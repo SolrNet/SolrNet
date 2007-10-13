@@ -69,7 +69,7 @@ namespace SolrNet.Tests {
 			mocks.ReplayAll();
 
 			ISolrConnection conn = new SolrConnection("https://pepe", reqFactory);
-			conn.Post("", "");
+			conn.Post("");
 			mocks.VerifyAll();
 		}
 

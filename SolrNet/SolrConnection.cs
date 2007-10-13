@@ -12,7 +12,7 @@ namespace SolrNet {
 	public class SolrConnection : ISolrConnection {
 		private string serverURL;
 		private IHttpWebRequestFactory httpWebRequestFactory;
-		private Encoding enc = Encoding.UTF8;
+		private Encoding xmlEncoding = Encoding.UTF8;
 
 		public SolrConnection(string serverURL, IHttpWebRequestFactory httpWebRequestFactory) {
 			ServerURL = serverURL;
@@ -35,9 +35,9 @@ namespace SolrNet {
 			}
 		}
 
-		public Encoding Enc {
-			get { return enc; }
-			set { enc = value; }
+		public Encoding XmlEncoding {
+			get { return xmlEncoding; }
+			set { xmlEncoding = value; }
 		}
 
 		public static byte[] ReadFully(Stream stream) {
@@ -52,23 +52,23 @@ namespace SolrNet {
 			}
 		}
 
-		public string Post(string s, string contentType) {
+		public string Post(string s) {
 			IHttpWebRequest request = httpWebRequestFactory.Create(serverURL);
 			request.Method = HttpWebRequestMethod.POST;
 			using (Stream postParams = request.GetRequestStream()) {
-				postParams.Write(enc.GetBytes(s), 0, s.Length);
-				request.ContentType = contentType;
+				postParams.Write(xmlEncoding.GetBytes(s), 0, s.Length);
+				request.ContentType = "text/xml; charset=utf-8";
 				request.ContentLength = s.Length;
 				using (IHttpWebResponse response = request.GetResponse()) {
 					using (Stream rStream = response.GetResponseStream()) {
-						return enc.GetString(ReadFully(rStream));
+						return xmlEncoding.GetString(ReadFully(rStream));
 					}
 				}
 			}
 		}
 
 		public XmlDocument PostXml(XmlDocument xml) {
-			string xmlResponse = Post(xml.ToString(), "text/xml");
+			string xmlResponse = Post(xml.ToString());
 			XmlDocument doc = new XmlDocument();
 			doc.LoadXml(xmlResponse);
 			return doc;
@@ -92,7 +92,7 @@ namespace SolrNet {
 			request.Method = HttpWebRequestMethod.GET;
 			using (IHttpWebResponse response = request.GetResponse()) {
 				using (Stream rStream = response.GetResponseStream()) {
-					return enc.GetString(ReadFully(rStream));
+					return xmlEncoding.GetString(ReadFully(rStream));
 				}
 			}
 		}

@@ -34,6 +34,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddCommand.cs" />
+    <Compile Include="Commands\AddCommand.cs" />
+    <Compile Include="Commands\CommitCommand.cs" />
+    <Compile Include="Commands\OptimizeCommand.cs" />
+    <Compile Include="ISolrCommand.cs" />
+    <Compile Include="ISolrDocument.cs" />
+    <Compile Include="ISolrDocumentSerializer.cs" />
+    <Compile Include="ISolrOperations.cs" />
+    <Compile Include="ISolrQuery.cs" />
+    <Compile Include="ISolrQueryResults.cs" />
+    <Compile Include="SolrDocumentSerializer.cs" />
+    <Compile Include="SolrField.cs" />
+    <Compile Include="SolrServer.cs" />
     <Compile Include="Utils\Func.cs" />
     <Compile Include="Exceptions\InvalidURLException.cs" />
     <Compile Include="ISolrConnection.cs" />

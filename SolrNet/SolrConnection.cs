@@ -14,6 +14,7 @@ namespace SolrNet {
 		private string serverURL;
 		private IHttpWebRequestFactory httpWebRequestFactory;
 		private Encoding xmlEncoding = Encoding.UTF8;
+		private string version = "2.2";
 
 		public SolrConnection(string serverURL, IHttpWebRequestFactory httpWebRequestFactory) {
 			ServerURL = serverURL;
@@ -34,6 +35,11 @@ namespace SolrNet {
 				}
 				serverURL = value;
 			}
+		}
+
+		public string Version {
+			get { return version; }
+			set { version = value; }
 		}
 
 		public Encoding XmlEncoding {
@@ -81,6 +87,7 @@ namespace SolrNet {
 		public string Get(string relativeUrl, IDictionary<string, string> parameters) {
 			UriBuilder u = new UriBuilder(serverURL);
 			u.Path += relativeUrl;
+			parameters["version"] = version;
 			u.Query = Func.Reduce(
 				Func.Map<KeyValuePair<string, string>, string>(parameters,
 				                                               delegate(KeyValuePair<string, string> input) {

@@ -36,6 +36,10 @@
   <ItemGroup>
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\CommitCommand.cs" />
+    <Compile Include="Commands\DeleteByIdParam.cs" />
+    <Compile Include="Commands\DeleteByQueryParam.cs" />
+    <Compile Include="Commands\DeleteCommand.cs" />
+    <Compile Include="Commands\ISolrDeleteParam.cs" />
     <Compile Include="Commands\OptimizeCommand.cs" />
     <Compile Include="ISolrCommand.cs" />
     <Compile Include="ISolrDocument.cs" />
@@ -43,9 +47,13 @@
     <Compile Include="ISolrOperations.cs" />
     <Compile Include="ISolrQuery.cs" />
     <Compile Include="ISolrQueryResults.cs" />
+    <Compile Include="SimpleQuery.cs" />
     <Compile Include="SolrDocumentSerializer.cs" />
+    <Compile Include="SolrExecutableQuery.cs" />
     <Compile Include="SolrField.cs" />
+    <Compile Include="SolrQueryResults.cs" />
     <Compile Include="SolrServer.cs" />
+    <Compile Include="SolrUniqueKey.cs" />
     <Compile Include="Utils\Func.cs" />
     <Compile Include="Exceptions\InvalidURLException.cs" />
     <Compile Include="ISolrConnection.cs" />

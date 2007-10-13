@@ -6,10 +6,6 @@ namespace SolrNet.Tests {
 	[TestFixture]
 	public class AddCommandTests {
 		public class SampleDoc : ISolrDocument {
-			public string Key {
-				get { return ""; }
-			}
-
 			[SolrField]
 			public string Id {
 				get { return "id"; }

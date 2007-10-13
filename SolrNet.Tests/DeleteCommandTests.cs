@@ -1,45 +1,36 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Rhino.Mocks.Constraints;
 
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class DeleteCommandTests {
 		[Test]
-		public void tt() {
+		public void DeleteById() {
+			const string id = "123123";
 			MockRepository mocks = new MockRepository();
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(conn.Post(string.Format("<delete><id>{0}</id></delete>", id))).Repeat.Once().Return("");
+			mocks.ReplayAll();
 			DeleteCommand cmd = new DeleteCommand();
+			cmd.DeleteParam = new DeleteByIdParam(id);
 			cmd.Execute(conn);
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void DeleteByQuery() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			ISolrQuery<ISolrDocument> q = mocks.CreateMock<ISolrQuery<ISolrDocument>>();
+			const string queryString = "someQuery";
+			Expect.Call(q.ToString()).Repeat.Once().Return(queryString);
+			Expect.Call(conn.Post(string.Format("<delete><query>{0}</query></delete>", queryString))).Repeat.Once().Return("");
+			mocks.ReplayAll();
+			DeleteCommand cmd = new DeleteCommand();
+			cmd.DeleteParam = new DeleteByQueryParam<ISolrDocument>(q);
+			cmd.Execute(conn);
+			mocks.VerifyAll();
 		}
 	}
-
-	public class DeleteCommand: ISolrCommand {
-		private bool fromPending = true;
-		private bool fromCommitted = true;
-		private ISolrDeleteParam deleteParam;
-
-		public bool FromPending {
-			get { return fromPending; }
-			set { fromPending = value; }
-		}
-
-		public bool FromCommitted {
-			get { return fromCommitted; }
-			set { fromCommitted = value; }
-		}
-
-		public ISolrDeleteParam DeleteParam {
-			get { return deleteParam; }
-			set { deleteParam = value; }
-		}
-
-		public string Execute(ISolrConnection connection) {
-			return connection.Post(string.Format("<delete>{0}</delete>", deleteParam));
-		}
-	}
-
-	public interface ISolrDeleteParam {}
 }

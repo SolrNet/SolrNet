@@ -1,31 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class SolrDocumentSerializerTests {
-
-		public class SampleDoc: ISolrDocument {
-			public string Key {
-				get { return ""; }
-			}
-
+		public class SampleDoc : ISolrDocument {
 			[SolrField]
 			public string Id {
-				get {
-					return "id";
-				}
+				get { return "id"; }
 			}
 
 			[SolrField("Flower")]
 			public decimal caca {
-				get {
-					return 23.5m;
-				}
+				get { return 23.5m; }
 			}
-
 		}
 
 		[Test]

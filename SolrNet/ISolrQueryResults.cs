@@ -1,5 +1,5 @@
 using System.Collections.Generic;
 
 namespace SolrNet {
-	public interface ISolrQueryResults<T> : IEnumerable<T> {}
+	public interface ISolrQueryResults<T> : ICollection<T> {}
 }

@@ -58,11 +58,11 @@ namespace SolrNet {
 			throw new NotImplementedException();
 		}
 
-		public string Delete(ISolrQuery q) {
+		public string Delete(ISolrQuery<T> q) {
 			throw new NotImplementedException();
 		}
 
-		public string Delete(ISolrQuery q, bool fromPending, bool fromCommited) {
+		public string Delete(ISolrQuery<T> q, bool fromPending, bool fromCommited) {
 			throw new NotImplementedException();
 		}
 
@@ -74,8 +74,9 @@ namespace SolrNet {
 			throw new NotImplementedException();
 		}
 
-		public ISolrQueryResults<T> Query(ISolrQuery q) {
-			throw new NotImplementedException();
+		public ISolrQueryResults<T> Query(ISolrQuery<T> q) {
+			ISolrExecutableQuery<T> exe = new SolrExecutableQuery<T>(connection, q.Query);
+			return exe.Execute();
 		}
 
 		public string Send(ISolrCommand cmd) {

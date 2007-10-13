@@ -22,11 +22,11 @@ namespace SolrNet {
 		string Add(IEnumerable<T> docs);
 		string Delete(T doc);
 		string Delete(T doc, bool fromPending, bool fromCommited);
-		string Delete(ISolrQuery q);
-		string Delete(ISolrQuery q, bool fromPending, bool fromCommited);
+		string Delete(ISolrQuery<T> q);
+		string Delete(ISolrQuery<T> q, bool fromPending, bool fromCommited);
 		string Delete(string id);
 		string Delete(string id, bool fromPending, bool fromCommited);
-		ISolrQueryResults<T> Query(ISolrQuery q);
+		ISolrQueryResults<T> Query(ISolrQuery<T> q);
 		string Send(ISolrCommand cmd);
 	}
 }

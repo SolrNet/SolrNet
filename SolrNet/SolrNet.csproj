@@ -34,7 +34,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddCommand.cs" />
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\CommitCommand.cs" />
     <Compile Include="Commands\OptimizeCommand.cs" />

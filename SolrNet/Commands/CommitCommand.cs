@@ -15,8 +15,8 @@ namespace SolrNet {
 			set { waitSearcher = value; }
 		}
 
-		public void Execute(ISolrConnection connection) {
-			connection.Post(
+		public string Execute(ISolrConnection connection) {
+			return connection.Post(
 				string.Format("<commit waitFlush=\"{0}\" waitSearcher=\"{1}\"/>",
 											waitFlush.ToString().ToLower(),
 											waitSearcher.ToString().ToLower()));

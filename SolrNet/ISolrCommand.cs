@@ -2,6 +2,6 @@ using System;
 
 namespace SolrNet {
 	public interface ISolrCommand {
-		void Execute(ISolrConnection connection);
+		string Execute(ISolrConnection connection);
 	}
 }

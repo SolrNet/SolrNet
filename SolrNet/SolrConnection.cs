@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Web;
 using System.Xml;
@@ -55,13 +56,16 @@ namespace SolrNet {
 		public string Post(string s) {
 			IHttpWebRequest request = httpWebRequestFactory.Create(serverURL);
 			request.Method = HttpWebRequestMethod.POST;
+			request.ContentType = "text/xml; charset=utf-8";
+			request.ContentLength = s.Length;
+			request.ProtocolVersion = HttpVersion.Version10;
 			using (Stream postParams = request.GetRequestStream()) {
 				postParams.Write(xmlEncoding.GetBytes(s), 0, s.Length);
-				request.ContentType = "text/xml; charset=utf-8";
-				request.ContentLength = s.Length;
 				using (IHttpWebResponse response = request.GetResponse()) {
 					using (Stream rStream = response.GetResponseStream()) {
-						return xmlEncoding.GetString(ReadFully(rStream));
+						string r = xmlEncoding.GetString(ReadFully(rStream));
+						//Console.WriteLine(r);
+						return r;
 					}
 				}
 			}
@@ -87,9 +91,10 @@ namespace SolrNet {
 				delegate(string x, string y) {
 					return string.Format("{0}&{1}", x, y);
 				});
-			Console.WriteLine(u.Uri);
+			//Console.WriteLine(u.Uri);
 			IHttpWebRequest request = httpWebRequestFactory.Create(u.Uri);
 			request.Method = HttpWebRequestMethod.GET;
+			request.ProtocolVersion = HttpVersion.Version10;
 			using (IHttpWebResponse response = request.GetResponse()) {
 				using (Stream rStream = response.GetResponseStream()) {
 					return xmlEncoding.GetString(ReadFully(rStream));

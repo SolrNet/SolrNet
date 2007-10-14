@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace SolrNet.Tests {
-	public class SolrQueryResults<T> : ISolrQueryResults<T> {
+	public class SolrQueryResults<T> : ISolrQueryResults<T> where T : ISolrDocument {
 		public IEnumerator<T> GetEnumerator() {
 			throw new NotImplementedException();
 		}

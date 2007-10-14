@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 
 namespace SolrNet {
-	public class SolrExecutableQuery<T> : ISolrExecutableQuery<T> {
+	public class SolrExecutableQuery<T> : ISolrExecutableQuery<T> where T : ISolrDocument {
 		private ISolrConnection connection;
 		private string query;
+		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();
 
 		public SolrExecutableQuery(ISolrConnection connection, string query) {
 			this.connection = connection;
@@ -21,11 +22,17 @@ namespace SolrNet {
 			param["q"] = query;
 			string r = connection.Get("/select/", param);
 			Console.WriteLine(r);
-			return null;
+			ISolrQueryResults<T> qr = ResultParser.Parse(r);
+			return qr;
 		}
 
 		public string Query {
 			get { return query; }
+		}
+
+		public ISolrQueryResultParser<T> ResultParser {
+			get { return resultParser; }
+			set { resultParser = value; }
 		}
 	}
 }

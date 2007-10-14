@@ -54,7 +54,7 @@ namespace SolrNet.Tests {
 			cmd.Execute(connection);
 		}
 
-		public void ByQuery<T>(ISolrQuery<T> q) {
+		public void ByQuery<T>(ISolrQuery<T> q) where T : ISolrDocument {
 			DeleteCommand cmd = new DeleteCommand();
 			cmd.DeleteParam = new DeleteByQueryParam<T>(q);
 			cmd.Execute(connection);

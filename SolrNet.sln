@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Tests", "SolrNet.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpWebAdapters", "HttpWebAdapters\HttpWebAdapters.csproj", "{AE7D2A46-3F67-4986-B04B-7DCE79A549A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.DSL", "SolrNet.DSL\SolrNet.DSL.csproj", "{385E2EC3-885B-43D5-A86B-955692058BA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNET.DSL.Tests", "SolrNET.DSL.Tests\SolrNET.DSL.Tests.csproj", "{58FA9DC2-97C8-4B2A-892E-B1617854401D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,14 @@ Global
 		{AE7D2A46-3F67-4986-B04B-7DCE79A549A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE7D2A46-3F67-4986-B04B-7DCE79A549A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE7D2A46-3F67-4986-B04B-7DCE79A549A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{385E2EC3-885B-43D5-A86B-955692058BA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{385E2EC3-885B-43D5-A86B-955692058BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{385E2EC3-885B-43D5-A86B-955692058BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{385E2EC3-885B-43D5-A86B-955692058BA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58FA9DC2-97C8-4B2A-892E-B1617854401D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58FA9DC2-97C8-4B2A-892E-B1617854401D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58FA9DC2-97C8-4B2A-892E-B1617854401D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58FA9DC2-97C8-4B2A-892E-B1617854401D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

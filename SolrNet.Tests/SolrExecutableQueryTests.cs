@@ -5,9 +5,8 @@ using Rhino.Mocks;
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class SolrExecutableQueryTests {
-		public class TestDocument: ISolrDocument {
-			
-		}
+		public class TestDocument : ISolrDocument {}
+
 		[Test]
 		public void Execute() {
 			const string queryString = "id:123456";

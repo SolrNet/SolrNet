@@ -45,6 +45,7 @@
     <Compile Include="ISolrCommand.cs" />
     <Compile Include="ISolrDocument.cs" />
     <Compile Include="ISolrDocumentSerializer.cs" />
+    <Compile Include="ISolrExecutableQuery.cs" />
     <Compile Include="ISolrOperations.cs" />
     <Compile Include="ISolrQuery.cs" />
     <Compile Include="ISolrQueryResultParser.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="SolrDocumentSerializer.cs" />
     <Compile Include="SolrExecutableQuery.cs" />
     <Compile Include="SolrField.cs" />
+    <Compile Include="SolrQuery.cs" />
     <Compile Include="SolrQueryResultParser.cs" />
     <Compile Include="SolrQueryResults.cs" />
     <Compile Include="SolrServer.cs" />

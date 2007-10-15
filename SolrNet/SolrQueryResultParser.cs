@@ -32,7 +32,8 @@ namespace SolrNet {
 				                          		if (atts.Length > 0) {
 				                          			SolrField att = (SolrField) atts[0];
 				                          			if (att.FieldName == fieldName) {
-				                          				property.SetValue(doc, Convert.ChangeType(field.InnerText, property.PropertyType), null);
+				                          				property.SetValue(doc, Convert.ChangeType(field.InnerText, property.PropertyType),
+				                          				                  null);
 				                          				return true;
 				                          			}
 				                          		}

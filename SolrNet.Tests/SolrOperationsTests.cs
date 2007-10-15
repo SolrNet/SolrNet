@@ -5,7 +5,8 @@ using Rhino.Mocks;
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class SolrOperationsTests {
-		public class TestDocument: ISolrDocument {}
+		public class TestDocument : ISolrDocument {}
+
 		[Test]
 		public void Commit() {
 			MockRepository mocks = new MockRepository();

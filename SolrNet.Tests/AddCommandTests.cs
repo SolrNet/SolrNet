@@ -20,7 +20,7 @@ namespace SolrNet.Tests {
 		public delegate string Writer(string s);
 
 		[Test]
-		public void execute() {
+		public void Execute() {
 			MockRepository mocks = new MockRepository();
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
 			conn.Post(null);
@@ -28,6 +28,9 @@ namespace SolrNet.Tests {
 			                                                       	Console.WriteLine(s);
 			                                                       	return null;
 			                                                       }));
+			SetupResult.For(conn.ServerURL).Return("");
+			conn.ServerURL = "";
+			LastCall.IgnoreArguments();
 			mocks.ReplayAll();
 			SampleDoc[] docs = new SampleDoc[] {new SampleDoc()};
 			AddCommand<SampleDoc> cmd = new AddCommand<SampleDoc>(docs);

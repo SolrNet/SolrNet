@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpWebAdapters", "HttpWebA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.DSL", "SolrNet.DSL\SolrNet.DSL.csproj", "{385E2EC3-885B-43D5-A86B-955692058BA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNET.DSL.Tests", "SolrNET.DSL.Tests\SolrNET.DSL.Tests.csproj", "{58FA9DC2-97C8-4B2A-892E-B1617854401D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.DSL.Tests", "SolrNet.DSL.Tests\SolrNet.DSL.Tests.csproj", "{58FA9DC2-97C8-4B2A-892E-B1617854401D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

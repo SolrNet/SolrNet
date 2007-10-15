@@ -1,9 +1,17 @@
 using NUnit.Framework;
+using Rhino.Mocks;
 using SolrNet.DSL;
 
-namespace SolrNet.Tests {
+namespace SolrNet.DSL.Tests {
 	[TestFixture]
 	public class DSLTests {
+		[TestFixtureSetUp]
+		public void setup() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Solr.Connection = conn;
+		}
+
 		public class TestDocument : ISolrDocument {}
 
 		[Test]

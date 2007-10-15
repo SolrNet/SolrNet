@@ -20,7 +20,7 @@ namespace SolrNet.Tests {
 		}
 
 		public string Execute(ISolrConnection connection) {
-			return connection.Post(string.Format("<delete>{0}</delete>", deleteParam));
+			return connection.Post(string.Format("<delete>{0}</delete>", deleteParam.ToXmlString()));
 		}
 	}
 }

@@ -9,7 +9,9 @@ namespace SolrNet.Tests.Integration {
 			ISolrOperations<TestDocument> server = new SolrServer<TestDocument>(conn);
 			SolrExecutableQuery<TestDocument> query = new SolrExecutableQuery<TestDocument>(conn, "id:123456");
 			ISolrQueryResults<TestDocument> r = server.Query(query);
-			Assert.Greater(0, r.Count);
+			Assert.Greater(r.Count, 0);
+			TestDocument doc = r[0];
+			Assert.AreEqual(123456, doc.Id);
 		}
 	}
 }

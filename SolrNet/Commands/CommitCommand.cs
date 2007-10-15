@@ -1,7 +1,5 @@
-using System;
-
 namespace SolrNet {
-	public class CommitCommand: ISolrCommand {
+	public class CommitCommand : ISolrCommand {
 		private bool waitFlush = true;
 		private bool waitSearcher = true;
 
@@ -18,8 +16,8 @@ namespace SolrNet {
 		public string Execute(ISolrConnection connection) {
 			return connection.Post(
 				string.Format("<commit waitFlush=\"{0}\" waitSearcher=\"{1}\"/>",
-											waitFlush.ToString().ToLower(),
-											waitSearcher.ToString().ToLower()));
+				              waitFlush.ToString().ToLower(),
+				              waitSearcher.ToString().ToLower()));
 		}
 	}
 }

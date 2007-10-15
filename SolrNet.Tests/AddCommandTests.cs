@@ -34,6 +34,5 @@ namespace SolrNet.Tests {
 			cmd.Execute(conn);
 			mocks.VerifyAll();
 		}
-
 	}
 }

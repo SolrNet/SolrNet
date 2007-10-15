@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace SolrNet {
-	public class SolrExecutableQuery<T> : ISolrExecutableQuery<T> where T : ISolrDocument {
+	public class SolrExecutableQuery<T> : ISolrExecutableQuery<T> where T : ISolrDocument, new() {
 		private ISolrConnection connection;
 		private string query;
 		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();
@@ -20,7 +20,7 @@ namespace SolrNet {
 		public ISolrQueryResults<T> Execute() {
 			IDictionary<string, string> param = new Dictionary<string, string>();
 			param["q"] = query;
-			string r = connection.Get("/select/", param);
+			string r = connection.Get("/select", param);
 			Console.WriteLine(r);
 			ISolrQueryResults<T> qr = ResultParser.Parse(r);
 			return qr;

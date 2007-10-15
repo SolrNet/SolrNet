@@ -1,5 +1,5 @@
 namespace SolrNet {
-	public class OptimizeCommand: ISolrCommand {
+	public class OptimizeCommand : ISolrCommand {
 		private bool waitFlush = true;
 		private bool waitSearcher = true;
 

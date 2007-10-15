@@ -1,4 +1,3 @@
 namespace SolrNet {
-	public interface ISolrDocument {
-	}
+	public interface ISolrDocument {}
 }

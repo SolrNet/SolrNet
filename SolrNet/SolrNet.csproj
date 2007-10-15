@@ -41,6 +41,7 @@
     <Compile Include="Commands\DeleteCommand.cs" />
     <Compile Include="Commands\ISolrDeleteParam.cs" />
     <Compile Include="Commands\OptimizeCommand.cs" />
+    <Compile Include="Exceptions\FieldNotFoundException.cs" />
     <Compile Include="ISolrCommand.cs" />
     <Compile Include="ISolrDocument.cs" />
     <Compile Include="ISolrDocumentSerializer.cs" />
@@ -48,7 +49,6 @@
     <Compile Include="ISolrQuery.cs" />
     <Compile Include="ISolrQueryResultParser.cs" />
     <Compile Include="ISolrQueryResults.cs" />
-    <Compile Include="SimpleQuery.cs" />
     <Compile Include="SolrDocumentSerializer.cs" />
     <Compile Include="SolrExecutableQuery.cs" />
     <Compile Include="SolrField.cs" />

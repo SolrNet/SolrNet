@@ -1,5 +1,5 @@
 namespace SolrNet.Tests {
-	public class DeleteCommand: ISolrCommand {
+	public class DeleteCommand : ISolrCommand {
 		private bool fromPending = true;
 		private bool fromCommitted = true;
 		private ISolrDeleteParam deleteParam;

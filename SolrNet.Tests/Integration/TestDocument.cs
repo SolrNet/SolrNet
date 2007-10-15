@@ -1,5 +1,5 @@
 namespace SolrNet.Tests.Integration {
-	public class TestDocument: ISolrDocument {
+	public class TestDocument : ISolrDocument {
 		private int id;
 		private string make;
 		private string model;

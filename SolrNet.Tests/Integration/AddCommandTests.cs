@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 
 namespace SolrNet.Tests.Integration {
@@ -28,6 +26,5 @@ namespace SolrNet.Tests.Integration {
 			solr.Add(new TestDocument[] {doc, doc});
 			Console.WriteLine(solr.Commit());
 		}
-
 	}
 }

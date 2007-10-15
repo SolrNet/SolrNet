@@ -1,3 +1,5 @@
 namespace SolrNet {
-	public interface ISolrDeleteParam {}
+	public interface ISolrDeleteParam {
+		string ToXmlString();
+	}
 }

@@ -1,5 +1,11 @@
 using System.Collections.Generic;
 
 namespace SolrNet {
-	public interface ISolrQueryResults<T> : ICollection<T> where T : ISolrDocument { }
+	/// <summary>
+	/// Query results.
+	/// </summary>
+	/// <typeparam name="T">Document type</typeparam>
+	public interface ISolrQueryResults<T> : IList<T> where T : ISolrDocument { // TODO make it readonly
+		int NumFound { get;}
+	}
 }

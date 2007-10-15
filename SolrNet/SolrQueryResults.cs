@@ -4,12 +4,58 @@ using System.Collections.Generic;
 
 namespace SolrNet.Tests {
 	public class SolrQueryResults<T> : ISolrQueryResults<T> where T : ISolrDocument {
-		public IEnumerator<T> GetEnumerator() {
-			throw new NotImplementedException();
+		private IList<T> innerList = new List<T>();
+
+		///<summary>
+		///Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1"></see>.
+		///</summary>
+		///
+		///<returns>
+		///The index of item if found in the list; otherwise, -1.
+		///</returns>
+		///
+		///<param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"></see>.</param>
+		public int IndexOf(T item) {
+			return innerList.IndexOf(item);
 		}
 
-		IEnumerator IEnumerable.GetEnumerator() {
-			throw new NotImplementedException();
+		///<summary>
+		///Inserts an item to the <see cref="T:System.Collections.Generic.IList`1"></see> at the specified index.
+		///</summary>
+		///
+		///<param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1"></see>.</param>
+		///<param name="index">The zero-based index at which item should be inserted.</param>
+		///<exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"></see> is read-only.</exception>
+		///<exception cref="T:System.ArgumentOutOfRangeException">index is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"></see>.</exception>
+		public void Insert(int index, T item) {
+			innerList.Insert(index, item);
+		}
+
+		///<summary>
+		///Removes the <see cref="T:System.Collections.Generic.IList`1"></see> item at the specified index.
+		///</summary>
+		///
+		///<param name="index">The zero-based index of the item to remove.</param>
+		///<exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"></see> is read-only.</exception>
+		///<exception cref="T:System.ArgumentOutOfRangeException">index is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"></see>.</exception>
+		public void RemoveAt(int index) {
+			innerList.RemoveAt(index);
+		}
+
+		///<summary>
+		///Gets or sets the element at the specified index.
+		///</summary>
+		///
+		///<returns>
+		///The element at the specified index.
+		///</returns>
+		///
+		///<param name="index">The zero-based index of the element to get or set.</param>
+		///<exception cref="T:System.ArgumentOutOfRangeException">index is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"></see>.</exception>
+		///<exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IList`1"></see> is read-only.</exception>
+		public T this[int index] {
+			get { return innerList[index]; }
+			set { innerList[index] = value; }
 		}
 
 		///<summary>
@@ -19,7 +65,7 @@ namespace SolrNet.Tests {
 		///<param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
 		///<exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only.</exception>
 		public void Add(T item) {
-			throw new NotImplementedException();
+			innerList.Add(item);
 		}
 
 		///<summary>
@@ -28,7 +74,7 @@ namespace SolrNet.Tests {
 		///
 		///<exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only. </exception>
 		public void Clear() {
-			throw new NotImplementedException();
+			innerList.Clear();
 		}
 
 		///<summary>
@@ -41,7 +87,7 @@ namespace SolrNet.Tests {
 		///
 		///<param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
 		public bool Contains(T item) {
-			throw new NotImplementedException();
+			return innerList.Contains(item);
 		}
 
 		///<summary>
@@ -54,7 +100,7 @@ namespace SolrNet.Tests {
 		///<exception cref="T:System.ArgumentNullException">array is null.</exception>
 		///<exception cref="T:System.ArgumentException">array is multidimensional.-or-arrayIndex is equal to or greater than the length of array.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"></see> is greater than the available space from arrayIndex to the end of the destination array.-or-Type T cannot be cast automatically to the type of the destination array.</exception>
 		public void CopyTo(T[] array, int arrayIndex) {
-			throw new NotImplementedException();
+			innerList.CopyTo(array, arrayIndex);
 		}
 
 		///<summary>
@@ -68,7 +114,7 @@ namespace SolrNet.Tests {
 		///<param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"></see>.</param>
 		///<exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"></see> is read-only.</exception>
 		public bool Remove(T item) {
-			throw new NotImplementedException();
+			return innerList.Remove(item);
 		}
 
 		///<summary>
@@ -80,7 +126,7 @@ namespace SolrNet.Tests {
 		///</returns>
 		///
 		public int Count {
-			get { throw new NotImplementedException(); }
+			get { return innerList.Count; }
 		}
 
 		///<summary>
@@ -92,7 +138,38 @@ namespace SolrNet.Tests {
 		///</returns>
 		///
 		public bool IsReadOnly {
-			get { throw new NotImplementedException(); }
+			get { return innerList.IsReadOnly; }
+		}
+
+		///<summary>
+		///Returns an enumerator that iterates through a collection.
+		///</summary>
+		///
+		///<returns>
+		///An <see cref="T:System.Collections.IEnumerator"></see> object that can be used to iterate through the collection.
+		///</returns>
+		///<filterpriority>2</filterpriority>
+		public IEnumerator GetEnumerator() {
+			return ((IEnumerable) innerList).GetEnumerator();
+		}
+
+		private int numFound;
+
+		public int NumFound {
+			get { return numFound; }
+			set { numFound = value; }
+		}
+
+		///<summary>
+		///Returns an enumerator that iterates through the collection.
+		///</summary>
+		///
+		///<returns>
+		///A <see cref="T:System.Collections.Generic.IEnumerator`1"></see> that can be used to iterate through the collection.
+		///</returns>
+		///<filterpriority>1</filterpriority>
+		IEnumerator<T> IEnumerable<T>.GetEnumerator() {
+			return innerList.GetEnumerator();
 		}
 	}
 }

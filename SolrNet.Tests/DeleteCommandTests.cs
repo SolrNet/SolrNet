@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using Rhino.Mocks;
-using Rhino.Mocks.Constraints;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -24,7 +23,7 @@ namespace SolrNet.Tests {
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
 			ISolrQuery<ISolrDocument> q = mocks.CreateMock<ISolrQuery<ISolrDocument>>();
 			const string queryString = "someQuery";
-			Expect.Call(q.ToString()).Repeat.Once().Return(queryString);
+			Expect.Call(q.Query).Repeat.Once().Return(queryString);
 			Expect.Call(conn.Post(string.Format("<delete><query>{0}</query></delete>", queryString))).Repeat.Once().Return("");
 			mocks.ReplayAll();
 			DeleteCommand cmd = new DeleteCommand();

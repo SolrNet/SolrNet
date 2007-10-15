@@ -1,5 +1,3 @@
-using SolrNet.Tests;
-
 namespace SolrNet {
 	public class DeleteByIdParam : ISolrDeleteParam {
 		private string id;
@@ -8,7 +6,7 @@ namespace SolrNet {
 			this.id = id;
 		}
 
-		public override string ToString() {
+		public string ToXmlString() {
 			return string.Format("<id>{0}</id>", id);
 		}
 	}

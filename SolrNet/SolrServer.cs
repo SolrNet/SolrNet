@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace SolrNet {
-	public class SolrServer<T> : ISolrOperations<T> where T : ISolrDocument {
+	public class SolrServer<T> : ISolrOperations<T> where T : ISolrDocument, new() {
 		private ISolrConnection connection;
 
 		public SolrServer(ISolrConnection connection) {
@@ -42,7 +42,7 @@ namespace SolrNet {
 		}
 
 		public string Add(T doc) {
-			return Add(new T[] { doc });
+			return Add(new T[] {doc});
 		}
 
 		public string Add(IEnumerable<T> docs) {

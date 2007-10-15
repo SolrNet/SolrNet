@@ -54,6 +54,7 @@
     <Compile Include="SolrExecutableQueryTests.cs" />
     <Compile Include="SolrFieldExample.cs" />
     <Compile Include="SolrOperationsTests.cs" />
+    <Compile Include="SolrQueryResultsParserTests.cs" />
     <Compile Include="SolrQueryTests.cs" />
     <Compile Include="SolrUniqueKeyTests.cs" />
   </ItemGroup>

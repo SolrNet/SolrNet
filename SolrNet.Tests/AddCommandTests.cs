@@ -17,25 +17,32 @@ namespace SolrNet.Tests {
 			}
 		}
 
-		public delegate string Writer(string s);
+		public delegate string Writer(string ignored, string s);
 
 		[Test]
 		public void Execute() {
 			MockRepository mocks = new MockRepository();
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
-			conn.Post(null);
-			LastCall.IgnoreArguments().Repeat.Once().Do(new Writer(delegate(string s) {
+			conn.Post("/update", "<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23,5</field></doc></add>");			
+			LastCall.Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
 			                                                       	Console.WriteLine(s);
 			                                                       	return null;
 			                                                       }));
 			SetupResult.For(conn.ServerURL).Return("");
-			conn.ServerURL = "";
-			LastCall.IgnoreArguments();
 			mocks.ReplayAll();
 			SampleDoc[] docs = new SampleDoc[] {new SampleDoc()};
 			AddCommand<SampleDoc> cmd = new AddCommand<SampleDoc>(docs);
 			cmd.Execute(conn);
 			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void ShouldntAlterOriginalServerUrl() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			SampleDoc[] docs = new SampleDoc[] { new SampleDoc() };
+			AddCommand<SampleDoc> cmd = new AddCommand<SampleDoc>(docs);
+			cmd.Execute(conn);
 		}
 	}
 }

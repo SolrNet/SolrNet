@@ -21,7 +21,7 @@ namespace SolrNet.Tests {
 			MockRepository mocks = new MockRepository();
 			ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
 			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
-			Expect.Call(connection.Post("<commit waitFlush=\"true\" waitSearcher=\"true\"/>")).Repeat.Once().Return(null);
+			Expect.Call(connection.Post("/update", "<commit waitFlush=\"true\" waitSearcher=\"true\"/>")).Repeat.Once().Return(null);
 			mocks.ReplayAll();
 			ISolrOperations<TestDocument> ops = new SolrServer<TestDocument>(connection);
 			ops.Commit(true, true);
@@ -33,6 +33,18 @@ namespace SolrNet.Tests {
 			MockRepository mocks = new MockRepository();
 			ISolrQueryResults<ISolrDocument> results = mocks.CreateMock<ISolrQueryResults<ISolrDocument>>();
 			Assert.IsInstanceOfType(typeof (IEnumerable<ISolrDocument>), results);
+		}
+
+		[Test]
+		public void Add() {
+			MockRepository mocks = new MockRepository();
+			ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
+			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(connection.Post("/update", "<add><doc /></add>")).Repeat.Once().Return(null);
+			mocks.ReplayAll();
+			ISolrOperations<TestDocument> ops = new SolrServer<TestDocument>(connection);
+			ops.Add(new TestDocument());
+			mocks.VerifyAll();			
 		}
 
 		[Test]

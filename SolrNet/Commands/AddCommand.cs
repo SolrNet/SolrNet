@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Text;
+using System.Xml;
 
 namespace SolrNet {
 	public class AddCommand<T> : ISolrCommand where T : ISolrDocument {
@@ -16,14 +16,14 @@ namespace SolrNet {
 		}
 
 		public string Execute(ISolrConnection connection) {
-			connection.ServerURL += "/update";
-			StringBuilder sb = new StringBuilder();
-			sb.Append("<add>"); // HACK use xml
+			XmlDocument xml = new XmlDocument();
+			XmlElement addElement = xml.CreateElement("add");
 			foreach (T doc in documents) {
-				sb.Append(serializer.Serialize(doc));
+				XmlDocument xmlDoc = serializer.Serialize(doc);
+				addElement.AppendChild(xml.ImportNode(xmlDoc.DocumentElement, true));
 			}
-			sb.Append("</add>");
-			return connection.Post(sb.ToString());
+			xml.AppendChild(addElement);
+			return connection.Post("/update", xml.OuterXml);
 		}
 	}
 }

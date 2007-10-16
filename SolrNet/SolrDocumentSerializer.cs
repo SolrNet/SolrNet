@@ -5,7 +5,7 @@ using System.Xml;
 namespace SolrNet {
 	public class SolrDocumentSerializer<T> : ISolrDocumentSerializer<T> where T : ISolrDocument {
 
-		public string Serialize(T doc) {
+		public XmlDocument Serialize(T doc) {
 			XmlDocument xml = new XmlDocument();
 			XmlElement docNode = xml.CreateElement("doc");
 			foreach (PropertyInfo p in typeof(T).GetProperties()) {
@@ -21,7 +21,7 @@ namespace SolrNet {
 				}
 			}
 			xml.AppendChild(docNode);
-			return xml.OuterXml;
+			return xml;
 		}
 	}
 }

@@ -20,8 +20,6 @@ namespace SolrNet.DSL.Tests {
 		public void Add() {
 			MockRepository mocks = new MockRepository();
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
-			conn.ServerURL = "";
-			LastCall.IgnoreArguments();
 			Expect.Call(conn.ServerURL).Return("");
 			mocks.ReplayAll();
 			Solr.Connection = conn;

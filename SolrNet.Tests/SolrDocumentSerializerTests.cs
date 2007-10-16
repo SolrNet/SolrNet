@@ -28,7 +28,9 @@ namespace SolrNet.Tests {
 			SampleDoc doc = new SampleDoc();
 			doc.Id = "id";
 			doc.Dd = 23.5m;
-			string fs = ser.Serialize(doc);
+			string fs = ser.Serialize(doc).OuterXml;
+			XmlDocument xml = new XmlDocument();
+			xml.LoadXml(fs);
 			Assert.AreEqual("<doc><field name=\"Id\">id</field><field name=\"Flower\">23,5</field></doc>", fs);
 		}
 
@@ -37,7 +39,7 @@ namespace SolrNet.Tests {
 			SolrDocumentSerializer<SampleDoc> ser = new SolrDocumentSerializer<SampleDoc>();
 			SampleDoc doc = new SampleDoc();
 			doc.Id = "<quote\"";
-			string fs = ser.Serialize(doc);
+			string fs = ser.Serialize(doc).OuterXml;
 			Console.WriteLine(fs);
 			XmlDocument xml = new XmlDocument();
 			xml.LoadXml(fs);

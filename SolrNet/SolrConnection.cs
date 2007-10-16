@@ -59,7 +59,7 @@ namespace SolrNet {
 			}
 		}
 
-		public string Post(string s) {
+		public string Post(string relativeUrl, string s) {
 			IHttpWebRequest request = httpWebRequestFactory.Create(serverURL);
 			request.Method = HttpWebRequestMethod.POST;
 			request.ContentType = "text/xml; charset=utf-8";
@@ -77,8 +77,8 @@ namespace SolrNet {
 			}
 		}
 
-		public XmlDocument PostXml(XmlDocument xml) {
-			string xmlResponse = Post(xml.ToString());
+		public XmlDocument PostXml(string relativeUrl, XmlDocument xml) {
+			string xmlResponse = Post(relativeUrl, xml.ToString());
 			XmlDocument doc = new XmlDocument();
 			doc.LoadXml(xmlResponse);
 			return doc;

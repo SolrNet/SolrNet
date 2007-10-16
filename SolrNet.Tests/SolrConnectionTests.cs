@@ -69,7 +69,7 @@ namespace SolrNet.Tests {
 			mocks.ReplayAll();
 
 			ISolrConnection conn = new SolrConnection("https://pepe", reqFactory);
-			conn.Post("");
+			conn.Post("", "");
 			mocks.VerifyAll();
 		}
 
@@ -93,7 +93,7 @@ namespace SolrNet.Tests {
 
 			ISolrConnection conn = new SolrConnection("https://pepe", reqFactory);
 			XmlDocument doc = new XmlDocument();
-			conn.PostXml(doc);
+			conn.PostXml("", doc);
 			mocks.VerifyAll();
 		}
 

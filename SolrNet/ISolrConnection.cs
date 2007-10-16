@@ -7,8 +7,8 @@ namespace SolrNet {
 		string ServerURL { get; set; }
 		string Version { get; set; }
 		Encoding XmlEncoding { get; set; }
-		string Post(string s);
-		XmlDocument PostXml(XmlDocument xml);
+		string Post(string relativeUrl, string s);
+		XmlDocument PostXml(string relativeUrl, XmlDocument xml);
 		string Get(string relativeUrl, IDictionary<string, string> parameters);
 	}
 }

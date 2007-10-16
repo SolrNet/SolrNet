@@ -41,6 +41,7 @@
     <Compile Include="Commands\DeleteCommand.cs" />
     <Compile Include="Commands\ISolrDeleteParam.cs" />
     <Compile Include="Commands\OptimizeCommand.cs" />
+    <Compile Include="Commands\QueryCommand.cs" />
     <Compile Include="Exceptions\FieldNotFoundException.cs" />
     <Compile Include="ISolrCommand.cs" />
     <Compile Include="ISolrDocument.cs" />

@@ -5,23 +5,28 @@ using SolrNet.DSL;
 namespace SolrNet.DSL.Tests {
 	[TestFixture]
 	public class DSLTests {
-		[TestFixtureSetUp]
-		public void setup() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
-			Solr.Connection = conn;
-		}
 
 		public class TestDocument : ISolrDocument {}
 
 		[Test]
 		public void DeleteById() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Solr.Connection = conn;
 			Solr.Delete.ById("123456");
 		}
 
 		[Test]
 		public void Add() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			conn.ServerURL = "";
+			LastCall.IgnoreArguments();
+			Expect.Call(conn.ServerURL).Return("");
+			mocks.ReplayAll();
+			Solr.Connection = conn;
 			Solr.Add(new TestDocument());
+			mocks.VerifyAll();
 		}
 
 		[Test]

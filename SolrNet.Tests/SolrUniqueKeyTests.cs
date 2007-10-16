@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using Rhino.Mocks;
+using SolrNet.Exceptions;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -17,6 +18,7 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
+		[ExpectedException(typeof(BadMappingException))]
 		public void ClassWithTwoUniqueKeys_ShouldFailAdd() {
 			TestDocumentWithTwoUniqueFields doc = new TestDocumentWithTwoUniqueFields();
 			MockRepository mocks = new MockRepository();

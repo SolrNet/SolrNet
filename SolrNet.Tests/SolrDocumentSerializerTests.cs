@@ -44,5 +44,16 @@ namespace SolrNet.Tests {
 			XmlDocument xml = new XmlDocument();
 			xml.LoadXml(fs);
 		}
+
+		[Test]
+		public void AcceptsNullObjects() {
+			SolrDocumentSerializer<SampleDoc> ser = new SolrDocumentSerializer<SampleDoc>();
+			SampleDoc doc = new SampleDoc();
+			doc.Id = null;
+			string fs = ser.Serialize(doc).OuterXml;
+			Console.WriteLine(fs);
+			XmlDocument xml = new XmlDocument();
+			xml.LoadXml(fs);			
+		}
 	}
 }

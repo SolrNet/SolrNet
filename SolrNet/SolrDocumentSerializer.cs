@@ -16,7 +16,8 @@ namespace SolrNet {
 					XmlAttribute nameAtt = xml.CreateAttribute("name");
 					nameAtt.InnerText = att.FieldName ?? p.Name;
 					fieldNode.Attributes.Append(nameAtt);
-					fieldNode.InnerText = p.GetValue(doc, null).ToString();
+					object propertyValue = p.GetValue(doc, null);
+					fieldNode.InnerText = (propertyValue ?? "").ToString();
 					docNode.AppendChild(fieldNode);
 				}
 			}

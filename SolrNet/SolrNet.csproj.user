@@ -1,11 +1,8 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <StartProgram>
-    </StartProgram>
-    <StartWorkingDirectory>
-    </StartWorkingDirectory>
-    <StartArguments>
-    </StartArguments>
-    <StartAction>Project</StartAction>
+    <StartProgram>C:\Program Files\JetBrains\ReSharper\VS2005\bin\JetBrains.ReSharper.UnitTestRunner.exe</StartProgram>
+    <StartWorkingDirectory>C:\Program Files\JetBrains\ReSharper\VS2005\bin</StartWorkingDirectory>
+    <StartArguments> RUNNERARGS "C:\Documents and Settings\m\Local Settings\Temp\tmpD77.tmp"</StartArguments>
+    <StartAction>Program</StartAction>
   </PropertyGroup>
 </Project>

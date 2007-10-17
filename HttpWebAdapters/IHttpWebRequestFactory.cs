@@ -1,6 +1,6 @@
 using System;
 
-namespace SolrNet.Tests {
+namespace HttpWebAdapters {
 	public interface IHttpWebRequestFactory {
 		IHttpWebRequest Create(string url);
 		IHttpWebRequest Create(Uri url);

@@ -1,3 +1,4 @@
+using HttpWebAdapters;
 using NUnit.Framework;
 
 namespace SolrNet.Tests.Integration {

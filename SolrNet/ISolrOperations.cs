@@ -23,6 +23,7 @@ namespace SolrNet {
 
 		string Optimize();
 		string Optimize(bool waitFlush, bool waitSearcher);
+
 		/// <summary>
 		/// Adds / updates a document
 		/// </summary>

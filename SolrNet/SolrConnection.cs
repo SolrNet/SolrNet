@@ -5,8 +5,8 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Xml;
+using HttpWebAdapters;
 using SolrNet.Exceptions;
-using SolrNet.Tests;
 using SolrNet.Utils;
 
 namespace SolrNet {

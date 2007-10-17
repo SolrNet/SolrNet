@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml;
+using HttpWebAdapters;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Exceptions;

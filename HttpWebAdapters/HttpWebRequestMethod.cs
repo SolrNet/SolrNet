@@ -1,4 +1,4 @@
-namespace SolrNet.Tests {
+namespace HttpWebAdapters {
 	public class HttpWebRequestMethod {
 		private string method;
 		private static readonly string SGET = "GET";

@@ -18,6 +18,5 @@ namespace SolrNet {
 		 * or IXmlSerializable http://msdn2.microsoft.com/en-us/library/system.xml.serialization.ixmlserializable(VS.80).aspx
 		 * but I don't want to put that burden on the document classes, they should be as POCO as possible
 		 */
-
 	}
 }

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 
-namespace SolrNet.Tests {
+namespace HttpWebAdapters {
 	public interface IHttpWebResponse : IDisposable {
 		///<summary>
 		///Gets the contents of a header that was returned with the response.

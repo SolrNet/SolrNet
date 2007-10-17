@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 
-namespace SolrNet.Tests {
+namespace HttpWebAdapters {
 	public class HttpWebResponseAdapter : IHttpWebResponse {
 		private HttpWebResponse response;
 

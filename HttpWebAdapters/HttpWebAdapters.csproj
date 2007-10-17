@@ -33,10 +33,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HttpWebRequestAdapter.cs" />
-    <Compile Include="HttpWebRequestFactory.cs" />
-    <Compile Include="HttpWebRequestMethod.cs" />
-    <Compile Include="HttpWebResponseAdapter.cs" />
+    <Compile Include="Impl\HttpWebRequestAdapter.cs" />
+    <Compile Include="Impl\HttpWebRequestFactory.cs" />
+    <Compile Include="Impl\HttpWebRequestMethod.cs" />
+    <Compile Include="Impl\HttpWebResponseAdapter.cs" />
     <Compile Include="IHttpWebRequest.cs" />
     <Compile Include="IHttpWebRequestFactory.cs" />
     <Compile Include="IHttpWebResponse.cs" />

@@ -53,7 +53,7 @@ namespace SolrNet.Tests {
 			string fs = ser.Serialize(doc).OuterXml;
 			Console.WriteLine(fs);
 			XmlDocument xml = new XmlDocument();
-			xml.LoadXml(fs);			
+			xml.LoadXml(fs);
 		}
 	}
 }

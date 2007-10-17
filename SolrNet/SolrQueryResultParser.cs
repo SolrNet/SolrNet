@@ -53,7 +53,8 @@ namespace SolrNet {
 				}
 				// no property found with this name, wrong class map
 				if (!found) {
-					FieldNotFoundException ex = new FieldNotFoundException(string.Format("Field '{0}' not found on class {1}", fieldName, typeof(T)));
+					FieldNotFoundException ex =
+						new FieldNotFoundException(string.Format("Field '{0}' not found on class {1}", fieldName, typeof (T)));
 					ex.FieldName = fieldName;
 					throw ex;
 				}

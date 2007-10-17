@@ -57,7 +57,7 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
-		[ExpectedException(typeof(NoUniqueKeyException))]
+		[ExpectedException(typeof (NoUniqueKeyException))]
 		public void DeleteDocumentWithoutUniqueKey_ShouldThrow() {
 			MockRepository mocks = new MockRepository();
 			ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
@@ -77,8 +77,7 @@ namespace SolrNet.Tests {
 			mocks.ReplayAll();
 			ISolrOperations<TestDocumentWithUniqueKey> ops = new SolrServer<TestDocumentWithUniqueKey>(connection);
 			ops.Delete(new TestDocumentWithUniqueKey());
-			mocks.VerifyAll();			
+			mocks.VerifyAll();
 		}
-
 	}
 }

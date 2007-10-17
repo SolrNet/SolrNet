@@ -57,7 +57,7 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
-		[ExpectedException(typeof(SolrConnectionException))]
+		[ExpectedException(typeof (SolrConnectionException))]
 		public void InvalidHostPost_ShouldThrowException() {
 			MockRepository mocks = new MockRepository();
 			IHttpWebRequestFactory reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
@@ -71,7 +71,7 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
-		[ExpectedException(typeof(SolrConnectionException))]
+		[ExpectedException(typeof (SolrConnectionException))]
 		public void InvalidHostGet_ShouldThrowException() {
 			MockRepository mocks = new MockRepository();
 			IHttpWebRequestFactory reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();

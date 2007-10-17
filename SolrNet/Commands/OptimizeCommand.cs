@@ -15,9 +15,9 @@ namespace SolrNet {
 
 		public string Execute(ISolrConnection connection) {
 			return connection.Post("/update",
-				string.Format("<optimize waitFlush=\"{0}\" waitSearcher=\"{1}\"/>",
-				              waitFlush.ToString().ToLower(),
-				              waitSearcher.ToString().ToLower()));
+			                       string.Format("<optimize waitFlush=\"{0}\" waitSearcher=\"{1}\"/>",
+			                                     waitFlush.ToString().ToLower(),
+			                                     waitSearcher.ToString().ToLower()));
 		}
 	}
 }

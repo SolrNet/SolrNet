@@ -31,7 +31,7 @@ namespace SolrNet.DSL.Tests {
 		}
 
 		[Test]
-		[ExpectedException(typeof(FieldNotFoundException))]
+		[ExpectedException(typeof (FieldNotFoundException))]
 		public void Query_InvalidField_ShouldThrow() {
 			MockRepository mocks = new MockRepository();
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
@@ -61,7 +61,7 @@ namespace SolrNet.DSL.Tests {
 			Solr.Connection = conn;
 			ISolrQueryResults<TestDocument> r = Solr.Query<TestDocument>("");
 			Assert.AreEqual(1, r.NumFound);
-			mocks.VerifyAll();			
+			mocks.VerifyAll();
 		}
 
 		[Test]
@@ -85,7 +85,7 @@ namespace SolrNet.DSL.Tests {
 			mocks.ReplayAll();
 			Solr.Connection = conn;
 			Solr.Delete.ByQuery<TestDocument>(q);
-			mocks.VerifyAll();			
+			mocks.VerifyAll();
 		}
 	}
 }

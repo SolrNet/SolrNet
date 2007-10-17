@@ -14,10 +14,10 @@ namespace SolrNet {
 		}
 
 		public string Execute(ISolrConnection connection) {
-			return connection.Post("/update", 
-				string.Format("<commit waitFlush=\"{0}\" waitSearcher=\"{1}\"/>",
-				              waitFlush.ToString().ToLower(),
-				              waitSearcher.ToString().ToLower()));
+			return connection.Post("/update",
+			                       string.Format("<commit waitFlush=\"{0}\" waitSearcher=\"{1}\"/>",
+			                                     waitFlush.ToString().ToLower(),
+			                                     waitSearcher.ToString().ToLower()));
 		}
 	}
 }

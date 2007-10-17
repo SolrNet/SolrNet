@@ -59,6 +59,7 @@
     <Compile Include="SolrExecutableQuery.cs" />
     <Compile Include="SolrField.cs" />
     <Compile Include="SolrQuery.cs" />
+    <Compile Include="SolrQueryByRange.cs" />
     <Compile Include="SolrQueryResultParser.cs" />
     <Compile Include="SolrQueryResults.cs" />
     <Compile Include="SolrServer.cs" />

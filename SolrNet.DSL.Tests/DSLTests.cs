@@ -3,6 +3,9 @@ using Rhino.Mocks;
 using SolrNet.Exceptions;
 
 namespace SolrNet.DSL.Tests {
+	/// <summary>
+	/// These tests are more to define DSL syntax than anything else.
+	/// </summary>
 	[TestFixture]
 	public class DSLTests {
 		public class TestDocument : ISolrDocument {}
@@ -86,6 +89,38 @@ namespace SolrNet.DSL.Tests {
 			Solr.Connection = conn;
 			Solr.Delete.ByQuery<TestDocument>(q);
 			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void Commit() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Solr.Connection = conn;
+			Solr.Commit();
+		}
+
+		[Test]
+		public void CommitWithParams() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Solr.Connection = conn;
+			Solr.Commit(true, true);
+		}
+
+		[Test]
+		public void Optimize() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Solr.Connection = conn;
+			Solr.Optimize();
+		}
+
+		[Test]
+		public void OptimizeWithParams() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Solr.Connection = conn;
+			Solr.Optimize(true, true);
 		}
 	}
 }

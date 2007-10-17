@@ -44,6 +44,7 @@
     <Compile Include="Commands\QueryCommand.cs" />
     <Compile Include="Exceptions\BadMappingException.cs" />
     <Compile Include="Exceptions\FieldNotFoundException.cs" />
+    <Compile Include="Exceptions\SolrConnectionException.cs" />
     <Compile Include="ISolrCommand.cs" />
     <Compile Include="ISolrDocument.cs" />
     <Compile Include="ISolrDocumentSerializer.cs" />

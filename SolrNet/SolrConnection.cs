@@ -65,15 +65,19 @@ namespace SolrNet {
 			request.ContentType = "text/xml; charset=utf-8";
 			request.ContentLength = s.Length;
 			request.ProtocolVersion = HttpVersion.Version10;
-			using (Stream postParams = request.GetRequestStream()) {
-				postParams.Write(xmlEncoding.GetBytes(s), 0, s.Length);
-				using (IHttpWebResponse response = request.GetResponse()) {
-					using (Stream rStream = response.GetResponseStream()) {
-						string r = xmlEncoding.GetString(ReadFully(rStream));
-						//Console.WriteLine(r);
-						return r;
+			try {
+				using (Stream postParams = request.GetRequestStream()) {
+					postParams.Write(xmlEncoding.GetBytes(s), 0, s.Length);
+					using (IHttpWebResponse response = request.GetResponse()) {
+						using (Stream rStream = response.GetResponseStream()) {
+							string r = xmlEncoding.GetString(ReadFully(rStream));
+							//Console.WriteLine(r);
+							return r;
+						}
 					}
 				}
+			} catch (WebException e) {
+				throw new SolrConnectionException(e);
 			}
 		}
 
@@ -87,6 +91,8 @@ namespace SolrNet {
 		public string Get(string relativeUrl, IDictionary<string, string> parameters) {
 			UriBuilder u = new UriBuilder(serverURL);
 			u.Path += relativeUrl;
+			if (parameters == null)
+				parameters = new Dictionary<string, string>();
 			parameters["version"] = version;
 			u.Query = Func.Reduce(
 				Func.Map<KeyValuePair<string, string>, string>(parameters,
@@ -102,10 +108,14 @@ namespace SolrNet {
 			IHttpWebRequest request = httpWebRequestFactory.Create(u.Uri);
 			request.Method = HttpWebRequestMethod.GET;
 			request.ProtocolVersion = HttpVersion.Version10;
-			using (IHttpWebResponse response = request.GetResponse()) {
-				using (Stream rStream = response.GetResponseStream()) {
-					return xmlEncoding.GetString(ReadFully(rStream));
+			try {
+				using (IHttpWebResponse response = request.GetResponse()) {
+					using (Stream rStream = response.GetResponseStream()) {
+						return xmlEncoding.GetString(ReadFully(rStream));
+					}
 				}
+			} catch (WebException e) {
+				throw new SolrConnectionException(e);
 			}
 		}
 	}

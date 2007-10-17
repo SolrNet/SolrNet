@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
 using System.Xml;
 using NUnit.Framework;
@@ -38,6 +39,49 @@ namespace SolrNet.Tests {
 			MockRepository mocks = new MockRepository();
 			IHttpWebRequestFactory reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
 			ISolrConnection conn = new SolrConnection("https://pepe", reqFactory);
+		}
+
+		[Test]
+		public void GetWithNullParameters_ShouldAcceptNull() {
+			MockRepository mocks = new MockRepository();
+			IHttpWebRequestFactory reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			IHttpWebRequest request = mocks.DynamicMock<IHttpWebRequest>();
+			Expect.Call(reqFactory.Create(new UriBuilder().Uri)).IgnoreArguments().Repeat.Once().Return(request);
+			IHttpWebResponse response = mocks.DynamicMock<IHttpWebResponse>();
+			Expect.Call(request.GetResponse()).Repeat.Once().Return(response);
+			Expect.Call(response.GetResponseStream()).Repeat.Once().Return(new MemoryStream());
+			mocks.ReplayAll();
+			ISolrConnection conn = new SolrConnection("https://pepe", reqFactory);
+			conn.Get("", null);
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		[ExpectedException(typeof(SolrConnectionException))]
+		public void InvalidHostPost_ShouldThrowException() {
+			MockRepository mocks = new MockRepository();
+			IHttpWebRequestFactory reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			IHttpWebRequest request = mocks.DynamicMock<IHttpWebRequest>();
+			Expect.Call(request.GetRequestStream()).Repeat.Once().Throw(new WebException());
+			Expect.Call(reqFactory.Create("")).IgnoreArguments().Repeat.Once().Return(request);
+			mocks.ReplayAll();
+			ISolrConnection conn = new SolrConnection("http://lalala:12345", reqFactory);
+			conn.Post("/update", "");
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		[ExpectedException(typeof(SolrConnectionException))]
+		public void InvalidHostGet_ShouldThrowException() {
+			MockRepository mocks = new MockRepository();
+			IHttpWebRequestFactory reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			IHttpWebRequest request = mocks.DynamicMock<IHttpWebRequest>();
+			Expect.Call(reqFactory.Create(new UriBuilder().Uri)).IgnoreArguments().Repeat.Once().Return(request);
+			Expect.Call(request.GetResponse()).Repeat.Once().Throw(new WebException());
+			mocks.ReplayAll();
+			ISolrConnection conn = new SolrConnection("http://lalala:12345", reqFactory);
+			conn.Get("", null);
+			mocks.VerifyAll();
 		}
 
 		[Test]

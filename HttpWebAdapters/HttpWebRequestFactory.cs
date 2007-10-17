@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using HttpWebAdapters.Adapters;
 
 namespace HttpWebAdapters {
 	public class HttpWebRequestFactory : IHttpWebRequestFactory {

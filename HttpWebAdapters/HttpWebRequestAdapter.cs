@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 
-namespace HttpWebAdapters {
+namespace HttpWebAdapters.Adapters {
 	public class HttpWebRequestAdapter : IHttpWebRequest {
 		private HttpWebRequest request;
 

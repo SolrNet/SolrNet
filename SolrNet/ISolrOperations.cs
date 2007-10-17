@@ -3,9 +3,9 @@ using SolrNet.Exceptions;
 
 namespace SolrNet {
 	/// <summary>
-	/// 
+	/// Consolidating interface, exposes all operations
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">Document type</typeparam>
 	public interface ISolrOperations<T> where T : ISolrDocument {
 		/// <summary>
 		/// Commits posts, 

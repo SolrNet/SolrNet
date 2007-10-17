@@ -2,6 +2,10 @@ using System.Reflection;
 using System.Xml;
 
 namespace SolrNet {
+	/// <summary>
+	/// Serializes a Solr document to xml
+	/// </summary>
+	/// <typeparam name="T">Document type</typeparam>
 	public class SolrDocumentSerializer<T> : ISolrDocumentSerializer<T> where T : ISolrDocument {
 		/// <summary>
 		/// Serializes a Solr document to xml

@@ -1,21 +1,25 @@
 using System.Collections.Generic;
+using Rhino.Commons;
 
 namespace SolrNet.DSL {
 	/// <summary>
-	/// TODO use ayende's semi-statics
-	/// http://www.ayende.com/Blog/archive/7447.aspx
-	/// https://rhino-tools.svn.sourceforge.net/svnroot/rhino-tools/trunk/rhino-commons/Rhino.Commons/LocalDataImpl/
+	/// Solr DSL Entry point
 	/// </summary>
 	public class Solr {
-		private static ISolrConnection connection;
-
 		public static DeleteBy Delete {
 			get { return new DeleteBy(Connection); }
 		}
 
+		public static readonly string SolrConnectionKey = "ISolrConnection";
+
+		/// <summary>
+		/// thread-local or webcontext-local connection
+		/// </summary>
+		/// <seealso cref="http://www.ayende.com/Blog/archive/7447.aspx"/>
+		/// <seealso cref="http://rhino-tools.svn.sourceforge.net/svnroot/rhino-tools/trunk/rhino-commons/Rhino.Commons/LocalDataImpl/"/>
 		public static ISolrConnection Connection {
-			get { return connection; }
-			set { connection = value; }
+			private get { return (ISolrConnection) Local.Data[SolrConnectionKey]; }
+			set { Local.Data[SolrConnectionKey] = value; }
 		}
 
 		public static void Add<T>(T document) where T : ISolrDocument {
@@ -39,26 +43,26 @@ namespace SolrNet.DSL {
 
 		public static void Commit() {
 			CommitCommand cmd = new CommitCommand();
-			cmd.Execute(connection);
+			cmd.Execute(Connection);
 		}
 
 		public static void Commit(bool waitFlush, bool waitSearcher) {
 			CommitCommand cmd = new CommitCommand();
 			cmd.WaitFlush = waitFlush;
 			cmd.WaitSearcher = waitSearcher;
-			cmd.Execute(connection);
+			cmd.Execute(Connection);
 		}
 
 		public static void Optimize() {
 			OptimizeCommand cmd = new OptimizeCommand();
-			cmd.Execute(connection);
+			cmd.Execute(Connection);
 		}
 
 		public static void Optimize(bool waitFlush, bool waitSearcher) {
 			OptimizeCommand cmd = new OptimizeCommand();
 			cmd.WaitFlush = waitFlush;
 			cmd.WaitSearcher = waitSearcher;
-			cmd.Execute(connection);
+			cmd.Execute(Connection);
 		}
 	}
 }

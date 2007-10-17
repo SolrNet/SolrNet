@@ -2,14 +2,25 @@ using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet {
+	/// <summary>
+	/// Adds / updates documents to solr
+	/// </summary>
+	/// <typeparam name="T">Document type</typeparam>
 	public class AddCommand<T> : ISolrCommand where T : ISolrDocument {
 		private IEnumerable<T> documents = new List<T>();
 		private ISolrDocumentSerializer<T> serializer = new SolrDocumentSerializer<T>();
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="documents">Documents to add</param>
 		public AddCommand(IEnumerable<T> documents) {
 			this.documents = documents;
 		}
 
+		/// <summary>
+		/// Document serializer, default serializer should work fine for most cases
+		/// </summary>
 		public ISolrDocumentSerializer<T> Serializer {
 			get { return serializer; }
 			set { serializer = value; }

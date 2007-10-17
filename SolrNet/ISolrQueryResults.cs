@@ -6,7 +6,9 @@ namespace SolrNet {
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
 	public interface ISolrQueryResults<T> : IList<T> where T : ISolrDocument {
-		// TODO make it readonly
+		/// <summary>
+		/// Total documents found
+		/// </summary>
 		int NumFound { get; }
 	}
 }

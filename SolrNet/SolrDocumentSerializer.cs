@@ -3,6 +3,11 @@ using System.Xml;
 
 namespace SolrNet {
 	public class SolrDocumentSerializer<T> : ISolrDocumentSerializer<T> where T : ISolrDocument {
+		/// <summary>
+		/// Serializes a Solr document to xml
+		/// </summary>
+		/// <param name="doc">document to serialize</param>
+		/// <returns>serialized document</returns>
 		public XmlDocument Serialize(T doc) {
 			XmlDocument xml = new XmlDocument();
 			XmlElement docNode = xml.CreateElement("doc");

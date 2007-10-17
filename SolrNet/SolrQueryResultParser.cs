@@ -5,7 +5,17 @@ using SolrNet.Exceptions;
 using SolrNet.Tests;
 
 namespace SolrNet {
+	/// <summary>
+	/// Default query results parser.
+	/// Parses xml query results
+	/// </summary>
+	/// <typeparam name="T">Document type</typeparam>
 	public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : ISolrDocument, new() {
+		/// <summary>
+		/// Parses solr's xml response
+		/// </summary>
+		/// <param name="r">solr xml response</param>
+		/// <returns>query results</returns>
 		public ISolrQueryResults<T> Parse(string r) {
 			SolrQueryResults<T> results = new SolrQueryResults<T>();
 			XmlDocument xml = new XmlDocument();
@@ -20,6 +30,11 @@ namespace SolrNet {
 
 		private delegate bool BoolFunc(PropertyInfo[] p);
 
+		/// <summary>
+		/// Builds a document from the correponding response xml node
+		/// </summary>
+		/// <param name="node">response xml node</param>
+		/// <returns>populated document</returns>
 		public T ParseDocument(XmlNode node) {
 			T doc = new T();
 			PropertyInfo[] properties = typeof (T).GetProperties();

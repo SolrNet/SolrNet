@@ -30,12 +30,15 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeleteBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solr.cs" />
+    <Compile Include="Utils\ILocalData.cs" />
+    <Compile Include="Utils\LocalData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">

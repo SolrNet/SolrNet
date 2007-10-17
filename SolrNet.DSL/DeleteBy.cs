@@ -19,5 +19,9 @@ namespace SolrNet.DSL {
 			cmd.DeleteParam = new DeleteByQueryParam<T>(q);
 			cmd.Execute(connection);
 		}
+
+		public void ByQuery<T>(string q) where T : ISolrDocument {
+			ByQuery(new SolrQuery<T>(q));
+		}
 	}
 }

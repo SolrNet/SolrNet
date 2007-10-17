@@ -75,5 +75,17 @@ namespace SolrNet.DSL.Tests {
 			Solr.Delete.ByQuery(new SolrQuery<TestDocument>(q));
 			mocks.VerifyAll();
 		}
+
+		[Test]
+		public void DeleteByQueryString() {
+			const string q = "id:123456";
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", q))).Return("");
+			mocks.ReplayAll();
+			Solr.Connection = conn;
+			Solr.Delete.ByQuery<TestDocument>(q);
+			mocks.VerifyAll();			
+		}
 	}
 }

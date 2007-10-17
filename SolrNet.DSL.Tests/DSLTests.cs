@@ -1,26 +1,29 @@
 using NUnit.Framework;
 using Rhino.Mocks;
-using SolrNet.DSL;
+using SolrNet.Exceptions;
 
 namespace SolrNet.DSL.Tests {
 	[TestFixture]
 	public class DSLTests {
-
 		public class TestDocument : ISolrDocument {}
 
 		[Test]
 		public void DeleteById() {
+			const string id = "123456";
 			MockRepository mocks = new MockRepository();
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id></delete>", id))).Return("");
+			mocks.ReplayAll();
 			Solr.Connection = conn;
-			Solr.Delete.ById("123456");
+			Solr.Delete.ById(id);
+			mocks.VerifyAll();
 		}
 
 		[Test]
 		public void Add() {
 			MockRepository mocks = new MockRepository();
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
-			Expect.Call(conn.ServerURL).Return("");
+			Expect.Call(conn.Post("/update", "<add><doc /></add>")).Return("");
 			mocks.ReplayAll();
 			Solr.Connection = conn;
 			Solr.Add(new TestDocument());
@@ -28,13 +31,49 @@ namespace SolrNet.DSL.Tests {
 		}
 
 		[Test]
-		public void Query() {
+		[ExpectedException(typeof(FieldNotFoundException))]
+		public void Query_InvalidField_ShouldThrow() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(
+				@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<response>
+<lst name=""responseHeader""><int name=""status"">0</int><int name=""QTime"">0</int><lst name=""params""><str name=""q"">id:123456</str><str name=""?""/><str name=""version"">2.2</str></lst></lst><result name=""response"" numFound=""1"" start=""0""><doc><str name=""advancedview""/><str name=""basicview""/><int name=""id"">123456</int></doc></result>
+</response>
+");
+			mocks.ReplayAll();
+			Solr.Connection = conn;
 			ISolrQueryResults<TestDocument> r = Solr.Query<TestDocument>("");
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void Query() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(
+				@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<response>
+<lst name=""responseHeader""><int name=""status"">0</int><int name=""QTime"">0</int><lst name=""params""><str name=""q"">id:123456</str><str name=""?""/><str name=""version"">2.2</str></lst></lst><result name=""response"" numFound=""1"" start=""0""><doc></doc></result>
+</response>
+");
+			mocks.ReplayAll();
+			Solr.Connection = conn;
+			ISolrQueryResults<TestDocument> r = Solr.Query<TestDocument>("");
+			Assert.AreEqual(1, r.NumFound);
+			mocks.VerifyAll();			
 		}
 
 		[Test]
 		public void DeleteByQuery() {
-			Solr.Delete.ByQuery(new SolrQuery<TestDocument>("id:123456"));
+			const string q = "id:123456";
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", q))).Return("");
+			mocks.ReplayAll();
+			Solr.Connection = conn;
+			Solr.Delete.ByQuery(new SolrQuery<TestDocument>(q));
+			mocks.VerifyAll();
 		}
 	}
 }

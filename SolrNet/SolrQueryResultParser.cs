@@ -23,6 +23,7 @@ namespace SolrNet {
 		public T ParseDocument(XmlNode node) {
 			T doc = new T();
 			PropertyInfo[] properties = typeof (T).GetProperties();
+			// TODO this is a mess, clean it up
 			foreach (XmlNode field in node.ChildNodes) {
 				string fieldName = field.Attributes["name"].InnerText;
 				// first look up attribute SolrField with this FieldName
@@ -52,7 +53,7 @@ namespace SolrNet {
 				}
 				// no property found with this name, wrong class map
 				if (!found) {
-					FieldNotFoundException ex = new FieldNotFoundException();
+					FieldNotFoundException ex = new FieldNotFoundException(string.Format("Field '{0}' not found on class {1}", fieldName, typeof(T)));
 					ex.FieldName = fieldName;
 					throw ex;
 				}

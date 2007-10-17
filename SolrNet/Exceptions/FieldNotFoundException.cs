@@ -1,7 +1,7 @@
 using System;
 
 namespace SolrNet.Exceptions {
-	public class FieldNotFoundException : SolrNetException {
+	public class FieldNotFoundException : BadMappingException {
 		private string fieldName;
 
 		public string FieldName {

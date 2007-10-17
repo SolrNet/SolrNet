@@ -1,12 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using SolrNet.Exceptions;
+using SolrNet.Tests;
 
 namespace SolrNet {
 	public class SolrServer<T> : ISolrOperations<T> where T : ISolrDocument, new() {
 		private ISolrConnection connection;
+		private IUniqueKeyFinder<T> uniqueKeyFinder = new UniqueKeyFinder<T>();
 
 		public SolrServer(ISolrConnection connection) {
 			this.connection = connection;
+		}
+
+		public IUniqueKeyFinder<T> UniqueKeyFinder {
+			get { return uniqueKeyFinder; }
+			set { uniqueKeyFinder = value; }
 		}
 
 		/// <summary>
@@ -51,27 +60,51 @@ namespace SolrNet {
 		}
 
 		public string Delete(T doc) {
-			throw new NotImplementedException();
+			object id = GetId(doc);
+			return Delete(id.ToString());
+		}
+
+		private object GetId(T doc) {
+			PropertyInfo prop = uniqueKeyFinder.UniqueKeyProperty;
+			if (prop == null)
+				throw new NoUniqueKeyException();
+			object id = prop.GetValue(doc, null);
+			if (id == null)
+				throw new NoUniqueKeyException();
+			return id;
 		}
 
 		public string Delete(T doc, bool fromPending, bool fromCommited) {
-			throw new NotImplementedException();
+			object id = GetId(doc);
+			return Delete(id.ToString(), fromPending, fromCommited);
 		}
 
 		public string Delete(ISolrQuery<T> q) {
-			throw new NotImplementedException();
+			DeleteCommand delete = new DeleteCommand();
+			delete.DeleteParam = new DeleteByQueryParam<T>(q);
+			return delete.Execute(connection);
 		}
 
 		public string Delete(ISolrQuery<T> q, bool fromPending, bool fromCommited) {
-			throw new NotImplementedException();
+			DeleteCommand delete = new DeleteCommand();
+			delete.DeleteParam = new DeleteByQueryParam<T>(q);
+			delete.FromCommitted = fromCommited;
+			delete.FromPending = fromPending;
+			return delete.Execute(connection);
 		}
 
 		public string Delete(string id) {
-			throw new NotImplementedException();
+			DeleteCommand delete = new DeleteCommand();
+			delete.DeleteParam = new DeleteByIdParam(id);
+			return delete.Execute(connection);
 		}
 
 		public string Delete(string id, bool fromPending, bool fromCommited) {
-			throw new NotImplementedException();
+			DeleteCommand delete = new DeleteCommand();
+			delete.DeleteParam = new DeleteByIdParam(id);
+			delete.FromCommitted = fromCommited;
+			delete.FromPending = fromPending;
+			return delete.Execute(connection);
 		}
 
 		public ISolrQueryResults<T> Query(ISolrQuery<T> q) {

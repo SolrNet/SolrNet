@@ -55,7 +55,7 @@
     <Compile Include="SolrOperationsTests.cs" />
     <Compile Include="SolrQueryResultsParserTests.cs" />
     <Compile Include="SolrQueryTests.cs" />
-    <Compile Include="SolrUniqueKeyTests.cs" />
+    <Compile Include="UniquePropertyFinderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">

@@ -1,18 +1,26 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SolrNet.Exceptions;
 
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class SolrOperationsTests {
-		public class TestDocument : ISolrDocument {}
+		public class TestDocumentWithoutUniqueKey : ISolrDocument {}
+
+		public class TestDocumentWithUniqueKey : ISolrDocument {
+			[SolrUniqueKey]
+			public int id {
+				get { return 0; }
+			}
+		}
 
 		[Test]
 		public void Commit() {
 			MockRepository mocks = new MockRepository();
 			ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
 			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
-			ISolrOperations<TestDocument> ops = new SolrServer<TestDocument>(connection);
+			ISolrOperations<TestDocumentWithoutUniqueKey> ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
 			ops.Commit();
 		}
 
@@ -21,9 +29,10 @@ namespace SolrNet.Tests {
 			MockRepository mocks = new MockRepository();
 			ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
 			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
-			Expect.Call(connection.Post("/update", "<commit waitFlush=\"true\" waitSearcher=\"true\"/>")).Repeat.Once().Return(null);
+			Expect.Call(connection.Post("/update", "<commit waitFlush=\"true\" waitSearcher=\"true\"/>")).Repeat.Once().Return(
+				null);
 			mocks.ReplayAll();
-			ISolrOperations<TestDocument> ops = new SolrServer<TestDocument>(connection);
+			ISolrOperations<TestDocumentWithoutUniqueKey> ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
 			ops.Commit(true, true);
 			mocks.VerifyAll();
 		}
@@ -42,13 +51,34 @@ namespace SolrNet.Tests {
 			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
 			Expect.Call(connection.Post("/update", "<add><doc /></add>")).Repeat.Once().Return(null);
 			mocks.ReplayAll();
-			ISolrOperations<TestDocument> ops = new SolrServer<TestDocument>(connection);
-			ops.Add(new TestDocument());
-			mocks.VerifyAll();			
+			ISolrOperations<TestDocumentWithoutUniqueKey> ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
+			ops.Add(new TestDocumentWithoutUniqueKey());
+			mocks.VerifyAll();
 		}
 
 		[Test]
-		[Category("Integration")]
-		public void DeleteAll() {}
+		[ExpectedException(typeof(NoUniqueKeyException))]
+		public void DeleteDocumentWithoutUniqueKey_ShouldThrow() {
+			MockRepository mocks = new MockRepository();
+			ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
+			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
+			mocks.ReplayAll();
+			ISolrOperations<TestDocumentWithoutUniqueKey> ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
+			ops.Delete(new TestDocumentWithoutUniqueKey());
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void DeleteDocumentWithUniqueKey() {
+			MockRepository mocks = new MockRepository();
+			ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
+			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(connection.Post("/update", "<delete><id>0</id></delete>")).Repeat.Once().Return(null);
+			mocks.ReplayAll();
+			ISolrOperations<TestDocumentWithUniqueKey> ops = new SolrServer<TestDocumentWithUniqueKey>(connection);
+			ops.Delete(new TestDocumentWithUniqueKey());
+			mocks.VerifyAll();			
+		}
+
 	}
 }

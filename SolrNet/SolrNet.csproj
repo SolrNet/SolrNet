@@ -44,6 +44,7 @@
     <Compile Include="Commands\QueryCommand.cs" />
     <Compile Include="Exceptions\BadMappingException.cs" />
     <Compile Include="Exceptions\FieldNotFoundException.cs" />
+    <Compile Include="Exceptions\NoUniqueKeyException.cs" />
     <Compile Include="Exceptions\SolrConnectionException.cs" />
     <Compile Include="ISolrCommand.cs" />
     <Compile Include="ISolrDocument.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="ISolrQuery.cs" />
     <Compile Include="ISolrQueryResultParser.cs" />
     <Compile Include="ISolrQueryResults.cs" />
+    <Compile Include="IUniqueKeyFinder.cs" />
     <Compile Include="SolrDocumentSerializer.cs" />
     <Compile Include="SolrExecutableQuery.cs" />
     <Compile Include="SolrField.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="SolrQueryResults.cs" />
     <Compile Include="SolrServer.cs" />
     <Compile Include="SolrUniqueKey.cs" />
+    <Compile Include="UniqueKeyFinder.cs" />
     <Compile Include="Utils\Func.cs" />
     <Compile Include="Exceptions\InvalidURLException.cs" />
     <Compile Include="ISolrConnection.cs" />

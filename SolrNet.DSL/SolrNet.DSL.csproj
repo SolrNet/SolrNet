@@ -36,7 +36,9 @@
   <ItemGroup>
     <Compile Include="DeleteBy.cs" />
     <Compile Include="DSLQuery.cs" />
+    <Compile Include="DSLQueryBy.cs" />
     <Compile Include="IDSLQuery.cs" />
+    <Compile Include="IDSLQueryBy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solr.cs" />
     <Compile Include="Utils\ILocalData.cs" />

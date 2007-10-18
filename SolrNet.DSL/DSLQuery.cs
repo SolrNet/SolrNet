@@ -7,7 +7,7 @@ namespace SolrNet.DSL {
 			this.connection = connection;
 		}
 
-		private DSLQuery(ISolrConnection connection, ISolrQuery<T> query) {
+		public DSLQuery(ISolrConnection connection, ISolrQuery<T> query) {
 			this.connection = connection;
 			this.query = query;
 		}
@@ -21,6 +21,10 @@ namespace SolrNet.DSL {
 
 		public ISolrQueryResults<T> Run() {
 			return new SolrExecutableQuery<T>(connection, query.Query).Execute();
+		}
+
+		public IDSLQueryBy<T> By(string fieldName) {
+			return new DSLQueryBy<T>(fieldName, connection, query);
 		}
 	}
 }

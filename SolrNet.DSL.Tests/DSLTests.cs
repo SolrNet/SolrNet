@@ -95,7 +95,20 @@ namespace SolrNet.DSL.Tests {
 			mocks.ReplayAll();
 			Solr.Connection = conn;
 			Solr.Query<TestDocument>().ByRange("id", 123, 456).ByRange("p", "a", "z").Run();
-			mocks.VerifyAll();			
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void QueryByAnyField() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			IDictionary<string, string> query = new Dictionary<string, string>();
+			query["q"] = "id:123456";
+			Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+			mocks.ReplayAll();
+			Solr.Connection = conn;
+			Solr.Query<TestDocument>().By("id").Is("123456").Run();
+			mocks.VerifyAll();
 		}
 
 		[Test]

@@ -17,5 +17,9 @@ namespace SolrNet.DSL {
 			                                                                            	new SolrQueryByField<T>(fieldName, s)
 			                                                                            }));
 		}
+
+		public IDSLQueryBetween<T, RT> Between<RT>(RT i) {
+			return new DSLQueryBetween<T, RT>(fieldName, connection, query, i);
+		}
 	}
 }

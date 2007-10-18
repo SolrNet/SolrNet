@@ -52,6 +52,7 @@
     <Compile Include="SolrDocumentSerializerTests.cs" />
     <Compile Include="SolrExecutableQueryTests.cs" />
     <Compile Include="SolrFieldExample.cs" />
+    <Compile Include="SolrMultipleCriteriaQueryTests.cs" />
     <Compile Include="SolrOperationsTests.cs" />
     <Compile Include="SolrQueryByRangeTests.cs" />
     <Compile Include="SolrQueryResultsParserTests.cs" />

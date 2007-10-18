@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Rhino.Commons;
 
@@ -39,6 +40,10 @@ namespace SolrNet.DSL {
 		public static ISolrQueryResults<T> Query<T>(ISolrQuery<T> q) where T : ISolrDocument, new() {
 			ISolrExecutableQuery<T> query = new SolrExecutableQuery<T>(Connection, q.Query);
 			return query.Execute();
+		}
+
+		public static IDSLQuery<T> Query<T>() where T : ISolrDocument, new() {
+			return new DSLQuery<T>(Connection);
 		}
 
 		public static void Commit() {

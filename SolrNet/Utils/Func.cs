@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SolrNet.Utils {
 	/// <summary>
@@ -37,6 +38,32 @@ namespace SolrNet.Utils {
 
 			              	return result;
 			              });
+		}
+
+		// These two are from http://weblogs.asp.net/whaggard/archive/2004/12/06/275917.aspx
+		// Default join that takes an IEnumerable list and just takes the ToString of each item
+		public static string Join<T>(string separator, IEnumerable<T> list) {
+			return Join(separator, list, delegate(T o) {
+			                                	return o.ToString();
+			                                });
+		}
+
+		// Join that takes an IEnumerable list that uses a converter to convert the type to a string
+		public static string Join<T>(string separator, IEnumerable<T> list, Converter<T, string> converter) {
+			return Join(separator, list, converter, false);
+		}
+
+		// Join that takes an IEnumerable list that uses a converter to convert the type to a string
+		public static string Join<T>(string separator, IEnumerable<T> list, Converter<T, string> converter, bool ignoreNulls) {
+			StringBuilder sb = new StringBuilder();
+			foreach (T t in list) {
+				if (ignoreNulls && t == null)
+					continue;
+				if (sb.Length != 0)
+					sb.Append(separator);
+				sb.Append(converter(t));
+			}
+			return sb.ToString();
 		}
 	}
 }

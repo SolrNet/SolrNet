@@ -58,6 +58,7 @@
     <Compile Include="SolrDocumentSerializer.cs" />
     <Compile Include="SolrExecutableQuery.cs" />
     <Compile Include="SolrField.cs" />
+    <Compile Include="SolrMultipleCriteriaQuery.cs" />
     <Compile Include="SolrQuery.cs" />
     <Compile Include="SolrQueryByRange.cs" />
     <Compile Include="SolrQueryResultParser.cs" />

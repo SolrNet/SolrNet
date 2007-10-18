@@ -11,6 +11,16 @@ namespace SolrNet.DSL.Tests {
 	public class DSLTests {
 		public class TestDocument : ISolrDocument {}
 
+		public class TestDocumentWithId : ISolrDocument {
+			private int id;
+
+			[SolrField]
+			public int Id {
+				get { return id; }
+				set { id = value; }
+			}
+		}
+
 		[Test]
 		public void DeleteById() {
 			const string id = "123456";
@@ -108,6 +118,21 @@ namespace SolrNet.DSL.Tests {
 			mocks.ReplayAll();
 			Solr.Connection = conn;
 			Solr.Query<TestDocument>().By("id").Is("123456").Run();
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void QueryByExample() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			IDictionary<string, string> query = new Dictionary<string, string>();
+			query["q"] = "Id:123456";
+			Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+			mocks.ReplayAll();
+			Solr.Connection = conn;
+			TestDocumentWithId doc = new TestDocumentWithId();
+			doc.Id = 123456;
+			Solr.Query<TestDocumentWithId>().ByExample(doc).Run();
 			mocks.VerifyAll();
 		}
 

@@ -3,5 +3,6 @@ namespace SolrNet.DSL {
 		IDSLQuery<T> ByRange<RT>(string fieldName, RT from, RT to);
 		ISolrQueryResults<T> Run();
 		IDSLQueryBy<T> By(string fieldName);
+		IDSLQuery<T> ByExample(T doc);
 	}
 }

@@ -16,7 +16,10 @@ namespace SolrNet.DSL {
 			return
 				new DSLQuery<T>(connection,
 				                new SolrMultipleCriteriaQuery<T>(
-				                	new ISolrQuery<T>[] {query, new SolrQueryByRange<T, RT>(fieldName, from, to)}));
+				                	new ISolrQuery<T>[] {
+				                	                    	query,
+				                	                    	new SolrQueryByRange<T, RT>(fieldName, from, to)
+				                	                    }));
 		}
 
 		public ISolrQueryResults<T> Run() {
@@ -25,6 +28,14 @@ namespace SolrNet.DSL {
 
 		public IDSLQueryBy<T> By(string fieldName) {
 			return new DSLQueryBy<T>(fieldName, connection, query);
+		}
+
+		public IDSLQuery<T> ByExample(T doc) {
+			return new DSLQuery<T>(connection,
+			                       new SolrMultipleCriteriaQuery<T>(new ISolrQuery<T>[] {
+			                                                                            	query,
+			                                                                            	new SolrQueryByExample<T>(doc)
+			                                                                            }));
 		}
 	}
 }

@@ -14,7 +14,7 @@ namespace SolrNet.DSL {
 			return new DSLQuery<T>(connection,
 			                       new SolrMultipleCriteriaQuery<T>(new ISolrQuery<T>[] {
 			                                                                            	query,
-			                                                                            	new SolrQuery<T>(string.Format("{0}:{1}", fieldName, s))
+			                                                                            	new SolrQueryByField<T>(fieldName, s)
 			                                                                            }));
 		}
 	}

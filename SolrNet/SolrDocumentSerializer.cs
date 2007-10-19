@@ -1,5 +1,9 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
+using SolrNet.Exceptions;
 
 namespace SolrNet {
 	/// <summary>
@@ -23,13 +27,42 @@ namespace SolrNet {
 					XmlAttribute nameAtt = xml.CreateAttribute("name");
 					nameAtt.InnerText = att.FieldName ?? p.Name;
 					fieldNode.Attributes.Append(nameAtt);
-					object propertyValue = p.GetValue(doc, null);
-					fieldNode.InnerText = (propertyValue ?? "").ToString();
+					if (p.PropertyType != typeof(string) && typeof(IEnumerable).IsAssignableFrom(p.PropertyType)) {
+						fieldNode.InnerXml = (GetPropertyValue(doc, p) ?? "").ToString();						
+					} else {
+						fieldNode.InnerText = (p.GetValue(doc, null) ?? "").ToString();						
+					}
 					docNode.AppendChild(fieldNode);
 				}
 			}
 			xml.AppendChild(docNode);
 			return xml;
+		}
+
+		private static IDictionary<Type, string> solrTypes;
+
+		static SolrDocumentSerializer() {
+			solrTypes = new Dictionary<Type, string>();
+			solrTypes[typeof (int)] = "int";
+			solrTypes[typeof (string)] = "str";
+			solrTypes[typeof (bool)] = "bool";
+		}
+
+		private static object GetPropertyValue(T doc, PropertyInfo p) {
+			try {
+				XmlDocument xml = new XmlDocument();
+				XmlNode root = xml.CreateElement("arr");
+				xml.AppendChild(root);
+				IEnumerable e = (IEnumerable)p.GetValue(doc, null);
+				foreach (object o in e) {
+					XmlNode fn = xml.CreateElement(solrTypes[o.GetType()]);
+					fn.InnerText = o.ToString();
+					root.AppendChild(fn);
+				}
+				return root.OuterXml;
+			} catch (Exception e) {
+				throw new CollectionTypeNotSupportedException(e, p.PropertyType);
+			}
 		}
 	}
 }

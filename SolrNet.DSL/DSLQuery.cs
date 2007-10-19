@@ -1,3 +1,5 @@
+using System;
+
 namespace SolrNet.DSL {
 	public class DSLQuery<T> : IDSLQuery<T> where T : ISolrDocument, new() {
 		private ISolrConnection connection;
@@ -24,6 +26,10 @@ namespace SolrNet.DSL {
 
 		public ISolrQueryResults<T> Run() {
 			return new SolrQueryExecuter<T>(connection, query.Query).Execute();
+		}
+
+		public ISolrQueryResults<T> Run(int start, int rows) {
+			return new SolrQueryExecuter<T>(connection, query.Query).Execute(start, rows);
 		}
 
 		public IDSLQueryBy<T> By(string fieldName) {

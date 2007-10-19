@@ -80,6 +80,18 @@ namespace SolrNet.DSL.Tests {
 			mocks.VerifyAll();
 		}
 
+		[Test]
+		public void QueryWithPagination() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response);
+			mocks.ReplayAll();
+			Solr.Connection = conn;
+			ISolrQueryResults<TestDocument> r = Solr.Query<TestDocument>("", 10, 20);
+			Assert.AreEqual(1, r.NumFound);
+			mocks.VerifyAll();
+		}
+
 		public delegate string Writer(string s, IDictionary<string, string> q);
 
 		[Test]

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Rhino.Commons;
+using SolrNet;
 
 namespace SolrNet.DSL {
 	/// <summary>
@@ -31,6 +32,11 @@ namespace SolrNet.DSL {
 			cmd.Execute(Connection);
 		}
 
+		public static ISolrQueryResults<T> Query<T>(string s, int start, int rows) where T : ISolrDocument, new() {
+			ISolrQueryExecuter<T> q = new SolrQueryExecuter<T>(Connection, s);
+			return q.Execute(start, rows);
+		}
+
 		public static ISolrQueryResults<T> Query<T>(string s) where T : ISolrDocument, new() {
 			ISolrQueryExecuter<T> q = new SolrQueryExecuter<T>(Connection, s);
 			return q.Execute();
@@ -39,6 +45,11 @@ namespace SolrNet.DSL {
 		public static ISolrQueryResults<T> Query<T>(ISolrQuery<T> q) where T : ISolrDocument, new() {
 			ISolrQueryExecuter<T> queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query);
 			return queryExecuter.Execute();
+		}
+
+		public static ISolrQueryResults<T> Query<T>(ISolrQuery<T> q, int start, int rows) where T : ISolrDocument, new() {
+			ISolrQueryExecuter<T> queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query);
+			return queryExecuter.Execute(start, rows);
 		}
 
 		public static IDSLQuery<T> Query<T>() where T : ISolrDocument, new() {
@@ -68,5 +79,6 @@ namespace SolrNet.DSL {
 			cmd.WaitSearcher = waitSearcher;
 			cmd.Execute(Connection);
 		}
+
 	}
 }

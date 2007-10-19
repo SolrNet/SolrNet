@@ -1,5 +1,5 @@
 namespace SolrNet {
-	public class SolrQueryByRange<T, RT> : ISolrQuery<T> where T : ISolrDocument {
+	public class SolrQueryByRange<T, RT> : AbstractSolrQuery<T> where T : ISolrDocument {
 		private string q;
 		public SolrQueryByRange(string fieldName, RT from, RT to) : this(fieldName, from, to, true) {}
 
@@ -15,7 +15,7 @@ namespace SolrNet {
 		/// <summary>
 		/// query string
 		/// </summary>
-		public string Query {
+		public override string Query {
 			get { return q; }
 		}
 	}

@@ -6,20 +6,10 @@ namespace SolrNet {
 	/// Executable query
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public class SolrExecutableQuery<T> : ISolrExecutableQuery<T> where T : ISolrDocument, new() {
+	public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> where T : ISolrDocument, new() {
 		private ISolrConnection connection;
-		private string query;
 		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="connection">connection to use</param>
-		/// <param name="query">query to execute</param>
-		public SolrExecutableQuery(ISolrConnection connection, string query) {
-			this.connection = connection;
-			this.query = query;
-		}
+		private ISolrQuery<T> query;
 
 		/// <summary>
 		/// Connection to use
@@ -29,24 +19,40 @@ namespace SolrNet {
 			set { connection = value; }
 		}
 
+		public ISolrQuery<T> Query {
+			get { return query; }
+			set { query = value; }
+		}
+
+		public SolrQueryExecuter(ISolrConnection connection, ISolrQuery<T> query) {
+			this.connection = connection;
+			this.query = query;
+		}
+
+		public SolrQueryExecuter(ISolrConnection connection, string query) {
+			this.connection = connection;
+			this.query = new SolrQuery<T>(query);
+		}
+
 		/// <summary>
 		/// Executes the query and returns results
 		/// </summary>
 		/// <returns>query results</returns>
 		public ISolrQueryResults<T> Execute() {
+			return Execute(-1, -1);
+		}
+
+		public ISolrQueryResults<T> Execute(int start, int rows) {
 			IDictionary<string, string> param = new Dictionary<string, string>();
-			param["q"] = query;
+			param["q"] = query.Query;
+			if (start != -1)
+				param["start"] = start.ToString();
+			if (rows != -1)
+				param["rows"] = rows.ToString();
 			string r = connection.Get("/select", param);
 			Console.WriteLine(r);
 			ISolrQueryResults<T> qr = ResultParser.Parse(r);
 			return qr;
-		}
-
-		/// <summary>
-		/// query string
-		/// </summary>
-		public string Query {
-			get { return query; }
 		}
 
 		/// <summary>

@@ -79,5 +79,29 @@ namespace SolrNet.Tests {
 			ops.Delete(new TestDocumentWithUniqueKey());
 			mocks.VerifyAll();
 		}
+
+		[Test]
+		public void PaginatedQuery() {
+			const string qstring = "id:123";
+			const int start = 10;
+			const int rows = 20;
+
+			MockRepository mocks = new MockRepository();
+			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
+			IDictionary<string, string> query = new Dictionary<string, string>();
+			query["q"] = qstring;
+			query["start"] = start.ToString();
+			query["rows"] = rows.ToString();
+			Expect.Call(connection.Get("/select", query)).Repeat.Once().Return("");
+
+			ISolrQueryResultParser<TestDocumentWithUniqueKey> parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+			SetupResult.For(parser.Parse(null)).IgnoreArguments().Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
+
+			mocks.ReplayAll();
+			SolrServer<TestDocumentWithUniqueKey> solr = new SolrServer<TestDocumentWithUniqueKey>(connection);
+			solr.ResultParser = parser;
+			ISolrQueryResults<TestDocumentWithUniqueKey> r = solr.Query(new SolrQuery<TestDocumentWithUniqueKey>(qstring), start, rows);
+			mocks.VerifyAll();
+		}
 	}
 }

@@ -19,9 +19,9 @@ namespace SolrNet.Tests {
 			ISolrQueryResults<TestDocument> mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
 			Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
 			mocks.ReplayAll();
-			SolrExecutableQuery<TestDocument> query = new SolrExecutableQuery<TestDocument>(conn, queryString);
-			query.ResultParser = parser;
-			ISolrQueryResults<TestDocument> r = query.Execute();
+			SolrQueryExecuter<TestDocument> queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString);
+			queryExecuter.ResultParser = parser;
+			ISolrQueryResults<TestDocument> r = queryExecuter.Execute();
 			mocks.VerifyAll();
 		}
 	}

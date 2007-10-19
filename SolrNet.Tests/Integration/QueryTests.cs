@@ -8,7 +8,7 @@ namespace SolrNet.Tests.Integration {
 		public void tt() {
 			ISolrConnection conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
 			ISolrOperations<TestDocument> server = new SolrServer<TestDocument>(conn);
-			SolrExecutableQuery<TestDocument> query = new SolrExecutableQuery<TestDocument>(conn, "id:123456");
+			ISolrQuery<TestDocument> query = new SolrQuery<TestDocument>("id:123456");
 			ISolrQueryResults<TestDocument> r = server.Query(query);
 			Assert.Greater(r.Count, 0);
 			TestDocument doc = r[0];

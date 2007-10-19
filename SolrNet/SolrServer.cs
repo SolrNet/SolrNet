@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using SolrNet.Exceptions;
@@ -7,7 +8,7 @@ namespace SolrNet {
 	public class SolrServer<T> : ISolrOperations<T> where T : ISolrDocument, new() {
 		private ISolrConnection connection;
 		private IUniqueKeyFinder<T> uniqueKeyFinder = new UniqueKeyFinder<T>();
-
+		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();
 		public SolrServer(ISolrConnection connection) {
 			this.connection = connection;
 		}
@@ -15,6 +16,14 @@ namespace SolrNet {
 		public IUniqueKeyFinder<T> UniqueKeyFinder {
 			get { return uniqueKeyFinder; }
 			set { uniqueKeyFinder = value; }
+		}
+
+		/// <summary>
+		/// Solr response parser, default is XML response parser
+		/// </summary>
+		public ISolrQueryResultParser<T> ResultParser {
+			get { return resultParser; }
+			set { resultParser = value; }
 		}
 
 		/// <summary>
@@ -106,13 +115,21 @@ namespace SolrNet {
 			return delete.Execute(connection);
 		}
 
-		public ISolrQueryResults<T> Query(ISolrQuery<T> q) {
-			ISolrExecutableQuery<T> exe = new SolrExecutableQuery<T>(connection, q.Query);
+		public ISolrQueryResults<T> Query(ISolrQuery<T> query) {
+			SolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
+			exe.ResultParser = resultParser;
 			return exe.Execute();
+		}
+
+		public ISolrQueryResults<T> Query(SolrQuery<T> query, int start, int rows) {
+			SolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
+			exe.ResultParser = resultParser;
+			return exe.Execute(start, rows);
 		}
 
 		public string Send(ISolrCommand cmd) {
 			return cmd.Execute(connection);
 		}
+
 	}
 }

@@ -15,7 +15,7 @@ namespace SolrNet.Commands {
 
 		public string Execute(ISolrConnection connection) {
 			throw new NotImplementedException(); // TODO finish!
-			//ISolrExecutableQuery<T> q = new SolrExecutableQuery<T>(connection, query);
+			//ISolrQueryExecuter<T> q = new SolrQueryExecuter<T>(connection, query);
 			//q.Execute();
 		}
 	}

@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 
 namespace SolrNet {
-	public class SolrQueryByField<T> : ISolrQuery<T> where T : ISolrDocument {
+	public class SolrQueryByField<T> : AbstractSolrQuery<T> where T : ISolrDocument {
 		private string q;
 
 		public SolrQueryByField(string fieldName, string fieldValue) {
@@ -21,7 +21,7 @@ namespace SolrNet {
 		/// <summary>
 		/// query string
 		/// </summary>
-		public string Query {
+		public override string Query {
 			get { return q; }
 		}
 	}

@@ -94,6 +94,8 @@ namespace SolrNet {
 		/// <param name="q">query to execute</param>
 		/// <returns>query results</returns>
 		ISolrQueryResults<T> Query(ISolrQuery<T> q);
+		
+		ISolrQueryResults<T> Query(SolrQuery<T> query, int start, int rows);
 
 		/// <summary>
 		/// Sends a custom command
@@ -101,5 +103,6 @@ namespace SolrNet {
 		/// <param name="cmd">command to send</param>
 		/// <returns>solr response</returns>
 		string Send(ISolrCommand cmd);
+
 	}
 }

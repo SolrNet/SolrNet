@@ -34,6 +34,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractSolrQuery.cs" />
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\CommitCommand.cs" />
     <Compile Include="Commands\DeleteByIdParam.cs" />
@@ -49,14 +50,14 @@
     <Compile Include="ISolrCommand.cs" />
     <Compile Include="ISolrDocument.cs" />
     <Compile Include="ISolrDocumentSerializer.cs" />
-    <Compile Include="ISolrExecutableQuery.cs" />
+    <Compile Include="ISolrQueryExecuter.cs" />
     <Compile Include="ISolrOperations.cs" />
     <Compile Include="ISolrQuery.cs" />
     <Compile Include="ISolrQueryResultParser.cs" />
     <Compile Include="ISolrQueryResults.cs" />
     <Compile Include="IUniqueKeyFinder.cs" />
     <Compile Include="SolrDocumentSerializer.cs" />
-    <Compile Include="SolrExecutableQuery.cs" />
+    <Compile Include="SolrQueryExecuter.cs" />
     <Compile Include="SolrField.cs" />
     <Compile Include="SolrMultipleCriteriaQuery.cs" />
     <Compile Include="SolrQuery.cs" />

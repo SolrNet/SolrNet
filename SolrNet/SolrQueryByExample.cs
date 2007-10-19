@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 namespace SolrNet {
-	public class SolrQueryByExample<T> : ISolrQuery<T> where T : ISolrDocument {
+	public class SolrQueryByExample<T> : AbstractSolrQuery<T> where T : ISolrDocument {
 		public string q;
 
 		public SolrQueryByExample(T document) {
@@ -23,7 +23,7 @@ namespace SolrNet {
 		/// <summary>
 		/// query string
 		/// </summary>
-		public string Query {
+		public override string Query {
 			get { return q; }
 		}
 	}

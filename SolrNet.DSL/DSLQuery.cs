@@ -23,7 +23,7 @@ namespace SolrNet.DSL {
 		}
 
 		public ISolrQueryResults<T> Run() {
-			return new SolrExecutableQuery<T>(connection, query.Query).Execute();
+			return new SolrQueryExecuter<T>(connection, query.Query).Execute();
 		}
 
 		public IDSLQueryBy<T> By(string fieldName) {

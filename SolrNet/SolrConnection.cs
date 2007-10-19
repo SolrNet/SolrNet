@@ -12,9 +12,13 @@ using SolrNet.Utils;
 namespace SolrNet {
 	public class SolrConnection : ISolrConnection {
 		private string serverURL;
-		private IHttpWebRequestFactory httpWebRequestFactory;
+		private IHttpWebRequestFactory httpWebRequestFactory = new HttpWebRequestFactory();
 		private Encoding xmlEncoding = Encoding.UTF8;
 		private string version = "2.2";
+
+		public SolrConnection(string serverURL) {
+			ServerURL = serverURL;
+		}
 
 		public SolrConnection(string serverURL, IHttpWebRequestFactory httpWebRequestFactory) {
 			ServerURL = serverURL;

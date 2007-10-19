@@ -45,12 +45,12 @@ namespace SolrNet {
 		public ISolrQueryResults<T> Execute(int start, int rows) {
 			IDictionary<string, string> param = new Dictionary<string, string>();
 			param["q"] = query.Query;
-			if (start != -1)
+			if (start >= 0)
 				param["start"] = start.ToString();
-			if (rows != -1)
+			if (rows >= 0)
 				param["rows"] = rows.ToString();
 			string r = connection.Get("/select", param);
-			Console.WriteLine(r);
+			//Console.WriteLine(r);
 			ISolrQueryResults<T> qr = ResultParser.Parse(r);
 			return qr;
 		}

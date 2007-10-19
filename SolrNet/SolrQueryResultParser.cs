@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using SolrNet.Exceptions;
@@ -11,6 +13,14 @@ namespace SolrNet {
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
 	public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : ISolrDocument, new() {
+		private static IDictionary<string, Type> solrTypes;
+
+		static SolrQueryResultParser() {
+			solrTypes = new Dictionary<string, Type>();
+			solrTypes["int"] = typeof (int);
+			solrTypes["str"] = typeof (string);
+		}
+
 		/// <summary>
 		/// Parses solr's xml response
 		/// </summary>
@@ -30,6 +40,63 @@ namespace SolrNet {
 
 		private delegate bool BoolFunc(PropertyInfo[] p);
 
+		public void SetProperty(T doc, PropertyInfo prop, XmlNode field) {
+			if (field.Name == "arr") {
+				prop.SetValue(doc, GetCollectionProperty(field, prop), null);
+			} else {
+				prop.SetValue(doc, Convert.ChangeType(field.InnerText, prop.PropertyType), null);
+			}
+		}
+
+		private static object GetCollectionProperty(XmlNode field, PropertyInfo prop) {
+			try {
+				Type[] genericTypes = prop.PropertyType.GetGenericArguments();
+				if (genericTypes.Length == 1) {
+					// ICollection<int>, etc
+					return GetGenericCollectionProperty(field, genericTypes);
+				} else if (prop.PropertyType.IsArray) {
+					// int[], string[], etc
+					return GetArrayProperty(field, prop);
+				} else if (prop.PropertyType.IsInterface) {
+					// ICollection
+					return GetNonGenericCollectionProperty(field);
+				}
+			} catch (Exception e) {
+				throw new CollectionTypeNotSupportedException(e, prop.PropertyType);
+			}
+			throw new CollectionTypeNotSupportedException(prop.PropertyType);
+		}
+
+		private static IList GetNonGenericCollectionProperty(XmlNode field) {
+			IList l = new ArrayList();
+			foreach (XmlNode arrayValueNode in field.ChildNodes) {
+				l.Add(Convert.ChangeType(arrayValueNode.InnerText, solrTypes[arrayValueNode.Name]));
+			}
+			return l;
+		}
+
+		private static Array GetArrayProperty(XmlNode field, PropertyInfo prop) {
+			// int[], string[], etc
+			Array arr = (Array) Activator.CreateInstance(prop.PropertyType, new object[] {field.ChildNodes.Count});
+			Type arrType = Type.GetType(prop.PropertyType.ToString().Replace("[]", ""));
+			int i = 0;
+			foreach (XmlNode arrayValueNode in field.ChildNodes) {
+				arr.SetValue(Convert.ChangeType(arrayValueNode.InnerText, arrType), i);
+				i++;
+			}
+			return arr;
+		}
+
+		private static IList GetGenericCollectionProperty(XmlNode field, Type[] genericTypes) {
+			// ICollection<int>, etc
+			Type gt = genericTypes[0];
+			IList l = (IList) Activator.CreateInstance(Type.GetType(string.Format("System.Collections.Generic.List`1[{0}]", gt)));
+			foreach (XmlNode arrayValueNode in field.ChildNodes) {
+				l.Add(Convert.ChangeType(arrayValueNode.InnerText, gt));
+			}
+			return l;
+		}
+
 		/// <summary>
 		/// Builds a document from the correponding response xml node
 		/// </summary>
@@ -48,8 +115,7 @@ namespace SolrNet {
 				                          		if (atts.Length > 0) {
 				                          			SolrField att = (SolrField) atts[0];
 				                          			if (att.FieldName == fieldName) {
-				                          				property.SetValue(doc, Convert.ChangeType(field.InnerText, property.PropertyType),
-				                          				                  null);
+				                          				SetProperty(doc, property, field);
 				                          				return true;
 				                          			}
 				                          		}
@@ -60,7 +126,7 @@ namespace SolrNet {
 				if (!found) {
 					foreach (PropertyInfo property in properties) {
 						if (property.Name == fieldName) {
-							property.SetValue(doc, field.InnerText, null);
+							SetProperty(doc, property, field);
 							found = true;
 							break;
 						}

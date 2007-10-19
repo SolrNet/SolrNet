@@ -35,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
+    <Compile Include="Exceptions\CollectionTypeNotSupportedException.cs" />
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\CommitCommand.cs" />
     <Compile Include="Commands\DeleteByIdParam.cs" />

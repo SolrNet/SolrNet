@@ -44,8 +44,8 @@ namespace SolrNet.Utils {
 		// Default join that takes an IEnumerable list and just takes the ToString of each item
 		public static string Join<T>(string separator, IEnumerable<T> list) {
 			return Join(separator, list, delegate(T o) {
-			                                	return o.ToString();
-			                                });
+			                             	return o.ToString();
+			                             });
 		}
 
 		// Join that takes an IEnumerable list that uses a converter to convert the type to a string

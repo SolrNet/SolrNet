@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using SolrNet.Exceptions;
@@ -9,6 +8,7 @@ namespace SolrNet {
 		private ISolrConnection connection;
 		private IUniqueKeyFinder<T> uniqueKeyFinder = new UniqueKeyFinder<T>();
 		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();
+
 		public SolrServer(ISolrConnection connection) {
 			this.connection = connection;
 		}
@@ -130,6 +130,5 @@ namespace SolrNet {
 		public string Send(ISolrCommand cmd) {
 			return cmd.Execute(connection);
 		}
-
 	}
 }

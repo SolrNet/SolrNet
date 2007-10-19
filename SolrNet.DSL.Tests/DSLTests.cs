@@ -131,7 +131,7 @@ namespace SolrNet.DSL.Tests {
 			mocks.ReplayAll();
 			Solr.Connection = conn;
 			Solr.Query<TestDocument>().By("id").Between(123).And(456).Run();
-			mocks.VerifyAll();			
+			mocks.VerifyAll();
 		}
 
 		[Test]

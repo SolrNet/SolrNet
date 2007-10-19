@@ -26,7 +26,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void ShouldNotQuoteWildcard() {
 			ISolrQuery<TestDocument> q = new SolrQueryByField<TestDocument>("id", "h?llo*");
-			Assert.AreEqual("id:h?llo*", q.Query);			
+			Assert.AreEqual("id:h?llo*", q.Query);
 		}
 	}
 }

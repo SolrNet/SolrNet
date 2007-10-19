@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
 using SolrNet.Exceptions;
-using SolrNet.Tests;
 
 namespace SolrNet {
 	/// <summary>

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace SolrNet {
 	public abstract class AbstractSolrQuery<T> : ISolrQuery<T> where T : ISolrDocument {
 		private int? start;

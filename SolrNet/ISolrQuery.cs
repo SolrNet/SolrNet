@@ -12,11 +12,11 @@ namespace SolrNet {
 		/// <summary>
 		/// Start row
 		/// </summary>
-		int? Start { get; set;}
+		int? Start { get; set; }
 
 		/// <summary>
 		/// Row count to get
 		/// </summary>
-		int? Rows { get; set;}
+		int? Rows { get; set; }
 	}
 }

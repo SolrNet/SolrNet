@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using NUnit.Framework;
-using SolrNet.Utils;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -20,8 +17,8 @@ namespace SolrNet.Tests {
 		public void AcceptsNulls() {
 			ISolrQuery<TestDocument> q1 = new SolrQuery<TestDocument>("1");
 			ISolrQuery<TestDocument> q2 = null;
-			ISolrQuery<TestDocument> qm = new SolrMultipleCriteriaQuery<TestDocument>(new ISolrQuery<TestDocument>[] { q1, q2 });
-			Assert.AreEqual("1", qm.Query);			
+			ISolrQuery<TestDocument> qm = new SolrMultipleCriteriaQuery<TestDocument>(new ISolrQuery<TestDocument>[] {q1, q2});
+			Assert.AreEqual("1", qm.Query);
 		}
 	}
 }

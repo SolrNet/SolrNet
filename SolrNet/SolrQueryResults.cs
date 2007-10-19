@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace SolrNet.Tests {
+namespace SolrNet {
 	public class SolrQueryResults<T> : ISolrQueryResults<T> where T : ISolrDocument {
 		private IList<T> innerList = new List<T>();
 

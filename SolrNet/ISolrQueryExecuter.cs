@@ -9,7 +9,7 @@ namespace SolrNet {
 		/// </summary>
 		ISolrConnection Connection { get; set; }
 
-		ISolrQuery<T> Query { get; set;}
+		ISolrQuery<T> Query { get; set; }
 
 		/// <summary>
 		/// Executes the query and returns results

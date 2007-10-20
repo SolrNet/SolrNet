@@ -1,9 +1,10 @@
 using System;
+using SolrNet;
 
 namespace SolrNet.DSL {
 	public class DSLQuery<T> : IDSLQuery<T> where T : ISolrDocument, new() {
-		private ISolrConnection connection;
-		private ISolrQuery<T> query;
+		protected ISolrConnection connection;
+		protected ISolrQuery<T> query;
 
 		public DSLQuery(ISolrConnection connection) {
 			this.connection = connection;
@@ -14,22 +15,16 @@ namespace SolrNet.DSL {
 			this.query = query;
 		}
 
-		public IDSLQuery<T> ByRange<RT>(string fieldName, RT from, RT to) {
-			return
-				new DSLQuery<T>(connection,
-				                new SolrMultipleCriteriaQuery<T>(
-				                	new ISolrQuery<T>[] {
-				                	                    	query,
-				                	                    	new SolrQueryByRange<T, RT>(fieldName, from, to)
-				                	                    }));
+		public IDSLQueryRange<T> ByRange<RT>(string fieldName, RT from, RT to) {
+			return new DSLQueryRange<T, RT>(connection, query, fieldName, from, to);
 		}
 
-		public ISolrQueryResults<T> Run() {
-			return new SolrQueryExecuter<T>(connection, query.Query).Execute();
+		public virtual ISolrQueryResults<T> Run() {
+			return new SolrQueryExecuter<T>(connection, query).Execute();
 		}
 
-		public ISolrQueryResults<T> Run(int start, int rows) {
-			return new SolrQueryExecuter<T>(connection, query.Query).Execute(start, rows);
+		public virtual ISolrQueryResults<T> Run(int start, int rows) {
+			return new SolrQueryExecuter<T>(connection, query).Execute(start, rows);
 		}
 
 		public IDSLQueryBy<T> By(string fieldName) {

@@ -108,6 +108,32 @@ namespace SolrNet.DSL.Tests {
 		}
 
 		[Test]
+		public void QueryByRangeExclusive() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			IDictionary<string, string> query = new Dictionary<string, string>();
+			query["q"] = "id:{123 TO 456}";
+			Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+			mocks.ReplayAll();
+			Solr.Connection = conn;
+			Solr.Query<TestDocument>().ByRange("id", 123, 456).Exclusive().Run();
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void QueryByRangeInclusive() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			IDictionary<string, string> query = new Dictionary<string, string>();
+			query["q"] = "id:[123 TO 456]";
+			Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+			mocks.ReplayAll();
+			Solr.Connection = conn;
+			Solr.Query<TestDocument>().ByRange("id", 123, 456).Inclusive().Run();
+			mocks.VerifyAll();
+		}
+
+		[Test]
 		public void QueryByRangeConcatenable() {
 			MockRepository mocks = new MockRepository();
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();

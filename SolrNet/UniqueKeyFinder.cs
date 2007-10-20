@@ -11,7 +11,7 @@ namespace SolrNet {
 				if (!hasUniqueKeyProperty.HasValue) {
 					hasUniqueKeyProperty = false;
 					foreach (PropertyInfo property in typeof (T).GetProperties()) {
-						object[] atts = property.GetCustomAttributes(typeof (SolrUniqueKey), true);
+						object[] atts = property.GetCustomAttributes(typeof (SolrUniqueKeyAttribute), true);
 						if (atts.Length > 0) {
 							if (uniqueKeyProperty != null)
 								throw new BadMappingException("Only one SolrUniqueKey allowed per document class");

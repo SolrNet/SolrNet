@@ -68,7 +68,7 @@
     <Compile Include="SolrQueryResultParser.cs" />
     <Compile Include="SolrQueryResults.cs" />
     <Compile Include="SolrServer.cs" />
-    <Compile Include="SolrUniqueKey.cs" />
+    <Compile Include="SolrUniqueKeyAttribute.cs" />
     <Compile Include="UniqueKeyFinder.cs" />
     <Compile Include="Utils\Func.cs" />
     <Compile Include="Exceptions\InvalidURLException.cs" />

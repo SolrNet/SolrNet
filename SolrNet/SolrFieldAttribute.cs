@@ -5,16 +5,16 @@ namespace SolrNet {
 	/// Marks a property as present on solr. By default the field name is the property name
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property)]
-	public class SolrField : Attribute {
+	public class SolrFieldAttribute : Attribute {
 		private string fieldName;
 
-		public SolrField() {}
+		public SolrFieldAttribute() {}
 
 		/// <summary>
 		/// Overrides field name
 		/// </summary>
 		/// <param name="fieldName"></param>
-		public SolrField(string fieldName) {
+		public SolrFieldAttribute(string fieldName) {
 			FieldName = fieldName;
 		}
 

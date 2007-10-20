@@ -20,9 +20,9 @@ namespace SolrNet {
 			XmlDocument xml = new XmlDocument();
 			XmlElement docNode = xml.CreateElement("doc");
 			foreach (PropertyInfo p in typeof (T).GetProperties()) {
-				object[] atts = p.GetCustomAttributes(typeof (SolrField), true);
+				object[] atts = p.GetCustomAttributes(typeof (SolrFieldAttribute), true);
 				if (atts.Length > 0) {
-					SolrField att = (SolrField) atts[0];
+					SolrFieldAttribute att = (SolrFieldAttribute)atts[0];
 					XmlElement fieldNode = xml.CreateElement("field");
 					XmlAttribute nameAtt = xml.CreateAttribute("name");
 					nameAtt.InnerText = att.FieldName ?? p.Name;

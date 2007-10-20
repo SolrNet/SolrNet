@@ -59,7 +59,7 @@
     <Compile Include="IUniqueKeyFinder.cs" />
     <Compile Include="SolrDocumentSerializer.cs" />
     <Compile Include="SolrQueryExecuter.cs" />
-    <Compile Include="SolrField.cs" />
+    <Compile Include="SolrFieldAttribute.cs" />
     <Compile Include="SolrMultipleCriteriaQuery.cs" />
     <Compile Include="SolrQuery.cs" />
     <Compile Include="SolrQueryByExample.cs" />

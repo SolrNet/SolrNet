@@ -107,12 +107,12 @@ namespace SolrNet {
 			// TODO this is a mess, clean it up
 			foreach (XmlNode field in node.ChildNodes) {
 				string fieldName = field.Attributes["name"].InnerText;
-				// first look up attribute SolrField with this FieldName
+				// first look up attribute SolrFieldAttribute with this FieldName
 				bool found = new BoolFunc(delegate {
 				                          	foreach (PropertyInfo property in properties) {
-				                          		object[] atts = property.GetCustomAttributes(typeof (SolrField), true);
+				                          		object[] atts = property.GetCustomAttributes(typeof (SolrFieldAttribute), true);
 				                          		if (atts.Length > 0) {
-				                          			SolrField att = (SolrField) atts[0];
+				                          			SolrFieldAttribute att = (SolrFieldAttribute) atts[0];
 				                          			if (att.FieldName == fieldName) {
 				                          				SetProperty(doc, property, field);
 				                          				return true;

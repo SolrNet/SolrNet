@@ -1,3 +1,5 @@
+using System.Xml;
+
 namespace SolrNet.Tests {
 	public class DeleteByQueryParam<T> : ISolrDeleteParam where T : ISolrDocument {
 		private ISolrQuery<T> query;
@@ -6,8 +8,11 @@ namespace SolrNet.Tests {
 			query = q;
 		}
 
-		public string ToXmlString() {
-			return string.Format("<query>{0}</query>", query.Query); // TODO use proper XML
+		public XmlNode ToXmlNode() {
+			XmlDocument xml = new XmlDocument();
+			XmlNode queryNode = xml.CreateElement("query");
+			queryNode.InnerText = query.Query;
+			return queryNode;
 		}
 	}
 }

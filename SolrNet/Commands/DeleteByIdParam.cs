@@ -1,3 +1,5 @@
+using System.Xml;
+
 namespace SolrNet {
 	public class DeleteByIdParam : ISolrDeleteParam {
 		private string id;
@@ -6,8 +8,11 @@ namespace SolrNet {
 			this.id = id;
 		}
 
-		public string ToXmlString() {
-			return string.Format("<id>{0}</id>", id); // TODO use proper XML
+		public XmlNode ToXmlNode() {
+			XmlDocument xml = new XmlDocument();
+			XmlNode idNode = xml.CreateElement("id");
+			idNode.InnerText = id;
+			return idNode;
 		}
 	}
 }

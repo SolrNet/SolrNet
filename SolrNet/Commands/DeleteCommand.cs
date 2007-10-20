@@ -4,6 +4,10 @@ namespace SolrNet {
 		private bool fromCommitted = true;
 		private ISolrDeleteParam deleteParam;
 
+		public DeleteCommand(ISolrDeleteParam deleteParam) {
+			this.deleteParam = deleteParam;
+		}
+
 		public bool FromPending {
 			get { return fromPending; }
 			set { fromPending = value; }

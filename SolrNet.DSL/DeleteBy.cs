@@ -9,14 +9,12 @@ namespace SolrNet.DSL {
 		}
 
 		public void ById(string id) {
-			DeleteCommand cmd = new DeleteCommand();
-			cmd.DeleteParam = new DeleteByIdParam(id);
+			DeleteCommand cmd = new DeleteCommand(new DeleteByIdParam(id));
 			cmd.Execute(connection);
 		}
 
 		public void ByQuery<T>(ISolrQuery<T> q) where T : ISolrDocument {
-			DeleteCommand cmd = new DeleteCommand();
-			cmd.DeleteParam = new DeleteByQueryParam<T>(q);
+			DeleteCommand cmd = new DeleteCommand(new DeleteByQueryParam<T>(q));
 			cmd.Execute(connection);
 		}
 

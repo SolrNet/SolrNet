@@ -11,8 +11,7 @@ namespace SolrNet.Tests {
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
 			Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id></delete>", id))).Repeat.Once().Return("");
 			mocks.ReplayAll();
-			DeleteCommand cmd = new DeleteCommand();
-			cmd.DeleteParam = new DeleteByIdParam(id);
+			DeleteCommand cmd = new DeleteCommand(new DeleteByIdParam(id));
 			cmd.Execute(conn);
 			mocks.VerifyAll();
 		}
@@ -27,8 +26,7 @@ namespace SolrNet.Tests {
 			Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", queryString))).Repeat.Once().
 				Return("");
 			mocks.ReplayAll();
-			DeleteCommand cmd = new DeleteCommand();
-			cmd.DeleteParam = new DeleteByQueryParam<ISolrDocument>(q);
+			DeleteCommand cmd = new DeleteCommand(new DeleteByQueryParam<ISolrDocument>(q));
 			cmd.Execute(conn);
 			mocks.VerifyAll();
 		}

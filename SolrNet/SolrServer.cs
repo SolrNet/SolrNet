@@ -88,28 +88,24 @@ namespace SolrNet {
 		}
 
 		public string Delete(ISolrQuery<T> q) {
-			DeleteCommand delete = new DeleteCommand();
-			delete.DeleteParam = new DeleteByQueryParam<T>(q);
+			DeleteCommand delete = new DeleteCommand(new DeleteByQueryParam<T>(q));
 			return delete.Execute(connection);
 		}
 
 		public string Delete(ISolrQuery<T> q, bool fromPending, bool fromCommited) {
-			DeleteCommand delete = new DeleteCommand();
-			delete.DeleteParam = new DeleteByQueryParam<T>(q);
+			DeleteCommand delete = new DeleteCommand(new DeleteByQueryParam<T>(q));
 			delete.FromCommitted = fromCommited;
 			delete.FromPending = fromPending;
 			return delete.Execute(connection);
 		}
 
 		public string Delete(string id) {
-			DeleteCommand delete = new DeleteCommand();
-			delete.DeleteParam = new DeleteByIdParam(id);
+			DeleteCommand delete = new DeleteCommand(new DeleteByIdParam(id));
 			return delete.Execute(connection);
 		}
 
 		public string Delete(string id, bool fromPending, bool fromCommited) {
-			DeleteCommand delete = new DeleteCommand();
-			delete.DeleteParam = new DeleteByIdParam(id);
+			DeleteCommand delete = new DeleteCommand(new DeleteByIdParam(id));
 			delete.FromCommitted = fromCommited;
 			delete.FromPending = fromPending;
 			return delete.Execute(connection);

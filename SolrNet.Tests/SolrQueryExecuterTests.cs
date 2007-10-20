@@ -4,7 +4,7 @@ using Rhino.Mocks;
 
 namespace SolrNet.Tests {
 	[TestFixture]
-	public class SolrExecutableQueryTests {
+	public class SolrQueryExecuterTests {
 		public class TestDocument : ISolrDocument {}
 
 		[Test]

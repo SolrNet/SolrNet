@@ -4,10 +4,10 @@ using System.Net;
 
 namespace HttpWebAdapters.Adapters {
 	public class HttpWebResponseAdapter : IHttpWebResponse {
-		private HttpWebResponse response;
+		private WebResponse response;
 
-		public HttpWebResponseAdapter(HttpWebResponse response) {
-			this.response = response;
+		public HttpWebResponseAdapter(WebResponse response) {
+			this.response = response; // TODO use DuckTyping!
 		}
 
 		///<summary>
@@ -21,7 +21,11 @@ namespace HttpWebAdapters.Adapters {
 		///<param name="headerName">The header value to return. </param>
 		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public string GetResponseHeader(string headerName) {
-			return response.GetResponseHeader(headerName);
+			try {
+				return ((HttpWebResponse) response).GetResponseHeader(headerName);
+			} catch (InvalidCastException) {
+				return ((WebResponseStub) response).GetResponseHeader(headerName);
+			}
 		}
 
 		///<summary>
@@ -34,8 +38,20 @@ namespace HttpWebAdapters.Adapters {
 		///
 		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public CookieCollection Cookies {
-			get { return response.Cookies; }
-			set { response.Cookies = value; }
+			get {
+				try {
+					return ((HttpWebResponse) response).Cookies;
+				} catch (InvalidCastException) {
+					return ((WebResponseStub) response).Cookies;
+				}
+			}
+			set {
+				try {
+					((HttpWebResponse) response).Cookies = value;
+				} catch (InvalidCastException) {
+					((WebResponseStub) response).Cookies = value;
+				}
+			}
 		}
 
 		///<summary>
@@ -48,7 +64,13 @@ namespace HttpWebAdapters.Adapters {
 		///
 		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public string ContentEncoding {
-			get { return response.ContentEncoding; }
+			get {
+				try {
+					return ((HttpWebResponse)response).ContentEncoding;
+				} catch (InvalidCastException) {
+					return ((WebResponseStub)response).ContentEncoding;
+				}				
+			}
 		}
 
 		///<summary>
@@ -61,7 +83,13 @@ namespace HttpWebAdapters.Adapters {
 		///
 		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" /></PermissionSet>
 		public string CharacterSet {
-			get { return response.CharacterSet; }
+			get {
+				try {
+					return ((HttpWebResponse)response).CharacterSet;
+				} catch (InvalidCastException) {
+					return ((WebResponseStub)response).CharacterSet;
+				}
+			}
 		}
 
 		///<summary>
@@ -74,7 +102,13 @@ namespace HttpWebAdapters.Adapters {
 		///
 		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public string Server {
-			get { return response.Server; }
+			get {
+				try {
+					return ((HttpWebResponse)response).Server;
+				} catch (InvalidCastException) {
+					return ((WebResponseStub)response).Server;
+				}
+			}
 		}
 
 		///<summary>
@@ -87,7 +121,13 @@ namespace HttpWebAdapters.Adapters {
 		///
 		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
 		public DateTime LastModified {
-			get { return response.LastModified; }
+			get {
+				try {
+					return ((HttpWebResponse)response).LastModified;
+				} catch (InvalidCastException) {
+					return ((WebResponseStub)response).LastModified;
+				}
+			}
 		}
 
 		///<summary>
@@ -100,7 +140,13 @@ namespace HttpWebAdapters.Adapters {
 		///
 		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public HttpStatusCode StatusCode {
-			get { return response.StatusCode; }
+			get {
+				try {
+					return ((HttpWebResponse)response).StatusCode;
+				} catch (InvalidCastException) {
+					return ((WebResponseStub) response).StatusCode;
+				}
+			}
 		}
 
 		///<summary>
@@ -113,7 +159,13 @@ namespace HttpWebAdapters.Adapters {
 		///
 		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public string StatusDescription {
-			get { return response.StatusDescription; }
+			get {
+				try {
+					return ((HttpWebResponse)response).StatusDescription;
+				} catch (InvalidCastException) {
+					return ((WebResponseStub)response).StatusDescription;
+				}
+			}
 		}
 
 		///<summary>
@@ -126,7 +178,13 @@ namespace HttpWebAdapters.Adapters {
 		///
 		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public Version ProtocolVersion {
-			get { return response.ProtocolVersion; }
+			get {
+				try {
+					return ((HttpWebResponse)response).ProtocolVersion;
+				} catch (InvalidCastException) {
+					return ((WebResponseStub)response).ProtocolVersion;
+				}
+			}
 		}
 
 		///<summary>
@@ -139,7 +197,13 @@ namespace HttpWebAdapters.Adapters {
 		///
 		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public string Method {
-			get { return response.Method; }
+			get {
+				try {
+					return ((HttpWebResponse)response).Method;
+				} catch (InvalidCastException) {
+					return ((WebResponseStub)response).Method;
+				}
+			}
 		}
 
 		///<summary>

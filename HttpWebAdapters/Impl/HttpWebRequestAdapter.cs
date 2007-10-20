@@ -17,7 +17,7 @@ namespace HttpWebAdapters.Adapters {
 		}
 
 		public IHttpWebResponse GetResponse() {
-			return new HttpWebResponseAdapter((HttpWebResponse) request.GetResponse());
+			return new HttpWebResponseAdapter(request.GetResponse());
 		}
 
 		///<summary>

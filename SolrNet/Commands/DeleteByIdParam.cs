@@ -7,7 +7,7 @@ namespace SolrNet {
 		}
 
 		public string ToXmlString() {
-			return string.Format("<id>{0}</id>", id);
+			return string.Format("<id>{0}</id>", id); // TODO use proper XML
 		}
 	}
 }

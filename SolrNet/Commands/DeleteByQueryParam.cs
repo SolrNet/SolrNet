@@ -7,7 +7,7 @@ namespace SolrNet.Tests {
 		}
 
 		public string ToXmlString() {
-			return string.Format("<query>{0}</query>", query.Query);
+			return string.Format("<query>{0}</query>", query.Query); // TODO use proper XML
 		}
 	}
 }

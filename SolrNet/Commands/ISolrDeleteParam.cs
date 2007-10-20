@@ -1,5 +1,5 @@
 namespace SolrNet {
 	public interface ISolrDeleteParam {
-		string ToXmlString();
+		string ToXmlString(); // TODO return XmlNode instead
 	}
 }

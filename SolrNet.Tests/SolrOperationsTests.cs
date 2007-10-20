@@ -20,8 +20,11 @@ namespace SolrNet.Tests {
 			MockRepository mocks = new MockRepository();
 			ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
 			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(connection.Post("/update", "<commit />")).Repeat.Once().Return(null);
+			mocks.ReplayAll();
 			ISolrOperations<TestDocumentWithoutUniqueKey> ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
 			ops.Commit();
+			mocks.VerifyAll();
 		}
 
 		[Test]
@@ -29,11 +32,35 @@ namespace SolrNet.Tests {
 			MockRepository mocks = new MockRepository();
 			ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
 			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
-			Expect.Call(connection.Post("/update", "<commit waitFlush=\"true\" waitSearcher=\"true\"/>")).Repeat.Once().Return(
+			Expect.Call(connection.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />")).Repeat.Once().Return(
 				null);
 			mocks.ReplayAll();
 			ISolrOperations<TestDocumentWithoutUniqueKey> ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
 			ops.Commit(true, true);
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void Optimize() {
+			MockRepository mocks = new MockRepository();
+			ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
+			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(connection.Post("/update", "<optimize />")).Repeat.Once().Return(null);
+			mocks.ReplayAll();
+			ISolrOperations<TestDocumentWithoutUniqueKey> ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
+			ops.Optimize();
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void OptimizeWithOptions() {
+			MockRepository mocks = new MockRepository();
+			ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
+			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
+			Expect.Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />")).Repeat.Once().Return(null);
+			mocks.ReplayAll();
+			ISolrOperations<TestDocumentWithoutUniqueKey> ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
+			ops.Optimize(true, true);
 			mocks.VerifyAll();
 		}
 

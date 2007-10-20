@@ -119,30 +119,6 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
-		public void PostXML() {
-			MockRepository mocks = new MockRepository();
-			IHttpWebRequestFactory reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
-			IHttpWebRequest request = mocks.DynamicMock<IHttpWebRequest>();
-
-			request.Method = HttpWebRequestMethod.POST;
-			LastCall.Repeat.Once();
-
-			IHttpWebResponse response = mocks.DynamicMock<IHttpWebResponse>();
-			Expect.Call(request.GetRequestStream()).Repeat.Once().Return(new MemoryStream());
-			Expect.Call(request.GetResponse()).Repeat.Once().Return(response);
-			Expect.Call(reqFactory.Create("")).IgnoreArguments().Repeat.Once().Return(request);
-			string responseXml = "<response/>";
-			MemoryStream responseStream = new MemoryStream(Encoding.UTF8.GetBytes(responseXml));
-			Expect.Call(response.GetResponseStream()).Repeat.Once().Return(responseStream);
-			mocks.ReplayAll();
-
-			ISolrConnection conn = new SolrConnection("https://pepe", reqFactory);
-			XmlDocument doc = new XmlDocument();
-			conn.PostXml("", doc);
-			mocks.VerifyAll();
-		}
-
-		[Test]
 		[ExpectedException(typeof (InvalidFieldException))]
 		public void UndefinedFieldQueryError_ShouldThrow() {
 			MockRepository mocks = new MockRepository();

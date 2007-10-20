@@ -86,13 +86,6 @@ namespace SolrNet {
 			}
 		}
 
-		public XmlDocument PostXml(string relativeUrl, XmlDocument xml) {
-			string xmlResponse = Post(relativeUrl, xml.ToString());
-			XmlDocument doc = new XmlDocument();
-			doc.LoadXml(xmlResponse);
-			return doc;
-		}
-
 		public string Get(string relativeUrl, IDictionary<string, string> parameters) {
 			UriBuilder u = new UriBuilder(serverURL);
 			u.Path += relativeUrl;

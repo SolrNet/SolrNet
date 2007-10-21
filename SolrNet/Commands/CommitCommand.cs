@@ -19,7 +19,7 @@ namespace SolrNet {
 		public string Execute(ISolrConnection connection) {
 			XmlDocument xml = new XmlDocument();
 			XmlNode node = xml.CreateElement("commit");
-			foreach (KeyValuePair<bool?, string> p in new KeyValuePair<bool?, string>[] { new KeyValuePair<bool?, string>(waitSearcher, "waitSearcher"), new KeyValuePair<bool?, string>(waitFlush, "waitFlush") }) {
+			foreach (KeyValuePair<bool?, string> p in new KeyValuePair<bool?, string>[] {new KeyValuePair<bool?, string>(waitSearcher, "waitSearcher"), new KeyValuePair<bool?, string>(waitFlush, "waitFlush")}) {
 				if (p.Key.HasValue) {
 					XmlAttribute att = xml.CreateAttribute(p.Value);
 					att.InnerText = p.Key.Value.ToString().ToLower();

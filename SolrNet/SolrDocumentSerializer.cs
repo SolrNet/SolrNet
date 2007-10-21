@@ -22,15 +22,15 @@ namespace SolrNet {
 			foreach (PropertyInfo p in typeof (T).GetProperties()) {
 				object[] atts = p.GetCustomAttributes(typeof (SolrFieldAttribute), true);
 				if (atts.Length > 0) {
-					SolrFieldAttribute att = (SolrFieldAttribute)atts[0];
+					SolrFieldAttribute att = (SolrFieldAttribute) atts[0];
 					XmlElement fieldNode = xml.CreateElement("field");
 					XmlAttribute nameAtt = xml.CreateAttribute("name");
 					nameAtt.InnerText = att.FieldName ?? p.Name;
 					fieldNode.Attributes.Append(nameAtt);
-					if (p.PropertyType != typeof(string) && typeof(IEnumerable).IsAssignableFrom(p.PropertyType)) {
-						fieldNode.InnerXml = (GetPropertyValue(doc, p) ?? "").ToString();						
+					if (p.PropertyType != typeof (string) && typeof (IEnumerable).IsAssignableFrom(p.PropertyType)) {
+						fieldNode.InnerXml = (GetPropertyValue(doc, p) ?? "").ToString();
 					} else {
-						fieldNode.InnerText = (p.GetValue(doc, null) ?? "").ToString();						
+						fieldNode.InnerText = (p.GetValue(doc, null) ?? "").ToString();
 					}
 					docNode.AppendChild(fieldNode);
 				}
@@ -53,7 +53,7 @@ namespace SolrNet {
 				XmlDocument xml = new XmlDocument();
 				XmlNode root = xml.CreateElement("arr");
 				xml.AppendChild(root);
-				IEnumerable e = (IEnumerable)p.GetValue(doc, null);
+				IEnumerable e = (IEnumerable) p.GetValue(doc, null);
 				foreach (object o in e) {
 					XmlNode fn = xml.CreateElement(solrTypes[o.GetType()]);
 					fn.InnerText = o.ToString();

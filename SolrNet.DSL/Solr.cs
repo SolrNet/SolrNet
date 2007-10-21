@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Rhino.Commons;
-using SolrNet;
 
 namespace SolrNet.DSL {
 	/// <summary>
@@ -79,6 +78,5 @@ namespace SolrNet.DSL {
 			cmd.WaitSearcher = waitSearcher;
 			cmd.Execute(Connection);
 		}
-
 	}
 }

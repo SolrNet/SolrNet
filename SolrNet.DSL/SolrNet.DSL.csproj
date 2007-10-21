@@ -39,10 +39,12 @@
     <Compile Include="DSLQueryBetween.cs" />
     <Compile Include="DSLQueryBy.cs" />
     <Compile Include="DSLQueryRange.cs" />
+    <Compile Include="DSLRun.cs" />
     <Compile Include="IDSLQuery.cs" />
     <Compile Include="IDSLQueryBetween.cs" />
     <Compile Include="IDSLQueryBy.cs" />
     <Compile Include="IDSLQueryRange.cs" />
+    <Compile Include="IDSLRun.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solr.cs" />
     <Compile Include="Utils\ILocalData.cs" />

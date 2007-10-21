@@ -66,10 +66,10 @@ namespace HttpWebAdapters.Adapters {
 		public string ContentEncoding {
 			get {
 				try {
-					return ((HttpWebResponse)response).ContentEncoding;
+					return ((HttpWebResponse) response).ContentEncoding;
 				} catch (InvalidCastException) {
-					return ((WebResponseStub)response).ContentEncoding;
-				}				
+					return ((WebResponseStub) response).ContentEncoding;
+				}
 			}
 		}
 
@@ -85,9 +85,9 @@ namespace HttpWebAdapters.Adapters {
 		public string CharacterSet {
 			get {
 				try {
-					return ((HttpWebResponse)response).CharacterSet;
+					return ((HttpWebResponse) response).CharacterSet;
 				} catch (InvalidCastException) {
-					return ((WebResponseStub)response).CharacterSet;
+					return ((WebResponseStub) response).CharacterSet;
 				}
 			}
 		}
@@ -104,9 +104,9 @@ namespace HttpWebAdapters.Adapters {
 		public string Server {
 			get {
 				try {
-					return ((HttpWebResponse)response).Server;
+					return ((HttpWebResponse) response).Server;
 				} catch (InvalidCastException) {
-					return ((WebResponseStub)response).Server;
+					return ((WebResponseStub) response).Server;
 				}
 			}
 		}
@@ -123,9 +123,9 @@ namespace HttpWebAdapters.Adapters {
 		public DateTime LastModified {
 			get {
 				try {
-					return ((HttpWebResponse)response).LastModified;
+					return ((HttpWebResponse) response).LastModified;
 				} catch (InvalidCastException) {
-					return ((WebResponseStub)response).LastModified;
+					return ((WebResponseStub) response).LastModified;
 				}
 			}
 		}
@@ -142,7 +142,7 @@ namespace HttpWebAdapters.Adapters {
 		public HttpStatusCode StatusCode {
 			get {
 				try {
-					return ((HttpWebResponse)response).StatusCode;
+					return ((HttpWebResponse) response).StatusCode;
 				} catch (InvalidCastException) {
 					return ((WebResponseStub) response).StatusCode;
 				}
@@ -161,9 +161,9 @@ namespace HttpWebAdapters.Adapters {
 		public string StatusDescription {
 			get {
 				try {
-					return ((HttpWebResponse)response).StatusDescription;
+					return ((HttpWebResponse) response).StatusDescription;
 				} catch (InvalidCastException) {
-					return ((WebResponseStub)response).StatusDescription;
+					return ((WebResponseStub) response).StatusDescription;
 				}
 			}
 		}
@@ -180,9 +180,9 @@ namespace HttpWebAdapters.Adapters {
 		public Version ProtocolVersion {
 			get {
 				try {
-					return ((HttpWebResponse)response).ProtocolVersion;
+					return ((HttpWebResponse) response).ProtocolVersion;
 				} catch (InvalidCastException) {
-					return ((WebResponseStub)response).ProtocolVersion;
+					return ((WebResponseStub) response).ProtocolVersion;
 				}
 			}
 		}
@@ -199,9 +199,9 @@ namespace HttpWebAdapters.Adapters {
 		public string Method {
 			get {
 				try {
-					return ((HttpWebResponse)response).Method;
+					return ((HttpWebResponse) response).Method;
 				} catch (InvalidCastException) {
-					return ((WebResponseStub)response).Method;
+					return ((WebResponseStub) response).Method;
 				}
 			}
 		}

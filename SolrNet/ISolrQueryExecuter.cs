@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace SolrNet {
 	/// <summary>
 	/// Executable query
@@ -10,6 +12,8 @@ namespace SolrNet {
 		ISolrConnection Connection { get; set; }
 
 		ISolrQuery<T> Query { get; set; }
+
+		ICollection<SortOrder> OrderBy { get; set; }
 
 		/// <summary>
 		/// Executes the query and returns results

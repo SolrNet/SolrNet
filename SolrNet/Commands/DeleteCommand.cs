@@ -32,7 +32,7 @@ namespace SolrNet {
 				if (p.Key.HasValue) {
 					XmlAttribute att = xml.CreateAttribute(p.Value);
 					att.InnerText = p.Key.Value.ToString().ToLower();
-					deleteNode.Attributes.Append(att);					
+					deleteNode.Attributes.Append(att);
 				}
 			}
 			deleteNode.InnerXml = deleteParam.ToXmlNode().OuterXml;

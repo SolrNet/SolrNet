@@ -23,12 +23,10 @@ namespace SolrNet.Tests {
 			}
 		}
 
-		public class TestDocWithCollections: ISolrDocument {
+		public class TestDocWithCollections : ISolrDocument {
 			[SolrField]
 			public ICollection<string> coll {
-				get {
-					return new string[] {"one", "two"};
-				}
+				get { return new string[] {"one", "two"}; }
 			}
 		}
 

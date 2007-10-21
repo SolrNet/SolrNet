@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using SolrNet.Utils;
 
 namespace SolrNet {
 	/// <summary>
@@ -10,6 +10,7 @@ namespace SolrNet {
 		private ISolrConnection connection;
 		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();
 		private ISolrQuery<T> query;
+		private ICollection<SortOrder> orderBy;
 
 		/// <summary>
 		/// Connection to use
@@ -49,6 +50,8 @@ namespace SolrNet {
 				param["start"] = start.ToString();
 			if (rows >= 0)
 				param["rows"] = rows.ToString();
+			if (orderBy != null && orderBy.Count > 0)
+				param["sort"] = Func.Join(",", orderBy);
 			string r = connection.Get("/select", param);
 			//Console.WriteLine(r);
 			ISolrQueryResults<T> qr = ResultParser.Parse(r);
@@ -61,6 +64,11 @@ namespace SolrNet {
 		public ISolrQueryResultParser<T> ResultParser {
 			get { return resultParser; }
 			set { resultParser = value; }
+		}
+
+		public ICollection<SortOrder> OrderBy {
+			get { return orderBy; }
+			set { orderBy = value; }
 		}
 	}
 }

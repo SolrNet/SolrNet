@@ -188,6 +188,54 @@ namespace SolrNet.DSL.Tests {
 		}
 
 		[Test]
+		public void OrderBy() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			IDictionary<string, string> query = new Dictionary<string, string>();
+			query["q"] = "Id:123456";
+			query["sort"] = "id";
+			Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+			mocks.ReplayAll();
+			Solr.Connection = conn;
+			TestDocumentWithId doc = new TestDocumentWithId();
+			doc.Id = 123456;
+			Solr.Query<TestDocumentWithId>().ByExample(doc).OrderBy("id").Run();
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void OrderByAscDesc() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			IDictionary<string, string> query = new Dictionary<string, string>();
+			query["q"] = "Id:123456";
+			query["sort"] = "id ASC";
+			Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+			mocks.ReplayAll();
+			Solr.Connection = conn;
+			TestDocumentWithId doc = new TestDocumentWithId();
+			doc.Id = 123456;
+			Solr.Query<TestDocumentWithId>().ByExample(doc).OrderBy("id", Order.ASC).Run();
+			mocks.VerifyAll();
+		}
+
+		[Test]
+		public void OrderByAscDescMultiple() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			IDictionary<string, string> query = new Dictionary<string, string>();
+			query["q"] = "Id:123456";
+			query["sort"] = "id ASC,name DESC";
+			Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+			mocks.ReplayAll();
+			Solr.Connection = conn;
+			TestDocumentWithId doc = new TestDocumentWithId();
+			doc.Id = 123456;
+			Solr.Query<TestDocumentWithId>().ByExample(doc).OrderBy("id", Order.ASC).OrderBy("name", Order.DESC).Run();
+			mocks.VerifyAll();
+		}
+
+		[Test]
 		public void DeleteByQuery() {
 			const string q = "id:123456";
 			MockRepository mocks = new MockRepository();

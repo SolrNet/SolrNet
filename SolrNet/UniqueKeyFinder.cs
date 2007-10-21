@@ -10,7 +10,7 @@ namespace SolrNet {
 			get {
 				if (!uniqueKeyCount.HasValue) {
 					uniqueKeyCount = 0;
-					foreach (PropertyInfo property in typeof(T).GetProperties()) {
+					foreach (PropertyInfo property in typeof (T).GetProperties()) {
 						object[] atts = property.GetCustomAttributes(typeof (SolrUniqueKeyAttribute), true);
 						if (atts.Length > 0) {
 							uniqueKeyCount++;

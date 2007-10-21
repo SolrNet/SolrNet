@@ -4,7 +4,6 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
-using System.Xml;
 using HttpWebAdapters;
 using HttpWebAdapters.Adapters;
 using SolrNet.Exceptions;
@@ -117,7 +116,7 @@ namespace SolrNet {
 					IHttpWebResponse r = new HttpWebResponseAdapter(e.Response);
 					if (r.StatusCode == HttpStatusCode.BadRequest) {
 						throw new InvalidFieldException(r.StatusDescription, e);
-					}					
+					}
 				}
 				throw new SolrConnectionException(e);
 			}

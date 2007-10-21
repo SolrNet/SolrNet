@@ -58,6 +58,7 @@
     <Compile Include="ISolrQueryResultParser.cs" />
     <Compile Include="ISolrQueryResults.cs" />
     <Compile Include="IUniqueKeyFinder.cs" />
+    <Compile Include="Order.cs" />
     <Compile Include="SolrDocumentSerializer.cs" />
     <Compile Include="SolrQueryExecuter.cs" />
     <Compile Include="SolrFieldAttribute.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="SolrQueryResults.cs" />
     <Compile Include="SolrServer.cs" />
     <Compile Include="SolrUniqueKeyAttribute.cs" />
+    <Compile Include="SortOrder.cs" />
     <Compile Include="UniqueKeyFinder.cs" />
     <Compile Include="Utils\Func.cs" />
     <Compile Include="Exceptions\InvalidURLException.cs" />

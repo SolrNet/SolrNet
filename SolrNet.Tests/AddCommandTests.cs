@@ -18,12 +18,10 @@ namespace SolrNet.Tests {
 			}
 		}
 
-		public class TestDocWithCollections: ISolrDocument {
+		public class TestDocWithCollections : ISolrDocument {
 			[SolrField]
 			public ICollection<string> coll {
-				get {
-					return new string[] {"one", "two"};
-				}
+				get { return new string[] {"one", "two"}; }
 			}
 		}
 
@@ -52,15 +50,15 @@ namespace SolrNet.Tests {
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
 			conn.Post("/update", "<add><doc><field name=\"coll\"><arr><str>one</str><str>two</str></arr></field></doc></add>");
 			LastCall.Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
-				Console.WriteLine(s);
-				return null;
-			}));
+			                                     	Console.WriteLine(s);
+			                                     	return null;
+			                                     }));
 			SetupResult.For(conn.ServerURL).Return("");
 			mocks.ReplayAll();
-			TestDocWithCollections[] docs = new TestDocWithCollections[] { new TestDocWithCollections() };
+			TestDocWithCollections[] docs = new TestDocWithCollections[] {new TestDocWithCollections()};
 			AddCommand<TestDocWithCollections> cmd = new AddCommand<TestDocWithCollections>(docs);
 			cmd.Execute(conn);
-			mocks.VerifyAll();			
+			mocks.VerifyAll();
 		}
 
 		[Test]

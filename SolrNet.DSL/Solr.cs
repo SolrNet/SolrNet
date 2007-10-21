@@ -41,6 +41,26 @@ namespace SolrNet.DSL {
 			return q.Execute();
 		}
 
+		public static ISolrQueryResults<T> Query<T>(string s, SortOrder order) where T : ISolrDocument, new() {
+			return Query<T>(s, new SortOrder[] {order});
+		}
+
+		public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order) where T : ISolrDocument, new() {
+			ISolrQueryExecuter<T> q = new SolrQueryExecuter<T>(Connection, s);
+			q.OrderBy = order;
+			return q.Execute();
+		}
+
+		public static ISolrQueryResults<T> Query<T>(string s, SortOrder order, int start, int rows) where T : ISolrDocument, new() {
+			return Query<T>(s, new SortOrder[] {order}, start, rows);
+		}
+
+		public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order, int start, int rows) where T : ISolrDocument, new() {
+			ISolrQueryExecuter<T> q = new SolrQueryExecuter<T>(Connection, s);
+			q.OrderBy = order;
+			return q.Execute(start, rows);
+		}
+
 		public static ISolrQueryResults<T> Query<T>(ISolrQuery<T> q) where T : ISolrDocument, new() {
 			ISolrQueryExecuter<T> queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query);
 			return queryExecuter.Execute();
@@ -49,6 +69,16 @@ namespace SolrNet.DSL {
 		public static ISolrQueryResults<T> Query<T>(ISolrQuery<T> q, int start, int rows) where T : ISolrDocument, new() {
 			ISolrQueryExecuter<T> queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query);
 			return queryExecuter.Execute(start, rows);
+		}
+
+		public static ISolrQueryResults<T> Query<T>(SolrQuery<T> query, SortOrder order) where T : ISolrDocument, new() {
+			return Query(query, new SortOrder[] {order});
+		}
+
+		public static ISolrQueryResults<T> Query<T>(SolrQuery<T> query, ICollection<SortOrder> orders) where T : ISolrDocument, new() {
+			ISolrQueryExecuter<T> queryExecuter = new SolrQueryExecuter<T>(Connection, query.Query);
+			queryExecuter.OrderBy = orders;
+			return queryExecuter.Execute();
 		}
 
 		public static IDSLQuery<T> Query<T>() where T : ISolrDocument, new() {

@@ -169,8 +169,6 @@ namespace SolrNet.Tests {
 		[Test]
 		public void QueryWithSort() {
 			const string qstring = "id:123";
-			const int start = 10;
-			const int rows = 20;
 
 			MockRepository mocks = new MockRepository();
 			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();

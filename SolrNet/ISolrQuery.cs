@@ -9,14 +9,5 @@ namespace SolrNet {
 		/// </summary>
 		string Query { get; }
 
-		/// <summary>
-		/// Start row
-		/// </summary>
-		int? Start { get; set; }
-
-		/// <summary>
-		/// Row count to get
-		/// </summary>
-		int? Rows { get; set; }
 	}
 }

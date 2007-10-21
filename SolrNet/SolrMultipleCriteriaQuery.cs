@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SolrNet.Utils;
 
 namespace SolrNet {
-	public class SolrMultipleCriteriaQuery<T> : AbstractSolrQuery<T> where T : ISolrDocument {
+	public class SolrMultipleCriteriaQuery<T> : ISolrQuery<T> where T : ISolrDocument {
 		private string q;
 
 		public SolrMultipleCriteriaQuery(IEnumerable<ISolrQuery<T>> queries) {
@@ -15,7 +15,7 @@ namespace SolrNet {
 		/// <summary>
 		/// query string
 		/// </summary>
-		public override string Query {
+		public string Query {
 			get { return q; }
 		}
 	}

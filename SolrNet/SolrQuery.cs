@@ -3,7 +3,7 @@ namespace SolrNet {
 	/// Basic solr query
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public class SolrQuery<T> : AbstractSolrQuery<T> where T : ISolrDocument {
+	public class SolrQuery<T> : ISolrQuery<T> where T : ISolrDocument {
 		private string query;
 
 		/// <summary>
@@ -17,7 +17,7 @@ namespace SolrNet {
 		/// <summary>
 		/// query to execute
 		/// </summary>
-		public override string Query {
+		public string Query {
 			get { return query; }
 		}
 	}

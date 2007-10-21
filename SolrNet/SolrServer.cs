@@ -112,19 +112,29 @@ namespace SolrNet {
 		}
 
 		public ISolrQueryResults<T> Query(ISolrQuery<T> query) {
-			SolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
-			exe.ResultParser = resultParser;
-			return exe.Execute();
+			return Query(query, null);
 		}
 
-		public ISolrQueryResults<T> Query(SolrQuery<T> query, int start, int rows) {
-			SolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
-			exe.ResultParser = resultParser;
-			return exe.Execute(start, rows);
+		public ISolrQueryResults<T> Query(ISolrQuery<T> query, int start, int rows) {
+			return Query(query, start, rows, null);
 		}
 
 		public string Send(ISolrCommand cmd) {
 			return cmd.Execute(connection);
+		}
+
+		public ISolrQueryResults<T> Query(ISolrQuery<T> query, int start, int rows, ICollection<SortOrder> orders) {
+			SolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
+			exe.ResultParser = resultParser;
+			exe.OrderBy = orders;
+			return exe.Execute(start, rows);			
+		}
+
+		public ISolrQueryResults<T> Query(ISolrQuery<T> query, ICollection<SortOrder> orders) {
+			SolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
+			exe.ResultParser = resultParser;
+			exe.OrderBy = orders;
+			return exe.Execute();
 		}
 	}
 }

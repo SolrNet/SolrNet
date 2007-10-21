@@ -95,7 +95,11 @@ namespace SolrNet {
 		/// <returns>query results</returns>
 		ISolrQueryResults<T> Query(ISolrQuery<T> q);
 
-		ISolrQueryResults<T> Query(SolrQuery<T> query, int start, int rows);
+		ISolrQueryResults<T> Query(ISolrQuery<T> query, int start, int rows);
+
+		ISolrQueryResults<T> Query(ISolrQuery<T> query, int start, int rows, ICollection<SortOrder> orders);
+
+		ISolrQueryResults<T> Query(ISolrQuery<T> query, ICollection<SortOrder> orders);
 
 		/// <summary>
 		/// Sends a custom command

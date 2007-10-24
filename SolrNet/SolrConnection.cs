@@ -64,7 +64,10 @@ namespace SolrNet {
 		}
 
 		public string Post(string relativeUrl, string s) {
-			IHttpWebRequest request = httpWebRequestFactory.Create(serverURL);
+			Console.WriteLine(s);
+			UriBuilder u = new UriBuilder(serverURL);
+			u.Path += relativeUrl;
+			IHttpWebRequest request = httpWebRequestFactory.Create(u.Uri);
 			request.Method = HttpWebRequestMethod.POST;
 			request.ContentType = "text/xml; charset=utf-8";
 			request.ContentLength = s.Length;

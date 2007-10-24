@@ -1,3 +1,5 @@
+using System;
+
 namespace SolrNet.Tests.Integration {
 	public class TestDocument : ISolrDocument {
 		private int id;
@@ -19,6 +21,7 @@ namespace SolrNet.Tests.Integration {
 		private bool featured;
 		private string basicView;
 		private string advancedView;
+		private DateTime? fecha;
 
 		[SolrUniqueKey]
 		[SolrField("id")]
@@ -133,6 +136,12 @@ namespace SolrNet.Tests.Integration {
 		public string AdvancedView {
 			get { return advancedView; }
 			set { advancedView = value; }
+		}
+
+		[SolrField("fecha")]
+		public DateTime? Fecha {
+			get { return fecha; }
+			set { fecha = value; }
 		}
 	}
 }

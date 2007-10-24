@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -98,6 +99,15 @@ namespace SolrNet.Tests {
 			Assert.AreEqual("SP2514N", doc.Id);
 		}
 
+		[Test]
+		public void SupportsDateTime() {
+			SolrQueryResultParser<TestDocumentWithDate> parser = new SolrQueryResultParser<TestDocumentWithDate>();
+			ISolrQueryResults<TestDocumentWithDate> results = parser.Parse(responseXMLWithDate);
+			Assert.AreEqual(1, results.Count);
+			TestDocumentWithDate doc = results[0];
+			Assert.AreEqual("SP2514N", doc.Date);
+		}
+
 		public class TestDocument : ISolrDocument {
 			private string advancedView;
 			private string basicView;
@@ -149,6 +159,10 @@ namespace SolrNet.Tests {
  </doc>
 </result>
 </response>
+";
+
+		private static readonly string responseXMLWithDate = 
+			@"
 ";
 
 		public class TestDocumentWithArrays : ISolrDocument {
@@ -241,6 +255,16 @@ namespace SolrNet.Tests {
 			public ICollection Numbers {
 				get { return numbers; }
 				set { numbers = value; }
+			}
+		}
+
+		public class TestDocumentWithDate: ISolrDocument {
+			private DateTime date;
+
+			[SolrField]
+			public DateTime Date {
+				get { return date; }
+				set { date = value; }
 			}
 		}
 	}

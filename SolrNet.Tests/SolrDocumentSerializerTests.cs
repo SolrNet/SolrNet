@@ -30,6 +30,16 @@ namespace SolrNet.Tests {
 			}
 		}
 
+		public class TestDocWithDate : ISolrDocument {
+			private DateTime date;
+
+			[SolrField]
+			public DateTime Date {
+				get { return date; }
+				set { date = value; }
+			}
+		}
+
 		[Test]
 		public void Serializes() {
 			SolrDocumentSerializer<SampleDoc> ser = new SolrDocumentSerializer<SampleDoc>();
@@ -72,6 +82,20 @@ namespace SolrNet.Tests {
 			Console.WriteLine(fs);
 			XmlDocument xml = new XmlDocument();
 			xml.LoadXml(fs);
+		}
+
+		/// <summary>
+		/// Support according to http://lucene.apache.org/solr/api/org/apache/solr/schema/DateField.html
+		/// </summary>
+		[Test]
+		public void SupportsDateTime() {
+			SolrDocumentSerializer<TestDocWithDate> ser = new SolrDocumentSerializer<TestDocWithDate>();
+			TestDocWithDate doc = new TestDocWithDate();
+			doc.Date = new DateTime(2001, 1, 2, 3, 4, 5);
+			string fs = ser.Serialize(doc).OuterXml;
+			XmlDocument xml = new XmlDocument();
+			xml.LoadXml(fs);
+			Assert.AreEqual("<doc><field name=\"Date\">2001-01-02T03:04:05Z</field></doc>", fs);
 		}
 	}
 }

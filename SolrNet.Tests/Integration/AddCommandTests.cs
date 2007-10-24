@@ -5,11 +5,13 @@ using NUnit.Framework;
 namespace SolrNet.Tests.Integration {
 	[TestFixture]
 	public class AddCommandTests {
+
+		private static readonly string serverURL = "http://localhost:8983/solr";
+
 		[Test]
 		[Category("Integration")]
 		public void AddOne() {
-			ISolrConnection conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
-			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(conn);
+			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
 			TestDocument doc = new TestDocument();
 			doc.Category = "cat";
 			doc.Id = 123456;
@@ -21,8 +23,7 @@ namespace SolrNet.Tests.Integration {
 		[Test]
 		[Category("Integration")]
 		public void DeleteAll() {
-			ISolrConnection conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
-			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(conn);
+			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
 			solr.Delete(new SolrQuery<TestDocument>("id:[* TO *]"));
 			Console.WriteLine(solr.Commit());
 		}
@@ -30,8 +31,7 @@ namespace SolrNet.Tests.Integration {
 		[Test]
 		[Category("Integration")]
 		public void AddMany() {
-			ISolrConnection conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
-			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(conn);
+			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
 			TestDocument doc = new TestDocument();
 			doc.Category = "cat";
 			solr.Add(new TestDocument[] {doc, doc});
@@ -41,8 +41,7 @@ namespace SolrNet.Tests.Integration {
 		[Test]
 		[Category("Integration")]
 		public void QueryAll() {
-			ISolrConnection conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
-			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(conn);
+			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
 			ISolrQueryResults<TestDocument> r = solr.Query(new SolrQuery<TestDocument>("id[* TO *]"));
 		}
 	}

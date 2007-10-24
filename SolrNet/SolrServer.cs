@@ -9,6 +9,10 @@ namespace SolrNet {
 		private IUniqueKeyFinder<T> uniqueKeyFinder = new UniqueKeyFinder<T>();
 		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();
 
+		public SolrServer(string serverURL) {
+			connection = new SolrConnection(serverURL);
+		}
+
 		public SolrServer(ISolrConnection connection) {
 			this.connection = connection;
 		}
@@ -119,15 +123,11 @@ namespace SolrNet {
 			return Query(query, start, rows, null);
 		}
 
-		public string Send(ISolrCommand cmd) {
-			return cmd.Execute(connection);
-		}
-
 		public ISolrQueryResults<T> Query(ISolrQuery<T> query, int start, int rows, ICollection<SortOrder> orders) {
 			SolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
 			exe.ResultParser = resultParser;
 			exe.OrderBy = orders;
-			return exe.Execute(start, rows);			
+			return exe.Execute(start, rows);
 		}
 
 		public ISolrQueryResults<T> Query(ISolrQuery<T> query, ICollection<SortOrder> orders) {
@@ -135,6 +135,10 @@ namespace SolrNet {
 			exe.ResultParser = resultParser;
 			exe.OrderBy = orders;
 			return exe.Execute();
+		}
+
+		public string Send(ISolrCommand cmd) {
+			return cmd.Execute(connection);
 		}
 	}
 }

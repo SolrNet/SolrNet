@@ -93,12 +93,14 @@ namespace SolrNet {
 		/// </summary>
 		/// <param name="q">query to execute</param>
 		/// <returns>query results</returns>
+
+		ISolrQueryResults<T> Query(string q);
+		ISolrQueryResults<T> Query(string q, int start, int rows);
+		ISolrQueryResults<T> Query(string q, int start, int rows, ICollection<SortOrder> orders);
+		ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders);
 		ISolrQueryResults<T> Query(ISolrQuery<T> q);
-
 		ISolrQueryResults<T> Query(ISolrQuery<T> query, int start, int rows);
-
 		ISolrQueryResults<T> Query(ISolrQuery<T> query, int start, int rows, ICollection<SortOrder> orders);
-
 		ISolrQueryResults<T> Query(ISolrQuery<T> query, ICollection<SortOrder> orders);
 
 		/// <summary>

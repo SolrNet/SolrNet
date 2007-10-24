@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using SolrNet.Exceptions;
@@ -113,6 +114,22 @@ namespace SolrNet {
 			delete.FromCommitted = fromCommited;
 			delete.FromPending = fromPending;
 			return delete.Execute(connection);
+		}
+
+		public ISolrQueryResults<T> Query(string q) {
+			return Query(new SolrQuery<T>(q));
+		}
+
+		public ISolrQueryResults<T> Query(string q, int start, int rows) {
+			return Query(new SolrQuery<T>(q), start, rows);
+		}
+
+		public ISolrQueryResults<T> Query(string q, int start, int rows, ICollection<SortOrder> orders) {
+			return Query(new SolrQuery<T>(q), start, rows, orders);
+		}
+
+		public ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders) {
+			return Query(new SolrQuery<T>(q), orders);
 		}
 
 		public ISolrQueryResults<T> Query(ISolrQuery<T> query) {

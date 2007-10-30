@@ -46,6 +46,7 @@
     <Compile Include="Exceptions\BadMappingException.cs" />
     <Compile Include="Exceptions\FieldNotFoundException.cs" />
     <Compile Include="Exceptions\InvalidFieldException.cs" />
+    <Compile Include="Exceptions\InvalidSortOrderException.cs" />
     <Compile Include="Exceptions\NoUniqueKeyException.cs" />
     <Compile Include="Exceptions\SolrConnectionException.cs" />
     <Compile Include="ISolrCommand.cs" />

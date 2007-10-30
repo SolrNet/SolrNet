@@ -59,6 +59,7 @@
     <Compile Include="SolrQueryByRangeTests.cs" />
     <Compile Include="SolrQueryResultsParserTests.cs" />
     <Compile Include="SolrQueryTests.cs" />
+    <Compile Include="SortOrderTests.cs" />
     <Compile Include="UniquePropertyFinderTests.cs" />
   </ItemGroup>
   <ItemGroup>

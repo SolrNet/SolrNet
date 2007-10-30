@@ -37,7 +37,7 @@ namespace SolrNet {
 					} else if (p.PropertyType == typeof (bool)) {
 						fieldNode.InnerText = p.GetValue(doc, null).ToString().ToLower();
 					} else {
-						fieldNode.InnerText = (p.GetValue(doc, null) ?? "").ToString();
+						fieldNode.InnerText = p.GetValue(doc, null).ToString();
 					}
 					docNode.AppendChild(fieldNode);
 				}

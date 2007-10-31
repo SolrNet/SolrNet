@@ -24,13 +24,13 @@ namespace SolrNet.Tests {
 		[Test]
 		public void ParseAsc() {
 			SortOrder o = SortOrder.Parse("pepe asc");
-			StringAssert.AreEqualIgnoringCase("pepe ASC", o.ToString());
+			StringAssert.IsMatch("pepe asc", o.ToString());
 		}
 
 		[Test]
 		public void ParseDesc() {
 			SortOrder o = SortOrder.Parse("pepe desc");
-			StringAssert.AreEqualIgnoringCase("pepe desc", o.ToString());
+			StringAssert.IsMatch("pepe desc", o.ToString());
 		}
 
 		[Test]

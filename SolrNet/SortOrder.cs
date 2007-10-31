@@ -17,7 +17,7 @@ namespace SolrNet {
 		}
 
 		public override string ToString() {
-			return string.Format("{0}{1}", fieldName, order.HasValue ? " " + order : "");
+			return string.Format("{0}{1}", fieldName, order.HasValue ? " " + order.ToString().ToLower() : "");
 		}
 
 		private delegate T F<TP, T>(TP p);

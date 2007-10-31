@@ -10,6 +10,12 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
+		public void DefaultOrder() {
+			SortOrder o = new SortOrder("uno");
+			Assert.AreEqual("uno asc", o.ToString());
+		}
+
+		[Test]
 		[ExpectedException(typeof (InvalidSortOrderException))]
 		public void ParseNull_ShouldThrow() {
 			SortOrder o = SortOrder.Parse(null);
@@ -18,7 +24,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void Parse() {
 			SortOrder o = SortOrder.Parse("pepe");
-			Assert.AreEqual("pepe", o.ToString());
+			Assert.AreEqual("pepe asc", o.ToString());
 		}
 
 		[Test]

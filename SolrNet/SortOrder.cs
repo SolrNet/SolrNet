@@ -4,7 +4,7 @@ using SolrNet.Tests;
 namespace SolrNet {
 	public class SortOrder {
 		private string fieldName;
-		private Order? order;
+		private Order order = Order.ASC;
 
 		public SortOrder(string fieldName) {
 			if (fieldName.IndexOf(' ') >= 0)
@@ -12,12 +12,12 @@ namespace SolrNet {
 			this.fieldName = fieldName;
 		}
 
-		public SortOrder(string fieldName, Order? order) : this(fieldName) {
+		public SortOrder(string fieldName, Order order) : this(fieldName) {
 			this.order = order;
 		}
 
 		public override string ToString() {
-			return string.Format("{0}{1}", fieldName, order.HasValue ? " " + order.ToString().ToLower() : "");
+			return string.Format("{0} {1}", fieldName, order.ToString().ToLower());
 		}
 
 		private delegate T F<TP, T>(TP p);
@@ -26,12 +26,11 @@ namespace SolrNet {
 			try {
 				string[] tokens = s.Split(' ');
 				string field = tokens[0];
-				Order? o = new F<string[], Order?>(delegate(string[] t) {
-				                                   	if (t.Length > 1)
-				                                   		return (Order?) Enum.Parse(typeof (Order), t[1].ToUpper());
-				                                   	return null;
-				                                   })(tokens);
-				return new SortOrder(field, o);
+				if (tokens.Length > 1) {
+					Order o = (Order) Enum.Parse(typeof (Order), tokens[1].ToUpper());
+					return new SortOrder(field, o);
+				}
+				return new SortOrder(field);
 			} catch (Exception e) {
 				throw new InvalidSortOrderException(e);
 			}

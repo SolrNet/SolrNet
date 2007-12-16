@@ -3,8 +3,8 @@ using SolrNet.Tests;
 
 namespace SolrNet {
 	public class SortOrder {
-		private string fieldName;
-		private Order order = Order.ASC;
+		private readonly string fieldName;
+		private readonly Order order = Order.ASC;
 
 		public SortOrder(string fieldName) {
 			if (fieldName.IndexOf(' ') >= 0)

@@ -2,7 +2,7 @@ using System.Xml;
 
 namespace SolrNet.Tests {
 	public class DeleteByQueryParam<T> : ISolrDeleteParam where T : ISolrDocument {
-		private ISolrQuery<T> query;
+		private readonly ISolrQuery<T> query;
 
 		public DeleteByQueryParam(ISolrQuery<T> q) {
 			query = q;

@@ -13,7 +13,7 @@ namespace SolrNet {
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
 	public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : ISolrDocument, new() {
-		private static IDictionary<string, Type> solrTypes;
+		private static readonly IDictionary<string, Type> solrTypes;
 
 		static SolrQueryResultParser() {
 			solrTypes = new Dictionary<string, Type>();

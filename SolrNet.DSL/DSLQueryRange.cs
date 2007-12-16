@@ -1,9 +1,9 @@
 namespace SolrNet.DSL {
 	public class DSLQueryRange<T, RT> : DSLQuery<T>, IDSLQueryRange<T> where T : ISolrDocument, new() {
-		private string fieldName;
-		private RT from;
-		private RT to;
-		private ISolrQuery<T> prevQuery;
+		private readonly string fieldName;
+		private readonly RT from;
+		private readonly RT to;
+		private readonly ISolrQuery<T> prevQuery;
 
 		public DSLQueryRange(ISolrConnection connection, ISolrQuery<T> query, string fieldName, RT from, RT to) : base(connection) {
 			this.query = new SolrMultipleCriteriaQuery<T>(new ISolrQuery<T>[] {

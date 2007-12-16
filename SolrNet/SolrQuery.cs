@@ -4,7 +4,7 @@ namespace SolrNet {
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
 	public class SolrQuery<T> : ISolrQuery<T> where T : ISolrDocument {
-		private string query;
+		private readonly string query;
 
 		/// <summary>
 		/// Constructor.

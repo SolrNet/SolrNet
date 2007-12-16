@@ -2,7 +2,7 @@ using SolrNet.Tests;
 
 namespace SolrNet.DSL {
 	public class DeleteBy {
-		private ISolrConnection connection;
+		private readonly ISolrConnection connection;
 
 		public DeleteBy(ISolrConnection connection) {
 			this.connection = connection;

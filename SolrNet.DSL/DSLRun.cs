@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace SolrNet.DSL {
 	public class DSLRun<T> : IDSLRun<T> where T : ISolrDocument, new() {
-		private ICollection<SortOrder> order = new List<SortOrder>();
+		private readonly ICollection<SortOrder> order = new List<SortOrder>();
 		protected ISolrConnection connection;
 		protected ISolrQuery<T> query;
 

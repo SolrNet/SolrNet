@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SolrNet {
 	public class SolrQueryResults<T> : ISolrQueryResults<T> where T : ISolrDocument {
-		private IList<T> innerList = new List<T>();
+		private readonly IList<T> innerList = new List<T>();
 
 		///<summary>
 		///Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1"></see>.

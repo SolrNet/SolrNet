@@ -6,7 +6,7 @@ using SolrNet.Tests;
 
 namespace SolrNet {
 	public class SolrServer<T> : ISolrOperations<T> where T : ISolrDocument, new() {
-		private ISolrConnection connection;
+		private readonly ISolrConnection connection;
 		private IUniqueKeyFinder<T> uniqueKeyFinder = new UniqueKeyFinder<T>();
 		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();
 

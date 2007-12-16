@@ -7,7 +7,7 @@ namespace SolrNet {
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
 	public class AddCommand<T> : ISolrCommand where T : ISolrDocument {
-		private IEnumerable<T> documents = new List<T>();
+		private readonly IEnumerable<T> documents = new List<T>();
 		private ISolrDocumentSerializer<T> serializer = new SolrDocumentSerializer<T>();
 
 		/// <summary>

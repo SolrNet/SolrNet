@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace SolrNet {
 	public class SolrQueryByField<T> : ISolrQuery<T> where T : ISolrDocument {
-		private string q;
+		private readonly string q;
 
 		public SolrQueryByField(string fieldName, string fieldValue) {
 			if (fieldName == null || fieldValue == null)

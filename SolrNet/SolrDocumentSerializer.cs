@@ -46,7 +46,7 @@ namespace SolrNet {
 			return xml;
 		}
 
-		private static IDictionary<Type, string> solrTypes;
+		private static readonly IDictionary<Type, string> solrTypes;
 
 		static SolrDocumentSerializer() {
 			solrTypes = new Dictionary<Type, string>();

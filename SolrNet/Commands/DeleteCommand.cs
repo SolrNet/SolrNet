@@ -5,7 +5,7 @@ namespace SolrNet {
 	public class DeleteCommand : ISolrCommand {
 		private bool? fromPending;
 		private bool? fromCommitted;
-		private ISolrDeleteParam deleteParam;
+		private readonly ISolrDeleteParam deleteParam;
 
 		public DeleteCommand(ISolrDeleteParam deleteParam) {
 			this.deleteParam = deleteParam;

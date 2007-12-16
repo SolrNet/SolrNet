@@ -1,6 +1,6 @@
 namespace SolrNet {
 	public class SolrQueryByRange<T, RT> : ISolrQuery<T> where T : ISolrDocument {
-		private string q;
+		private readonly string q;
 		public SolrQueryByRange(string fieldName, RT from, RT to) : this(fieldName, from, to, true) {}
 
 		public SolrQueryByRange(string fieldName, RT from, RT to, bool inclusive) {

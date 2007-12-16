@@ -2,7 +2,7 @@ using System.Xml;
 
 namespace SolrNet {
 	public class DeleteByIdParam : ISolrDeleteParam {
-		private string id;
+		private readonly string id;
 
 		public DeleteByIdParam(string id) {
 			this.id = id;

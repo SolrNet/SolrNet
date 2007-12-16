@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet", "SolrNet\SolrNet.csproj", "{CEEB8690-3E08-4440-B647-787A58E71CFA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Tests", "SolrNet.Tests\SolrNet.Tests.csproj", "{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}"

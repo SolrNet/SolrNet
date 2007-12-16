@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Xml;
+using SolrNet.Commands.Parameters;
 
-namespace SolrNet {
+namespace SolrNet.Commands {
 	public class DeleteCommand : ISolrCommand {
 		private bool? fromPending;
 		private bool? fromCommitted;

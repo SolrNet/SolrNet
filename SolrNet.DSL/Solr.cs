@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Rhino.Commons;
+using SolrNet.Commands;
 
 namespace SolrNet.DSL {
 	/// <summary>

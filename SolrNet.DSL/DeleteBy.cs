@@ -1,4 +1,5 @@
-using SolrNet.Tests;
+using SolrNet.Commands;
+using SolrNet.Commands.Parameters;
 
 namespace SolrNet.DSL {
 	public class DeleteBy {

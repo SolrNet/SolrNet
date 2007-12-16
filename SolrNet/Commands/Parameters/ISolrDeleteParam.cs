@@ -1,6 +1,6 @@
 using System.Xml;
 
-namespace SolrNet {
+namespace SolrNet.Commands.Parameters {
 	public interface ISolrDeleteParam {
 		XmlNode ToXmlNode();
 	}

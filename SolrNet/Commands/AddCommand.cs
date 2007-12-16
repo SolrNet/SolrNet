@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Xml;
 
-namespace SolrNet {
+namespace SolrNet.Commands {
 	/// <summary>
 	/// Adds / updates documents to solr
 	/// </summary>

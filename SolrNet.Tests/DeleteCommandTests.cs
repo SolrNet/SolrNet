@@ -1,5 +1,7 @@
 using NUnit.Framework;
 using Rhino.Mocks;
+using SolrNet.Commands;
+using SolrNet.Commands.Parameters;
 
 namespace SolrNet.Tests {
 	[TestFixture]

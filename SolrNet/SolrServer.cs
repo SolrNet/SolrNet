@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using SolrNet.Commands;
+using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
-using SolrNet.Tests;
 
 namespace SolrNet {
 	public class SolrServer<T> : ISolrOperations<T> where T : ISolrDocument, new() {

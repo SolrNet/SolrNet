@@ -1,6 +1,6 @@
 using System.Xml;
 
-namespace SolrNet {
+namespace SolrNet.Commands.Parameters {
 	public class DeleteByIdParam : ISolrDeleteParam {
 		private readonly string id;
 

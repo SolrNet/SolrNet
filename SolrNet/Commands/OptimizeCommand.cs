@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Xml;
 
-namespace SolrNet {
+namespace SolrNet.Commands {
 	public class OptimizeCommand : ISolrCommand {
 		private bool? waitFlush;
 		private bool? waitSearcher;

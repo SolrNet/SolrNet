@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CEEB8690-3E08-4440-B647-787A58E71CFA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -42,10 +42,10 @@
     <Compile Include="Exceptions\CollectionTypeNotSupportedException.cs" />
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\CommitCommand.cs" />
-    <Compile Include="Commands\DeleteByIdParam.cs" />
-    <Compile Include="Commands\DeleteByQueryParam.cs" />
+    <Compile Include="Commands\Parameters\DeleteByIdParam.cs" />
+    <Compile Include="Commands\Parameters\DeleteByQueryParam.cs" />
     <Compile Include="Commands\DeleteCommand.cs" />
-    <Compile Include="Commands\ISolrDeleteParam.cs" />
+    <Compile Include="Commands\Parameters\ISolrDeleteParam.cs" />
     <Compile Include="Commands\OptimizeCommand.cs" />
     <Compile Include="Commands\QueryCommand.cs" />
     <Compile Include="Exceptions\BadMappingException.cs" />

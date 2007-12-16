@@ -1,6 +1,6 @@
 using System.Xml;
 
-namespace SolrNet.Tests {
+namespace SolrNet.Commands.Parameters {
 	public class DeleteByQueryParam<T> : ISolrDeleteParam where T : ISolrDocument {
 		private readonly ISolrQuery<T> query;
 

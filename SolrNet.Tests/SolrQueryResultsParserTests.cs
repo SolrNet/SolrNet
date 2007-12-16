@@ -105,7 +105,7 @@ namespace SolrNet.Tests {
 			ISolrQueryResults<TestDocumentWithDate> results = parser.Parse(responseXMLWithDate);
 			Assert.AreEqual(1, results.Count);
 			TestDocumentWithDate doc = results[0];
-			Assert.AreEqual("SP2514N", doc.Date);
+			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 3, 3), doc.Fecha);
 		}
 
 		public class TestDocument : ISolrDocument {
@@ -161,8 +161,15 @@ namespace SolrNet.Tests {
 </response>
 ";
 
-		private static readonly string responseXMLWithDate = 
-			@"
+		private static readonly string responseXMLWithDate =
+			@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<response>
+<result numFound=""1"" start=""0"">
+	<doc>
+	<date name=""Fecha"">2001-01-02T03:03:03Z</date>
+	</doc>
+</result>
+</response>
 ";
 
 		public class TestDocumentWithArrays : ISolrDocument {
@@ -259,12 +266,12 @@ namespace SolrNet.Tests {
 		}
 
 		public class TestDocumentWithDate: ISolrDocument {
-			private DateTime date;
+			private DateTime fecha;
 
 			[SolrField]
-			public DateTime Date {
-				get { return date; }
-				set { date = value; }
+			public DateTime Fecha {
+				get { return fecha; }
+				set { fecha = value; }
 			}
 		}
 	}

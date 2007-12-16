@@ -95,7 +95,7 @@ namespace SolrNet.Tests {
 			string fs = ser.Serialize(doc).OuterXml;
 			XmlDocument xml = new XmlDocument();
 			xml.LoadXml(fs);
-			Assert.AreEqual("<doc><field name=\"Date\">2001-01-02T03:04:05Z</field></doc>", fs);
+			Assert.AreEqual("<doc><field name=\"Fecha\">2001-01-02T03:04:05Z</field></doc>", fs);
 		}
 	}
 }

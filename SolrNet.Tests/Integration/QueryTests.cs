@@ -5,6 +5,8 @@ namespace SolrNet.Tests.Integration {
 	[TestFixture]
 	public class QueryTests {
 		[Test]
+		[Category("Integration")]
+		[Ignore]
 		public void tt() {
 			ISolrConnection conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
 			ISolrOperations<TestDocument> server = new SolrServer<TestDocument>(conn);

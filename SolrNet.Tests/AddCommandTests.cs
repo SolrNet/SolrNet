@@ -32,34 +32,18 @@ namespace SolrNet.Tests {
 		public void Execute() {
 			MockRepository mocks = new MockRepository();
 			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
-			conn.Post("/update", "<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23,5</field></doc></add>");
-			LastCall.Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
-			                                     	Console.WriteLine(s);
-			                                     	return null;
-			                                     }));
-			SetupResult.For(conn.ServerURL).Return("");
-			mocks.ReplayAll();
-			SampleDoc[] docs = new SampleDoc[] {new SampleDoc()};
-			AddCommand<SampleDoc> cmd = new AddCommand<SampleDoc>(docs);
-			cmd.Execute(conn);
-			mocks.VerifyAll();
-		}
-
-		[Test]
-		public void SupportsDocumentWithStringCollection() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
-			conn.Post("/update", "<add><doc><field name=\"coll\"><arr><str>one</str><str>two</str></arr></field></doc></add>");
-			LastCall.Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
-			                                     	Console.WriteLine(s);
-			                                     	return null;
-			                                     }));
-			SetupResult.For(conn.ServerURL).Return("");
-			mocks.ReplayAll();
-			TestDocWithCollections[] docs = new TestDocWithCollections[] {new TestDocWithCollections()};
-			AddCommand<TestDocWithCollections> cmd = new AddCommand<TestDocWithCollections>(docs);
-			cmd.Execute(conn);
-			mocks.VerifyAll();
+			With.Mocks(mocks).Expecting(delegate {
+				conn.Post("/update", "<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23,5</field></doc></add>");
+				LastCall.Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
+					Console.WriteLine(s);
+					return null;
+				}));
+				SetupResult.For(conn.ServerURL).Return("");
+			}).Verify(delegate {
+				SampleDoc[] docs = new SampleDoc[] {new SampleDoc()};
+				AddCommand<SampleDoc> cmd = new AddCommand<SampleDoc>(docs);
+				cmd.Execute(conn);
+			});
 		}
 
 		[Test]
@@ -69,6 +53,24 @@ namespace SolrNet.Tests {
 			SampleDoc[] docs = new SampleDoc[] {new SampleDoc()};
 			AddCommand<SampleDoc> cmd = new AddCommand<SampleDoc>(docs);
 			cmd.Execute(conn);
+		}
+
+		[Test]
+		public void SupportsDocumentWithStringCollection() {
+			MockRepository mocks = new MockRepository();
+			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			With.Mocks(mocks).Expecting(delegate {
+				conn.Post("/update", "<add><doc><field name=\"coll\"><arr><str>one</str><str>two</str></arr></field></doc></add>");
+				LastCall.Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
+					Console.WriteLine(s);
+					return null;
+				}));
+				SetupResult.For(conn.ServerURL).Return("");
+			}).Verify(delegate {
+				TestDocWithCollections[] docs = new TestDocWithCollections[] {new TestDocWithCollections()};
+				AddCommand<TestDocWithCollections> cmd = new AddCommand<TestDocWithCollections>(docs);
+				cmd.Execute(conn);
+			});
 		}
 	}
 }

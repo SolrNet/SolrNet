@@ -10,6 +10,7 @@ namespace SolrNet.Tests.Integration {
 
 		[Test]
 		[Category("Integration")]
+		[Ignore]
 		public void AddOne() {
 			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
 			TestDocument doc = new TestDocument();
@@ -22,6 +23,7 @@ namespace SolrNet.Tests.Integration {
 
 		[Test]
 		[Category("Integration")]
+		[Ignore]
 		public void DeleteAll() {
 			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
 			solr.Delete(new SolrQuery<TestDocument>("id:[* TO *]"));
@@ -30,6 +32,7 @@ namespace SolrNet.Tests.Integration {
 
 		[Test]
 		[Category("Integration")]
+		[Ignore]
 		public void AddMany() {
 			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
 			TestDocument doc = new TestDocument();
@@ -40,6 +43,7 @@ namespace SolrNet.Tests.Integration {
 
 		[Test]
 		[Category("Integration")]
+		[Ignore]
 		public void QueryAll() {
 			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
 			ISolrQueryResults<TestDocument> r = solr.Query(new SolrQuery<TestDocument>("id[* TO *]"));

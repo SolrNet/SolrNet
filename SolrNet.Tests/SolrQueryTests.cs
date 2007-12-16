@@ -10,14 +10,15 @@ namespace SolrNet.Tests {
 		public void tt() {
 			MockRepository mocks = new MockRepository();
 			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
-			Expect.Call(connection.Get(null, null)).IgnoreArguments().Repeat.Once().Return("");
 			ISolrQueryResultParser<TestDocument> parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
-			Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(new SolrQueryResults<TestDocument>());
-			mocks.ReplayAll();
-			SolrQueryExecuter<TestDocument> q = new SolrQueryExecuter<TestDocument>(connection, "id:123456");
-			q.ResultParser = parser;
-			ISolrQueryResults<TestDocument> r = q.Execute();
-			mocks.VerifyAll();
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(connection.Get(null, null)).IgnoreArguments().Repeat.Once().Return("");
+				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(new SolrQueryResults<TestDocument>());
+			}).Verify(delegate {
+				SolrQueryExecuter<TestDocument> q = new SolrQueryExecuter<TestDocument>(connection, "id:123456");
+				q.ResultParser = parser;
+				ISolrQueryResults<TestDocument> r = q.Execute();
+			});
 		}
 	}
 }

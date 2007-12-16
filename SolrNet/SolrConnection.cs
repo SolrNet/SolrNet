@@ -41,6 +41,9 @@ namespace SolrNet {
 			}
 		}
 
+		/// <summary>
+		/// Solr XML response syntax version
+		/// </summary>
 		public string Version {
 			get { return version; }
 			set { version = value; }
@@ -94,6 +97,7 @@ namespace SolrNet {
 			if (parameters == null)
 				parameters = new Dictionary<string, string>();
 			parameters["version"] = version;
+			// TODO clean up, too messy
 			u.Query = Func.Reduce(
 				Func.Map<KeyValuePair<string, string>, string>(parameters,
 				                                               delegate(KeyValuePair<string, string> input) {
@@ -107,7 +111,7 @@ namespace SolrNet {
 			//Console.WriteLine(u.Uri);
 			IHttpWebRequest request = httpWebRequestFactory.Create(u.Uri);
 			request.Method = HttpWebRequestMethod.GET;
-			request.ProtocolVersion = HttpVersion.Version10;
+			request.ProtocolVersion = HttpVersion.Version10; // for some reason Version11 throws
 			try {
 				using (IHttpWebResponse response = request.GetResponse()) {
 					using (Stream rStream = response.GetResponseStream()) {

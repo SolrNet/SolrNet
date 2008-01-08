@@ -40,6 +40,16 @@ namespace SolrNet.Tests {
 			}
 		}
 
+		public class TestDocWithBool: ISolrDocument {
+			private bool b;
+
+			[SolrField]
+			public bool B {
+				get { return b; }
+				set { b = value; }
+			}
+		}
+
 		[Test]
 		public void Serializes() {
 			SolrDocumentSerializer<SampleDoc> ser = new SolrDocumentSerializer<SampleDoc>();
@@ -95,7 +105,29 @@ namespace SolrNet.Tests {
 			string fs = ser.Serialize(doc).OuterXml;
 			XmlDocument xml = new XmlDocument();
 			xml.LoadXml(fs);
-			Assert.AreEqual("<doc><field name=\"Fecha\">2001-01-02T03:04:05Z</field></doc>", fs);
+			Assert.AreEqual("<doc><field name=\"Date\">2001-01-02T03:04:05Z</field></doc>", fs);
+		}
+
+		[Test]
+		public void SupportsBoolTrue() {
+			SolrDocumentSerializer<TestDocWithBool> ser = new SolrDocumentSerializer<TestDocWithBool>();
+			TestDocWithBool doc = new TestDocWithBool();
+			doc.B = true;
+			string fs = ser.Serialize(doc).OuterXml;
+			XmlDocument xml = new XmlDocument();
+			xml.LoadXml(fs);
+			Assert.AreEqual("<doc><field name=\"B\">true</field></doc>", fs);			
+		}
+
+		[Test]
+		public void SupportsBoolFalse() {
+			SolrDocumentSerializer<TestDocWithBool> ser = new SolrDocumentSerializer<TestDocWithBool>();
+			TestDocWithBool doc = new TestDocWithBool();
+			doc.B = false;
+			string fs = ser.Serialize(doc).OuterXml;
+			XmlDocument xml = new XmlDocument();
+			xml.LoadXml(fs);
+			Assert.AreEqual("<doc><field name=\"B\">false</field></doc>", fs);
 		}
 	}
 }

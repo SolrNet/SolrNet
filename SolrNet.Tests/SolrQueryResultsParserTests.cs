@@ -108,6 +108,23 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 3, 3), doc.Fecha);
 		}
 
+		[Test]
+		public void SupportsIEnumerable() {
+			SolrQueryResultParser<TestDocumentWithArrays4> parser = new SolrQueryResultParser<TestDocumentWithArrays4>();
+			ISolrQueryResults<TestDocumentWithArrays4> results = parser.Parse(responseXMLWithArraysSimple);
+			Assert.AreEqual(1, results.Count);
+			TestDocumentWithArrays4 doc = results[0];
+			Assert.AreEqual(2, new List<string>(doc.Features).Count);
+		}
+
+		[Test]
+		public void WrongFieldDoesntThrow() {
+			SolrQueryResultParser<TestDocumentWithDate> parser = new SolrQueryResultParser<TestDocumentWithDate>();
+			ISolrQueryResults<TestDocumentWithDate> results = parser.Parse(responseXMLWithArraysSimple);
+			Assert.AreEqual(1, results.Count);
+			TestDocumentWithDate doc = results[0];			
+		}
+
 		public class TestDocument : ISolrDocument {
 			private string advancedView;
 			private string basicView;
@@ -136,6 +153,18 @@ namespace SolrNet.Tests {
 			@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
 <lst name=""responseHeader""><int name=""status"">0</int><int name=""QTime"">0</int><lst name=""params""><str name=""q"">id:123456</str><str name=""?""/><str name=""version"">2.2</str></lst></lst><result name=""response"" numFound=""1"" start=""0""><doc><str name=""advancedview""/><str name=""basicview""/><int name=""id"">123456</int></doc></result>
+</response>
+";
+
+		private static readonly string responseXMLWithArraysSimple =
+			@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<response>
+<responseHeader><status>0</status><QTime>1</QTime></responseHeader>
+<result numFound=""1"" start=""0"">
+	<doc>
+		<arr name=""features""><str>7200RPM, 8MB cache, IDE Ultra ATA-133</str><str>NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor</str></arr>
+	</doc>
+</result>
 </response>
 ";
 
@@ -262,6 +291,16 @@ namespace SolrNet.Tests {
 			public ICollection Numbers {
 				get { return numbers; }
 				set { numbers = value; }
+			}
+		}
+
+		public class TestDocumentWithArrays4: ISolrDocument {
+			private IEnumerable<string> features;
+
+			[SolrField]
+			public IEnumerable<string> Features {
+				get { return features; }
+				set { features = value; }
 			}
 		}
 

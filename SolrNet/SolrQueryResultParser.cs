@@ -94,7 +94,7 @@ namespace SolrNet {
 		private static IList GetGenericCollectionProperty(XmlNode field, Type[] genericTypes) {
 			// ICollection<int>, etc
 			Type gt = genericTypes[0];
-			IList l = (IList) Activator.CreateInstance(Type.GetType(string.Format("System.Collections.Generic.List`1[{0}]", gt)));
+			IList l = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(gt));			
 			foreach (XmlNode arrayValueNode in field.ChildNodes) {
 				l.Add(Convert.ChangeType(arrayValueNode.InnerText, gt));
 			}

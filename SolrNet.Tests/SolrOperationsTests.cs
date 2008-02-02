@@ -59,11 +59,14 @@ namespace SolrNet.Tests {
 			MockRepository mocks = new MockRepository();
 			//ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
 			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
-			Expect.Call(connection.Post("/update", "<delete><query>id:123</query></delete>")).Repeat.Once().Return(null);
-			mocks.ReplayAll();
-			ISolrOperations<TestDocumentWithUniqueKey> ops = new SolrServer<TestDocumentWithUniqueKey>(connection);
-			ops.Delete(new SolrQuery<TestDocumentWithUniqueKey>("id:123"));
-			mocks.VerifyAll();
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(connection.Post("/update", "<delete><query>id:123</query></delete>"))
+					.Repeat.Once()
+					.Return(null);
+			}).Verify(delegate {
+				ISolrOperations<TestDocumentWithUniqueKey> ops = new SolrServer<TestDocumentWithUniqueKey>(connection);
+				ops.Delete(new SolrQuery<TestDocumentWithUniqueKey>("id:123"));				
+			});
 		}
 
 		[Test]
@@ -71,11 +74,14 @@ namespace SolrNet.Tests {
 			MockRepository mocks = new MockRepository();
 			//ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
 			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
-			Expect.Call(connection.Post("/update", "<delete fromPending=\"true\" fromCommitted=\"true\"><query>id:123</query></delete>")).Repeat.Once().Return(null);
-			mocks.ReplayAll();
-			ISolrOperations<TestDocumentWithUniqueKey> ops = new SolrServer<TestDocumentWithUniqueKey>(connection);
-			ops.Delete(new SolrQuery<TestDocumentWithUniqueKey>("id:123"), true, true);
-			mocks.VerifyAll();
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(connection.Post("/update", "<delete fromPending=\"true\" fromCommitted=\"true\"><query>id:123</query></delete>"))
+					.Repeat.Once()
+					.Return(null);
+			}).Verify(delegate {
+				ISolrOperations<TestDocumentWithUniqueKey> ops = new SolrServer<TestDocumentWithUniqueKey>(connection);
+				ops.Delete(new SolrQuery<TestDocumentWithUniqueKey>("id:123"), true, true);				
+			});
 		}
 
 		[Test]

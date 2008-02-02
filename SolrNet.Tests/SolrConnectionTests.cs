@@ -40,13 +40,15 @@ namespace SolrNet.Tests {
 			MockRepository mocks = new MockRepository();
 			IHttpWebRequestFactory reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
 			IHttpWebRequest request = mocks.DynamicMock<IHttpWebRequest>();
-			Expect.Call(reqFactory.Create(new UriBuilder().Uri)).IgnoreArguments().Repeat.Once().Return(request);
 			IHttpWebResponse response = mocks.DynamicMock<IHttpWebResponse>();
-			Expect.Call(request.GetResponse()).Repeat.Once().Return(response);
-			Expect.Call(response.GetResponseStream()).Repeat.Once().Return(new MemoryStream());
-			mocks.ReplayAll();
-			ISolrConnection conn = new SolrConnection("https://pepe", reqFactory);
-			conn.Get("", new Dictionary<string, string>());
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(reqFactory.Create(new UriBuilder().Uri)).IgnoreArguments().Repeat.Once().Return(request);
+				Expect.Call(request.GetResponse()).Repeat.Once().Return(response);
+				Expect.Call(response.GetResponseStream()).Repeat.Once().Return(new MemoryStream());				
+			}).Verify(delegate {
+				ISolrConnection conn = new SolrConnection("https://pepe", reqFactory);
+				conn.Get("", new Dictionary<string, string>());				
+			});
 		}
 
 		[Test]

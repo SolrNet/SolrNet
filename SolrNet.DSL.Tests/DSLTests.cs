@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
-using SolrNet.Exceptions;
 
 namespace SolrNet.DSL.Tests {
 	/// <summary>
@@ -12,16 +11,11 @@ namespace SolrNet.DSL.Tests {
 		public class TestDocument : ISolrDocument {}
 
 		public class TestDocumentWithId : ISolrDocument {
-			private int id;
-
 			[SolrField]
-			public int Id {
-				get { return id; }
-				set { id = value; }
-			}
+			public int Id { get; set; }
 		}
 
-		private static readonly string response =
+		private const string response =
 			@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
 <lst name=""responseHeader""><int name=""status"">0</int><int name=""QTime"">0</int><lst name=""params""><str name=""q"">id:123456</str><str name=""?""/><str name=""version"">2.2</str></lst></lst><result name=""response"" numFound=""1"" start=""0""><doc></doc></result>
@@ -32,8 +26,8 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void Add() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(conn.Post("/update", "<add><doc /></add>")).Return("");
 			}).Verify(delegate {
@@ -44,16 +38,16 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void Commit() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			Solr.Connection = conn;
 			Solr.Commit();
 		}
 
 		[Test]
 		public void CommitWithParams() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			Solr.Connection = conn;
 			Solr.Commit(true, true);
 		}
@@ -61,8 +55,8 @@ namespace SolrNet.DSL.Tests {
 		[Test]
 		public void DeleteById() {
 			const string id = "123456";
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id></delete>", id))).Return("");
 			}).Verify(delegate {
@@ -74,8 +68,8 @@ namespace SolrNet.DSL.Tests {
 		[Test]
 		public void DeleteByQuery() {
 			const string q = "id:123456";
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", q))).Return("");
 			}).Verify(delegate {
@@ -87,8 +81,8 @@ namespace SolrNet.DSL.Tests {
 		[Test]
 		public void DeleteByQueryString() {
 			const string q = "id:123456";
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", q))).Return("");
 			}).Verify(delegate {
@@ -99,46 +93,44 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void Optimize() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			Solr.Connection = conn;
 			Solr.Optimize();
 		}
 
 		[Test]
 		public void OptimizeWithParams() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			Solr.Connection = conn;
 			Solr.Optimize(true, true);
 		}
 
 		[Test]
 		public void OrderBy() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = "Id:123456";
-				query["sort"] = "id asc";
+				var query = new Dictionary<string, string> {{"q", "Id:123456"}, {"sort", "id asc"}};
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				TestDocumentWithId doc = new TestDocumentWithId();
-				doc.Id = 123456;
-				Solr.Query<TestDocumentWithId>().ByExample(doc).OrderBy("id").Run();
+				var doc = new TestDocumentWithId {Id = 123456};
+				Solr.Query<TestDocumentWithId>()
+					.ByExample(doc)
+					.OrderBy("id")
+					.Run();
 			});
 		}
 
 		[Test]
 		public void OrderBy2() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			const string queryString = "id:123";
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = queryString;
-				query["sort"] = "id asc";
+				var query = new Dictionary<string, string> {{"q", queryString}, {"sort", "id asc"}};
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
@@ -148,71 +140,74 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void OrderBy2Multiple() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			const string queryString = "id:123";
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = queryString;
-				query["sort"] = "id asc,name desc";
+				var query = new Dictionary<string, string> {{"q", queryString}, {"sort", "id asc,name desc"}};
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Query(new SolrQuery<TestDocument>(queryString), new SortOrder[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)});
+				Solr.Query(new SolrQuery<TestDocument>(queryString), new[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)});
 			});
 		}
 
 		[Test]
 		public void OrderByAscDesc() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = "Id:123456";
-				query["sort"] = "id asc";
+				var query = new Dictionary<string, string> {{"q", "Id:123456"}, {"sort", "id asc"}};
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				TestDocumentWithId doc = new TestDocumentWithId();
-				doc.Id = 123456;
-				Solr.Query<TestDocumentWithId>().ByExample(doc).OrderBy("id", Order.ASC).Run();
+				var doc = new TestDocumentWithId {Id = 123456};
+				Solr.Query<TestDocumentWithId>()
+					.ByExample(doc)
+					.OrderBy("id", Order.ASC)
+					.Run();
 			});
 		}
 
 		[Test]
 		public void OrderByAscDescMultiple() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = "Id:123456";
-				query["sort"] = "id asc,name desc";
+				var query = new Dictionary<string, string>
+				            	{
+				            		{"q", "Id:123456"},
+				            		{"sort", "id asc,name desc"}
+				            	};
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				TestDocumentWithId doc = new TestDocumentWithId();
-				doc.Id = 123456;
-				Solr.Query<TestDocumentWithId>().ByExample(doc).OrderBy("id", Order.ASC).OrderBy("name", Order.DESC).Run();
+				var doc = new TestDocumentWithId {Id = 123456};
+				Solr.Query<TestDocumentWithId>()
+					.ByExample(doc)
+					.OrderBy("id", Order.ASC)
+					.OrderBy("name", Order.DESC)
+					.Run();
 			});
 		}
 
 		[Test]
 		public void Query() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				ISolrQueryResults<TestDocument> r = Solr.Query<TestDocument>("");
+				var r = Solr.Query<TestDocument>("");
 				Assert.AreEqual(1, r.NumFound);
 			});
 		}
 
 		[Test]
 		public void Query_InvalidField_ShouldNOTThrow() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(
 					@"<?xml version=""1.0"" encoding=""UTF-8""?>
@@ -222,17 +217,16 @@ namespace SolrNet.DSL.Tests {
 ");
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				ISolrQueryResults<TestDocument> r = Solr.Query<TestDocument>("");
+				Solr.Query<TestDocument>("");
 			});
 		}
 
 		[Test]
 		public void QueryByAnyField() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = "id:123456";
+				var query = new Dictionary<string, string> {{"q", "id:123456"}};
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
@@ -242,28 +236,27 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void QueryByExample() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = "Id:123456";
+				var query = new Dictionary<string, string> {{"q", "Id:123456"}};
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				TestDocumentWithId doc = new TestDocumentWithId();
-				doc.Id = 123456;
+				var doc = new TestDocumentWithId {Id = 123456};
 				Solr.Query<TestDocumentWithId>().ByExample(doc).Run();
 			});
 		}
 
 		[Test]
 		public void QueryByRange() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = "id:[123 TO 456]";
-				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+				var query = new Dictionary<string, string> {{"q", "id:[123 TO 456]"}};
+				Expect.Call(conn.Get("/select", query))
+					.Repeat.Once()
+					.Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
 				Solr.Query<TestDocument>().ByRange("id", 123, 456).Run();
@@ -272,12 +265,13 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void QueryByRange_AnotherSyntax() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = "id:[123 TO 456]";
-				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+				var query = new Dictionary<string, string> {{"q", "id:[123 TO 456]"}};
+				Expect.Call(conn.Get("/select", query))
+					.Repeat.Once()
+					.Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
 				Solr.Query<TestDocument>().By("id").Between(123).And(456).Run();
@@ -286,12 +280,13 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void QueryByRangeConcatenable() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = "id:[123 TO 456] p:[a TO z]";
-				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+				var query = new Dictionary<string, string> {{"q", "id:[123 TO 456] p:[a TO z]"}};
+				Expect.Call(conn.Get("/select", query))
+					.Repeat.Once()
+					.Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
 				Solr.Query<TestDocument>().ByRange("id", 123, 456).ByRange("p", "a", "z").Run();
@@ -300,12 +295,13 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void QueryByRangeExclusive() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = "id:{123 TO 456}";
-				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+				var query = new Dictionary<string, string> {{"q", "id:{123 TO 456}"}};
+				Expect.Call(conn.Get("/select", query))
+					.Repeat.Once()
+					.Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
 				Solr.Query<TestDocument>().ByRange("id", 123, 456).Exclusive().Run();
@@ -314,12 +310,13 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void QueryByRangeInclusive() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = "id:[123 TO 456]";
-				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+				var query = new Dictionary<string, string> {{"q", "id:[123 TO 456]"}};
+				Expect.Call(conn.Get("/select", query))
+					.Repeat.Once()
+					.Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
 				Solr.Query<TestDocument>().ByRange("id", 123, 456).Inclusive().Run();
@@ -328,13 +325,14 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void QueryISolrQuery() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			const string queryString = "id:123";
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = queryString;
-				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+				var query = new Dictionary<string, string> {{"q", queryString}};
+				Expect.Call(conn.Get("/select", query))
+					.Repeat.Once()
+					.Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
 				Solr.Query(new SolrQuery<TestDocument>(queryString));
@@ -343,15 +341,19 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void QueryISolrQueryWithPagination() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			const string queryString = "id:123";
 			With.Mocks(mocks).Expecting(delegate {
-				IDictionary<string, string> query = new Dictionary<string, string>();
-				query["q"] = queryString;
-				query["start"] = 10.ToString();
-				query["rows"] = 20.ToString();
-				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+				var query = new Dictionary<string, string>
+				            	{
+				            		{"q", queryString},
+				            		{"start", 10.ToString()},
+				            		{"rows", 20.ToString()}
+				            	};
+				Expect.Call(conn.Get("/select", query))
+					.Repeat.Once()
+					.Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
 				Solr.Query(new SolrQuery<TestDocument>(queryString), 10, 20);
@@ -360,13 +362,13 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void QueryWithPagination() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection conn = mocks.CreateMock<ISolrConnection>();
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				ISolrQueryResults<TestDocument> r = Solr.Query<TestDocument>("", 10, 20);
+				var r = Solr.Query<TestDocument>("", 10, 20);
 				Assert.AreEqual(1, r.NumFound);
 			});
 		}

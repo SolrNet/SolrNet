@@ -6,7 +6,7 @@ namespace SolrNet.DSL {
 	/// <summary>
 	/// Solr DSL Entry point
 	/// </summary>
-	public class Solr {
+	public static class Solr {
 		public static DeleteBy Delete {
 			get { return new DeleteBy(Connection); }
 		}
@@ -24,61 +24,58 @@ namespace SolrNet.DSL {
 		}
 
 		public static void Add<T>(T document) where T : ISolrDocument {
-			Add<T>(new T[] {document});
+			Add<T>(new[] {document});
 		}
 
 		public static void Add<T>(IEnumerable<T> documents) where T : ISolrDocument {
-			AddCommand<T> cmd = new AddCommand<T>(documents);
+			var cmd = new AddCommand<T>(documents);
 			cmd.Execute(Connection);
 		}
 
 		public static ISolrQueryResults<T> Query<T>(string s, int start, int rows) where T : ISolrDocument, new() {
-			ISolrQueryExecuter<T> q = new SolrQueryExecuter<T>(Connection, s);
+			var q = new SolrQueryExecuter<T>(Connection, s);
 			return q.Execute(start, rows);
 		}
 
 		public static ISolrQueryResults<T> Query<T>(string s) where T : ISolrDocument, new() {
-			ISolrQueryExecuter<T> q = new SolrQueryExecuter<T>(Connection, s);
+			var q = new SolrQueryExecuter<T>(Connection, s);
 			return q.Execute();
 		}
 
 		public static ISolrQueryResults<T> Query<T>(string s, SortOrder order) where T : ISolrDocument, new() {
-			return Query<T>(s, new SortOrder[] {order});
+			return Query<T>(s, new[] {order});
 		}
 
 		public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order) where T : ISolrDocument, new() {
-			ISolrQueryExecuter<T> q = new SolrQueryExecuter<T>(Connection, s);
-			q.OrderBy = order;
+			var q = new SolrQueryExecuter<T>(Connection, s) {OrderBy = order};
 			return q.Execute();
 		}
 
 		public static ISolrQueryResults<T> Query<T>(string s, SortOrder order, int start, int rows) where T : ISolrDocument, new() {
-			return Query<T>(s, new SortOrder[] {order}, start, rows);
+			return Query<T>(s, new[] {order}, start, rows);
 		}
 
 		public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order, int start, int rows) where T : ISolrDocument, new() {
-			ISolrQueryExecuter<T> q = new SolrQueryExecuter<T>(Connection, s);
-			q.OrderBy = order;
+			var q = new SolrQueryExecuter<T>(Connection, s) {OrderBy = order};
 			return q.Execute(start, rows);
 		}
 
 		public static ISolrQueryResults<T> Query<T>(ISolrQuery<T> q) where T : ISolrDocument, new() {
-			ISolrQueryExecuter<T> queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query);
+			var queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query);
 			return queryExecuter.Execute();
 		}
 
 		public static ISolrQueryResults<T> Query<T>(ISolrQuery<T> q, int start, int rows) where T : ISolrDocument, new() {
-			ISolrQueryExecuter<T> queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query);
+			var queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query);
 			return queryExecuter.Execute(start, rows);
 		}
 
 		public static ISolrQueryResults<T> Query<T>(SolrQuery<T> query, SortOrder order) where T : ISolrDocument, new() {
-			return Query(query, new SortOrder[] {order});
+			return Query(query, new[] {order});
 		}
 
 		public static ISolrQueryResults<T> Query<T>(SolrQuery<T> query, ICollection<SortOrder> orders) where T : ISolrDocument, new() {
-			ISolrQueryExecuter<T> queryExecuter = new SolrQueryExecuter<T>(Connection, query.Query);
-			queryExecuter.OrderBy = orders;
+			var queryExecuter = new SolrQueryExecuter<T>(Connection, query.Query) {OrderBy = orders};
 			return queryExecuter.Execute();
 		}
 
@@ -87,26 +84,22 @@ namespace SolrNet.DSL {
 		}
 
 		public static void Commit() {
-			CommitCommand cmd = new CommitCommand();
+			var cmd = new CommitCommand();
 			cmd.Execute(Connection);
 		}
 
 		public static void Commit(bool waitFlush, bool waitSearcher) {
-			CommitCommand cmd = new CommitCommand();
-			cmd.WaitFlush = waitFlush;
-			cmd.WaitSearcher = waitSearcher;
+			var cmd = new CommitCommand {WaitFlush = waitFlush, WaitSearcher = waitSearcher};
 			cmd.Execute(Connection);
 		}
 
 		public static void Optimize() {
-			OptimizeCommand cmd = new OptimizeCommand();
+			var cmd = new OptimizeCommand();
 			cmd.Execute(Connection);
 		}
 
 		public static void Optimize(bool waitFlush, bool waitSearcher) {
-			OptimizeCommand cmd = new OptimizeCommand();
-			cmd.WaitFlush = waitFlush;
-			cmd.WaitSearcher = waitSearcher;
+			var cmd = new OptimizeCommand {WaitFlush = waitFlush, WaitSearcher = waitSearcher};
 			cmd.Execute(Connection);
 		}
 	}

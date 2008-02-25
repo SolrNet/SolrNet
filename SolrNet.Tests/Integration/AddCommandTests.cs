@@ -1,52 +1,61 @@
 using System;
-using HttpWebAdapters;
 using NUnit.Framework;
 
 namespace SolrNet.Tests.Integration {
-	[TestFixture]
-	public class AddCommandTests {
+    [TestFixture]
+    public class AddCommandTests {
+        private const string serverURL = "http://nippur:8081/solr";
 
-		private static readonly string serverURL = "http://localhost:8983/solr";
+        [Test]
+        [Category("Integration")]
+        [Ignore]
+        public void AddOne() {
+            var solr = new SolrServer<TestDocument>(serverURL);
+            var doc = new TestDocument {Category = "cat", Id = 123456, Fecha = DateTime.Now};
+            solr.Add(doc);
+            Console.WriteLine(solr.Commit());
+        }
 
-		[Test]
-		[Category("Integration")]
-		[Ignore]
-		public void AddOne() {
-			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
-			TestDocument doc = new TestDocument();
-			doc.Category = "cat";
-			doc.Id = 123456;
-			doc.Fecha = DateTime.Now;
-			solr.Add(doc);
-			Console.WriteLine(solr.Commit());
-		}
+        [Test]
+        [Category("Integration")]
+        [Ignore]
+        public void AddOneWithArray() {
+            var solr = new SolrServer<TestDocument>(serverURL);
+            var doc = new TestDocument
+                          {
+                              Id = 123,
+                              Series = new[] {1,2,3},
+                          };
+            solr.Add(doc);
+            Console.WriteLine(solr.Commit());
+        }
 
-		[Test]
-		[Category("Integration")]
-		[Ignore]
-		public void DeleteAll() {
-			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
-			solr.Delete(new SolrQuery<TestDocument>("id:[* TO *]"));
-			Console.WriteLine(solr.Commit());
-		}
 
-		[Test]
-		[Category("Integration")]
-		[Ignore]
-		public void AddMany() {
-			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
-			TestDocument doc = new TestDocument();
-			doc.Category = "cat";
-			solr.Add(new TestDocument[] {doc, doc});
-			Console.WriteLine(solr.Commit());
-		}
+        [Test]
+        [Category("Integration")]
+        [Ignore]
+        public void DeleteAll() {
+            var solr = new SolrServer<TestDocument>(serverURL);
+            solr.Delete(new SolrQuery<TestDocument>("id:[* TO *]"));
+            Console.WriteLine(solr.Commit());
+        }
 
-		[Test]
-		[Category("Integration")]
-		[Ignore]
-		public void QueryAll() {
-			ISolrOperations<TestDocument> solr = new SolrServer<TestDocument>(serverURL);
-			ISolrQueryResults<TestDocument> r = solr.Query(new SolrQuery<TestDocument>("id[* TO *]"));
-		}
-	}
+        [Test]
+        [Category("Integration")]
+        [Ignore]
+        public void AddMany() {
+            var solr = new SolrServer<TestDocument>(serverURL);
+            var doc = new TestDocument {Category = "cat"};
+            solr.Add(new[] {doc, doc});
+            Console.WriteLine(solr.Commit());
+        }
+
+        [Test]
+        [Category("Integration")]
+        [Ignore]
+        public void QueryAll() {
+            var solr = new SolrServer<TestDocument>(serverURL);
+            var r = solr.Query(new SolrQuery<TestDocument>("id[* TO *]"));
+        }
+    }
 }

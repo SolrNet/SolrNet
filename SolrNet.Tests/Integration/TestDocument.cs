@@ -1,147 +1,71 @@
 using System;
+using System.Collections.Generic;
 
 namespace SolrNet.Tests.Integration {
-	public class TestDocument : ISolrDocument {
-		private int id;
-		private string make;
-		private string model;
-		private string style;
-		private string category;
-		private int year;
-		private decimal price;
-		private int months;
-		private int region;
-		private int miles;
-		private string state;
-		private bool visible;
-		private bool photo;
-		private bool transferring;
-		private bool sponsored;
-		private bool hotdeal;
-		private bool featured;
-		private string basicView;
-		private string advancedView;
-		private DateTime? fecha;
+    public class TestDocument : ISolrDocument {
+        [SolrUniqueKey]
+        [SolrField("id")]
+        public int Id { get; set; }
 
-		[SolrUniqueKey]
-		[SolrField("id")]
-		public int Id {
-			get { return id; }
-			set { id = value; }
-		}
+        [SolrField("make")]
+        public string Make { get; set; }
 
-		[SolrField("make")]
-		public string Make {
-			get { return make; }
-			set { make = value; }
-		}
+        [SolrField("model")]
+        public string Model { get; set; }
 
-		[SolrField("model")]
-		public string Model {
-			get { return model; }
-			set { model = value; }
-		}
+        [SolrField("series")]
+        public ICollection<int> Series { get; set;}
 
-		[SolrField("style")]
-		public string Style {
-			get { return style; }
-			set { style = value; }
-		}
+        [SolrField("style")]
+        public string Style { get; set; }
 
-		[SolrField("category")]
-		public string Category {
-			get { return category; }
-			set { category = value; }
-		}
+        [SolrField("category")]
+        public string Category { get; set; }
 
-		[SolrField("year")]
-		public int Year {
-			get { return year; }
-			set { year = value; }
-		}
+        [SolrField("year")]
+        public int Year { get; set; }
 
-		[SolrField("price")]
-		public decimal Price {
-			get { return price; }
-			set { price = value; }
-		}
+        [SolrField("payment")]
+        public decimal Price { get; set; }
 
-		[SolrField("months")]
-		public int Months {
-			get { return months; }
-			set { months = value; }
-		}
+        [SolrField("months")]
+        public int Months { get; set; }
 
-		[SolrField("region")]
-		public int Region {
-			get { return region; }
-			set { region = value; }
-		}
+        [SolrField("region")]
+        public int Region { get; set; }
 
-		[SolrField("miles")]
-		public int Miles {
-			get { return miles; }
-			set { miles = value; }
-		}
+        [SolrField("miles")]
+        public int Miles { get; set; }
 
-		[SolrField("state")]
-		public string State {
-			get { return state; }
-			set { state = value; }
-		}
+        [SolrField("state")]
+        public string State { get; set; }
 
-		[SolrField("visible")]
-		public bool Visible {
-			get { return visible; }
-			set { visible = value; }
-		}
+        [SolrField("visible")]
+        public bool Visible { get; set; }
 
-		[SolrField("photo")]
-		public bool Photo {
-			get { return photo; }
-			set { photo = value; }
-		}
+        [SolrField("photo")]
+        public bool Photo { get; set; }
 
-		[SolrField("transferring")]
-		public bool Transferring {
-			get { return transferring; }
-			set { transferring = value; }
-		}
+        //[SolrField("transferring")]
+        //public bool Transferring { get; set; }
 
-		[SolrField("sponsored")]
-		public bool Sponsored {
-			get { return sponsored; }
-			set { sponsored = value; }
-		}
+        [SolrField("sponsored")]
+        public bool Sponsored { get; set; }
 
-		[SolrField("hotdeal")]
-		public bool Hotdeal {
-			get { return hotdeal; }
-			set { hotdeal = value; }
-		}
+        [SolrField("hotdeal")]
+        public bool Hotdeal { get; set; }
 
-		[SolrField("featured")]
-		public bool Featured {
-			get { return featured; }
-			set { featured = value; }
-		}
+        [SolrField("featured")]
+        public bool Featured { get; set; }
 
-		[SolrField("basicview")]
-		public string BasicView {
-			get { return basicView; }
-			set { basicView = value; }
-		}
+        [SolrField("basicview")]
+        public string BasicView { get; set; }
 
-		[SolrField("advancedview")]
-		public string AdvancedView {
-			get { return advancedView; }
-			set { advancedView = value; }
-		}
+        [SolrField("advancedview")]
+        public string AdvancedView { get; set; }
 
-		[SolrField("fecha")]
-		public DateTime? Fecha {
-			get { return fecha; }
-			set { fecha = value; }
-		}
-	}
+        [SolrField("fecha")]
+        public DateTime? Fecha { get; set; }
+    }
+
 }

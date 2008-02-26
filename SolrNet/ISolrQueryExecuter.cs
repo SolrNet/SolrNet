@@ -11,7 +11,7 @@ namespace SolrNet {
 		/// </summary>
 		ISolrConnection Connection { get; set; }
 
-		ISolrQuery<T> Query { get; set; }
+		ISolrQuery Query { get; set; }
 
 		ICollection<SortOrder> OrderBy { get; set; }
 

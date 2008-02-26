@@ -7,19 +7,19 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void IntInclusive() {
-			ISolrQuery<TestDocument> q = new SolrQueryByRange<TestDocument, int>("id", 123, 456);
+			ISolrQuery q = new SolrQueryByRange<TestDocument, int>("id", 123, 456);
 			Assert.AreEqual("id:[123 TO 456]", q.Query);
 		}
 
 		[Test]
 		public void StringInclusive() {
-			ISolrQuery<TestDocument> q = new SolrQueryByRange<TestDocument, string>("id", "Arroz", "Zimbabwe");
+			ISolrQuery q = new SolrQueryByRange<TestDocument, string>("id", "Arroz", "Zimbabwe");
 			Assert.AreEqual("id:[Arroz TO Zimbabwe]", q.Query);
 		}
 
 		[Test]
 		public void StringExclusive() {
-			ISolrQuery<TestDocument> q = new SolrQueryByRange<TestDocument, string>("id", "Arroz", "Zimbabwe", false);
+			ISolrQuery q = new SolrQueryByRange<TestDocument, string>("id", "Arroz", "Zimbabwe", false);
 			Assert.AreEqual("id:{Arroz TO Zimbabwe}", q.Query);
 		}
 	}

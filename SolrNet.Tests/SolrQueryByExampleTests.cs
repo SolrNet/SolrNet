@@ -5,19 +5,19 @@ namespace SolrNet.Tests {
 	public class SolrQueryByExampleTests {
 		[Test]
 		public void Basic() {
-			ISolrQuery<TestDocument> q = new SolrQueryByExample<TestDocument>(new TestDocument(0, "a"));
+			ISolrQuery q = new SolrQueryByExample<TestDocument>(new TestDocument(0, "a"));
 			Assert.AreEqual("Id:0 Ss:a", q.Query);
 		}
 
 		[Test]
 		public void NullShouldNotGenerateQuery() {
-			ISolrQuery<TestDocument> q = new SolrQueryByExample<TestDocument>(new TestDocument(0, null));
+			ISolrQuery q = new SolrQueryByExample<TestDocument>(new TestDocument(0, null));
 			Assert.AreEqual("Id:0", q.Query);
 		}
 
 		[Test]
 		public void NullShouldNotGenerateQuery2() {
-			ISolrQuery<TestDocument> q = new SolrQueryByExample<TestDocument>(new TestDocument(null, "a"));
+			ISolrQuery q = new SolrQueryByExample<TestDocument>(new TestDocument(null, "a"));
 			Assert.AreEqual("Ss:a", q.Query);
 		}
 

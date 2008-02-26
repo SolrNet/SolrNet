@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using System.Reflection;
 
 namespace SolrNet {
-	public class SolrQueryByExample<T> : ISolrQuery<T> where T : ISolrDocument {
+	public class SolrQueryByExample<T> : ISolrQuery where T : ISolrDocument {
 		public string q;
 
 		public SolrQueryByExample(T document) {
-			IList<ISolrQuery<T>> fields = new List<ISolrQuery<T>>();
+			IList<ISolrQuery> fields = new List<ISolrQuery>();
 			foreach (PropertyInfo property in typeof (T).GetProperties()) {
 				object[] atts = property.GetCustomAttributes(typeof (SolrFieldAttribute), true);
 				if (atts.Length > 0) {

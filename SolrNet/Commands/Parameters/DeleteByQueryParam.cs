@@ -1,15 +1,15 @@
 using System.Xml;
 
 namespace SolrNet.Commands.Parameters {
-	public class DeleteByQueryParam<T> : ISolrDeleteParam where T : ISolrDocument {
-		private readonly ISolrQuery<T> query;
+	public class DeleteByQueryParam: ISolrDeleteParam {
+		private readonly ISolrQuery query;
 
-		public DeleteByQueryParam(ISolrQuery<T> q) {
+		public DeleteByQueryParam(ISolrQuery q) {
 			query = q;
 		}
 
 		public XmlNode ToXmlNode() {
-			XmlDocument xml = new XmlDocument();
+			var xml = new XmlDocument();
 			XmlNode queryNode = xml.CreateElement("query");
 			queryNode.InnerText = query.Query;
 			return queryNode;

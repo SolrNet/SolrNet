@@ -9,7 +9,7 @@ namespace SolrNet {
 	public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> where T : ISolrDocument, new() {
 		private ISolrConnection connection;
 		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();
-		private ISolrQuery<T> query;
+		private ISolrQuery query;
 		private ICollection<SortOrder> orderBy;
 
 		/// <summary>
@@ -20,19 +20,19 @@ namespace SolrNet {
 			set { connection = value; }
 		}
 
-		public ISolrQuery<T> Query {
+		public ISolrQuery Query {
 			get { return query; }
 			set { query = value; }
 		}
 
-		public SolrQueryExecuter(ISolrConnection connection, ISolrQuery<T> query) {
+		public SolrQueryExecuter(ISolrConnection connection, ISolrQuery query) {
 			this.connection = connection;
 			this.query = query;
 		}
 
 		public SolrQueryExecuter(ISolrConnection connection, string query) {
 			this.connection = connection;
-			this.query = new SolrQuery<T>(query);
+			this.query = new SolrQuery(query);
 		}
 
 		/// <summary>

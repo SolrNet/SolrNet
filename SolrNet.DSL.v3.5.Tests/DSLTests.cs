@@ -74,7 +74,7 @@ namespace SolrNet.DSL.v3._5.Tests {
 				Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", q))).Return("");
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Delete.ByQuery(new SolrQuery<TestDocument>(q));
+				Solr.Delete.ByQuery(new SolrQuery(q));
 			});
 		}
 
@@ -87,7 +87,7 @@ namespace SolrNet.DSL.v3._5.Tests {
 				Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", q))).Return("");
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Delete.ByQuery<TestDocument>(q);
+				Solr.Delete.ByQuery(q);
 			});
 		}
 
@@ -134,7 +134,7 @@ namespace SolrNet.DSL.v3._5.Tests {
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Query(new SolrQuery<TestDocument>(queryString), new SortOrder("id", Order.ASC));
+				Solr.Query<TestDocument>(new SolrQuery(queryString), new SortOrder("id", Order.ASC));
 			});
 		}
 
@@ -148,7 +148,7 @@ namespace SolrNet.DSL.v3._5.Tests {
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Query(new SolrQuery<TestDocument>(queryString), new[] { new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC) });
+				Solr.Query<TestDocument>(new SolrQuery(queryString), new[] { new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC) });
 			});
 		}
 
@@ -324,6 +324,22 @@ namespace SolrNet.DSL.v3._5.Tests {
 		}
 
 		[Test]
+		public void QueryByRange_Lambda() {
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
+			With.Mocks(mocks).Expecting(delegate {
+				var query = new Dictionary<string, string> { { "q", "Id:[123 TO 456]" } };
+				Expect.Call(conn.Get("/select", query))
+					.Repeat.Once()
+					.Return(response);
+			}).Verify(delegate {
+				Solr.Connection = conn;
+				Solr.Query<TestDocumentWithId>().ByRange(x => x.Id >= 123 && x.Id <= 456).Run();
+			});
+		}
+
+
+		[Test]
 		public void QueryByRangeExclusive() {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
@@ -365,7 +381,7 @@ namespace SolrNet.DSL.v3._5.Tests {
 					.Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Query(new SolrQuery<TestDocument>(queryString));
+				Solr.Query<TestDocument>(new SolrQuery(queryString));
 			});
 		}
 
@@ -386,7 +402,7 @@ namespace SolrNet.DSL.v3._5.Tests {
 					.Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Query(new SolrQuery<TestDocument>(queryString), 10, 20);
+				Solr.Query<TestDocument>(new SolrQuery(queryString), 10, 20);
 			});
 		}
 

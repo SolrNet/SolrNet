@@ -1,9 +1,8 @@
 namespace SolrNet {
 	/// <summary>
 	/// Basic solr query
-	/// </summary>
-	/// <typeparam name="T">Document type</typeparam>
-	public class SolrQuery<T> : ISolrQuery<T> where T : ISolrDocument {
+	/// </summary>	
+	public class SolrQuery : ISolrQuery {
 		private readonly string query;
 
 		/// <summary>

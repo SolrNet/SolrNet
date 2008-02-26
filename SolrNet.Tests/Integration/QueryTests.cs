@@ -8,12 +8,12 @@ namespace SolrNet.Tests.Integration {
 		[Category("Integration")]
 		[Ignore]
 		public void tt() {
-			ISolrConnection conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
-			ISolrOperations<TestDocument> server = new SolrServer<TestDocument>(conn);
-			ISolrQuery<TestDocument> query = new SolrQuery<TestDocument>("id:123456");
-			ISolrQueryResults<TestDocument> r = server.Query(query);
+			var conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
+			var server = new SolrServer<TestDocument>(conn);
+			var query = new SolrQuery("id:123456");
+			var r = server.Query(query);
 			Assert.Greater(r.Count, 0);
-			TestDocument doc = r[0];
+			var doc = r[0];
 			Assert.AreEqual(123456, doc.Id);
 		}
 	}

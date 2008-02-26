@@ -65,7 +65,7 @@ namespace SolrNet.Tests {
 					.Return(null);
 			}).Verify(delegate {
 				ISolrOperations<TestDocumentWithUniqueKey> ops = new SolrServer<TestDocumentWithUniqueKey>(connection);
-				ops.Delete(new SolrQuery<TestDocumentWithUniqueKey>("id:123"));				
+				ops.Delete(new SolrQuery("id:123"));				
 			});
 		}
 
@@ -80,7 +80,7 @@ namespace SolrNet.Tests {
 					.Return(null);
 			}).Verify(delegate {
 				ISolrOperations<TestDocumentWithUniqueKey> ops = new SolrServer<TestDocumentWithUniqueKey>(connection);
-				ops.Delete(new SolrQuery<TestDocumentWithUniqueKey>("id:123"), true, true);				
+				ops.Delete(new SolrQuery("id:123"), true, true);				
 			});
 		}
 
@@ -167,7 +167,7 @@ namespace SolrNet.Tests {
 			}).Verify(delegate {
 				SolrServer<TestDocumentWithUniqueKey> solr = new SolrServer<TestDocumentWithUniqueKey>(connection);
 				solr.ResultParser = parser;
-				ISolrQueryResults<TestDocumentWithUniqueKey> r = solr.Query(new SolrQuery<TestDocumentWithUniqueKey>(qstring), start, rows);
+				ISolrQueryResults<TestDocumentWithUniqueKey> r = solr.Query(new SolrQuery(qstring), start, rows);
 			});
 		}
 
@@ -187,7 +187,7 @@ namespace SolrNet.Tests {
 			}).Verify(delegate {
 				SolrServer<TestDocumentWithUniqueKey> solr = new SolrServer<TestDocumentWithUniqueKey>(connection);
 				solr.ResultParser = parser;
-				ISolrQueryResults<TestDocumentWithUniqueKey> r = solr.Query(new SolrQuery<TestDocumentWithUniqueKey>(qstring), new SortOrder[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)});
+				ISolrQueryResults<TestDocumentWithUniqueKey> r = solr.Query(new SolrQuery(qstring), new SortOrder[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)});
 			});
 		}
 
@@ -212,7 +212,7 @@ namespace SolrNet.Tests {
 			}).Verify(delegate {
 				SolrServer<TestDocumentWithUniqueKey> solr = new SolrServer<TestDocumentWithUniqueKey>(connection);
 				solr.ResultParser = parser;
-				ISolrQueryResults<TestDocumentWithUniqueKey> r = solr.Query(new SolrQuery<TestDocumentWithUniqueKey>(qstring), start, rows, new SortOrder[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)});
+				ISolrQueryResults<TestDocumentWithUniqueKey> r = solr.Query(new SolrQuery(qstring), start, rows, new SortOrder[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)});
 			});
 		}
 

@@ -7,17 +7,17 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void Concat() {
-			ISolrQuery<TestDocument> q1 = new SolrQuery<TestDocument>("1");
-			ISolrQuery<TestDocument> q2 = new SolrQuery<TestDocument>("2");
-			ISolrQuery<TestDocument> qm = new SolrMultipleCriteriaQuery<TestDocument>(new ISolrQuery<TestDocument>[] {q1, q2});
+			ISolrQuery q1 = new SolrQuery("1");
+			ISolrQuery q2 = new SolrQuery("2");
+			ISolrQuery qm = new SolrMultipleCriteriaQuery<TestDocument>(new ISolrQuery[] {q1, q2});
 			Assert.AreEqual("1 2", qm.Query);
 		}
 
 		[Test]
 		public void AcceptsNulls() {
-			ISolrQuery<TestDocument> q1 = new SolrQuery<TestDocument>("1");
-			ISolrQuery<TestDocument> q2 = null;
-			ISolrQuery<TestDocument> qm = new SolrMultipleCriteriaQuery<TestDocument>(new ISolrQuery<TestDocument>[] {q1, q2});
+			ISolrQuery q1 = new SolrQuery("1");
+			ISolrQuery q2 = null;
+			ISolrQuery qm = new SolrMultipleCriteriaQuery<TestDocument>(new ISolrQuery[] {q1, q2});
 			Assert.AreEqual("1", qm.Query);
 		}
 	}

@@ -27,16 +27,16 @@ namespace SolrNet.DSL.v3._5 {
 			DSL.Solr.Optimize();
 		}
 
-		public static ISolrQueryResults<T> Query<T>(ISolrQuery<T> q) where T : ISolrDocument, new() {
-			return DSL.Solr.Query(q);
+		public static ISolrQueryResults<T> Query<T>(ISolrQuery q) where T : ISolrDocument, new() {
+			return DSL.Solr.Query<T>(q);
 		}
 
 		public static ISolrQueryResults<T> Query<T>(string q) where T : ISolrDocument, new() {
 			return DSL.Solr.Query<T>(q);
 		}
 
-		public static ISolrQueryResults<T> Query<T>(ISolrQuery<T> q, int start, int rows) where T : ISolrDocument, new() {
-			return DSL.Solr.Query(q, start, rows);
+		public static ISolrQueryResults<T> Query<T>(ISolrQuery q, int start, int rows) where T : ISolrDocument, new() {
+			return DSL.Solr.Query<T>(q, start, rows);
 		}
 
 		public static ISolrQueryResults<T> Query<T>(string q, int start, int rows) where T : ISolrDocument, new() {
@@ -48,12 +48,12 @@ namespace SolrNet.DSL.v3._5 {
 			DSL.Solr.Optimize(waitFlush, waitSearcher);
 		}
 
-		public static ISolrQueryResults<T> Query<T>(SolrQuery<T> query, SortOrder order) where T : ISolrDocument, new() {
-			return DSL.Solr.Query(query, order);
+		public static ISolrQueryResults<T> Query<T>(SolrQuery query, SortOrder order) where T : ISolrDocument, new() {
+			return DSL.Solr.Query<T>(query, order);
 		}
 
-		public static ISolrQueryResults<T> Query<T>(SolrQuery<T> query, ICollection<SortOrder> orders) where T : ISolrDocument, new() {
-			return DSL.Solr.Query(query, orders);
+		public static ISolrQueryResults<T> Query<T>(SolrQuery query, ICollection<SortOrder> orders) where T : ISolrDocument, new() {
+			return DSL.Solr.Query<T>(query, orders);
 		}
 
 		public static readonly string SolrConnectionKey = DSL.Solr.SolrConnectionKey;

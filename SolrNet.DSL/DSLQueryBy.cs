@@ -2,9 +2,9 @@ namespace SolrNet.DSL {
 	public class DSLQueryBy<T> : IDSLQueryBy<T> where T : ISolrDocument, new() {
 		private readonly string fieldName;
 		private readonly ISolrConnection connection;
-		private readonly ISolrQuery<T> query;
+		private readonly ISolrQuery query;
 
-		public DSLQueryBy(string fieldName, ISolrConnection connection, ISolrQuery<T> query) {
+		public DSLQueryBy(string fieldName, ISolrConnection connection, ISolrQuery query) {
 			this.fieldName = fieldName;
 			this.connection = connection;
 			this.query = query;
@@ -12,7 +12,7 @@ namespace SolrNet.DSL {
 
 		public IDSLQuery<T> Is(string s) {
 			return new DSLQuery<T>(connection,
-			                       new SolrMultipleCriteriaQuery<T>(new ISolrQuery<T>[] {
+			                       new SolrMultipleCriteriaQuery<T>(new ISolrQuery[] {
 			                                                                            	query,
 			                                                                            	new SolrQueryByField<T>(fieldName, s)
 			                                                                            }));

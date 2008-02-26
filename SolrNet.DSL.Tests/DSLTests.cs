@@ -74,7 +74,7 @@ namespace SolrNet.DSL.Tests {
 				Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", q))).Return("");
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Delete.ByQuery(new SolrQuery<TestDocument>(q));
+				Solr.Delete.ByQuery(new SolrQuery(q));
 			});
 		}
 
@@ -87,7 +87,7 @@ namespace SolrNet.DSL.Tests {
 				Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", q))).Return("");
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Delete.ByQuery<TestDocument>(q);
+				Solr.Delete.ByQuery(q);
 			});
 		}
 
@@ -134,7 +134,7 @@ namespace SolrNet.DSL.Tests {
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Query(new SolrQuery<TestDocument>(queryString), new SortOrder("id", Order.ASC));
+				Solr.Query<TestDocument>(new SolrQuery(queryString), new SortOrder("id", Order.ASC));
 			});
 		}
 
@@ -148,7 +148,7 @@ namespace SolrNet.DSL.Tests {
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Query(new SolrQuery<TestDocument>(queryString), new[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)});
+				Solr.Query<TestDocument>(new SolrQuery(queryString), new[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)});
 			});
 		}
 
@@ -335,7 +335,7 @@ namespace SolrNet.DSL.Tests {
 					.Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Query(new SolrQuery<TestDocument>(queryString));
+				Solr.Query<TestDocument>(new SolrQuery(queryString));
 			});
 		}
 
@@ -356,7 +356,7 @@ namespace SolrNet.DSL.Tests {
 					.Return(response);
 			}).Verify(delegate {
 				Solr.Connection = conn;
-				Solr.Query(new SolrQuery<TestDocument>(queryString), 10, 20);
+				Solr.Query<TestDocument>(new SolrQuery(queryString), 10, 20);
 			});
 		}
 

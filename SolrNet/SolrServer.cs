@@ -93,13 +93,13 @@ namespace SolrNet {
 			return Delete(id.ToString(), fromPending, fromCommited);
 		}
 
-		public string Delete(ISolrQuery<T> q) {
-			DeleteCommand delete = new DeleteCommand(new DeleteByQueryParam<T>(q));
+		public string Delete(ISolrQuery q) {
+			var delete = new DeleteCommand(new DeleteByQueryParam(q));
 			return delete.Execute(connection);
 		}
 
-		public string Delete(ISolrQuery<T> q, bool fromPending, bool fromCommited) {
-			DeleteCommand delete = new DeleteCommand(new DeleteByQueryParam<T>(q));
+		public string Delete(ISolrQuery q, bool fromPending, bool fromCommited) {
+			var delete = new DeleteCommand(new DeleteByQueryParam(q));
 			delete.FromCommitted = fromCommited;
 			delete.FromPending = fromPending;
 			return delete.Execute(connection);
@@ -118,37 +118,37 @@ namespace SolrNet {
 		}
 
 		public ISolrQueryResults<T> Query(string q) {
-			return Query(new SolrQuery<T>(q));
+			return Query(new SolrQuery(q));
 		}
 
 		public ISolrQueryResults<T> Query(string q, int start, int rows) {
-			return Query(new SolrQuery<T>(q), start, rows);
+			return Query(new SolrQuery(q), start, rows);
 		}
 
 		public ISolrQueryResults<T> Query(string q, int start, int rows, ICollection<SortOrder> orders) {
-			return Query(new SolrQuery<T>(q), start, rows, orders);
+			return Query(new SolrQuery(q), start, rows, orders);
 		}
 
 		public ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders) {
-			return Query(new SolrQuery<T>(q), orders);
+			return Query(new SolrQuery(q), orders);
 		}
 
-		public ISolrQueryResults<T> Query(ISolrQuery<T> query) {
+		public ISolrQueryResults<T> Query(ISolrQuery query) {
 			return Query(query, null);
 		}
 
-		public ISolrQueryResults<T> Query(ISolrQuery<T> query, int start, int rows) {
+		public ISolrQueryResults<T> Query(ISolrQuery query, int start, int rows) {
 			return Query(query, start, rows, null);
 		}
 
-		public ISolrQueryResults<T> Query(ISolrQuery<T> query, int start, int rows, ICollection<SortOrder> orders) {
+		public ISolrQueryResults<T> Query(ISolrQuery query, int start, int rows, ICollection<SortOrder> orders) {
 			SolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
 			exe.ResultParser = resultParser;
 			exe.OrderBy = orders;
 			return exe.Execute(start, rows);
 		}
 
-		public ISolrQueryResults<T> Query(ISolrQuery<T> query, ICollection<SortOrder> orders) {
+		public ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders) {
 			SolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
 			exe.ResultParser = resultParser;
 			exe.OrderBy = orders;

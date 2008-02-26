@@ -4,18 +4,18 @@ namespace SolrNet.DSL {
 	public class DSLRun<T> : IDSLRun<T> where T : ISolrDocument, new() {
 		private readonly ICollection<SortOrder> order = new List<SortOrder>();
 		protected ISolrConnection connection;
-		protected ISolrQuery<T> query;
+		protected ISolrQuery query;
 
 		public DSLRun(ISolrConnection connection) {
 			this.connection = connection;
 		}
 
-		public DSLRun(ISolrConnection connection, ISolrQuery<T> query) {
+		public DSLRun(ISolrConnection connection, ISolrQuery query) {
 			this.connection = connection;
 			this.query = query;
 		}
 
-		public DSLRun(ISolrConnection connection, ISolrQuery<T> query, ICollection<SortOrder> order) {
+		public DSLRun(ISolrConnection connection, ISolrQuery query, ICollection<SortOrder> order) {
 			this.connection = connection;
 			this.query = query;
 			this.order = order;

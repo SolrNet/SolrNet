@@ -16,6 +16,10 @@ namespace SolrNet.DSL.v3._5 {
 			}
 		}
 
+		public IDSLQueryRange<T> ByRange(Expression<Func<T, object>> f) {
+			throw new NotImplementedException();
+		}
+
 		public IDSLQueryBy<T> By(Expression<Func<T, object>> f) {
 			try {
 				var exp = f.Body as UnaryExpression;

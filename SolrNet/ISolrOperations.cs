@@ -61,7 +61,7 @@ namespace SolrNet {
 		/// </summary>
 		/// <param name="q">query to match</param>
 		/// <returns></returns>
-		string Delete(ISolrQuery<T> q);
+		string Delete(ISolrQuery q);
 
 		/// <summary>
 		/// Deletes all documents that match a query
@@ -70,7 +70,7 @@ namespace SolrNet {
 		/// <param name="fromPending">deletes document from pending (not committed) documents</param>
 		/// <param name="fromCommited">deletes document from committed documents</param>
 		/// <returns></returns>
-		string Delete(ISolrQuery<T> q, bool fromPending, bool fromCommited);
+		string Delete(ISolrQuery q, bool fromPending, bool fromCommited);
 
 		/// <summary>
 		/// Deletes a document by its id (unique key)
@@ -98,10 +98,10 @@ namespace SolrNet {
 		ISolrQueryResults<T> Query(string q, int start, int rows);
 		ISolrQueryResults<T> Query(string q, int start, int rows, ICollection<SortOrder> orders);
 		ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders);
-		ISolrQueryResults<T> Query(ISolrQuery<T> q);
-		ISolrQueryResults<T> Query(ISolrQuery<T> query, int start, int rows);
-		ISolrQueryResults<T> Query(ISolrQuery<T> query, int start, int rows, ICollection<SortOrder> orders);
-		ISolrQueryResults<T> Query(ISolrQuery<T> query, ICollection<SortOrder> orders);
+		ISolrQueryResults<T> Query(ISolrQuery q);
+		ISolrQueryResults<T> Query(ISolrQuery query, int start, int rows);
+		ISolrQueryResults<T> Query(ISolrQuery query, int start, int rows, ICollection<SortOrder> orders);
+		ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders);
 
 		/// <summary>
 		/// Sends a custom command

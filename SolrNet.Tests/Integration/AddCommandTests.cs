@@ -36,7 +36,7 @@ namespace SolrNet.Tests.Integration {
         [Ignore]
         public void DeleteAll() {
             var solr = new SolrServer<TestDocument>(serverURL);
-            solr.Delete(new SolrQuery<TestDocument>("id:[* TO *]"));
+            solr.Delete(new SolrQuery("id:[* TO *]"));
             Console.WriteLine(solr.Commit());
         }
 
@@ -55,7 +55,7 @@ namespace SolrNet.Tests.Integration {
         [Ignore]
         public void QueryAll() {
             var solr = new SolrServer<TestDocument>(serverURL);
-            var r = solr.Query(new SolrQuery<TestDocument>("id[* TO *]"));
+            var r = solr.Query(new SolrQuery("id[* TO *]"));
         }
     }
 }

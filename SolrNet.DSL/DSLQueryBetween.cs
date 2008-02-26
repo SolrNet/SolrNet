@@ -14,11 +14,12 @@ namespace SolrNet.DSL {
 
 		public IDSLQuery<T> And(RT i) {
 			return new DSLQuery<T>(connection,
-			                       new SolrMultipleCriteriaQuery<T>(
-			                       	new ISolrQuery[] {
-			                       	                    	query,
-			                       	                    	new SolrQueryByRange<T, RT>(fieldName, from, i)
-			                       	                    }));
+			                       new SolrMultipleCriteriaQuery(
+			                       	new[]
+			                       		{
+			                       			query,
+			                       			new SolrQueryByRange<T, RT>(fieldName, from, i)
+			                       		}));
 		}
 	}
 }

@@ -8,16 +8,15 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void tt() {
-			MockRepository mocks = new MockRepository();
-			ISolrConnection connection = mocks.CreateMock<ISolrConnection>();
-			ISolrQueryResultParser<TestDocument> parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
+			var mocks = new MockRepository();
+			var connection = mocks.CreateMock<ISolrConnection>();
+			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(connection.Get(null, null)).IgnoreArguments().Repeat.Once().Return("");
 				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(new SolrQueryResults<TestDocument>());
 			}).Verify(delegate {
-				SolrQueryExecuter<TestDocument> q = new SolrQueryExecuter<TestDocument>(connection, "id:123456");
-				q.ResultParser = parser;
-				ISolrQueryResults<TestDocument> r = q.Execute();
+				var q = new SolrQueryExecuter<TestDocument>(connection, "id:123456") {ResultParser = parser};
+				var r = q.Execute();
 			});
 		}
 	}

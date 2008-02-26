@@ -22,26 +22,22 @@ namespace SolrNet.DSL {
 		}
 
 		public ISolrQueryResults<T> Run() {
-			ISolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
-			exe.OrderBy = order;
+			var exe = new SolrQueryExecuter<T>(connection, query) {OrderBy = order};
 			return exe.Execute();
 		}
 
 		public ISolrQueryResults<T> Run(int start, int rows) {
-			ISolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
-			exe.OrderBy = order;
+			var exe = new SolrQueryExecuter<T>(connection, query) {OrderBy = order};
 			return exe.Execute(start, rows);
 		}
 
 		public IDSLRun<T> OrderBy(string fieldName) {
-			List<SortOrder> newOrder = new List<SortOrder>(order);
-			newOrder.Add(new SortOrder(fieldName));
+			var newOrder = new List<SortOrder>(order) {new SortOrder(fieldName)};
 			return new DSLRun<T>(connection, query, newOrder);
 		}
 
 		public IDSLRun<T> OrderBy(string fieldName, Order o) {
-			List<SortOrder> newOrder = new List<SortOrder>(order);
-			newOrder.Add(new SortOrder(fieldName, o));
+			var newOrder = new List<SortOrder>(order) {new SortOrder(fieldName, o)};
 			return new DSLRun<T>(connection, query, newOrder);
 		}
 	}

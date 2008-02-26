@@ -43,8 +43,7 @@ namespace SolrNet.Tests {
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(conn.Post("/update", string.Format("<delete fromCommitted=\"true\"><id>{0}</id></delete>", id))).Repeat.Once().Return("");
 			}).Verify(delegate {
-				var cmd = new DeleteCommand(new DeleteByIdParam(id));
-				cmd.FromCommitted = true;
+				var cmd = new DeleteCommand(new DeleteByIdParam(id)) {FromCommitted = true};
 				cmd.Execute(conn);
 			});
 		}
@@ -57,9 +56,7 @@ namespace SolrNet.Tests {
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(conn.Post("/update", string.Format("<delete fromPending=\"false\" fromCommitted=\"false\"><id>{0}</id></delete>", id))).Repeat.Once().Return("");
 			}).Verify(delegate {
-				var cmd = new DeleteCommand(new DeleteByIdParam(id));
-				cmd.FromCommitted = false;
-				cmd.FromPending = false;
+				var cmd = new DeleteCommand(new DeleteByIdParam(id)) {FromCommitted = false, FromPending = false};
 				cmd.Execute(conn);
 			});
 		}
@@ -72,8 +69,7 @@ namespace SolrNet.Tests {
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(conn.Post("/update", string.Format("<delete fromPending=\"true\"><id>{0}</id></delete>", id))).Repeat.Once().Return("");
 			}).Verify(delegate {
-				var cmd = new DeleteCommand(new DeleteByIdParam(id));
-				cmd.FromPending = true;
+				var cmd = new DeleteCommand(new DeleteByIdParam(id)) {FromPending = true};
 				cmd.Execute(conn);
 			});
 		}

@@ -14,10 +14,11 @@ namespace SolrNet.DSL {
 
 		public IDSLQuery<T> ByExample(T doc) {
 			return new DSLQuery<T>(connection,
-			                       new SolrMultipleCriteriaQuery<T>(new ISolrQuery[] {
-			                                                                            	query,
-			                                                                            	new SolrQueryByExample<T>(doc)
-			                                                                            }));
+			                       new SolrMultipleCriteriaQuery(new[]
+			                                                        	{
+			                                                        		query,
+			                                                        		new SolrQueryByExample<T>(doc)
+			                                                        	}));
 		}
 	}
 }

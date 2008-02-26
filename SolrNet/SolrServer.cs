@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 using SolrNet.Commands;
@@ -47,9 +46,7 @@ namespace SolrNet {
 		/// <param name="waitFlush">block until index changes are flushed to disk</param>
 		/// <param name="waitSearcher">block until a new searcher is opened and registered as the main query searcher, making the changes visible.</param>
 		public string Commit(bool waitFlush, bool waitSearcher) {
-			CommitCommand cmd = new CommitCommand();
-			cmd.WaitFlush = waitFlush;
-			cmd.WaitSearcher = waitSearcher;
+			var cmd = new CommitCommand {WaitFlush = waitFlush, WaitSearcher = waitSearcher};
 			return Send(cmd);
 		}
 
@@ -58,18 +55,16 @@ namespace SolrNet {
 		}
 
 		public string Optimize(bool waitFlush, bool waitSearcher) {
-			OptimizeCommand optimize = new OptimizeCommand();
-			optimize.WaitFlush = waitFlush;
-			optimize.WaitSearcher = waitSearcher;
+			var optimize = new OptimizeCommand {WaitFlush = waitFlush, WaitSearcher = waitSearcher};
 			return Send(optimize);
 		}
 
 		public string Add(T doc) {
-			return Add(new T[] {doc});
+			return Add(new[] {doc});
 		}
 
 		public string Add(IEnumerable<T> docs) {
-			AddCommand<T> cmd = new AddCommand<T>(docs);
+			var cmd = new AddCommand<T>(docs);
 			return Send(cmd);
 		}
 
@@ -99,21 +94,17 @@ namespace SolrNet {
 		}
 
 		public string Delete(ISolrQuery q, bool fromPending, bool fromCommited) {
-			var delete = new DeleteCommand(new DeleteByQueryParam(q));
-			delete.FromCommitted = fromCommited;
-			delete.FromPending = fromPending;
+			var delete = new DeleteCommand(new DeleteByQueryParam(q)) {FromCommitted = fromCommited, FromPending = fromPending};
 			return delete.Execute(connection);
 		}
 
 		public string Delete(string id) {
-			DeleteCommand delete = new DeleteCommand(new DeleteByIdParam(id));
+			var delete = new DeleteCommand(new DeleteByIdParam(id));
 			return delete.Execute(connection);
 		}
 
 		public string Delete(string id, bool fromPending, bool fromCommited) {
-			DeleteCommand delete = new DeleteCommand(new DeleteByIdParam(id));
-			delete.FromCommitted = fromCommited;
-			delete.FromPending = fromPending;
+			var delete = new DeleteCommand(new DeleteByIdParam(id)) {FromCommitted = fromCommited, FromPending = fromPending};
 			return delete.Execute(connection);
 		}
 
@@ -142,16 +133,20 @@ namespace SolrNet {
 		}
 
 		public ISolrQueryResults<T> Query(ISolrQuery query, int start, int rows, ICollection<SortOrder> orders) {
-			SolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
-			exe.ResultParser = resultParser;
-			exe.OrderBy = orders;
+			var exe = new SolrQueryExecuter<T>(connection, query)
+			          	{
+			          		ResultParser = resultParser,
+			          		OrderBy = orders
+			          	};
 			return exe.Execute(start, rows);
 		}
 
 		public ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders) {
-			SolrQueryExecuter<T> exe = new SolrQueryExecuter<T>(connection, query);
-			exe.ResultParser = resultParser;
-			exe.OrderBy = orders;
+			var exe = new SolrQueryExecuter<T>(connection, query)
+			          	{
+			          		ResultParser = resultParser,
+			          		OrderBy = orders
+			          	};
 			return exe.Execute();
 		}
 

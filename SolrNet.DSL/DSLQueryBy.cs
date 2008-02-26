@@ -12,10 +12,11 @@ namespace SolrNet.DSL {
 
 		public IDSLQuery<T> Is(string s) {
 			return new DSLQuery<T>(connection,
-			                       new SolrMultipleCriteriaQuery<T>(new ISolrQuery[] {
-			                                                                            	query,
-			                                                                            	new SolrQueryByField<T>(fieldName, s)
-			                                                                            }));
+			                       new SolrMultipleCriteriaQuery(new[]
+			                                                        	{
+			                                                        		query,
+			                                                        		new SolrQueryByField(fieldName, s)
+			                                                        	}));
 		}
 
 		public IDSLQueryBetween<T, RT> Between<RT>(RT i) {

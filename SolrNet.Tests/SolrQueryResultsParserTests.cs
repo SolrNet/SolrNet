@@ -12,8 +12,8 @@ namespace SolrNet.Tests {
 			var parser = new SolrQueryResultParser<TestDocument>();
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXml);
-			XmlNode docNode = xml.SelectSingleNode("response/result/doc");
-			TestDocument doc = parser.ParseDocument(docNode);
+			var docNode = xml.SelectSingleNode("response/result/doc");
+			var doc = parser.ParseDocument(docNode);
 			Assert.IsNotNull(doc);
 			Assert.AreEqual(123456, doc.Id);
 		}
@@ -21,16 +21,16 @@ namespace SolrNet.Tests {
 		[Test]
 		public void NumFound() {
 			var parser = new SolrQueryResultParser<TestDocument>();
-			ISolrQueryResults<TestDocument> r = parser.Parse(responseXml);
+			var r = parser.Parse(responseXml);
 			Assert.AreEqual(1, r.NumFound);
 		}
 
 		[Test]
 		public void Parse() {
 			var parser = new SolrQueryResultParser<TestDocument>();
-			ISolrQueryResults<TestDocument> results = parser.Parse(responseXml);
+			var results = parser.Parse(responseXml);
 			Assert.AreEqual(1, results.Count);
-			TestDocument doc = results[0];
+			var doc = results[0];
 			Assert.AreEqual(123456, doc.Id);
 		}
 
@@ -38,12 +38,12 @@ namespace SolrNet.Tests {
 		public void SetPropertyWithArrayOfStrings() {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);
-			XmlNode fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='cat']");
+			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='cat']");
 			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
 			var doc = new TestDocumentWithArrays();
 			parser.SetProperty(doc, typeof (TestDocumentWithArrays).GetProperty("Cat"), fieldNode);
 			Assert.AreEqual(2, doc.Cat.Count);
-			IList<string> cats = new List<string>(doc.Cat);
+			var cats = new List<string>(doc.Cat);
 			Assert.AreEqual("electronics", cats[0]);
 			Assert.AreEqual("hard drive", cats[1]);
 		}
@@ -52,12 +52,12 @@ namespace SolrNet.Tests {
 		public void SetPropertyWithIntCollection() {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);
-			XmlNode fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
+			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
 			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
 			var doc = new TestDocumentWithArrays();
 			parser.SetProperty(doc, typeof (TestDocumentWithArrays).GetProperty("Numbers"), fieldNode);
 			Assert.AreEqual(2, doc.Numbers.Count);
-			IList<int> numbers = new List<int>(doc.Numbers);
+			var numbers = new List<int>(doc.Numbers);
 			Assert.AreEqual(1, numbers[0]);
 			Assert.AreEqual(2, numbers[1]);
 		}
@@ -66,12 +66,12 @@ namespace SolrNet.Tests {
 		public void SetPropertyWithNonGenericCollection() {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);
-			XmlNode fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
+			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
 			var parser = new SolrQueryResultParser<TestDocumentWithArrays3>();
 			var doc = new TestDocumentWithArrays3();
 			parser.SetProperty(doc, typeof (TestDocumentWithArrays3).GetProperty("Numbers"), fieldNode);
 			Assert.AreEqual(2, doc.Numbers.Count);
-			IList numbers = new ArrayList(doc.Numbers);
+			var numbers = new ArrayList(doc.Numbers);
 			Assert.AreEqual(1, numbers[0]);
 			Assert.AreEqual(2, numbers[1]);
 		}
@@ -80,12 +80,12 @@ namespace SolrNet.Tests {
 		public void SetPropertyWithArrayOfIntsToIntArray() {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);
-			XmlNode fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
+			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
 			var parser = new SolrQueryResultParser<TestDocumentWithArrays2>();
 			var doc = new TestDocumentWithArrays2();
 			parser.SetProperty(doc, typeof (TestDocumentWithArrays2).GetProperty("Numbers"), fieldNode);
 			Assert.AreEqual(2, doc.Numbers.Length);
-			IList<int> numbers = new List<int>(doc.Numbers);
+			var numbers = new List<int>(doc.Numbers);
 			Assert.AreEqual(1, numbers[0]);
 			Assert.AreEqual(2, numbers[1]);
 		}
@@ -93,18 +93,18 @@ namespace SolrNet.Tests {
 		[Test]
 		public void ParseResultsWithArrays() {
 			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
-			ISolrQueryResults<TestDocumentWithArrays> results = parser.Parse(responseXMLWithArrays);
+			var results = parser.Parse(responseXMLWithArrays);
 			Assert.AreEqual(1, results.Count);
-			TestDocumentWithArrays doc = results[0];
+			var doc = results[0];
 			Assert.AreEqual("SP2514N", doc.Id);
 		}
 
 		[Test]
 		public void SupportsDateTime() {
 			var parser = new SolrQueryResultParser<TestDocumentWithDate>();
-			ISolrQueryResults<TestDocumentWithDate> results = parser.Parse(responseXMLWithDate);
+			var results = parser.Parse(responseXMLWithDate);
 			Assert.AreEqual(1, results.Count);
-			TestDocumentWithDate doc = results[0];
+			var doc = results[0];
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 3, 3), doc.Fecha);
 		}
 
@@ -136,13 +136,15 @@ namespace SolrNet.Tests {
 			public int Id { get; set; }
 		}
 
-		private const string responseXml = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+		private const string responseXml =
+			@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
 <lst name=""responseHeader""><int name=""status"">0</int><int name=""QTime"">0</int><lst name=""params""><str name=""q"">id:123456</str><str name=""?""/><str name=""version"">2.2</str></lst></lst><result name=""response"" numFound=""1"" start=""0""><doc><str name=""advancedview""/><str name=""basicview""/><int name=""id"">123456</int></doc></result>
 </response>
 ";
 
-		private const string responseXMLWithArraysSimple = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+		private const string responseXMLWithArraysSimple =
+			@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
 <responseHeader><status>0</status><QTime>1</QTime></responseHeader>
 <result numFound=""1"" start=""0"">
@@ -153,7 +155,8 @@ namespace SolrNet.Tests {
 </response>
 ";
 
-		private const string responseXMLWithArrays = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+		private const string responseXMLWithArrays =
+			@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
 <responseHeader><status>0</status><QTime>1</QTime></responseHeader>
 

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using SolrNet.Utils;
 
 namespace SolrNet {
-	public class SolrMultipleCriteriaQuery<T> : ISolrQuery where T : ISolrDocument {
+	public class SolrMultipleCriteriaQuery: ISolrQuery {
 		private readonly string q;
 
 		public SolrMultipleCriteriaQuery(IEnumerable<ISolrQuery> queries) {
-			q = Func.Join(" ", queries, delegate(ISolrQuery query) {
-			                                                          	return query.Query;
-			}, true);
+			q = Func.Join(" ", queries, query => query.Query, true);
 		}
 
 		/// <summary>

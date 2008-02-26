@@ -10,7 +10,7 @@ namespace SolrNet.Commands.Parameters {
 
 		public XmlNode ToXmlNode() {
 			var xml = new XmlDocument();
-			XmlNode queryNode = xml.CreateElement("query");
+			var queryNode = xml.CreateElement("query");
 			queryNode.InnerText = query.Query;
 			return queryNode;
 		}

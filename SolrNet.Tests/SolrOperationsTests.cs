@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 
 namespace SolrNet.Tests {
@@ -44,13 +45,48 @@ namespace SolrNet.Tests {
 		[Test]
 		public void CommitWithOptions() {
 			var mocks = new MockRepository();
-			//ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
 			var connection = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(connection.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />")).Repeat.Once().Return(null);
 			}).Verify(delegate {
 				var ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
 				ops.Commit(true, true);
+			});
+		}
+
+		[Test]
+		public void CommitWithOptions2_WaitSearcher_WaitFlush() {
+			var mocks = new MockRepository();
+			var connection = mocks.CreateMock<ISolrConnection>();
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(connection.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />")).Repeat.Once().Return(null);
+			}).Verify(delegate {
+				var ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
+				ops.Commit(new WaitOptions {WaitSearcher = true, WaitFlush = true});
+			});
+		}
+
+		[Test]
+		public void CommitWithOptions2_WaitSearcher() {
+			var mocks = new MockRepository();
+			var connection = mocks.CreateMock<ISolrConnection>();
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(connection.Post("/update", "<commit waitSearcher=\"true\" />")).Repeat.Once().Return(null);
+			}).Verify(delegate {
+				var ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
+				ops.Commit(new WaitOptions { WaitSearcher = true});
+			});
+		}
+
+		[Test]
+		public void CommitWithOptions2_WaitFlush() {
+			var mocks = new MockRepository();
+			var connection = mocks.CreateMock<ISolrConnection>();
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(connection.Post("/update", "<commit waitFlush=\"true\" />")).Repeat.Once().Return(null);
+			}).Verify(delegate {
+				var ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
+				ops.Commit(new WaitOptions { WaitFlush = true });
 			});
 		}
 
@@ -137,7 +173,6 @@ namespace SolrNet.Tests {
 		[Test]
 		public void OptimizeWithOptions() {
 			var mocks = new MockRepository();
-			//ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
 			var connection = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />")).Repeat.Once().Return(null);
@@ -145,6 +180,18 @@ namespace SolrNet.Tests {
 				var ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
 				ops.Optimize(true, true);
 			});
+		}
+
+		[Test]
+		public void OptimizeWithWaitOptions() {
+			var mocks = new MockRepository();
+			var connection = mocks.CreateMock<ISolrConnection>();
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />")).Repeat.Once().Return(null);
+			}).Verify(delegate {
+				var ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
+				ops.Optimize(new WaitOptions{WaitFlush = true, WaitSearcher = true});
+			});			
 		}
 
 		[Test]

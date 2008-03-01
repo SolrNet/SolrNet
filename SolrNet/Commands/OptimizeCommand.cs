@@ -3,25 +3,16 @@ using System.Xml;
 
 namespace SolrNet.Commands {
 	public class OptimizeCommand : ISolrCommand {
-		private bool? waitFlush;
-		private bool? waitSearcher;
+		public bool? WaitFlush { get; set; }
 
-		public bool? WaitFlush {
-			get { return waitFlush; }
-			set { waitFlush = value; }
-		}
-
-		public bool? WaitSearcher {
-			get { return waitSearcher; }
-			set { waitSearcher = value; }
-		}
+		public bool? WaitSearcher { get; set; }
 
 		public string Execute(ISolrConnection connection) {
-			XmlDocument xml = new XmlDocument();
-			XmlNode node = xml.CreateElement("optimize");
-			foreach (KeyValuePair<bool?, string> p in new KeyValuePair<bool?, string>[] {new KeyValuePair<bool?, string>(waitSearcher, "waitSearcher"), new KeyValuePair<bool?, string>(waitFlush, "waitFlush")}) {
+			var xml = new XmlDocument();
+			var node = xml.CreateElement("optimize");
+			foreach (var p in new[] {new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), new KeyValuePair<bool?, string>(WaitFlush, "waitFlush")}) {
 				if (p.Key.HasValue) {
-					XmlAttribute att = xml.CreateAttribute(p.Value);
+					var att = xml.CreateAttribute(p.Value);
 					att.InnerText = p.Key.Value.ToString().ToLower();
 					node.Attributes.Append(att);
 				}

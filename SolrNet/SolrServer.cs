@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using SolrNet.Commands;
@@ -50,6 +51,11 @@ namespace SolrNet {
 			return Send(cmd);
 		}
 
+		public string Commit(WaitOptions options) {
+			var cmd = new CommitCommand { WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher };
+			return Send(cmd);
+		}
+
 		public string Optimize() {
 			return Send(new OptimizeCommand());
 		}
@@ -57,6 +63,11 @@ namespace SolrNet {
 		public string Optimize(bool waitFlush, bool waitSearcher) {
 			var optimize = new OptimizeCommand {WaitFlush = waitFlush, WaitSearcher = waitSearcher};
 			return Send(optimize);
+		}
+
+		public string Optimize(WaitOptions options) {
+			var cmd = new OptimizeCommand { WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher };
+			return Send(cmd);
 		}
 
 		public string Add(T doc) {
@@ -74,7 +85,7 @@ namespace SolrNet {
 		}
 
 		private object GetId(T doc) {
-			PropertyInfo prop = uniqueKeyFinder.UniqueKeyProperty;
+			var prop = uniqueKeyFinder.UniqueKeyProperty;
 			if (prop == null)
 				throw new NoUniqueKeyException();
 			object id = prop.GetValue(doc, null);
@@ -153,5 +164,6 @@ namespace SolrNet {
 		public string Send(ISolrCommand cmd) {
 			return cmd.Execute(connection);
 		}
+
 	}
 }

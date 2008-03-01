@@ -9,7 +9,7 @@ namespace SolrNet.DSL {
 			this.query = new SolrMultipleCriteriaQuery(new[]
 			                                              	{
 			                                              		query,
-			                                              		new SolrQueryByRange<T, RT>(fieldName, from, to)
+			                                              		new SolrQueryByRange<RT>(fieldName, from, to)
 			                                              	});
 			prevQuery = query;
 			this.fieldName = fieldName;
@@ -21,7 +21,7 @@ namespace SolrNet.DSL {
 			return new SolrMultipleCriteriaQuery(new[]
 			                                        	{
 			                                        		prevQuery,
-			                                        		new SolrQueryByRange<T, RT>(fieldName, from, to, inclusive)
+			                                        		new SolrQueryByRange<RT>(fieldName, from, to, inclusive)
 			                                        	});
 		}
 

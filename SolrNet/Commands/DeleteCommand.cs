@@ -4,34 +4,26 @@ using SolrNet.Commands.Parameters;
 
 namespace SolrNet.Commands {
 	public class DeleteCommand : ISolrCommand {
-		private bool? fromPending;
-		private bool? fromCommitted;
 		private readonly ISolrDeleteParam deleteParam;
 
 		public DeleteCommand(ISolrDeleteParam deleteParam) {
 			this.deleteParam = deleteParam;
 		}
 
-		public bool? FromPending {
-			get { return fromPending; }
-			set { fromPending = value; }
-		}
+		public bool? FromPending { get; set; }
 
-		public bool? FromCommitted {
-			get { return fromCommitted; }
-			set { fromCommitted = value; }
-		}
+		public bool? FromCommitted { get; set; }
 
 		public ISolrDeleteParam DeleteParam {
 			get { return deleteParam; }
 		}
 
 		public string Execute(ISolrConnection connection) {
-			XmlDocument xml = new XmlDocument();
-			XmlNode deleteNode = xml.CreateElement("delete");
-			foreach (KeyValuePair<bool?, string> p in new KeyValuePair<bool?, string>[] {new KeyValuePair<bool?, string>(fromPending, "fromPending"), new KeyValuePair<bool?, string>(fromCommitted, "fromCommitted")}) {
+			var xml = new XmlDocument();
+			var deleteNode = xml.CreateElement("delete");
+			foreach (var p in new[] {new KeyValuePair<bool?, string>(FromPending, "fromPending"), new KeyValuePair<bool?, string>(FromCommitted, "fromCommitted")}) {
 				if (p.Key.HasValue) {
-					XmlAttribute att = xml.CreateAttribute(p.Value);
+					var att = xml.CreateAttribute(p.Value);
 					att.InnerText = p.Key.Value.ToString().ToLower();
 					deleteNode.Attributes.Append(att);
 				}

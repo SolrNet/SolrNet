@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
@@ -80,7 +79,7 @@ namespace SolrNet {
 		}
 
 		public string Delete(T doc) {
-			object id = GetId(doc);
+			var id = GetId(doc);
 			return Delete(id.ToString());
 		}
 
@@ -88,14 +87,14 @@ namespace SolrNet {
 			var prop = uniqueKeyFinder.UniqueKeyProperty;
 			if (prop == null)
 				throw new NoUniqueKeyException();
-			object id = prop.GetValue(doc, null);
+			var id = prop.GetValue(doc, null);
 			if (id == null)
 				throw new NoUniqueKeyException();
 			return id;
 		}
 
 		public string Delete(T doc, bool fromPending, bool fromCommited) {
-			object id = GetId(doc);
+			var id = GetId(doc);
 			return Delete(id.ToString(), fromPending, fromCommited);
 		}
 

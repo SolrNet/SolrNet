@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -417,6 +418,19 @@ namespace SolrNet.DSL.v3._5.Tests {
 				var r = Solr.Query<TestDocument>("", 10, 20);
 				Assert.AreEqual(1, r.NumFound);
 			});
+			LastCall.Do(L.C((int x) => 0));
+		}
+	}
+
+	public static class L {
+		//public static T C<T>(this T f) {
+		//  return f;
+		//}
+		public static Func<T> C<T>(this Func<T> f) {
+			return f;
+		}
+		public static Func<T1, T2> C<T1, T2>(this Func<T1, T2> f) {
+			return f;
 		}
 	}
 }

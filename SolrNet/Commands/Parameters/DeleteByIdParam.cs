@@ -9,8 +9,8 @@ namespace SolrNet.Commands.Parameters {
 		}
 
 		public XmlNode ToXmlNode() {
-			XmlDocument xml = new XmlDocument();
-			XmlNode idNode = xml.CreateElement("id");
+			var xml = new XmlDocument();
+			var idNode = xml.CreateElement("id");
 			idNode.InnerText = id;
 			return idNode;
 		}

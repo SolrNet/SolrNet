@@ -18,7 +18,7 @@ namespace SolrNet.DSL {
 			                       	new[]
 			                       		{
 			                       			query,
-			                       			new SolrQueryByRange<T, RT>(fieldName, from, i)
+			                       			new SolrQueryByRange<RT>(fieldName, from, i)
 			                       		}));
 		}
 	}

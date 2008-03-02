@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
@@ -51,7 +50,7 @@ namespace SolrNet {
 		}
 
 		public string Commit(WaitOptions options) {
-			var cmd = new CommitCommand { WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher };
+			var cmd = new CommitCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
 			return Send(cmd);
 		}
 
@@ -65,7 +64,7 @@ namespace SolrNet {
 		}
 
 		public string Optimize(WaitOptions options) {
-			var cmd = new OptimizeCommand { WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher };
+			var cmd = new OptimizeCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
 			return Send(cmd);
 		}
 
@@ -127,8 +126,7 @@ namespace SolrNet {
 		}
 
 		public ISolrQueryResults<T> Query(string q, QueryOptions options) {
-			var exe = new SolrQueryExecuter<T>(connection, q)
-			{
+			var exe = new SolrQueryExecuter<T>(connection, q) {
 				ResultParser = resultParser,
 				Options = options
 			};
@@ -140,7 +138,7 @@ namespace SolrNet {
 		}
 
 		public ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders) {
-			return Query(query, new QueryOptions{OrderBy = orders});
+			return Query(query, new QueryOptions {OrderBy = orders});
 		}
 
 		public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
@@ -150,6 +148,5 @@ namespace SolrNet {
 		public string Send(ISolrCommand cmd) {
 			return cmd.Execute(connection);
 		}
-
 	}
 }

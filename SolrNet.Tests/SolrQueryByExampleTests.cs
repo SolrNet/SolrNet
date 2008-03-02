@@ -23,8 +23,8 @@ namespace SolrNet.Tests {
 
 		public class TestDocument : ISolrDocument {
 			public TestDocument(int? id, string ss) {
-				this.Id = id;
-				this.Ss = ss;
+				Id = id;
+				Ss = ss;
 			}
 
 			[SolrField]

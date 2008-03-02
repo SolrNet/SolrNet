@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using SolrNet.Utils;
 
 namespace SolrNet {
-	public class SolrMultipleCriteriaQuery: ISolrQuery {
+	public class SolrMultipleCriteriaQuery : ISolrQuery {
 		private readonly string q;
 
 		public SolrMultipleCriteriaQuery(IEnumerable<ISolrQuery> queries) {

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class FacetsTests {
-		public class SolrDoc: ISolrDocument {
-			
-		}
+		public class SolrDoc : ISolrDocument {}
 
 		[Test]
 		public void FacetQueriesResults() {
@@ -20,7 +14,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void FacetFieldsResults() {
 			var results = new SolrQueryResults<SolrDoc>();
-			results.FacetFields["hotdeal"] = 1;			
+			results.FacetFields["hotdeal"] = 1;
 		}
 	}
 }

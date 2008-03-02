@@ -6,8 +6,6 @@ namespace SolrNet {
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property)]
 	public class SolrFieldAttribute : Attribute {
-		private string fieldName;
-
 		public SolrFieldAttribute() {}
 
 		/// <summary>
@@ -21,9 +19,6 @@ namespace SolrNet {
 		/// <summary>
 		/// Overrides field name
 		/// </summary>
-		public string FieldName {
-			get { return fieldName; }
-			set { fieldName = value; }
-		}
+		public string FieldName { get; set; }
 	}
 }

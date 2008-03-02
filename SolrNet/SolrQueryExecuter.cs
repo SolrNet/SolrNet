@@ -34,7 +34,7 @@ namespace SolrNet {
 		/// </summary>
 		/// <returns>query results</returns>
 		public ISolrQueryResults<T> Execute() {
-			IDictionary<string, string> param = new Dictionary<string, string>();
+			var param = new Dictionary<string, string>();
 			param["q"] = Query.Query;
 			if (Options != null) {
 				if (Options.Start.HasValue)
@@ -42,7 +42,7 @@ namespace SolrNet {
 				if (Options.Rows.HasValue)
 					param["rows"] = Options.Rows.ToString();
 				if (Options.OrderBy != null && Options.OrderBy.Count > 0)
-					param["sort"] = Func.Join(",", Options.OrderBy);				
+					param["sort"] = Func.Join(",", Options.OrderBy);
 			}
 			string r = Connection.Get("/select", param);
 			var qr = ResultParser.Parse(r);

@@ -1,7 +1,7 @@
 using System.Xml;
 
 namespace SolrNet.Commands.Parameters {
-	public class DeleteByQueryParam: ISolrDeleteParam {
+	public class DeleteByQueryParam : ISolrDeleteParam {
 		private readonly ISolrQuery query;
 
 		public DeleteByQueryParam(ISolrQuery q) {

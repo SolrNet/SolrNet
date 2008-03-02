@@ -2,7 +2,7 @@ using System;
 
 namespace SolrNet.Exceptions {
 	public class CollectionTypeNotSupportedException : BadMappingException {
-		private Type collectionType;
+		private readonly Type collectionType;
 
 		private static readonly string DefaultMessage = "Collection type '{0}' is not supported";
 

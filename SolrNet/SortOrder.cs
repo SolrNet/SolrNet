@@ -24,7 +24,7 @@ namespace SolrNet {
 
 		public static SortOrder Parse(string s) {
 			try {
-				string[] tokens = s.Split(' ');
+				var tokens = s.Split(' ');
 				string field = tokens[0];
 				if (tokens.Length > 1) {
 					Order o = (Order) Enum.Parse(typeof (Order), tokens[1].ToUpper());

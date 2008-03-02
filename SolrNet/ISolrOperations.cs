@@ -21,9 +21,11 @@ namespace SolrNet {
 		/// <param name="waitFlush">block until index changes are flushed to disk</param>
 		/// <param name="waitSearcher">block until a new searcher is opened and registered as the main query searcher, making the changes visible.</param>
 		string Commit(bool waitFlush, bool waitSearcher);
+		string Commit(WaitOptions options);
 
 		string Optimize();
 		string Optimize(bool waitFlush, bool waitSearcher);
+		string Optimize(WaitOptions options);
 
 		/// <summary>
 		/// Adds / updates a document
@@ -94,7 +96,6 @@ namespace SolrNet {
 		/// </summary>
 		/// <param name="q">query to execute</param>
 		/// <returns>query results</returns>
-
 		ISolrQueryResults<T> Query(string q);
 		ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders);
 		ISolrQueryResults<T> Query(string q, QueryOptions options);
@@ -109,7 +110,5 @@ namespace SolrNet {
 		/// <returns>solr response</returns>
 		string Send(ISolrCommand cmd);
 
-		string Commit(WaitOptions options);
-		string Optimize(WaitOptions options);
 	}
 }

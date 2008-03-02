@@ -2,12 +2,7 @@ using System;
 
 namespace SolrNet.Exceptions {
 	public class FieldNotFoundException : BadMappingException {
-		private string fieldName;
-
-		public string FieldName {
-			get { return fieldName; }
-			set { fieldName = value; }
-		}
+		public string FieldName { get; set; }
 
 		public FieldNotFoundException() {}
 		public FieldNotFoundException(string message, Exception innerException) : base(message, innerException) {}

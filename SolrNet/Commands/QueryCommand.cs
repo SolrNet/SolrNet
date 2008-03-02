@@ -1,16 +1,11 @@
 using System;
 
 namespace SolrNet.Commands {
-	public class QueryCommand<T> : ISolrCommand where T : ISolrDocument, new() {
-		private string query;
-
-		public string Query {
-			get { return query; }
-			set { query = value; }
-		}
+	public class QueryCommand: ISolrCommand {
+		public string Query { get; set; }
 
 		public QueryCommand(string query) {
-			this.query = query;
+			this.Query = query;
 		}
 
 		public string Execute(ISolrConnection connection) {

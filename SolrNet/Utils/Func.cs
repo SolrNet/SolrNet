@@ -11,9 +11,9 @@ namespace SolrNet.Utils {
 
 		public static TResult Reduce<TSource, TResult>(IEnumerable<TSource> source, TResult startValue,
 		                                               Accumulator<TSource, TResult> accumulator) {
-			TResult result = startValue;
+			var result = startValue;
 			if (source != null) {
-				foreach (TSource item in source)
+				foreach (var item in source)
 					result = accumulator(item, result);
 			}
 
@@ -22,7 +22,7 @@ namespace SolrNet.Utils {
 
 		public static IEnumerable<TSource> Filter<TSource>(IEnumerable<TSource> source, Predicate<TSource> predicate) {
 			return Reduce(source, new List<TSource>(),
-			              delegate(TSource item, List<TSource> result) {
+			              (item, result) => {
 			              	if (predicate(item))
 			              		result.Add(item);
 
@@ -33,7 +33,7 @@ namespace SolrNet.Utils {
 		public static IEnumerable<TResult> Map<TSource, TResult>(IEnumerable<TSource> source,
 		                                                         Converter<TSource, TResult> converter) {
 			return Reduce(source, new List<TResult>(),
-			              delegate(TSource item, List<TResult> result) {
+			              (item, result) => {
 			              	result.Add(converter(item));
 
 			              	return result;
@@ -43,9 +43,7 @@ namespace SolrNet.Utils {
 		// These two are from http://weblogs.asp.net/whaggard/archive/2004/12/06/275917.aspx
 		// Default join that takes an IEnumerable list and just takes the ToString of each item
 		public static string Join<T>(string separator, IEnumerable<T> list) {
-			return Join(separator, list, delegate(T o) {
-			                             	return o.ToString();
-			                             });
+			return Join(separator, list, o => o.ToString());
 		}
 
 		// Join that takes an IEnumerable list that uses a converter to convert the type to a string
@@ -55,7 +53,7 @@ namespace SolrNet.Utils {
 
 		// Join that takes an IEnumerable list that uses a converter to convert the type to a string
 		public static string Join<T>(string separator, IEnumerable<T> list, Converter<T, string> converter, bool ignoreNulls) {
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			foreach (T t in list) {
 				if (ignoreNulls && t == null)
 					continue;

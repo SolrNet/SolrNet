@@ -21,11 +21,10 @@ namespace SolrNet.Tests.Integration {
 		[Ignore]
 		public void AddOneWithArray() {
 			var solr = new SolrServer<TestDocument>(serverURL);
-			var doc = new TestDocument
-			          	{
-			          		Id = 123,
-			          		Series = new[] {1, 2, 3},
-			          	};
+			var doc = new TestDocument {
+				Id = 123,
+				Series = new[] {1, 2, 3},
+			};
 			solr.Add(doc);
 			Console.WriteLine(solr.Commit());
 		}

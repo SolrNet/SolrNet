@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet {
@@ -14,7 +13,7 @@ namespace SolrNet {
 
 		ISolrQuery Query { get; set; }
 
-		QueryOptions Options { get; set;}
+		QueryOptions Options { get; set; }
 
 		/// <summary>
 		/// Executes the query and returns results

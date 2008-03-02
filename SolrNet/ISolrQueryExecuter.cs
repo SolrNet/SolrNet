@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SolrNet.Commands.Parameters;
 
 namespace SolrNet {
 	/// <summary>
@@ -13,14 +14,12 @@ namespace SolrNet {
 
 		ISolrQuery Query { get; set; }
 
-		ICollection<SortOrder> OrderBy { get; set; }
+		QueryOptions Options { get; set;}
 
 		/// <summary>
 		/// Executes the query and returns results
 		/// </summary>
 		/// <returns>query results</returns>
 		ISolrQueryResults<T> Execute();
-
-		ISolrQueryResults<T> Execute(int start, int rows);
 	}
 }

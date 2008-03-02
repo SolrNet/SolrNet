@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SolrNet.Commands.Parameters;
 
 namespace SolrNet.DSL {
 	public class DSLRun<T> : IDSLRun<T> where T : ISolrDocument, new() {
@@ -22,13 +23,16 @@ namespace SolrNet.DSL {
 		}
 
 		public ISolrQueryResults<T> Run() {
-			var exe = new SolrQueryExecuter<T>(connection, query) {OrderBy = order};
+			var exe = new SolrQueryExecuter<T>(connection, query) {Options = new QueryOptions {OrderBy = order}};
 			return exe.Execute();
 		}
 
 		public ISolrQueryResults<T> Run(int start, int rows) {
-			var exe = new SolrQueryExecuter<T>(connection, query) {OrderBy = order};
-			return exe.Execute(start, rows);
+			var exe = new SolrQueryExecuter<T>(connection, query)
+			          	{
+			          		Options = new QueryOptions {OrderBy = order, Start = start, Rows = rows}
+			          	};
+			return exe.Execute();
 		}
 
 		public IDSLRun<T> OrderBy(string fieldName) {

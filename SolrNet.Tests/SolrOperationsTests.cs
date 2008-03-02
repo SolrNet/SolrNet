@@ -74,7 +74,7 @@ namespace SolrNet.Tests {
 				Expect.Call(connection.Post("/update", "<commit waitSearcher=\"true\" />")).Repeat.Once().Return(null);
 			}).Verify(delegate {
 				var ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
-				ops.Commit(new WaitOptions { WaitSearcher = true});
+				ops.Commit(new WaitOptions {WaitSearcher = true});
 			});
 		}
 
@@ -86,7 +86,7 @@ namespace SolrNet.Tests {
 				Expect.Call(connection.Post("/update", "<commit waitFlush=\"true\" />")).Repeat.Once().Return(null);
 			}).Verify(delegate {
 				var ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
-				ops.Commit(new WaitOptions { WaitFlush = true });
+				ops.Commit(new WaitOptions {WaitFlush = true});
 			});
 		}
 
@@ -190,8 +190,8 @@ namespace SolrNet.Tests {
 				Expect.Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />")).Repeat.Once().Return(null);
 			}).Verify(delegate {
 				var ops = new SolrServer<TestDocumentWithoutUniqueKey>(connection);
-				ops.Optimize(new WaitOptions{WaitFlush = true, WaitSearcher = true});
-			});			
+				ops.Optimize(new WaitOptions {WaitFlush = true, WaitSearcher = true});
+			});
 		}
 
 		[Test]
@@ -213,7 +213,7 @@ namespace SolrNet.Tests {
 				SetupResult.For(parser.Parse(null)).IgnoreArguments().Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
 			}).Verify(delegate {
 				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) {ResultParser = parser};
-				var r = solr.Query(new SolrQuery(qstring), start, rows);
+				var r = solr.Query(new SolrQuery(qstring), new QueryOptions {Start = start, Rows = rows});
 			});
 		}
 
@@ -256,7 +256,11 @@ namespace SolrNet.Tests {
 				SetupResult.For(parser.Parse(null)).IgnoreArguments().Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
 			}).Verify(delegate {
 				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) {ResultParser = parser};
-				var r = solr.Query(new SolrQuery(qstring), start, rows, new[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)});
+				var r = solr.Query(new SolrQuery(qstring), new QueryOptions {
+					Start = start,
+					Rows = rows,
+					OrderBy = new[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)}
+				});
 			});
 		}
 

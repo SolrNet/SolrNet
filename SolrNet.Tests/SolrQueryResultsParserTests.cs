@@ -187,6 +187,40 @@ namespace SolrNet.Tests {
 </response>
 ";
 
+		private const string responseXMLWithFacet =
+			@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<response>
+<responseHeader><status>0</status><QTime>2</QTime></responseHeader>
+<result numFound=""4"" start=""0""/>
+<lst name=""facet_counts"">
+ <lst name=""facet_queries""/>
+ <lst name=""facet_fields"">
+  <lst name=""cat"">
+        <int name=""search"">0</int>
+        <int name=""memory"">0</int>
+        <int name=""graphics"">0</int>
+        <int name=""card"">0</int>
+        <int name=""music"">1</int>
+        <int name=""software"">0</int>
+        <int name=""electronics"">3</int>
+        <int name=""copier"">0</int>
+        <int name=""multifunction"">0</int>
+        <int name=""camera"">0</int>
+        <int name=""connector"">2</int>
+        <int name=""hard"">0</int>
+        <int name=""scanner"">0</int>
+        <int name=""monitor"">0</int>
+        <int name=""drive"">0</int>
+        <int name=""printer"">0</int>
+  </lst>
+  <lst name=""inStock"">
+        <int name=""false"">3</int>
+        <int name=""true"">1</int>
+  </lst>
+ </lst>
+</lst>
+</response>";
+
 		public class TestDocumentWithArrays : ISolrDocument {
 			[SolrField("cat")]
 			public ICollection<string> Cat { get; set; }

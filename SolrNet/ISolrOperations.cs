@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 
 namespace SolrNet {
@@ -95,13 +96,11 @@ namespace SolrNet {
 		/// <returns>query results</returns>
 
 		ISolrQueryResults<T> Query(string q);
-		ISolrQueryResults<T> Query(string q, int start, int rows);
-		ISolrQueryResults<T> Query(string q, int start, int rows, ICollection<SortOrder> orders);
 		ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders);
+		ISolrQueryResults<T> Query(string q, QueryOptions options);
 		ISolrQueryResults<T> Query(ISolrQuery q);
-		ISolrQueryResults<T> Query(ISolrQuery query, int start, int rows);
-		ISolrQueryResults<T> Query(ISolrQuery query, int start, int rows, ICollection<SortOrder> orders);
 		ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders);
+		ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options);
 
 		/// <summary>
 		/// Sends a custom command
@@ -109,5 +108,8 @@ namespace SolrNet {
 		/// <param name="cmd">command to send</param>
 		/// <returns>solr response</returns>
 		string Send(ISolrCommand cmd);
+
+		string Commit(WaitOptions options);
+		string Optimize(WaitOptions options);
 	}
 }

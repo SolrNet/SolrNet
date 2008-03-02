@@ -122,42 +122,29 @@ namespace SolrNet {
 			return Query(new SolrQuery(q));
 		}
 
-		public ISolrQueryResults<T> Query(string q, int start, int rows) {
-			return Query(new SolrQuery(q), start, rows);
-		}
-
-		public ISolrQueryResults<T> Query(string q, int start, int rows, ICollection<SortOrder> orders) {
-			return Query(new SolrQuery(q), start, rows, orders);
-		}
-
 		public ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders) {
 			return Query(new SolrQuery(q), orders);
 		}
 
+		public ISolrQueryResults<T> Query(string q, QueryOptions options) {
+			var exe = new SolrQueryExecuter<T>(connection, q)
+			{
+				ResultParser = resultParser,
+				Options = options
+			};
+			return exe.Execute();
+		}
+
 		public ISolrQueryResults<T> Query(ISolrQuery query) {
-			return Query(query, null);
-		}
-
-		public ISolrQueryResults<T> Query(ISolrQuery query, int start, int rows) {
-			return Query(query, start, rows, null);
-		}
-
-		public ISolrQueryResults<T> Query(ISolrQuery query, int start, int rows, ICollection<SortOrder> orders) {
-			var exe = new SolrQueryExecuter<T>(connection, query)
-			          	{
-			          		ResultParser = resultParser,
-			          		OrderBy = orders
-			          	};
-			return exe.Execute(start, rows);
+			return Query(query, new QueryOptions());
 		}
 
 		public ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders) {
-			var exe = new SolrQueryExecuter<T>(connection, query)
-			          	{
-			          		ResultParser = resultParser,
-			          		OrderBy = orders
-			          	};
-			return exe.Execute();
+			return Query(query, new QueryOptions{OrderBy = orders});
+		}
+
+		public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
+			return Query(query.Query, options);
 		}
 
 		public string Send(ISolrCommand cmd) {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SolrNet.Commands.Parameters;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -39,11 +40,10 @@ namespace SolrNet.Tests {
 				Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
 				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
 			}).Verify(delegate {
-				var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString)
-				                    	{
-				                    		ResultParser = parser,
-				                    		OrderBy = new[] {new SortOrder("id")}
-				                    	};
+				var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
+					ResultParser = parser,
+					Options = new QueryOptions {OrderBy = new[] {new SortOrder("id")}}
+				};
 				var r = queryExecuter.Execute();
 			});
 		}
@@ -62,11 +62,15 @@ namespace SolrNet.Tests {
 				Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
 				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
 			}).Verify(delegate {
-				var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString)
-				                    	{
-				                    		ResultParser = parser,
-				                    		OrderBy = new[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)}
-				                    	};
+				var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
+					ResultParser = parser,
+					Options = new QueryOptions {
+						OrderBy = new[] {
+							new SortOrder("id", Order.ASC),
+							new SortOrder("name", Order.DESC)
+						}
+					}
+				};
 				var r = queryExecuter.Execute();
 			});
 		}
@@ -84,10 +88,9 @@ namespace SolrNet.Tests {
 				Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
 				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
 			}).Verify(delegate {
-				var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString)
-				                    	{
-				                    		ResultParser = parser
-				                    	};
+				var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
+					ResultParser = parser
+				};
 				var r = queryExecuter.Execute();
 			});
 		}

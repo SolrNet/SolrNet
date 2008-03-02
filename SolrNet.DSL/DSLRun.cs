@@ -28,10 +28,9 @@ namespace SolrNet.DSL {
 		}
 
 		public ISolrQueryResults<T> Run(int start, int rows) {
-			var exe = new SolrQueryExecuter<T>(connection, query)
-			          	{
-			          		Options = new QueryOptions {OrderBy = order, Start = start, Rows = rows}
-			          	};
+			var exe = new SolrQueryExecuter<T>(connection, query) {
+				Options = new QueryOptions {OrderBy = order, Start = start, Rows = rows}
+			};
 			return exe.Execute();
 		}
 

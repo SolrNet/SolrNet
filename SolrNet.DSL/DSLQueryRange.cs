@@ -6,11 +6,10 @@ namespace SolrNet.DSL {
 		private readonly ISolrQuery prevQuery;
 
 		public DSLQueryRange(ISolrConnection connection, ISolrQuery query, string fieldName, RT from, RT to) : base(connection) {
-			this.query = new SolrMultipleCriteriaQuery(new[]
-			                                              	{
-			                                              		query,
-			                                              		new SolrQueryByRange<RT>(fieldName, from, to)
-			                                              	});
+			this.query = new SolrMultipleCriteriaQuery(new[] {
+				query,
+				new SolrQueryByRange<RT>(fieldName, from, to)
+			});
 			prevQuery = query;
 			this.fieldName = fieldName;
 			this.from = from;
@@ -18,11 +17,10 @@ namespace SolrNet.DSL {
 		}
 
 		private ISolrQuery buildFinalQuery(bool inclusive) {
-			return new SolrMultipleCriteriaQuery(new[]
-			                                        	{
-			                                        		prevQuery,
-			                                        		new SolrQueryByRange<RT>(fieldName, from, to, inclusive)
-			                                        	});
+			return new SolrMultipleCriteriaQuery(new[] {
+				prevQuery,
+				new SolrQueryByRange<RT>(fieldName, from, to, inclusive)
+			});
 		}
 
 		public IDSLQuery<T> Exclusive() {

@@ -34,10 +34,9 @@ namespace SolrNet.DSL {
 		}
 
 		public static ISolrQueryResults<T> Query<T>(string s, int start, int rows) where T : ISolrDocument, new() {
-			var q = new SolrQueryExecuter<T>(Connection, s)
-			        	{
-			        		Options = new QueryOptions {Start = start, Rows = rows}
-			        	};
+			var q = new SolrQueryExecuter<T>(Connection, s) {
+				Options = new QueryOptions {Start = start, Rows = rows}
+			};
 			return q.Execute();
 		}
 
@@ -51,10 +50,9 @@ namespace SolrNet.DSL {
 		}
 
 		public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order) where T : ISolrDocument, new() {
-			var q = new SolrQueryExecuter<T>(Connection, s)
-			        	{
-			        		Options = new QueryOptions {OrderBy = order}
-			        	};
+			var q = new SolrQueryExecuter<T>(Connection, s) {
+				Options = new QueryOptions {OrderBy = order}
+			};
 			return q.Execute();
 		}
 
@@ -63,15 +61,13 @@ namespace SolrNet.DSL {
 		}
 
 		public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order, int start, int rows) where T : ISolrDocument, new() {
-			var q = new SolrQueryExecuter<T>(Connection, s)
-			        	{
-			        		Options = new QueryOptions
-			        		          	{
-			        		          		OrderBy = order,
-			        		          		Start = start,
-			        		          		Rows = rows,
-			        		          	}
-			        	};
+			var q = new SolrQueryExecuter<T>(Connection, s) {
+				Options = new QueryOptions {
+					OrderBy = order,
+					Start = start,
+					Rows = rows,
+				}
+			};
 			return q.Execute();
 		}
 
@@ -81,7 +77,9 @@ namespace SolrNet.DSL {
 		}
 
 		public static ISolrQueryResults<T> Query<T>(ISolrQuery q, int start, int rows) where T : ISolrDocument, new() {
-			var queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query) {Options = new QueryOptions {Start = start, Rows = rows}};
+			var queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query) {
+				Options = new QueryOptions {Start = start, Rows = rows}
+			};
 			return queryExecuter.Execute();
 		}
 
@@ -90,7 +88,9 @@ namespace SolrNet.DSL {
 		}
 
 		public static ISolrQueryResults<T> Query<T>(SolrQuery query, ICollection<SortOrder> orders) where T : ISolrDocument, new() {
-			var queryExecuter = new SolrQueryExecuter<T>(Connection, query.Query) {Options = new QueryOptions { OrderBy = orders}};
+			var queryExecuter = new SolrQueryExecuter<T>(Connection, query.Query) {
+				Options = new QueryOptions {OrderBy = orders}
+			};
 			return queryExecuter.Execute();
 		}
 

@@ -311,6 +311,7 @@ namespace HttpWebAdapters.Adapters {
 		///</summary>
 		///<filterpriority>2</filterpriority>
 		public void Dispose() {
+            response.Close();
 			//response.GetType().GetMethod("Dispose", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(response, null);
 		}
 	}

@@ -46,8 +46,11 @@ namespace SolrNet {
 			if (field.Name == "arr") {
 				prop.SetValue(doc, GetCollectionProperty(field, prop), null);
 			} else if (prop.PropertyType == typeof (DateTime)) {
-				prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
-			} else {
+			    prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
+			} else if (prop.PropertyType == typeof(DateTime?)) {
+                if (!string.IsNullOrEmpty(field.InnerText))
+                    prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
+		    } else {
 				prop.SetValue(doc, Convert.ChangeType(field.InnerText, prop.PropertyType), null);
 			}
 		}

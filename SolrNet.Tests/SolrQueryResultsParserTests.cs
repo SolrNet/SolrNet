@@ -108,6 +108,15 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 3, 3), doc.Fecha);
 		}
 
+        [Test]
+        public void SupportsNullableDateTime() {
+            var parser = new SolrQueryResultParser<TestDocumentWithNullableDate>();
+            var results = parser.Parse(responseXMLWithDate);
+            Assert.AreEqual(1, results.Count);
+            var doc = results[0];
+            Assert.AreEqual(new DateTime(2001, 1, 2, 3, 3, 3), doc.Fecha);            
+        }
+
 		[Test]
 		public void SupportsIEnumerable() {
 			var parser = new SolrQueryResultParser<TestDocumentWithArrays4>();
@@ -272,5 +281,10 @@ namespace SolrNet.Tests {
 			[SolrField]
 			public DateTime Fecha { get; set; }
 		}
+
+        public class TestDocumentWithNullableDate: ISolrDocument {
+            [SolrField]
+            public DateTime? Fecha { get; set; }
+        }
 	}
 }

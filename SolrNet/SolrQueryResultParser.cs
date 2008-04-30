@@ -43,14 +43,19 @@ namespace SolrNet {
 		private delegate bool BoolFunc(PropertyInfo[] p);
 
 		public void SetProperty(T doc, PropertyInfo prop, XmlNode field) {
+			// HACK too messy
 			if (field.Name == "arr") {
 				prop.SetValue(doc, GetCollectionProperty(field, prop), null);
-			} else if (prop.PropertyType == typeof (DateTime)) {
+			} else if (prop.PropertyType == typeof(decimal)) {
+				prop.SetValue(doc, decimal.Parse(field.InnerText, CultureInfo.InvariantCulture), null);
+			} else if (prop.PropertyType == typeof(double)) {
+				prop.SetValue(doc, double.Parse(field.InnerText, CultureInfo.InvariantCulture), null);
+			} else if (prop.PropertyType == typeof(DateTime)) {
 			    prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
 			} else if (prop.PropertyType == typeof(DateTime?)) {
                 if (!string.IsNullOrEmpty(field.InnerText))
                     prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
-		    } else {
+		  } else {
 				prop.SetValue(doc, Convert.ChangeType(field.InnerText, prop.PropertyType), null);
 			}
 		}

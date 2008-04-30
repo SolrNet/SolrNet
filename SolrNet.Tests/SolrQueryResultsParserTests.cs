@@ -49,6 +49,17 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
+		public void SetPropertyDouble() {
+			var xml = new XmlDocument();
+			xml.LoadXml(responseXMLWithArrays);
+			var fieldNode = xml.SelectSingleNode("response/result/doc/float[@name='price']");
+			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
+			var doc = new TestDocumentWithArrays();
+			parser.SetProperty(doc, typeof(TestDocumentWithArrays).GetProperty("Price"), fieldNode);
+			Assert.AreEqual(92d, doc.Price);
+		}
+
+		[Test]
 		public void SetPropertyWithIntCollection() {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);

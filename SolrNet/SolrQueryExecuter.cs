@@ -43,6 +43,8 @@ namespace SolrNet {
 					param["rows"] = Options.Rows.ToString();
 				if (Options.OrderBy != null && Options.OrderBy.Count > 0)
 					param["sort"] = Func.Join(",", Options.OrderBy);
+				if (Options.Fields != null && Options.Fields.Count > 0)
+					param["fl"] = Func.Join(",", Options.Fields);
 			}
 			string r = Connection.Get("/select", param);
 			var qr = ResultParser.Parse(r);

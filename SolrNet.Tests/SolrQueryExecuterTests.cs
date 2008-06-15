@@ -75,6 +75,30 @@ namespace SolrNet.Tests {
 			});
 		}
 
+		[Test]
+		public void ResultFields() {
+			const string queryString = "id:123456";
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
+			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
+			var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
+			With.Mocks(mocks).Expecting(delegate {
+				var q = new Dictionary<string, string>();
+				q["q"] = queryString;
+				q["fl"] = "id,name";
+				Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
+				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
+			}).Verify(delegate {
+				var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
+					ResultParser = parser,
+					Options = new QueryOptions {
+						Fields = new[] {"id", "name"},
+					}
+				};
+				var r = queryExecuter.Execute();
+			});			
+		}
+
 		[Test, Ignore("incomplete")]
 		public void UndefinedFieldError() {
 			const string queryString = "id:123456";

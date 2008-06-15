@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -62,6 +63,26 @@ namespace SolrNet.Utils {
 				sb.Append(converter(t));
 			}
 			return sb.ToString();
+		}
+
+		public static IEnumerable<T> Take<T>(IEnumerable<T> l, int count) {
+			var e = l.GetEnumerator();
+			var c = 0;
+			while (e.MoveNext() && c < count) {
+				yield return e.Current;
+			}
+		}
+
+		public static IEnumerable<R> Select<R>(IEnumerable l, Converter<object, R> f) {
+			foreach (var e in l) {
+				yield return f(e);
+			}
+		}
+
+		public static IEnumerable<R> Select<T, R>(IEnumerable<T> l, Converter<T, R> f) {
+			foreach (var e in l) {
+				yield return f(e);
+			}
 		}
 	}
 }

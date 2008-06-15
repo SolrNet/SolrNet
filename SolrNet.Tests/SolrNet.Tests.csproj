@@ -67,6 +67,7 @@
     <Compile Include="SolrQueryByExampleTests.cs" />
     <Compile Include="SolrQueryByFieldTests.cs" />
     <Compile Include="SolrQueryByRangeTests.cs" />
+    <Compile Include="SolrQueryInListTests.cs" />
     <Compile Include="SolrQueryResultsParserTests.cs" />
     <Compile Include="SolrQueryTests.cs" />
     <Compile Include="SortOrderTests.cs" />

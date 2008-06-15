@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using SolrNet.Tests;
 
 namespace SolrNet {
 	public class SortOrder {
 		private readonly string fieldName;
 		private readonly Order order = Order.ASC;
+		public static ICollection<SortOrder> Random = new[] {RandomSortOrder.Instance};
 
 		public SortOrder(string fieldName) {
 			if (fieldName.IndexOf(' ') >= 0)

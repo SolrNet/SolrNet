@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 
 namespace SolrNet.Commands.Parameters {
-	public class QueryOptions : ExecuteOptions {
-		private ICollection<SortOrder> orderBy = new List<SortOrder>();
+	public class QueryOptions {
+		public int? Start { get; set; }
+		public int? Rows { get; set; }
+		public ICollection<SortOrder> OrderBy { get; set; }
 
-		public ICollection<SortOrder> OrderBy {
-			get { return orderBy; }
-			set { orderBy = value; }
+		public QueryOptions() {
+			OrderBy = new List<SortOrder>();
 		}
 	}
 }

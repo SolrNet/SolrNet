@@ -39,7 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Parameters\ExecuteOptions.cs" />
     <Compile Include="Commands\Parameters\QueryOptions.cs" />
     <Compile Include="Commands\Parameters\WaitOptions.cs" />
     <Compile Include="Exceptions\CollectionTypeNotSupportedException.cs" />

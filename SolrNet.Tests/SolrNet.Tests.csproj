@@ -54,6 +54,7 @@
     <Compile Include="AddCommandTests.cs" />
     <Compile Include="DeleteCommandTests.cs" />
     <Compile Include="FacetsTests.cs" />
+    <Compile Include="FuncTests.cs" />
     <Compile Include="Integration\AddCommandTests.cs" />
     <Compile Include="Integration\QueryTests.cs" />
     <Compile Include="Integration\TestDocument.cs" />

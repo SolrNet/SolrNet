@@ -1,3 +1,4 @@
+using System;
 using HttpWebAdapters;
 using NUnit.Framework;
 using SolrNet.Commands.Parameters;
@@ -32,6 +33,22 @@ namespace SolrNet.Tests.Integration {
 			Assert.IsNull(doc.Make);
 			Assert.IsNull(doc.Model);
 			Assert.IsNull(doc.Style);
+		}
+
+		[Test]
+		[Category("Integration")]
+		[Ignore]
+		public void RandomSort() {
+			var conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
+			var server = new SolrServer<TestDocument>(conn);
+			var query = new SolrQuery("*:*");
+			var r = server.Query(query, new QueryOptions {
+				OrderBy = SortOrder.Random,
+				Rows = 5,
+			});
+			Assert.Greater(r.Count, 0);
+			var doc = r[0];
+			Console.WriteLine(r[0].Id);
 		}
 	}
 }

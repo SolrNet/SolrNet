@@ -57,7 +57,8 @@ namespace SolrNet {
 				param["rows"] = rows.ToString();
 				if (Options.OrderBy != null && Options.OrderBy.Count > 0)
 					if (Options.OrderBy == SortOrder.Random) {
-						var pk = UniqueKeyFinder.UniqueKeyProperty;
+						var pk = UniqueKeyFinder.UniqueKeyFieldName;
+						var pkProp = UniqueKeyFinder.UniqueKeyProperty;
 						if (pk == null)
 							throw new NoUniqueKeyException();
 						var executer = new SolrQueryExecuter<T>(Connection, Query) {
@@ -65,13 +66,13 @@ namespace SolrNet {
 							ResultParser = ResultParser,
 							UniqueKeyFinder = UniqueKeyFinder,
 							Options = new QueryOptions {
-								Fields = new[] {pk.Name},
+								Fields = new[] {pk},
                 Rows = int.MaxValue,
 							}
 						};
 						var nr = executer.Execute();
 						ListRandomizer.Randomize(nr);
-						var idListQuery = new SolrQueryInList(pk.Name, Func.Select(Func.Take(nr, rows), x => pk.GetValue(x, null)));
+						var idListQuery = new SolrQueryInList(pk, Func.Select(Func.Take(nr, rows), x => pkProp.GetValue(x, null)));
 						param["q"] = idListQuery.Query;
 					} else {
 						param["sort"] = Func.Join(",", Options.OrderBy);

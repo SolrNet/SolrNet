@@ -69,6 +69,7 @@ namespace SolrNet.Utils {
 			var e = l.GetEnumerator();
 			var c = 0;
 			while (e.MoveNext() && c < count) {
+				c++;
 				yield return e.Current;
 			}
 		}

@@ -4,28 +4,50 @@ using SolrNet.Exceptions;
 namespace SolrNet {
 	public class UniqueKeyFinder<T> : IUniqueKeyFinder<T> where T : ISolrDocument {
 		private int? uniqueKeyCount;
-		private PropertyInfo uniqueKeyProperty;
+		private PropertyInfo prop;
+		private SolrUniqueKeyAttribute attr;
 
-		public PropertyInfo UniqueKeyProperty {
+		public SolrUniqueKeyAttribute UniqueKeyAttribute {
 			get {
 				if (!uniqueKeyCount.HasValue) {
 					uniqueKeyCount = 0;
-					foreach (PropertyInfo property in typeof (T).GetProperties()) {
+					foreach (var property in typeof (T).GetProperties()) {
 						var atts = property.GetCustomAttributes(typeof (SolrUniqueKeyAttribute), true);
 						if (atts.Length > 0) {
 							uniqueKeyCount++;
-							if (uniqueKeyProperty != null) {
+							if (prop != null) {
 								break;
 							}
-							uniqueKeyProperty = property;
+							attr = (SolrUniqueKeyAttribute) atts[0];
+							prop = property;
 						}
 					}
 				}
 				if (uniqueKeyCount > 1)
 					throw new BadMappingException("Only one SolrUniqueKey allowed per document class");
 				if (uniqueKeyCount == 1)
-					return uniqueKeyProperty;
+					return attr;
 				return null;
+			}
+		}
+
+		public string UniqueKeyFieldName {
+			get {
+				var a = UniqueKeyAttribute;
+				if (a == null)
+					return null;
+				if (a.FieldName != null)
+					return a.FieldName;
+				return prop.Name;
+			}
+		}
+
+		public PropertyInfo UniqueKeyProperty {
+			get {
+				var a = UniqueKeyAttribute;
+				if (a == null)
+					return null;
+				return prop;
 			}
 		}
 	}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SolrNet.Tests.Integration {
 	public class TestDocument : ISolrDocument {
-		[SolrUniqueKey]
+		[SolrUniqueKey("id")]
 		[SolrField("id")]
 		public int Id { get; set; }
 

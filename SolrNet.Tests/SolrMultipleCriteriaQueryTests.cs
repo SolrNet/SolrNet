@@ -10,7 +10,7 @@ namespace SolrNet.Tests {
 			var q1 = new SolrQuery("1");
 			var q2 = new SolrQuery("2");
 			var qm = new SolrMultipleCriteriaQuery(new[] {q1, q2});
-			Assert.AreEqual("1 2", qm.Query);
+			Assert.AreEqual("1  2", qm.Query);
 		}
 
 		[Test]

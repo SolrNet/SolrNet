@@ -5,8 +5,15 @@ namespace SolrNet {
 	public class SolrMultipleCriteriaQuery : ISolrQuery {
 		private readonly string q;
 
-		public SolrMultipleCriteriaQuery(IEnumerable<ISolrQuery> queries) {
-			q = Func.Join(" ", queries, query => query.Query, true);
+		public class Operator {
+			public const string OR = "OR";
+			public const string AND = "AND";
+		}
+
+		public SolrMultipleCriteriaQuery(IEnumerable<ISolrQuery> queries): this(queries, "") {}
+
+		public SolrMultipleCriteriaQuery(IEnumerable<ISolrQuery> queries, string oper) {
+			q = Func.Join(string.Format(" {0} ", oper), queries, query => query.Query, true);
 		}
 
 		/// <summary>

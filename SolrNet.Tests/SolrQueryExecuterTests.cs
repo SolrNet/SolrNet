@@ -37,18 +37,18 @@ namespace SolrNet.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
 			var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
+			var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
+				ResultParser = parser,
+				Options = new QueryOptions { OrderBy = new[] { new SortOrder("id") } }
+			};
 			With.Mocks(mocks).Expecting(delegate {
 				var q = new Dictionary<string, string>();
 				q["q"] = queryString;
-				q["rows"] = int.MaxValue.ToString();
+				q["rows"] = queryExecuter.DefaultRows.ToString();
 				q["sort"] = "id asc";
 				Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
 				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
 			}).Verify(delegate {
-				var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
-					ResultParser = parser,
-					Options = new QueryOptions {OrderBy = new[] {new SortOrder("id")}}
-				};
 				var r = queryExecuter.Execute();
 			});
 		}
@@ -60,23 +60,23 @@ namespace SolrNet.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
 			var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
+			var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
+				ResultParser = parser,
+				Options = new QueryOptions {
+					OrderBy = new[] {
+							new SortOrder("id", Order.ASC),
+							new SortOrder("name", Order.DESC)
+						}
+				}
+			};
 			With.Mocks(mocks).Expecting(delegate {
 				var q = new Dictionary<string, string>();
 				q["q"] = queryString;
-				q["rows"] = int.MaxValue.ToString();
+				q["rows"] = queryExecuter.DefaultRows.ToString();
 				q["sort"] = "id asc,name desc";
 				Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
 				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
 			}).Verify(delegate {
-				var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
-					ResultParser = parser,
-					Options = new QueryOptions {
-						OrderBy = new[] {
-							new SortOrder("id", Order.ASC),
-							new SortOrder("name", Order.DESC)
-						}
-					}
-				};
 				var r = queryExecuter.Execute();
 			});
 		}
@@ -131,20 +131,20 @@ namespace SolrNet.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
 			var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
+			var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
+				ResultParser = parser,
+				Options = new QueryOptions {
+					Fields = new[] { "id", "name" },
+				}
+			};
 			With.Mocks(mocks).Expecting(delegate {
 				var q = new Dictionary<string, string>();
 				q["q"] = queryString;
-				q["rows"] = int.MaxValue.ToString();
+				q["rows"] = queryExecuter.DefaultRows.ToString();
 				q["fl"] = "id,name";
 				Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
 				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
 			}).Verify(delegate {
-				var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
-					ResultParser = parser,
-					Options = new QueryOptions {
-						Fields = new[] {"id", "name"},
-					}
-				};
 				var r = queryExecuter.Execute();
 			});
 		}

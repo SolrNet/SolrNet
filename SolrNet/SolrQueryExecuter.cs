@@ -25,22 +25,26 @@ namespace SolrNet {
 
 		public IListRandomizer ListRandomizer { get; set; }
 
-		public IUniqueKeyFinder<T> UniqueKeyFinder { get; set; } 
+		public IUniqueKeyFinder<T> UniqueKeyFinder { get; set; }
+
+		public int DefaultRows { get; set; }
 
 		public SolrQueryExecuter(ISolrConnection connection, ISolrQuery query) {
+			Query = query;
 			Connection = connection;
 			ListRandomizer = new ListRandomizer();
-			Query = query;
 			ResultParser = new SolrQueryResultParser<T>();
 			UniqueKeyFinder = new UniqueKeyFinder<T>();
+			DefaultRows = 1000000000;
 		}
 
 		public SolrQueryExecuter(ISolrConnection connection, string query) {
+			Query = new SolrQuery(query);
 			Connection = connection;
 			ListRandomizer = new ListRandomizer();
-			Query = new SolrQuery(query);
 			ResultParser = new SolrQueryResultParser<T>();
 			UniqueKeyFinder = new UniqueKeyFinder<T>();
+			DefaultRows = 1000000000;
 		}
 
 		/// <summary>
@@ -53,7 +57,7 @@ namespace SolrNet {
 			if (Options != null) {
 				if (Options.Start.HasValue)
 					param["start"] = Options.Start.ToString();
-				var rows = Options.Rows.HasValue ? Options.Rows.Value : int.MaxValue;
+				var rows = Options.Rows.HasValue ? Options.Rows.Value : DefaultRows;
 				param["rows"] = rows.ToString();
 				if (Options.OrderBy != null && Options.OrderBy.Count > 0)
 					if (Options.OrderBy == SortOrder.Random) {

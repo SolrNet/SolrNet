@@ -29,22 +29,22 @@ namespace SolrNet {
 
 		public int DefaultRows { get; set; }
 
-		public SolrQueryExecuter(ISolrConnection connection, ISolrQuery query) {
-			Query = query;
-			Connection = connection;
+		private void SetDefaults() {
 			ListRandomizer = new ListRandomizer();
 			ResultParser = new SolrQueryResultParser<T>();
 			UniqueKeyFinder = new UniqueKeyFinder<T>();
-			DefaultRows = 1000000000;
+			DefaultRows = 100000000;
+		}
+		public SolrQueryExecuter(ISolrConnection connection, ISolrQuery query) {
+			Query = query;
+			Connection = connection;
+			SetDefaults();
 		}
 
 		public SolrQueryExecuter(ISolrConnection connection, string query) {
 			Query = new SolrQuery(query);
 			Connection = connection;
-			ListRandomizer = new ListRandomizer();
-			ResultParser = new SolrQueryResultParser<T>();
-			UniqueKeyFinder = new UniqueKeyFinder<T>();
-			DefaultRows = 1000000000;
+			SetDefaults();
 		}
 
 		/// <summary>

@@ -71,7 +71,6 @@ namespace SolrNet {
 							UniqueKeyFinder = UniqueKeyFinder,
 							Options = new QueryOptions {
 								Fields = new[] {pk},
-                Rows = int.MaxValue,
 							}
 						};
 						var nr = executer.Execute();

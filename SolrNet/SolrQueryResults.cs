@@ -153,6 +153,7 @@ namespace SolrNet {
 		}
 
 		public int NumFound { get; set; }
+		public double? MaxScore { get; set; }
 
 		public IDictionary<string, int> FacetQueries { get; set; }
 		public IDictionary<string, int> FacetFields { get; set; }

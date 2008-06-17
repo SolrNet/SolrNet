@@ -10,6 +10,7 @@ namespace SolrNet {
 		/// Total documents found
 		/// </summary>
 		int NumFound { get; }
+		double? MaxScore { get; }
 
 		IDictionary<string, int> FacetQueries { get; set; }
 		IDictionary<string, int> FacetFields { get; set; }

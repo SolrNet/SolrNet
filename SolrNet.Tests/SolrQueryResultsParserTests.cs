@@ -145,6 +145,20 @@ namespace SolrNet.Tests {
 			var doc = results[0];
 		}
 
+		[Test]
+		public void ReadsMaxScoreAttribute() {
+			var parser = new SolrQueryResultParser<TestDocumentWithArrays4>();
+			var results = parser.Parse(responseXMLWithArraysSimple);
+			Assert.AreEqual(1.6578954, results.MaxScore);
+		}
+
+		[Test]
+		public void ReadMaxScore_doesnt_crash_if_not_present() {
+			var parser = new SolrQueryResultParser<TestDocument>();
+			var results = parser.Parse(responseXml);
+			Assert.IsNull(results.MaxScore);
+		}
+
 		public class TestDocument : ISolrDocument {
 			[SolrField("advancedview")]
 			public string AdvancedView { get; set; }
@@ -167,7 +181,7 @@ namespace SolrNet.Tests {
 			@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
 <responseHeader><status>0</status><QTime>1</QTime></responseHeader>
-<result numFound=""1"" start=""0"">
+<result numFound=""1"" start=""0"" maxScore=""1.6578954"">
 	<doc>
 		<arr name=""features""><str>7200RPM, 8MB cache, IDE Ultra ATA-133</str><str>NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor</str></arr>
 	</doc>

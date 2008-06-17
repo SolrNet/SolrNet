@@ -34,6 +34,10 @@ namespace SolrNet {
 			xml.LoadXml(r);
 			var resultNode = xml.SelectSingleNode("response/result");
 			results.NumFound = Convert.ToInt32(resultNode.Attributes["numFound"].InnerText);
+			var maxScore = resultNode.Attributes["maxScore"];
+			if (maxScore != null) {
+				results.MaxScore = double.Parse(maxScore.InnerText, CultureInfo.InvariantCulture.NumberFormat);
+			}
 			foreach (XmlNode docNode in xml.SelectNodes("response/result/doc")) {
 				results.Add(ParseDocument(docNode));
 			}

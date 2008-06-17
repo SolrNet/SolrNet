@@ -2,7 +2,7 @@
 
 namespace SolrNet.Utils {
 	public class RNG : IRNG {
-		private readonly Random r = new Random();
+		private static readonly Random r = new Random();
 
 		public int Next() {
 			return r.Next();

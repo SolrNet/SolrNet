@@ -54,6 +54,9 @@ namespace SolrNet {
 				prop.SetValue(doc, decimal.Parse(field.InnerText, CultureInfo.InvariantCulture), null);
 			} else if (prop.PropertyType == typeof(double)) {
 				prop.SetValue(doc, double.Parse(field.InnerText, CultureInfo.InvariantCulture), null);
+			} else if (prop.PropertyType == typeof(double?)) {
+				if (!string.IsNullOrEmpty(field.InnerText))
+					prop.SetValue(doc, double.Parse(field.InnerText, CultureInfo.InvariantCulture), null);
 			} else if (prop.PropertyType == typeof(DateTime)) {
 			    prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
 			} else if (prop.PropertyType == typeof(DateTime?)) {

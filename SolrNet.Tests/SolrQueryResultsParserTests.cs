@@ -60,6 +60,17 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
+		public void SetPropertyNullableDouble() {
+			var xml = new XmlDocument();
+			xml.LoadXml(responseXMLWithArrays);
+			var fieldNode = xml.SelectSingleNode("response/result/doc/float[@name='price']");
+			var parser = new SolrQueryResultParser<TestDocumentWithNullableDouble>();
+			var doc = new TestDocumentWithNullableDouble();
+			parser.SetProperty(doc, typeof(TestDocumentWithNullableDouble).GetProperty("Price"), fieldNode);
+			Assert.AreEqual(92d, doc.Price);
+		}
+
+		[Test]
 		public void SetPropertyWithIntCollection() {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);
@@ -254,6 +265,11 @@ namespace SolrNet.Tests {
  </lst>
 </lst>
 </response>";
+
+		public class TestDocumentWithNullableDouble: ISolrDocument {
+			[SolrField("price")]
+			public double? Price { get; set; }			
+		}
 
 		public class TestDocumentWithArrays : ISolrDocument {
 			[SolrField("cat")]

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using log4net.Config;
 using NUnit.Framework;
 
 namespace SolrNet.Tests {
@@ -55,7 +56,7 @@ namespace SolrNet.Tests {
 			var fieldNode = xml.SelectSingleNode("response/result/doc/float[@name='price']");
 			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
 			var doc = new TestDocumentWithArrays();
-			parser.SetProperty(doc, typeof(TestDocumentWithArrays).GetProperty("Price"), fieldNode);
+			parser.SetProperty(doc, typeof (TestDocumentWithArrays).GetProperty("Price"), fieldNode);
 			Assert.AreEqual(92d, doc.Price);
 		}
 
@@ -66,7 +67,7 @@ namespace SolrNet.Tests {
 			var fieldNode = xml.SelectSingleNode("response/result/doc/float[@name='price']");
 			var parser = new SolrQueryResultParser<TestDocumentWithNullableDouble>();
 			var doc = new TestDocumentWithNullableDouble();
-			parser.SetProperty(doc, typeof(TestDocumentWithNullableDouble).GetProperty("Price"), fieldNode);
+			parser.SetProperty(doc, typeof (TestDocumentWithNullableDouble).GetProperty("Price"), fieldNode);
 			Assert.AreEqual(92d, doc.Price);
 		}
 
@@ -130,14 +131,14 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 3, 3), doc.Fecha);
 		}
 
-        [Test]
-        public void SupportsNullableDateTime() {
-            var parser = new SolrQueryResultParser<TestDocumentWithNullableDate>();
-            var results = parser.Parse(responseXMLWithDate);
-            Assert.AreEqual(1, results.Count);
-            var doc = results[0];
-            Assert.AreEqual(new DateTime(2001, 1, 2, 3, 3, 3), doc.Fecha);            
-        }
+		[Test]
+		public void SupportsNullableDateTime() {
+			var parser = new SolrQueryResultParser<TestDocumentWithNullableDate>();
+			var results = parser.Parse(responseXMLWithDate);
+			Assert.AreEqual(1, results.Count);
+			var doc = results[0];
+			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 3, 3), doc.Fecha);
+		}
 
 		[Test]
 		public void SupportsIEnumerable() {
@@ -168,6 +169,15 @@ namespace SolrNet.Tests {
 			var parser = new SolrQueryResultParser<TestDocument>();
 			var results = parser.Parse(responseXml);
 			Assert.IsNull(results.MaxScore);
+		}
+
+		[Test]
+		public void Performance() {
+			BasicConfigurator.Configure();
+			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
+			for (var i = 0; i < 1000; i++) {
+				parser.Parse(responseXMLWithArrays);
+			}
 		}
 
 		public class TestDocument : ISolrDocument {
@@ -266,9 +276,9 @@ namespace SolrNet.Tests {
 </lst>
 </response>";
 
-		public class TestDocumentWithNullableDouble: ISolrDocument {
+		public class TestDocumentWithNullableDouble : ISolrDocument {
 			[SolrField("price")]
-			public double? Price { get; set; }			
+			public double? Price { get; set; }
 		}
 
 		public class TestDocumentWithArrays : ISolrDocument {
@@ -323,9 +333,9 @@ namespace SolrNet.Tests {
 			public DateTime Fecha { get; set; }
 		}
 
-        public class TestDocumentWithNullableDate: ISolrDocument {
-            [SolrField]
-            public DateTime? Fecha { get; set; }
-        }
+		public class TestDocumentWithNullableDate : ISolrDocument {
+			[SolrField]
+			public DateTime? Fecha { get; set; }
+		}
 	}
 }

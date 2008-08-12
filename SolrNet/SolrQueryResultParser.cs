@@ -44,8 +44,39 @@ namespace SolrNet {
 			foreach (XmlNode docNode in xml.SelectNodes("response/result/doc")) {
 				results.Add(ParseDocument(docNode));
 			}
+			var mainFacetNode = xml.SelectSingleNode("response/lst[@name='facet_counts']");
+			if (mainFacetNode != null) {
+				log.Debug("contains facets");
+				results.FacetQueries = ParseFacetQueries(mainFacetNode);
+				results.FacetFields = ParseFacetFields(mainFacetNode);
+			}
 			log.Debug("End parse()");
 			return results;
+		}
+
+		public IDictionary<string, ICollection<KeyValuePair<string, int>>> ParseFacetFields(XmlNode node) {
+			var d = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
+			foreach (XmlNode fieldNode in node.SelectSingleNode("lst[@name='facet_fields']").ChildNodes) {
+				var field = fieldNode.Attributes["name"].Value;
+				var c = new List<KeyValuePair<string, int>>();
+				foreach (XmlNode facetNode in fieldNode.ChildNodes) {
+					var key = facetNode.Attributes["name"].Value;
+					var value = Convert.ToInt32(facetNode.InnerText);
+					c.Add(new KeyValuePair<string, int>(key, value));
+				}
+				d[field] = c;
+			}
+			return d;
+		}
+
+		public IDictionary<string, int> ParseFacetQueries(XmlNode node) {
+			var d = new Dictionary<string, int>();
+			foreach (XmlNode fieldNode in node.SelectSingleNode("lst[@name='facet_queries']").ChildNodes) {
+				var key = fieldNode.Attributes["name"].Value;
+				var value = Convert.ToInt32(fieldNode.InnerText);
+				d[key] = value;
+			}
+			return d;
 		}
 
 		private delegate bool BoolFunc(PropertyInfo[] p);
@@ -140,7 +171,8 @@ namespace SolrNet {
 						var atts = property.GetCustomAttributes(typeof (SolrFieldAttribute), true);
 						if (atts.Length > 0) {
 							var att = (SolrFieldAttribute) atts[0];
-							if (att.FieldName == fieldName) {
+							var fName = att.FieldName ?? property.Name;
+							if (fName == fieldName) {
 								SetProperty(doc, property, field);
 								return true;
 							}

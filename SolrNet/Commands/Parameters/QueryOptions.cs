@@ -2,7 +2,8 @@
 
 namespace SolrNet.Commands.Parameters {
 	public class QueryOptions {
-		public ICollection<string> Fields;
+		public ICollection<string> Fields { get; set; }
+		public ICollection<ISolrFacetQuery> FacetQueries { get; set; }
 		public int? Start { get; set; }
 		public int? Rows { get; set; }
 		public ICollection<SortOrder> OrderBy { get; set; }

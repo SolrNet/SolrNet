@@ -35,6 +35,7 @@ namespace SolrNet {
 			UniqueKeyFinder = new UniqueKeyFinder<T>();
 			DefaultRows = 100000000;
 		}
+
 		public SolrQueryExecuter(ISolrConnection connection, ISolrQuery query) {
 			Query = query;
 			Connection = connection;
@@ -59,7 +60,7 @@ namespace SolrNet {
 					param["start"] = Options.Start.ToString();
 				var rows = Options.Rows.HasValue ? Options.Rows.Value : DefaultRows;
 				param["rows"] = rows.ToString();
-				if (Options.OrderBy != null && Options.OrderBy.Count > 0)
+				if (Options.OrderBy != null && Options.OrderBy.Count > 0) {
 					if (Options.OrderBy == SortOrder.Random) {
 						var pk = UniqueKeyFinder.UniqueKeyFieldName;
 						var pkProp = UniqueKeyFinder.UniqueKeyProperty;
@@ -80,9 +81,21 @@ namespace SolrNet {
 					} else {
 						param["sort"] = Func.Join(",", Options.OrderBy);
 					}
+				}
+
 				if (Options.Fields != null && Options.Fields.Count > 0)
 					param["fl"] = Func.Join(",", Options.Fields);
+
+				if (Options.FacetQueries != null && Options.FacetQueries.Count > 0) {
+					param["facet"] = "true";
+					foreach (var fq in Options.FacetQueries) {
+						foreach (var fqv in fq.Query) {
+							param[fqv.Key] = fqv.Value;
+						}
+					}
+				}
 			}
+
 			string r = Connection.Get("/select", param);
 			var qr = ResultParser.Parse(r);
 			return qr;

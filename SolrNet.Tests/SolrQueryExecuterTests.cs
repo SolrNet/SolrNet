@@ -39,7 +39,7 @@ namespace SolrNet.Tests {
 			var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
 			var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
 				ResultParser = parser,
-				Options = new QueryOptions { OrderBy = new[] { new SortOrder("id") } }
+				Options = new QueryOptions {OrderBy = new[] {new SortOrder("id")}}
 			};
 			With.Mocks(mocks).Expecting(delegate {
 				var q = new Dictionary<string, string>();
@@ -64,9 +64,9 @@ namespace SolrNet.Tests {
 				ResultParser = parser,
 				Options = new QueryOptions {
 					OrderBy = new[] {
-							new SortOrder("id", Order.ASC),
-							new SortOrder("name", Order.DESC)
-						}
+						new SortOrder("id", Order.ASC),
+						new SortOrder("name", Order.DESC)
+					}
 				}
 			};
 			With.Mocks(mocks).Expecting(delegate {
@@ -94,7 +94,7 @@ namespace SolrNet.Tests {
 				q["rows"] = int.MaxValue.ToString();
 				q["fl"] = "id";
 				Expect.Call(conn.Get("/select", q)).IgnoreArguments().Return("");
-				var doc123 = new TestDocument {Id = 123};	
+				var doc123 = new TestDocument {Id = 123};
 				var doc456 = new TestDocument {Id = 456};
 				var doc567 = new TestDocument {Id = 567};
 				Expect.Call(parser.Parse(null)).IgnoreArguments().Return(new SolrQueryResults<TestDocument> {
@@ -134,7 +134,7 @@ namespace SolrNet.Tests {
 			var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
 				ResultParser = parser,
 				Options = new QueryOptions {
-					Fields = new[] { "id", "name" },
+					Fields = new[] {"id", "name"},
 				}
 			};
 			With.Mocks(mocks).Expecting(delegate {
@@ -146,6 +146,34 @@ namespace SolrNet.Tests {
 				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
 			}).Verify(delegate {
 				var r = queryExecuter.Execute();
+			});
+		}
+
+		[Test]
+		public void Facets() {
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
+			var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+			var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, "") {
+				Options = new QueryOptions {
+					FacetQueries = new ISolrFacetQuery[] {
+						new SolrFacetFieldQuery("Id"),
+						new SolrFacetQuery(new SolrQuery("id:[1 TO 5]")),
+					},
+				},
+				ResultParser = parser,
+			};
+			With.Mocks(mocks).Expecting(() => {
+				var q = new Dictionary<string, string>();
+				q["q"] = "";
+				q["rows"] = queryExecuter.DefaultRows.ToString();
+				q["facet"] = "true";
+				q["facet.field"] = "Id";
+				q["facet.query"] = "id:[1 TO 5]";
+				Expect.Call(conn.Get("/select", q))
+					.Repeat.Once().Return("");
+			}).Verify(() => {
+				queryExecuter.Execute();
 			});
 		}
 

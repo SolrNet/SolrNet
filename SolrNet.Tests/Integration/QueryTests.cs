@@ -50,5 +50,25 @@ namespace SolrNet.Tests.Integration {
 			var doc = r[0];
 			Console.WriteLine(r[0].Id);
 		}
+
+		[Test]
+		[Category("Integration")]
+		[Ignore]
+		public void FacetField() {
+			var conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
+			var server = new SolrServer<TestDocument>(conn);
+			var query = new SolrQueryByField("makedesc", "bmw");
+			var r = server.Query(query, new QueryOptions {
+				Rows = 5,
+				FacetQueries = new ISolrFacetQuery[] {
+					new SolrFacetFieldQuery("modeldesc"), 
+				},
+			});
+			Console.WriteLine(r.Count);
+			Console.WriteLine(r.FacetFields.Count);
+			foreach (var fq in r.FacetFields["modeldesc"]) {
+				Console.WriteLine("{0}: {1}", fq.Key, fq.Value);
+			}
+		}
 	}
 }

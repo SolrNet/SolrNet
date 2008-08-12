@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
-    	<Name>log4net</Name>
+      <Name>log4net</Name>
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\log4net.dll</HintPath>
     </Reference>
@@ -64,6 +64,7 @@
     <Compile Include="ISolrCommand.cs" />
     <Compile Include="ISolrDocument.cs" />
     <Compile Include="ISolrDocumentSerializer.cs" />
+    <Compile Include="ISolrFacetQuery.cs" />
     <Compile Include="ISolrQueryExecuter.cs" />
     <Compile Include="ISolrOperations.cs" />
     <Compile Include="ISolrQuery.cs" />
@@ -73,6 +74,8 @@
     <Compile Include="Order.cs" />
     <Compile Include="RandomSortOrder.cs" />
     <Compile Include="SolrDocumentSerializer.cs" />
+    <Compile Include="SolrFacetFieldQuery.cs" />
+    <Compile Include="SolrFacetQuery.cs" />
     <Compile Include="SolrQueryExecuter.cs" />
     <Compile Include="SolrFieldAttribute.cs" />
     <Compile Include="SolrMultipleCriteriaQuery.cs" />

@@ -13,6 +13,6 @@ namespace SolrNet {
 		double? MaxScore { get; }
 
 		IDictionary<string, int> FacetQueries { get; set; }
-		IDictionary<string, int> FacetFields { get; set; }
+		IDictionary<string, ICollection<KeyValuePair<string, int>>> FacetFields { get; set; }
 	}
 }

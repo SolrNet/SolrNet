@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using log4net.Config;
 using NUnit.Framework;
@@ -180,6 +181,21 @@ namespace SolrNet.Tests {
 			}
 		}
 
+		[Test]
+		public void ParseFacetResults() {
+			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
+			var r = parser.Parse(responseXMLWithFacet);
+			Assert.IsNotNull(r.FacetFields);
+			Console.WriteLine(r.FacetFields.Count);
+			Assert.IsTrue(r.FacetFields.ContainsKey("cat"));
+			Assert.IsTrue(r.FacetFields.ContainsKey("inStock"));
+			Assert.AreEqual(2, r.FacetFields["cat"].Where(q => q.Key == "connector").First().Value);
+
+			Assert.IsNotNull(r.FacetQueries);
+			Console.WriteLine(r.FacetQueries.Count);
+			Assert.AreEqual(1, r.FacetQueries.Count);
+		}
+
 		public class TestDocument : ISolrDocument {
 			[SolrField("advancedview")]
 			public string AdvancedView { get; set; }
@@ -248,7 +264,9 @@ namespace SolrNet.Tests {
 <responseHeader><status>0</status><QTime>2</QTime></responseHeader>
 <result numFound=""4"" start=""0""/>
 <lst name=""facet_counts"">
- <lst name=""facet_queries""/>
+ <lst name=""facet_queries"">
+	<int name=""payment:[0 TO 1000]"">259</int>
+ </lst>
  <lst name=""facet_fields"">
   <lst name=""cat"">
         <int name=""search"">0</int>
@@ -324,7 +342,7 @@ namespace SolrNet.Tests {
 		}
 
 		public class TestDocumentWithArrays4 : ISolrDocument {
-			[SolrField]
+			[SolrField("features")]
 			public IEnumerable<string> Features { get; set; }
 		}
 

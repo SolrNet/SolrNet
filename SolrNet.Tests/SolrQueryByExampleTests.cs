@@ -6,7 +6,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void Basic() {
 			var q = new SolrQueryByExample<TestDocument>(new TestDocument(0, "a"));
-			Assert.AreEqual("Id:0 Ss:a", q.Query);
+			Assert.AreEqual("Id:0  Ss:a", q.Query);
 		}
 
 		[Test]

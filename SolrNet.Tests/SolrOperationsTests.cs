@@ -227,9 +227,14 @@ namespace SolrNet.Tests {
 			With.Mocks(mocks).Expecting(delegate {
 				IDictionary<string, string> query = new Dictionary<string, string>();
 				query["q"] = qstring;
+				query["rows"] = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, "").DefaultRows.ToString();
 				query["sort"] = "id asc,name desc";
-				Expect.Call(connection.Get("/select", query)).Repeat.Once().Return("");
-				SetupResult.For(parser.Parse(null)).IgnoreArguments().Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
+				Expect.Call(connection.Get("/select", query))
+					.Repeat.Once()
+					.Return("");
+				SetupResult.For(parser.Parse(null))
+					.IgnoreArguments()
+					.Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
 			}).Verify(delegate {
 				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) {ResultParser = parser};
 				var r = solr.Query(new SolrQuery(qstring), new[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)});
@@ -265,10 +270,66 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
+		public void FacetQuery() {
+			var mocks = new MockRepository();
+			var connection = mocks.CreateMock<ISolrConnection>();
+			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+			With.Mocks(mocks).Expecting(delegate {
+				IDictionary<string, string> query = new Dictionary<string, string>();
+				query["q"] = "";
+				query["rows"] = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, "").DefaultRows.ToString();
+				query["facet"] = "true";
+				query["facet.query"] = "id:1";
+				Expect.Call(connection.Get("/select", query))
+					.Repeat.Once()
+					.Return("");
+				SetupResult.For(parser.Parse(null))
+					.IgnoreArguments()
+					.Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
+			}).Verify(delegate {
+				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) { ResultParser = parser };
+				var r = solr.Query("", new QueryOptions {
+					FacetQueries = new ISolrFacetQuery[] {
+						new SolrFacetQuery(new SolrQuery("id:1")),
+					},
+				});
+			});
+		}
+
+		[Test]
+		public void FacetField() {
+			var mocks = new MockRepository();
+			var connection = mocks.CreateMock<ISolrConnection>();
+			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+			With.Mocks(mocks).Expecting(delegate {
+				IDictionary<string, string> query = new Dictionary<string, string>();
+				query["q"] = "";
+				query["rows"] = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, "").DefaultRows.ToString();
+				query["facet"] = "true";
+				query["facet.field"] = "id";
+				query["facet.limit"] = "3";
+				Expect.Call(connection.Get("/select", query))
+					.Repeat.Once()
+					.Return("");
+				SetupResult.For(parser.Parse(null))
+					.IgnoreArguments()
+					.Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
+			}).Verify(delegate {
+				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) { ResultParser = parser };
+				var r = solr.Query("", new QueryOptions {
+					FacetQueries = new ISolrFacetQuery[] {
+						new SolrFacetFieldQuery("id") {Limit = 3},
+					},
+				});
+			});			
+		}
+
+		[Test]
 		public void SearchResults_ShouldBeIterable() {
 			var mocks = new MockRepository();
 			var results = mocks.CreateMock<ISolrQueryResults<ISolrDocument>>();
 			Assert.IsInstanceOfType(typeof (IEnumerable<ISolrDocument>), results);
 		}
+
 	}
 }

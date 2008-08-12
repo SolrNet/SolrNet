@@ -156,7 +156,7 @@ namespace SolrNet {
 		public double? MaxScore { get; set; }
 
 		public IDictionary<string, int> FacetQueries { get; set; }
-		public IDictionary<string, int> FacetFields { get; set; }
+		public IDictionary<string, ICollection<KeyValuePair<string, int>>> FacetFields { get; set; }
 
 		///<summary>
 		///Returns an enumerator that iterates through the collection.

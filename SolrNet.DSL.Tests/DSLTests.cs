@@ -372,5 +372,42 @@ namespace SolrNet.DSL.Tests {
 				Assert.AreEqual(1, r.NumFound);
 			});
 		}
+
+		[Test]
+		public void FacetField() {
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response);
+			}).Verify(delegate {
+				Solr.Connection = conn;
+				var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithFacetField("modeldesc").Run();
+			});
+		}
+
+		[Test]
+		public void FacetQuery_string() {
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response);
+			}).Verify(delegate {
+				Solr.Connection = conn;
+				var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithFacetQuery("").Run();
+			});
+		}
+
+		[Test]
+		public void FacetQuery_ISolrQuery() {
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response);
+			}).Verify(delegate {
+				Solr.Connection = conn;
+				var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithFacetQuery(new SolrQuery("")).Run();
+			});
+		}
+
 	}
 }

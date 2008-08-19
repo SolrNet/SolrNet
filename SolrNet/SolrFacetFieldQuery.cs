@@ -70,6 +70,8 @@ namespace SolrNet {
 					r.Add(new KeyValuePair<string, string>("facet.offset", Offset.ToString()));
 				if (MinCount.HasValue)
 					r.Add(new KeyValuePair<string, string>("facet.mincount", MinCount.ToString()));
+				if (Missing.HasValue)
+					r.Add(new KeyValuePair<string, string>("facet.missing", Missing.ToString().ToLowerInvariant()));
 				if (EnumCacheMinDf.HasValue)
 					r.Add(new KeyValuePair<string, string>("facet.enum.cache.minDf", EnumCacheMinDf.ToString()));
 				return r;

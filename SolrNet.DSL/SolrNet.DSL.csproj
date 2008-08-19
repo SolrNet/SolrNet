@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{385E2EC3-885B-43D5-A86B-955692058BA0}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -40,11 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeleteBy.cs" />
+    <Compile Include="DSLFacetFieldOptions.cs" />
     <Compile Include="DSLQuery.cs" />
     <Compile Include="DSLQueryBetween.cs" />
     <Compile Include="DSLQueryBy.cs" />
     <Compile Include="DSLQueryRange.cs" />
     <Compile Include="DSLRun.cs" />
+    <Compile Include="IDSLFacetFieldOptions.cs" />
     <Compile Include="IDSLQuery.cs" />
     <Compile Include="IDSLQueryBetween.cs" />
     <Compile Include="IDSLQueryBy.cs" />

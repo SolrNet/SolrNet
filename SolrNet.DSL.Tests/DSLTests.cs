@@ -386,6 +386,26 @@ namespace SolrNet.DSL.Tests {
 		}
 
 		[Test]
+		public void FacetField_options() {
+			var mocks = new MockRepository();
+			var conn = mocks.CreateMock<ISolrConnection>();
+			With.Mocks(mocks).Expecting(delegate {
+				Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response);
+			}).Verify(delegate {
+				Solr.Connection = conn;
+				var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw")
+					.WithFacetField("modeldesc")
+					.LimitTo(100)
+					.DontSortByCount()
+					.WithPrefix("xx")
+					.WithMinCount(10)
+					.StartingAt(20)
+					.IncludeMissing()
+					.Run();
+			});
+		}
+
+		[Test]
 		public void FacetQuery_string() {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();

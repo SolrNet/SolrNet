@@ -3,8 +3,8 @@ using SolrNet.Commands.Parameters;
 
 namespace SolrNet.DSL {
 	public class DSLRun<T> : IDSLRun<T> where T : ISolrDocument, new() {
-		private readonly ICollection<SortOrder> order = new List<SortOrder>();
-		private readonly ICollection<ISolrFacetQuery> facets = new List<ISolrFacetQuery>();
+		protected readonly ICollection<SortOrder> order = new List<SortOrder>();
+		protected readonly ICollection<ISolrFacetQuery> facets = new List<ISolrFacetQuery>();
 		protected ISolrConnection connection;
 		protected ISolrQuery query;
 
@@ -56,9 +56,10 @@ namespace SolrNet.DSL {
 			return new DSLRun<T>(connection, query, newOrder);
 		}
 
-		public IDSLRun<T> WithFacetField(string fieldName) {
-			var newFacets = new List<ISolrFacetQuery>(facets) {new SolrFacetFieldQuery(fieldName)};
-			return new DSLRun<T>(connection, query, order, newFacets);
+		public IDSLFacetFieldOptions<T> WithFacetField(string fieldName) {
+			var facetFieldQuery = new SolrFacetFieldQuery(fieldName);
+			var newFacets = new List<ISolrFacetQuery>(facets) {facetFieldQuery};
+			return new DSLFacetFieldOptions<T>(connection, query, order, newFacets, facetFieldQuery);
 		}
 
 		public IDSLRun<T> WithFacetQuery(string q) {

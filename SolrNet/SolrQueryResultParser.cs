@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using System.Xml;
@@ -85,20 +86,20 @@ namespace SolrNet {
 			// HACK too messy
 			if (field.Name == "arr") {
 				prop.SetValue(doc, GetCollectionProperty(field, prop), null);
-			} else if (prop.PropertyType == typeof(decimal)) {
-				prop.SetValue(doc, decimal.Parse(field.InnerText, CultureInfo.InvariantCulture), null);
-			} else if (prop.PropertyType == typeof(double)) {
-				prop.SetValue(doc, double.Parse(field.InnerText, CultureInfo.InvariantCulture), null);
-			} else if (prop.PropertyType == typeof(double?)) {
+			} else if (prop.PropertyType == typeof (double?)) {
 				if (!string.IsNullOrEmpty(field.InnerText))
 					prop.SetValue(doc, double.Parse(field.InnerText, CultureInfo.InvariantCulture), null);
-			} else if (prop.PropertyType == typeof(DateTime)) {
-			    prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
-			} else if (prop.PropertyType == typeof(DateTime?)) {
-                if (!string.IsNullOrEmpty(field.InnerText))
-                    prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
-		  } else {
-				prop.SetValue(doc, Convert.ChangeType(field.InnerText, prop.PropertyType), null);
+			} else if (prop.PropertyType == typeof (DateTime)) {
+				prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
+			} else if (prop.PropertyType == typeof (DateTime?)) {
+				if (!string.IsNullOrEmpty(field.InnerText))
+					prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
+			} else {
+				var converter = TypeDescriptor.GetConverter(prop.PropertyType);
+				if (converter.CanConvertFrom(typeof (string)))
+					prop.SetValue(doc, converter.ConvertFromInvariantString(field.InnerText), null);
+				else
+					prop.SetValue(doc, Convert.ChangeType(field.InnerText, prop.PropertyType), null);
 			}
 		}
 

@@ -173,6 +173,7 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
+		[Ignore("Performance test, potentially slow")]
 		public void Performance() {
 			BasicConfigurator.Configure();
 			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();

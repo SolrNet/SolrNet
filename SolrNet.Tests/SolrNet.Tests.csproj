@@ -66,6 +66,7 @@
     <Compile Include="Integration\AddCommandTests.cs" />
     <Compile Include="Integration\QueryTests.cs" />
     <Compile Include="Integration\TestDocument.cs" />
+    <Compile Include="JsonQueryResultParser.cs" />
     <Compile Include="JsonQueryResultParserTests.cs" />
     <Compile Include="SolrConnectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

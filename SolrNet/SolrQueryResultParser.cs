@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using System.Xml;
-using log4net;
 using SolrNet.Exceptions;
 
 namespace SolrNet {
@@ -16,7 +15,6 @@ namespace SolrNet {
 	/// <typeparam name="T">Document type</typeparam>
 	public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : ISolrDocument, new() {
 		private static readonly IDictionary<string, Type> solrTypes;
-		private static readonly ILog log = LogManager.GetLogger(typeof (SolrQueryResultParser<T>));
 
 		static SolrQueryResultParser() {
 			solrTypes = new Dictionary<string, Type>();
@@ -32,7 +30,6 @@ namespace SolrNet {
 		/// <param name="r">solr xml response</param>
 		/// <returns>query results</returns>
 		public ISolrQueryResults<T> Parse(string r) {
-			log.Debug("Start parse()");
 			var results = new SolrQueryResults<T>();
 			var xml = new XmlDocument();
 			xml.LoadXml(r);
@@ -47,11 +44,9 @@ namespace SolrNet {
 			}
 			var mainFacetNode = xml.SelectSingleNode("response/lst[@name='facet_counts']");
 			if (mainFacetNode != null) {
-				log.Debug("contains facets");
 				results.FacetQueries = ParseFacetQueries(mainFacetNode);
 				results.FacetFields = ParseFacetFields(mainFacetNode);
 			}
-			log.Debug("End parse()");
 			return results;
 		}
 
@@ -160,7 +155,6 @@ namespace SolrNet {
 		/// <param name="node">response xml node</param>
 		/// <returns>populated document</returns>
 		public T ParseDocument(XmlNode node) {
-			log.Debug("Start ParseDocument()");
 			var doc = new T();
 			var properties = typeof (T).GetProperties();
 			// TODO this is a mess, clean it up
@@ -199,7 +193,6 @@ namespace SolrNet {
 				//  throw ex;
 				//}
 			}
-			log.Debug("End ParseDocument()");
 			return doc;
 		}
 	}

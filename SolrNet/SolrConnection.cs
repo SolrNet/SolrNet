@@ -25,8 +25,6 @@ namespace SolrNet {
 			this.httpWebRequestFactory = httpWebRequestFactory;
 		}
 
-		#region ISolrConnection Members
-
 		public string ServerURL {
 			get { return serverURL; }
 			set {
@@ -57,7 +55,6 @@ namespace SolrNet {
 		}
 
 		public string Post(string relativeUrl, string s) {
-			Console.WriteLine(s);
 			var u = new UriBuilder(serverURL);
 			u.Path += relativeUrl;
 			var request = httpWebRequestFactory.Create(u.Uri);
@@ -114,8 +111,6 @@ namespace SolrNet {
 				throw new SolrConnectionException(e);
 			}
 		}
-
-		#endregion
 
 		public static byte[] ReadFully(Stream stream) {
 			var buffer = new byte[32768];

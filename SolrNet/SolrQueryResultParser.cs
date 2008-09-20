@@ -77,6 +77,10 @@ namespace SolrNet {
 
 		private delegate bool BoolFunc(PropertyInfo[] p);
 
+		public DateTime ParseDate(string s) {
+			return DateTime.ParseExact(s, "yyyy-MM-dd'T'HH:mm:ss.FFF'Z'", CultureInfo.InvariantCulture);
+		}
+
 		public void SetProperty(T doc, PropertyInfo prop, XmlNode field) {
 			// HACK too messy
 			if (field.Name == "arr") {
@@ -85,10 +89,10 @@ namespace SolrNet {
 				if (!string.IsNullOrEmpty(field.InnerText))
 					prop.SetValue(doc, double.Parse(field.InnerText, CultureInfo.InvariantCulture), null);
 			} else if (prop.PropertyType == typeof (DateTime)) {
-				prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
+				prop.SetValue(doc, ParseDate(field.InnerText), null);
 			} else if (prop.PropertyType == typeof (DateTime?)) {
 				if (!string.IsNullOrEmpty(field.InnerText))
-					prop.SetValue(doc, DateTime.ParseExact(field.InnerText, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture), null);
+					prop.SetValue(doc, ParseDate(field.InnerText), null);
 			} else {
 				var converter = TypeDescriptor.GetConverter(prop.PropertyType);
 				if (converter.CanConvertFrom(typeof (string)))

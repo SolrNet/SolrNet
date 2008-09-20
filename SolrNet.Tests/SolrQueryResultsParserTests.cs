@@ -129,7 +129,21 @@ namespace SolrNet.Tests {
 			var results = parser.Parse(responseXMLWithDate);
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
-			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 3, 3), doc.Fecha);
+			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5), doc.Fecha);
+		}
+
+		[Test]
+		public void ParseDate_without_milliseconds() {
+			var parser = new SolrQueryResultParser<TestDocumentWithDate>();
+			var dt = parser.ParseDate("2001-01-02T03:04:05Z");
+			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5), dt);
+		}
+
+		[Test]
+		public void ParseDate_with_milliseconds() {
+			var parser = new SolrQueryResultParser<TestDocumentWithDate>();
+			var dt = parser.ParseDate("2001-01-02T03:04:05.245Z");
+			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5, 245), dt);
 		}
 
 		[Test]
@@ -138,7 +152,7 @@ namespace SolrNet.Tests {
 			var results = parser.Parse(responseXMLWithDate);
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
-			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 3, 3), doc.Fecha);
+			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5), doc.Fecha);
 		}
 
 		[Test]
@@ -253,7 +267,7 @@ namespace SolrNet.Tests {
 <response>
 <result numFound=""1"" start=""0"">
 	<doc>
-	<date name=""Fecha"">2001-01-02T03:03:03Z</date>
+	<date name=""Fecha"">2001-01-02T03:04:05Z</date>
 	</doc>
 </result>
 </response>

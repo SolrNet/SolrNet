@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
@@ -147,6 +148,10 @@ namespace SolrNet {
 
 		public string Send(ISolrCommand cmd) {
 			return cmd.Execute(connection);
+		}
+
+		public string Ping() {
+			return new PingCommand().Execute(connection);
 		}
 	}
 }

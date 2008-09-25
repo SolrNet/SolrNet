@@ -110,5 +110,7 @@ namespace SolrNet {
 		/// <returns>solr response</returns>
 		string Send(ISolrCommand cmd);
 
+		string Ping();
+
 	}
 }

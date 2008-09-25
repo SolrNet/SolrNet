@@ -34,12 +34,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Parameters\QueryOptions.cs" />
     <Compile Include="Commands\Parameters\WaitOptions.cs" />
+    <Compile Include="Commands\PingCommand.cs" />
     <Compile Include="Exceptions\CollectionTypeNotSupportedException.cs" />
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\CommitCommand.cs" />

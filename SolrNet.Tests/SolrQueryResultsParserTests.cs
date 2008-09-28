@@ -211,6 +211,20 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(1, r.FacetQueries.Count);
 		}
 
+		[Test]
+		public void ParseResponseHeader() {
+			var parser = new SolrQueryResultParser<TestDocument>();
+			var xml = new XmlDocument();
+			xml.LoadXml(responseXml);
+			var docNode = xml.SelectSingleNode("response/lst[@name='responseHeader']");
+			var header = parser.ParseHeader(docNode);
+			Assert.AreEqual(1, header.Status);
+			Assert.AreEqual(15, header.QTime);
+			Assert.AreEqual(2, header.Params.Count);
+			Assert.AreEqual("id:123456", header.Params["q"]);
+			Assert.AreEqual("2.2", header.Params["version"]);
+		}
+
 		public class TestDocument : ISolrDocument {
 			[SolrField("advancedview")]
 			public string AdvancedView { get; set; }
@@ -225,7 +239,15 @@ namespace SolrNet.Tests {
 		private const string responseXml =
 			@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
-<lst name=""responseHeader""><int name=""status"">0</int><int name=""QTime"">0</int><lst name=""params""><str name=""q"">id:123456</str><str name=""?""/><str name=""version"">2.2</str></lst></lst><result name=""response"" numFound=""1"" start=""0""><doc><str name=""advancedview""/><str name=""basicview""/><int name=""id"">123456</int></doc></result>
+<lst name=""responseHeader"">
+	<int name=""status"">1</int>
+	<int name=""QTime"">15</int>
+	<lst name=""params"">
+		<str name=""q"">id:123456</str>
+		<str name=""version"">2.2</str>
+	</lst>
+</lst>
+<result name=""response"" numFound=""1"" start=""0""><doc><str name=""advancedview""/><str name=""basicview""/><int name=""id"">123456</int></doc></result>
 </response>
 ";
 

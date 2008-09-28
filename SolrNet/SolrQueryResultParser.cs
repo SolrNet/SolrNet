@@ -47,6 +47,12 @@ namespace SolrNet {
 				results.FacetQueries = ParseFacetQueries(mainFacetNode);
 				results.FacetFields = ParseFacetFields(mainFacetNode);
 			}
+
+			var responseHeaderNode = xml.SelectSingleNode("response/lst[@name='responseHeader']");
+			if (responseHeaderNode != null) {
+				results.Header = ParseHeader(responseHeaderNode);
+			}
+
 			return results;
 		}
 
@@ -198,6 +204,20 @@ namespace SolrNet {
 				//}
 			}
 			return doc;
+		}
+
+		public ResponseHeader ParseHeader(XmlNode node) {
+			var r = new ResponseHeader();
+			r.Status = int.Parse(node.SelectSingleNode("int[@name='status']").InnerText);
+			r.QTime = int.Parse(node.SelectSingleNode("int[@name='QTime']").InnerText);
+			r.Params = new Dictionary<string, string>();
+			var paramNodes = node.SelectNodes("lst[@name='params']/str");
+			if (paramNodes != null) {
+				foreach (XmlNode n in paramNodes) {
+					r.Params[n.Attributes["name"].InnerText] = n.InnerText;
+				}				
+			}
+			return r;
 		}
 	}
 }

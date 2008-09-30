@@ -16,5 +16,6 @@ namespace SolrNet {
 		IDictionary<string, ICollection<KeyValuePair<string, int>>> FacetFields { get; set; }
 
 		ResponseHeader Header { get; set; }
+		IDictionary<T, IDictionary<string, string>> Highlights { get; set; }
 	}
 }

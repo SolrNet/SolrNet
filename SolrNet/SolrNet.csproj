@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Parameters\HighlightingParameters.cs" />
     <Compile Include="Commands\Parameters\QueryOptions.cs" />
     <Compile Include="Commands\Parameters\WaitOptions.cs" />
     <Compile Include="Commands\PingCommand.cs" />

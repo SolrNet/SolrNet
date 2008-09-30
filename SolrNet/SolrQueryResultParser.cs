@@ -60,6 +60,10 @@ namespace SolrNet {
 				results.Header = ParseHeader(responseHeaderNode);
 			}
 
+			var highlightingNode = xml.SelectSingleNode("response/lst[@name='highlighting']");
+			if (highlightingNode != null)
+				results.Highlights = ParseHighlighting(results, highlightingNode);
+
 			return results;
 		}
 
@@ -167,7 +171,7 @@ namespace SolrNet {
 		}
 
 		/// <summary>
-		/// Builds a document from the correponding response xml node
+		/// Builds a document from the corresponding response xml node
 		/// </summary>
 		/// <param name="node">response xml node</param>
 		/// <returns>populated document</returns>

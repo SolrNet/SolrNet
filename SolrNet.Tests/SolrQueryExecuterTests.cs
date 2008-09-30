@@ -177,24 +177,35 @@ namespace SolrNet.Tests {
 			});
 		}
 
-		[Test, Ignore("incomplete")]
-		public void UndefinedFieldError() {
-			const string queryString = "id:123456";
+		[Test]
+		public void Highlighting() {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
-			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
-			var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
-			With.Mocks(mocks).Expecting(delegate {
+			var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+			const string highlightedField = "field1";
+			const string afterTerm = "after";
+			const string beforeTerm = "before";
+			var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, "") {
+				Options = new QueryOptions {
+					Highlight = new HighlightingParameters {
+						Fields = new[] {highlightedField},
+						AfterTerm = afterTerm,
+						BeforeTerm = beforeTerm,
+          }
+				},
+				ResultParser = parser,
+			};
+			With.Mocks(mocks).Expecting(() => {
 				var q = new Dictionary<string, string>();
-				q["q"] = queryString;
-				Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
-				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
-			}).Verify(delegate {
-				var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, queryString) {
-					ResultParser = parser
-				};
-				var r = queryExecuter.Execute();
-			});
+				q["q"] = "";
+				q["rows"] = queryExecuter.DefaultRows.ToString();
+				q["hl"] = "true";
+				q["hl.fl"] = highlightedField;
+				q["hl.simple.pre"] = beforeTerm;
+				q["hl.simple.post"] = afterTerm;
+				Expect.Call(conn.Get("/select", q))
+					.Repeat.Once().Return("");
+			}).Verify(() => queryExecuter.Execute());
 		}
 	}
 }

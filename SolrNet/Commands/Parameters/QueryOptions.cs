@@ -7,6 +7,7 @@ namespace SolrNet.Commands.Parameters {
 		public int? Start { get; set; }
 		public int? Rows { get; set; }
 		public ICollection<SortOrder> OrderBy { get; set; }
+		public HighlightingParameters Highlight { get; set; }
 
 		public QueryOptions() {
 			OrderBy = new List<SortOrder>();

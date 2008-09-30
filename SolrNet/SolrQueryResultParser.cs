@@ -14,7 +14,14 @@ namespace SolrNet {
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
 	public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : ISolrDocument, new() {
+
+		public IUniqueKeyFinder<T> UniqueKeyFinder { get; set; }
+
 		private static readonly IDictionary<string, Type> solrTypes;
+
+		public SolrQueryResultParser() {
+			UniqueKeyFinder = new UniqueKeyFinder<T>();
+		}
 
 		static SolrQueryResultParser() {
 			solrTypes = new Dictionary<string, Type>();
@@ -216,6 +223,39 @@ namespace SolrNet {
 				foreach (XmlNode n in paramNodes) {
 					r.Params[n.Attributes["name"].InnerText] = n.InnerText;
 				}				
+			}
+			return r;
+		}
+
+		public IDictionary<string, T> IndexResultsByKey(IEnumerable<T> results) {
+			var r = new Dictionary<string, T>();
+			var prop = UniqueKeyFinder.UniqueKeyProperty;
+			foreach (var d in results) {
+				var key = prop.GetValue(d, null).ToString();
+				r[key] = d;
+			}
+			return r;
+		}
+
+		public IDictionary<string, string> ParseHighlightingFields(XmlNodeList nodes) {
+			var fields = new Dictionary<string, string>();
+			foreach (XmlNode field in nodes) {
+				var fieldName = field.Attributes["name"].InnerText;
+				fields[fieldName] = field.InnerText;
+			}
+			return fields;
+		}
+
+		public IDictionary<T, IDictionary<string, string>> ParseHighlighting(IEnumerable<T> results, XmlNode node) {
+			var r = new Dictionary<T, IDictionary<string, string>>();
+			var docRefs = node.SelectNodes("lst");
+			if (docRefs == null)
+				return r;
+			var resultsByKey = IndexResultsByKey(results);
+			foreach (XmlNode docRef in docRefs) {
+				var docRefKey = docRef.Attributes["name"].InnerText;
+				var doc = resultsByKey[docRefKey];
+				r[doc] = ParseHighlightingFields(docRef.ChildNodes);
 			}
 			return r;
 		}

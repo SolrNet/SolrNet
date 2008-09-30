@@ -5,6 +5,8 @@ using System.Linq;
 using System.Xml;
 using log4net.Config;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -225,6 +227,64 @@ namespace SolrNet.Tests {
 			Assert.AreEqual("2.2", header.Params["version"]);
 		}
 
+		[Test]
+		public void ParseHighlighting() {
+			var parser = new SolrQueryResultParser<Product>();
+			var xml = new XmlDocument();
+			xml.LoadXml(responseXmlWithHighlighting);
+			var docNode = xml.SelectSingleNode("response/lst[@name='highlighting']");
+			var item = new Product { Id = "SP2514N" };
+			var highlights = parser.ParseHighlighting(new SolrQueryResults<Product> { item }, docNode);
+			Assert.AreEqual(1, highlights.Count);
+			Assert.AreSame(item, highlights.First().Key);
+			var kv = highlights.First().Value;
+			Assert.AreEqual(1, kv.Count);
+			Assert.AreEqual("features", kv.First().Key);
+			Assert.That(kv.First().Value, Text.Contains("Noise"));
+		}
+
+		public class Product : ISolrDocument {
+			[SolrField("id")]
+			[SolrUniqueKey]
+			public string Id { get; set; }
+
+			[SolrField("sku")]
+			public string SKU { get; set; }
+
+			[SolrField("name")]
+			public string Name { get; set; }
+
+			[SolrField("manu")]
+			public string Manufacturer { get; set; }
+
+			[SolrField("cat")]
+			public ICollection<string> Categories { get; set; }
+
+			[SolrField("features")]
+			public ICollection<string> Features { get; set; }
+
+			[SolrField("includes")]
+			public string Includes { get; set; }
+
+			[SolrField("weight")]
+			public float Weight { get; set; }
+
+			[SolrField("price")]
+			public decimal Price { get; set; }
+
+			[SolrField("popularity")]
+			public int Popularity { get; set; }
+
+			[SolrField("inStock")]
+			public bool InStock { get; set; }
+
+			[SolrField("word")]
+			public string Word { get; set; }
+
+			[SolrField("timestamp")]
+			public DateTime Timestamp { get; set; }
+		}
+
 		public class TestDocument : ISolrDocument {
 			[SolrField("advancedview")]
 			public string AdvancedView { get; set; }
@@ -235,6 +295,17 @@ namespace SolrNet.Tests {
 			[SolrField("id")]
 			public int Id { get; set; }
 		}
+
+		private const string responseXmlWithHighlighting =
+			@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<response>
+<lst name=""responseHeader""><int name=""status"">0</int><int name=""QTime"">15</int><lst name=""params""><str name=""hl.fl"">features,spell</str><str name=""q"">features:noise</str><str name=""hl"">true</str></lst></lst>
+<result name=""response"" numFound=""1"" start=""0""><doc><arr name=""cat""><str>electronics</str><str>hard drive</str></arr><arr name=""features""><str>7200RPM, 8MB cache, IDE Ultra ATA-133</str><str>NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor</str></arr><str name=""id"">SP2514N</str><bool name=""inStock"">true</bool><str name=""manu"">Samsung Electronics Co. Ltd.</str><str name=""name"">Samsung SpinPoint P120 SP2514N - hard drive - 250 GB - ATA-133</str><int name=""popularity"">6</int><float name=""price"">92.0</float><str name=""sku"">SP2514N</str><arr name=""spell""><str>Samsung SpinPoint P120 SP2514N - hard drive - 250 GB - ATA-133</str></arr><date name=""timestamp"">0001-01-01T00:00:00Z</date><float name=""weight"">0.0</float></doc></result>
+<lst name=""highlighting"">
+	<lst name=""SP2514N""><arr name=""features""><str>&lt;em&gt;Noise&lt;/em&gt;Guard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor</str></arr></lst>
+</lst>
+</response>
+";
 
 		private const string responseXml =
 			@"<?xml version=""1.0"" encoding=""UTF-8""?>

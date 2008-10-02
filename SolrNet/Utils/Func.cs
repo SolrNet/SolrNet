@@ -85,5 +85,12 @@ namespace SolrNet.Utils {
 				yield return f(e);
 			}
 		}
+
+		public static T[] ToArray<T>(IEnumerable<T> l) {
+			var r = new List<T>();
+			foreach (var o in l)
+				r.Add(o);
+			return r.ToArray();
+		}
 	}
 }

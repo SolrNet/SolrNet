@@ -1,3 +1,5 @@
+using SolrNet.Commands.Parameters;
+
 namespace SolrNet.DSL {
 	public interface IDSLRun<T> where T : ISolrDocument, new() {
 		ISolrQueryResults<T> Run();
@@ -7,5 +9,6 @@ namespace SolrNet.DSL {
 		IDSLFacetFieldOptions<T> WithFacetField(string fieldName);
 		IDSLRun<T> WithFacetQuery(string query);
 		IDSLRun<T> WithFacetQuery(ISolrQuery query);
+		IDSLRun<T> WithHighlighting(HighlightingParameters parameters);
 	}
 }

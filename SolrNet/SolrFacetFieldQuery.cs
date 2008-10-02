@@ -77,5 +77,13 @@ namespace SolrNet {
 				return r;
 			}
 		}
+
+		public override string ToString() {
+			var l = new List<string>();
+			foreach (var q in Query) {
+				l.Add(string.Format("{0}={1}", q.Key, q.Value));
+			}
+			return string.Join("\n", l.ToArray());
+		}
 	}
 }

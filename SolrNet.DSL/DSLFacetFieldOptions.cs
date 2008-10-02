@@ -4,7 +4,8 @@ namespace SolrNet.DSL {
 	public class DSLFacetFieldOptions<T> : DSLRun<T>, IDSLFacetFieldOptions<T> where T : ISolrDocument, new() {
 		private readonly SolrFacetFieldQuery facetQuery;
 
-		public DSLFacetFieldOptions(ISolrConnection connection, ISolrQuery query, ICollection<SortOrder> order, ICollection<ISolrFacetQuery> facets, SolrFacetFieldQuery facetQuery) : base(connection, query, order, facets) {
+		public DSLFacetFieldOptions(ISolrConnection connection, ISolrQuery query, ICollection<SortOrder> order, ICollection<ISolrFacetQuery> facets, SolrFacetFieldQuery facetQuery) 
+			: base(connection, query, order, facets, null) {
 			this.facetQuery = facetQuery;
 		}
 

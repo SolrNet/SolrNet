@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SolrNet.Utils;
 
 namespace SolrNet.Commands.Parameters {
 	public class HighlightingParameters {
@@ -67,5 +68,15 @@ namespace SolrNet.Commands.Parameters {
 		/// The default value is "10000". 
 		/// </summary>
 		public int? RegexMaxAnalyzedChars { get; set; }
+
+		public override string ToString() {
+			var l = new List<string>();
+			foreach (var p in GetType().GetProperties()) {
+				var o = p.GetValue(this, null);
+				if (o != null)
+					l.Add(string.Format("{0}={1}", p.Name, o));
+			}
+			return string.Join("\n", l.ToArray());
+		}
 	}
 }

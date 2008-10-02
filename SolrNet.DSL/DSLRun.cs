@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
+using SolrNet.Utils;
 
 namespace SolrNet.DSL {
 	public class DSLRun<T> : IDSLRun<T> where T : ISolrDocument, new() {
 		protected readonly ICollection<SortOrder> order = new List<SortOrder>();
 		protected readonly ICollection<ISolrFacetQuery> facets = new List<ISolrFacetQuery>();
+		protected readonly HighlightingParameters highlight;
 		protected ISolrConnection connection;
 		protected ISolrQuery query;
 
@@ -20,8 +22,9 @@ namespace SolrNet.DSL {
 			this.order = order;
 		}
 
-		public DSLRun(ISolrConnection connection, ISolrQuery query, ICollection<SortOrder> order, ICollection<ISolrFacetQuery> facets): this(connection, query, order) {
+		public DSLRun(ISolrConnection connection, ISolrQuery query, ICollection<SortOrder> order, ICollection<ISolrFacetQuery> facets, HighlightingParameters highlight): this(connection, query, order) {
 			this.facets = facets;
+			this.highlight = highlight;
 		}
 
 		public ISolrQueryResults<T> Run() {
@@ -40,7 +43,8 @@ namespace SolrNet.DSL {
 					OrderBy = order,
 					FacetQueries = facets,
 					Start = start, 
-					Rows = rows
+					Rows = rows,
+					Highlight = highlight,
 				}
 			};
 			return exe.Execute();
@@ -68,7 +72,23 @@ namespace SolrNet.DSL {
 
 		public IDSLRun<T> WithFacetQuery(ISolrQuery q) {
 			var newFacets = new List<ISolrFacetQuery>(facets) { new SolrFacetQuery(q) };
-			return new DSLRun<T>(connection, query, order, newFacets);
+			return new DSLRun<T>(connection, query, order, newFacets, highlight);
+		}
+
+		public IDSLRun<T> WithHighlighting(HighlightingParameters parameters) {
+			return new DSLRun<T>(connection, query, order, facets, parameters);
+		}
+
+		public override string ToString() {
+			var l = new List<string>();
+			if (query != null)
+				l.Add(query.Query);
+			if (highlight != null)
+				l.Add("highlight=" + highlight);
+			if (facets != null)
+				l.Add("facets=" + string.Join("\n", Func.ToArray(Func.Select(facets, f => f.ToString()))));
+
+			return string.Join("\n", l.ToArray());
 		}
 	}
 }

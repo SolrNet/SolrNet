@@ -49,11 +49,7 @@ namespace SolrNet {
 			SetDefaults();
 		}
 
-		/// <summary>
-		/// Executes the query and returns results
-		/// </summary>
-		/// <returns>query results</returns>
-		public ISolrQueryResults<T> Execute() {
+		public IDictionary<string, string> GetAllParameters() {
 			var param = new Dictionary<string, string>();
 			param["q"] = Query.Query;
 			if (Options != null) {
@@ -71,8 +67,9 @@ namespace SolrNet {
 							ListRandomizer = ListRandomizer,
 							ResultParser = ResultParser,
 							UniqueKeyFinder = UniqueKeyFinder,
-							Options = new QueryOptions {
-								Fields = new[] {pk},
+							Options = new QueryOptions
+							{
+								Fields = new[] { pk },
 							}
 						};
 						var nr = executer.Execute();
@@ -96,42 +93,59 @@ namespace SolrNet {
 					}
 				}
 
-				if (Options.Highlight != null) {
-					var h = Options.Highlight;
-					param["hl"] = "true";
-					if (h.Fields != null) {
-						param["hl.fl"] = Func.Join(",", h.Fields);
-
-						if (h.Snippets.HasValue)
-							param["hl.snippets"] = h.Snippets.Value.ToString();
-
-						if (h.Fragsize.HasValue)
-							param["hl.fragsize"] = h.Fragsize.Value.ToString();
-
-						if (h.RequireFieldMatch.HasValue)
-							param["hl.requireFieldMatch"] = h.RequireFieldMatch.Value.ToString().ToLowerInvariant();
-
-						if (h.AlternateField != null)
-							param["hl.alternateField"] = h.AlternateField;
-
-						if (h.BeforeTerm != null)
-							param["hl.simple.pre"] = h.BeforeTerm;
-
-						if (h.AfterTerm != null)
-							param["hl.simple.post"] = h.AfterTerm;
-
-						if (h.RegexSlop.HasValue)
-							param["hl.regex.slop"] = h.RegexSlop.Value.ToString();
-
-						if (h.RegexPattern != null)
-							param["hl.regex.pattern"] = h.RegexPattern;
-
-						if (h.RegexMaxAnalyzedChars.HasValue)
-							param["hl.regex.maxAnalyzedChars"] = h.RegexMaxAnalyzedChars.Value.ToString();
-					}					
+				foreach (var p in GetHighlightingParameters()) {
+					param.Add(p.Key, p.Value);
 				}
 			}
 
+			return param;
+		}
+
+		public IDictionary<string, string> GetHighlightingParameters() {
+			var param = new Dictionary<string, string>();
+			if (Options.Highlight != null) {
+				var h = Options.Highlight;
+				param["hl"] = "true";
+				if (h.Fields != null) {
+					param["hl.fl"] = Func.Join(",", h.Fields);
+
+					if (h.Snippets.HasValue)
+						param["hl.snippets"] = h.Snippets.Value.ToString();
+
+					if (h.Fragsize.HasValue)
+						param["hl.fragsize"] = h.Fragsize.Value.ToString();
+
+					if (h.RequireFieldMatch.HasValue)
+						param["hl.requireFieldMatch"] = h.RequireFieldMatch.Value.ToString().ToLowerInvariant();
+
+					if (h.AlternateField != null)
+						param["hl.alternateField"] = h.AlternateField;
+
+					if (h.BeforeTerm != null)
+						param["hl.simple.pre"] = h.BeforeTerm;
+
+					if (h.AfterTerm != null)
+						param["hl.simple.post"] = h.AfterTerm;
+
+					if (h.RegexSlop.HasValue)
+						param["hl.regex.slop"] = h.RegexSlop.Value.ToString();
+
+					if (h.RegexPattern != null)
+						param["hl.regex.pattern"] = h.RegexPattern;
+
+					if (h.RegexMaxAnalyzedChars.HasValue)
+						param["hl.regex.maxAnalyzedChars"] = h.RegexMaxAnalyzedChars.Value.ToString();
+				}
+			}
+			return param;
+		}
+
+		/// <summary>
+		/// Executes the query and returns results
+		/// </summary>
+		/// <returns>query results</returns>
+		public ISolrQueryResults<T> Execute() {
+			var param = GetAllParameters();
 			string r = Connection.Get("/select", param);
 			var qr = ResultParser.Parse(r);
 			return qr;

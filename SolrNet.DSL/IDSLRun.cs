@@ -10,5 +10,6 @@ namespace SolrNet.DSL {
 		IDSLRun<T> WithFacetQuery(string query);
 		IDSLRun<T> WithFacetQuery(ISolrQuery query);
 		IDSLRun<T> WithHighlighting(HighlightingParameters parameters);
+		IDSLRun<T> WithHighlightingFields(params string[] fields);
 	}
 }

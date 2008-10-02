@@ -32,6 +32,7 @@ namespace SolrNet.DSL {
 				Options = new QueryOptions {
 					OrderBy = order,
 					FacetQueries = facets,
+					Highlight = highlight,
 				},
 			};
 			return exe.Execute();
@@ -77,6 +78,12 @@ namespace SolrNet.DSL {
 
 		public IDSLRun<T> WithHighlighting(HighlightingParameters parameters) {
 			return new DSLRun<T>(connection, query, order, facets, parameters);
+		}
+
+		public IDSLRun<T> WithHighlightingFields(params string[] fields) {
+			return WithHighlighting(new HighlightingParameters {
+				Fields = fields,
+			});
 		}
 
 		public override string ToString() {

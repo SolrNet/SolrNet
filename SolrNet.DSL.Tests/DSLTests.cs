@@ -61,11 +61,11 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks)
 				.Expecting(() => Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id></delete>", id)))
-					.Return(""))
+				                 	.Return(""))
 				.Verify(() => {
-				Solr.Connection = conn;
-				Solr.Delete.ById(id);
-			});
+					Solr.Connection = conn;
+					Solr.Delete.ById(id);
+				});
 		}
 
 		[Test]
@@ -485,16 +485,28 @@ namespace SolrNet.DSL.Tests {
 
 		[Test]
 		public void Highlighting() {
-			var mocks = new MockRepository();
-			var conn = mocks.CreateMock<ISolrConnection>();
-			With.Mocks(mocks)
-				.Expecting(() => Expect.Call(conn.Get("/select", null)).IgnoreArguments().Repeat.Once().Return(response))
-				.Verify(() => {
-					Solr.Connection = conn;
-					var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithHighlighting(new HighlightingParameters {
-						Fields = new[] {"make"},
-					}).Run();
-				});
+			var conn = new MockConnection(new Dictionary<string, string> {
+				{"q", "makedesc:bmw"},
+				{"hl", "true"},
+				{"hl.fl", "make"},
+				{"rows", DefaultRows()},
+			});
+			Solr.Connection = conn;
+			var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithHighlighting(new HighlightingParameters {
+				Fields = new[] {"make"},
+			}).Run();
+		}
+
+		[Test]
+		public void HighlightingFields() {
+			var conn = new MockConnection(new Dictionary<string, string> {
+				{"q", "makedesc:bmw"},
+				{"hl", "true"},
+				{"hl.fl", "make,category"},
+				{"rows", DefaultRows()},
+			});
+			Solr.Connection = conn;
+			var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithHighlightingFields("make", "category").Run();
 		}
 	}
 }

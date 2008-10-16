@@ -18,10 +18,10 @@ namespace SolrNet {
 
 		public SolrConnection(string serverURL) {
 			ServerURL = serverURL;
+		    Timeout = -1;
 		}
 
-		public SolrConnection(string serverURL, IHttpWebRequestFactory httpWebRequestFactory) {
-			ServerURL = serverURL;
+		public SolrConnection(string serverURL, IHttpWebRequestFactory httpWebRequestFactory): this(serverURL) {
 			this.httpWebRequestFactory = httpWebRequestFactory;
 		}
 
@@ -54,12 +54,16 @@ namespace SolrNet {
 			set { xmlEncoding = value; }
 		}
 
+        public int Timeout { get; set; }
+
 		public string Post(string relativeUrl, string s) {
 			var u = new UriBuilder(serverURL);
 			u.Path += relativeUrl;
 			var request = httpWebRequestFactory.Create(u.Uri);
 			request.Method = HttpWebRequestMethod.POST;
 			request.KeepAlive = false;
+            if (Timeout > 0)
+                request.Timeout = Timeout;
 			request.ContentType = "text/xml; charset=utf-8";
 			request.ContentLength = s.Length;
 			request.ProtocolVersion = HttpVersion.Version10;
@@ -94,6 +98,8 @@ namespace SolrNet {
 			var request = httpWebRequestFactory.Create(u.Uri);
 			request.Method = HttpWebRequestMethod.GET;
 			request.KeepAlive = false;
+            if (Timeout > 0)
+                request.Timeout = Timeout;
 			request.ProtocolVersion = HttpVersion.Version10; // for some reason Version11 throws
 			try {
 				using (var response = request.GetResponse()) {

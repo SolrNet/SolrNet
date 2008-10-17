@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using Newtonsoft.Json;
+using SolrNet.Utils;
 
 namespace SolrNet {
 	public class JsonQueryResultParser<T> : ISolrQueryResultParser<T> where T : ISolrDocument, new() {
@@ -10,18 +12,32 @@ namespace SolrNet {
 			var o = JavaScriptConvert.DeserializeObject(r) as JavaScriptObject;
 			var results = new SolrQueryResults<T>();
 			var responseNode = FindNode("response", o);
-			var docsNode = Q.Cast<JavaScriptObject>(FindNode<IEnumerable>("docs", responseNode));
+			var docsNode = Func.Cast<JavaScriptObject>(FindNode<IEnumerable>("docs", responseNode));
 			results.NumFound = (int)FindNode<long>("numFound", responseNode);
 			foreach (var doc in docsNode) {
 				var ndoc = new T();
 				foreach (var field in doc) {
 					var prop = GetPropertyBySolrField(field.Key);
-					if (prop != null)
-						prop.SetValue(Convert.ChangeType(field.Value, prop.PropertyType), ndoc, null);
+					if (prop != null) {
+						try {
+							var obj = ConvertFrom(field.Value, prop.PropertyType);
+							prop.SetValue(obj, ndoc, null);
+						} catch (TargetException e) {
+							throw new TargetException(string.Format("Couldn't set property {0}", prop.Name), e);
+						}
+					}
 				}
 				results.Add(ndoc);
 			}
 			return results;
+		}
+
+		public object ConvertFrom(object value, Type t) {
+			if (t.IsGenericType && t.GetGenericTypeDefinition().Equals(typeof(Nullable<>))) {
+				var nc = new NullableConverter(t);
+				return nc.ConvertFrom(value);
+			}
+			return Convert.ChangeType(value, t);
 		}
 
 		public PropertyInfo GetPropertyBySolrField(string field) {
@@ -34,7 +50,7 @@ namespace SolrNet {
 		}
 
 		public string GetSolrFieldName(PropertyInfo p) {
-			var a = p.GetCustomAttributes(typeof (SolrFieldAttribute), true);
+			var a = p.GetCustomAttributes(typeof(SolrFieldAttribute), true);
 			if (a.Length == 0)
 				return null;
 			return (a[0] as SolrFieldAttribute).FieldName ?? p.Name;
@@ -42,44 +58,18 @@ namespace SolrNet {
 
 		public R FindNode<R>(string key, JavaScriptObject parent) {
 			try {
-				return (R)Q.First(Q.Where(kv => kv.Key == key, parent)).Value;
-			} catch {
+				return (R)Func.First(Func.Filter(parent, kv => kv.Key == key)).Value;
+			} catch (InvalidOperationException) {
 				return default(R);
-			}			
+			}
 		}
 
 		public JavaScriptObject FindNode(string key, JavaScriptObject parent) {
 			try {
-				return Q.First(Q.Where(kv => kv.Key == key, parent)).Value as JavaScriptObject;
-			} catch {
+				return Func.First(Func.Filter(parent, kv => kv.Key == key)).Value as JavaScriptObject;
+			} catch (InvalidOperationException) {
 				return null;
 			}
-		}
-	}
-
-	public static class Q {
-		public delegate R Func<P, R>(P e);
-
-		public static IEnumerable<R> Cast<R>(IEnumerable e) {
-			foreach (var i in e)
-				yield return (R) Convert.ChangeType(i, typeof(R));
-		}
-
-		public static T First<T>(IEnumerable<T> e) {
-			foreach (var i in e)
-				return i;
-			throw new ApplicationException();
-		}
-
-		public static IEnumerable<R> Select<T, R>(Func<T, R> f, IEnumerable<T> e) {
-			foreach (var i in e)
-				yield return f(i);
-		}
-
-		public static IEnumerable<T> Where<T>(Func<T, bool> condition, IEnumerable<T> e) {
-			foreach (var i in e)
-				if (condition(i))
-					yield return i;
 		}
 	}
 }

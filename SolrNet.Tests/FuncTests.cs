@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using SolrNet.Utils;
 
@@ -23,5 +24,17 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(2, r[1]);
 		}
 
+		[Test]
+		public void First() {
+			var l = new[] { 1, 2, 3, 4, 5 };
+			Assert.AreEqual(1, Func.First(l));			
+		}
+
+		[Test]
+		[ExpectedException(typeof(InvalidOperationException))]
+		public void FirstOrDefault_without_elements_throws() {
+			var l = new int[] {};
+			Func.First(l);
+		}
 	}
 }

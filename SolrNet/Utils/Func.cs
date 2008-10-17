@@ -22,23 +22,40 @@ namespace SolrNet.Utils {
 		}
 
 		public static IEnumerable<TSource> Filter<TSource>(IEnumerable<TSource> source, Predicate<TSource> predicate) {
-			return Reduce(source, new List<TSource>(),
-			              (item, result) => {
-			              	if (predicate(item))
-			              		result.Add(item);
-
-			              	return result;
-			              });
+			foreach (var s in source) {
+				if (predicate(s))
+					yield return s;
+			}
 		}
 
 		public static IEnumerable<TResult> Map<TSource, TResult>(IEnumerable<TSource> source,
 		                                                         Converter<TSource, TResult> converter) {
-			return Reduce(source, new List<TResult>(),
-			              (item, result) => {
-			              	result.Add(converter(item));
 
-			              	return result;
-			              });
+			foreach (var s in source) {
+				yield return converter(s);
+			}
+		}
+
+		public static T First<T>(IEnumerable<T> e) {
+			foreach (var i in e)
+				return i;
+			throw new InvalidOperationException();
+		}
+
+		/// <summary>
+		/// This is a conversion cast, unlike LINQ's
+		/// </summary>
+		/// <typeparam name="R"></typeparam>
+		/// <param name="e"></param>
+		/// <returns></returns>
+		public static IEnumerable<R> Convert<R>(IEnumerable e) {
+			foreach (var i in e)
+				yield return (R)System.Convert.ChangeType(i, typeof(R));
+		}
+
+		public static IEnumerable<R> Cast<R>(IEnumerable e) {
+			foreach (var i in e)
+				yield return (R) i;
 		}
 
 		// These two are from http://weblogs.asp.net/whaggard/archive/2004/12/06/275917.aspx

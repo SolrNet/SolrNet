@@ -1,6 +1,6 @@
 using System;
 
-namespace SolrNet {
+namespace SolrNet.Attributes {
 	/// <summary>
 	/// Marks a property as present on solr. By default the field name is the property name
 	/// </summary>

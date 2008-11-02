@@ -1,6 +1,6 @@
 using System;
 
-namespace SolrNet {
+namespace SolrNet.Attributes {
 	[AttributeUsage(AttributeTargets.Property)]
 	public class SolrUniqueKeyAttribute : Attribute {
 		/// <summary>

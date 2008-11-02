@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
+using SolrNet.Attributes;
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet.DSL.Tests {

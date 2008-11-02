@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using Newtonsoft.Json;
+using SolrNet.Attributes;
 using SolrNet.Utils;
 
 namespace SolrNet {

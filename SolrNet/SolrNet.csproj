@@ -75,7 +75,7 @@
     <Compile Include="SolrFacetFieldQuery.cs" />
     <Compile Include="SolrFacetQuery.cs" />
     <Compile Include="SolrQueryExecuter.cs" />
-    <Compile Include="SolrFieldAttribute.cs" />
+    <Compile Include="Attributes\SolrFieldAttribute.cs" />
     <Compile Include="SolrMultipleCriteriaQuery.cs" />
     <Compile Include="SolrQuery.cs" />
     <Compile Include="SolrQueryByExample.cs" />
@@ -85,7 +85,7 @@
     <Compile Include="SolrQueryResultParser.cs" />
     <Compile Include="SolrQueryResults.cs" />
     <Compile Include="SolrServer.cs" />
-    <Compile Include="SolrUniqueKeyAttribute.cs" />
+    <Compile Include="Attributes\SolrUniqueKeyAttribute.cs" />
     <Compile Include="SortOrder.cs" />
     <Compile Include="UniqueKeyFinder.cs" />
     <Compile Include="Utils\Func.cs" />

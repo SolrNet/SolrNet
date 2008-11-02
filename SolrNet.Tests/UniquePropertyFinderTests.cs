@@ -1,5 +1,6 @@
 using System.Reflection;
 using NUnit.Framework;
+using SolrNet.Attributes;
 using SolrNet.Exceptions;
 
 namespace SolrNet.Tests {

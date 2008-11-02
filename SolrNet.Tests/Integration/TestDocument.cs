@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SolrNet.Attributes;
 
 namespace SolrNet.Tests.Integration {
 	public class TestDocument : ISolrDocument {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using SolrNet.Attributes;
 
 namespace SolrNet.Tests {
 	[TestFixture]

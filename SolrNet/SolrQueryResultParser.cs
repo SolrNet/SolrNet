@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using System.Xml;
+using SolrNet.Attributes;
 using SolrNet.Exceptions;
 
 namespace SolrNet {

@@ -1,3 +1,5 @@
+using SolrNet.Attributes;
+
 namespace SolrNet.Tests {
 	public class SolrFieldExample {
 		public class Test {

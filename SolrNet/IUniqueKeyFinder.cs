@@ -1,4 +1,5 @@
 using System.Reflection;
+using SolrNet.Attributes;
 
 namespace SolrNet {
 	public interface IUniqueKeyFinder<T> where T : ISolrDocument {

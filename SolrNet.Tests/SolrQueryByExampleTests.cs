@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using SolrNet.Attributes;
 
 namespace SolrNet.Tests {
 	[TestFixture]

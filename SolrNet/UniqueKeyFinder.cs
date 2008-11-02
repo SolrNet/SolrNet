@@ -1,4 +1,5 @@
 using System.Reflection;
+using SolrNet.Attributes;
 using SolrNet.Exceptions;
 
 namespace SolrNet {

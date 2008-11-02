@@ -53,6 +53,4 @@ namespace SolrNet.Tests {
 	public class Entity {
 		public int Id { get; set; }
 	}
-
-	public class 
 }

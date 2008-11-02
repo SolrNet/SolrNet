@@ -11,7 +11,7 @@ namespace SolrNet {
 	/// Serializes a Solr document to xml
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public class SolrDocumentSerializer<T> : ISolrDocumentSerializer<T> where T : ISolrDocument {
+	public class SolrDocumentSerializer<T> : ISolrDocumentSerializer<T> {
 		/// <summary>
 		/// Serializes a Solr document to xml
 		/// </summary>

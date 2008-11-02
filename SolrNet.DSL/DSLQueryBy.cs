@@ -1,5 +1,5 @@
 namespace SolrNet.DSL {
-	public class DSLQueryBy<T> : IDSLQueryBy<T> where T : ISolrDocument, new() {
+	public class DSLQueryBy<T> : IDSLQueryBy<T> where T : new() {
 		private readonly string fieldName;
 		private readonly ISolrConnection connection;
 		private readonly ISolrQuery query;

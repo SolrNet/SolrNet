@@ -1,5 +1,5 @@
 namespace SolrNet.DSL {
-	public class DSLQueryRange<T, RT> : DSLQuery<T>, IDSLQueryRange<T> where T : ISolrDocument, new() {
+	public class DSLQueryRange<T, RT> : DSLQuery<T>, IDSLQueryRange<T> where T : new() {
 		private readonly string fieldName;
 		private readonly RT from;
 		private readonly RT to;

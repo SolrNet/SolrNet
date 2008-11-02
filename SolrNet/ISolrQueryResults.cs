@@ -5,7 +5,7 @@ namespace SolrNet {
 	/// Query results.
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public interface ISolrQueryResults<T> : IList<T> where T : ISolrDocument {
+	public interface ISolrQueryResults<T> : IList<T>  {
 		/// <summary>
 		/// Total documents found
 		/// </summary>

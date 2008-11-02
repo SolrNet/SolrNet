@@ -14,7 +14,7 @@ namespace SolrNet {
 	/// Parses xml query results
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : ISolrDocument, new() {
+	public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : new() {
 
 		public IUniqueKeyFinder<T> UniqueKeyFinder { get; set; }
 

@@ -5,7 +5,7 @@ using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 
 namespace SolrNet {
-	public class SolrServer<T> : ISolrOperations<T> where T : ISolrDocument, new() {
+	public class SolrServer<T> : ISolrOperations<T> where T : new() {
 		private readonly ISolrConnection connection;
 		private IUniqueKeyFinder<T> uniqueKeyFinder = new UniqueKeyFinder<T>();
 		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();

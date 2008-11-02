@@ -9,7 +9,7 @@ namespace SolrNet {
 	/// Executable query
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> where T : ISolrDocument, new() {
+	public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> where T : new() {
 		/// <summary>
 		/// Solr response parser, default is XML response parser
 		/// </summary>

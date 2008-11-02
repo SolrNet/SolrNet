@@ -1,5 +1,5 @@
 namespace SolrNet.DSL {
-	public class DSLQueryBetween<T, RT> : IDSLQueryBetween<T, RT> where T : ISolrDocument, new() {
+	public class DSLQueryBetween<T, RT> : IDSLQueryBetween<T, RT> where T : new() {
 		private readonly string fieldName;
 		private readonly ISolrConnection connection;
 		private readonly ISolrQuery query;

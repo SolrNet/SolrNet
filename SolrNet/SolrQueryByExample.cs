@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using SolrNet.Attributes;
 
 namespace SolrNet {
-	public class SolrQueryByExample<T> : ISolrQuery where T : ISolrDocument {
+	public class SolrQueryByExample<T> : ISolrQuery {
 		public string q;
 
 		public SolrQueryByExample(T document) {

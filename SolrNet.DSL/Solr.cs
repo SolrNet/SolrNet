@@ -24,43 +24,43 @@ namespace SolrNet.DSL {
 			set { Local.Data[SolrConnectionKey] = value; }
 		}
 
-		public static void Add<T>(T document) where T : ISolrDocument {
+		public static void Add<T>(T document) {
 			Add<T>(new[] {document});
 		}
 
-		public static void Add<T>(IEnumerable<T> documents) where T : ISolrDocument {
+		public static void Add<T>(IEnumerable<T> documents) {
 			var cmd = new AddCommand<T>(documents);
 			cmd.Execute(Connection);
 		}
 
-		public static ISolrQueryResults<T> Query<T>(string s, int start, int rows) where T : ISolrDocument, new() {
+		public static ISolrQueryResults<T> Query<T>(string s, int start, int rows) where T : new() {
 			var q = new SolrQueryExecuter<T>(Connection, s) {
 				Options = new QueryOptions {Start = start, Rows = rows}
 			};
 			return q.Execute();
 		}
 
-		public static ISolrQueryResults<T> Query<T>(string s) where T : ISolrDocument, new() {
+		public static ISolrQueryResults<T> Query<T>(string s) where T : new() {
 			var q = new SolrQueryExecuter<T>(Connection, s);
 			return q.Execute();
 		}
 
-		public static ISolrQueryResults<T> Query<T>(string s, SortOrder order) where T : ISolrDocument, new() {
+		public static ISolrQueryResults<T> Query<T>(string s, SortOrder order) where T : new() {
 			return Query<T>(s, new[] {order});
 		}
 
-		public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order) where T : ISolrDocument, new() {
+		public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order) where T : new() {
 			var q = new SolrQueryExecuter<T>(Connection, s) {
 				Options = new QueryOptions {OrderBy = order}
 			};
 			return q.Execute();
 		}
 
-		public static ISolrQueryResults<T> Query<T>(string s, SortOrder order, int start, int rows) where T : ISolrDocument, new() {
+		public static ISolrQueryResults<T> Query<T>(string s, SortOrder order, int start, int rows) where T : new() {
 			return Query<T>(s, new[] {order}, start, rows);
 		}
 
-		public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order, int start, int rows) where T : ISolrDocument, new() {
+		public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order, int start, int rows) where T : new() {
 			var q = new SolrQueryExecuter<T>(Connection, s) {
 				Options = new QueryOptions {
 					OrderBy = order,
@@ -71,30 +71,30 @@ namespace SolrNet.DSL {
 			return q.Execute();
 		}
 
-		public static ISolrQueryResults<T> Query<T>(ISolrQuery q) where T : ISolrDocument, new() {
+		public static ISolrQueryResults<T> Query<T>(ISolrQuery q) where T : new() {
 			var queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query);
 			return queryExecuter.Execute();
 		}
 
-		public static ISolrQueryResults<T> Query<T>(ISolrQuery q, int start, int rows) where T : ISolrDocument, new() {
+		public static ISolrQueryResults<T> Query<T>(ISolrQuery q, int start, int rows) where T : new() {
 			var queryExecuter = new SolrQueryExecuter<T>(Connection, q.Query) {
 				Options = new QueryOptions {Start = start, Rows = rows}
 			};
 			return queryExecuter.Execute();
 		}
 
-		public static ISolrQueryResults<T> Query<T>(SolrQuery query, SortOrder order) where T : ISolrDocument, new() {
+		public static ISolrQueryResults<T> Query<T>(SolrQuery query, SortOrder order) where T : new() {
 			return Query<T>(query, new[] {order});
 		}
 
-		public static ISolrQueryResults<T> Query<T>(SolrQuery query, ICollection<SortOrder> orders) where T : ISolrDocument, new() {
+		public static ISolrQueryResults<T> Query<T>(SolrQuery query, ICollection<SortOrder> orders) where T : new() {
 			var queryExecuter = new SolrQueryExecuter<T>(Connection, query.Query) {
 				Options = new QueryOptions {OrderBy = orders}
 			};
 			return queryExecuter.Execute();
 		}
 
-		public static IDSLQuery<T> Query<T>() where T : ISolrDocument, new() {
+		public static IDSLQuery<T> Query<T>() where T : new() {
 			return new DSLQuery<T>(Connection);
 		}
 

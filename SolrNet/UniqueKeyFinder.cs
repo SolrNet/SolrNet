@@ -3,7 +3,7 @@ using SolrNet.Attributes;
 using SolrNet.Exceptions;
 
 namespace SolrNet {
-	public class UniqueKeyFinder<T> : IUniqueKeyFinder<T> where T : ISolrDocument {
+	public class UniqueKeyFinder<T> : IUniqueKeyFinder<T> {
 		private int? uniqueKeyCount;
 		private PropertyInfo prop;
 		private SolrUniqueKeyAttribute attr;

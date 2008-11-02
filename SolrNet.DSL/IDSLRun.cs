@@ -1,7 +1,7 @@
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet.DSL {
-	public interface IDSLRun<T> where T : ISolrDocument, new() {
+	public interface IDSLRun<T> where T : new() {
 		ISolrQueryResults<T> Run();
 		ISolrQueryResults<T> Run(int start, int rows);
 		IDSLRun<T> OrderBy(string fieldName);

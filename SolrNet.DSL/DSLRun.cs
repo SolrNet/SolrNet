@@ -3,7 +3,7 @@ using SolrNet.Commands.Parameters;
 using SolrNet.Utils;
 
 namespace SolrNet.DSL {
-	public class DSLRun<T> : IDSLRun<T> where T : ISolrDocument, new() {
+	public class DSLRun<T> : IDSLRun<T> where T : new() {
 		protected readonly ICollection<SortOrder> order = new List<SortOrder>();
 		protected readonly ICollection<ISolrFacetQuery> facets = new List<ISolrFacetQuery>();
 		protected readonly HighlightingParameters highlight;

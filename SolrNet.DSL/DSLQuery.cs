@@ -1,5 +1,5 @@
 namespace SolrNet.DSL {
-	public class DSLQuery<T> : DSLRun<T>, IDSLQuery<T> where T : ISolrDocument, new() {
+	public class DSLQuery<T> : DSLRun<T>, IDSLQuery<T> where T : new() {
 		public DSLQuery(ISolrConnection connection) : base(connection) {}
 
 		public DSLQuery(ISolrConnection connection, ISolrQuery query) : base(connection, query) {}

@@ -7,7 +7,7 @@ namespace SolrNet {
 	/// Consolidating interface, exposes all operations
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public interface ISolrOperations<T> where T : ISolrDocument {
+	public interface ISolrOperations<T>  {
 		/// <summary>
 		/// Commits posts, 
 		/// blocking until index changes are flushed to disk and

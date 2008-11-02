@@ -6,7 +6,7 @@ namespace SolrNet {
 	/// Executable query
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public interface ISolrQueryExecuter<T> where T : ISolrDocument {
+	public interface ISolrQueryExecuter<T>  {
 		/// <summary>
 		/// Connection to use
 		/// </summary>

@@ -4,8 +4,7 @@ using SolrNet.Attributes;
 
 namespace SolrNet.Tests.Integration.Sample {
 	public class Product : ISolrDocument {
-		[SolrField("id")]
-		[SolrUniqueKey]
+		[SolrUniqueKey("id")]
 		public string Id { get; set; }
 
 		[SolrField("sku")]

@@ -19,5 +19,11 @@ namespace SolrNet {
 		public string Query {
 			get { return query; }
 		}
+
+		static SolrQuery() {
+			All = new SolrQuery("*:*");
+		}
+
+		public static ISolrQuery All { get; private set; }
 	}
 }

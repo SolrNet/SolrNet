@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributesMappingManager.cs" />
     <Compile Include="Commands\Parameters\HighlightingParameters.cs" />
     <Compile Include="Commands\Parameters\QueryOptions.cs" />
     <Compile Include="Commands\Parameters\WaitOptions.cs" />
@@ -58,6 +59,8 @@
     <Compile Include="Exceptions\InvalidSortOrderException.cs" />
     <Compile Include="Exceptions\NoUniqueKeyException.cs" />
     <Compile Include="Exceptions\SolrConnectionException.cs" />
+    <Compile Include="IMappingManager.cs" />
+    <Compile Include="IReadOnlyMappingManager.cs" />
     <Compile Include="ISolrCommand.cs" />
     <Compile Include="ISolrDocument.cs" />
     <Compile Include="ISolrDocumentSerializer.cs" />
@@ -67,7 +70,7 @@
     <Compile Include="ISolrQuery.cs" />
     <Compile Include="ISolrQueryResultParser.cs" />
     <Compile Include="ISolrQueryResults.cs" />
-    <Compile Include="IUniqueKeyFinder.cs" />
+    <Compile Include="MappingManager.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="RandomSortOrder.cs" />
     <Compile Include="ResponseHeader.cs" />
@@ -87,7 +90,6 @@
     <Compile Include="SolrServer.cs" />
     <Compile Include="Attributes\SolrUniqueKeyAttribute.cs" />
     <Compile Include="SortOrder.cs" />
-    <Compile Include="UniqueKeyFinder.cs" />
     <Compile Include="Utils\Func.cs" />
     <Compile Include="Exceptions\InvalidURLException.cs" />
     <Compile Include="ISolrConnection.cs" />

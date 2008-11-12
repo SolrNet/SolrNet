@@ -245,8 +245,7 @@ namespace SolrNet.Tests {
 		}
 
 		public class Product : ISolrDocument {
-			[SolrField("id")]
-			[SolrUniqueKey]
+			[SolrUniqueKey("id")]
 			public string Id { get; set; }
 
 			[SolrField("sku")]

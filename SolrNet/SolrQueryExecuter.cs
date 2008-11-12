@@ -26,27 +26,24 @@ namespace SolrNet {
 
 		public IListRandomizer ListRandomizer { get; set; }
 
-		public IUniqueKeyFinder<T> UniqueKeyFinder { get; set; }
+		public IReadOnlyMappingManager MappingManager { get; set; }
 
 		public int DefaultRows { get; set; }
 
-		private void SetDefaults() {
+		private SolrQueryExecuter(ISolrConnection connection) {
+			Connection = connection;
 			ListRandomizer = new ListRandomizer();
 			ResultParser = new SolrQueryResultParser<T>();
-			UniqueKeyFinder = new UniqueKeyFinder<T>();
+			MappingManager = new AttributesMappingManager();
 			DefaultRows = 100000000;
 		}
 
-		public SolrQueryExecuter(ISolrConnection connection, ISolrQuery query) {
+		public SolrQueryExecuter(ISolrConnection connection, ISolrQuery query): this(connection) {
 			Query = query;
-			Connection = connection;
-			SetDefaults();
 		}
 
-		public SolrQueryExecuter(ISolrConnection connection, string query) {
+		public SolrQueryExecuter(ISolrConnection connection, string query): this(connection) {
 			Query = new SolrQuery(query);
-			Connection = connection;
-			SetDefaults();
 		}
 
 		public IDictionary<string, string> GetAllParameters() {
@@ -59,22 +56,20 @@ namespace SolrNet {
 				param["rows"] = rows.ToString();
 				if (Options.OrderBy != null && Options.OrderBy.Count > 0) {
 					if (Options.OrderBy == SortOrder.Random) {
-						var pk = UniqueKeyFinder.UniqueKeyFieldName;
-						var pkProp = UniqueKeyFinder.UniqueKeyProperty;
-						if (pk == null)
+						var pk = MappingManager.GetUniqueKey(typeof (T));
+						if (pk.Key == null)
 							throw new NoUniqueKeyException();
 						var executer = new SolrQueryExecuter<T>(Connection, Query) {
 							ListRandomizer = ListRandomizer,
 							ResultParser = ResultParser,
-							UniqueKeyFinder = UniqueKeyFinder,
-							Options = new QueryOptions
-							{
-								Fields = new[] { pk },
+							MappingManager = MappingManager,
+							Options = new QueryOptions {
+								Fields = new[] { pk.Value },
 							}
 						};
 						var nr = executer.Execute();
 						ListRandomizer.Randomize(nr);
-						var idListQuery = new SolrQueryInList(pk, Func.Select(Func.Take(nr, rows), x => pkProp.GetValue(x, null)));
+						var idListQuery = new SolrQueryInList(pk.Value, Func.Select(Func.Take(nr, rows), x => pk.Key.GetValue(x, null)));
 						param["q"] = idListQuery.Query;
 					} else {
 						param["sort"] = Func.Join(",", Options.OrderBy);

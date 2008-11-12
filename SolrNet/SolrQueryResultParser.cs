@@ -16,13 +16,9 @@ namespace SolrNet {
 	/// <typeparam name="T">Document type</typeparam>
 	public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : new() {
 
-		public IUniqueKeyFinder<T> UniqueKeyFinder { get; set; }
+		public IReadOnlyMappingManager MappingManager { get; set; }
 
 		private static readonly IDictionary<string, Type> solrTypes;
-
-		public SolrQueryResultParser() {
-			UniqueKeyFinder = new UniqueKeyFinder<T>();
-		}
 
 		static SolrQueryResultParser() {
 			solrTypes = new Dictionary<string, Type>();
@@ -30,6 +26,10 @@ namespace SolrNet {
 			solrTypes["str"] = typeof (string);
 			solrTypes["bool"] = typeof (bool);
 			solrTypes["date"] = typeof (DateTime);
+		}
+
+		public SolrQueryResultParser() {
+			MappingManager = new AttributesMappingManager();
 		}
 
 		/// <summary>
@@ -234,7 +234,7 @@ namespace SolrNet {
 
 		public IDictionary<string, T> IndexResultsByKey(IEnumerable<T> results) {
 			var r = new Dictionary<string, T>();
-			var prop = UniqueKeyFinder.UniqueKeyProperty;
+			var prop = MappingManager.GetUniqueKey(typeof (T)).Key;
 			foreach (var d in results) {
 				var key = prop.GetValue(d, null).ToString();
 				r[key] = d;

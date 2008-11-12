@@ -31,7 +31,7 @@ namespace SolrNet.Tests.Integration.Sample {
 			};
 
 			var solr = new SolrServer<Product>(serverURL);
-			solr.Delete(new SolrQuery("*:*"));
+			solr.Delete(SolrQuery.All);
 			solr.Add(p);
 			solr.Commit();
 			var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m));

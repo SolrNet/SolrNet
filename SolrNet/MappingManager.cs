@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace SolrNet.Tests {
+namespace SolrNet {
 	public class MappingManager : IMappingManager {
 		private readonly IDictionary<Type, Dictionary<PropertyInfo, string>> mappings = new Dictionary<Type, Dictionary<PropertyInfo, string>>();
 		private readonly IDictionary<Type, PropertyInfo> uniqueKeys = new Dictionary<Type, PropertyInfo>();

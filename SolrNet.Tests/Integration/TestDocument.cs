@@ -5,7 +5,6 @@ using SolrNet.Attributes;
 namespace SolrNet.Tests.Integration {
 	public class TestDocument : ISolrDocument {
 		[SolrUniqueKey("id")]
-		[SolrField("id")]
 		public int Id { get; set; }
 
 		[SolrField("make")]

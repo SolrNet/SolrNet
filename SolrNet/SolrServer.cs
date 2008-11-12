@@ -7,20 +7,19 @@ using SolrNet.Exceptions;
 namespace SolrNet {
 	public class SolrServer<T> : ISolrOperations<T> where T : new() {
 		private readonly ISolrConnection connection;
-		private IUniqueKeyFinder<T> uniqueKeyFinder = new UniqueKeyFinder<T>();
 		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();
+		public IReadOnlyMappingManager MappingManager { get; set; }
 
-		public SolrServer(string serverURL) {
+		private SolrServer() {
+			MappingManager = new AttributesMappingManager();
+		}
+
+		public SolrServer(string serverURL): this() {
 			connection = new SolrConnection(serverURL);
 		}
 
-		public SolrServer(ISolrConnection connection) {
+		public SolrServer(ISolrConnection connection): this() {
 			this.connection = connection;
-		}
-
-		public IUniqueKeyFinder<T> UniqueKeyFinder {
-			get { return uniqueKeyFinder; }
-			set { uniqueKeyFinder = value; }
 		}
 
 		/// <summary>
@@ -84,7 +83,7 @@ namespace SolrNet {
 		}
 
 		private object GetId(T doc) {
-			var prop = uniqueKeyFinder.UniqueKeyProperty;
+			var prop = MappingManager.GetUniqueKey(typeof (T)).Key;
 			if (prop == null)
 				throw new NoUniqueKeyException();
 			var id = prop.GetValue(doc, null);

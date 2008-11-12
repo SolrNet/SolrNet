@@ -61,9 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddCommandTests.cs" />
+    <Compile Include="AttributesMappingManagerTests.cs" />
     <Compile Include="DeleteCommandTests.cs" />
     <Compile Include="FuncTests.cs" />
-    <Compile Include="IMappingManager.cs" />
     <Compile Include="Integration.Sample\Product.cs" />
     <Compile Include="Integration.Sample\Tests.cs" />
     <Compile Include="Integration\AddCommandTests.cs" />
@@ -71,7 +71,6 @@
     <Compile Include="Integration\TestDocument.cs" />
     <Compile Include="JsonQueryResultParser.cs" />
     <Compile Include="JsonQueryResultParserTests.cs" />
-    <Compile Include="MappingManager.cs" />
     <Compile Include="MappingManagerTests.cs" />
     <Compile Include="SolrConnectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,7 +87,6 @@
     <Compile Include="SolrQueryResultsParserTests.cs" />
     <Compile Include="SolrQueryTests.cs" />
     <Compile Include="SortOrderTests.cs" />
-    <Compile Include="UniquePropertyFinderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">

@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AllPropertiesMappingManager.cs" />
     <Compile Include="AttributesMappingManager.cs" />
     <Compile Include="Commands\Parameters\HighlightingParameters.cs" />
     <Compile Include="Commands\Parameters\QueryOptions.cs" />

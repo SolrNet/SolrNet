@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddCommandTests.cs" />
+    <Compile Include="AllPropertiesMappingManagerTests.cs" />
     <Compile Include="AttributesMappingManagerTests.cs" />
     <Compile Include="DeleteCommandTests.cs" />
     <Compile Include="FuncTests.cs" />

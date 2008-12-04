@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Xml;
 using SolrNet.Attributes;
 using SolrNet.Exceptions;
+using SolrNet.Utils;
 
 namespace SolrNet {
 	/// <summary>
@@ -178,42 +179,12 @@ namespace SolrNet {
 		/// <returns>populated document</returns>
 		public T ParseDocument(XmlNode node) {
 			var doc = new T();
-			var properties = typeof (T).GetProperties();
-			// TODO this is a mess, clean it up
 			foreach (XmlNode field in node.ChildNodes) {
 				string fieldName = field.Attributes["name"].InnerText;
-				// first look up attribute SolrFieldAttribute with this FieldName
-				bool found = new BoolFunc(delegate {
-					foreach (var property in properties) {
-						var atts = property.GetCustomAttributes(typeof (SolrFieldAttribute), true);
-						if (atts.Length > 0) {
-							var att = (SolrFieldAttribute) atts[0];
-							var fName = att.FieldName ?? property.Name;
-							if (fName == fieldName) {
-								SetProperty(doc, property, field);
-								return true;
-							}
-						}
-					}
-					return false;
-				})(properties);
-				// if not found, look up by property name
-				if (!found) {
-					foreach (var property in properties) {
-						if (property.Name == fieldName) {
-							SetProperty(doc, property, field);
-							found = true;
-							break;
-						}
-					}
-				}
-				// no property found with this name, wrong class map
-				//if (!found) {
-				//  FieldNotFoundException ex =
-				//    new FieldNotFoundException(string.Format("Field '{0}' not found on class {1}", fieldName, typeof (T)));
-				//  ex.FieldName = fieldName;
-				//  throw ex;
-				//}
+			    var property = Func.FirstOrDefault(MappingManager.GetFields(typeof (T)), kv => kv.Value == fieldName);
+                if (property.Key == null)
+                    continue;
+			    SetProperty(doc, property.Key, field);
 			}
 			return doc;
 		}

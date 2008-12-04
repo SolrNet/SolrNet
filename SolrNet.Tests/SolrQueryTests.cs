@@ -15,8 +15,8 @@ namespace SolrNet.Tests {
 				Expect.Call(connection.Get(null, null)).IgnoreArguments().Repeat.Once().Return("");
 				Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(new SolrQueryResults<TestDocument>());
 			}).Verify(delegate {
-				var q = new SolrQueryExecuter<TestDocument>(connection, "id:123456") {ResultParser = parser};
-				var r = q.Execute();
+				var q = new SolrQueryExecuter<TestDocument>(connection) {ResultParser = parser};
+				var r = q.Execute(new SolrQuery("id:123456"), null);
 			});
 		}
 	}

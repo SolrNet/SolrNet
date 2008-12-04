@@ -12,14 +12,10 @@ namespace SolrNet {
 		/// </summary>
 		ISolrConnection Connection { get; set; }
 
-		ISolrQuery Query { get; set; }
-
-		QueryOptions Options { get; set; }
-
 		/// <summary>
 		/// Executes the query and returns results
 		/// </summary>
 		/// <returns>query results</returns>
-		ISolrQueryResults<T> Execute();
+		ISolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options);
 	}
 }

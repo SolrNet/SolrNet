@@ -7,30 +7,28 @@ using SolrNet.Exceptions;
 namespace SolrNet {
 	public class SolrServer<T> : ISolrOperations<T> where T : new() {
 		private readonly ISolrConnection connection;
-		private ISolrQueryResultParser<T> resultParser = new SolrQueryResultParser<T>();
-		public IReadOnlyMappingManager MappingManager { get; set; }
+	    public IReadOnlyMappingManager MappingManager { get; set; }
+
+        /// <summary>
+        /// Solr response parser, default is XML response parser
+        /// </summary>
+        public ISolrQueryResultParser<T> ResultParser { get; set; }
+        public ISolrQueryExecuter<T> QueryExecuter { get; set; }
 
 		private SolrServer() {
-			MappingManager = new AttributesMappingManager();
+		    MappingManager = new AttributesMappingManager();
+		    ResultParser = new SolrQueryResultParser<T>();
 		}
 
-		public SolrServer(string serverURL): this() {
+	    public SolrServer(string serverURL): this() {
 			connection = new SolrConnection(serverURL);
-		}
+        }
 
 		public SolrServer(ISolrConnection connection): this() {
 			this.connection = connection;
 		}
 
-		/// <summary>
-		/// Solr response parser, default is XML response parser
-		/// </summary>
-		public ISolrQueryResultParser<T> ResultParser {
-			get { return resultParser; }
-			set { resultParser = value; }
-		}
-
-		/// <summary>
+	    /// <summary>
 		/// Commits posts, 
 		/// blocking until index changes are flushed to disk and
 		/// blocking until a new searcher is opened and registered as the main query searcher, making the changes visible.
@@ -126,12 +124,7 @@ namespace SolrNet {
 		}
 
 		public ISolrQueryResults<T> Query(string q, QueryOptions options) {
-			var exe = new SolrQueryExecuter<T>(connection, q) {
-				ResultParser = resultParser,
-                MappingManager = MappingManager,
-				Options = options
-			};
-			return exe.Execute();
+            return QueryExecuter.Execute(new SolrQuery(q), options);
 		}
 
 		public ISolrQueryResults<T> Query(ISolrQuery query) {

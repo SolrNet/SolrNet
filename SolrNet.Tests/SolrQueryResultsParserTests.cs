@@ -23,6 +23,19 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(123456, doc.Id);
 		}
 
+        [Test]
+	    public void ParseDocumentWithMappingManager() {
+            var mapper = new MappingManager();
+            mapper.Add(typeof(TestDocumentWithoutAttributes).GetProperty("Id"), "id");
+            var parser = new SolrQueryResultParser<TestDocumentWithoutAttributes> { MappingManager = mapper };
+			var xml = new XmlDocument();
+			xml.LoadXml(responseXml);
+			var docNode = xml.SelectSingleNode("response/result/doc");
+			var doc = parser.ParseDocument(docNode);
+			Assert.IsNotNull(doc);
+			Assert.AreEqual(123456, doc.Id);
+	    }
+
 		[Test]
 		public void NumFound() {
 			var parser = new SolrQueryResultParser<TestDocument>();
@@ -295,6 +308,10 @@ namespace SolrNet.Tests {
 			[SolrField("id")]
 			public int Id { get; set; }
 		}
+
+        public class TestDocumentWithoutAttributes {
+            public int Id { get; set; }
+        }
 
 		private const string responseXmlWithHighlighting =
 			@"<?xml version=""1.0"" encoding=""UTF-8""?>

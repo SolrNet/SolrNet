@@ -228,7 +228,7 @@ namespace SolrNet.Tests {
 			With.Mocks(mocks).Expecting(delegate {
 				IDictionary<string, string> query = new Dictionary<string, string>();
 				query["q"] = qstring;
-				query["rows"] = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, "").DefaultRows.ToString();
+				query["rows"] = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection).DefaultRows.ToString();
 				query["sort"] = "id asc,name desc";
 				Expect.Call(connection.Get("/select", query))
 					.Repeat.Once()
@@ -278,7 +278,7 @@ namespace SolrNet.Tests {
 			With.Mocks(mocks).Expecting(delegate {
 				IDictionary<string, string> query = new Dictionary<string, string>();
 				query["q"] = "";
-				query["rows"] = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, "").DefaultRows.ToString();
+				query["rows"] = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection).DefaultRows.ToString();
 				query["facet"] = "true";
 				query["facet.query"] = "id:1";
 				Expect.Call(connection.Get("/select", query))
@@ -305,7 +305,7 @@ namespace SolrNet.Tests {
 			With.Mocks(mocks).Expecting(delegate {
 				IDictionary<string, string> query = new Dictionary<string, string>();
 				query["q"] = "";
-				query["rows"] = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, "").DefaultRows.ToString();
+				query["rows"] = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection).DefaultRows.ToString();
 				query["facet"] = "true";
 				query["facet.field"] = "id";
 				query["facet.limit"] = "3";

@@ -114,7 +114,7 @@ namespace SolrNet.DSL.Tests {
 		}
 
 		public string DefaultRows() {
-			return new SolrQueryExecuter<TestDocumentWithId>(new MockConnection(), "").DefaultRows.ToString();
+			return new SolrQueryExecuter<TestDocumentWithId>(new MockConnection()).DefaultRows.ToString();
 		}
 
 		[Test]

@@ -42,6 +42,20 @@ namespace SolrNet.Utils {
 			throw new InvalidOperationException();
 		}
 
+        public static T FirstOrDefault<T>(IEnumerable<T> e) {
+            foreach (var i in e)
+                return i;
+            return default(T);
+        }
+
+        public static T FirstOrDefault<T>(IEnumerable<T> e, Predicate<T> condition) {
+            foreach (var i in e)
+                if (condition(i))
+                    return i;
+            return default(T);
+        }
+
+
 		/// <summary>
 		/// This is a conversion cast, unlike LINQ's
 		/// </summary>

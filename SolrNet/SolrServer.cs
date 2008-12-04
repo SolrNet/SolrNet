@@ -128,6 +128,7 @@ namespace SolrNet {
 		public ISolrQueryResults<T> Query(string q, QueryOptions options) {
 			var exe = new SolrQueryExecuter<T>(connection, q) {
 				ResultParser = resultParser,
+                MappingManager = MappingManager,
 				Options = options
 			};
 			return exe.Execute();

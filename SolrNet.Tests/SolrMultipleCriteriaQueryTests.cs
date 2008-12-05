@@ -31,5 +31,11 @@ namespace SolrNet.Tests {
             var qm = new SolrMultipleCriteriaQuery(new[] {q1, q2});
             Assert.AreEqual("(1)", qm.Query);
         }
+
+        [Test]
+        public void Empty() {
+            var qm = new SolrMultipleCriteriaQuery(new ISolrQuery[] { });
+            Assert.IsEmpty(qm.Query);
+        }
     }
 }

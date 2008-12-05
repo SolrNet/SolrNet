@@ -13,7 +13,9 @@ namespace SolrNet {
 		public SolrMultipleCriteriaQuery(IEnumerable<ISolrQuery> queries): this(queries, "") {}
 
 		public SolrMultipleCriteriaQuery(IEnumerable<ISolrQuery> queries, string oper) {
-			q = "(" + Func.Join(string.Format(" {0} ", oper), queries, query => query.Query, true) + ")";
+			q = Func.Join(string.Format(" {0} ", oper), queries, query => query.Query, true);
+            if (!string.IsNullOrEmpty(q))
+                q = "(" + q + ")";
 		}
 
 		/// <summary>

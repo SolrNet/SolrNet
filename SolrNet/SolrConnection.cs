@@ -83,12 +83,17 @@ namespace SolrNet {
 			}
 		}
 
-		public string Get(string relativeUrl, IDictionary<string, string> parameters) {
+        public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {
+            return new KeyValuePair<T1, T2>(a, b);
+        }
+
+		public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
 			var u = new UriBuilder(serverURL);
 			u.Path += relativeUrl;
-			if (parameters == null)
-				parameters = new Dictionary<string, string>();
-			parameters["version"] = version;
+		    var param = new List<KeyValuePair<string, string>>();
+            if (parameters != null)
+                param.AddRange(parameters);
+            param.Add(KVP("version", version));
 			// TODO clean up, too messy
 			u.Query = Func.Reduce(
 				Func.Map(parameters, input => string.Format("{0}={1}", HttpUtility.UrlEncode(input.Key),

@@ -29,8 +29,9 @@ namespace SolrNet.DSL.Tests {
 			return string.Empty;
 		}
 
-		public virtual string Get(string relativeUrl, IDictionary<string, string> parameters) {
-			Assert.AreEqual(expectations.Count, parameters.Count, "Expected {0} parameters but found {1}", expectations.Count, parameters.Count);
+		public virtual string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
+		    var param = new List<KeyValuePair<string, string>>(parameters);
+            Assert.AreEqual(expectations.Count, param.Count, "Expected {0} parameters but found {1}", expectations.Count, param.Count);
 			foreach (var p in parameters)
 				Assert.IsTrue(expectations.Contains(p), "Parameter {0}:{1}, not found in expectations", p.Key, p.Value);
 			return response;

@@ -11,6 +11,8 @@ namespace SolrNet.Tests {
         public class TestDocument : ISolrDocument {
             [SolrUniqueKey]
             public int Id { get; set; }
+
+            public string OtherField { get; set; }
         }
 
         [Test]
@@ -166,6 +168,37 @@ namespace SolrNet.Tests {
                     FacetQueries = new ISolrFacetQuery[] {
                         new SolrFacetFieldQuery("Id"),
                         new SolrFacetQuery(new SolrQuery("id:[1 TO 5]")),
+                    },
+                });
+            });
+        }
+
+        public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {
+            return new KeyValuePair<T1, T2>(a, b);
+        }
+
+        [Test]
+        public void MultipleFacetFields() {
+            var mocks = new MockRepository();
+            var conn = mocks.CreateMock<ISolrConnection>();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn) {
+                ResultParser = parser,
+            };
+            With.Mocks(mocks).Expecting(() => {
+                var q = new List<KeyValuePair<string, string>>();
+                q.Add(KVP("q", ""));
+                q.Add(KVP("rows", queryExecuter.DefaultRows.ToString()));
+                q.Add(KVP("facet", "true"));
+                q.Add(KVP("facet.field", "Id"));
+                q.Add(KVP("facet.field", "OtherField"));
+                Expect.Call(conn.Get("/select", q))
+                    .Repeat.Once().Return("");
+            }).Verify(() => {
+                queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
+                    FacetQueries = new ISolrFacetQuery[] {
+                        new SolrFacetFieldQuery("Id"),
+                        new SolrFacetFieldQuery("OtherField"),
                     },
                 });
             });

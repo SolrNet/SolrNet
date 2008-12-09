@@ -33,14 +33,19 @@ namespace SolrNet {
             DefaultRows = 100000000;
         }
 
-        public IDictionary<string, string> GetAllParameters(ISolrQuery Query, QueryOptions Options) {
-            var param = new Dictionary<string, string>();
-            param["q"] = Query.Query;
+        public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {
+            return new KeyValuePair<T1, T2>(a, b);
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery Query, QueryOptions Options) {
+            var param = new List<KeyValuePair<string, string>> {
+                KVP("q", Query.Query)
+            };
             if (Options != null) {
                 if (Options.Start.HasValue)
-                    param["start"] = Options.Start.ToString();
+                    param.Add(KVP("start", Options.Start.ToString()));
                 var rows = Options.Rows.HasValue ? Options.Rows.Value : DefaultRows;
-                param["rows"] = rows.ToString();
+                param.Add(KVP("rows", rows.ToString()));
                 if (Options.OrderBy != null && Options.OrderBy.Count > 0) {
                     if (Options.OrderBy == SortOrder.Random) {
                         var pk = MappingManager.GetUniqueKey(typeof (T));
@@ -56,26 +61,27 @@ namespace SolrNet {
                         });
                         ListRandomizer.Randomize(nr);
                         var idListQuery = new SolrQueryInList(pk.Value, Func.Select(Func.Take(nr, rows), x => pk.Key.GetValue(x, null)));
-                        param["q"] = idListQuery.Query;
+                        param.RemoveAll(kv => kv.Key == "q");
+                        param.Add(KVP("q", idListQuery.Query));
                     } else {
-                        param["sort"] = Func.Join(",", Options.OrderBy);
+                        param.Add(KVP("sort", Func.Join(",", Options.OrderBy)));
                     }
                 }
 
                 if (Options.Fields != null && Options.Fields.Count > 0)
-                    param["fl"] = Func.Join(",", Options.Fields);
+                    param.Add(KVP("fl", Func.Join(",", Options.Fields)));
 
                 if (Options.FacetQueries != null && Options.FacetQueries.Count > 0) {
-                    param["facet"] = "true";
+                    param.Add(KVP("facet", "true"));
                     foreach (var fq in Options.FacetQueries) {
                         foreach (var fqv in fq.Query) {
-                            param[fqv.Key] = fqv.Value;
+                            param.Add(fqv);
                         }
                     }
                 }
 
                 foreach (var p in GetHighlightingParameters(Options)) {
-                    param.Add(p.Key, p.Value);
+                    param.Add(p);
                 }
             }
 

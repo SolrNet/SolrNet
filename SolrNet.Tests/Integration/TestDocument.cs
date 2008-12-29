@@ -50,13 +50,13 @@ namespace SolrNet.Tests.Integration {
 		//public bool Transferring { get; set; }
 
 		[SolrField("sponsored")]
-		public bool Sponsored { get; set; }
+		public DateTime Sponsored { get; set; }
 
 		[SolrField("hotdeal")]
 		public bool Hotdeal { get; set; }
 
 		[SolrField("featured")]
-		public bool Featured { get; set; }
+        public DateTime Featured { get; set; }
 
 		[SolrField("basicview")]
 		public string BasicView { get; set; }

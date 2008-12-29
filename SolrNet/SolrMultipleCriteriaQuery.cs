@@ -18,6 +18,10 @@ namespace SolrNet {
                 q = "(" + q + ")";
 		}
 
+        public static SolrMultipleCriteriaQuery Create<T>(IEnumerable<T> queries) where T: ISolrQuery {            
+            return new SolrMultipleCriteriaQuery(Func.Cast<ISolrQuery>(queries));
+        }
+
 		/// <summary>
 		/// query string
 		/// </summary>

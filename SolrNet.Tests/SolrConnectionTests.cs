@@ -42,9 +42,16 @@ namespace SolrNet.Tests {
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			var response = mocks.DynamicMock<IHttpWebResponse>();
 			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(reqFactory.Create(new UriBuilder().Uri)).IgnoreArguments().Repeat.Once().Return(request);
-				Expect.Call(request.GetResponse()).Repeat.Once().Return(response);
-				Expect.Call(response.GetResponseStream()).Repeat.Once().Return(new MemoryStream());
+				Expect.Call(reqFactory.Create(new UriBuilder().Uri))
+                    .IgnoreArguments()
+                    .Repeat.Once()
+                    .Return(request);
+				Expect.Call(request.GetResponse())
+                    .Repeat.Once()
+                    .Return(response);
+				Expect.Call(response.GetResponseStream())
+                    .Repeat.Once()
+                    .Return(new MemoryStream());
 			}).Verify(delegate {
 				var conn = new SolrConnection("https://pepe", reqFactory);
 				conn.Get("", new Dictionary<string, string>());
@@ -58,12 +65,19 @@ namespace SolrNet.Tests {
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			var response = mocks.DynamicMock<IHttpWebResponse>();
 			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(reqFactory.Create(new UriBuilder().Uri)).IgnoreArguments().Repeat.Once().Return(request);
-				Expect.Call(request.GetResponse()).Repeat.Once().Return(response);
-				Expect.Call(response.GetResponseStream()).Repeat.Once().Return(new MemoryStream());
+				Expect.Call(reqFactory.Create(new UriBuilder().Uri))
+                    .IgnoreArguments()
+                    .Repeat.Once()
+                    .Return(request);
+				Expect.Call(request.GetResponse())
+                    .Repeat.Once()
+                    .Return(response);
+				Expect.Call(response.GetResponseStream())
+                    .Repeat.Once()
+                    .Return(new MemoryStream());
 			}).Verify(delegate {
 				var conn = new SolrConnection("https://pepe", reqFactory);
-				conn.Get("", null);
+                conn.Get("", new Dictionary<string, string>());
 			});
 		}
 
@@ -74,11 +88,16 @@ namespace SolrNet.Tests {
 			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(reqFactory.Create(new UriBuilder().Uri)).IgnoreArguments().Repeat.Once().Return(request);
-				Expect.Call(request.GetResponse()).Repeat.Once().Throw(new WebException());
+				Expect.Call(reqFactory.Create(new UriBuilder().Uri))
+                    .IgnoreArguments()
+                    .Repeat.Once()
+                    .Return(request);
+				Expect.Call(request.GetResponse())
+                    .Repeat.Once()
+                    .Throw(new WebException());
 			}).Verify(delegate {
 				var conn = new SolrConnection("http://lalala:12345", reqFactory);
-				conn.Get("", null);
+				conn.Get("", new Dictionary<string, string>());
 			});
 		}
 
@@ -89,8 +108,13 @@ namespace SolrNet.Tests {
 			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(request.GetRequestStream()).Repeat.Once().Throw(new WebException());
-				Expect.Call(reqFactory.Create(new Uri("http://lalala:12345/update"))).IgnoreArguments().Repeat.Once().Return(request);
+				Expect.Call(request.GetRequestStream())
+                    .Repeat.Once()
+                    .Throw(new WebException());
+				Expect.Call(reqFactory.Create(new Uri("http://lalala:12345/update")))
+                    .IgnoreArguments()
+                    .Repeat.Once()
+                    .Return(request);
 			}).Verify(delegate {
 				var conn = new SolrConnection("http://lalala:12345", reqFactory);
 				conn.Post("/update", "");
@@ -112,12 +136,20 @@ namespace SolrNet.Tests {
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			var response = mocks.DynamicMock<IHttpWebResponse>();
 			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(request.GetRequestStream()).Repeat.Once().Return(new MemoryStream());
-				Expect.Call(reqFactory.Create(new Uri("https://pepe"))).Repeat.Once().Return(request);
+				Expect.Call(request.GetRequestStream())
+                    .Repeat.Once()
+                    .Return(new MemoryStream());
+				Expect.Call(reqFactory.Create(new Uri("https://pepe")))
+                    .Repeat.Once()
+                    .Return(request);
 				request.Method = HttpWebRequestMethod.POST;
 				LastCall.Repeat.Once();
-				Expect.Call(request.GetResponse()).Repeat.Once().Return(response);
-				Expect.Call(response.GetResponseStream()).Repeat.Once().Return(new MemoryStream());
+				Expect.Call(request.GetResponse())
+                    .Repeat.Once()
+                    .Return(response);
+				Expect.Call(response.GetResponseStream())
+                    .Repeat.Once()
+                    .Return(new MemoryStream());
 			}).Verify(delegate {
 				var conn = new SolrConnection("https://pepe", reqFactory);
 				conn.Post("", "");
@@ -131,9 +163,13 @@ namespace SolrNet.Tests {
 			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(reqFactory.Create(new UriBuilder().Uri)).IgnoreArguments().Repeat.Once().Return(request);
+				Expect.Call(reqFactory.Create(new UriBuilder().Uri))
+                    .IgnoreArguments()
+                    .Repeat.Once()
+                    .Return(request);
 				var r = new WebResponseStub {StatusCode = HttpStatusCode.BadRequest};
-				Expect.Call(request.GetResponse()).Repeat.Once()
+				Expect.Call(request.GetResponse())
+                    .Repeat.Once()
 					.Throw(new WebException("(400) Bad Request", new ApplicationException(), WebExceptionStatus.ProtocolError, r));
 			}).Verify(delegate {
 				var conn = new SolrConnection("https://pepe", reqFactory);

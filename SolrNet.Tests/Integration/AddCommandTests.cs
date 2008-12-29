@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace SolrNet.Tests.Integration {
 	[TestFixture]
 	public class AddCommandTests {
-		private const string serverURL = "http://nippur:8081/solr";
+		private const string serverURL = "http://10.0.0.84:8080/solr";
 
 		[Test]
 		[Category("Integration")]
@@ -54,7 +54,8 @@ namespace SolrNet.Tests.Integration {
 		[Ignore]
 		public void QueryAll() {
 			var solr = new SolrServer<TestDocument>(serverURL);
-			var r = solr.Query(new SolrQuery("id[* TO *]"));
+			var r = solr.Query(new SolrQuery("id:[* TO *]"));
+            Console.WriteLine(r.NumFound);
 		}
 	}
 }

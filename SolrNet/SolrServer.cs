@@ -22,10 +22,12 @@ namespace SolrNet {
 
 	    public SolrServer(string serverURL): this() {
 			connection = new SolrConnection(serverURL);
+            QueryExecuter = new SolrQueryExecuter<T>(connection);
         }
 
 		public SolrServer(ISolrConnection connection): this() {
 			this.connection = connection;
+            QueryExecuter = new SolrQueryExecuter<T>(connection);
 		}
 
 	    /// <summary>

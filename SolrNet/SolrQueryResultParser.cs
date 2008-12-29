@@ -179,12 +179,17 @@ namespace SolrNet {
 		/// <returns>populated document</returns>
 		public T ParseDocument(XmlNode node) {
 			var doc = new T();
+		    var allFields = MappingManager.GetFields(typeof (T));
 			foreach (XmlNode field in node.ChildNodes) {
 				string fieldName = field.Attributes["name"].InnerText;
-			    var property = Func.FirstOrDefault(MappingManager.GetFields(typeof (T)), kv => kv.Value == fieldName);
+			    var property = Func.FirstOrDefault(allFields, kv => kv.Value == fieldName);
                 if (property.Key == null)
                     continue;
-			    SetProperty(doc, property.Key, field);
+			    try {
+			        SetProperty(doc, property.Key, field);
+			    } catch (Exception e) {
+                    throw new SolrNetException(string.Format("Error setting property {0} from field {1}", property.Key.Name, fieldName), e);
+			    }
 			}
 			return doc;
 		}

@@ -48,8 +48,9 @@ namespace SolrNet {
 			if (maxScore != null) {
 				results.MaxScore = double.Parse(maxScore.InnerText, CultureInfo.InvariantCulture.NumberFormat);
 			}
+		    var allFields = MappingManager.GetFields(typeof (T));
 			foreach (XmlNode docNode in xml.SelectNodes("response/result/doc")) {
-				results.Add(ParseDocument(docNode));
+				results.Add(ParseDocument(docNode, allFields));
 			}
 			var mainFacetNode = xml.SelectSingleNode("response/lst[@name='facet_counts']");
 			if (mainFacetNode != null) {
@@ -176,13 +177,13 @@ namespace SolrNet {
 		/// Builds a document from the corresponding response xml node
 		/// </summary>
 		/// <param name="node">response xml node</param>
+		/// <param name="fields">document fields</param>
 		/// <returns>populated document</returns>
-		public T ParseDocument(XmlNode node) {
+		public T ParseDocument(XmlNode node, ICollection<KeyValuePair<PropertyInfo, string>> fields) {
 			var doc = new T();
-		    var allFields = MappingManager.GetFields(typeof (T));
 			foreach (XmlNode field in node.ChildNodes) {
 				string fieldName = field.Attributes["name"].InnerText;
-			    var property = Func.FirstOrDefault(allFields, kv => kv.Value == fieldName);
+			    var property = Func.FirstOrDefault(fields, kv => kv.Value == fieldName);
                 if (property.Key == null)
                     continue;
 			    try {

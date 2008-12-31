@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using log4net.Config;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using NUnit.Framework.SyntaxHelpers;
 using SolrNet.Attributes;
 
@@ -17,8 +15,9 @@ namespace SolrNet.Tests {
 			var parser = new SolrQueryResultParser<TestDocument>();
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXml);
+		    var mapper = new AttributesMappingManager();
 			var docNode = xml.SelectSingleNode("response/result/doc");
-			var doc = parser.ParseDocument(docNode);
+			var doc = parser.ParseDocument(docNode, mapper.GetFields(typeof(TestDocument)));
 			Assert.IsNotNull(doc);
 			Assert.AreEqual(123456, doc.Id);
 		}
@@ -31,7 +30,7 @@ namespace SolrNet.Tests {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXml);
 			var docNode = xml.SelectSingleNode("response/result/doc");
-			var doc = parser.ParseDocument(docNode);
+            var doc = parser.ParseDocument(docNode, mapper.GetFields(typeof(TestDocumentWithoutAttributes)));
 			Assert.IsNotNull(doc);
 			Assert.AreEqual(123456, doc.Id);
 	    }

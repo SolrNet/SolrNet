@@ -29,7 +29,7 @@ namespace SolrNet {
             Connection = connection;
             ListRandomizer = new ListRandomizer();
             ResultParser = new SolrQueryResultParser<T>();
-            MappingManager = new AttributesMappingManager();
+            MappingManager = new MemoizingMappingManager(new AttributesMappingManager());
             DefaultRows = 100000000;
         }
 

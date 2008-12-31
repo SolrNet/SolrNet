@@ -16,7 +16,7 @@ namespace SolrNet {
         public ISolrQueryExecuter<T> QueryExecuter { get; set; }
 
 		private SolrServer() {
-		    MappingManager = new AttributesMappingManager();
+		    MappingManager = new MemoizingMappingManager(new AttributesMappingManager());
 		    ResultParser = new SolrQueryResultParser<T>();
 		}
 

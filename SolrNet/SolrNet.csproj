@@ -72,6 +72,7 @@
     <Compile Include="ISolrQueryResultParser.cs" />
     <Compile Include="ISolrQueryResults.cs" />
     <Compile Include="MappingManager.cs" />
+    <Compile Include="MemoizingMappingManager.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="RandomSortOrder.cs" />
     <Compile Include="ResponseHeader.cs" />

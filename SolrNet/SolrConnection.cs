@@ -64,13 +64,14 @@ namespace SolrNet {
                 using (var postParams = request.GetRequestStream())
                 using (var sw = new StreamWriter(postParams)) {
                     sw.Write(s);
-                    using (var response = request.GetResponse())
-                    using (var rStream = response.GetResponseStream())
-                    using (var sr = new StreamReader(rStream)) {
-                        return sr.ReadToEnd();
-                    }
                 }
-            } catch (WebException e) {
+                using (var response = request.GetResponse())
+                using (var rStream = response.GetResponseStream())
+                using (var sr = new StreamReader(rStream)) {
+                    return sr.ReadToEnd();
+                }
+            }
+            catch (WebException e) {
                 throw new SolrConnectionException(e);
             }
         }

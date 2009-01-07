@@ -21,6 +21,12 @@ namespace SolrNet.Tests {
 			var o = SortOrder.Parse(null);
 		}
 
+        [Test]
+        [ExpectedException(typeof(InvalidSortOrderException))]
+        public void ParseEmpty_ShouldThrow() {
+            var o = SortOrder.Parse("");
+        }
+
 		[Test]
 		public void Parse() {
 			var o = SortOrder.Parse("pepe");

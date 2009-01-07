@@ -25,6 +25,8 @@ namespace SolrNet {
 		private delegate T F<TP, T>(TP p);
 
 		public static SortOrder Parse(string s) {
+            if (string.IsNullOrEmpty(s))
+                throw new InvalidSortOrderException();
 			try {
 				var tokens = s.Split(' ');
 				string field = tokens[0];

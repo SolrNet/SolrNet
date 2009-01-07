@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using SolrNet.Commands.Parameters;
 
 namespace SolrNet.Tests.Integration {
 	[TestFixture]
@@ -54,7 +55,7 @@ namespace SolrNet.Tests.Integration {
 		[Ignore]
 		public void QueryAll() {
 			var solr = new SolrServer<TestDocument>(serverURL);
-			var r = solr.Query(new SolrQuery("id:[* TO *]"));
+			var r = solr.Query(SolrQuery.All, new QueryOptions {Fields = new[] {"id"}});
             Console.WriteLine(r.NumFound);
 		}
 	}

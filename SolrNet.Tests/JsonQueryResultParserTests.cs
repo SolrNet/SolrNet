@@ -5,6 +5,7 @@ using SolrNet.Attributes;
 
 namespace SolrNet.Tests {
 	[TestFixture]
+    [Ignore("not ready yet")]
 	public class JsonQueryResultParserTests {
 		[Test]
 		public void NumFound() {

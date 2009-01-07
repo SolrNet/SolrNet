@@ -39,7 +39,7 @@ namespace SolrNet.Tests {
 			string fs = ser.Serialize(doc).OuterXml;
 			var xml = new XmlDocument();
 			xml.LoadXml(fs);
-			Assert.AreEqual("<doc><field name=\"Id\">id</field><field name=\"Flower\">23,5</field></doc>", fs);
+			Assert.AreEqual("<doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc>", fs);
 		}
 
 		[Test]

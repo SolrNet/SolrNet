@@ -35,7 +35,7 @@ namespace SolrNet.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
 				conn.Post("/update",
-				          "<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23,5</field></doc></add>");
+				          "<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc></add>");
 				LastCall.Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
 					Console.WriteLine(s);
 					return null;

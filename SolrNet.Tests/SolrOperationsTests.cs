@@ -204,6 +204,7 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var connection = mocks.CreateMock<ISolrConnection>();
 			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+		    var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection) {ResultParser = parser};
 			With.Mocks(mocks).Expecting(delegate {
 				var query = new Dictionary<string, string>();
 				query["q"] = qstring;
@@ -211,9 +212,14 @@ namespace SolrNet.Tests {
 				query["rows"] = rows.ToString();
 				Expect.Call(connection.Get("/select", query)).Repeat.Once().Return("");
 
-				SetupResult.For(parser.Parse(null)).IgnoreArguments().Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
+				SetupResult.For(parser.Parse(null))
+                    .IgnoreArguments()
+                    .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
 			}).Verify(delegate {
-				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) {ResultParser = parser};
+				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) {
+				    ResultParser = parser,
+                    QueryExecuter = executer,
+				};
 				var r = solr.Query(new SolrQuery(qstring), new QueryOptions {Start = start, Rows = rows});
 			});
 		}
@@ -225,6 +231,7 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var connection = mocks.CreateMock<ISolrConnection>();
 			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection) { ResultParser = parser };
 			With.Mocks(mocks).Expecting(delegate {
 				IDictionary<string, string> query = new Dictionary<string, string>();
 				query["q"] = qstring;
@@ -237,7 +244,10 @@ namespace SolrNet.Tests {
 					.IgnoreArguments()
 					.Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
 			}).Verify(delegate {
-				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) {ResultParser = parser};
+				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) {
+				    ResultParser = parser,
+                    QueryExecuter = executer,
+				};
 				var r = solr.Query(new SolrQuery(qstring), new[] {new SortOrder("id", Order.ASC), new SortOrder("name", Order.DESC)});
 			});
 		}
@@ -251,6 +261,7 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var connection = mocks.CreateMock<ISolrConnection>();
 			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection) { ResultParser = parser };
 			With.Mocks(mocks).Expecting(delegate {
 				var query = new Dictionary<string, string>();
 				query["q"] = qstring;
@@ -259,9 +270,14 @@ namespace SolrNet.Tests {
 				query["sort"] = "id asc,name desc";
 				Expect.Call(connection.Get("/select", query)).Repeat.Once().Return("");
 
-				SetupResult.For(parser.Parse(null)).IgnoreArguments().Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
+				SetupResult.For(parser.Parse(null))
+                    .IgnoreArguments()
+                    .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
 			}).Verify(delegate {
-				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) {ResultParser = parser};
+				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) {
+				    ResultParser = parser,
+                    QueryExecuter = executer,
+				};
 				var r = solr.Query(new SolrQuery(qstring), new QueryOptions {
 					Start = start,
 					Rows = rows,
@@ -275,6 +291,7 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var connection = mocks.CreateMock<ISolrConnection>();
 			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection) { ResultParser = parser };
 			With.Mocks(mocks).Expecting(delegate {
 				IDictionary<string, string> query = new Dictionary<string, string>();
 				query["q"] = "";
@@ -288,7 +305,10 @@ namespace SolrNet.Tests {
 					.IgnoreArguments()
 					.Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
 			}).Verify(delegate {
-				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) { ResultParser = parser };
+				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) {
+				    ResultParser = parser,
+                    QueryExecuter = executer,
+				};
 				var r = solr.Query("", new QueryOptions {
 					FacetQueries = new ISolrFacetQuery[] {
 						new SolrFacetQuery(new SolrQuery("id:1")),
@@ -302,6 +322,7 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var connection = mocks.CreateMock<ISolrConnection>();
 			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection) { ResultParser = parser };
 			With.Mocks(mocks).Expecting(delegate {
 				IDictionary<string, string> query = new Dictionary<string, string>();
 				query["q"] = "";
@@ -316,7 +337,10 @@ namespace SolrNet.Tests {
 					.IgnoreArguments()
 					.Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
 			}).Verify(delegate {
-				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) { ResultParser = parser };
+				var solr = new SolrServer<TestDocumentWithUniqueKey>(connection) {
+				    ResultParser = parser,
+                    QueryExecuter = executer,
+				};
 				var r = solr.Query("", new QueryOptions {
 					FacetQueries = new ISolrFacetQuery[] {
 						new SolrFacetFieldQuery("id") {Limit = 3},

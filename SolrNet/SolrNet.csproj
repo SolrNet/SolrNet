@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CEEB8690-3E08-4440-B647-787A58E71CFA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -71,6 +71,7 @@
     <Compile Include="ISolrQuery.cs" />
     <Compile Include="ISolrQueryResultParser.cs" />
     <Compile Include="ISolrQueryResults.cs" />
+    <Compile Include="ISolrReadOnlyOperations.cs" />
     <Compile Include="MappingManager.cs" />
     <Compile Include="MemoizingMappingManager.cs" />
     <Compile Include="Order.cs" />

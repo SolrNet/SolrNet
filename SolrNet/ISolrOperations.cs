@@ -7,7 +7,7 @@ namespace SolrNet {
 	/// Consolidating interface, exposes all operations
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public interface ISolrOperations<T>  {
+	public interface ISolrOperations<T> : ISolrReadOnlyOperations<T> {
 		/// <summary>
 		/// Commits posts, 
 		/// blocking until index changes are flushed to disk and
@@ -91,26 +91,11 @@ namespace SolrNet {
 		/// <returns></returns>
 		string Delete(string id, bool fromPending, bool fromCommited);
 
-		/// <summary>
-		/// Queries documents
-		/// </summary>
-		/// <param name="q">query to execute</param>
-		/// <returns>query results</returns>
-		ISolrQueryResults<T> Query(string q);
-		ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders);
-		ISolrQueryResults<T> Query(string q, QueryOptions options);
-		ISolrQueryResults<T> Query(ISolrQuery q);
-		ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders);
-		ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options);
-
-		/// <summary>
+	    /// <summary>
 		/// Sends a custom command
 		/// </summary>
 		/// <param name="cmd">command to send</param>
 		/// <returns>solr response</returns>
 		string Send(ISolrCommand cmd);
-
-		string Ping();
-
 	}
 }

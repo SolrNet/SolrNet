@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
+using SolrNet.Utils;
 
 namespace SolrNet {
 	public class SolrServer<T> : ISolrOperations<T> where T : new() {
@@ -16,7 +17,7 @@ namespace SolrNet {
         public ISolrQueryExecuter<T> QueryExecuter { get; set; }
 
 		private SolrServer() {
-		    MappingManager = new MemoizingMappingManager(new AttributesMappingManager());
+            MappingManager = ReadOnlyMappingManagerFactory.Create();
 		    ResultParser = new SolrQueryResultParser<T>();
 		}
 

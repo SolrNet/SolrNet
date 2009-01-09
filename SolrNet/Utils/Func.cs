@@ -10,6 +10,8 @@ namespace SolrNet.Utils {
 	public class Func {
 		public delegate TResult Accumulator<TSource, TResult>(TSource x, TResult y);
 
+	    public delegate T Function<T>();
+
 		public static TResult Reduce<TSource, TResult>(IEnumerable<TSource> source, TResult startValue,
 		                                               Accumulator<TSource, TResult> accumulator) {
 			var result = startValue;

@@ -30,7 +30,7 @@ namespace SolrNet {
 		}
 
 		public SolrQueryResultParser() {
-            MappingManager = new MemoizingMappingManager(new AttributesMappingManager());
+            MappingManager = ReadOnlyMappingManagerFactory.Create();
 		}
 
 		/// <summary>

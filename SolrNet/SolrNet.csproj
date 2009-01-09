@@ -103,6 +103,7 @@
     <Compile Include="Utils\IRNG.cs" />
     <Compile Include="Utils\ListRandomizer.cs" />
     <Compile Include="Utils\Memoizer.cs" />
+    <Compile Include="Utils\ReadOnlyMappingManagerFactory.cs" />
     <Compile Include="Utils\RNG.cs" />
   </ItemGroup>
   <ItemGroup>

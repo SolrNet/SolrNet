@@ -120,7 +120,7 @@ namespace SolrNet.DSL.Tests {
 		[Test]
 		public void OrderBy() {
 			var conn = new MockConnection(new Dictionary<string, string> {
-				{"q", "Id:123456"},
+				{"q", "((Id:123456))"},
 				{"sort", "id asc"},
 				{"rows", DefaultRows()},
 			});
@@ -179,7 +179,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "Id:123456"},
+					{"q", "(Id:123456)"},
 					{"rows", DefaultRows()},
 					{"sort", "id asc"},
 				};
@@ -202,7 +202,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "Id:123456"},
+					{"q", "(Id:123456)"},
 					{"rows", DefaultRows()},
 					{"sort", "id asc,name desc"},
 				};
@@ -259,7 +259,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "id:123456"},
+					{"q", "(id:123456)"},
 					{"rows", DefaultRows()},
 				};
 				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
@@ -275,10 +275,12 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "Id:123456"},
+					{"q", "(Id:123456)"},
 					{"rows", DefaultRows()},
 				};
-				Expect.Call(conn.Get("/select", query)).Repeat.Once().Return(response);
+				Expect.Call(conn.Get("/select", query))
+                    .Repeat.Once()
+                    .Return(response);
 			}).Verify(() => {
 				Solr.Connection = conn;
 				var doc = new TestDocumentWithId {Id = 123456};
@@ -292,7 +294,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "id:[123 TO 456]"},
+					{"q", "(id:[123 TO 456])"},
 					{"rows", DefaultRows()},
 				};
 				Expect.Call(conn.Get("/select", query))
@@ -310,7 +312,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "id:[123 TO 456]"},
+					{"q", "(id:[123 TO 456])"},
 					{"rows", DefaultRows()},
 				};
 				Expect.Call(conn.Get("/select", query))
@@ -325,7 +327,7 @@ namespace SolrNet.DSL.Tests {
 		[Test]
 		public void QueryByRangeConcatenable() {
 			var conn = new MockConnection(new Dictionary<string, string> {
-				{"q", "id:[123 TO 456]  p:[a TO z]"},
+				{"q", "((id:[123 TO 456])  p:[a TO z])"},
 				{"rows", DefaultRows()},
 			});
 			Solr.Connection = conn;
@@ -338,7 +340,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "id:{123 TO 456}"},
+					{"q", "(id:{123 TO 456})"},
 					{"rows", DefaultRows()},
 				};
 				Expect.Call(conn.Get("/select", query))
@@ -356,7 +358,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "id:[123 TO 456]"},
+					{"q", "(id:[123 TO 456])"},
 					{"rows", DefaultRows()},
 				};
 				Expect.Call(conn.Get("/select", query))
@@ -404,7 +406,10 @@ namespace SolrNet.DSL.Tests {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks)
-				.Expecting(() => Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response))
+				.Expecting(() => Expect.Call(conn.Get(null, null))
+                    .IgnoreArguments()
+                    .Repeat.Once()
+                    .Return(response))
 				.Verify(() => {
 					Solr.Connection = conn;
 					var r = Solr.Query<TestDocument>("", 10, 20);
@@ -417,7 +422,10 @@ namespace SolrNet.DSL.Tests {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks)
-				.Expecting(() => Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response))
+				.Expecting(() => Expect.Call(conn.Get(null, null))
+                    .IgnoreArguments()
+                    .Repeat.Once()
+                    .Return(response))
 				.Verify(() => {
 					Solr.Connection = conn;
 					var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithFacetField("modeldesc").Run();
@@ -429,7 +437,10 @@ namespace SolrNet.DSL.Tests {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks)
-				.Expecting(() => Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response))
+				.Expecting(() => Expect.Call(conn.Get(null, null))
+                    .IgnoreArguments()
+                    .Repeat.Once()
+                    .Return(response))
 				.Verify(() => {
 					Solr.Connection = conn;
 					var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw")
@@ -449,7 +460,10 @@ namespace SolrNet.DSL.Tests {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks)
-				.Expecting(() => Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response))
+				.Expecting(() => Expect.Call(conn.Get(null, null))
+                    .IgnoreArguments()
+                    .Repeat.Once()
+                    .Return(response))
 				.Verify(() => {
 					Solr.Connection = conn;
 					var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithFacetQuery("").Run();
@@ -461,7 +475,10 @@ namespace SolrNet.DSL.Tests {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks)
-				.Expecting(() => Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response))
+				.Expecting(() => Expect.Call(conn.Get(null, null))
+                    .IgnoreArguments()
+                    .Repeat.Once()
+                    .Return(response))
 				.Verify(() => {
 					Solr.Connection = conn;
 					var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithFacetQuery(new SolrQuery("")).Run();
@@ -487,7 +504,7 @@ namespace SolrNet.DSL.Tests {
 		[Test]
 		public void Highlighting() {
 			var conn = new MockConnection(new Dictionary<string, string> {
-				{"q", "makedesc:bmw"},
+				{"q", "(makedesc:bmw)"},
 				{"hl", "true"},
 				{"hl.fl", "make"},
 				{"rows", DefaultRows()},
@@ -501,7 +518,7 @@ namespace SolrNet.DSL.Tests {
 		[Test]
 		public void HighlightingFields() {
 			var conn = new MockConnection(new Dictionary<string, string> {
-				{"q", "makedesc:bmw"},
+				{"q", "(makedesc:bmw)"},
 				{"hl", "true"},
 				{"hl.fl", "make,category"},
 				{"rows", DefaultRows()},

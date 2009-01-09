@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using SolrNet;
@@ -29,11 +30,15 @@ namespace SolrNet.DSL.Tests {
 			return string.Empty;
 		}
 
+        public string DumpParams(List<KeyValuePair<string, string>> parameters) {
+            return string.Join("\n", parameters.ConvertAll(kv => string.Format("{0}={1}", kv.Key, kv.Value)).ToArray());
+        }
+
 		public virtual string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
 		    var param = new List<KeyValuePair<string, string>>(parameters);
             Assert.AreEqual(expectations.Count, param.Count, "Expected {0} parameters but found {1}", expectations.Count, param.Count);
 			foreach (var p in parameters)
-				Assert.IsTrue(expectations.Contains(p), "Parameter {0}:{1}, not found in expectations", p.Key, p.Value);
+                Assert.IsTrue(expectations.Contains(p), "Parameter {0}={1}, not found in expectations.\nCurrent expectations are:\n {2}", p.Key, p.Value, DumpParams(new List<KeyValuePair<string, string>>(expectations)));
 			return response;
 		}
 	}

@@ -105,6 +105,7 @@
     <Compile Include="Utils\Memoizer.cs" />
     <Compile Include="Utils\ReadOnlyMappingManagerFactory.cs" />
     <Compile Include="Utils\RNG.cs" />
+    <Compile Include="Utils\StringHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">

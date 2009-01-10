@@ -60,7 +60,7 @@ namespace SolrNet {
                             Fields = new[] {pk.Value},
                         });
                         ListRandomizer.Randomize(nr);
-                        var idListQuery = new SolrQueryInList(pk.Value, Func.Select(Func.Take(nr, rows), x => pk.Key.GetValue(x, null)));
+                        var idListQuery = new SolrQueryInList(pk.Value, Func.Select(Func.Take(nr, rows), x => StringHelper.ToNullOrString(pk.Key.GetValue(x, null))));
                         param.RemoveAll(kv => kv.Key == "q");
                         param.Add(KVP("q", idListQuery.Query));
                     } else {

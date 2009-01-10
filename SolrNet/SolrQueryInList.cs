@@ -1,12 +1,12 @@
-﻿using System.Collections;
-using SolrNet.Utils;
+﻿using SolrNet.Utils;
+using System.Collections.Generic;
 
 namespace SolrNet {
 	public class SolrQueryInList : ISolrQuery {
 		private readonly string q;
 
-		public SolrQueryInList(string fieldName, IEnumerable list) {
-			q = "(" + Func.Join(" OR ", Func.Select(list, l => string.Format("{0}:{1}", fieldName, l))) + ")";
+		public SolrQueryInList(string fieldName, IEnumerable<string> list) {
+			q = "(" + Func.Join(" OR ", Func.Select(list, l => new SolrQueryByField(fieldName, l).Query)) + ")";
 		}
 
 		public string Query {

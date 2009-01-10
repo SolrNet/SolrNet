@@ -67,9 +67,6 @@
     <Compile Include="FuncTests.cs" />
     <Compile Include="Integration.Sample\Product.cs" />
     <Compile Include="Integration.Sample\Tests.cs" />
-    <Compile Include="Integration\AddCommandTests.cs" />
-    <Compile Include="Integration\QueryTests.cs" />
-    <Compile Include="Integration\TestDocument.cs" />
     <Compile Include="JsonQueryResultParser.cs" />
     <Compile Include="JsonQueryResultParserTests.cs" />
     <Compile Include="MappingManagerTests.cs" />

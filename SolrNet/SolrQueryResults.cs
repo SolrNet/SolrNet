@@ -172,5 +172,10 @@ namespace SolrNet {
 		IEnumerator<T> IEnumerable<T>.GetEnumerator() {
 			return innerList.GetEnumerator();
 		}
+
+	    public SolrQueryResults() {
+	        FacetQueries = new Dictionary<string, int>();
+            FacetFields = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
+	    }
 	}
 }

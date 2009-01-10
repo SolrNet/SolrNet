@@ -7,7 +7,7 @@ namespace SolrNet.Tests {
     [TestFixture]
     public class MemoizingMappingManagerTests {
         [Test]
-        public void tt() {
+        public void CallsInnerJustOnce() {
             var mocks = new MockRepository();
             var innerMapper = mocks.CreateMock<IReadOnlyMappingManager>();
             With.Mocks(mocks).Expecting(() => Expect.Call(innerMapper.GetFields(typeof (TestDocument)))

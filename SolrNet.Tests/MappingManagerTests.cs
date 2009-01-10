@@ -14,10 +14,10 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
-		public void No_Mapped_type_returns_null() {
+		public void No_Mapped_type_returns_empty() {
 			var mgr = new MappingManager();
 			var fields = mgr.GetFields(typeof (Entity));
-			Assert.IsNull(fields);
+			Assert.AreEqual(0, fields.Count);
 		}
 
 		[Test]

@@ -38,6 +38,15 @@ namespace SolrNet.Tests {
             var pk = m.GetUniqueKey(typeof(Entity));
         }
 
+        [Test]
+        public void NoProperties_ShouldReturnEmpty() {
+            var m = new AllPropertiesMappingManager();
+            var props = m.GetFields(typeof (NoProperties));
+            Assert.AreEqual(0, props.Count);
+        }
+
+        public class NoProperties {}
+
 		public class Entity {
 			public int Id { get; set; }
 

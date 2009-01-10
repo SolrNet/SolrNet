@@ -31,7 +31,7 @@ namespace SolrNet {
 			if (type == null)
 				throw new ArgumentNullException("type");
 			if (!mappings.ContainsKey(type))
-				return null;
+				return new KeyValuePair<PropertyInfo, string>[0];
 			return mappings[type];
 		}
 

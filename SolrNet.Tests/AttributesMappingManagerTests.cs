@@ -42,6 +42,15 @@ namespace SolrNet.Tests {
             Assert.AreEqual(1, fields.Count);
         }
 
+        [Test]
+        public void NoProperties_ShouldReturnEmpty() {
+            var m = new AttributesMappingManager();
+            var fields = m.GetFields(typeof (NoProperties));
+            Assert.AreEqual(0, fields.Count);
+        }
+
+        public class NoProperties {}
+
 		public class Entity {
 			[SolrUniqueKey]
 			public int Id { get; set; }

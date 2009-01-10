@@ -9,7 +9,7 @@ namespace SolrNet {
 		/// Gets fields mapped for this type
 		/// </summary>
 		/// <param name="type"></param>
-		/// <returns>Null if <paramref name="type"/> is not mapped</returns>
+		/// <returns>Empty collection if <paramref name="type"/> is not mapped</returns>
 		ICollection<KeyValuePair<PropertyInfo, string>> GetFields(Type type);
 
         /// <summary>

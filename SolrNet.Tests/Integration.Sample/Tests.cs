@@ -31,9 +31,9 @@ namespace SolrNet.Tests.Integration.Sample {
 			};
 
 			var solr = new SolrServer<Product>(serverURL);
-			solr.Delete(SolrQuery.All);
-			solr.Add(p);
-			solr.Commit();
+		    solr.Delete(SolrQuery.All)
+		        .Add(p)
+		        .Commit();
 			var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m));
 			Assert.AreEqual(1, products.Count);
 			Assert.AreEqual("SP2514N", products[0].Id);
@@ -55,8 +55,7 @@ namespace SolrNet.Tests.Integration.Sample {
 		[Test]
 		public void Ping() {
 			var solr = new SolrServer<Product>(serverURL);
-			var response = solr.Ping();
-			Console.WriteLine(response);
+			solr.Ping();
 		}
 	}
 }

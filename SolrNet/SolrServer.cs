@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
@@ -6,146 +5,155 @@ using SolrNet.Exceptions;
 using SolrNet.Utils;
 
 namespace SolrNet {
-	public class SolrServer<T> : ISolrOperations<T> where T : new() {
-		private readonly ISolrConnection connection;
-	    public IReadOnlyMappingManager MappingManager { get; set; }
+    public class SolrServer<T> : ISolrOperations<T> where T : new() {
+        private readonly ISolrConnection connection;
+        public IReadOnlyMappingManager MappingManager { get; set; }
 
         /// <summary>
         /// Solr response parser, default is XML response parser
         /// </summary>
         public ISolrQueryResultParser<T> ResultParser { get; set; }
+
         public ISolrQueryExecuter<T> QueryExecuter { get; set; }
 
-		private SolrServer() {
+        private SolrServer() {
             MappingManager = ReadOnlyMappingManagerFactory.Create();
-		    ResultParser = new SolrQueryResultParser<T>();
-		}
+            ResultParser = new SolrQueryResultParser<T>();
+        }
 
-	    public SolrServer(string serverURL): this() {
-			connection = new SolrConnection(serverURL);
+        public SolrServer(string serverURL) : this() {
+            connection = new SolrConnection(serverURL);
             QueryExecuter = new SolrQueryExecuter<T>(connection);
         }
 
-		public SolrServer(ISolrConnection connection): this() {
-			this.connection = connection;
+        public SolrServer(ISolrConnection connection) : this() {
+            this.connection = connection;
             QueryExecuter = new SolrQueryExecuter<T>(connection);
-		}
+        }
 
-	    /// <summary>
-		/// Commits posts, 
-		/// blocking until index changes are flushed to disk and
-		/// blocking until a new searcher is opened and registered as the main query searcher, making the changes visible.
-		/// </summary>
-		public string Commit() {
-			return Send(new CommitCommand());
-		}
+        /// <summary>
+        /// Commits posts, 
+        /// blocking until index changes are flushed to disk and
+        /// blocking until a new searcher is opened and registered as the main query searcher, making the changes visible.
+        /// </summary>
+        public void Commit() {
+            Send(new CommitCommand());
+        }
 
-		/// <summary>
-		/// Commits posts
-		/// </summary>
-		/// <param name="waitFlush">block until index changes are flushed to disk</param>
-		/// <param name="waitSearcher">block until a new searcher is opened and registered as the main query searcher, making the changes visible.</param>
-		public string Commit(bool waitFlush, bool waitSearcher) {
-			var cmd = new CommitCommand {WaitFlush = waitFlush, WaitSearcher = waitSearcher};
-			return Send(cmd);
-		}
+        /// <summary>
+        /// Commits posts
+        /// </summary>
+        /// <param name="waitFlush">block until index changes are flushed to disk</param>
+        /// <param name="waitSearcher">block until a new searcher is opened and registered as the main query searcher, making the changes visible.</param>
+        public void Commit(bool waitFlush, bool waitSearcher) {
+            var cmd = new CommitCommand {WaitFlush = waitFlush, WaitSearcher = waitSearcher};
+            Send(cmd);
+        }
 
-		public string Commit(WaitOptions options) {
-			var cmd = new CommitCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
-			return Send(cmd);
-		}
+        public void Commit(WaitOptions options) {
+            var cmd = new CommitCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
+            Send(cmd);
+        }
 
-		public string Optimize() {
-			return Send(new OptimizeCommand());
-		}
+        public void Optimize() {
+            Send(new OptimizeCommand());
+        }
 
-		public string Optimize(bool waitFlush, bool waitSearcher) {
-			var optimize = new OptimizeCommand {WaitFlush = waitFlush, WaitSearcher = waitSearcher};
-			return Send(optimize);
-		}
+        public void Optimize(bool waitFlush, bool waitSearcher) {
+            var optimize = new OptimizeCommand {WaitFlush = waitFlush, WaitSearcher = waitSearcher};
+            Send(optimize);
+        }
 
-		public string Optimize(WaitOptions options) {
-			var cmd = new OptimizeCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
-			return Send(cmd);
-		}
+        public void Optimize(WaitOptions options) {
+            var cmd = new OptimizeCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
+            Send(cmd);
+        }
 
-		public string Add(T doc) {
-			return Add(new[] {doc});
-		}
+        public ISolrOperations<T> Add(T doc) {
+            Add(new[] {doc});
+            return this;
+        }
 
-		public string Add(IEnumerable<T> docs) {
-			var cmd = new AddCommand<T>(docs);
-			return Send(cmd);
-		}
+        public ISolrOperations<T> Add(IEnumerable<T> docs) {
+            var cmd = new AddCommand<T>(docs);
+            Send(cmd);
+            return this;
+        }
 
-		public string Delete(T doc) {
-			var id = GetId(doc);
-			return Delete(id.ToString());
-		}
+        public ISolrOperations<T> Delete(T doc) {
+            var id = GetId(doc);
+            Delete(id.ToString());
+            return this;
+        }
 
-		private object GetId(T doc) {
-			var prop = MappingManager.GetUniqueKey(typeof (T)).Key;
-			var id = prop.GetValue(doc, null);
-			if (id == null)
-				throw new NoUniqueKeyException(typeof(T));
-			return id;
-		}
+        private object GetId(T doc) {
+            var prop = MappingManager.GetUniqueKey(typeof (T)).Key;
+            var id = prop.GetValue(doc, null);
+            if (id == null)
+                throw new NoUniqueKeyException(typeof (T));
+            return id;
+        }
 
-		public string Delete(T doc, bool fromPending, bool fromCommited) {
-			var id = GetId(doc);
-			return Delete(id.ToString(), fromPending, fromCommited);
-		}
+        public ISolrOperations<T> Delete(T doc, bool fromPending, bool fromCommited) {
+            var id = GetId(doc);
+            Delete(id.ToString(), fromPending, fromCommited);
+            return this;
+        }
 
-		public string Delete(ISolrQuery q) {
-			var delete = new DeleteCommand(new DeleteByQueryParam(q));
-			return delete.Execute(connection);
-		}
+        public ISolrOperations<T> Delete(ISolrQuery q) {
+            var delete = new DeleteCommand(new DeleteByQueryParam(q));
+            delete.Execute(connection);
+            return this;
+        }
 
-		public string Delete(ISolrQuery q, bool fromPending, bool fromCommited) {
-			var delete = new DeleteCommand(new DeleteByQueryParam(q)) {FromCommitted = fromCommited, FromPending = fromPending};
-			return delete.Execute(connection);
-		}
+        public ISolrOperations<T> Delete(ISolrQuery q, bool fromPending, bool fromCommited) {
+            var delete = new DeleteCommand(new DeleteByQueryParam(q)) {FromCommitted = fromCommited, FromPending = fromPending};
+            delete.Execute(connection);
+            return this;
+        }
 
-		public string Delete(string id) {
-			var delete = new DeleteCommand(new DeleteByIdParam(id));
-			return delete.Execute(connection);
-		}
+        public ISolrOperations<T> Delete(string id) {
+            var delete = new DeleteCommand(new DeleteByIdParam(id));
+            delete.Execute(connection);
+            return this;
+        }
 
-		public string Delete(string id, bool fromPending, bool fromCommited) {
-			var delete = new DeleteCommand(new DeleteByIdParam(id)) {FromCommitted = fromCommited, FromPending = fromPending};
-			return delete.Execute(connection);
-		}
+        public ISolrOperations<T> Delete(string id, bool fromPending, bool fromCommited) {
+            var delete = new DeleteCommand(new DeleteByIdParam(id)) {FromCommitted = fromCommited, FromPending = fromPending};
+            delete.Execute(connection);
+            return this;
+        }
 
-		public ISolrQueryResults<T> Query(string q) {
-			return Query(new SolrQuery(q));
-		}
+        public ISolrQueryResults<T> Query(string q) {
+            return Query(new SolrQuery(q));
+        }
 
-		public ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders) {
-			return Query(new SolrQuery(q), orders);
-		}
+        public ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders) {
+            return Query(new SolrQuery(q), orders);
+        }
 
-		public ISolrQueryResults<T> Query(string q, QueryOptions options) {
+        public ISolrQueryResults<T> Query(string q, QueryOptions options) {
             return QueryExecuter.Execute(new SolrQuery(q), options);
-		}
+        }
 
-		public ISolrQueryResults<T> Query(ISolrQuery query) {
-			return Query(query, new QueryOptions());
-		}
+        public ISolrQueryResults<T> Query(ISolrQuery query) {
+            return Query(query, new QueryOptions());
+        }
 
-		public ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders) {
-			return Query(query, new QueryOptions {OrderBy = orders});
-		}
+        public ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders) {
+            return Query(query, new QueryOptions {OrderBy = orders});
+        }
 
-		public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
-			return Query(query.Query, options);
-		}
+        public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
+            return Query(query.Query, options);
+        }
 
-		public string Send(ISolrCommand cmd) {
-			return cmd.Execute(connection);
-		}
+        public string Send(ISolrCommand cmd) {
+            return cmd.Execute(connection);
+        }
 
-		public string Ping() {
-			return new PingCommand().Execute(connection);
-		}
-	}
+        public void Ping() {
+            new PingCommand().Execute(connection);
+        }
+    }
 }

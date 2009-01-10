@@ -13,33 +13,33 @@ namespace SolrNet {
 		/// blocking until index changes are flushed to disk and
 		/// blocking until a new searcher is opened and registered as the main query searcher, making the changes visible.
 		/// </summary>
-		string Commit();
+		void Commit();
 
 		/// <summary>
 		/// Commits posts
 		/// </summary>
 		/// <param name="waitFlush">block until index changes are flushed to disk</param>
 		/// <param name="waitSearcher">block until a new searcher is opened and registered as the main query searcher, making the changes visible.</param>
-		string Commit(bool waitFlush, bool waitSearcher);
-		string Commit(WaitOptions options);
+        void Commit(bool waitFlush, bool waitSearcher);
+        void Commit(WaitOptions options);
 
-		string Optimize();
-		string Optimize(bool waitFlush, bool waitSearcher);
-		string Optimize(WaitOptions options);
+        void Optimize();
+        void Optimize(bool waitFlush, bool waitSearcher);
+        void Optimize(WaitOptions options);
 
 		/// <summary>
 		/// Adds / updates a document
 		/// </summary>
 		/// <param name="doc">document to add/update</param>
 		/// <returns></returns>
-		string Add(T doc);
+        ISolrOperations<T> Add(T doc);
 
 		/// <summary>
 		/// Adds / updates several documents at once
 		/// </summary>
 		/// <param name="docs">documents to add/update</param>
 		/// <returns></returns>
-		string Add(IEnumerable<T> docs);
+        ISolrOperations<T> Add(IEnumerable<T> docs);
 
 		/// <summary>
 		/// Deletes a document (requires the document to have a unique key defined with non-null value)
@@ -47,7 +47,7 @@ namespace SolrNet {
 		/// <param name="doc">document to delete</param>
 		/// <returns></returns>
 		/// <exception cref="NoUniqueKeyException">throws if document type doesn't have a unique key or document has null unique key</exception>
-		string Delete(T doc);
+        ISolrOperations<T> Delete(T doc);
 
 		/// <summary>
 		/// Deletes a document (requires the document to have a unique key defined)
@@ -57,14 +57,14 @@ namespace SolrNet {
 		/// <param name="fromCommited">deletes document from committed documents</param>
 		/// <returns></returns>
 		/// <exception cref="NoUniqueKeyException">throws if document type doesn't have a unique key or document has null unique key</exception>
-		string Delete(T doc, bool fromPending, bool fromCommited);
+        ISolrOperations<T> Delete(T doc, bool fromPending, bool fromCommited);
 
 		/// <summary>
 		/// Deletes all documents that match a query
 		/// </summary>
 		/// <param name="q">query to match</param>
 		/// <returns></returns>
-		string Delete(ISolrQuery q);
+        ISolrOperations<T> Delete(ISolrQuery q);
 
 		/// <summary>
 		/// Deletes all documents that match a query
@@ -73,14 +73,14 @@ namespace SolrNet {
 		/// <param name="fromPending">deletes document from pending (not committed) documents</param>
 		/// <param name="fromCommited">deletes document from committed documents</param>
 		/// <returns></returns>
-		string Delete(ISolrQuery q, bool fromPending, bool fromCommited);
+        ISolrOperations<T> Delete(ISolrQuery q, bool fromPending, bool fromCommited);
 
 		/// <summary>
 		/// Deletes a document by its id (unique key)
 		/// </summary>
 		/// <param name="id">document key</param>
 		/// <returns></returns>
-		string Delete(string id);
+        ISolrOperations<T> Delete(string id);
 
 		/// <summary>
 		/// Deletes a document by its id (unique key)
@@ -89,7 +89,7 @@ namespace SolrNet {
 		/// <param name="fromPending">deletes document from pending (not committed) documents</param>
 		/// <param name="fromCommited">deletes document from committed documents</param>
 		/// <returns></returns>
-		string Delete(string id, bool fromPending, bool fromCommited);
+        ISolrOperations<T> Delete(string id, bool fromPending, bool fromCommited);
 
 	    /// <summary>
 		/// Sends a custom command

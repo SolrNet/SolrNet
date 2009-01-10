@@ -120,14 +120,14 @@ namespace SolrNet.DSL.Tests {
 		[Test]
 		public void OrderBy() {
 			var conn = new MockConnection(new Dictionary<string, string> {
-				{"q", "((Id:123456))"},
+				{"q", "(Id:123456)"},
 				{"sort", "id asc"},
 				{"rows", DefaultRows()},
 			});
 			Solr.Connection = conn;
 			var doc = new TestDocumentWithId {Id = 123456};
 			Solr.Query<TestDocumentWithId>()
-				.ByExample(doc)
+				.By("Id").Is("123456")
 				.OrderBy("id")
 				.Run();
 		}
@@ -179,7 +179,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "((Id:123456))"},
+					{"q", "(Id:123456)"},
 					{"rows", DefaultRows()},
 					{"sort", "id asc"},
 				};
@@ -190,7 +190,7 @@ namespace SolrNet.DSL.Tests {
 				Solr.Connection = conn;
 				var doc = new TestDocumentWithId {Id = 123456};
 				Solr.Query<TestDocumentWithId>()
-					.ByExample(doc)
+                    .By("Id").Is("123456")
 					.OrderBy("id", Order.ASC)
 					.Run();
 			});
@@ -202,7 +202,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "((Id:123456))"},
+					{"q", "(Id:123456)"},
 					{"rows", DefaultRows()},
 					{"sort", "id asc,name desc"},
 				};
@@ -213,7 +213,7 @@ namespace SolrNet.DSL.Tests {
 				Solr.Connection = conn;
 				var doc = new TestDocumentWithId {Id = 123456};
 				Solr.Query<TestDocumentWithId>()
-					.ByExample(doc)
+                    .By("Id").Is("123456")
 					.OrderBy("id", Order.ASC)
 					.OrderBy("name", Order.DESC)
 					.Run();
@@ -275,7 +275,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "((Id:123456))"},
+					{"q", "(Id:123456)"},
 					{"rows", DefaultRows()},
 				};
 				Expect.Call(conn.Get("/select", query))
@@ -284,7 +284,7 @@ namespace SolrNet.DSL.Tests {
 			}).Verify(() => {
 				Solr.Connection = conn;
 				var doc = new TestDocumentWithId {Id = 123456};
-				Solr.Query<TestDocumentWithId>().ByExample(doc).Run();
+				Solr.Query<TestDocumentWithId>().By("Id").Is("123456").Run();
 			});
 		}
 

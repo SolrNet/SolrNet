@@ -11,13 +11,5 @@ namespace SolrNet.DSL {
 		public IDSLQueryBy<T> By(string fieldName) {
 			return new DSLQueryBy<T>(fieldName, connection, query);
 		}
-
-		public IDSLQuery<T> ByExample(T doc) {
-			return new DSLQuery<T>(connection,
-			                       new SolrMultipleCriteriaQuery(new[] {
-			                       	query,
-			                       	new SolrQueryByExample<T>(doc)
-			                       }));
-		}
 	}
 }

@@ -32,8 +32,8 @@ namespace SolrNet {
 			var fields = Func.Select(propsAttrs, kv => new KeyValuePair<PropertyInfo, string>(kv.Key, kv.Value[0].FieldName ?? kv.Key.Name));
 			try {
 				return Func.First(fields);
-			} catch (InvalidOperationException e) {
-				throw new NoUniqueKeyException(string.Format("Type '{0}' has no unique key defined", type), e);
+			} catch (InvalidOperationException) {
+			    throw new NoUniqueKeyException(type);
 			}
 		}
 	}

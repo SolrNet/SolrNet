@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using SolrNet.Exceptions;
 using SolrNet.Utils;
 
 namespace SolrNet {
@@ -18,8 +19,12 @@ namespace SolrNet {
 		}
 
 		public KeyValuePair<PropertyInfo, string> GetUniqueKey(Type type) {
-			var key = uniqueKeys[type];
-			return new KeyValuePair<PropertyInfo, string>(key, key.Name);
+		    try {
+		        var key = uniqueKeys[type];
+		        return new KeyValuePair<PropertyInfo, string>(key, key.Name);
+		    } catch (KeyNotFoundException) {
+		        throw new NoUniqueKeyException(type);
+		    }
 		}
 
 		public void SetUniqueKey(PropertyInfo property) {

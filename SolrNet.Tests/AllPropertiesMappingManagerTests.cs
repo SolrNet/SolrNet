@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using SolrNet.Exceptions;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -29,6 +30,13 @@ namespace SolrNet.Tests {
 			Assert.AreEqual("Id", pk.Key.Name);
 			Assert.AreEqual("Id", pk.Value);
 		}
+
+        [Test]
+        [ExpectedException(typeof(NoUniqueKeyException))]
+        public void NoUniqueKey_ShouldThrow() {
+            var m = new AllPropertiesMappingManager();
+            var pk = m.GetUniqueKey(typeof(Entity));
+        }
 
 		public class Entity {
 			public int Id { get; set; }

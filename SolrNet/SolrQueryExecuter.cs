@@ -50,7 +50,7 @@ namespace SolrNet {
                     if (Options.OrderBy == SortOrder.Random) {
                         var pk = MappingManager.GetUniqueKey(typeof (T));
                         if (pk.Key == null)
-                            throw new NoUniqueKeyException();
+                            throw new NoUniqueKeyException(typeof(T));
                         var executer = new SolrQueryExecuter<T>(Connection) {
                             ListRandomizer = ListRandomizer,
                             ResultParser = ResultParser,

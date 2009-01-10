@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace SolrNet.Utils {
 	/// <summary>
+	/// Randomizes a list in place
 	/// Adapted from http://bytes.com/forum/post415826-2.html
 	/// </summary>
 	public class ListRandomizer : IListRandomizer {

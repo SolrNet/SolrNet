@@ -3,6 +3,9 @@ using System.Xml;
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet.Commands {
+    /// <summary>
+    /// Deletes document(s), either by id or by query
+    /// </summary>
 	public class DeleteCommand : ISolrCommand {
 		private readonly ISolrDeleteParam deleteParam;
 
@@ -10,8 +13,14 @@ namespace SolrNet.Commands {
 			this.deleteParam = deleteParam;
 		}
 
+        /// <summary>
+        /// Deprecated in Solr 1.3
+        /// </summary>
 		public bool? FromPending { get; set; }
 
+        /// <summary>
+        /// Deprecated in Solr 1.3
+        /// </summary>
 		public bool? FromCommitted { get; set; }
 
 		public ISolrDeleteParam DeleteParam {

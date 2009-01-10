@@ -1,6 +1,9 @@
 using System;
 
 namespace SolrNet.Exceptions {
+    /// <summary>
+    /// Thrown when an unknown collection type needed to be mapped to Solr
+    /// </summary>
 	public class CollectionTypeNotSupportedException : BadMappingException {
 		private readonly Type collectionType;
 

@@ -1,6 +1,10 @@
 ﻿using System;
 
 namespace SolrNet.Utils {
+    /// <summary>
+    /// Random number generator implementation
+    /// Just a wrapper around <see cref="Random"/>
+    /// </summary>
 	public class RNG : IRNG {
 		private static readonly Random r = new Random();
 

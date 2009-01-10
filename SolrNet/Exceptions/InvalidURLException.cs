@@ -1,6 +1,9 @@
 using System;
 
 namespace SolrNet.Exceptions {
+    /// <summary>
+    /// Invalid URL specified
+    /// </summary>
 	public class InvalidURLException : SolrNetException {
 		public InvalidURLException(Exception innerException) : base(innerException) {}
 

@@ -1,6 +1,9 @@
 using System;
 
 namespace SolrNet.Exceptions {
+    /// <summary>
+    /// Base exception for all exceptions thrown by SolrNet
+    /// </summary>
 	public class SolrNetException : ApplicationException {
 		public SolrNetException(Exception innerException) : base(innerException.Message, innerException) {}
 		public SolrNetException(string message) : base(message) {}

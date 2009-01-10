@@ -1,6 +1,9 @@
 using System.Xml;
 
 namespace SolrNet.Commands.Parameters {
+    /// <summary>
+    /// Parameter to delete one document, by id
+    /// </summary>
 	public class DeleteByIdParam : ISolrDeleteParam {
 		private readonly string id;
 

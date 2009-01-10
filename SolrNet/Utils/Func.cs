@@ -5,7 +5,8 @@ using System.Text;
 
 namespace SolrNet.Utils {
 	/// <summary>
-	/// From http://diditwith.net/PermaLink,guid,a1a76478-03d2-428f-9db6-9cf4e300ea0f.aspx
+	/// Functional utilities
+	/// Mostly from http://diditwith.net/PermaLink,guid,a1a76478-03d2-428f-9db6-9cf4e300ea0f.aspx
 	/// </summary>
 	public class Func {
 		public delegate TResult Accumulator<TSource, TResult>(TSource x, TResult y);

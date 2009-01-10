@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Commands {
+    /// <summary>
+    /// Optimizes Solr's index
+    /// See the <see cref="http://wiki.apache.org/jakarta-lucene/LuceneFAQ">Lucene FAQ</see> for more information.
+    /// </summary>
 	public class OptimizeCommand : ISolrCommand {
 
 		/// <summary>

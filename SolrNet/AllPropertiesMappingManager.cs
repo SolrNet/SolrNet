@@ -5,7 +5,8 @@ using SolrNet.Utils;
 
 namespace SolrNet {
 	/// <summary>
-	/// Maps all properties in the class, with the same field name as the property
+	/// Maps all properties in the class, with the same field name as the property.
+	/// Note that unique keys must be added manually.
 	/// </summary>
 	public class AllPropertiesMappingManager : IReadOnlyMappingManager {
 		private readonly IDictionary<Type, PropertyInfo> uniqueKeys = new Dictionary<Type, PropertyInfo>();

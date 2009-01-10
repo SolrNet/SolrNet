@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Commands {
+    /// <summary>
+    /// Commits updates
+    /// </summary>
 	public class CommitCommand : ISolrCommand {
 
 		/// <summary>

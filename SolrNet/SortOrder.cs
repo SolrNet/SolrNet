@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using SolrNet.Tests;
+using SolrNet.Exceptions;
 
 namespace SolrNet {
 	public class SortOrder {

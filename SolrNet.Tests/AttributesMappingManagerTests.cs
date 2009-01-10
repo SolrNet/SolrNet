@@ -30,6 +30,18 @@ namespace SolrNet.Tests {
 			Assert.AreEqual("Id", key.Value);
 		}
 
+        [Test]
+        public void DifferentTypes() {
+            var m = new AttributesMappingManager();
+            var key = m.GetUniqueKey(typeof(Entity));
+            Assert.IsNotNull(key);
+            Assert.IsNotNull(key.Key);
+            Assert.AreEqual("Id", key.Key.Name);
+            Assert.AreEqual("Id", key.Value);
+            var fields = m.GetFields(typeof (AnotherEntity));
+            Assert.AreEqual(1, fields.Count);
+        }
+
 		public class Entity {
 			[SolrUniqueKey]
 			public int Id { get; set; }
@@ -37,5 +49,10 @@ namespace SolrNet.Tests {
 			[SolrField("desc")]
 			public string Description { get; set; }
 		}
+
+        public class AnotherEntity {
+            [SolrField]
+            public string Name { get; set; }
+        }
 	}
 }

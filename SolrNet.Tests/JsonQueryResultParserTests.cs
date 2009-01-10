@@ -4,30 +4,33 @@ using NUnit.Framework;
 using SolrNet.Attributes;
 
 namespace SolrNet.Tests {
-	[TestFixture]
+    [TestFixture]
     [Ignore("not ready yet")]
-	public class JsonQueryResultParserTests {
-		[Test]
-		public void NumFound() {
-			ISolrQueryResultParser<TestDocument> parser = new JsonQueryResultParser<TestDocument>();
-			var r = parser.Parse(basicResponse);
-			Assert.AreEqual(318, r.NumFound);
-		}
+    public class JsonQueryResultParserTests {
+        [Test]
+        [Ignore("not ready yet")]
+        public void NumFound() {
+            ISolrQueryResultParser<TestDocument> parser = new JsonQueryResultParser<TestDocument>();
+            var r = parser.Parse(basicResponse);
+            Assert.AreEqual(318, r.NumFound);
+        }
 
-		[Test]
-		public void MaxScore() {
-			throw new NotImplementedException();
-		}
+        [Test]
+        [Ignore("not ready yet")]
+        public void MaxScore() {
+            throw new NotImplementedException();
+        }
 
-		[Test]
-		public void ParseDoc() {
-			var parser = new JsonQueryResultParser<TestDocument>();
-			var r = parser.Parse(jsonResponse);
-			Assert.AreEqual(1, r.Count);
-		}
+        [Test]
+        [Ignore("not ready yet")]
+        public void ParseDoc() {
+            var parser = new JsonQueryResultParser<TestDocument>();
+            var r = parser.Parse(jsonResponse);
+            Assert.AreEqual(1, r.Count);
+        }
 
-		private const string basicResponse =
-			@"{
+        private const string basicResponse =
+            @"{
  ""responseHeader"":{
 	  ""status"":0,
 	  ""QTime"":0,
@@ -41,7 +44,8 @@ namespace SolrNet.Tests {
  ""response"":{""numFound"":318,""start"":0,""docs"":[]
  }}";
 
-		private const string jsonResponse = @"{
+        private const string jsonResponse =
+            @"{
  ""responseHeader"":{
   ""status"":0,
   ""QTime"":0,
@@ -68,24 +72,24 @@ namespace SolrNet.Tests {
 	]
  }}";
 
-		public class TestDocument : ISolrDocument {
-			[SolrField("id")]
-			public int Id { get; set;}
+        public class TestDocument : ISolrDocument {
+            [SolrField("id")]
+            public int Id { get; set; }
 
-			[SolrField("make")]
-			public int Make { get; set;}
+            [SolrField("make")]
+            public int Make { get; set; }
 
-			[SolrField("makedesc")]
-			public string Makedesc { get; set;}
+            [SolrField("makedesc")]
+            public string Makedesc { get; set; }
 
-			[SolrField("payment")]
-			public decimal Payment { get; set;}
+            [SolrField("payment")]
+            public decimal Payment { get; set; }
 
-			[SolrField("timestamp")]
-			public DateTime Timestamp { get; set;}
+            [SolrField("timestamp")]
+            public DateTime Timestamp { get; set; }
 
-			[SolrField("description")]
-			public ICollection<string> Description { get; set;}
-		}
-	}
+            [SolrField("description")]
+            public ICollection<string> Description { get; set; }
+        }
+    }
 }

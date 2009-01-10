@@ -85,8 +85,6 @@ namespace SolrNet {
 
 		private object GetId(T doc) {
 			var prop = MappingManager.GetUniqueKey(typeof (T)).Key;
-			if (prop == null)
-				throw new NoUniqueKeyException();
 			var id = prop.GetValue(doc, null);
 			if (id == null)
 				throw new NoUniqueKeyException();

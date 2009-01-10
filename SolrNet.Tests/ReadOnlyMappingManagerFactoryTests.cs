@@ -29,5 +29,11 @@ namespace SolrNet.Tests {
             Assert.AreNotSame(m1, m2);
         }
 
+        [TestFixtureTearDown]
+        public void FixtureTeardown() {
+            // restore default factory
+            ReadOnlyMappingManagerFactory.Create = ReadOnlyMappingManagerFactory.DefaultCreate;
+        }
+
     }
 }

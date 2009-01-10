@@ -1,6 +1,7 @@
 ﻿namespace SolrNet.Utils {
     public static class ReadOnlyMappingManagerFactory {
-        public static Func.Function<IReadOnlyMappingManager> Create = () => DefaultReadOnlyMappingManager.Instance;
+        public static readonly Func.Function<IReadOnlyMappingManager> DefaultCreate = () => DefaultReadOnlyMappingManager.Instance;
+        public static Func.Function<IReadOnlyMappingManager> Create = DefaultCreate;
 
         private sealed class DefaultReadOnlyMappingManager {
             private static readonly IReadOnlyMappingManager instance = new MemoizingMappingManager(new AttributesMappingManager());

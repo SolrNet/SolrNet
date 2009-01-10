@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using System.Xml;
 using SolrNet.Attributes;
@@ -42,8 +43,11 @@ namespace SolrNet {
 						fieldNode.InnerText = ((DateTime) p.GetValue(doc, null)).ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
 					} else if (p.PropertyType == typeof (bool)) {
 						fieldNode.InnerText = p.GetValue(doc, null).ToString().ToLower();
+					} else if (typeof(IFormattable).IsAssignableFrom(p.PropertyType)) {
+                        var v = (IFormattable)p.GetValue(doc, null);
+					    fieldNode.InnerText = v.ToString(null, CultureInfo.InvariantCulture);
 					} else {
-						fieldNode.InnerText = p.GetValue(doc, null).ToString();
+					    fieldNode.InnerText = p.GetValue(doc, null).ToString();
 					}
 					if (fieldNode != null)
 						docNode.AppendChild(fieldNode);

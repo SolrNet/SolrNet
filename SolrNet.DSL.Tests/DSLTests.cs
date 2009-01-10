@@ -179,7 +179,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "(Id:123456)"},
+					{"q", "((Id:123456))"},
 					{"rows", DefaultRows()},
 					{"sort", "id asc"},
 				};
@@ -202,7 +202,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "(Id:123456)"},
+					{"q", "((Id:123456))"},
 					{"rows", DefaultRows()},
 					{"sort", "id asc,name desc"},
 				};
@@ -275,7 +275,7 @@ namespace SolrNet.DSL.Tests {
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(() => {
 				var query = new Dictionary<string, string> {
-					{"q", "(Id:123456)"},
+					{"q", "((Id:123456))"},
 					{"rows", DefaultRows()},
 				};
 				Expect.Call(conn.Get("/select", query))

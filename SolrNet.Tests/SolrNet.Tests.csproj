@@ -86,6 +86,7 @@
     <Compile Include="SolrQueryResultsParserTests.cs" />
     <Compile Include="SolrQueryResultsTests.cs" />
     <Compile Include="SolrQueryTests.cs" />
+    <Compile Include="SolrServerTests.cs" />
     <Compile Include="SortOrderTests.cs" />
   </ItemGroup>
   <ItemGroup>

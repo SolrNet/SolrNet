@@ -11,5 +11,10 @@ namespace SolrNet.Commands.Parameters {
         /// Default is true
         /// </summary>
 		public bool? WaitFlush { get; set; }
+
+	    public WaitOptions() {
+	        WaitSearcher = true;
+	        WaitFlush = true;
+	    }
 	}
 }

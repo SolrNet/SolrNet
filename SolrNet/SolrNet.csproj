@@ -62,6 +62,8 @@
     <Compile Include="Exceptions\SolrConnectionException.cs" />
     <Compile Include="IMappingManager.cs" />
     <Compile Include="IReadOnlyMappingManager.cs" />
+    <Compile Include="ISolrBasicOperations.cs" />
+    <Compile Include="ISolrBasicReadOnlyOperations.cs" />
     <Compile Include="ISolrCommand.cs" />
     <Compile Include="ISolrDocument.cs" />
     <Compile Include="ISolrDocumentSerializer.cs" />
@@ -89,8 +91,9 @@
     <Compile Include="SolrQueryInList.cs" />
     <Compile Include="SolrQueryResultParser.cs" />
     <Compile Include="SolrQueryResults.cs" />
-    <Compile Include="SolrServer.cs" />
+    <Compile Include="SolrBasicServer.cs" />
     <Compile Include="Attributes\SolrUniqueKeyAttribute.cs" />
+    <Compile Include="SolrServer.cs" />
     <Compile Include="SortOrder.cs" />
     <Compile Include="Utils\Func.cs" />
     <Compile Include="Exceptions\InvalidURLException.cs" />

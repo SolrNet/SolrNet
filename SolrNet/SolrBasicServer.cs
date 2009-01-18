@@ -6,23 +6,14 @@ namespace SolrNet {
     public class SolrBasicServer<T> : ISolrBasicOperations<T> where T : new() {
         private readonly ISolrConnection connection;
 
-        /// <summary>
-        /// Solr response parser, default is XML response parser
-        /// </summary>
-        public ISolrQueryResultParser<T> ResultParser { get; set; }
-
         public ISolrQueryExecuter<T> QueryExecuter { get; set; }
 
-        private SolrBasicServer() {
-            ResultParser = new SolrQueryResultParser<T>();
-        }
-
-        public SolrBasicServer(string serverURL) : this() {
+        public SolrBasicServer(string serverURL) {
             connection = new SolrConnection(serverURL);
             QueryExecuter = new SolrQueryExecuter<T>(connection);
         }
 
-        public SolrBasicServer(ISolrConnection connection) : this() {
+        public SolrBasicServer(ISolrConnection connection) {
             this.connection = connection;
             QueryExecuter = new SolrQueryExecuter<T>(connection);
         }

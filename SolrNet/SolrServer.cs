@@ -8,6 +8,10 @@ using SolrNet.Utils;
 namespace SolrNet {
     public class SolrServer<T> : ISolrOperations<T> where T : new() {
         private readonly ISolrBasicOperations<T> basicServer;
+
+        /// <summary>
+        /// Allows overriding of the mapping manager
+        /// </summary>
         public IReadOnlyMappingManager MappingManager { get; set; }
 
         protected SolrServer() {
@@ -54,10 +58,21 @@ namespace SolrNet {
             return Query(query, new QueryOptions { OrderBy = orders });
         }
 
+        public ICollection<KeyValuePair<string, int>> FacetFieldQuery(SolrFacetFieldQuery facet) {
+            var r = basicServer.Query(SolrQuery.All, new QueryOptions {
+                Rows = 0,
+                FacetQueries = new[] {facet},
+            });
+            return r.FacetFields[facet.Field];
+        }
+
         public void Commit(WaitOptions options) {
             basicServer.Commit(options);
         }
 
+        /// <summary>
+        /// Commits posts
+        /// </summary>
         public void Optimize(WaitOptions options) {
             basicServer.Optimize(options);
         }
@@ -100,6 +115,11 @@ namespace SolrNet {
             basicServer.Commit(null);
         }
 
+        /// <summary>
+        /// Commits posts, 
+        /// blocking until index changes are flushed to disk and
+        /// blocking until a new searcher is opened and registered as the main query searcher, making the changes visible.
+        /// </summary>
         public void Optimize() {
             basicServer.Optimize(null);
         }

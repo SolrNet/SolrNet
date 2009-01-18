@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Attributes;
 using SolrNet.Commands.Parameters;
+using SolrNet.Tests;
 
 namespace SolrNet.DSL.Tests {
 	/// <summary>

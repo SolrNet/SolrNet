@@ -4,6 +4,7 @@ using Rhino.Mocks;
 using SolrNet.Attributes;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
+using SolrNet.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -194,8 +195,8 @@ namespace SolrNet.Tests {
             var connection = mocks.CreateMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />"))
-                    .Repeat.Once()
-                    .Return(null))
+                                     .Repeat.Once()
+                                     .Return(null))
                 .Verify(() => {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection);
                     ops.Optimize(new WaitOptions {WaitFlush = true, WaitSearcher = true});
@@ -208,8 +209,8 @@ namespace SolrNet.Tests {
             var connection = mocks.CreateMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />"))
-                .Repeat.Once()
-                .Return(null))
+                                     .Repeat.Once()
+                                     .Return(null))
                 .Verify(() => {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection);
                     ops.Optimize(new WaitOptions {WaitFlush = true, WaitSearcher = true});
@@ -238,7 +239,6 @@ namespace SolrNet.Tests {
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection) {
-                    ResultParser = parser,
                     QueryExecuter = executer,
                 };
                 var r = solr.Query(new SolrQuery(qstring), new QueryOptions {Start = start, Rows = rows});
@@ -266,7 +266,6 @@ namespace SolrNet.Tests {
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection) {
-                    ResultParser = parser,
                     QueryExecuter = executer,
                 };
                 var r = solr.Query(new SolrQuery(qstring),
@@ -302,7 +301,6 @@ namespace SolrNet.Tests {
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection) {
-                    ResultParser = parser,
                     QueryExecuter = executer,
                 };
                 var r = solr.Query(new SolrQuery(qstring), new QueryOptions {
@@ -333,7 +331,6 @@ namespace SolrNet.Tests {
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection) {
-                    ResultParser = parser,
                     QueryExecuter = executer,
                 };
                 var r = solr.Query(new SolrQuery(""), new QueryOptions {
@@ -365,7 +362,6 @@ namespace SolrNet.Tests {
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection) {
-                    ResultParser = parser,
                     QueryExecuter = executer,
                 };
                 var r = solr.Query(new SolrQuery(""), new QueryOptions {
@@ -373,6 +369,38 @@ namespace SolrNet.Tests {
                         new SolrFacetFieldQuery("id") {Limit = 3},
                     },
                 });
+            });
+        }
+
+        [Test]
+        public void FacetFieldQuery() {
+            var mocks = new MockRepository();
+            IDictionary<string, string> query = new Dictionary<string, string>();
+            query["q"] = "*:*";
+            query["facet"] = "true";
+            query["facet.field"] = "cat";
+            query["rows"] = "0";
+            var connection = new MockConnection(query);
+            var resultParser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var queryExecuter = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection) {ResultParser = resultParser};
+            var basicSolr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection) {QueryExecuter = queryExecuter};
+            var solr = new SolrServer<TestDocumentWithUniqueKey>(basicSolr);
+            With.Mocks(mocks).Expecting(() => {
+                Expect.Call(resultParser.Parse(""))
+                    .IgnoreArguments()
+                    .Repeat.Once()
+                    .Return(new SolrQueryResults<TestDocumentWithUniqueKey> {
+                        FacetFields = new Dictionary<string, ICollection<KeyValuePair<string, int>>> {
+                            {"cat", new List<KeyValuePair<string, int>> {
+                                new KeyValuePair<string, int>("electronics", 5),
+                                new KeyValuePair<string, int>("hard drive", 3),
+                            }}
+                        }
+                    });
+            }).Verify(() => {
+                var r = solr.FacetFieldQuery(new SolrFacetFieldQuery("cat"));
+                Assert.AreEqual(2, r.Count);
+                Assert.AreEqual("electronics", Func.First(r).Key);
             });
         }
 

@@ -14,5 +14,7 @@ namespace SolrNet {
         ISolrQueryResults<T> Query(string q, QueryOptions options);
         ISolrQueryResults<T> Query(ISolrQuery q);
         ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders);
+
+        ICollection<KeyValuePair<string, int>> FacetFieldQuery(SolrFacetFieldQuery facets);
     }
 }

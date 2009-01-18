@@ -8,7 +8,11 @@ namespace SolrNet {
 			this.field = field;
 		}
 
-		/// <summary>
+	    public string Field {
+	        get { return field; }
+	    }
+
+	    /// <summary>
 		/// Limits the terms on which to facet to those starting with the given string prefix.
 		/// </summary>
 		public string Prefix { get; set; }

@@ -1,0 +1,52 @@
+﻿using System.IO;
+using System.Net;
+using NUnit.Framework;
+
+namespace SolrNet.Tests {
+    [TestFixture]
+    public class HttpTests {
+        private const int Reps = 100;
+
+        [Test]
+        [Ignore("performance test")]
+        public void ReadToEnd() {
+            for (int i = 0; i < Reps; i++) {
+                var req = WebRequest.Create("http://www.google.com");
+                using (var r = req.GetResponse())
+                using (var rs = r.GetResponseStream())
+                using (var sr = new StreamReader(rs))
+                    sr.ReadToEnd();
+            }
+        }
+
+        [Test]
+        [Ignore("performance test")]
+        public void ReadFully() {
+            for (int i = 0; i < Reps; i++) {
+                var req = WebRequest.Create("http://www.google.com");
+                using (var r = req.GetResponse())
+                using (var rs = r.GetResponseStream())
+                    ReadFully(rs);
+            }
+        }
+
+        /// <summary>
+        /// Reads data from a stream until the end is reached. The
+        /// data is returned as a byte array. An IOException is
+        /// thrown if any of the underlying IO calls fail.
+        /// From http://www.yoda.arachsys.com/csharp/readbinary.html
+        /// </summary>
+        /// <param name="stream">The stream to read data from</param>
+        public static byte[] ReadFully(Stream stream) {
+            var buffer = new byte[32768];
+            using (var ms = new MemoryStream()) {
+                while (true) {
+                    int read = stream.Read(buffer, 0, buffer.Length);
+                    if (read <= 0)
+                        return ms.ToArray();
+                    ms.Write(buffer, 0, read);
+                }
+            }
+        }
+    }
+}

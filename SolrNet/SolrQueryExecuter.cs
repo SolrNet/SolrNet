@@ -83,9 +83,19 @@ namespace SolrNet {
                 foreach (var p in GetHighlightingParameters(Options)) {
                     param.Add(p);
                 }
+
+                param.AddRange(GetFilterQueries(Options));
             }
 
             return param;
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> GetFilterQueries(QueryOptions options) {
+            if (options.FilterQueries == null || options.FilterQueries.Count == 0)
+                yield break;
+            foreach (var fq in options.FilterQueries) {
+                yield return new KeyValuePair<string, string>("fq", fq.Query);
+            }
         }
 
         public IDictionary<string, string> GetHighlightingParameters(QueryOptions Options) {

@@ -233,5 +233,27 @@ namespace SolrNet.Tests {
                 }
             }));
         }
+
+        [Test]
+        public void FilterQuery() {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = new MockConnection(new[] {
+                new KeyValuePair<string, string>("q", "*:*"),
+                new KeyValuePair<string, string>("rows", "10"),
+                new KeyValuePair<string, string>("fq", "id:0"),
+                new KeyValuePair<string, string>("fq", "id:2"),
+            });
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn) {
+                ResultParser = parser,
+                DefaultRows = 10,
+            };
+            queryExecuter.Execute(SolrQuery.All, new QueryOptions {
+                FilterQueries = new[] {
+                    new SolrQuery("id:0"),
+                    new SolrQuery("id:2"),
+                },
+            });
+        }
     }
 }

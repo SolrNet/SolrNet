@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace SolrNet.Tests {
     public class MockConnection : ISolrConnection {
-        private readonly IDictionary<string, string> expectations;
+        private readonly ICollection<KeyValuePair<string, string>> expectations;
         private const string response =
             @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
@@ -15,7 +15,7 @@ namespace SolrNet.Tests {
 
         public MockConnection() {}
 
-        public MockConnection(IDictionary<string, string> expectations) {
+        public MockConnection(ICollection<KeyValuePair<string, string>> expectations) {
             this.expectations = expectations;
         }
 

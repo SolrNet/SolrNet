@@ -64,6 +64,7 @@
     <Compile Include="AllPropertiesMappingManagerTests.cs" />
     <Compile Include="AttributesMappingManagerTests.cs" />
     <Compile Include="DeleteCommandTests.cs" />
+    <Compile Include="FilterQueryTests.cs" />
     <Compile Include="FuncTests.cs" />
     <Compile Include="HttpTests.cs" />
     <Compile Include="Integration.Sample\Product.cs" />

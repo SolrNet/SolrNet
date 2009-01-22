@@ -2,7 +2,8 @@
 
 namespace SolrNet.Commands.Parameters {
 	public class QueryOptions {
-		/// <summary>
+
+	    /// <summary>
 		/// Fields to retrieve.
 		/// By default, all stored fields are returned
 		/// </summary>
@@ -36,7 +37,14 @@ namespace SolrNet.Commands.Parameters {
 		/// </summary>
 		public HighlightingParameters Highlight { get; set; }
 
-		public QueryOptions() {
+        /// <summary>
+        /// This parameter can be used to specify a query that can be used to restrict the super set of documents that can be returned, without influencing score. 
+        /// It can be very useful for speeding up complex queries since the queries specified with fq are cached independently from the main query. 
+        /// This assumes the same Filter is used again for a latter query (i.e. there's a cache hit)
+        /// </summary>
+        public ICollection<ISolrQuery> FilterQueries { get; set; }
+
+	    public QueryOptions() {
 			OrderBy = new List<SortOrder>();
 		}
 	}

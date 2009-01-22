@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet.Tests.Integration.Sample {
@@ -55,6 +56,17 @@ namespace SolrNet.Tests.Integration.Sample {
         public void Ping() {
             var solr = new SolrBasicServer<Product>(serverURL);
             solr.Ping();
+        }
+
+        [Test]
+        public void FilterQuery() {
+            var solr = new SolrBasicServer<Product>(serverURL);
+            var r = solr.Query(SolrQuery.All, new QueryOptions {
+                FilterQueries = new[] { new SolrQueryByRange<string>("price", "4", "*"), }
+            });
+            foreach (var product in r) {
+                Console.WriteLine(product.Id);
+            }
         }
     }
 }

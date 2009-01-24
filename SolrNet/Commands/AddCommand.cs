@@ -8,29 +8,26 @@ namespace SolrNet.Commands {
 	/// <typeparam name="T">Document type</typeparam>
 	public class AddCommand<T> : ISolrCommand {
 		private readonly IEnumerable<T> documents = new List<T>();
-		private ISolrDocumentSerializer<T> serializer = new SolrDocumentSerializer<T>();
 
-		/// <summary>
+	    /// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="documents">Documents to add</param>
 		public AddCommand(IEnumerable<T> documents) {
-			this.documents = documents;
+		    Serializer = new SolrDocumentSerializer<T>();
+		    this.documents = documents;
 		}
 
-		/// <summary>
-		/// Document serializer, default serializer should work fine for most cases
-		/// </summary>
-		public ISolrDocumentSerializer<T> Serializer {
-			get { return serializer; }
-			set { serializer = value; }
-		}
+	    /// <summary>
+	    /// Document serializer, default serializer should work fine for most cases
+	    /// </summary>
+	    public ISolrDocumentSerializer<T> Serializer { get; set; }
 
-		public string Execute(ISolrConnection connection) {
+	    public string Execute(ISolrConnection connection) {
 			var xml = new XmlDocument();
 			var addElement = xml.CreateElement("add");
 			foreach (T doc in documents) {
-				var xmlDoc = serializer.Serialize(doc);
+				var xmlDoc = Serializer.Serialize(doc);
 				addElement.AppendChild(xml.ImportNode(xmlDoc.DocumentElement, true));
 			}
 			xml.AppendChild(addElement);

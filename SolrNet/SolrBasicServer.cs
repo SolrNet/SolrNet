@@ -7,15 +7,21 @@ namespace SolrNet {
         private readonly ISolrConnection connection;
 
         public ISolrQueryExecuter<T> QueryExecuter { get; set; }
+        public ISolrDocumentSerializer<T> DocumentSerializer { get; set; }
+
+        private void Init() {
+            QueryExecuter = new SolrQueryExecuter<T>(connection);
+            DocumentSerializer = new SolrDocumentSerializer<T>();
+        }
 
         public SolrBasicServer(string serverURL) {
             connection = new SolrConnection(serverURL);
-            QueryExecuter = new SolrQueryExecuter<T>(connection);
+            Init();
         }
 
         public SolrBasicServer(ISolrConnection connection) {
             this.connection = connection;
-            QueryExecuter = new SolrQueryExecuter<T>(connection);
+            Init();
         }
 
         public void Commit(WaitOptions options) {
@@ -31,7 +37,7 @@ namespace SolrNet {
         }
 
         public ISolrBasicOperations<T> Add(IEnumerable<T> docs) {
-            var cmd = new AddCommand<T>(docs);
+            var cmd = new AddCommand<T>(docs) {Serializer = DocumentSerializer};
             Send(cmd);
             return this;
         }

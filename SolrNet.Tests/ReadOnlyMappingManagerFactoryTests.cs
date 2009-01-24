@@ -29,11 +29,28 @@ namespace SolrNet.Tests {
             Assert.AreNotSame(m1, m2);
         }
 
+        [Test]
+        public void EveryoneHasTheSameImpl() {
+            var mapper = MockRepository.GenerateStub<IReadOnlyMappingManager>();
+            ReadOnlyMappingManagerFactory.Create = () => mapper;
+
+            var connection = new SolrConnection("http://localhost");
+            var executer = new SolrQueryExecuter<Document>(connection);
+            Assert.AreSame(mapper, executer.MappingManager);
+
+            var solr = new SolrBasicServer<Document>(connection);
+            var solrExec = (SolrQueryExecuter<Document>)solr.QueryExecuter;
+            Assert.AreSame(mapper, solrExec.MappingManager);
+
+        }
+
         [TestFixtureTearDown]
         public void FixtureTeardown() {
             // restore default factory
             ReadOnlyMappingManagerFactory.Create = ReadOnlyMappingManagerFactory.DefaultCreate;
         }
+
+        public class Document {}
 
     }
 }

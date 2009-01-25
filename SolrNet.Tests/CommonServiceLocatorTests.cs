@@ -51,6 +51,7 @@ namespace SolrNet.Tests {
             var inst = new ServiceImpl();
             container.Register<IService>(c => inst);
             var svc = container.GetInstance<AnotherService>();
+            Assert.AreSame(inst, svc.Svc);
         }
 
         [Test]
@@ -152,6 +153,11 @@ namespace SolrNet.Tests {
         }
         public class AnotherService {
             private readonly IService svc;
+
+            public IService Svc {
+                get { return svc; }
+            }
+
             public AnotherService(IService svc) {
                 this.svc = svc;
             }

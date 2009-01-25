@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Web;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using SolrNet.Utils;
@@ -49,12 +50,14 @@ namespace SolrNet.Tests {
             var container = new Container();
             container.Register(c => ThreadLocal<IService>.Set(() => new ServiceImpl()));
             var id = ((ServiceImpl) container.GetInstance<IService>()).Id;
-            var id3 = ((ServiceImpl) container.GetInstance<IService>()).Id;
-            Assert.AreEqual(id, id3);
+            var id2 = ((ServiceImpl) container.GetInstance<IService>()).Id;
+            Assert.AreEqual(id, id2);
             var t = new Thread(() => {
                 try {
-                    var id2 = ((ServiceImpl) container.GetInstance<IService>()).Id;
-                    Assert.AreNotEqual(id, id2);
+                    var id3 = ((ServiceImpl) container.GetInstance<IService>()).Id;
+                    var id4 = ((ServiceImpl)container.GetInstance<IService>()).Id;
+                    Assert.AreNotEqual(id3, id2);
+                    Assert.AreEqual(id3, id4);
                 } catch (Exception ex) {
                     Assert.Fail(ex.ToString());
                 }
@@ -93,6 +96,48 @@ namespace SolrNet.Tests {
                 if (service == null)
                     service = new ServiceImpl();
                 return service;
+            }
+        }
+
+
+        [Test]
+        [Ignore("don't know how to test this!")]
+        public void WebRequest() {
+            var container = new Container();
+            container.Register(c => HttpContextLocal<IService>.Set(() => new ServiceImpl()));
+            var id = ((ServiceImpl) container.GetInstance<IService>()).Id;
+            var id3 = ((ServiceImpl) container.GetInstance<IService>()).Id;
+            Assert.AreEqual(id, id3);
+            var t = new Thread(() => {
+                try {
+                    var id2 = ((ServiceImpl) container.GetInstance<IService>()).Id;
+                    Assert.AreNotEqual(id, id2);
+                } catch (Exception ex) {
+                    Assert.Fail(ex.ToString());
+                }
+            });
+            t.Start();
+            t.Join();
+        }
+
+        public class HttpContextLocal<T> where T : class {
+            private static readonly object key = new object();
+
+            private static FactoryDelegate<T> factory;
+
+            public delegate S FactoryDelegate<S>();
+
+            public static T Set(FactoryDelegate<T> factoryMethod) {
+                factory = factoryMethod;
+                return Instance;
+            }
+
+            public static T Instance {
+                get {
+                    if (HttpContext.Current.Items[key] == null)
+                        HttpContext.Current.Items[key] = factory();
+                    return (T) HttpContext.Current.Items[key];
+                }
             }
         }
 

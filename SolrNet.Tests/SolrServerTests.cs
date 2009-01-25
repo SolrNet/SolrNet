@@ -9,10 +9,11 @@ namespace SolrNet.Tests {
         public void Ping() {
             var mocks = new MockRepository();
             var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             With.Mocks(mocks)
                 .Expecting(basicServer.Ping)
                 .Verify(() => {
-                    var s = new SolrServer<TestDocument>(basicServer);
+                    var s = new SolrServer<TestDocument>(basicServer, mapper);
                     s.Ping();
                 });
         }
@@ -21,10 +22,11 @@ namespace SolrNet.Tests {
         public void Commit() {
             var mocks = new MockRepository();
             var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             With.Mocks(mocks)
                 .Expecting(() => basicServer.Commit(null))
                 .Verify(() => {
-                    var s = new SolrServer<TestDocument>(basicServer);
+                    var s = new SolrServer<TestDocument>(basicServer, mapper);
                     s.Commit();
                 });            
         }

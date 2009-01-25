@@ -8,11 +8,6 @@ namespace SolrNet {
 	/// <typeparam name="T">Document type</typeparam>
 	public interface ISolrQueryExecuter<T>  {
 		/// <summary>
-		/// Connection to use
-		/// </summary>
-		ISolrConnection Connection { get; set; }
-
-		/// <summary>
 		/// Executes the query and returns results
 		/// </summary>
 		/// <returns>query results</returns>

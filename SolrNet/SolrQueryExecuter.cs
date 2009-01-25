@@ -9,28 +9,23 @@ namespace SolrNet {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> where T : new() {
-        /// <summary>
-        /// Solr response parser, default is XML response parser
-        /// </summary>
-        public ISolrQueryResultParser<T> ResultParser { get; set; }
 
-        /// <summary>
-        /// Connection to use
-        /// </summary>
-        public ISolrConnection Connection { get; set; }
+        private readonly ISolrQueryResultParser<T> resultParser;
+        private readonly IReadOnlyMappingManager mapper;
+        private readonly ISolrConnection connection;
 
         public IListRandomizer ListRandomizer { get; set; }
 
-        public IReadOnlyMappingManager MappingManager { get; set; }
-
         public int DefaultRows { get; set; }
 
-        public SolrQueryExecuter(ISolrConnection connection) {
-            Connection = connection;
-            ListRandomizer = new ListRandomizer();
-            ResultParser = new SolrQueryResultParser<T>();
-            MappingManager = ReadOnlyMappingManagerFactory.Create();
-            DefaultRows = 100000000;
+        public static readonly int ConstDefaultRows = 100000000;
+
+        public SolrQueryExecuter(ISolrConnection connection, ISolrQueryResultParser<T> resultParser, IReadOnlyMappingManager mapper) {
+            this.connection = connection;
+            this.resultParser = resultParser;
+            this.mapper = mapper;
+            ListRandomizer = Factory.Get<IListRandomizer>();
+            DefaultRows = ConstDefaultRows;
         }
 
         public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {
@@ -48,14 +43,10 @@ namespace SolrNet {
                 param.Add(KVP("rows", rows.ToString()));
                 if (Options.OrderBy != null && Options.OrderBy.Count > 0) {
                     if (Options.OrderBy == SortOrder.Random) {
-                        var pk = MappingManager.GetUniqueKey(typeof (T));
+                        var pk = mapper.GetUniqueKey(typeof (T));
                         if (pk.Key == null)
                             throw new NoUniqueKeyException(typeof(T));
-                        var executer = new SolrQueryExecuter<T>(Connection) {
-                            ListRandomizer = ListRandomizer,
-                            ResultParser = ResultParser,
-                            MappingManager = MappingManager,
-                        };
+                        var executer = new SolrQueryExecuter<T>(connection, resultParser, mapper);
                         var nr = executer.Execute(Query, new QueryOptions {
                             Fields = new[] {pk.Value},
                         });
@@ -143,8 +134,8 @@ namespace SolrNet {
         /// <returns>query results</returns>
         public ISolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
             var param = GetAllParameters(q, options);
-            string r = Connection.Get("/select", param);
-            var qr = ResultParser.Parse(r);
+            string r = connection.Get("/select", param);
+            var qr = resultParser.Parse(r);
             return qr;
         }
     }

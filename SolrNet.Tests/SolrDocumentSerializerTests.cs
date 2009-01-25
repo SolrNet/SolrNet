@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using NUnit.Framework;
+using Rhino.Mocks;
 using SolrNet.Attributes;
 
 namespace SolrNet.Tests {
@@ -34,7 +35,9 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void Serializes() {
-			var ser = new SolrDocumentSerializer<SampleDoc>();
+		    var mocks = new MockRepository();
+		    var mapper = new AttributesMappingManager();
+			var ser = new SolrDocumentSerializer<SampleDoc>(mapper);
 			var doc = new SampleDoc {Id = "id", Dd = 23.5m};
 			string fs = ser.Serialize(doc).OuterXml;
 			var xml = new XmlDocument();
@@ -44,7 +47,9 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void SupportsCollections() {
-			var ser = new SolrDocumentSerializer<TestDocWithCollections>();
+            var mocks = new MockRepository();
+            var mapper = new AttributesMappingManager();            
+            var ser = new SolrDocumentSerializer<TestDocWithCollections>(mapper);
 			var doc = new TestDocWithCollections();
 			string fs = ser.Serialize(doc).OuterXml;
 			var xml = new XmlDocument();
@@ -54,7 +59,9 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void EscapesStrings() {
-			var ser = new SolrDocumentSerializer<SampleDoc>();
+            var mocks = new MockRepository();
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<SampleDoc>(mapper);
 			var doc = new SampleDoc {Id = "<quote\""};
 			string fs = ser.Serialize(doc).OuterXml;
 			Console.WriteLine(fs);
@@ -64,7 +71,9 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void AcceptsNullObjects() {
-			var ser = new SolrDocumentSerializer<SampleDoc>();
+            var mocks = new MockRepository();
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<SampleDoc>(mapper);
 			var doc = new SampleDoc {Id = null};
 			string fs = ser.Serialize(doc).OuterXml;
 			Console.WriteLine(fs);
@@ -77,7 +86,9 @@ namespace SolrNet.Tests {
 		/// </summary>
 		[Test]
 		public void SupportsDateTime() {
-			var ser = new SolrDocumentSerializer<TestDocWithDate>();
+            var mocks = new MockRepository();
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithDate>(mapper);
 			var doc = new TestDocWithDate {Date = new DateTime(2001, 1, 2, 3, 4, 5)};
 			string fs = ser.Serialize(doc).OuterXml;
 			var xml = new XmlDocument();
@@ -87,7 +98,9 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void SupportsBoolTrue() {
-			var ser = new SolrDocumentSerializer<TestDocWithBool>();
+            var mocks = new MockRepository();
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithBool>(mapper);
 			var doc = new TestDocWithBool {B = true};
 			string fs = ser.Serialize(doc).OuterXml;
 			var xml = new XmlDocument();
@@ -97,7 +110,9 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void SupportsBoolFalse() {
-			var ser = new SolrDocumentSerializer<TestDocWithBool>();
+            var mocks = new MockRepository();
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithBool>(mapper);
 			var doc = new TestDocWithBool {B = false};
 			string fs = ser.Serialize(doc).OuterXml;
 			var xml = new XmlDocument();

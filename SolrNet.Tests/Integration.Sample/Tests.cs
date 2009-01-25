@@ -11,6 +11,11 @@ namespace SolrNet.Tests.Integration.Sample {
     public class Tests {
         private const string serverURL = "http://localhost:8983/solr";
 
+        [TestFixtureSetUp]
+        public void FixtureSetup() {
+            Startup.Init<Product>(serverURL);
+        }
+
         [Test]
         public void Add() {
             var p = new Product {
@@ -30,7 +35,7 @@ namespace SolrNet.Tests.Integration.Sample {
                 InStock = true,
             };
 
-            ISolrOperations<Product> solr = new SolrServer<Product>(serverURL);
+            var solr = Factory.Get<ISolrOperations<Product>>();
             solr.Delete(SolrQuery.All)
                 .Add(p)
                 .Commit();
@@ -42,7 +47,7 @@ namespace SolrNet.Tests.Integration.Sample {
         [Test]
         public void Highlighting() {
             Add();
-            var solr = new SolrBasicServer<Product>(serverURL);
+            var solr = Factory.Get<ISolrBasicOperations<Product>>();
             var results = solr.Query(new SolrQueryByField("features", "noise"), new QueryOptions {
                 Highlight = new HighlightingParameters {
                     Fields = new[] {"features"},
@@ -54,13 +59,13 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void Ping() {
-            var solr = new SolrBasicServer<Product>(serverURL);
+            var solr = Factory.Get<ISolrBasicOperations<Product>>();
             solr.Ping();
         }
 
         [Test]
         public void FilterQuery() {
-            var solr = new SolrBasicServer<Product>(serverURL);
+            var solr = Factory.Get<ISolrBasicOperations<Product>>();
             var r = solr.Query(SolrQuery.All, new QueryOptions {
                 FilterQueries = new[] { new SolrQueryByRange<string>("price", "4", "*"), }
             });

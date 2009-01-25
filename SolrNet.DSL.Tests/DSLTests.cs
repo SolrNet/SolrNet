@@ -28,6 +28,12 @@ namespace SolrNet.DSL.Tests {
 
 		public delegate string Writer(string s, IDictionary<string, string> q);
 
+        [TestFixtureSetUp]
+        public void FixtureSetup() {
+            Startup.Init<TestDocument>("http://localhost");
+            Startup.Init<TestDocumentWithId>("http://localhost");            
+        }
+
 		[Test]
 		public void Add() {
 			var mocks = new MockRepository();
@@ -115,7 +121,7 @@ namespace SolrNet.DSL.Tests {
 		}
 
 		public string DefaultRows() {
-			return new SolrQueryExecuter<TestDocumentWithId>(new MockConnection()).DefaultRows.ToString();
+		    return SolrQueryExecuter<TestDocumentWithId>.ConstDefaultRows.ToString();
 		}
 
 		[Test]

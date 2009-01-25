@@ -12,7 +12,7 @@ namespace SolrNet.Tests {
 	public class SolrQueryResultsParserTests {
 		[Test]
 		public void ParseDocument() {
-			var parser = new SolrQueryResultParser<TestDocument>();
+			var parser = new SolrQueryResultParser<TestDocument>(new AttributesMappingManager());
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXml);
 		    var mapper = new AttributesMappingManager();
@@ -26,7 +26,7 @@ namespace SolrNet.Tests {
 	    public void ParseDocumentWithMappingManager() {
             var mapper = new MappingManager();
             mapper.Add(typeof(TestDocumentWithoutAttributes).GetProperty("Id"), "id");
-            var parser = new SolrQueryResultParser<TestDocumentWithoutAttributes> { MappingManager = mapper };
+            var parser = new SolrQueryResultParser<TestDocumentWithoutAttributes>(mapper);
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXml);
 			var docNode = xml.SelectSingleNode("response/result/doc");
@@ -37,14 +37,14 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void NumFound() {
-			var parser = new SolrQueryResultParser<TestDocument>();
+            var parser = new SolrQueryResultParser<TestDocument>(new AttributesMappingManager());
 			var r = parser.Parse(responseXml);
 			Assert.AreEqual(1, r.NumFound);
 		}
 
 		[Test]
 		public void Parse() {
-			var parser = new SolrQueryResultParser<TestDocument>();
+            var parser = new SolrQueryResultParser<TestDocument>(new AttributesMappingManager());
 			var results = parser.Parse(responseXml);
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
@@ -56,7 +56,7 @@ namespace SolrNet.Tests {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);
 			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='cat']");
-			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
+            var parser = new SolrQueryResultParser<TestDocumentWithArrays>(new AttributesMappingManager());
 			var doc = new TestDocumentWithArrays();
 			parser.SetProperty(doc, typeof (TestDocumentWithArrays).GetProperty("Cat"), fieldNode);
 			Assert.AreEqual(2, doc.Cat.Count);
@@ -70,7 +70,7 @@ namespace SolrNet.Tests {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);
 			var fieldNode = xml.SelectSingleNode("response/result/doc/float[@name='price']");
-			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
+            var parser = new SolrQueryResultParser<TestDocumentWithArrays>(new AttributesMappingManager());
 			var doc = new TestDocumentWithArrays();
 			parser.SetProperty(doc, typeof (TestDocumentWithArrays).GetProperty("Price"), fieldNode);
 			Assert.AreEqual(92d, doc.Price);
@@ -81,7 +81,7 @@ namespace SolrNet.Tests {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);
 			var fieldNode = xml.SelectSingleNode("response/result/doc/float[@name='price']");
-			var parser = new SolrQueryResultParser<TestDocumentWithNullableDouble>();
+            var parser = new SolrQueryResultParser<TestDocumentWithNullableDouble>(new AttributesMappingManager());
 			var doc = new TestDocumentWithNullableDouble();
 			parser.SetProperty(doc, typeof (TestDocumentWithNullableDouble).GetProperty("Price"), fieldNode);
 			Assert.AreEqual(92d, doc.Price);
@@ -92,7 +92,7 @@ namespace SolrNet.Tests {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);
 			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
-			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
+            var parser = new SolrQueryResultParser<TestDocumentWithArrays>(new AttributesMappingManager());
 			var doc = new TestDocumentWithArrays();
 			parser.SetProperty(doc, typeof (TestDocumentWithArrays).GetProperty("Numbers"), fieldNode);
 			Assert.AreEqual(2, doc.Numbers.Count);
@@ -106,7 +106,7 @@ namespace SolrNet.Tests {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);
 			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
-			var parser = new SolrQueryResultParser<TestDocumentWithArrays3>();
+            var parser = new SolrQueryResultParser<TestDocumentWithArrays3>(new AttributesMappingManager());
 			var doc = new TestDocumentWithArrays3();
 			parser.SetProperty(doc, typeof (TestDocumentWithArrays3).GetProperty("Numbers"), fieldNode);
 			Assert.AreEqual(2, doc.Numbers.Count);
@@ -120,7 +120,7 @@ namespace SolrNet.Tests {
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXMLWithArrays);
 			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
-			var parser = new SolrQueryResultParser<TestDocumentWithArrays2>();
+            var parser = new SolrQueryResultParser<TestDocumentWithArrays2>(new AttributesMappingManager());
 			var doc = new TestDocumentWithArrays2();
 			parser.SetProperty(doc, typeof (TestDocumentWithArrays2).GetProperty("Numbers"), fieldNode);
 			Assert.AreEqual(2, doc.Numbers.Length);
@@ -131,7 +131,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void ParseResultsWithArrays() {
-			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
+            var parser = new SolrQueryResultParser<TestDocumentWithArrays>(new AttributesMappingManager());
 			var results = parser.Parse(responseXMLWithArrays);
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
@@ -140,7 +140,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void SupportsDateTime() {
-			var parser = new SolrQueryResultParser<TestDocumentWithDate>();
+            var parser = new SolrQueryResultParser<TestDocumentWithDate>(new AttributesMappingManager());
 			var results = parser.Parse(responseXMLWithDate);
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
@@ -149,21 +149,21 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void ParseDate_without_milliseconds() {
-			var parser = new SolrQueryResultParser<TestDocumentWithDate>();
+            var parser = new SolrQueryResultParser<TestDocumentWithDate>(new AttributesMappingManager());
 			var dt = parser.ParseDate("2001-01-02T03:04:05Z");
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5), dt);
 		}
 
 		[Test]
 		public void ParseDate_with_milliseconds() {
-			var parser = new SolrQueryResultParser<TestDocumentWithDate>();
+            var parser = new SolrQueryResultParser<TestDocumentWithDate>(new AttributesMappingManager());
 			var dt = parser.ParseDate("2001-01-02T03:04:05.245Z");
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5, 245), dt);
 		}
 
 		[Test]
 		public void SupportsNullableDateTime() {
-			var parser = new SolrQueryResultParser<TestDocumentWithNullableDate>();
+            var parser = new SolrQueryResultParser<TestDocumentWithNullableDate>(new AttributesMappingManager());
 			var results = parser.Parse(responseXMLWithDate);
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
@@ -172,7 +172,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void SupportsIEnumerable() {
-			var parser = new SolrQueryResultParser<TestDocumentWithArrays4>();
+            var parser = new SolrQueryResultParser<TestDocumentWithArrays4>(new AttributesMappingManager());
 			var results = parser.Parse(responseXMLWithArraysSimple);
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
@@ -181,7 +181,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void WrongFieldDoesntThrow() {
-			var parser = new SolrQueryResultParser<TestDocumentWithDate>();
+            var parser = new SolrQueryResultParser<TestDocumentWithDate>(new AttributesMappingManager());
 			var results = parser.Parse(responseXMLWithArraysSimple);
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
@@ -189,14 +189,14 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void ReadsMaxScoreAttribute() {
-			var parser = new SolrQueryResultParser<TestDocumentWithArrays4>();
+            var parser = new SolrQueryResultParser<TestDocumentWithArrays4>(new AttributesMappingManager());
 			var results = parser.Parse(responseXMLWithArraysSimple);
 			Assert.AreEqual(1.6578954, results.MaxScore);
 		}
 
 		[Test]
 		public void ReadMaxScore_doesnt_crash_if_not_present() {
-			var parser = new SolrQueryResultParser<TestDocument>();
+            var parser = new SolrQueryResultParser<TestDocument>(new AttributesMappingManager());
 			var results = parser.Parse(responseXml);
 			Assert.IsNull(results.MaxScore);
 		}
@@ -205,7 +205,7 @@ namespace SolrNet.Tests {
 		[Ignore("Performance test, potentially slow")]
 		public void Performance() {
 			//BasicConfigurator.Configure();
-			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
+            var parser = new SolrQueryResultParser<TestDocumentWithArrays>(new AttributesMappingManager());
 			for (var i = 0; i < 10000; i++) {
 				parser.Parse(responseXMLWithArrays);
 			}
@@ -213,7 +213,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void ParseFacetResults() {
-			var parser = new SolrQueryResultParser<TestDocumentWithArrays>();
+            var parser = new SolrQueryResultParser<TestDocumentWithArrays>(new AttributesMappingManager());
 			var r = parser.Parse(responseXMLWithFacet);
 			Assert.IsNotNull(r.FacetFields);
 			Console.WriteLine(r.FacetFields.Count);
@@ -228,7 +228,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void ParseResponseHeader() {
-			var parser = new SolrQueryResultParser<TestDocument>();
+            var parser = new SolrQueryResultParser<TestDocument>(new AttributesMappingManager());
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXml);
 			var docNode = xml.SelectSingleNode("response/lst[@name='responseHeader']");
@@ -242,7 +242,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void ParseHighlighting() {
-			var parser = new SolrQueryResultParser<Product>();
+            var parser = new SolrQueryResultParser<Product>(new AttributesMappingManager());
 			var xml = new XmlDocument();
 			xml.LoadXml(responseXmlWithHighlighting);
 			var docNode = xml.SelectSingleNode("response/lst[@name='highlighting']");

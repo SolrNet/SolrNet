@@ -33,6 +33,7 @@ namespace SolrNet.Tests {
 		public void Execute() {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
+		    var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager());
 			With.Mocks(mocks).Expecting(delegate {
 				conn.Post("/update",
 				          "<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc></add>");
@@ -43,7 +44,7 @@ namespace SolrNet.Tests {
 				SetupResult.For(conn.ServerURL).Return("");
 			}).Verify(delegate {
 				var docs = new[] {new SampleDoc()};
-				var cmd = new AddCommand<SampleDoc>(docs);
+				var cmd = new AddCommand<SampleDoc>(docs, docSerializer);
 				cmd.Execute(conn);
 			});
 		}
@@ -52,8 +53,8 @@ namespace SolrNet.Tests {
 		public void ShouldntAlterOriginalServerUrl() {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
-			var docs = new[] {new SampleDoc()};
-			var cmd = new AddCommand<SampleDoc>(docs);
+            var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager());		    
+			var cmd = new AddCommand<SampleDoc>(new[] {new SampleDoc()}, docSerializer);
 			cmd.Execute(conn);
 		}
 
@@ -61,6 +62,7 @@ namespace SolrNet.Tests {
 		public void SupportsDocumentWithStringCollection() {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
+            var docSerializer = new SolrDocumentSerializer<TestDocWithCollections>(new AttributesMappingManager());		    
 			With.Mocks(mocks).Expecting(delegate {
 				conn.Post("/update",
 				          "<add><doc><field name=\"coll\">one</field><field name=\"coll\">two</field></doc></add>");
@@ -71,7 +73,7 @@ namespace SolrNet.Tests {
 				SetupResult.For(conn.ServerURL).Return("");
 			}).Verify(delegate {
 				var docs = new[] {new TestDocWithCollections()};
-				var cmd = new AddCommand<TestDocWithCollections>(docs);
+				var cmd = new AddCommand<TestDocWithCollections>(docs, docSerializer);
 				cmd.Execute(conn);
 			});
 		}

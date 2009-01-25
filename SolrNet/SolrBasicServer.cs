@@ -5,23 +5,13 @@ using SolrNet.Commands.Parameters;
 namespace SolrNet {
     public class SolrBasicServer<T> : ISolrBasicOperations<T> where T : new() {
         private readonly ISolrConnection connection;
+        private readonly ISolrQueryExecuter<T> queryExecuter;
+        private readonly ISolrDocumentSerializer<T> documentSerializer;
 
-        public ISolrQueryExecuter<T> QueryExecuter { get; set; }
-        public ISolrDocumentSerializer<T> DocumentSerializer { get; set; }
-
-        private void Init() {
-            QueryExecuter = new SolrQueryExecuter<T>(connection);
-            DocumentSerializer = new SolrDocumentSerializer<T>();
-        }
-
-        public SolrBasicServer(string serverURL) {
-            connection = new SolrConnection(serverURL);
-            Init();
-        }
-
-        public SolrBasicServer(ISolrConnection connection) {
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer) {
             this.connection = connection;
-            Init();
+            this.queryExecuter = queryExecuter;
+            this.documentSerializer = documentSerializer;
         }
 
         public void Commit(WaitOptions options) {
@@ -37,7 +27,7 @@ namespace SolrNet {
         }
 
         public ISolrBasicOperations<T> Add(IEnumerable<T> docs) {
-            var cmd = new AddCommand<T>(docs) {Serializer = DocumentSerializer};
+            var cmd = new AddCommand<T>(docs, documentSerializer);
             Send(cmd);
             return this;
         }
@@ -55,7 +45,7 @@ namespace SolrNet {
         }
 
         public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
-            return QueryExecuter.Execute(query, options);
+            return queryExecuter.Execute(query, options);
         }
 
         public string Send(ISolrCommand cmd) {

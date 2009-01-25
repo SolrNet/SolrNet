@@ -3,31 +3,15 @@ using System.Collections.Generic;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
-using SolrNet.Utils;
 
 namespace SolrNet {
     public class SolrServer<T> : ISolrOperations<T> where T : new() {
         private readonly ISolrBasicOperations<T> basicServer;
+        private readonly IReadOnlyMappingManager mappingManager;
 
-        /// <summary>
-        /// Allows overriding of the mapping manager
-        /// </summary>
-        public IReadOnlyMappingManager MappingManager { get; set; }
-
-        protected SolrServer() {
-            MappingManager = ReadOnlyMappingManagerFactory.Create();
-        }
-
-        public SolrServer(string serverURL): this() {
-            basicServer = new SolrBasicServer<T>(serverURL);
-        }
-
-        public SolrServer(ISolrConnection connection) : this() {
-            basicServer = new SolrBasicServer<T>(connection);
-        }
-
-        public SolrServer(ISolrBasicOperations<T> basicServer) : this() {
+        public SolrServer(ISolrBasicOperations<T> basicServer, IReadOnlyMappingManager mappingManager) {
             this.basicServer = basicServer;
+            this.mappingManager = mappingManager;
         }
 
         public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
@@ -93,7 +77,7 @@ namespace SolrNet {
         }
 
         private object GetId(T doc) {
-            var prop = MappingManager.GetUniqueKey(typeof(T)).Key;
+            var prop = mappingManager.GetUniqueKey(typeof(T)).Key;
             var id = prop.GetValue(doc, null);
             if (id == null)
                 throw new NoUniqueKeyException(typeof(T));

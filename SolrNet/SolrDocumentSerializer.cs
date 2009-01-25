@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
-using SolrNet.Utils;
 
 namespace SolrNet {
     /// <summary>
@@ -12,10 +11,6 @@ namespace SolrNet {
     /// <typeparam name="T">Document type</typeparam>
     public class SolrDocumentSerializer<T> : ISolrDocumentSerializer<T> {
         private readonly IReadOnlyMappingManager mappingManager;
-
-        public SolrDocumentSerializer() {
-            mappingManager = ReadOnlyMappingManagerFactory.Create();
-        }
 
         public SolrDocumentSerializer(IReadOnlyMappingManager mappingManager) {
             this.mappingManager = mappingManager;

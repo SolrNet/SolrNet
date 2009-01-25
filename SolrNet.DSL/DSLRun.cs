@@ -28,7 +28,7 @@ namespace SolrNet.DSL {
         }
 
         public ISolrQueryResults<T> Run() {
-            var exe = new SolrQueryExecuter<T>(connection);
+            var exe = new SolrQueryExecuter<T>(connection, Factory.Get<ISolrQueryResultParser<T>>(), Factory.Get<IReadOnlyMappingManager>());
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
                 FacetQueries = facets,
@@ -37,7 +37,7 @@ namespace SolrNet.DSL {
         }
 
         public ISolrQueryResults<T> Run(int start, int rows) {
-            var exe = new SolrQueryExecuter<T>(connection);
+            var exe = new SolrQueryExecuter<T>(connection, Factory.Get<ISolrQueryResultParser<T>>(), Factory.Get<IReadOnlyMappingManager>());
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
                 FacetQueries = facets,

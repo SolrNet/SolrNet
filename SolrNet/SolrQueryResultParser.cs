@@ -17,7 +17,7 @@ namespace SolrNet {
 	/// <typeparam name="T">Document type</typeparam>
 	public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : new() {
 
-		public IReadOnlyMappingManager MappingManager { get; set; }
+	    private readonly IReadOnlyMappingManager mappingManager;
 
 		private static readonly IDictionary<string, Type> solrTypes;
 
@@ -29,8 +29,8 @@ namespace SolrNet {
 			solrTypes["date"] = typeof (DateTime);
 		}
 
-		public SolrQueryResultParser() {
-            MappingManager = ReadOnlyMappingManagerFactory.Create();
+		public SolrQueryResultParser(IReadOnlyMappingManager mapper) {
+		    mappingManager = mapper;
 		}
 
 		/// <summary>
@@ -48,7 +48,7 @@ namespace SolrNet {
 			if (maxScore != null) {
 				results.MaxScore = double.Parse(maxScore.InnerText, CultureInfo.InvariantCulture.NumberFormat);
 			}
-		    var allFields = MappingManager.GetFields(typeof (T));
+		    var allFields = mappingManager.GetFields(typeof (T));
 			foreach (XmlNode docNode in xml.SelectNodes("response/result/doc")) {
 				results.Add(ParseDocument(docNode, allFields));
 			}
@@ -211,7 +211,7 @@ namespace SolrNet {
 
 		public IDictionary<string, T> IndexResultsByKey(IEnumerable<T> results) {
 			var r = new Dictionary<string, T>();
-			var prop = MappingManager.GetUniqueKey(typeof (T)).Key;
+			var prop = mappingManager.GetUniqueKey(typeof (T)).Key;
 			foreach (var d in results) {
 				var key = prop.GetValue(d, null).ToString();
 				r[key] = d;

@@ -73,5 +73,10 @@ namespace SolrNet.Utils {
             componentsByName.Remove(key);
             componentsByType[serviceType].Remove(factory);
         }
+
+        public void Clear() {
+            componentsByType.Clear();
+            componentsByName.Clear();
+        }
     }
 }

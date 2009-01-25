@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using SolrNet.Commands.Parameters;
 
@@ -35,7 +36,7 @@ namespace SolrNet.Tests.Integration.Sample {
                 InStock = true,
             };
 
-            var solr = Factory.Get<ISolrOperations<Product>>();
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             solr.Delete(SolrQuery.All)
                 .Add(p)
                 .Commit();
@@ -47,7 +48,7 @@ namespace SolrNet.Tests.Integration.Sample {
         [Test]
         public void Highlighting() {
             Add();
-            var solr = Factory.Get<ISolrBasicOperations<Product>>();
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(new SolrQueryByField("features", "noise"), new QueryOptions {
                 Highlight = new HighlightingParameters {
                     Fields = new[] {"features"},
@@ -59,13 +60,13 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void Ping() {
-            var solr = Factory.Get<ISolrBasicOperations<Product>>();
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             solr.Ping();
         }
 
         [Test]
         public void FilterQuery() {
-            var solr = Factory.Get<ISolrBasicOperations<Product>>();
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var r = solr.Query(SolrQuery.All, new QueryOptions {
                 FilterQueries = new[] { new SolrQueryByRange<string>("price", "4", "*"), }
             });

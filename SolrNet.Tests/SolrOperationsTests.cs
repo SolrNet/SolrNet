@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Attributes;
@@ -253,8 +254,8 @@ namespace SolrNet.Tests {
             const int rows = 20;
 
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceProvider>();
-            Factory.Init(container);
+            var container = mocks.CreateMock<IServiceLocator>();
+            ServiceLocator.SetLocatorProvider(() => container);
             var connection = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
@@ -267,7 +268,7 @@ namespace SolrNet.Tests {
                 Expect.Call(connection.Get("/select", query))
                     .Repeat.Once()
                     .Return("");
-                Expect.Call(container.GetService(typeof (IListRandomizer)))
+                Expect.Call(container.GetInstance<IListRandomizer>())
                     .Repeat.Any()
                     .Return(null);
 
@@ -286,8 +287,8 @@ namespace SolrNet.Tests {
             const string qstring = "id:123";
 
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceProvider>();
-            Factory.Init(container);
+            var container = mocks.CreateMock<IServiceLocator>();
+            ServiceLocator.SetLocatorProvider(() => container);
             var connection = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
@@ -300,7 +301,7 @@ namespace SolrNet.Tests {
                 Expect.Call(connection.Get("/select", query))
                     .Repeat.Once()
                     .Return("");
-                Expect.Call(container.GetService(typeof(IListRandomizer)))
+                Expect.Call(container.GetInstance<IListRandomizer>())
                     .Repeat.Any()
                     .Return(null);
                 SetupResult.For(parser.Parse(null))
@@ -326,8 +327,8 @@ namespace SolrNet.Tests {
             const int rows = 20;
 
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceProvider>();
-            Factory.Init(container);
+            var container = mocks.CreateMock<IServiceLocator>();
+            ServiceLocator.SetLocatorProvider(() => container);
             var connection = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
@@ -339,7 +340,7 @@ namespace SolrNet.Tests {
                 query["rows"] = rows.ToString();
                 query["sort"] = "id asc,name desc";
                 Expect.Call(connection.Get("/select", query)).Repeat.Once().Return("");
-                Expect.Call(container.GetService(typeof(IListRandomizer)))
+                Expect.Call(container.GetInstance<IListRandomizer>())
                     .Repeat.Any()
                     .Return(null);
 
@@ -363,8 +364,8 @@ namespace SolrNet.Tests {
         [Test]
         public void FacetQuery() {
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceProvider>();
-            Factory.Init(container);
+            var container = mocks.CreateMock<IServiceLocator>();
+            ServiceLocator.SetLocatorProvider(() => container);
             var connection = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
@@ -378,7 +379,7 @@ namespace SolrNet.Tests {
                 Expect.Call(connection.Get("/select", query))
                     .Repeat.Once()
                     .Return("");
-                Expect.Call(container.GetService(typeof(IListRandomizer)))
+                Expect.Call(container.GetInstance<IListRandomizer>())
                     .Repeat.Any()
                     .Return(null);
                 SetupResult.For(parser.Parse(null))
@@ -398,8 +399,8 @@ namespace SolrNet.Tests {
         [Test]
         public void FacetField() {
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceProvider>();
-            Factory.Init(container);
+            var container = mocks.CreateMock<IServiceLocator>();
+            ServiceLocator.SetLocatorProvider(() => container);
             var connection = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
@@ -414,7 +415,7 @@ namespace SolrNet.Tests {
                 Expect.Call(connection.Get("/select", query))
                     .Repeat.Once()
                     .Return("");
-                Expect.Call(container.GetService(typeof(IListRandomizer)))
+                Expect.Call(container.GetInstance<IListRandomizer>())
                     .Repeat.Any()
                     .Return(null);
                 SetupResult.For(parser.Parse(null))
@@ -434,8 +435,8 @@ namespace SolrNet.Tests {
         [Test]
         public void FacetFieldQuery() {
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceProvider>();
-            Factory.Init(container);
+            var container = mocks.CreateMock<IServiceLocator>();
+            ServiceLocator.SetLocatorProvider(() => container);
             var query = new Dictionary<string, string>();
             query["q"] = "*:*";
             query["facet"] = "true";
@@ -446,7 +447,7 @@ namespace SolrNet.Tests {
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                Expect.Call(container.GetService(typeof(IListRandomizer)))
+                Expect.Call(container.GetInstance<IListRandomizer>())
                     .Repeat.Any()
                     .Return(null);
                 Expect.Call(resultParser.Parse(""))

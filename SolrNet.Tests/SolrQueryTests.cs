@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Utils;
@@ -11,8 +12,8 @@ namespace SolrNet.Tests {
 		[Test]
 		public void tt() {
 			var mocks = new MockRepository();
-		    var container = mocks.CreateMock<IServiceProvider>();
-            Factory.Init(container);
+		    var container = mocks.CreateMock<IServiceLocator>();
+            ServiceLocator.SetLocatorProvider(() => container);
 			var connection = mocks.CreateMock<ISolrConnection>();
 		    var listRnd = mocks.CreateMock<IListRandomizer>();
 			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
@@ -26,7 +27,7 @@ namespace SolrNet.Tests {
                     .IgnoreArguments()
                     .Repeat.Once()
                     .Return(new SolrQueryResults<TestDocument>());
-			    Expect.Call(container.GetService(typeof (IListRandomizer)))
+			    Expect.Call(container.GetInstance<IListRandomizer>())
 			        .Return(listRnd);
 			}).Verify(delegate {
 			    var q = new SolrQueryExecuter<TestDocument>(connection, parser, mapper);

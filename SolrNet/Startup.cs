@@ -1,10 +1,11 @@
-﻿using SolrNet.Utils;
+﻿using Microsoft.Practices.ServiceLocation;
+using SolrNet.Utils;
 
 namespace SolrNet {
     public static class Startup {
         static Startup() {
             Container = new Container();
-            Factory.Init(Container);
+            ServiceLocator.SetLocatorProvider(() => Container);
             var mapper = new MemoizingMappingManager(new AttributesMappingManager());
             Container.Register<IReadOnlyMappingManager>(c => mapper);
 

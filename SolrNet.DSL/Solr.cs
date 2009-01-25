@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.Practices.ServiceLocation;
 using Rhino.Commons;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
@@ -29,17 +30,17 @@ namespace SolrNet.DSL {
         }
 
         public static void Add<T>(IEnumerable<T> documents) {
-            var cmd = new AddCommand<T>(documents, Factory.Get<ISolrDocumentSerializer<T>>());
+            var cmd = new AddCommand<T>(documents, ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<T>>());
             cmd.Execute(Connection);
         }
 
         public static ISolrQueryResults<T> Query<T>(string s, int start, int rows) where T : new() {
-            var q = new SolrQueryExecuter<T>(Connection, Factory.Get<ISolrQueryResultParser<T>>(), Factory.Get<IReadOnlyMappingManager>());
+            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
             return q.Execute(new SolrQuery(s), new QueryOptions {Start = start, Rows = rows});
         }
 
         public static ISolrQueryResults<T> Query<T>(string s) where T : new() {
-            var q = new SolrQueryExecuter<T>(Connection, Factory.Get<ISolrQueryResultParser<T>>(), Factory.Get<IReadOnlyMappingManager>());
+            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
             return q.Execute(new SolrQuery(s), null);
         }
 
@@ -48,7 +49,7 @@ namespace SolrNet.DSL {
         }
 
         public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order) where T : new() {
-            var q = new SolrQueryExecuter<T>(Connection, Factory.Get<ISolrQueryResultParser<T>>(), Factory.Get<IReadOnlyMappingManager>());
+            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
             return q.Execute(new SolrQuery(s), new QueryOptions {OrderBy = order});
         }
 
@@ -57,7 +58,7 @@ namespace SolrNet.DSL {
         }
 
         public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order, int start, int rows) where T : new() {
-            var q = new SolrQueryExecuter<T>(Connection, Factory.Get<ISolrQueryResultParser<T>>(), Factory.Get<IReadOnlyMappingManager>());
+            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
             return q.Execute(new SolrQuery(s), new QueryOptions {
                 OrderBy = order,
                 Start = start,
@@ -66,12 +67,12 @@ namespace SolrNet.DSL {
         }
 
         public static ISolrQueryResults<T> Query<T>(ISolrQuery q) where T : new() {
-            var queryExecuter = new SolrQueryExecuter<T>(Connection, Factory.Get<ISolrQueryResultParser<T>>(), Factory.Get<IReadOnlyMappingManager>());
+            var queryExecuter = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
             return queryExecuter.Execute(q, null);
         }
 
         public static ISolrQueryResults<T> Query<T>(ISolrQuery q, int start, int rows) where T : new() {
-            var queryExecuter = new SolrQueryExecuter<T>(Connection, Factory.Get<ISolrQueryResultParser<T>>(), Factory.Get<IReadOnlyMappingManager>());
+            var queryExecuter = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
             return queryExecuter.Execute(q, new QueryOptions {Start = start, Rows = rows});
         }
 
@@ -80,7 +81,7 @@ namespace SolrNet.DSL {
         }
 
         public static ISolrQueryResults<T> Query<T>(SolrQuery query, ICollection<SortOrder> orders) where T : new() {
-            var queryExecuter = new SolrQueryExecuter<T>(Connection, Factory.Get<ISolrQueryResultParser<T>>(), Factory.Get<IReadOnlyMappingManager>());
+            var queryExecuter = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
             return queryExecuter.Execute(query, new QueryOptions { OrderBy = orders });
         }
 

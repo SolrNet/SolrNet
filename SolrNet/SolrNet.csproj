@@ -109,7 +109,6 @@
     <Compile Include="Exceptions\SolrNetException.cs" />
     <Compile Include="Utils\IContainer.cs" />
     <Compile Include="Utils\IListRandomizer.cs" />
-    <Compile Include="Factory.cs" />
     <Compile Include="Utils\IRNG.cs" />
     <Compile Include="Utils\ListRandomizer.cs" />
     <Compile Include="Utils\Memoizer.cs" />

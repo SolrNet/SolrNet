@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands.Parameters;
 using SolrNet.Utils;
 
@@ -28,7 +29,7 @@ namespace SolrNet.DSL {
         }
 
         public ISolrQueryResults<T> Run() {
-            var exe = new SolrQueryExecuter<T>(connection, Factory.Get<ISolrQueryResultParser<T>>(), Factory.Get<IReadOnlyMappingManager>());
+            var exe = new SolrQueryExecuter<T>(connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
                 FacetQueries = facets,
@@ -37,7 +38,7 @@ namespace SolrNet.DSL {
         }
 
         public ISolrQueryResults<T> Run(int start, int rows) {
-            var exe = new SolrQueryExecuter<T>(connection, Factory.Get<ISolrQueryResultParser<T>>(), Factory.Get<IReadOnlyMappingManager>());
+            var exe = new SolrQueryExecuter<T>(connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
                 FacetQueries = facets,

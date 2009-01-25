@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
@@ -24,7 +25,7 @@ namespace SolrNet {
             this.connection = connection;
             this.resultParser = resultParser;
             this.mapper = mapper;
-            ListRandomizer = Factory.Get<IListRandomizer>();
+            ListRandomizer = ServiceLocator.Current.GetInstance<IListRandomizer>();
             DefaultRows = ConstDefaultRows;
         }
 

@@ -32,18 +32,16 @@ namespace SolrNet.Tests {
             var container = new Container();
             container.Register(c => servicePerThread);
             var id = ((ServiceImpl) container.GetInstance<IService>()).Id;
-            var e = new ManualResetEvent(false);
-            ThreadPool.QueueUserWorkItem(q => {
+            var t = new Thread(() => {
                 try {
                     var id2 = ((ServiceImpl) container.GetInstance<IService>()).Id;
                     Assert.AreNotEqual(id, id2);
                 } catch (Exception ex) {
                     Assert.Fail(ex.ToString());
-                } finally {
-                    e.Set();
                 }
             });
-            e.WaitOne();
+            t.Start();
+            t.Join();
         }
 
         [Test]
@@ -51,20 +49,18 @@ namespace SolrNet.Tests {
             var container = new Container();
             container.Register(c => ThreadLocal<IService>.Set(() => new ServiceImpl()));
             var id = ((ServiceImpl) container.GetInstance<IService>()).Id;
-            var id3 = ((ServiceImpl)container.GetInstance<IService>()).Id;
+            var id3 = ((ServiceImpl) container.GetInstance<IService>()).Id;
             Assert.AreEqual(id, id3);
-            var e = new ManualResetEvent(false);
-            ThreadPool.QueueUserWorkItem(q => {
+            var t = new Thread(() => {
                 try {
                     var id2 = ((ServiceImpl) container.GetInstance<IService>()).Id;
                     Assert.AreNotEqual(id, id2);
                 } catch (Exception ex) {
                     Assert.Fail(ex.ToString());
-                } finally {
-                    e.Set();
                 }
             });
-            e.WaitOne();
+            t.Start();
+            t.Join();
         }
 
         public class ThreadLocal<T> where T : class {

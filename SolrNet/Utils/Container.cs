@@ -30,14 +30,32 @@ namespace SolrNet.Utils {
                 yield return c(this);
         }
 
+        /// <summary>
+        /// Adds a component implementing <typeparamref name="T"/>
+        /// Component key is <typeparamref name="T"/>'s <see cref="Type.FullName"/>
+        /// </summary>
+        /// <typeparam name="T">Service type</typeparam>
+        /// <param name="factory">Component factory method</param>
         public void Register<T>(Converter<IContainer,T> factory) {
             Register(typeof(T).FullName, typeof(T), c => factory(c));
         }
 
+        /// <summary>
+        /// Adds a component implementing <typeparamref name="T"/> with the specified key
+        /// </summary>
+        /// <typeparam name="T">Service type</typeparam>
+        /// <param name="factory">Component factory method</param>
+        /// <param name="key">Component key</param>
         public void Register<T>(string key, Converter<IContainer,T> factory) {
             Register(key, typeof(T), c => factory(c));
         }
 
+        /// <summary>
+        /// Adds a component
+        /// </summary>
+        /// <param name="key">Component key</param>
+        /// <param name="serviceType">Component service type</param>
+        /// <param name="factory">Component factory method. Must return <paramref name="serviceType"/> or a descendant</param>
         public void Register(string key, Type serviceType, Converter<IContainer, object> factory) {
             if (componentsByName.ContainsKey(key))
                 throw new ApplicationException(string.Format("Key '{0}' already registered in container", key));
@@ -48,6 +66,10 @@ namespace SolrNet.Utils {
             componentsByType[serviceType].Add(factory);
         }
 
+        /// <summary>
+        /// Removes all components with service type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Service type</typeparam>
         public void RemoveAll<T>() {
             foreach (var c in componentsByType[typeof(T)]) {
                 var removeList = new List<string>();
@@ -60,20 +82,37 @@ namespace SolrNet.Utils {
             componentsByType[typeof(T)].Clear();
         }
 
+        /// <summary>
+        /// Removes the default component for service type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Service type</typeparam>
         public void Remove<T>() {
             Remove(typeof(T).FullName, typeof(T));
         }
 
+        /// <summary>
+        /// Removes the component with key <paramref name="key"/> implementing service type <typeparamref name="T"/>
+        /// </summary>
+        /// <typeparam name="T">Service type</typeparam>
+        /// <param name="key">Component key</param>
         public void Remove<T>(string key) {
             Remove(key, typeof(T));
         }
 
+        /// <summary>
+        /// Removes the component with key <paramref name="key"/> implementing service type <paramref name="serviceType"/>
+        /// </summary>
+        /// <param name="key">Component key</param>
+        /// <param name="serviceType">Service type</param>
         public void Remove(string key, Type serviceType) {
             var factory = componentsByName[key];
             componentsByName.Remove(key);
             componentsByType[serviceType].Remove(factory);
         }
 
+        /// <summary>
+        /// Removes all component registrations from this container
+        /// </summary>
         public void Clear() {
             componentsByType.Clear();
             componentsByName.Clear();

@@ -16,6 +16,16 @@ namespace SolrNet.Tests {
             Assert.AreSame(mapper, mapperFromFactory);
         }
 
+        [Test]
+        public void SwappingMappingManager2() {
+            var mapper = new MappingManager();
+            Startup.Container.Remove<IReadOnlyMappingManager>();
+            Startup.Container.Register<IReadOnlyMappingManager>(c => mapper);
+            Startup.Init<Document>("http://localhost");
+            var mapperFromFactory = Factory.Get<IReadOnlyMappingManager>();
+            Assert.AreSame(mapper, mapperFromFactory);
+        }
+
         public class Document {}
     }
 }

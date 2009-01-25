@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using SolrNet.Utils;
@@ -27,6 +28,79 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void PerThread() {
+            var container = new Container();
+            container.Register(c => servicePerThread);
+            var id = ((ServiceImpl) container.GetInstance<IService>()).Id;
+            var e = new ManualResetEvent(false);
+            ThreadPool.QueueUserWorkItem(q => {
+                try {
+                    var id2 = ((ServiceImpl) container.GetInstance<IService>()).Id;
+                    Assert.AreNotEqual(id, id2);
+                } catch (Exception ex) {
+                    Assert.Fail(ex.ToString());
+                } finally {
+                    e.Set();
+                }
+            });
+            e.WaitOne();
+        }
+
+        [Test]
+        public void PerThread_with_helper() {
+            var container = new Container();
+            container.Register(c => ThreadLocal<IService>.Set(() => new ServiceImpl()));
+            var id = ((ServiceImpl) container.GetInstance<IService>()).Id;
+            var id3 = ((ServiceImpl)container.GetInstance<IService>()).Id;
+            Assert.AreEqual(id, id3);
+            var e = new ManualResetEvent(false);
+            ThreadPool.QueueUserWorkItem(q => {
+                try {
+                    var id2 = ((ServiceImpl) container.GetInstance<IService>()).Id;
+                    Assert.AreNotEqual(id, id2);
+                } catch (Exception ex) {
+                    Assert.Fail(ex.ToString());
+                } finally {
+                    e.Set();
+                }
+            });
+            e.WaitOne();
+        }
+
+        public class ThreadLocal<T> where T : class {
+            [ThreadStatic]
+            private static T instance;
+
+            public delegate S FactoryDelegate<S>();
+
+            private static FactoryDelegate<T> factory;
+
+            public static T Set(FactoryDelegate<T> factoryMethod) {
+                factory = factoryMethod;
+                return Instance;
+            }
+
+            public static T Instance {
+                get {
+                    if (instance == null)
+                        instance = factory();
+                    return instance;
+                }
+            }
+        }
+
+        [ThreadStatic]
+        public static IService service;
+
+        public static IService servicePerThread {
+            get {
+                if (service == null)
+                    service = new ServiceImpl();
+                return service;
+            }
+        }
+
+        [Test]
         public void NoInterface() {
             var container = new Container();
             var inst = new ServiceImpl();
@@ -36,7 +110,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        [ExpectedException(typeof(ActivationException))]
+        [ExpectedException(typeof (ActivationException))]
         public void NoInterface_ask_for_interface_throws() {
             var container = new Container();
             var inst = new ServiceImpl();
@@ -55,7 +129,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        [ExpectedException(typeof(ActivationException))]
+        [ExpectedException(typeof (ActivationException))]
         public void InjectionWithoutDependency_throws() {
             var container = new Container();
             container.Register(c => new AnotherService(c.GetInstance<IService>()));
@@ -63,7 +137,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        [ExpectedException(typeof(ApplicationException))]
+        [ExpectedException(typeof (ApplicationException))]
         public void MultipleInstancesOfSameService_without_key_throws() {
             var container = new Container();
             var inst = new ServiceImpl();
@@ -112,7 +186,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        [ExpectedException(typeof(ActivationException))]
+        [ExpectedException(typeof (ActivationException))]
         public void RemoveAllByType() {
             var container = new Container();
             var inst = new ServiceImpl();
@@ -145,12 +219,17 @@ namespace SolrNet.Tests {
             Assert.AreSame(inst2, container.GetInstance<IService>());
         }
 
-        public interface IService { }
-        public class ServiceImpl: IService {
+        public interface IService {}
+
+        public class ServiceImpl : IService {
             private static readonly Random rnd = new Random();
             private readonly int id = rnd.Next();
-            public int Id { get { return id;} }
+
+            public int Id {
+                get { return id; }
+            }
         }
+
         public class AnotherService {
             private readonly IService svc;
 

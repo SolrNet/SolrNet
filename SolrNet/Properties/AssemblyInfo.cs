@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly : AssemblyTitle("SolrNet")]
-[assembly : AssemblyDescription("")]
+[assembly: AssemblyDescription("SolrNet")]
 [assembly : AssemblyConfiguration("")]
 [assembly : AssemblyCompany("")]
 [assembly : AssemblyProduct("SolrNet")]
-[assembly : AssemblyCopyright("Copyright ©  2007")]
+[assembly : AssemblyCopyright("Copyright © Mauricio Scheffer 2007-2009")]
 [assembly : AssemblyTrademark("")]
 [assembly : AssemblyCulture("")]
 

@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly : AssemblyTitle("HttpWebAdapters")]
-[assembly : AssemblyDescription("")]
+[assembly: AssemblyDescription("HttpWebAdapters")]
 [assembly : AssemblyConfiguration("")]
 [assembly : AssemblyCompany("")]
 [assembly : AssemblyProduct("HttpWebAdapters")]
-[assembly : AssemblyCopyright("Copyright ©  2007")]
+[assembly: AssemblyCopyright("Copyright © Mauricio Scheffer 2007-2009")]
 [assembly : AssemblyTrademark("")]
 [assembly : AssemblyCulture("")]
 

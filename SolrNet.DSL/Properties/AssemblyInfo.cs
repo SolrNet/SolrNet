@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly : AssemblyConfiguration("")]
 [assembly : AssemblyCompany("")]
 [assembly : AssemblyProduct("SolrNet.DSL")]
-[assembly : AssemblyCopyright("Copyright ©  2007")]
+[assembly: AssemblyCopyright("Copyright © Mauricio Scheffer 2007-2009")]
 [assembly : AssemblyTrademark("")]
 [assembly : AssemblyCulture("")]
 

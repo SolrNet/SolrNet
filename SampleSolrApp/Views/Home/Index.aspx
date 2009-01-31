@@ -7,13 +7,15 @@
 
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2><%= Html.Encode(ViewData["Message"]) %></h2>
-    <p>
+    <div>
         <% foreach (var p in ViewData.Model.Products) { %>
-        <%= p.Name %><br />
-        <%= p.Price.ToString("C") %><br />
+        <div class="product">
+            <div class="productName"><%= p.Name %></div>
+            Price: <span class="price"><%= p.Price.ToString("C") %></span><br />
+        </div>
         <%} %>
-    </p>
-    <p>
+    </div>
+    <div>
         Results <%= ViewData.Model.FirstResultIndex %> - <%= ViewData.Model.LastResultIndex %> of <b><%= ViewData.Model.TotalCount %></b>
-    </p>
+    </div>
 </asp:Content>

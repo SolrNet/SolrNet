@@ -315,3 +315,18 @@ div#title
     font-weight: bold;
     color: #ff0000;
 }
+.product 
+{
+	border: solid 1px #999999;
+	padding: 4px;
+	margin: 5px;
+}
+.productName 
+{
+	font-size: 120%;
+	font-weight: bold;
+}
+.price 
+{
+	font-weight: bold;
+}

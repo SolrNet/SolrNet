@@ -21,7 +21,7 @@ namespace SampleSolrApp.Controllers {
             return View(new ProductView {
                 Products = matchingProducts,
                 FirstResultIndex = start+1,
-                LastResultIndex = start + parameters.PageSize+1,
+                LastResultIndex = start + parameters.PageSize,
                 TotalCount = matchingProducts.NumFound,
             });
         }

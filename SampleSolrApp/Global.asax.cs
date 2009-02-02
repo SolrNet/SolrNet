@@ -37,11 +37,13 @@ namespace SampleSolrApp {
         }
 
         private void AddInitialDocuments() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Delete(SolrQuery.All);
             var connection = ServiceLocator.Current.GetInstance<ISolrConnection>();
             foreach (var file in Directory.GetFiles(Server.MapPath("/exampledocs"), "*.xml")) {
                 connection.Post("/update", File.ReadAllText(file, Encoding.UTF8));
             }
-            ServiceLocator.Current.GetInstance<ISolrOperations<Product>>().Commit();
+            solr.Commit();
         }
 
         public IController GetContainerRegistration(IContainer container, Type t) {

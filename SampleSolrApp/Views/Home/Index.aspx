@@ -28,4 +28,15 @@
         PageSize = Model.Search.PageSize,
         TotalItemCount = Model.TotalCount,
     }); %>
+    
+    <div class="pagesize">
+        <% foreach (var ps in new[] { 5, 10, 20 }) { %>
+            <% if (ps == Model.Search.PageSize) { %>
+            <span><%= ps%></span>
+            <% } else { %>
+            <a href="<%= Url.SetParameter("pageSize", ps) %>"><%= ps%></a>
+            <% } %>
+        <% } %>
+        items per page
+    </div>
 </asp:Content>

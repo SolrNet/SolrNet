@@ -328,6 +328,7 @@ table th
 .pagination 
 {
 	margin: 5px;
+	float: left;
 }
 .pagination a, .pagination span 
 {
@@ -348,4 +349,9 @@ table th
 	font-weight: bold;
 	background-color: #888888;
 	color: White;
+}
+/* page size */
+.pagesize 
+{
+	text-align: right;
 }

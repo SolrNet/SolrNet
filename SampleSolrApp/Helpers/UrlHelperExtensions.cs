@@ -19,8 +19,8 @@ namespace SampleSolrApp.Helpers {
             return string.Join("&", qs.Select(k => string.Format("{0}={1}", HttpUtility.UrlEncode(k.Key), HttpUtility.UrlEncode(k.Value))).ToArray());
         }
 
-        public static string SetParameter(this UrlHelper helper, string key, string value) {
-            return helper.SetParameter(helper.RequestContext.HttpContext.Request.RawUrl, key, value);
+        public static string SetParameter(this UrlHelper helper, string key, object value) {
+            return helper.SetParameter(helper.RequestContext.HttpContext.Request.RawUrl, key, value.ToString());
         }
 
         public static IDictionary<string, string> ParseQueryString(string s) {

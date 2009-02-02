@@ -330,3 +330,23 @@ div#title
 {
 	font-weight: bold;
 }
+.pagination a, .pagination span 
+{
+	border: solid 1px #888888;
+	padding: 2px;
+	margin: 2px;
+}
+.pagination a 
+{
+	text-decoration: none;
+}
+.pagination a:hover
+{
+	background-color: #FFFFCC;
+}
+.pagination .currentPage
+{
+	font-weight: bold;
+	background-color: #888888;
+	color: White;
+}

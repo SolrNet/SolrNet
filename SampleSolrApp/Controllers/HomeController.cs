@@ -13,17 +13,17 @@ namespace SampleSolrApp.Controllers {
         }
 
         public ActionResult Index(SearchParameters parameters) {
-            var start = parameters.PageIndex * parameters.PageSize;
+            var start = (parameters.PageIndex-1) * parameters.PageSize;
             var matchingProducts = solr.Query(parameters.FreeSearch ?? SolrQuery.All.Query, new QueryOptions {
                 Rows = parameters.PageSize,
                 Start = start,
             });
-            return View(new ProductView {
+            var view = new ProductView {
                 Products = matchingProducts,
-                FirstResultIndex = start+1,
-                LastResultIndex = start + parameters.PageSize,
+                Search = parameters,
                 TotalCount = matchingProducts.NumFound,
-            });
+            };
+            return View(view);
         }
     }
 }

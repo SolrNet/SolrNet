@@ -8,7 +8,7 @@ namespace SampleSolrApp.Models.Binders {
             var qs = controllerContext.HttpContext.Request.QueryString;
             var sp = new SearchParameters {
                 FreeSearch = qs["q"],
-                PageIndex = TryParse(qs["page"]),
+                PageIndex = TryParse(qs["page"], 1),
                 PageSize = TryParse(qs["pageSize"], DefaultPageSize),
             };
             return sp;

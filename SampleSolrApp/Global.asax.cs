@@ -31,7 +31,7 @@ namespace SampleSolrApp {
             RegisterRoutes(RouteTable.Routes);
             Startup.Init<Product>("http://localhost:8983/solr");
             RegisterAllControllers();
-            ControllerBuilder.Current.SetControllerFactory(new SimpleControllerFactory(Startup.Container));
+            ControllerBuilder.Current.SetControllerFactory(new ServiceProviderControllerFactory(Startup.Container));
             ModelBinders.Binders[typeof (SearchParameters)] = new SearchParametersBinder();
             AddInitialDocuments();
         }
@@ -57,7 +57,7 @@ namespace SampleSolrApp {
         public void RegisterAllControllers() {
             var controllers = typeof (MvcApplication).Assembly.GetTypes().Where(t => typeof (IController).IsAssignableFrom(t));
             foreach (var controller in controllers)
-                Startup.Container.Register(GetControllerName(controller), c => GetContainerRegistration(c, controller));
+                Startup.Container.Register(GetControllerName(controller), controller, c => GetContainerRegistration(c, controller));
         }
     }
 }

@@ -27,7 +27,7 @@ namespace SampleSolrApp.Helpers {
         }
 
         public static string SetParameter(this UrlHelper helper, string key, object value) {
-            return helper.SetParameter(helper.RequestContext.HttpContext.Request.RawUrl, key, value.ToString());
+            return helper.SetParameter(helper.RequestContext.HttpContext.Request.RawUrl, key, value.ToNullOrString());
         }
 
         public static string SetParameters(this UrlHelper helper, object parameterDictionary) {

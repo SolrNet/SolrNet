@@ -80,6 +80,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HtmlHelperRepeatExtensions.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\UrlHelperExtensions.cs" />
     <Compile Include="Models\Binders\SearchParametersBinder.cs" />
     <Compile Include="Models\PaginationInfo.cs" />

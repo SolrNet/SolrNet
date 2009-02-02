@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using SampleSolrApp.Helpers;
 
 namespace SampleSolrApp.Models.Binders {
     public class SearchParametersBinder : IModelBinder {
@@ -7,23 +8,12 @@ namespace SampleSolrApp.Models.Binders {
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext) {
             var qs = controllerContext.HttpContext.Request.QueryString;
             var sp = new SearchParameters {
-                FreeSearch = qs["q"],
-                PageIndex = TryParse(qs["page"], 1),
-                PageSize = TryParse(qs["pageSize"], DefaultPageSize),
+                FreeSearch = StringHelper.EmptyToNull(qs["q"]),
+                PageIndex = StringHelper.TryParse(qs["page"], 1),
+                PageSize = StringHelper.TryParse(qs["pageSize"], DefaultPageSize),
             };
             return sp;
         }
 
-        public int TryParse(string u, int defaultValue) {
-            try {
-                return int.Parse(u);
-            } catch {
-                return defaultValue;
-            }
-        }
-
-        public int TryParse(string u) {
-            return TryParse(u, 0);
-        }
     }
 }

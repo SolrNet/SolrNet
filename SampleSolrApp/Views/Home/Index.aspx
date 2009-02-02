@@ -7,6 +7,11 @@
 </asp:Content>
 
 <asp:Content ID="indexContent" ContentPlaceHolderID="MainContent" runat="server">
+    <form method="get" action="<%= Url.Action("Index") %>">
+        <%= Html.TextBox("q", Model.Search.FreeSearch) %>
+        <input type="submit" value="Search" />
+    </form>
+
     <h2><%= Html.Encode(ViewData["Message"]) %></h2>
     <div>
         <% foreach (var p in Model.Products) { %>

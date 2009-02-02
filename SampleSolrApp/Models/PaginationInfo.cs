@@ -59,5 +59,17 @@ namespace SampleSolrApp.Models {
         }
 
         public string PageUrl { get; set; }
+
+        public int FirstItemIndex {
+            get {
+                return PageSize*(CurrentPage-1)+1;
+            }
+        }
+
+        public int LastItemIndex {
+            get {
+                return Math.Min(FirstItemIndex + PageSize-1, TotalItemCount);
+            }
+        }
     }
 }

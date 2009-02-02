@@ -2,6 +2,10 @@
 <%@ Import Namespace="SampleSolrApp.Models"%>
 <%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<PaginationInfo>" %>
 
+<div>
+    Results <%= Model.FirstItemIndex %> - <%= Model.LastItemIndex%> of <b><%= Model.TotalItemCount %></b>
+</div>
+
 <div class="pagination">
 
 <% if (Model.HasPrevPage) { %>

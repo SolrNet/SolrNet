@@ -21,9 +21,6 @@
         </div>
         <%} %>
     </div>
-    <div>
-        Results <%= Model.Search.FirstItemIndex+1 %> - <%= Model.Search.LastItemIndex%> of <b><%= Model.TotalCount %></b>
-    </div>
     
     <% Html.RenderPartial("Pagination", new PaginationInfo {
         PageUrl = Url.SetParameter("page", "!0"),

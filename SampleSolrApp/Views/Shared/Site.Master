@@ -15,19 +15,10 @@
 
         <div id="header">
             <div id="title">
-                <h1>My MVC Application</h1>
-            </div>
-                          
-            <div id="menucontainer">
-            
-                <ul id="menu">              
-                    <li><%= Html.ActionLink("Home", "Index", "Home")%></li>
-                    <li><%= Html.ActionLink("About", "About", "Home")%></li>
-                </ul>
-            
-            </div>
+                <h1>Megastore</h1>
+            </div>                          
         </div>
-
+<br />
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
 

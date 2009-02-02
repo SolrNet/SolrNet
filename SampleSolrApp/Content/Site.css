@@ -265,13 +265,6 @@ table th
     margin-top:40px;
 }
 
-div#title
-{
-    display:block;
-    float:left;
-    text-align:left;
-}
-
 #logindisplay
 {
     font-size:1.1em;
@@ -329,6 +322,12 @@ div#title
 .price 
 {
 	font-weight: bold;
+}
+
+/* pagination */
+.pagination 
+{
+	margin: 5px;
 }
 .pagination a, .pagination span 
 {

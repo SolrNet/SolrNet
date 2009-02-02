@@ -19,12 +19,11 @@
     <div>
         Results <%= Model.Search.FirstItemIndex+1 %> - <%= Model.Search.LastItemIndex%> of <b><%= Model.TotalCount %></b>
     </div>
-    <div>
-        <% Html.RenderPartial("Pagination", new PaginationInfo {
-            PageUrl = Url.SetParameter("page", "!0"),
-            CurrentPage = Model.Search.PageIndex, 
-            PageSize = Model.Search.PageSize,
-            TotalItemCount = Model.TotalCount,
-        }); %>
-    </div>
+    
+    <% Html.RenderPartial("Pagination", new PaginationInfo {
+        PageUrl = Url.SetParameter("page", "!0"),
+        CurrentPage = Model.Search.PageIndex, 
+        PageSize = Model.Search.PageSize,
+        TotalItemCount = Model.TotalCount,
+    }); %>
 </asp:Content>

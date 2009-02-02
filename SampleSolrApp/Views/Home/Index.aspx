@@ -34,7 +34,7 @@
             <% if (ps == Model.Search.PageSize) { %>
             <span><%= ps%></span>
             <% } else { %>
-            <a href="<%= Url.SetParameter("pageSize", ps) %>"><%= ps%></a>
+            <a href="<%= Url.SetParameters(new {pagesize = ps, page = 1}) %>"><%= ps%></a>
             <% } %>
         <% } %>
         items per page

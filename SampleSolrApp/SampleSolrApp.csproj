@@ -79,7 +79,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EnumerableExtensions.cs" />
     <Compile Include="Helpers\HtmlHelperRepeatExtensions.cs" />
+    <Compile Include="Helpers\ObjectExtensions.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\UrlHelperExtensions.cs" />
     <Compile Include="Models\Binders\SearchParametersBinder.cs" />

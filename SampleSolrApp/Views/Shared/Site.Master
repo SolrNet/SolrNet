@@ -15,7 +15,7 @@
 
         <div id="header">
             <div id="title">
-                <h1>Megastore</h1>
+                <h1><a href="/">Megastore</a></h1>
             </div>
         </div>
 <br />

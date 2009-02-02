@@ -7,11 +7,18 @@ using System.Web.Mvc;
 namespace SampleSolrApp.Helpers {
     public static class UrlHelperExtensions {
         public static string SetParameter(this UrlHelper helper, string url, string key, string value) {
+            return helper.SetParameters(url, new Dictionary<string, object> {
+                {key, value}
+            });
+        }
+
+        public static string SetParameters(this UrlHelper helper, string url, IDictionary<string, object> parameters) {
             var parts = url.Split('?');
             IDictionary<string, string> qs = new Dictionary<string, string>();
             if (parts.Length > 1)
                 qs = ParseQueryString(parts[1]);
-            qs[key] = value;
+            foreach (var p in parameters)
+                qs[p.Key] = p.Value.ToNullOrString();
             return parts[0] + "?" + DictToQuerystring(qs);
         }
 
@@ -21,6 +28,10 @@ namespace SampleSolrApp.Helpers {
 
         public static string SetParameter(this UrlHelper helper, string key, object value) {
             return helper.SetParameter(helper.RequestContext.HttpContext.Request.RawUrl, key, value.ToString());
+        }
+
+        public static string SetParameters(this UrlHelper helper, object parameterDictionary) {
+            return helper.SetParameters(helper.RequestContext.HttpContext.Request.RawUrl, parameterDictionary.ToPropertyDictionary());
         }
 
         public static IDictionary<string, string> ParseQueryString(string s) {

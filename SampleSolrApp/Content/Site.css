@@ -109,6 +109,17 @@ page width. Or, you can specify an exact pixel width. */
     font-size: 32px !important;
 }
 
+h1 a 
+{
+	text-decoration: none;
+	color: White;
+}
+
+h1 a:visited 
+{
+	color: White;	
+}
+
 #main
 {
     padding: 30px 30px 15px 30px;

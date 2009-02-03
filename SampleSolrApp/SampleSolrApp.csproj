@@ -84,6 +84,7 @@
     <Compile Include="Helpers\ObjectExtensions.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\UrlHelperExtensions.cs" />
+    <Compile Include="Helpers\UrlHelperRouteExtensions.cs" />
     <Compile Include="Models\Binders\SearchParametersBinder.cs" />
     <Compile Include="Models\PaginationInfo.cs" />
     <Compile Include="Models\Product.cs" />

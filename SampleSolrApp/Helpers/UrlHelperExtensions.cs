@@ -23,7 +23,9 @@ namespace SampleSolrApp.Helpers {
         }
 
         public static string DictToQuerystring(IDictionary<string, string> qs) {
-            return string.Join("&", qs.Select(k => string.Format("{0}={1}", HttpUtility.UrlEncode(k.Key), HttpUtility.UrlEncode(k.Value))).ToArray());
+            return string.Join("&", qs
+                .Where(k => !string.IsNullOrEmpty(k.Key))
+                .Select(k => string.Format("{0}={1}", HttpUtility.UrlEncode(k.Key), HttpUtility.UrlEncode(k.Value))).ToArray());
         }
 
         public static string SetParameter(this UrlHelper helper, string key, object value) {

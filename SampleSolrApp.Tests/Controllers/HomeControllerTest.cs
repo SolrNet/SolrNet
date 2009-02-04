@@ -11,9 +11,16 @@ namespace SampleSolrApp.Tests.Controllers {
         [Test]
         public void Index_Without_parameters() {
             var solr = MockRepository.GenerateMock<ISolrReadOnlyOperations<Product>>();
+            solr.Expect(o => o.Query("*:*", new QueryOptions()))
+                .IgnoreArguments()
+                .Return(new SolrQueryResults<Product>());
             var c = new HomeController(solr);
             var result = c.Index(new SearchParameters());   
-            solr.AssertWasCalled(o => o.Query("*:*", new QueryOptions()), o => o.IgnoreArguments());
+        }
+
+        [Test]
+        public void Facets() {
+            
         }
     }
 }

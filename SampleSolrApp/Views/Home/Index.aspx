@@ -11,32 +11,39 @@
         <%= Html.TextBox("q", Model.Search.FreeSearch) %>
         <input type="submit" value="Search" />
     </form>
-
-    <h2><%= Html.Encode(ViewData["Message"]) %></h2>
-    <div>
-        <% foreach (var p in Model.Products) { %>
-        <div class="product">
-            <div class="productName"><%= p.Name %></div>
-            Price: <span class="price"><%= p.Price.ToString("C") %></span><br />
-        </div>
-        <%} %>
+    
+    <div class="leftColumn">
+        <ul>
+            
+        </ul>
     </div>
-    
-    <% Html.RenderPartial("Pagination", new PaginationInfo {
-        PageUrl = Url.SetParameter("page", "!0"),
-        CurrentPage = Model.Search.PageIndex, 
-        PageSize = Model.Search.PageSize,
-        TotalItemCount = Model.TotalCount,
-    }); %>
-    
-    <div class="pagesize">
-        <% foreach (var ps in new[] { 5, 10, 20 }) { %>
-            <% if (ps == Model.Search.PageSize) { %>
-            <span><%= ps%></span>
-            <% } else { %>
-            <a href="<%= Url.SetParameters(new {pagesize = ps, page = 1}) %>"><%= ps%></a>
+
+    <div class="rightColumn">
+        <div>
+            <% foreach (var p in Model.Products) { %>
+            <div class="product">
+                <div class="productName"><%= p.Name %></div>
+                Price: <span class="price"><%= p.Price.ToString("C") %></span><br />
+            </div>
+            <%} %>
+        </div>
+        
+        <% Html.RenderPartial("Pagination", new PaginationInfo {
+            PageUrl = Url.SetParameter("page", "!0"),
+            CurrentPage = Model.Search.PageIndex, 
+            PageSize = Model.Search.PageSize,
+            TotalItemCount = Model.TotalCount,
+        }); %>
+        
+        <div class="pagesize">
+            <% foreach (var ps in new[] { 5, 10, 20 }) { %>
+                <% if (ps == Model.Search.PageSize) { %>
+                <span><%= ps%></span>
+                <% } else { %>
+                <a href="<%= Url.SetParameters(new {pagesize = ps, page = 1}) %>"><%= ps%></a>
+                <% } %>
             <% } %>
-        <% } %>
-        items per page
+            items per page
+        </div>
     </div>
 </asp:Content>

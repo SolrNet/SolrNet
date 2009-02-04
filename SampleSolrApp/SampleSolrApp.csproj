@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="Helpers\EnumerableExtensions.cs" />
     <Compile Include="Helpers\HtmlHelperRepeatExtensions.cs" />
+    <Compile Include="Helpers\KeyValuePairExtensions.cs" />
     <Compile Include="Helpers\ObjectExtensions.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\UrlHelperExtensions.cs" />

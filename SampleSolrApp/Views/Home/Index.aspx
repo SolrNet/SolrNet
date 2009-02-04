@@ -16,7 +16,7 @@
         <ul>
             <% foreach (var f in Model.Facets) { %> 
             <li>
-                <%= f.Key %>
+                <%= Html.SolrFieldPropName<Product>(f.Key) %>
                 <ul>
                     <% foreach (var fv in f.Value) { %>
                     <li><a href="<%= Url.SetFacet(f.Key, fv.Key) %>"><%= fv.Key %></a> <span>(<%= fv.Value %>)</span></li>

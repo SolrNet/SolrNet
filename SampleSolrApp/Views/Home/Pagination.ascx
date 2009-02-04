@@ -9,13 +9,9 @@
 <div class="pagination">
 
 <% if (Model.HasPrevPage) { %>
-<a href="<%= Model.PrevPageUrl %>">
-&laquo; Previous
-</a>
+<a href="<%= Model.PrevPageUrl %>">&laquo; Previous</a>
 <% } else { %>
-<span class="disabledPage">
-&laquo; Previous
-</span>
+<span class="disabledPage">&laquo; Previous</span>
 <% } %>
 
 <% foreach (var p in Model.Pages) { %>
@@ -27,13 +23,9 @@
 <% } %>
 
 <% if (Model.HasNextPage) { %>
-<a href="<%= Model.NextPageUrl %>">
-Next &raquo; 
-</a>
+<a href="<%= Model.NextPageUrl %>">Next &raquo;</a>
 <% } else { %>
-<span class="disabledPage">
-Next &raquo;
-</span>
+<span class="disabledPage">Next &raquo;</span>
 <% } %>
 
 </div>

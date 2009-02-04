@@ -338,7 +338,7 @@ table th
 .pagination a, .pagination span 
 {
 	border: solid 1px #888888;
-	padding: 2px;
+	padding: 2px 5px;
 	margin: 2px;
 }
 .pagination a 
@@ -354,6 +354,10 @@ table th
 	font-weight: bold;
 	background-color: #888888;
 	color: White;
+}
+.pagination .disabledPage 
+{
+	color: #aaaaaa;
 }
 /* page size */
 .pagesize 

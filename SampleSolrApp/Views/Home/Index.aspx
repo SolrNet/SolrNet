@@ -36,13 +36,13 @@
         }); %>
         
         <div class="pagesize">
-            <% foreach (var ps in new[] { 5, 10, 20 }) { %>
+            <% Html.Repeat(new[] { 5, 10, 20 }, ps => { %>
                 <% if (ps == Model.Search.PageSize) { %>
                 <span><%= ps%></span>
                 <% } else { %>
                 <a href="<%= Url.SetParameters(new {pagesize = ps, page = 1}) %>"><%= ps%></a>
                 <% } %>
-            <% } %>
+            <% }, () => { %> | <% }); %>
             items per page
         </div>
     </div>

@@ -364,3 +364,7 @@ table th
 {
 	text-align: right;
 }
+.pagesize span 
+{
+	font-weight: bold;
+}

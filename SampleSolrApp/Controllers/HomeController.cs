@@ -31,11 +31,13 @@ namespace SampleSolrApp.Controllers {
             var matchingProducts = solr.Query(BuildQuery(parameters), new QueryOptions {
                 Rows = parameters.PageSize,
                 Start = start,
+                FacetQueries = new[] {new SolrFacetFieldQuery("cat"), }
             });
             var view = new ProductView {
                 Products = matchingProducts,
                 Search = parameters,
                 TotalCount = matchingProducts.NumFound,
+                Facets = matchingProducts.FacetFields,
             };
             return View(view);
         }

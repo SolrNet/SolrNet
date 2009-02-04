@@ -14,7 +14,16 @@
     
     <div class="leftColumn">
         <ul>
-            
+            <% foreach (var f in Model.Facets) { %> 
+            <li>
+                <%= f.Key %>
+                <ul>
+                    <% foreach (var fv in f.Value) { %>
+                    <li><a href="<%= Url.SetFacet(f.Key, fv.Key) %>"><%= fv.Key %></a> <span>(<%= fv.Value %>)</span></li>
+                    <%} %>
+                </ul>
+            </li>
+            <% } %>
         </ul>
     </div>
 
@@ -25,7 +34,7 @@
                 <div class="productName"><%= p.Name %></div>
                 Price: <span class="price"><%= p.Price.ToString("C") %></span><br />
                 Categories: <% Html.Repeat(p.Categories, cat => { %>
-                    <a href="<%= Url.SetParameters(new {f_cat = cat, page = 1 }) %>"><%= cat %></a><% }, () => {%>, <% }); %>
+                    <a href="<%= Url.SetFacet("cat", cat) %>"><%= cat %></a><% }, () => {%>, <% }); %>
             </div>
             <%} %>
         </div>

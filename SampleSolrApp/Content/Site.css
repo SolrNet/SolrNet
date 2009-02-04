@@ -120,6 +120,8 @@ h1 a:visited
     background-color: #fff;
     margin-bottom: 30px;
     _height: 1px; /* only IE6 applies CSS properties starting with an underscrore */
+    float: left;
+    display: block;
 }
 
 #footer
@@ -130,6 +132,14 @@ h1 a:visited
     line-height: normal;
     margin: 0;
     font-size: .9em;
+}
+.leftColumn 
+{
+	float: left;
+}
+.rightColumn 
+{
+	float: right;
 }
 
 /* TAB MENU   
@@ -367,4 +377,24 @@ table th
 .pagesize span 
 {
 	font-weight: bold;
+}
+
+/* facets */
+.leftColumn ul 
+{
+	list-style: none;
+	padding: 0;
+}
+.leftColumn ul li
+{
+	font-weight: bold;
+}
+.leftColumn ul li ul li 
+{
+	font-weight: normal;
+}
+.leftColumn ul li ul li span 
+{
+	font-size: 80%;
+	color: #999;
 }

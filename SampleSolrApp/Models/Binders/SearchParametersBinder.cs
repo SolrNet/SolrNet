@@ -21,7 +21,7 @@ namespace SampleSolrApp.Models.Binders {
             return d;
         }
 
-        private static readonly Regex FacetRegex = new Regex("^f\\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex FacetRegex = new Regex("^f_", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext) {
             var qs = controllerContext.HttpContext.Request.QueryString;

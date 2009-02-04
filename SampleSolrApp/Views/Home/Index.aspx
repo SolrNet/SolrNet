@@ -24,6 +24,8 @@
             <div class="product">
                 <div class="productName"><%= p.Name %></div>
                 Price: <span class="price"><%= p.Price.ToString("C") %></span><br />
+                Categories: <% Html.Repeat(p.Categories, cat => { %>
+                    <a href="<%= Url.SetParameters(new {f_cat = cat, page = 1 }) %>"><%= cat %></a><% }, () => {%>, <% }); %>
             </div>
             <%} %>
         </div>

@@ -37,7 +37,10 @@ namespace SampleSolrApp.Controllers {
             var matchingProducts = solr.Query(BuildQuery(parameters), new QueryOptions {
                 Rows = parameters.PageSize,
                 Start = start,
-                FacetQueries = AllFacetFields.Except(SelectedFacetFields(parameters)).Select(f => new SolrFacetFieldQuery(f)).Cast<ISolrFacetQuery>().ToList(),
+                FacetQueries = AllFacetFields.Except(SelectedFacetFields(parameters))
+                    .Select(f => new SolrFacetFieldQuery(f) {MinCount = 1})
+                    .Cast<ISolrFacetQuery>()
+                    .ToList(),
             });
             var view = new ProductView {
                 Products = matchingProducts,

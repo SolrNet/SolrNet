@@ -26,12 +26,18 @@ namespace SampleSolrApp.Controllers {
             return new SolrMultipleCriteriaQuery(queries, SolrMultipleCriteriaQuery.Operator.AND);
         }
 
+        private static readonly string[] AllFacetFields = new[] {"cat"};
+
+        public IEnumerable<string> SelectedFacetFields(SearchParameters parameters) {
+            return parameters.Facets.Select(f => f.Key);
+        }
+
         public ActionResult Index(SearchParameters parameters) {
             var start = (parameters.PageIndex - 1)*parameters.PageSize;
             var matchingProducts = solr.Query(BuildQuery(parameters), new QueryOptions {
                 Rows = parameters.PageSize,
                 Start = start,
-                FacetQueries = new[] {new SolrFacetFieldQuery("cat"), }
+                FacetQueries = AllFacetFields.Except(SelectedFacetFields(parameters)).Select(f => new SolrFacetFieldQuery(f)).Cast<ISolrFacetQuery>().ToList(),
             });
             var view = new ProductView {
                 Products = matchingProducts,

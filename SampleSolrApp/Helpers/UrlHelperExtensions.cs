@@ -22,6 +22,16 @@ namespace SampleSolrApp.Helpers {
             return parts[0] + "?" + DictToQuerystring(qs);
         }
 
+        public static string RemoveParameters(this UrlHelper helper, string url, params string[] parameters) {
+            var parts = url.Split('?');
+            IDictionary<string, string> qs = new Dictionary<string, string>();
+            if (parts.Length > 1)
+                qs = ParseQueryString(parts[1]);
+            foreach (var p in parameters)
+                qs.Remove(p);
+            return parts[0] + "?" + DictToQuerystring(qs);
+        }
+
         public static string DictToQuerystring(IDictionary<string, string> qs) {
             return string.Join("&", qs
                 .Where(k => !string.IsNullOrEmpty(k.Key))

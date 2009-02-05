@@ -13,7 +13,18 @@
     </form>
     
     <div class="leftColumn">
+        <% foreach (var f in Model.Search.Facets) { %>
         <ul>
+            <li>
+                <%= Html.SolrFieldPropName<Product>(f.Key) %>
+                <ul>
+                    <li><a class="removeFacet" href="<%= Url.RemoveFacet(f.Key) %>"><%= f.Value %></a></li>
+                </ul>
+            </li>
+        </ul>
+        <% } %>
+        
+        <ul>            
             <% foreach (var f in Model.Facets) { %> 
             <li>
                 <%= Html.SolrFieldPropName<Product>(f.Key) %>

@@ -140,6 +140,7 @@ h1 a:visited
 .rightColumn 
 {
 	float: right;
+	width: 700px;
 }
 
 /* TAB MENU   
@@ -397,4 +398,10 @@ table th
 {
 	font-size: 80%;
 	color: #999;
+}
+a.removeFacet 
+{
+	background: url(close_icon.png) no-repeat center left;
+	padding-left: 15px;
+	cursor: pointer;
 }

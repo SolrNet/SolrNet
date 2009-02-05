@@ -26,7 +26,7 @@ namespace SampleSolrApp.Controllers {
             return new SolrMultipleCriteriaQuery(queries, SolrMultipleCriteriaQuery.Operator.AND);
         }
 
-        private static readonly string[] AllFacetFields = new[] {"cat"};
+        private static readonly string[] AllFacetFields = new[] {"cat", "manu_exact"};
 
         public IEnumerable<string> SelectedFacetFields(SearchParameters parameters) {
             return parameters.Facets.Select(f => f.Key);

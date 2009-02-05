@@ -13,7 +13,7 @@ namespace SampleSolrApp.Models {
         [SolrField("name")]
         public string Name { get; set; }
 
-        [SolrField("manu")]
+        [SolrField("manu_exact")]
         public string Manufacturer { get; set; }
 
         [SolrField("cat")]

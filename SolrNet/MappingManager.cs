@@ -24,7 +24,9 @@ namespace SolrNet {
 		private readonly IDictionary<Type, PropertyInfo> uniqueKeys = new Dictionary<Type, PropertyInfo>();
 
 		public void Add(PropertyInfo property) {
-			Add(property, property.Name);
+            if (property == null)
+                throw new ArgumentNullException("property");
+            Add(property, property.Name);
 		}
 
 		public void Add(PropertyInfo property, string fieldName) {

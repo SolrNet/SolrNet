@@ -280,14 +280,24 @@ namespace SolrNet.Tests {
             const string highlightedField = "field1";
             const string afterTerm = "after";
             const string beforeTerm = "before";
+            const int snippets = 3;
+            const string alt = "alt";
+            const int fragsize = 7;
             With.Mocks(mocks).Expecting(() => {
                 var q = new Dictionary<string, string>();
                 q["q"] = "";
                 q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
                 q["hl"] = "true";
                 q["hl.fl"] = highlightedField;
+                q["hl.snippets"] = snippets.ToString();
+                q["hl.fragsize"] = fragsize.ToString();
+                q["hl.requireFieldMatch"] = "true";
+                q["hl.alternateField"] = alt;
                 q["hl.simple.pre"] = beforeTerm;
                 q["hl.simple.post"] = afterTerm;
+                q["hl.regex.slop"] = "4.12";
+                q["hl.regex.pattern"] = "\\.";
+                q["hl.regex.maxAnalyzedChars"] = "8000";
                 Expect.Call(conn.Get("/select", q))
                     .Repeat.Once().Return("");
                 Expect.Call(container.GetInstance<IListRandomizer>())
@@ -300,6 +310,13 @@ namespace SolrNet.Tests {
                         Fields = new[] {highlightedField},
                         AfterTerm = afterTerm,
                         BeforeTerm = beforeTerm,
+                        Snippets = snippets,
+                        AlternateField = alt,
+                        Fragsize = fragsize,
+                        RequireFieldMatch = true,
+                        RegexSlop = 4.12,
+                        RegexPattern = "\\.",
+                        RegexMaxAnalyzedChars = 8000,
                     }
                 });
             });

@@ -54,13 +54,13 @@ namespace SolrNet.Commands.Parameters {
 
 		/// <summary>
 		/// The text which appears before a highlighted term.
-		/// The default value is "<em>"
+		/// The default value is "&lt;em&gt;"
 		/// </summary>
 		public string BeforeTerm { get; set; }
 
 		/// <summary>
 		/// The text which appears after a highlighted term.
-		/// The default value is "</em>"
+        /// The default value is "&lt;/em&gt;"
 		/// </summary>
 		public string AfterTerm { get; set; }
 
@@ -84,15 +84,5 @@ namespace SolrNet.Commands.Parameters {
 		/// The default value is "10000". 
 		/// </summary>
 		public int? RegexMaxAnalyzedChars { get; set; }
-
-		public override string ToString() {
-			var l = new List<string>();
-			foreach (var p in GetType().GetProperties()) {
-				var o = p.GetValue(this, null);
-				if (o != null)
-					l.Add(string.Format("{0}={1}", p.Name, o));
-			}
-			return string.Join("\n", l.ToArray());
-		}
 	}
 }

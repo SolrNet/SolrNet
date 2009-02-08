@@ -75,35 +75,28 @@ namespace SolrNet {
 		/// </summary>
 		public int? EnumCacheMinDf { get; set; }
 
+        private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
+            return new KeyValuePair<K, V>(key, value);
+        }
+
 		public IEnumerable<KeyValuePair<string, string>> Query {
 			get {
-				var r = new List<KeyValuePair<string, string>> {
-					new KeyValuePair<string, string>("facet.field", field)
-				};
-				if (Prefix != null)
-					r.Add(new KeyValuePair<string, string>("facet.prefix", Prefix));
-				if (Sort.HasValue)
-					r.Add(new KeyValuePair<string, string>("facet.sort", Sort.ToString().ToLowerInvariant()));
+			    yield return KV("facet.field", field);
+                if (Prefix != null)
+                    yield return KV("facet.prefix", Prefix);
+                if (Sort.HasValue)
+                    yield return KV("facet.sort", Sort.ToString().ToLowerInvariant());
 				if (Limit.HasValue)
-					r.Add(new KeyValuePair<string, string>("facet.limit", Limit.ToString()));
+                    yield return KV("facet.limit", Limit.ToString());
 				if (Offset.HasValue)
-					r.Add(new KeyValuePair<string, string>("facet.offset", Offset.ToString()));
+					yield return KV("facet.offset", Offset.ToString());
 				if (MinCount.HasValue)
-					r.Add(new KeyValuePair<string, string>("facet.mincount", MinCount.ToString()));
+					yield return KV("facet.mincount", MinCount.ToString());
 				if (Missing.HasValue)
-					r.Add(new KeyValuePair<string, string>("facet.missing", Missing.ToString().ToLowerInvariant()));
+					yield return KV("facet.missing", Missing.ToString().ToLowerInvariant());
 				if (EnumCacheMinDf.HasValue)
-					r.Add(new KeyValuePair<string, string>("facet.enum.cache.minDf", EnumCacheMinDf.ToString()));
-				return r;
+					yield return KV("facet.enum.cache.minDf", EnumCacheMinDf.ToString());
 			}
-		}
-
-		public override string ToString() {
-			var l = new List<string>();
-			foreach (var q in Query) {
-				l.Add(string.Format("{0}={1}", q.Key, q.Value));
-			}
-			return string.Join("\n", l.ToArray());
 		}
 	}
 }

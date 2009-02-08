@@ -42,6 +42,8 @@ namespace SolrNet.Utils {
         }
 
         protected override IEnumerable<object> DoGetAllInstances(Type serviceType) {
+            if (!componentsByType.ContainsKey(serviceType))
+                yield break;
             foreach (var c in componentsByType[serviceType])
                 yield return c(this);
         }

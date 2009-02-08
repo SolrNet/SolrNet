@@ -17,6 +17,7 @@
 using System.Linq;
 using NUnit.Framework;
 using SolrNet.Attributes;
+using SolrNet.Exceptions;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -63,6 +64,13 @@ namespace SolrNet.Tests {
             var m = new AttributesMappingManager();
             var fields = m.GetFields(typeof (NoProperties));
             Assert.AreEqual(0, fields.Count);
+        }
+
+        [Test]
+        [ExpectedException(typeof(NoUniqueKeyException))]
+        public void GetUniqueKey_without_unique_key_throws() {
+            var m = new AttributesMappingManager();
+            m.GetUniqueKey(typeof (AnotherEntity));
         }
 
         public class NoProperties {}

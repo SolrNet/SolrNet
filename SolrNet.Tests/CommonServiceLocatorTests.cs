@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Web;
 using Microsoft.Practices.ServiceLocation;
@@ -274,6 +275,17 @@ namespace SolrNet.Tests {
             container.Register<IService>(c => inst2);
             container.Remove<IService>("inst1");
             Assert.AreSame(inst2, container.GetInstance<IService>());
+        }
+
+        [Test]
+        public void Clear() {
+            var container = new Container();
+            var inst = new ServiceImpl();
+            container.Register<IService>("inst1", c => inst);
+            var inst2 = new ServiceImpl();
+            container.Register<IService>(c => inst2);
+            container.Clear();
+            Assert.AreEqual(0, container.GetAllInstances<IService>().ToArray().Length);
         }
 
         public interface IService {}

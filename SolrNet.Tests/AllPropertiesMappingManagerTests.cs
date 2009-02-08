@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NUnit.Framework;
 using SolrNet.Exceptions;
 
@@ -59,6 +60,13 @@ namespace SolrNet.Tests {
             var m = new AllPropertiesMappingManager();
             var props = m.GetFields(typeof (NoProperties));
             Assert.AreEqual(0, props.Count);
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SetUniqueKey_null_throws() {
+            var m = new AllPropertiesMappingManager();
+            m.SetUniqueKey(null);
         }
 
         public class NoProperties {}

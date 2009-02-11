@@ -55,6 +55,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         }
 
         [Test]
+        [Ignore("Requires a running solr instance")]
         public void Ping_Query() {
             var configStore = new DefaultConfigurationStore();
             var configuration = new MutableConfiguration("solr");

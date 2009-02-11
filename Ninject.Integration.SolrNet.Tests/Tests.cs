@@ -24,7 +24,7 @@ namespace Ninject.Integration.SolrNet.Tests {
     [TestFixture]
     public class Tests {
         [Test]
-        [ExpectedException(typeof(SolrConnectionException))]
+        [Ignore("Requires a running solr instance")]
         public void Ping() {
             var c = new StandardKernel();
             c.Load(new SolrNetModule("http://localhost:8983/solr"));

@@ -65,7 +65,7 @@ class InsertLicenseTask:
 			exts = ("*.cs", "*.boo")
 			for ext in exts:
 				for file in Directory.GetFiles(dir, ext):
-					yield file
+					yield file if not file.EndsWith("AssemblyInfo.cs")
 					
 			for subDir in Directory.GetDirectories(dir):
 				for fname as string in GetFiles(subDir):

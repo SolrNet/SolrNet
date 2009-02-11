@@ -26,7 +26,6 @@ using Microsoft.Practices.ServiceLocation;
 using SampleSolrApp.Models;
 using SampleSolrApp.Models.Binders;
 using SolrNet;
-using SolrNet.Utils;
 
 namespace SampleSolrApp {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -62,9 +61,9 @@ namespace SampleSolrApp {
             solr.Commit();
         }
 
-        public IController GetContainerRegistration(IContainer container, Type t) {
+        public IController GetContainerRegistration(IServiceProvider container, Type t) {
             var constructor = t.GetConstructors()[0];
-            var dependencies = constructor.GetParameters().Select(p => container.GetInstance(p.ParameterType)).ToArray();
+            var dependencies = constructor.GetParameters().Select(p => container.GetService(p.ParameterType)).ToArray();
             return (IController) constructor.Invoke(dependencies);
         }
 

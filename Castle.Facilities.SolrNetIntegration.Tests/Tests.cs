@@ -36,7 +36,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         [ExpectedException(typeof(FacilityException))]
         public void InvalidUrl_throws() {
             var configStore = new DefaultConfigurationStore();
-            var configuration = new MutableConfiguration("solr");
+            var configuration = new MutableConfiguration("facility");
             configuration.CreateChild("solrURL", "123");
             configStore.AddFacilityConfiguration("solr", configuration);
             var container = new WindsorContainer(configStore);
@@ -47,7 +47,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         [ExpectedException(typeof(FacilityException))]
         public void InvalidProtocol_throws() {
             var configStore = new DefaultConfigurationStore();
-            var configuration = new MutableConfiguration("solr");
+            var configuration = new MutableConfiguration("facility");
             configuration.CreateChild("solrURL", "ftp://localhost");
             configStore.AddFacilityConfiguration("solr", configuration);
             var container = new WindsorContainer(configStore);
@@ -58,7 +58,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         [Ignore("Requires a running solr instance")]
         public void Ping_Query() {
             var configStore = new DefaultConfigurationStore();
-            var configuration = new MutableConfiguration("solr");
+            var configuration = new MutableConfiguration("facility");
             configuration.CreateChild("solrURL", "http://localhost:8983/solr");
             configStore.AddFacilityConfiguration("solr", configuration);
             var container = new WindsorContainer(configStore);

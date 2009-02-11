@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSolrApp", "SampleSolr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleSolrApp.Tests", "SampleSolrApp.Tests\SampleSolrApp.Tests.csproj", "{CBABA824-232A-48B7-BDBF-7F43C64F8EA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Integration.SolrNet.Tests", "Ninject.Integration.SolrNet.Tests\Ninject.Integration.SolrNet.Tests.csproj", "{08D59BEE-EC70-4AC8-B6F6-3088B81A6251}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Integration.SolrNet", "Ninject.Integration.SolrNet\Ninject.Integration.SolrNet.csproj", "{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +65,14 @@ Global
 		{CBABA824-232A-48B7-BDBF-7F43C64F8EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBABA824-232A-48B7-BDBF-7F43C64F8EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBABA824-232A-48B7-BDBF-7F43C64F8EA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08D59BEE-EC70-4AC8-B6F6-3088B81A6251}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08D59BEE-EC70-4AC8-B6F6-3088B81A6251}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D59BEE-EC70-4AC8-B6F6-3088B81A6251}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08D59BEE-EC70-4AC8-B6F6-3088B81A6251}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

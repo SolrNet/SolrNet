@@ -81,7 +81,6 @@
     <Compile Include="MappingManager.cs" />
     <Compile Include="MemoizingMappingManager.cs" />
     <Compile Include="Order.cs" />
-    <Compile Include="RandomSortOrder.cs" />
     <Compile Include="ResponseHeader.cs" />
     <Compile Include="SolrDocumentSerializer.cs" />
     <Compile Include="SolrFacetFieldQuery.cs" />

@@ -31,8 +31,6 @@ namespace SolrNet {
         private readonly IReadOnlyMappingManager mapper;
         private readonly ISolrConnection connection;
 
-        public IListRandomizer ListRandomizer { get; set; }
-
         public int DefaultRows { get; set; }
 
         public static readonly int ConstDefaultRows = 100000000;
@@ -41,7 +39,6 @@ namespace SolrNet {
             this.connection = connection;
             this.resultParser = resultParser;
             this.mapper = mapper;
-            ListRandomizer = ServiceLocator.Current.GetInstance<IListRandomizer>();
             DefaultRows = ConstDefaultRows;
         }
 
@@ -59,21 +56,7 @@ namespace SolrNet {
                 var rows = Options.Rows.HasValue ? Options.Rows.Value : DefaultRows;
                 param.Add(KVP("rows", rows.ToString()));
                 if (Options.OrderBy != null && Options.OrderBy.Count > 0) {
-                    if (Options.OrderBy == SortOrder.Random) {
-                        var pk = mapper.GetUniqueKey(typeof (T));
-                        if (pk.Key == null)
-                            throw new NoUniqueKeyException(typeof(T));
-                        var executer = new SolrQueryExecuter<T>(connection, resultParser, mapper);
-                        var nr = executer.Execute(Query, new QueryOptions {
-                            Fields = new[] {pk.Value},
-                        });
-                        ListRandomizer.Randomize(nr);
-                        var idListQuery = new SolrQueryInList(pk.Value, Func.Select(Func.Take(nr, rows), x => StringHelper.ToNullOrString(pk.Key.GetValue(x, null))));
-                        param.RemoveAll(kv => kv.Key == "q");
-                        param.Add(KVP("q", idListQuery.Query));
-                    } else {
-                        param.Add(KVP("sort", Func.Join(",", Options.OrderBy)));
-                    }
+                    param.Add(KVP("sort", Func.Join(",", Options.OrderBy)));
                 }
 
                 if (Options.Fields != null && Options.Fields.Count > 0)

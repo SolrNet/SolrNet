@@ -28,10 +28,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void tt() {
 			var mocks = new MockRepository();
-		    var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
 			var connection = mocks.CreateMock<ISolrConnection>();
-		    var listRnd = mocks.CreateMock<IListRandomizer>();
 			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
 		    var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
 			With.Mocks(mocks).Expecting(delegate {
@@ -43,8 +40,6 @@ namespace SolrNet.Tests {
                     .IgnoreArguments()
                     .Repeat.Once()
                     .Return(new SolrQueryResults<TestDocument>());
-			    Expect.Call(container.GetInstance<IListRandomizer>())
-			        .Return(listRnd);
 			}).Verify(delegate {
 			    var q = new SolrQueryExecuter<TestDocument>(connection, parser, mapper);
 				var r = q.Execute(new SolrQuery("id:123456"), null);

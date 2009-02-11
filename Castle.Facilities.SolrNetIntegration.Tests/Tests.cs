@@ -19,8 +19,6 @@ using Castle.Core.Configuration;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using CommonServiceLocator.WindsorAdapter;
-using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using SolrNet;
 
@@ -64,9 +62,6 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             configStore.AddFacilityConfiguration("solr", configuration);
             var container = new WindsorContainer(configStore);
             container.AddFacility<SolrNetFacility>("solr");
-
-            var locator = new WindsorServiceLocator(container);
-            ServiceLocator.SetLocatorProvider(() => locator);
 
             var solr = container.Resolve<ISolrOperations<Document>>();
             solr.Ping();

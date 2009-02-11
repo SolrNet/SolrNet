@@ -123,58 +123,6 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void RandomSort() {
-            const string queryString = "id:123456";
-            var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var conn = mocks.CreateMock<ISolrConnection>();
-            var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
-            var random = mocks.CreateMock<IListRandomizer>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
-            With.Mocks(mocks).Expecting(() => {
-                var q = new Dictionary<string, string>();
-                q["q"] = queryString;
-                q["rows"] = int.MaxValue.ToString();
-                q["fl"] = "id";
-                Expect.Call(conn.Get("/select", q)).IgnoreArguments().Return("");
-                var doc123 = new TestDocument {Id = 123};
-                var doc456 = new TestDocument {Id = 456};
-                var doc567 = new TestDocument {Id = 567};
-                Expect.Call(parser.Parse(null))
-                    .IgnoreArguments()
-                    .Return(new SolrQueryResults<TestDocument> {
-                    doc123,
-                    doc456,
-                    doc567,
-                });
-                Expect.Call(() => random.Randomize(new List<TestDocument>())).IgnoreArguments();
-                var nq = new Dictionary<string, string>();
-                nq["q"] = "(id:123 OR id:456 OR id:567)";
-                Expect.Call(conn.Get("/select", nq)).IgnoreArguments().Return("");
-                Expect.Call(parser.Parse(null)).IgnoreArguments().Return(new SolrQueryResults<TestDocument> {
-                    doc123,
-                    doc456,
-                    doc567,
-                });
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
-                Expect.Call(mapper.GetUniqueKey(typeof (TestDocument)))
-                    .Repeat.Once()
-                    .Return(new KeyValuePair<PropertyInfo, string>(typeof (TestDocument).GetProperty("Id"), "Id"));
-            }).Verify(() => {
-                var e = new SolrQueryExecuter<TestDocument>(conn, parser, mapper) {
-                    ListRandomizer = random,
-                };
-                var r = e.Execute(new SolrQuery(queryString), new QueryOptions {
-                    OrderBy = SortOrder.Random,
-                    Rows = 2,
-                });
-            });
-        }
-
-        [Test]
         public void ResultFields() {
             const string queryString = "id:123456";
             var mocks = new MockRepository();

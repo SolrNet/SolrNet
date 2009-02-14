@@ -26,10 +26,6 @@ namespace SampleSolrApp.Models.Binders {
     public class SearchParametersBinder : IModelBinder {
         public const int DefaultPageSize = 5;
 
-        public bool StringEq(string a, string b) {
-            return StringComparer.InvariantCultureIgnoreCase.Compare(a, b) == 0;
-        }
-
         public IDictionary<string, string> NVToDict(NameValueCollection nv) {
             var d = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
             foreach (var k in nv.AllKeys)

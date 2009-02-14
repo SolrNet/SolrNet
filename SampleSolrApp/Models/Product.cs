@@ -23,7 +23,7 @@ namespace SampleSolrApp.Models {
         [SolrUniqueKey("id")]
         public string Id { get; set; }
 
-        [SolrUniqueKey("sku")]
+        [SolrField("sku")]
         public string SKU { get; set; }
 
         [SolrField("name")]

@@ -51,6 +51,9 @@ namespace SampleSolrApp {
             AddInitialDocuments();
         }
 
+        /// <summary>
+        /// Adds some sample documents to Solr
+        /// </summary>
         private void AddInitialDocuments() {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             solr.Delete(SolrQuery.All);
@@ -61,6 +64,13 @@ namespace SampleSolrApp {
             solr.Commit();
         }
 
+        /// <summary>
+        /// Gets a controller instance with its dependencies injected.
+        /// Picks the first constructor on the controller.
+        /// </summary>
+        /// <param name="container"></param>
+        /// <param name="t">Controller type</param>
+        /// <returns></returns>
         public IController GetContainerRegistration(IServiceProvider container, Type t) {
             var constructor = t.GetConstructors()[0];
             var dependencies = constructor.GetParameters().Select(p => container.GetService(p.ParameterType)).ToArray();
@@ -71,6 +81,9 @@ namespace SampleSolrApp {
             return Regex.Replace(t.Name, "controller$", "", RegexOptions.IgnoreCase);
         }
 
+        /// <summary>
+        /// Registers controllers in the DI container
+        /// </summary>
         public void RegisterAllControllers() {
             var controllers = typeof (MvcApplication).Assembly.GetTypes().Where(t => typeof (IController).IsAssignableFrom(t));
             foreach (var controller in controllers)

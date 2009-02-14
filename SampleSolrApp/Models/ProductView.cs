@@ -15,7 +15,6 @@
 #endregion
 
 using System.Collections.Generic;
-using SingleFacetResult = System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, int>>;
 
 namespace SampleSolrApp.Models {
     public class ProductView {

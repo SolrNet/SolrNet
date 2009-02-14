@@ -30,6 +30,11 @@ namespace SampleSolrApp.Controllers {
             this.solr = solr;
         }
 
+        /// <summary>
+        /// Builds the Solr query from the search parameters
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public ISolrQuery BuildQuery(SearchParameters parameters) {
             var queriesFromFacets = from p in parameters.Facets
                                     let q = new SolrQueryByField(p.Key, p.Value)
@@ -42,8 +47,16 @@ namespace SampleSolrApp.Controllers {
             return new SolrMultipleCriteriaQuery(queries, SolrMultipleCriteriaQuery.Operator.AND);
         }
 
+        /// <summary>
+        /// All selectable facet fields
+        /// </summary>
         private static readonly string[] AllFacetFields = new[] {"cat", "manu_exact"};
 
+        /// <summary>
+        /// Gets the selected facet fields
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         public IEnumerable<string> SelectedFacetFields(SearchParameters parameters) {
             return parameters.Facets.Select(f => f.Key);
         }

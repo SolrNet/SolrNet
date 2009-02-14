@@ -23,6 +23,11 @@ namespace SampleSolrApp.Helpers {
             return o == null ? null : o.ToString();
         }
 
+        /// <summary>
+        /// Builds a dictionary from the object's properties
+        /// </summary>
+        /// <param name="o"></param>
+        /// <returns></returns>
         public static IDictionary<string, object> ToPropertyDictionary(this object o) {
             if (o == null)
                 return null;

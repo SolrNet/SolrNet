@@ -23,6 +23,7 @@ using SolrNet.Utils;
 namespace Castle.Facilities.SolrNetIntegration {
     public class SolrNetFacility : AbstractFacility {
         private readonly string solrURL;
+        public IReadOnlyMappingManager Mapper { get; set; }
 
         public SolrNetFacility() {}
 
@@ -45,7 +46,7 @@ namespace Castle.Facilities.SolrNetIntegration {
         }
 
         protected override void Init() {
-            var mapper = new MemoizingMappingManager(new AttributesMappingManager());
+            var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Kernel.AddComponentInstance<IReadOnlyMappingManager>(mapper);
             Kernel.Register(Component.For<IRNG>().ImplementedBy<RNG>());
             Kernel.Register(Component.For<IListRandomizer>().ImplementedBy<ListRandomizer>());

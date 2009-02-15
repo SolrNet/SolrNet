@@ -20,6 +20,7 @@ using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using NUnit.Framework;
+using Rhino.Mocks;
 using SolrNet;
 
 namespace Castle.Facilities.SolrNetIntegration.Tests {
@@ -67,6 +68,16 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             var solr = container.Resolve<ISolrOperations<Document>>();
             solr.Ping();
             Console.WriteLine(solr.Query(SolrQuery.All).Count);
+        }
+
+        [Test]
+        public void ReplacingMapper() {
+            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr") {Mapper = mapper};
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            var m = container.Resolve<IReadOnlyMappingManager>();
+            Assert.AreSame(m, mapper);
         }
 
         public class Document {}

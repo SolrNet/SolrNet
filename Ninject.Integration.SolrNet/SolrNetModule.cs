@@ -21,13 +21,14 @@ using SolrNet.Utils;
 namespace Ninject.Integration.SolrNet {
     public class SolrNetModule : StandardModule {
         private readonly string serverURL;
+        public IReadOnlyMappingManager Mapper { get; set; }
 
         public SolrNetModule(string serverURL) {
             this.serverURL = serverURL;
         }
 
         public override void Load() {
-            var mapper = new MemoizingMappingManager(new AttributesMappingManager());
+            var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Bind<IReadOnlyMappingManager>().ToConstant(mapper);
             Bind<IRNG>().To<RNG>();
             Bind<IListRandomizer>().To<ListRandomizer>();

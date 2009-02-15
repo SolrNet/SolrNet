@@ -17,6 +17,7 @@
 using System;
 using Ninject.Core;
 using NUnit.Framework;
+using Rhino.Mocks;
 using SolrNet;
 using SolrNet.Exceptions;
 
@@ -31,6 +32,15 @@ namespace Ninject.Integration.SolrNet.Tests {
             var solr = c.Get<ISolrOperations<Entity>>();
             solr.Ping();
             Console.WriteLine(solr.Query(SolrQuery.All).Count);
+        }
+
+        [Test]
+        public void ReplaceMapper() {
+            var c = new StandardKernel();
+            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
+            c.Load(new SolrNetModule("http://localhost:8983/solr") {Mapper = mapper});
+            var m = c.Get<IReadOnlyMappingManager>();
+            Assert.AreSame(mapper, m);
         }
 
         public class Entity {}

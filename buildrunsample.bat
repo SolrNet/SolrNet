@@ -1,0 +1,3 @@
+@echo off
+msbuild
+runsample

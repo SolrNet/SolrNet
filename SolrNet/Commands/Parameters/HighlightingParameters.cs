@@ -15,9 +15,11 @@
 #endregion
 
 using System.Collections.Generic;
-using SolrNet.Utils;
 
 namespace SolrNet.Commands.Parameters {
+    /// <summary>
+    /// Highlighting parameters
+    /// </summary>
 	public class HighlightingParameters {
 		/// <summary>
 		/// List of fields to generate highlighted snippets for. 

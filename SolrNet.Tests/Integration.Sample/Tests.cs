@@ -37,7 +37,7 @@ namespace SolrNet.Tests.Integration.Sample {
         public void Add() {
             var p = new Product {
                 Id = "SP2514N",
-                Name = "Samsung SpinPoint P120 SP2514N - hard drive - 250 GB - ATA-133",
+                Name = "Samsuñg SpinPoint P120 SP2514N - hárd drívè - 250 GB - ÁTÀ-133", // testing UTF
                 Manufacturer = "Samsung Electronics Co. Ltd.",
                 Categories = new[] {
                     "electronics",
@@ -46,6 +46,7 @@ namespace SolrNet.Tests.Integration.Sample {
                 Features = new[] {
                     "7200RPM, 8MB cache, IDE Ultra ATA-133",
                     "NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor",
+                    "áéíóúñç", // testing UTF
                 },
                 Price = 92,
                 Popularity = 6,

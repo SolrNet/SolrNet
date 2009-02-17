@@ -36,6 +36,11 @@ namespace SolrNet.Commands {
 		/// </summary>
 		public bool? WaitSearcher { get; set; }
 
+        /// <summary>
+        /// Executes this command
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <returns></returns>
 		public string Execute(ISolrConnection connection) {
 			var xml = new XmlDocument();
 			var node = xml.CreateElement("optimize");

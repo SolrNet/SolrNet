@@ -22,7 +22,7 @@ using SolrNet.Utils;
 
 namespace SolrNet {
     /// <summary>
-    /// Executable query
+    /// Executes queries
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> where T : new() {
@@ -31,6 +31,9 @@ namespace SolrNet {
         private readonly IReadOnlyMappingManager mapper;
         private readonly ISolrConnection connection;
 
+        /// <summary>
+        /// When the row count is not defined, use this row count by default
+        /// </summary>
         public int DefaultRows { get; set; }
 
         public static readonly int ConstDefaultRows = 100000000;

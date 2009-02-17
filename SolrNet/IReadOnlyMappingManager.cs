@@ -20,6 +20,9 @@ using System.Reflection;
 using SolrNet.Exceptions;
 
 namespace SolrNet {
+    /// <summary>
+    /// Service interface for mapping Solr fields to object properties
+    /// </summary>
 	public interface IReadOnlyMappingManager {
 		/// <summary>
 		/// Gets fields mapped for this type

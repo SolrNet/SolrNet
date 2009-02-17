@@ -18,6 +18,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace SolrNet {
+    /// <summary>
+    /// Query results
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
 	public class SolrQueryResults<T> : ISolrQueryResults<T> {
 		private readonly IList<T> innerList = new List<T>();
 

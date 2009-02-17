@@ -19,6 +19,9 @@ using System.Collections.Generic;
 using System.Reflection;
 
 namespace SolrNet {
+    /// <summary>
+    /// Manual mapping manager
+    /// </summary>
 	public class MappingManager : IMappingManager {
 		private readonly IDictionary<Type, Dictionary<PropertyInfo, string>> mappings = new Dictionary<Type, Dictionary<PropertyInfo, string>>();
 		private readonly IDictionary<Type, PropertyInfo> uniqueKeys = new Dictionary<Type, PropertyInfo>();
@@ -43,7 +46,7 @@ namespace SolrNet {
 		/// <summary>
 		/// Gets fields mapped for this type
 		/// </summary>
-		/// <param name="type"></param>
+		/// <param name="type">Document type</param>
 		/// <returns>Null if <paramref name="type"/> is not mapped</returns>
 		public ICollection<KeyValuePair<PropertyInfo, string>> GetFields(Type type) {
 			if (type == null)
@@ -53,7 +56,7 @@ namespace SolrNet {
 			return mappings[type];
 		}
 
-		public void SetUniqueKey(PropertyInfo property) {
+ 		public void SetUniqueKey(PropertyInfo property) {
 			if (property == null)
 				throw new ArgumentNullException("property");
 			var t = property.ReflectedType;

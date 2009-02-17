@@ -40,6 +40,9 @@ namespace SolrNet {
 			All = new SolrQuery("*:*");
 		}
 
+        /// <summary>
+        /// Represents a query for all documents ("*:*")
+        /// </summary>
 		public static ISolrQuery All { get; private set; }
 	}
 }

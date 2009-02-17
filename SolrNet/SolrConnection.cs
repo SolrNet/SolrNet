@@ -25,6 +25,9 @@ using SolrNet.Exceptions;
 using SolrNet.Utils;
 
 namespace SolrNet {
+    /// <summary>
+    /// Manages HTTP connection with Solr
+    /// </summary>
     public class SolrConnection : ISolrConnection {
         private readonly IHttpWebRequestFactory httpWebRequestFactory = new HttpWebRequestFactory();
         private string serverURL;
@@ -63,6 +66,9 @@ namespace SolrNet {
             set { version = value; }
         }
 
+        /// <summary>
+        /// HTTP connection timeout
+        /// </summary>
         public int Timeout { get; set; }
 
         public string Post(string relativeUrl, string s) {

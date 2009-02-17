@@ -43,6 +43,10 @@ namespace SolrNet {
 		    }
 		}
 
+        /// <summary>
+        /// Sets the property that acts as unique key for a document type
+        /// </summary>
+        /// <param name="property">Unique key property</param>
 		public void SetUniqueKey(PropertyInfo property) {
 			if (property == null)
 				throw new ArgumentNullException("property");

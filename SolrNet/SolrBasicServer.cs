@@ -19,6 +19,10 @@ using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet {
+    /// <summary>
+    /// Implements the basic Solr operations
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
     public class SolrBasicServer<T> : ISolrBasicOperations<T> where T : new() {
         private readonly ISolrConnection connection;
         private readonly ISolrQueryExecuter<T> queryExecuter;

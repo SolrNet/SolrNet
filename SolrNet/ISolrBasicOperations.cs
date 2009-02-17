@@ -19,8 +19,21 @@ using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 
 namespace SolrNet {
+    /// <summary>
+    /// Solr operations without convenience overloads
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
     public interface ISolrBasicOperations<T>: ISolrBasicReadOnlyOperations<T> {
+        /// <summary>
+        /// Commits posted documents
+        /// </summary>
+        /// <param name="options">Commit options</param>
         void Commit(WaitOptions options);
+
+        /// <summary>
+        /// Optimized Solr's index
+        /// </summary>
+        /// <param name="options">Optimization options</param>
         void Optimize(WaitOptions options);
 
         /// <summary>

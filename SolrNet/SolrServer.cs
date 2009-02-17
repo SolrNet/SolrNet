@@ -21,6 +21,10 @@ using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 
 namespace SolrNet {
+    /// <summary>
+    /// Main component to interact with Solr
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
     public class SolrServer<T> : ISolrOperations<T> where T : new() {
         private readonly ISolrBasicOperations<T> basicServer;
         private readonly IReadOnlyMappingManager mappingManager;
@@ -30,6 +34,12 @@ namespace SolrNet {
             this.mappingManager = mappingManager;
         }
 
+        /// <summary>
+        /// Executes a query
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
             return basicServer.Query(query, options);
         }
@@ -42,22 +52,50 @@ namespace SolrNet {
             return Query(new SolrQuery(q));
         }
 
+        /// <summary>
+        /// Executes a query
+        /// </summary>
+        /// <param name="q"></param>
+        /// <param name="orders"></param>
+        /// <returns></returns>
         public ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders) {
             return Query(new SolrQuery(q), orders);
         }
 
+        /// <summary>
+        /// Executes a query
+        /// </summary>
+        /// <param name="q"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public ISolrQueryResults<T> Query(string q, QueryOptions options) {
             return basicServer.Query(new SolrQuery(q), options);
         }
 
+        /// <summary>
+        /// Executes a query
+        /// </summary>
+        /// <param name="q"></param>
+        /// <returns></returns>
         public ISolrQueryResults<T> Query(ISolrQuery q) {
             return Query(q, new QueryOptions());
         }
 
+        /// <summary>
+        /// Executes a query
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="orders"></param>
+        /// <returns></returns>
         public ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders) {
             return Query(query, new QueryOptions { OrderBy = orders });
         }
 
+        /// <summary>
+        /// Executes a facet field query only
+        /// </summary>
+        /// <param name="facet"></param>
+        /// <returns></returns>
         public ICollection<KeyValuePair<string, int>> FacetFieldQuery(SolrFacetFieldQuery facet) {
             var r = basicServer.Query(SolrQuery.All, new QueryOptions {
                 Rows = 0,

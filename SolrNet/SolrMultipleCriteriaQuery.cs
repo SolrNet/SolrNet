@@ -18,9 +18,15 @@ using System.Collections.Generic;
 using SolrNet.Utils;
 
 namespace SolrNet {
+    /// <summary>
+    /// Represents several queries as one
+    /// </summary>
 	public class SolrMultipleCriteriaQuery : ISolrQuery {
 		private readonly string q;
 
+        /// <summary>
+        /// Operator to apply to the included queries
+        /// </summary>
 		public class Operator {
 			public const string OR = "OR";
 			public const string AND = "AND";

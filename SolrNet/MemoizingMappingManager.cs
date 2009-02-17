@@ -20,6 +20,9 @@ using System.Reflection;
 using SolrNet.Utils;
 
 namespace SolrNet {
+    /// <summary>
+    /// Memoizing decorator for a mapping manager
+    /// </summary>
     public class MemoizingMappingManager : IReadOnlyMappingManager {
         private readonly Converter<Type, ICollection<KeyValuePair<PropertyInfo, string>>> memoGetFields;
         private readonly Converter<Type, KeyValuePair<PropertyInfo, string>> memoGetUniqueKey;

@@ -18,6 +18,9 @@ using Microsoft.Practices.ServiceLocation;
 using SolrNet.Utils;
 
 namespace SolrNet {
+    /// <summary>
+    /// SolrNet initialization manager
+    /// </summary>
     public static class Startup {
         static Startup() {
             Container = new Container();
@@ -35,6 +38,11 @@ namespace SolrNet {
 
         public static readonly Container Container;
 
+        /// <summary>
+        /// Initializes SolrNet with the built-in container
+        /// </summary>
+        /// <typeparam name="T">Document type</typeparam>
+        /// <param name="serverURL">Solr URL (i.e. "http://localhost:8983/solr")</param>
         public static void Init<T>(string serverURL) where T: new() {
             var connection = new SolrConnection(serverURL);
             var connectionKey = string.Format("{0}.{1}.{2}", typeof(SolrConnection), typeof(T), serverURL);

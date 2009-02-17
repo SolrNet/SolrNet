@@ -19,6 +19,9 @@ using System.Collections.Generic;
 using SolrNet.Exceptions;
 
 namespace SolrNet {
+    /// <summary>
+    /// Sorting order
+    /// </summary>
 	public class SortOrder {
 		private readonly string fieldName;
 		private readonly Order order = Order.ASC;

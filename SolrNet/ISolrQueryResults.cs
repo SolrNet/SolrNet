@@ -26,12 +26,30 @@ namespace SolrNet {
 		/// Total documents found
 		/// </summary>
 		int NumFound { get; }
+
+        /// <summary>
+        /// Max score in these results
+        /// </summary>
 		double? MaxScore { get; }
 
+        /// <summary>
+        /// Facet queries results
+        /// </summary>
 		IDictionary<string, int> FacetQueries { get; set; }
+
+        /// <summary>
+        /// Facet field queries results
+        /// </summary>
 		IDictionary<string, ICollection<KeyValuePair<string, int>>> FacetFields { get; set; }
 
+        /// <summary>
+        /// Query response header
+        /// </summary>
 		ResponseHeader Header { get; set; }
+
+        /// <summary>
+        /// Highlight results
+        /// </summary>
 		IDictionary<T, IDictionary<string, string>> Highlights { get; set; }
 	}
 }

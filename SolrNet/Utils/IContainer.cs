@@ -18,6 +18,9 @@ using System;
 using Microsoft.Practices.ServiceLocation;
 
 namespace SolrNet.Utils {
+    /// <summary>
+    /// Interface for the built-in DI container
+    /// </summary>
     public interface IContainer : IServiceLocator {
         /// <summary>
         /// Adds a component implementing <typeparamref name="T"/>

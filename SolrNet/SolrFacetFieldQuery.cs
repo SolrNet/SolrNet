@@ -17,6 +17,9 @@
 using System.Collections.Generic;
 
 namespace SolrNet {
+    /// <summary>
+    /// Facet field query
+    /// </summary>
 	public class SolrFacetFieldQuery : ISolrFacetQuery {
 		private readonly string field;
 
@@ -24,6 +27,9 @@ namespace SolrNet {
 			this.field = field;
 		}
 
+        /// <summary>
+        /// Facet field
+        /// </summary>
 	    public string Field {
 	        get { return field; }
 	    }
@@ -79,7 +85,7 @@ namespace SolrNet {
             return new KeyValuePair<K, V>(key, value);
         }
 
-		public IEnumerable<KeyValuePair<string, string>> Query {
+ 		public IEnumerable<KeyValuePair<string, string>> Query {
 			get {
 			    yield return KV("facet.field", field);
                 if (Prefix != null)

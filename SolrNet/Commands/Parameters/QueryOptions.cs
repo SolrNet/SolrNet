@@ -17,6 +17,9 @@
 using System.Collections.Generic;
 
 namespace SolrNet.Commands.Parameters {
+    /// <summary>
+    /// Query options
+    /// </summary>
 	public class QueryOptions {
 
 	    /// <summary>

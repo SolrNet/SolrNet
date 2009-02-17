@@ -17,7 +17,13 @@
 using System.Collections.Generic;
 
 namespace SolrNet {
+    /// <summary>
+    /// Facet query interface
+    /// </summary>
 	public interface ISolrFacetQuery {
+        /// <summary>
+        /// Represents this query as solr parameters
+        /// </summary>
 		IEnumerable<KeyValuePair<string, string>> Query { get; }
 	}
 }

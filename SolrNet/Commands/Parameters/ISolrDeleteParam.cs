@@ -21,6 +21,10 @@ namespace SolrNet.Commands.Parameters {
     /// Delete command parameter
     /// </summary>
 	public interface ISolrDeleteParam {
+        /// <summary>
+        /// Converts this parameter to xml representation
+        /// </summary>
+        /// <returns></returns>
 		XmlNode ToXmlNode();
 	}
 }

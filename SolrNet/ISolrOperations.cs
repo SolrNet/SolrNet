@@ -24,12 +24,15 @@ namespace SolrNet {
     /// <typeparam name="T">Document type</typeparam>
     public interface ISolrOperations<T> : ISolrReadOnlyOperations<T>, ISolrBasicOperations<T> {
         /// <summary>
-        /// Commits posts, 
+        /// Commits posted documents, 
         /// blocking until index changes are flushed to disk and
         /// blocking until a new searcher is opened and registered as the main query searcher, making the changes visible.
         /// </summary>
         void Commit();
 
+        /// <summary>
+        /// Optimizes Solr's index
+        /// </summary>
         void Optimize();
 
         /// <summary>

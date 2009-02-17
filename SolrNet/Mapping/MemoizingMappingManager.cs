@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using SolrNet.Utils;
 
-namespace SolrNet {
+namespace SolrNet.Mapping {
     /// <summary>
     /// Memoizing decorator for a mapping manager
     /// </summary>

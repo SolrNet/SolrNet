@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using SolrNet.Exceptions;
+using SolrNet.Mapping;
 
 namespace SolrNet.Tests {
 	[TestFixture]

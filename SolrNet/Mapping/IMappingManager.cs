@@ -16,11 +16,11 @@
 
 using System.Reflection;
 
-namespace SolrNet {
+namespace SolrNet.Mapping {
     /// <summary>
     /// Mapping manager abstraction
     /// </summary>
-	public interface IMappingManager : IReadOnlyMappingManager {
+    public interface IMappingManager : IReadOnlyMappingManager {
         /// <summary>
         /// Maps a property with the property name as Solr field name
         /// </summary>
@@ -32,12 +32,12 @@ namespace SolrNet {
         /// </summary>
         /// <param name="property">Document type property</param>
         /// <param name="fieldName">Solr field name</param>
-		void Add(PropertyInfo property, string fieldName);
+        void Add(PropertyInfo property, string fieldName);
 
         /// <summary>
         /// Sets unique key for a document type
         /// </summary>
         /// <param name="property">Document type property</param>
-		void SetUniqueKey(PropertyInfo property);
-	}
+        void SetUniqueKey(PropertyInfo property);
+    }
 }

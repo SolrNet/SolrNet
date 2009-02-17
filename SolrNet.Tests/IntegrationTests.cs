@@ -16,6 +16,7 @@
 
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
+using SolrNet.Mapping;
 using SolrNet.Utils;
 
 namespace SolrNet.Tests {

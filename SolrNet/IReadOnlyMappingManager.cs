@@ -23,13 +23,13 @@ namespace SolrNet {
     /// <summary>
     /// Service interface for mapping Solr fields to object properties
     /// </summary>
-	public interface IReadOnlyMappingManager {
-		/// <summary>
-		/// Gets fields mapped for this type
-		/// </summary>
-		/// <param name="type"></param>
-		/// <returns>Empty collection if <paramref name="type"/> is not mapped</returns>
-		ICollection<KeyValuePair<PropertyInfo, string>> GetFields(Type type);
+    public interface IReadOnlyMappingManager {
+        /// <summary>
+        /// Gets fields mapped for this type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns>Empty collection if <paramref name="type"/> is not mapped</returns>
+        ICollection<KeyValuePair<PropertyInfo, string>> GetFields(Type type);
 
         /// <summary>
         /// Gets unique key for the type
@@ -37,6 +37,6 @@ namespace SolrNet {
         /// <exception cref="NoUniqueKeyException">Thrown when <paramref name="type"/> has no unique key defined</exception>
         /// <param name="type"></param>
         /// <returns></returns>
-		KeyValuePair<PropertyInfo, string> GetUniqueKey(Type type);
-	}
+        KeyValuePair<PropertyInfo, string> GetUniqueKey(Type type);
+    }
 }

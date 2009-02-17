@@ -18,6 +18,9 @@ using SolrNet.Utils;
 using System.Collections.Generic;
 
 namespace SolrNet {
+    /// <summary>
+    /// Queries a field for a list of possible values
+    /// </summary>
 	public class SolrQueryInList : ISolrQuery {
 		private readonly string q;
 

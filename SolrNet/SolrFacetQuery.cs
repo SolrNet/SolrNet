@@ -17,6 +17,9 @@
 using System.Collections.Generic;
 
 namespace SolrNet {
+    /// <summary>
+    /// Arbitrary facet query
+    /// </summary>
 	public class SolrFacetQuery : ISolrFacetQuery {
 		public readonly string query;
 

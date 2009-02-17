@@ -19,6 +19,9 @@ using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
 
 namespace SolrNet.Utils {
+    /// <summary>
+    /// Basic built-in dependency-injection container
+    /// </summary>
     public class Container : ServiceLocatorImplBase, IContainer {
         private readonly Dictionary<string, Converter<IContainer, object>> componentsByName = new Dictionary<string, Converter<IContainer, object>>();
         private readonly Dictionary<Type, List<Converter<IContainer, object>>> componentsByType = new Dictionary<Type, List<Converter<IContainer, object>>>();

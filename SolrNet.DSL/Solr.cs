@@ -29,7 +29,7 @@ namespace SolrNet.DSL {
             get { return new DeleteBy(Connection); }
         }
 
-        public static readonly string SolrConnectionKey = "ISolrConnection";
+        private static readonly string SolrConnectionKey = "ISolrConnection";
 
         /// <summary>
         /// thread-local or webcontext-local connection

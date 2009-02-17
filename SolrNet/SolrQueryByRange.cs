@@ -15,6 +15,10 @@
 #endregion
 
 namespace SolrNet {
+    /// <summary>
+    /// Queries a field for a range
+    /// </summary>
+    /// <typeparam name="RT"></typeparam>
 	public class SolrQueryByRange<RT> : ISolrQuery {
 		private readonly string q;
 		public SolrQueryByRange(string fieldName, RT from, RT to) : this(fieldName, from, to, true) {}

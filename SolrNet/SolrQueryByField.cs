@@ -17,6 +17,9 @@
 using System.Text.RegularExpressions;
 
 namespace SolrNet {
+    /// <summary>
+    /// Queries a field for a value
+    /// </summary>
 	public class SolrQueryByField : ISolrQuery {
 		private readonly string q;
 

@@ -17,7 +17,10 @@
 using System;
 
 namespace SolrNet.Attributes {
-	[AttributeUsage(AttributeTargets.Property)]
+    /// <summary>
+    /// Marks a property as unique key. By default the field name is the property name.
+    /// </summary>
+	[AttributeUsage(AttributeTargets.Property)]   
 	public class SolrUniqueKeyAttribute : SolrFieldAttribute {
 		public SolrUniqueKeyAttribute() {}
 		public SolrUniqueKeyAttribute(string fieldName) : base(fieldName) {}

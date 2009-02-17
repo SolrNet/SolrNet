@@ -52,7 +52,7 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
-		public void get() {
+		public void Get() {
 			var mocks = new MockRepository();
 			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
 			var request = mocks.DynamicMock<IHttpWebRequest>();

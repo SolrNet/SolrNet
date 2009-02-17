@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Web;
 using HttpWebAdapters;
 using HttpWebAdapters.Adapters;
@@ -80,18 +81,15 @@ namespace SolrNet {
             if (Timeout > 0)
                 request.Timeout = Timeout;
             request.ContentType = "text/xml; charset=utf-8";
-            request.ContentLength = s.Length;
+            var bytes = Encoding.UTF8.GetBytes(s);
+            request.ContentLength = bytes.Length;
             request.ProtocolVersion = HttpVersion.Version10;
             try {
                 using (var postParams = request.GetRequestStream())
                 using (var sw = new StreamWriter(postParams)) {
                     sw.Write(s);
                 }
-                using (var response = request.GetResponse())
-                using (var rStream = response.GetResponseStream())
-                using (var sr = new StreamReader(rStream)) {
-                    return sr.ReadToEnd();
-                }
+                return GetResponse(request);
             }
             catch (WebException e) {
                 throw new SolrConnectionException(e);
@@ -121,11 +119,7 @@ namespace SolrNet {
                 request.Timeout = Timeout;
             request.ProtocolVersion = HttpVersion.Version10; // for some reason Version11 throws
             try {
-                using (var response = request.GetResponse())
-                using (var rStream = response.GetResponseStream())
-                using (var sr = new StreamReader(rStream)) {
-                    return sr.ReadToEnd();
-                }
+                return GetResponse(request);
             } catch (WebException e) {
                 if (e.Response != null) {
                     var r = new HttpWebResponseAdapter(e.Response);
@@ -134,6 +128,22 @@ namespace SolrNet {
                     }
                 }
                 throw new SolrConnectionException(e);
+            }
+        }
+
+        private string GetResponse(IHttpWebRequest request) {
+            using (var response = request.GetResponse())
+            using (var rStream = response.GetResponseStream())
+            using (var sr = new StreamReader(rStream, TryGetEncoding(response))) {
+                return sr.ReadToEnd();
+            }
+        }
+
+        private Encoding TryGetEncoding(IHttpWebResponse response) {
+            try {
+                return Encoding.GetEncoding(response.CharacterSet);
+            } catch {
+                return Encoding.UTF8;
             }
         }
     }

@@ -27,7 +27,7 @@ namespace SampleSolrApp.Tests.Controllers {
         [Test]
         public void Index_Without_parameters() {
             var solr = MockRepository.GenerateMock<ISolrReadOnlyOperations<Product>>();
-            solr.Expect(o => o.Query("*:*", new QueryOptions()))
+            solr.Expect(o => o.Query(SolrQuery.All, new QueryOptions()))
                 .IgnoreArguments()
                 .Return(new SolrQueryResults<Product>());
             var c = new HomeController(solr);

@@ -292,7 +292,7 @@ namespace SolrNet.Tests {
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
-                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser, mapper);
+                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
                 var r = solr.Query(new SolrQuery(qstring), new QueryOptions {Start = start, Rows = rows});
             });
@@ -324,7 +324,7 @@ namespace SolrNet.Tests {
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
-                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser, mapper);
+                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
                 var r = solr.Query(new SolrQuery(qstring),
                                    new QueryOptions {
@@ -364,7 +364,7 @@ namespace SolrNet.Tests {
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
-                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser, mapper);
+                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
                 var r = solr.Query(new SolrQuery(qstring), new QueryOptions {
                     Start = start,
@@ -402,7 +402,7 @@ namespace SolrNet.Tests {
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
-                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser, mapper);
+                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
                 var r = solr.Query(new SolrQuery(""), new QueryOptions {
                     FacetQueries = new ISolrFacetQuery[] {
@@ -438,7 +438,7 @@ namespace SolrNet.Tests {
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
-                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser, mapper);
+                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
                 var r = solr.Query(new SolrQuery(""), new QueryOptions {
                     FacetQueries = new ISolrFacetQuery[] {
@@ -480,7 +480,7 @@ namespace SolrNet.Tests {
                         }
                     });
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, resultParser, mapper);
+                var queryExecuter = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, resultParser);
                 var basicSolr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, queryExecuter, docSerializer);
                 var solr = new SolrServer<TestDocumentWithUniqueKey>(basicSolr, mapper);
                 var r = solr.FacetFieldQuery(new SolrFacetFieldQuery("cat"));

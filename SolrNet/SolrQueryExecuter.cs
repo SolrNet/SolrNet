@@ -15,9 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
-using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands.Parameters;
-using SolrNet.Exceptions;
 using SolrNet.Utils;
 
 namespace SolrNet {
@@ -28,7 +26,6 @@ namespace SolrNet {
     public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> where T : new() {
 
         private readonly ISolrQueryResultParser<T> resultParser;
-        private readonly IReadOnlyMappingManager mapper;
         private readonly ISolrConnection connection;
 
         /// <summary>
@@ -38,10 +35,9 @@ namespace SolrNet {
 
         public static readonly int ConstDefaultRows = 100000000;
 
-        public SolrQueryExecuter(ISolrConnection connection, ISolrQueryResultParser<T> resultParser, IReadOnlyMappingManager mapper) {
+        public SolrQueryExecuter(ISolrConnection connection, ISolrQueryResultParser<T> resultParser) {
             this.connection = connection;
             this.resultParser = resultParser;
-            this.mapper = mapper;
             DefaultRows = ConstDefaultRows;
         }
 

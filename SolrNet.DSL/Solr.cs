@@ -69,7 +69,7 @@ namespace SolrNet.DSL {
         /// <param name="rows">Pagination item count</param>
         /// <returns>Query results</returns>
         public static ISolrQueryResults<T> Query<T>(string s, int start, int rows) where T : new() {
-            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
+            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>());
             return q.Execute(new SolrQuery(s), new QueryOptions {Start = start, Rows = rows});
         }
 
@@ -80,7 +80,7 @@ namespace SolrNet.DSL {
         /// <param name="s">Query</param>
         /// <returns>Query results</returns>
         public static ISolrQueryResults<T> Query<T>(string s) where T : new() {
-            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
+            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>());
             return q.Execute(new SolrQuery(s), null);
         }
 
@@ -103,7 +103,7 @@ namespace SolrNet.DSL {
         /// <param name="order">Sort orders</param>
         /// <returns>Query results</returns>
         public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order) where T : new() {
-            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
+            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>());
             return q.Execute(new SolrQuery(s), new QueryOptions {OrderBy = order});
         }
 
@@ -130,7 +130,7 @@ namespace SolrNet.DSL {
         /// <param name="rows">Pagination item count</param>
         /// <returns>Query results</returns>
         public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order, int start, int rows) where T : new() {
-            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
+            var q = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>());
             return q.Execute(new SolrQuery(s), new QueryOptions {
                 OrderBy = order,
                 Start = start,
@@ -145,7 +145,7 @@ namespace SolrNet.DSL {
         /// <param name="q">Query</param>
         /// <returns>Query results</returns>
         public static ISolrQueryResults<T> Query<T>(ISolrQuery q) where T : new() {
-            var queryExecuter = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
+            var queryExecuter = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>());
             return queryExecuter.Execute(q, null);
         }
 
@@ -158,7 +158,7 @@ namespace SolrNet.DSL {
         /// <param name="rows">Pagination item count</param>
         /// <returns>Query results</returns>
         public static ISolrQueryResults<T> Query<T>(ISolrQuery q, int start, int rows) where T : new() {
-            var queryExecuter = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
+            var queryExecuter = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>());
             return queryExecuter.Execute(q, new QueryOptions {Start = start, Rows = rows});
         }
 
@@ -181,7 +181,7 @@ namespace SolrNet.DSL {
         /// <param name="orders">Sort orders</param>
         /// <returns>Query results</returns>
         public static ISolrQueryResults<T> Query<T>(SolrQuery query, ICollection<SortOrder> orders) where T : new() {
-            var queryExecuter = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(), ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>());
+            var queryExecuter = new SolrQueryExecuter<T>(Connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>());
             return queryExecuter.Execute(query, new QueryOptions { OrderBy = orders });
         }
 

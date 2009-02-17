@@ -51,7 +51,7 @@ namespace SolrNet {
             var resultParser = new SolrQueryResultParser<T>(Container.GetInstance<IReadOnlyMappingManager>());
             Container.Register<ISolrQueryResultParser<T>>(c => resultParser);
 
-            var queryExecuter = new SolrQueryExecuter<T>(connection, resultParser, Container.GetInstance<IReadOnlyMappingManager>());
+            var queryExecuter = new SolrQueryExecuter<T>(connection, resultParser);
             Container.Register<ISolrQueryExecuter<T>>(c => queryExecuter);
 
             var documentSerializer = new SolrDocumentSerializer<T>(Container.GetInstance<IReadOnlyMappingManager>());

@@ -53,7 +53,7 @@ namespace SolrNet.Tests {
                     .Repeat.Any()
                     .Return(null);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser, mapper);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), null);
             });
         }
@@ -84,7 +84,7 @@ namespace SolrNet.Tests {
                     .Repeat.Any()
                     .Return(null);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser, mapper);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
                     OrderBy = new[] {new SortOrder("id")}
                 });
@@ -112,7 +112,7 @@ namespace SolrNet.Tests {
                     .Repeat.Any()
                     .Return(null);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser, mapper);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
                     OrderBy = new[] {
                         new SortOrder("id", Order.ASC),
@@ -143,7 +143,7 @@ namespace SolrNet.Tests {
                     .Repeat.Any()
                     .Return(null);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser, mapper);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
                     Fields = new[] {"id", "name"},
                 });
@@ -171,7 +171,7 @@ namespace SolrNet.Tests {
                     .Repeat.Any()
                     .Return(null);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser, mapper);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
                     FacetQueries = new ISolrFacetQuery[] {
                         new SolrFacetFieldQuery("Id"),
@@ -207,7 +207,7 @@ namespace SolrNet.Tests {
                     .Repeat.Any()
                     .Return(null);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser, mapper);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
                     FacetQueries = new ISolrFacetQuery[] {
                         new SolrFacetFieldQuery("Id"),
@@ -252,7 +252,7 @@ namespace SolrNet.Tests {
                     .Repeat.Any()
                     .Return(null);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser, mapper);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
                     Highlight = new HighlightingParameters {
                         Fields = new[] {highlightedField},
@@ -283,7 +283,7 @@ namespace SolrNet.Tests {
                 new KeyValuePair<string, string>("fq", "id:0"),
                 new KeyValuePair<string, string>("fq", "id:2"),
             });
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser, mapper) {
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser) {
                 DefaultRows = 10,
             };
             queryExecuter.Execute(SolrQuery.All, new QueryOptions {

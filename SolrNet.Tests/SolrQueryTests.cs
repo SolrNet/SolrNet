@@ -41,7 +41,7 @@ namespace SolrNet.Tests {
                     .Repeat.Once()
                     .Return(new SolrQueryResults<TestDocument>());
 			}).Verify(delegate {
-			    var q = new SolrQueryExecuter<TestDocument>(connection, parser, mapper);
+			    var q = new SolrQueryExecuter<TestDocument>(connection, parser);
 				var r = q.Execute(new SolrQuery("id:123456"), null);
 			});
 		}

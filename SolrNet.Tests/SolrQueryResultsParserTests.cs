@@ -22,6 +22,7 @@ using System.Xml;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using SolrNet.Attributes;
+using SolrNet.Impl;
 using SolrNet.Mapping;
 
 namespace SolrNet.Tests {

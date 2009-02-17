@@ -24,6 +24,7 @@ using SolrNet.Attributes;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
+using SolrNet.Impl;
 using SolrNet.Mapping;
 using SolrNet.Utils;
 

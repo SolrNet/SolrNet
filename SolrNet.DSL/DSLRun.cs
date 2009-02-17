@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 using SolrNet.Utils;
 
 namespace SolrNet.DSL {

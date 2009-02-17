@@ -15,6 +15,7 @@
 #endregion
 
 using Microsoft.Practices.ServiceLocation;
+using SolrNet.Impl;
 using SolrNet.Mapping;
 using SolrNet.Utils;
 

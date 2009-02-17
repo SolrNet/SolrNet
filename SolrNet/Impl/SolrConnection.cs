@@ -25,7 +25,7 @@ using HttpWebAdapters.Adapters;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
 
-namespace SolrNet {
+namespace SolrNet.Impl {
     /// <summary>
     /// Manages HTTP connection with Solr
     /// </summary>

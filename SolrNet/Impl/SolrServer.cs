@@ -20,7 +20,7 @@ using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 
-namespace SolrNet {
+namespace SolrNet.Impl {
     /// <summary>
     /// Main component to interact with Solr
     /// </summary>

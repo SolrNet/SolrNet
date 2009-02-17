@@ -18,6 +18,7 @@ using System;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.Registration;
 using SolrNet;
+using SolrNet.Impl;
 using SolrNet.Mapping;
 using SolrNet.Utils;
 

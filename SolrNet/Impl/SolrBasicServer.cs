@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 
-namespace SolrNet {
+namespace SolrNet.Impl {
     /// <summary>
     /// Implements the basic Solr operations
     /// </summary>

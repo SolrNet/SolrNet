@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 
 namespace SolrNet.Tests {
     [TestFixture]

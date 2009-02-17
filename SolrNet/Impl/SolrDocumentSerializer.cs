@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
 
-namespace SolrNet {
+namespace SolrNet.Impl {
     /// <summary>
     /// Serializes a Solr document to xml
     /// </summary>

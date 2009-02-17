@@ -16,6 +16,7 @@
 
 using Ninject.Core;
 using SolrNet;
+using SolrNet.Impl;
 using SolrNet.Mapping;
 using SolrNet.Utils;
 

@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Attributes;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 using SolrNet.Utils;
 
 namespace SolrNet.Tests {

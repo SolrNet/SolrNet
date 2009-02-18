@@ -197,6 +197,15 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(2, new List<string>(doc.Features).Count);
 		}
 
+        [Test]
+        public void SupportsGuid() {
+            var parser = new SolrQueryResultParser<TestDocWithGuid>(new AttributesMappingManager());
+            var results = parser.Parse(responseXMLWithGuid);
+            Assert.AreEqual(1, results.Count);
+            var doc = results[0];
+            Console.WriteLine(doc.Key);
+        }
+
 		[Test]
 		public void WrongFieldDoesntThrow() {
             var parser = new SolrQueryResultParser<TestDocumentWithDate>(new AttributesMappingManager());
@@ -400,6 +409,17 @@ namespace SolrNet.Tests {
 </response>
 ";
 
+	    private const string responseXMLWithGuid =
+            @"<?xml version=""1.0"" encoding=""UTF-8""?>
+<response>
+<result numFound=""1"" start=""0"">
+	<doc>
+	<str name=""Key"">224fbdc1-12df-4520-9fbe-dd91f916eba1</str>
+	</doc>
+</result>
+</response>
+";
+
 		private const string responseXMLWithFacet =
 			@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
@@ -497,5 +517,10 @@ namespace SolrNet.Tests {
 			[SolrField]
 			public DateTime? Fecha { get; set; }
 		}
+
+        public class TestDocWithGuid {
+            [SolrField]
+            public Guid Key { get; set; }
+        }
 	}
 }

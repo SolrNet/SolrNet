@@ -70,6 +70,14 @@ namespace SolrNet.Tests {
             m.SetUniqueKey(null);
         }
 
+        [Test]
+        public void Inherited() {
+            var m = new AllPropertiesMappingManager();
+            var fields = m.GetFields(typeof (InheritedEntity));
+            Assert.AreEqual(3, fields.Count);
+            
+        }
+
         public class NoProperties {}
 
 		public class Entity {
@@ -77,5 +85,9 @@ namespace SolrNet.Tests {
 
 			public string Description { get; set; }
 		}
+
+        public class InheritedEntity: Entity {
+            public DateTime DateOfBirth { get; set; }
+        }
 	}
 }

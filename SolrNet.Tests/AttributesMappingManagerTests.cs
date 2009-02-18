@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Linq;
 using NUnit.Framework;
 using SolrNet.Attributes;
@@ -74,6 +75,16 @@ namespace SolrNet.Tests {
             m.GetUniqueKey(typeof (AnotherEntity));
         }
 
+        [Test]
+        public void Inherited() {
+            var m = new AttributesMappingManager();
+            var fields = m.GetFields(typeof (InheritedEntity));
+            Assert.AreEqual(3, fields.Count);
+            var uniqueKey = m.GetUniqueKey(typeof(InheritedEntity));
+            Assert.IsNotNull(uniqueKey);
+            Assert.AreEqual("Id", uniqueKey.Value);
+        }
+
         public class NoProperties {}
 
 		public class Entity {
@@ -83,6 +94,11 @@ namespace SolrNet.Tests {
 			[SolrField("desc")]
 			public string Description { get; set; }
 		}
+
+        public class InheritedEntity: Entity {
+            [SolrField("ts")]
+            public DateTime Timestamp { get; set; }
+        }
 
         public class AnotherEntity {
             [SolrField]

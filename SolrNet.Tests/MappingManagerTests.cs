@@ -99,27 +99,44 @@ namespace SolrNet.Tests {
 
         [Test]
         [ExpectedException(typeof (ArgumentNullException))]
-        public void AddProperty_doesnt_admin_null() {
+        public void AddProperty_doesnt_admit_null() {
             var mgr = new MappingManager();
             mgr.Add(null);
         }
 
         [Test]
         [ExpectedException(typeof (ArgumentNullException))]
-        public void AddProperty2_doesnt_admin_null() {
+        public void AddProperty2_doesnt_admit_null() {
             var mgr = new MappingManager();
             mgr.Add(null, "");
         }
 
         [Test]
         [ExpectedException(typeof (ArgumentNullException))]
-        public void AddProperty3_doesnt_admin_null() {
+        public void AddProperty3_doesnt_admit_null() {
             var mgr = new MappingManager();
             mgr.Add(typeof (Entity).GetProperties()[0], null);
         }
+
+        [Test]
+        [Ignore("Fails, see issue #37")]
+        public void Inherited() {
+            var mgr = new MappingManager();
+            mgr.Add(typeof(Entity).GetProperty("Id"), "id");
+            mgr.Add(typeof(InheritedEntity).GetProperty("Description"), "desc");
+            var entityFields = mgr.GetFields(typeof (Entity));
+            Assert.AreEqual(1, entityFields.Count);
+            var inheritedEntityFields = mgr.GetFields(typeof(InheritedEntity));
+            Assert.AreEqual(2, inheritedEntityFields.Count);
+        }
+
     }
 
     public class Entity {
         public int Id { get; set; }
+    }
+
+    public class InheritedEntity: Entity {
+        public string Description { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace SolrNet {
     /// <summary>
     /// Queries a field for a list of possible values
     /// </summary>
-    public class SolrQueryInList : ISolrQuery {
+    public class SolrQueryInList : AbstractSolrQuery {
         private readonly string q;
 
         public SolrQueryInList(string fieldName, IEnumerable<string> list) {
@@ -30,7 +30,7 @@ namespace SolrNet {
 
         public SolrQueryInList(string fieldName, params string[] values) : this(fieldName, (IEnumerable<string>) values) {}
 
-        public string Query {
+        public override string Query {
             get { return q; }
         }
     }

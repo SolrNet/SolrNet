@@ -19,7 +19,7 @@ namespace SolrNet {
     /// Queries a field for a range
     /// </summary>
     /// <typeparam name="RT"></typeparam>
-	public class SolrQueryByRange<RT> : ISolrQuery {
+	public class SolrQueryByRange<RT> : AbstractSolrQuery {
 		private readonly string q;
 		public SolrQueryByRange(string fieldName, RT from, RT to) : this(fieldName, from, to, true) {}
 
@@ -35,7 +35,7 @@ namespace SolrNet {
 		/// <summary>
 		/// query string
 		/// </summary>
-		public string Query {
+		public override string Query {
 			get { return q; }
 		}
 	}

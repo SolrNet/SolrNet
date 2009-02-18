@@ -15,19 +15,10 @@
 #endregion
 
 namespace SolrNet {
-	/// <summary>
-	/// Base query interface
-	/// </summary>
-	public interface ISolrQuery {
-		/// <summary>
-		/// query string
-		/// </summary>
-		string Query { get; }
-
-        /// <summary>
-        /// Negates this query
-        /// </summary>
-        /// <returns></returns>
-	    ISolrQuery Not();
-	}
+    public abstract class AbstractSolrQuery : ISolrQuery {
+        public abstract string Query { get; }
+        public ISolrQuery Not() {
+            return new SolrNotQuery(this);
+        }
+    }
 }

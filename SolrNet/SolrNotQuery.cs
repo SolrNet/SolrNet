@@ -18,7 +18,7 @@ namespace SolrNet {
     /// <summary>
     /// Negates a query
     /// </summary>
-    public class SolrNotQuery : ISolrQuery {
+    public class SolrNotQuery : AbstractSolrQuery {
         private readonly ISolrQuery query;
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace SolrNet {
             query = q;
         }
 
-        public string Query {
+        public override string Query {
             get {
                 return "-" + query.Query;
             }

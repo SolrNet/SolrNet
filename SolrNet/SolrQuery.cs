@@ -18,7 +18,7 @@ namespace SolrNet {
 	/// <summary>
 	/// Basic solr query
 	/// </summary>	
-	public class SolrQuery : ISolrQuery {
+    public class SolrQuery : AbstractSolrQuery {
 		private readonly string query;
 
 		/// <summary>
@@ -32,7 +32,7 @@ namespace SolrNet {
 		/// <summary>
 		/// query to execute
 		/// </summary>
-		public string Query {
+		public override string Query {
 			get { return query; }
 		}
 

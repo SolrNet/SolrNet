@@ -20,7 +20,7 @@ namespace SolrNet {
     /// <summary>
     /// Queries a field for a value
     /// </summary>
-	public class SolrQueryByField : ISolrQuery {
+	public class SolrQueryByField : AbstractSolrQuery {
 		private readonly string q;
 
 		public SolrQueryByField(string fieldName, string fieldValue) {
@@ -40,7 +40,7 @@ namespace SolrNet {
 		/// <summary>
 		/// query string
 		/// </summary>
-		public string Query {
+		public override string Query {
 			get { return q; }
 		}
 	}

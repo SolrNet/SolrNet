@@ -21,7 +21,7 @@ namespace SolrNet {
     /// <summary>
     /// Represents several queries as one
     /// </summary>
-	public class SolrMultipleCriteriaQuery : ISolrQuery {
+    public class SolrMultipleCriteriaQuery : AbstractSolrQuery {
 		private readonly string q;
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SolrNet {
 		/// <summary>
 		/// query string
 		/// </summary>
-		public string Query {
+		public override string Query {
 			get { return q; }
 		}
 	}

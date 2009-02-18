@@ -89,6 +89,7 @@
     <Compile Include="Impl\SolrQueryExecuter.cs" />
     <Compile Include="Attributes\SolrFieldAttribute.cs" />
     <Compile Include="SolrMultipleCriteriaQuery.cs" />
+    <Compile Include="SolrNotQuery.cs" />
     <Compile Include="SolrQuery.cs" />
     <Compile Include="SolrQueryByField.cs" />
     <Compile Include="SolrQueryByRange.cs" />

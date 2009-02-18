@@ -23,5 +23,6 @@ namespace SolrNet {
 		/// query string
 		/// </summary>
 		string Query { get; }
+
 	}
 }

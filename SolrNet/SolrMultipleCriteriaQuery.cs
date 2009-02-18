@@ -40,6 +40,14 @@ namespace SolrNet {
                 q = "(" + q + ")";
 		}
 
+        public static SolrMultipleCriteriaQuery Create<T>(params T[] queries) where T: ISolrQuery {
+            return Create((IEnumerable<T>)queries);
+        }
+
+        public static SolrMultipleCriteriaQuery Create(params ISolrQuery[] queries) {
+            return Create((IEnumerable<ISolrQuery>) queries);
+        }
+
         public static SolrMultipleCriteriaQuery Create<T>(IEnumerable<T> queries) where T: ISolrQuery {            
             return new SolrMultipleCriteriaQuery(Func.Cast<ISolrQuery>(queries));
         }

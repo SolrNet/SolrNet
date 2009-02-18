@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2007-2009 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +14,25 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-using SolrNet.Utils;
-
 namespace SolrNet {
     /// <summary>
-    /// Queries a field for a list of possible values
+    /// Negates a query
     /// </summary>
-    public class SolrQueryInList : ISolrQuery {
-        private readonly string q;
+    public class SolrNotQuery : ISolrQuery {
+        private readonly ISolrQuery query;
 
-        public SolrQueryInList(string fieldName, IEnumerable<string> list) {
-            q = "(" + Func.Join(" OR ", Func.Select(list, l => new SolrQueryByField(fieldName, l).Query)) + ")";
+        /// <summary>
+        /// Negates a query
+        /// </summary>
+        /// <param name="q"></param>
+        public SolrNotQuery(ISolrQuery q) {
+            query = q;
         }
 
-        public SolrQueryInList(string fieldName, params string[] values) : this(fieldName, (IEnumerable<string>) values) {}
-
         public string Query {
-            get { return q; }
+            get {
+                return "-" + query.Query;
+            }
         }
     }
 }

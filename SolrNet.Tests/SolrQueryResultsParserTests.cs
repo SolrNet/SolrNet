@@ -206,6 +206,15 @@ namespace SolrNet.Tests {
             Console.WriteLine(doc.Key);
         }
 
+        [Test]
+        public void SupportsEnumAsInteger() {
+            var parser = new SolrQueryResultParser<TestDocWithEnum>(new AttributesMappingManager());
+            var results = parser.Parse(responseXMLWithEnumAsInt);
+            Assert.AreEqual(1, results.Count);
+            var doc = results[0];
+            Console.WriteLine(doc.En);
+        }
+
 		[Test]
 		public void WrongFieldDoesntThrow() {
             var parser = new SolrQueryResultParser<TestDocumentWithDate>(new AttributesMappingManager());
@@ -420,6 +429,16 @@ namespace SolrNet.Tests {
 </response>
 ";
 
+	    private const string responseXMLWithEnumAsInt = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+<response>
+<result numFound=""1"" start=""0"">
+	<doc>
+	<int name=""En"">1</int>
+	</doc>
+</result>
+</response>
+";
+
 		private const string responseXMLWithFacet =
 			@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
@@ -521,6 +540,17 @@ namespace SolrNet.Tests {
         public class TestDocWithGuid {
             [SolrField]
             public Guid Key { get; set; }
+        }
+
+        public enum AEnum {
+            One,
+            Two,
+            Three
+        }
+
+        public class TestDocWithEnum {
+            [SolrField]
+            public AEnum En { get; set; }
         }
 	}
 }

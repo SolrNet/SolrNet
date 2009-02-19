@@ -44,5 +44,11 @@ namespace SolrNet.Tests {
             var q = new SolrQuery("solr") + new SolrQuery("name:desc");
             Assert.AreEqual("(solr  name:desc)", q.Query);
         }
+
+        [Test]
+        public void Not() {
+            var q = !new SolrQuery("solr");
+            Assert.AreEqual("-solr", q.Query);
+        }
     }
 }

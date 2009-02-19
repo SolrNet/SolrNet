@@ -40,5 +40,9 @@ namespace SolrNet {
         public static bool operator true (AbstractSolrQuery a) {
             return false;
         }
+
+        public static ISolrQuery operator ! (AbstractSolrQuery a) {
+            return a.Not();
+        }
     }
 }

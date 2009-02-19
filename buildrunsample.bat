@@ -1,3 +1,3 @@
 @echo off
-msbuild
+msbuild /p:Configuration=Release /m SolrNet.sln
 runsample

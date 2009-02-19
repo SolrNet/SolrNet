@@ -20,5 +20,25 @@ namespace SolrNet {
         public ISolrQuery Not() {
             return new SolrNotQuery(this);
         }
+
+        public static AbstractSolrQuery operator & (AbstractSolrQuery a, AbstractSolrQuery b) {
+            return new SolrMultipleCriteriaQuery(new[] {a, b}, "AND");
+        }
+
+        public static AbstractSolrQuery operator | (AbstractSolrQuery a, AbstractSolrQuery b) {
+            return new SolrMultipleCriteriaQuery(new[] { a, b }, "OR");
+        }
+
+        public static AbstractSolrQuery operator + (AbstractSolrQuery a, AbstractSolrQuery b) {
+            return new SolrMultipleCriteriaQuery(new[] {a, b});
+        }
+
+        public static bool operator false (AbstractSolrQuery a) {
+            return false;
+        }
+
+        public static bool operator true (AbstractSolrQuery a) {
+            return false;
+        }
     }
 }

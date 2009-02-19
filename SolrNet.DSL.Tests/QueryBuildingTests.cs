@@ -101,7 +101,7 @@ namespace SolrNet.DSL.Tests {
         }
 
         public ISolrQuery In<T>(params T[] values) {
-            return new SolrQueryInList(fieldName, Func.Select(values, v => Convert.ToString((object) v)));
+            return new SolrQueryInList(fieldName, Func.Select(values, v => Convert.ToString(v)));
         }
 
         public ISolrQuery Is<T>(T value) {

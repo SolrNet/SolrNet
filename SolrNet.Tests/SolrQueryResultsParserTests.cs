@@ -215,6 +215,15 @@ namespace SolrNet.Tests {
             Console.WriteLine(doc.En);
         }
 
+        [Test]
+        public void SupportsEnumAsString() {
+            var parser = new SolrQueryResultParser<TestDocWithEnum>(new AttributesMappingManager());
+            var results = parser.Parse(responseXMLWithEnumAsString);
+            Assert.AreEqual(1, results.Count);
+            var doc = results[0];
+            Console.WriteLine(doc.En);
+        }
+
 		[Test]
 		public void WrongFieldDoesntThrow() {
             var parser = new SolrQueryResultParser<TestDocumentWithDate>(new AttributesMappingManager());
@@ -434,6 +443,16 @@ namespace SolrNet.Tests {
 <result numFound=""1"" start=""0"">
 	<doc>
 	<int name=""En"">1</int>
+	</doc>
+</result>
+</response>
+";
+
+        private const string responseXMLWithEnumAsString = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+<response>
+<result numFound=""1"" start=""0"">
+	<doc>
+	<int name=""En"">Two</int>
 	</doc>
 </result>
 </response>

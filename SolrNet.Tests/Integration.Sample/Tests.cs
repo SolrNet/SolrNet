@@ -73,6 +73,9 @@ namespace SolrNet.Tests.Integration.Sample {
             });
             Assert.IsNotNull(results.Highlights);
             Assert.AreEqual(1, results.Highlights.Count);
+            foreach (var h in results.Highlights[results[0]]) {
+                Console.WriteLine("{0}: {1}", h.Key, h.Value);
+            }
         }
 
         [Test]

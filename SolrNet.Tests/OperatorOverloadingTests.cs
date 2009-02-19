@@ -38,5 +38,11 @@ namespace SolrNet.Tests {
             var q = (new SolrQuery("solr") || new SolrQuery("name:desc")) && new SolrQueryByField("id", "123456");
             Assert.AreEqual("((solr OR name:desc) AND id:123456)", q.Query);
         }
+
+        [Test]
+        public void Add() {
+            var q = new SolrQuery("solr") + new SolrQuery("name:desc");
+            Assert.AreEqual("(solr  name:desc)", q.Query);
+        }
     }
 }

@@ -7,8 +7,8 @@
     <ProjectGuid>{58FA9DC2-97C8-4B2A-892E-B1617854401D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SolrNET.DSL.Tests</RootNamespace>
-    <AssemblyName>SolrNET.DSL.Tests</AssemblyName>
+    <RootNamespace>SolrNet.DSL.Tests</RootNamespace>
+    <AssemblyName>SolrNet.DSL.Tests</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="DSLTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryBuildingTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet.DSL\SolrNet.DSL.csproj">

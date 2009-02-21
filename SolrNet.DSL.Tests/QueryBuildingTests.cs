@@ -1,6 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-using SolrNet.Utils;
+﻿using NUnit.Framework;
 
 #region license
 
@@ -58,50 +56,11 @@ namespace SolrNet.DSL.Tests {
             var q = Query.Field("price").In(10, 20, 30);
             Assert.AreEqual("(price:10 OR price:20 OR price:30)", q.Query);
         }
-    }
 
-    public static class Query {
-        public static ISolrQuery Simple(string s) {
-            return new SolrQuery(s);
-        }
-
-        public static FieldDefinition Field(string field) {
-            return new FieldDefinition(field);
-        }
-    }
-
-    public class RangeDefinition<T> {
-        private readonly string fieldName;
-        private readonly T from;
-
-        public RangeDefinition(string fieldName, T from) {
-            this.fieldName = fieldName;
-            this.from = from;
-        }
-
-        public ISolrQuery To(T to) {
-            return new SolrQueryByRange<T>(fieldName, from, to);
-        }
-    }
-
-
-    public class FieldDefinition {
-        private readonly string fieldName;
-
-        public FieldDefinition(string fieldName) {
-            this.fieldName = fieldName;
-        }
-
-        public RangeDefinition<T> From<T>(T from) {
-            return new RangeDefinition<T>(fieldName, from);
-        }
-
-        public ISolrQuery In<T>(params T[] values) {
-            return new SolrQueryInList(fieldName, Func.Select(values, v => Convert.ToString(v)));
-        }
-
-        public ISolrQuery Is<T>(T value) {
-            return new SolrQueryByField(fieldName, Convert.ToString(value));
+        [Test]
+        public void HasValue() {
+            var q = Query.Field("name").HasAnyValue();
+            Assert.AreEqual("name:[* TO *]", q.Query);
         }
     }
 }

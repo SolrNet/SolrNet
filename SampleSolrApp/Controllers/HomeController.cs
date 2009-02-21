@@ -20,6 +20,7 @@ using System.Web.Mvc;
 using SampleSolrApp.Models;
 using SolrNet;
 using SolrNet.Commands.Parameters;
+using SolrNet.DSL;
 
 namespace SampleSolrApp.Controllers {
     [HandleError]
@@ -37,9 +38,8 @@ namespace SampleSolrApp.Controllers {
         /// <returns></returns>
         public ISolrQuery BuildQuery(SearchParameters parameters) {
             var queriesFromFacets = from p in parameters.Facets
-                                    let q = new SolrQueryByField(p.Key, p.Value)
-                                    select q as ISolrQuery;
-            var queries = new List<ISolrQuery>(queriesFromFacets);
+                                    select Query.Field(p.Key).Is(p.Value);
+            var queries = queriesFromFacets.ToList();
             if (!string.IsNullOrEmpty(parameters.FreeSearch))
                 queries.Add(new SolrQuery(parameters.FreeSearch));
             if (queries.Count == 0)

@@ -108,6 +108,10 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SolrNet.DSL\SolrNet.DSL.csproj">
+      <Project>{385E2EC3-885B-43D5-A86B-955692058BA0}</Project>
+      <Name>SolrNet.DSL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">
       <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>
       <Name>SolrNet</Name>

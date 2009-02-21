@@ -26,6 +26,20 @@ namespace SolrNet {
         private readonly string oper;
 
         /// <summary>
+        /// Queries contained in this multiple criteria
+        /// </summary>
+        public IEnumerable<ISolrQuery> Queries {
+            get { return queries; }
+        }
+
+        /// <summary>
+        /// Operator used for joining these queries
+        /// </summary>
+        public string Oper {
+            get { return oper; }
+        }
+
+        /// <summary>
         /// Operator to apply to the included queries
         /// </summary>
 		public class Operator {

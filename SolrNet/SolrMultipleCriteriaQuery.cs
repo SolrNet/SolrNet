@@ -22,7 +22,8 @@ namespace SolrNet {
     /// Represents several queries as one
     /// </summary>
     public class SolrMultipleCriteriaQuery : AbstractSolrQuery {
-		private readonly string q;
+        private readonly IEnumerable<ISolrQuery> queries;
+        private readonly string oper;
 
         /// <summary>
         /// Operator to apply to the included queries
@@ -35,19 +36,35 @@ namespace SolrNet {
 		public SolrMultipleCriteriaQuery(IEnumerable<ISolrQuery> queries): this(queries, "") {}
 
 		public SolrMultipleCriteriaQuery(IEnumerable<ISolrQuery> queries, string oper) {
-			q = Func.Join(string.Format(" {0} ", oper), queries, query => query.Query, true);
-            if (!string.IsNullOrEmpty(q))
-                q = "(" + q + ")";
+		    this.queries = queries;
+		    this.oper = oper;
 		}
 
+        /// <summary>
+        /// Static create helper
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="queries"></param>
+        /// <returns></returns>
         public static SolrMultipleCriteriaQuery Create<T>(params T[] queries) where T: ISolrQuery {
             return Create((IEnumerable<T>)queries);
         }
 
+        /// <summary>
+        /// Static create helper
+        /// </summary>
+        /// <param name="queries"></param>
+        /// <returns></returns>
         public static SolrMultipleCriteriaQuery Create(params ISolrQuery[] queries) {
             return Create((IEnumerable<ISolrQuery>) queries);
         }
 
+        /// <summary>
+        /// Static create helper
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="queries"></param>
+        /// <returns></returns>
         public static SolrMultipleCriteriaQuery Create<T>(IEnumerable<T> queries) where T: ISolrQuery {            
             return new SolrMultipleCriteriaQuery(Func.Cast<ISolrQuery>(queries));
         }
@@ -56,7 +73,12 @@ namespace SolrNet {
 		/// query string
 		/// </summary>
 		public override string Query {
-			get { return q; }
+			get {
+                var q = Func.Join(string.Format(" {0} ", oper), queries, query => query.Query, true);
+                if (!string.IsNullOrEmpty(q))
+                    q = "(" + q + ")";
+			    return q;
+			}
 		}
 	}
 }

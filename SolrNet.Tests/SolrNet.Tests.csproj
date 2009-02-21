@@ -85,6 +85,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolrDocumentSerializerTests.cs" />
     <Compile Include="SolrFacetFieldQueryTests.cs" />
+    <Compile Include="SolrHasValueQueryTests.cs" />
     <Compile Include="SolrNotQueryTests.cs" />
     <Compile Include="SolrQueryExecuterTests.cs" />
     <Compile Include="SolrFieldExample.cs" />

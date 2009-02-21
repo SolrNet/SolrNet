@@ -58,10 +58,6 @@ namespace SolrNet.DSL.Tests {
             var q = Query.Field("price").In(10, 20, 30);
             Assert.AreEqual("(price:10 OR price:20 OR price:30)", q.Query);
         }
-
-        [Test]
-        [Ignore("not implemented")]
-        public void And() {}
     }
 
     public static class Query {

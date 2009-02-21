@@ -20,7 +20,7 @@ using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 using SolrNet.Utils;
 
-namespace SolrNet.DSL {
+namespace SolrNet.DSL.Impl {
     public class DSLRun<T> : IDSLRun<T> where T : new() {
         protected readonly ICollection<SortOrder> order = new List<SortOrder>();
         protected readonly ICollection<ISolrFacetQuery> facets = new List<ISolrFacetQuery>();

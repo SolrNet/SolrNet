@@ -14,9 +14,8 @@
 // limitations under the License.
 #endregion
 
-namespace SolrNet.DSL {
-	public interface IDSLQuery<T> : IDSLRun<T> where T : new() {
-		IDSLQueryRange<T> ByRange<RT>(string fieldName, RT from, RT to);
-		IDSLQueryBy<T> By(string fieldName);
-	}
+namespace SolrNet.DSL.Impl {
+    public interface IDSLQueryBetween<T, RT> where T : new() {
+        IDSLQuery<T> And(RT i);
+    }
 }

@@ -1,7 +1,7 @@
 using System;
 using SolrNet.Utils;
 
-namespace SolrNet.DSL {
+namespace SolrNet.DSL.Impl {
     public class FieldDefinition {
         private readonly string fieldName;
 
@@ -14,7 +14,7 @@ namespace SolrNet.DSL {
         }
 
         public ISolrQuery In<T>(params T[] values) {
-            return new SolrQueryInList(fieldName, Func.Select(values, v => Convert.ToString((object) v)));
+            return new SolrQueryInList(fieldName, Func.Select(values, v => Convert.ToString(v)));
         }
 
         public ISolrQuery Is<T>(T value) {

@@ -14,8 +14,9 @@
 // limitations under the License.
 #endregion
 
-namespace SolrNet.DSL {
-	public interface IDSLQueryBetween<T, RT> where T : new() {
-		IDSLQuery<T> And(RT i);
-	}
+namespace SolrNet.DSL.Impl {
+    public interface IDSLQueryBy<T> where T : new() {
+        IDSLQuery<T> Is(string s);
+        IDSLQueryBetween<T, RT> Between<RT>(RT i);
+    }
 }

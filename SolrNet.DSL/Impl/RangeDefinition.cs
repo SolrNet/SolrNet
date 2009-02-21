@@ -1,4 +1,4 @@
-namespace SolrNet.DSL {
+namespace SolrNet.DSL.Impl {
     public class RangeDefinition<T> {
         private readonly string fieldName;
         private readonly T from;

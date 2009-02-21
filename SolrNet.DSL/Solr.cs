@@ -19,6 +19,7 @@ using Microsoft.Practices.ServiceLocation;
 using Rhino.Commons;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
+using SolrNet.DSL.Impl;
 using SolrNet.Impl;
 
 namespace SolrNet.DSL {

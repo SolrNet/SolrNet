@@ -1,3 +1,5 @@
+using SolrNet.DSL.Impl;
+
 namespace SolrNet.DSL {
     public static class Query {
         public static ISolrQuery Simple(string s) {

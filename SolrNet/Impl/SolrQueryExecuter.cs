@@ -46,6 +46,12 @@ namespace SolrNet.Impl {
             return new KeyValuePair<T1, T2>(a, b);
         }
 
+        /// <summary>
+        /// Gets Solr parameters for all defined query options
+        /// </summary>
+        /// <param name="Query"></param>
+        /// <param name="Options"></param>
+        /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery Query, QueryOptions Options) {
             var param = new List<KeyValuePair<string, string>> {
                 KVP("q", Query.Query)
@@ -83,7 +89,12 @@ namespace SolrNet.Impl {
             return param;
         }
 
-        private IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisParameters(QueryOptions options) {
+        /// <summary>
+        /// Gets Solr parameters for defined more-like-this options
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisParameters(QueryOptions options) {
             if (options.MoreLikeThis == null)
                 yield break;
             var mlt = options.MoreLikeThis;
@@ -110,6 +121,11 @@ namespace SolrNet.Impl {
                 yield return KVP("mlt.qf", Func.Join(",", mlt.QueryFields));
         }
 
+        /// <summary>
+        /// Gets Solr parameters for defined filter queries
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetFilterQueries(QueryOptions options) {
             if (options.FilterQueries == null || options.FilterQueries.Count == 0)
                 yield break;
@@ -118,6 +134,11 @@ namespace SolrNet.Impl {
             }
         }
 
+        /// <summary>
+        /// Gets Solr parameters for defined highlightings
+        /// </summary>
+        /// <param name="Options"></param>
+        /// <returns></returns>
         public IDictionary<string, string> GetHighlightingParameters(QueryOptions Options) {
             var param = new Dictionary<string, string>();
             if (Options.Highlight != null) {
@@ -157,6 +178,11 @@ namespace SolrNet.Impl {
             return param;
         }
 
+        /// <summary>
+        /// Gets solr parameters for defined spell-checking
+        /// </summary>
+        /// <param name="Options"></param>
+        /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetSpellCheckingParameters(QueryOptions Options) {
             var spellCheck = Options.SpellCheck;
             if (spellCheck != null) {

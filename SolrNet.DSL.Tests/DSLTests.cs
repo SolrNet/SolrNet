@@ -93,6 +93,20 @@ namespace SolrNet.DSL.Tests {
 				});
 		}
 
+        [Test]
+        public void DeleteByIds() {
+            var ids = new[] {"123", "456"};
+            var mocks = new MockRepository();
+            var conn = mocks.CreateMock<ISolrConnection>();
+            With.Mocks(mocks)
+                .Expecting(() => Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id><id>{1}</id></delete>", ids[0], ids[1])))
+                                    .Return(""))
+                .Verify(() => {
+                    Solr.Connection = conn;
+                    Solr.Delete.ByIds(ids);
+                });            
+        }
+
 		[Test]
 		public void DeleteByQuery() {
 			const string q = "id:123456";

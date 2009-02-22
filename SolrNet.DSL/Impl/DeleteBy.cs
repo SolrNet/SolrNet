@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 
@@ -30,6 +31,11 @@ namespace SolrNet.DSL.Impl {
             cmd.Execute(connection);
         }
 
+        public void ByIds(IEnumerable<string> ids) {
+            var cmd = new DeleteCommand(new DeleteByMultipleIdParam(ids));
+            cmd.Execute(connection);
+        }
+       
         public void ByQuery(ISolrQuery q) {
             var cmd = new DeleteCommand(new DeleteByQueryParam(q));
             cmd.Execute(connection);

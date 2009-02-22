@@ -137,7 +137,7 @@ namespace SolrNet.Impl {
                 if (spellCheck.Build.HasValue)
                     yield return KVP("spellcheck.build", spellCheck.Build.ToString().ToLowerInvariant());
                 if (spellCheck.Collate.HasValue)
-                    yield return KVP("spellcheck.collate", spellCheck.Build.ToString().ToLowerInvariant());
+                    yield return KVP("spellcheck.collate", spellCheck.Collate.ToString().ToLowerInvariant());
                 if (spellCheck.Count.HasValue)
                     yield return KVP("spellcheck.count", spellCheck.Count.ToString());
                 if (!string.IsNullOrEmpty(spellCheck.Dictionary))

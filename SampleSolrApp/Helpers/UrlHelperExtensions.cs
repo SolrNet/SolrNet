@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -118,6 +119,10 @@ namespace SampleSolrApp.Helpers {
                 d[HttpUtility.UrlDecode(v[0])] = HttpUtility.UrlDecode(v[1]);
             }
             return d;
+        }
+
+        public static string UrlForQuery(this UrlHelper helper, string solrQuery) {
+            return helper.SetParameter("q", solrQuery);
         }
     }
 }

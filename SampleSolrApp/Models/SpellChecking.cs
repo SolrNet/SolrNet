@@ -14,14 +14,9 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-
 namespace SampleSolrApp.Models {
-    public class ProductView {
-        public SearchParameters Search { get; set; }
-        public ICollection<Product> Products { get; set; }
-        public int TotalCount { get; set; }
-        public IDictionary<string, ICollection<KeyValuePair<string, int>>> Facets { get; set; }
+    public class SpellChecking {
         public string DidYouMean { get; set; }
+        public string Query { get; set; }
     }
 }

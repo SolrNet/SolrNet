@@ -47,8 +47,18 @@ namespace SolrNet {
         /// <param name="serverURL">Solr URL (i.e. "http://localhost:8983/solr")</param>
         public static void Init<T>(string serverURL) where T: new() {
             var connection = new SolrConnection(serverURL);
-            var connectionKey = string.Format("{0}.{1}.{2}", typeof(SolrConnection), typeof(T), serverURL);
-            Container.Register<ISolrConnection>(connectionKey, c => connection);
+
+            Init<T>(connection);
+        }
+
+        /// <summary>
+        /// Initializes SolrNet with the built-in container
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="connection"></param>
+        public static void Init<T>(ISolrConnection connection) where T: new() {
+            var connectionKey = string.Format("{0}.{1}.{2}", typeof(SolrConnection), typeof(T), connection.GetType());
+            Container.Register(connectionKey, c => connection);
 
             var resultParser = new SolrQueryResultParser<T>(Container.GetInstance<IReadOnlyMappingManager>());
             Container.Register<ISolrQueryResultParser<T>>(c => resultParser);
@@ -66,7 +76,7 @@ namespace SolrNet {
             var server = new SolrServer<T>(basicServer, Container.GetInstance<IReadOnlyMappingManager>());
             Container.Register<ISolrOperations<T>>(c => server);
             Container.Register<ISolrReadOnlyOperations<T>>(c => server);
- 
+            
         }
     }
 }

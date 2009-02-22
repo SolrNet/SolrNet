@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -66,6 +67,7 @@ namespace SampleSolrApp.Controllers {
             var matchingProducts = solr.Query(BuildQuery(parameters), new QueryOptions {
                 Rows = parameters.PageSize,
                 Start = start,
+                SpellCheck = new SpellCheckingParameters(),
                 FacetQueries = AllFacetFields.Except(SelectedFacetFields(parameters))
                     .Select(f => new SolrFacetFieldQuery(f) {MinCount = 1})
                     .Cast<ISolrFacetQuery>()
@@ -76,8 +78,16 @@ namespace SampleSolrApp.Controllers {
                 Search = parameters,
                 TotalCount = matchingProducts.NumFound,
                 Facets = matchingProducts.FacetFields,
+                DidYouMean = GetSpellCheckingResult(matchingProducts),
             };
             return View(view);
+        }
+
+        private string GetSpellCheckingResult(ISolrQueryResults<Product> products) {
+            return string.Join(" ", products.SpellChecking
+                .Select(c => c.Suggestions.FirstOrDefault())
+                .Where(c => !string.IsNullOrEmpty(c))
+                .ToArray());
         }
     }
 }

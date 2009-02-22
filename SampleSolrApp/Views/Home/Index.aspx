@@ -12,6 +12,10 @@
         <input type="submit" value="Search" />
     </form>
     
+    <% if (!string.IsNullOrEmpty(Model.DidYouMean)) { %>
+    Did you mean <strong><em><a href="<%= Url.UrlForQuery(Model.DidYouMean) %>"><%= Model.DidYouMean%></a></em></strong>
+    <% } %>
+    
     <div class="leftColumn">
         <% foreach (var f in Model.Search.Facets) { %>
         <ul>

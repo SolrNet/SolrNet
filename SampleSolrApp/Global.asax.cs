@@ -22,10 +22,12 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using log4net.Config;
 using Microsoft.Practices.ServiceLocation;
 using SampleSolrApp.Models;
 using SampleSolrApp.Models.Binders;
 using SolrNet;
+using SolrNet.Impl;
 
 namespace SampleSolrApp {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -43,8 +45,15 @@ namespace SampleSolrApp {
         }
 
         protected void Application_Start() {
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Server.MapPath("/"), "log4net.config")));
+
             RegisterRoutes(RouteTable.Routes);
-            Startup.Init<Product>("http://localhost:8983/solr");
+            var serverURL = "http://localhost:8983/solr";
+
+            var connection = new SolrConnection(serverURL);
+            var loggingConnection = new LoggingConnection(connection);
+            Startup.Init<Product>(loggingConnection);
+
             RegisterAllControllers();
             ControllerBuilder.Current.SetControllerFactory(new ServiceProviderControllerFactory(Startup.Container));
             ModelBinders.Binders[typeof (SearchParameters)] = new SearchParametersBinder();

@@ -82,6 +82,7 @@ namespace SolrNet.Impl {
             if (highlightingNode != null)
                 results.Highlights = ParseHighlighting(results, highlightingNode);
 
+            results.SpellChecking = new SpellCheckResults();
             var spellCheckingNode = xml.SelectSingleNode("response/lst[@name='spellcheck']");
             if (spellCheckingNode != null)
                 results.SpellChecking = ParseSpellChecking(spellCheckingNode);

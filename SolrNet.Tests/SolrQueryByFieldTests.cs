@@ -21,6 +21,18 @@ namespace SolrNet.Tests {
 	public class SolrQueryByFieldTests {
 		public class TestDocument : ISolrDocument {}
 
+        [Test]
+        public void NullField_yields_null_query() {
+            var q = new SolrQueryByField(null, "123456");
+            Assert.IsNull(q.Query);
+        }
+
+        [Test]
+        public void NullValue_yields_null_query() {
+            var q = new SolrQueryByField("id", null);
+            Assert.IsNull(q.Query);
+        }
+
 		[Test]
 		public void Basic() {
 			var q = new SolrQueryByField("id", "123456");

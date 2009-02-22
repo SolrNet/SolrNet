@@ -30,9 +30,5 @@ namespace SolrNet {
 		public IEnumerable<KeyValuePair<string, string>> Query {
 			get { yield return new KeyValuePair<string, string>("facet.query", query); }
 		}
-
-		public override string ToString() {
-			return query;
-		}
 	}
 }

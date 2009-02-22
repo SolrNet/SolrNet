@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
 using SolrNet.Utils;
@@ -76,9 +77,37 @@ namespace SolrNet.Impl {
 
                 param.AddRange(GetFilterQueries(Options));
                 param.AddRange(GetSpellCheckingParameters(Options));
+                param.AddRange(GetMoreLikeThisParameters(Options));
             }
 
             return param;
+        }
+
+        private IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisParameters(QueryOptions options) {
+            if (options.MoreLikeThis == null)
+                yield break;
+            var mlt = options.MoreLikeThis;
+            yield return KVP("mlt", "true");
+            if (mlt.Fields != null)
+                yield return KVP("mlt.fl", Func.Join(",", mlt.Fields));
+            if (mlt.Boost.HasValue)
+                yield return KVP("mlt.boost", mlt.Boost.ToString().ToLowerInvariant());
+            if (mlt.Count.HasValue)
+                yield return KVP("mlt.count", mlt.Count.ToString());
+            if (mlt.MaxQueryTerms.HasValue)
+                yield return KVP("mlt.maxqt", mlt.MaxQueryTerms.ToString());
+            if (mlt.MaxTokens.HasValue)
+                yield return KVP("mlt.maxntp", mlt.MaxTokens.ToString());
+            if (mlt.MaxWordLength.HasValue)
+                yield return KVP("mlt.maxwl", mlt.MaxWordLength.ToString());
+            if (mlt.MinDocFreq.HasValue)
+                yield return KVP("mlt.mindf", mlt.MinDocFreq.ToString());
+            if (mlt.MinTermFreq.HasValue)
+                yield return KVP("mlt.mintf", mlt.MinTermFreq.ToString());
+            if (mlt.MinWordLength.HasValue)
+                yield return KVP("mlt.minwl", mlt.MinWordLength.ToString());
+            if (mlt.QueryFields != null && mlt.QueryFields.Count > 0)
+                yield return KVP("mlt.qf", Func.Join(",", mlt.QueryFields));
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetFilterQueries(QueryOptions options) {

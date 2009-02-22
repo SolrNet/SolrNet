@@ -48,6 +48,20 @@ namespace SolrNet.Impl {
             mappingManager = mapper;
         }
 
+        public IList<T> ParseResults(XmlNode parentNode) {
+            var results = new List<T>();
+            if (parentNode == null)
+                return results;
+            var allFields = mappingManager.GetFields(typeof(T));
+            var nodes = parentNode.SelectNodes("doc");
+            if (nodes == null)
+                return results;
+            foreach (XmlNode docNode in nodes) {
+                results.Add(ParseDocument(docNode, allFields));
+            }
+            return results;
+        }
+
         /// <summary>
         /// Parses solr's xml response
         /// </summary>
@@ -63,10 +77,10 @@ namespace SolrNet.Impl {
             if (maxScore != null) {
                 results.MaxScore = double.Parse(maxScore.InnerText, CultureInfo.InvariantCulture.NumberFormat);
             }
-            var allFields = mappingManager.GetFields(typeof (T));
-            foreach (XmlNode docNode in xml.SelectNodes("response/result/doc")) {
-                results.Add(ParseDocument(docNode, allFields));
-            }
+
+            foreach (var result in ParseResults(resultNode))
+                results.Add(result);
+            
             var mainFacetNode = xml.SelectSingleNode("response/lst[@name='facet_counts']");
             if (mainFacetNode != null) {
                 results.FacetQueries = ParseFacetQueries(mainFacetNode);
@@ -82,10 +96,13 @@ namespace SolrNet.Impl {
             if (highlightingNode != null)
                 results.Highlights = ParseHighlighting(results, highlightingNode);
 
-            results.SpellChecking = new SpellCheckResults();
             var spellCheckingNode = xml.SelectSingleNode("response/lst[@name='spellcheck']");
             if (spellCheckingNode != null)
                 results.SpellChecking = ParseSpellChecking(spellCheckingNode);
+
+            var moreLikeThis = xml.SelectSingleNode("response/lst[@name='moreLikeThis']");
+            if (moreLikeThis != null)
+                results.SimilarResults = ParseMoreLikeThis(results, moreLikeThis);
 
             return results;
         }
@@ -114,8 +131,6 @@ namespace SolrNet.Impl {
             }
             return d;
         }
-
-        private delegate bool BoolFunc(PropertyInfo[] p);
 
         public DateTime ParseDate(string s) {
             return DateTime.ParseExact(s, "yyyy-MM-dd'T'HH:mm:ss.FFF'Z'", CultureInfo.InvariantCulture);
@@ -215,6 +230,11 @@ namespace SolrNet.Impl {
             return doc;
         }
 
+        /// <summary>
+        /// Parses response header
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         public ResponseHeader ParseHeader(XmlNode node) {
             var r = new ResponseHeader();
             r.Status = int.Parse(node.SelectSingleNode("int[@name='status']").InnerText);
@@ -229,6 +249,11 @@ namespace SolrNet.Impl {
             return r;
         }
 
+        /// <summary>
+        /// Creates an index of documents by unique key
+        /// </summary>
+        /// <param name="results"></param>
+        /// <returns></returns>
         public IDictionary<string, T> IndexResultsByKey(IEnumerable<T> results) {
             var r = new Dictionary<string, T>();
             var prop = mappingManager.GetUniqueKey(typeof (T)).Key;
@@ -248,6 +273,12 @@ namespace SolrNet.Impl {
             return fields;
         }
 
+        /// <summary>
+        /// Parses highlighting results
+        /// </summary>
+        /// <param name="results"></param>
+        /// <param name="node"></param>
+        /// <returns></returns>
         public IDictionary<T, IDictionary<string, string>> ParseHighlighting(IEnumerable<T> results, XmlNode node) {
             var r = new Dictionary<T, IDictionary<string, string>>();
             var docRefs = node.SelectNodes("lst");
@@ -262,6 +293,11 @@ namespace SolrNet.Impl {
             return r;
         }
 
+        /// <summary>
+        /// Parses spell-checking results
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         public SpellCheckResults ParseSpellChecking(XmlNode node) {
             var r = new SpellCheckResults();
             var suggestionsNode = node.SelectSingleNode("lst[@name='suggestions']");
@@ -286,6 +322,26 @@ namespace SolrNet.Impl {
                     result.Suggestions = suggestions;
                     r.Add(result);
                 }
+            }
+            return r;
+        }
+
+        /// <summary>
+        /// Parses more-like-this results
+        /// </summary>
+        /// <param name="results"></param>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public IDictionary<T, IList<T>> ParseMoreLikeThis(IEnumerable<T> results, XmlNode node) {
+            var r = new Dictionary<T, IList<T>>();
+            var docRefs = node.SelectNodes("result");
+            if (docRefs == null)
+                return r;
+            var resultsByKey = IndexResultsByKey(results);
+            foreach (XmlNode docRef in docRefs) {
+                var docRefKey = docRef.Attributes["name"].InnerText;
+                var doc = resultsByKey[docRefKey];
+                r[doc] = ParseResults(docRef);
             }
             return r;
         }

@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using SolrNet.Commands.Parameters;
@@ -124,6 +125,24 @@ namespace SolrNet.Tests.Integration.Sample {
             });
             foreach (var r in results)
                 Console.WriteLine(r.Manufacturer);
+        }
+
+        [Test]
+        public void MoreLikeThis() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var results = solr.Query(new SolrQuery("apache"), new QueryOptions {
+                MoreLikeThis = new MoreLikeThisParameters(new[] {"cat", "manu"}) {
+                    MinDocFreq = 1,
+                    MinTermFreq = 1,
+                    //Count = 1,
+                },
+            });
+            foreach (var r in results.SimilarResults) {
+                Console.WriteLine("Similar documents to {0}", r.Key.Id);
+                foreach (var similar in r.Value)
+                    Console.WriteLine(similar.Id);
+                Console.WriteLine();
+            }
         }
     }
 }

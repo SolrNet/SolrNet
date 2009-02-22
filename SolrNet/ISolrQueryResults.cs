@@ -58,5 +58,10 @@ namespace SolrNet {
         /// </summary>
 	    SpellCheckResults SpellChecking { get; set; }
 
+        /// <summary>
+        /// More-like-this results
+        /// </summary>
+        IDictionary<T, IList<T>> SimilarResults { get; set; }
+
 	}
 }

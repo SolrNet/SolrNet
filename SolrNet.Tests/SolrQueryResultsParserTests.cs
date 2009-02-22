@@ -313,6 +313,27 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, spellChecking.Count);
         }
 
+        [Test]
+        public void ParseMoreLikeThis() {
+            var parser = new SolrQueryResultParser<Product>(new AttributesMappingManager());
+            var xml = new XmlDocument();
+            xml.LoadXml(responseXmlWithMoreLikeThis);
+            var docNode = xml.SelectSingleNode("response/lst[@name='moreLikeThis']");
+            var product1 = new Product { Id = "UTF8TEST" };
+            var product2 = new Product { Id = "SOLR1000" };
+            var mlt = parser.ParseMoreLikeThis(new[] {
+                product1,
+                product2,
+            }, docNode);
+            Assert.IsNotNull(mlt);
+            Assert.AreEqual(2, mlt.Count);
+            Assert.IsTrue(mlt.ContainsKey(product1));
+            Assert.IsTrue(mlt.ContainsKey(product2));
+            Assert.AreEqual(1, mlt[product1].Count);
+            Assert.AreEqual(1, mlt[product2].Count);
+            Console.WriteLine(mlt[product1][0].Id);
+        }
+
         public enum AEnum {
             One,
             Two,

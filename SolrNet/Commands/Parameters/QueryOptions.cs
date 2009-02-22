@@ -62,6 +62,11 @@ namespace SolrNet.Commands.Parameters {
         public SpellCheckingParameters SpellCheck { get; set; }
 
         /// <summary>
+        /// More-like-this parameters
+        /// </summary>
+        public MoreLikeThisParameters MoreLikeThis { get; set; }
+
+        /// <summary>
         /// This parameter can be used to specify a query that can be used to restrict the super set of documents that can be returned, without influencing score. 
         /// It can be very useful for speeding up complex queries since the queries specified with fq are cached independently from the main query. 
         /// This assumes the same Filter is used again for a latter query (i.e. there's a cache hit)

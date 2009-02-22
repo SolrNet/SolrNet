@@ -183,6 +183,7 @@ namespace SolrNet {
 		public IDictionary<T, IDictionary<string, string>> Highlights { get; set; }
 
         public SpellCheckResults SpellChecking { get; set; }
+        public IDictionary<T, IList<T>> SimilarResults { get; set; }
 
         ///<summary>
 		///Returns an enumerator that iterates through the collection.
@@ -199,6 +200,8 @@ namespace SolrNet {
 	    public SolrQueryResults() {
 	        FacetQueries = new Dictionary<string, int>();
             FacetFields = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
+            SpellChecking = new SpellCheckResults();
+            SimilarResults = new Dictionary<T, IList<T>>();
 	    }
 	}
 }

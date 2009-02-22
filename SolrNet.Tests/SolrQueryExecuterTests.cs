@@ -347,5 +347,24 @@ namespace SolrNet.Tests {
             Assert.Contains(KVP("spellcheck.onlyMorePopular", "true"), p);
             Assert.Contains(KVP("spellcheck.reload", "true"), p);
         }
+
+        [Test]
+        public void MoreLikeThis() {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var p = queryExecuter.GetAllParameters(new SolrQuery("apache"), new QueryOptions {
+                MoreLikeThis = new MoreLikeThisParameters(new[] { "manu", "cat" }) {
+                    MinDocFreq = 1,
+                    MinTermFreq = 1,
+                },
+            }).ToList();
+            Assert.Contains(KVP("mlt", "true"), p);
+            Assert.Contains(KVP("mlt.mindf", "1"), p);
+            Assert.Contains(KVP("mlt.fl", "manu,cat"), p);
+            Assert.Contains(KVP("mlt.mintf", "1"), p);
+            Assert.Contains(KVP("q", "apache"), p);
+        }
     }
 }

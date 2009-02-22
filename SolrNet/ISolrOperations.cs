@@ -58,6 +58,14 @@ namespace SolrNet {
         ISolrOperations<T> Delete(T doc);
 
         /// <summary>
+        /// Deletes several documents (requires the document type to have a unique key defined with non-null value)
+        /// </summary>
+        /// <param name="docs"></param>
+        /// <returns></returns>
+        /// <exception cref="NoUniqueKeyException">throws if document type doesn't have a unique key or document has null unique key</exception>
+        ISolrOperations<T> Delete(IEnumerable<T> docs);
+
+        /// <summary>
         /// Deletes all documents that match a query
         /// </summary>
         /// <param name="q">query to match</param>
@@ -69,6 +77,13 @@ namespace SolrNet {
         /// </summary>
         /// <param name="id">document key</param>
         /// <returns></returns>
-        new ISolrOperations<T> Delete(string id);
+        ISolrOperations<T> Delete(string id);
+
+        /// <summary>
+        /// Deletes several documents by their id (unique key)
+        /// </summary>
+        /// <param name="ids">document unique keys</param>
+        /// <returns></returns>
+        new ISolrOperations<T> Delete(IEnumerable<string> ids);
     }
 }

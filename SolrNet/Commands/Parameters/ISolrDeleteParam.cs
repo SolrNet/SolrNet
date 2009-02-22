@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Commands.Parameters {
@@ -25,6 +26,6 @@ namespace SolrNet.Commands.Parameters {
         /// Converts this parameter to xml representation
         /// </summary>
         /// <returns></returns>
-		XmlNode ToXmlNode();
+		IEnumerable<XmlNode> ToXmlNode();
 	}
 }

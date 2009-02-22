@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
+    <Compile Include="Commands\Parameters\DeleteByMultipleIdParam.cs" />
     <Compile Include="Commands\Parameters\SpellCheckingParameters.cs" />
     <Compile Include="Impl\SpellCheckResult.cs" />
     <Compile Include="Impl\SpellCheckResults.cs" />
@@ -58,7 +59,6 @@
     <Compile Include="Exceptions\CollectionTypeNotSupportedException.cs" />
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\CommitCommand.cs" />
-    <Compile Include="Commands\Parameters\DeleteByIdParam.cs" />
     <Compile Include="Commands\Parameters\DeleteByQueryParam.cs" />
     <Compile Include="Commands\DeleteCommand.cs" />
     <Compile Include="Commands\Parameters\ISolrDeleteParam.cs" />

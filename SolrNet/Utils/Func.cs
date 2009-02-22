@@ -102,6 +102,10 @@ namespace SolrNet.Utils {
 			return Join(separator, list, converter, false);
 		}
 
+        public static string Join<T>(IEnumerable<T> list) {
+            return Join("", list);
+        }
+
 		// Join that takes an IEnumerable list that uses a converter to convert the type to a string
 		public static string Join<T>(string separator, IEnumerable<T> list, Converter<T, string> converter, bool ignoreNulls) {
 			var sb = new StringBuilder();

@@ -152,19 +152,19 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        [Ignore("obsolete")]
-        public void DeleteByQueryWithParams() {
-            //var mocks = new MockRepository();
-            ////ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
-            //var connection = mocks.CreateMock<ISolrConnection>();
-            //With.Mocks(mocks).Expecting(delegate {
-            //    Expect.Call(connection.Post("/update", "<delete fromPending=\"true\" fromCommitted=\"true\"><query>id:123</query></delete>"))
-            //        .Repeat.Once()
-            //        .Return(null);
-            //}).Verify(delegate {
-            //    ISolrOperations<TestDocumentWithUniqueKey> ops = new SolrServer<TestDocumentWithUniqueKey>(connection);
-            //    ops.Delete(new SolrQuery("id:123"), true, true);
-            //});
+        public void DeleteByMultipleId() {
+            var mocks = new MockRepository();
+            var connection = mocks.CreateMock<ISolrConnection>();
+            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithUniqueKey>>();
+            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            With.Mocks(mocks)
+                .Expecting(() => Expect.Call(connection.Post("/update", "<delete><query>id:123</query></delete>"))
+                                     .Repeat.Once()
+                                     .Return(null))
+                .Verify(delegate {
+                    var ops = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
+                    ops.Delete(new SolrQuery("id:123"));
+                });            
         }
 
         [Test]
@@ -204,17 +204,23 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        [Ignore("obsolete")]
-        public void DeleteDocumentWithUniqueKeyWithParams() {
-            //var mocks = new MockRepository();
-            ////ISolrDocument doc = mocks.CreateMock<ISolrDocument>();
-            //var connection = mocks.CreateMock<ISolrConnection>();
-            //With.Mocks(mocks).Expecting(delegate {
-            //    Expect.Call(connection.Post("/update", "<delete fromPending=\"true\" fromCommitted=\"false\"><id>0</id></delete>")).Repeat.Once().Return(null);
-            //}).Verify(delegate {
-            //    var ops = new SolrBasicServer<TestDocumentWithUniqueKey>(connection);
-            //    ops.Delete(new TestDocumentWithUniqueKey(), true, false);
-            //});
+        public void DeleteMultipleDocs() {
+            var mocks = new MockRepository();
+            var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocumentWithUniqueKey>>();
+            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            With.Mocks(mocks)
+                .Expecting(() => {
+                    Expect.Call(basicServer.Send(null))
+                        .IgnoreArguments()
+                        .Repeat.Once()
+                        .Return("");
+                    Expect.Call(mapper.GetUniqueKey(typeof(TestDocumentWithUniqueKey)))
+                        .Return(new KeyValuePair<PropertyInfo, string>(typeof(TestDocumentWithUniqueKey).GetProperty("id"), "id"));
+                })
+                .Verify(delegate {
+                    var ops = new SolrServer<TestDocumentWithUniqueKey>(basicServer, mapper);
+                    ops.Delete(new[] {new TestDocumentWithUniqueKey()});
+                });            
         }
 
         [Test]

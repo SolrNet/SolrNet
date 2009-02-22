@@ -120,13 +120,24 @@ namespace SolrNet.Impl {
             return this;
         }
 
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.Delete(string id) {
+        public ISolrOperations<T> Delete(IEnumerable<string> ids) {
+            basicServer.Delete(ids);
+            return this;
+        }
+
+        ISolrBasicOperations<T> ISolrBasicOperations<T>.Delete(IEnumerable<string> id) {
             return Delete(id);
         }
 
         public ISolrOperations<T> Delete(T doc) {
             var id = GetId(doc);
             Delete(id.ToString());
+            return this;
+        }
+
+        public ISolrOperations<T> Delete(IEnumerable<T> docs) {
+            foreach (var d in docs)
+                Delete(GetId(d).ToString());
             return this;
         }
 
@@ -144,7 +155,7 @@ namespace SolrNet.Impl {
         }
 
         public ISolrOperations<T> Delete(string id) {
-            var delete = new DeleteCommand(new DeleteByIdParam(id));
+            var delete = new DeleteCommand(new DeleteByMultipleIdParam(new[] {id}));
             basicServer.Send(delete);
             return this;
         }

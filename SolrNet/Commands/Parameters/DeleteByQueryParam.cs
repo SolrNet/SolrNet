@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Commands.Parameters {
@@ -27,11 +28,11 @@ namespace SolrNet.Commands.Parameters {
 			query = q;
 		}
 
-		public XmlNode ToXmlNode() {
+		public IEnumerable<XmlNode> ToXmlNode() {
 			var xml = new XmlDocument();
 			var queryNode = xml.CreateElement("query");
 			queryNode.InnerText = query.Query;
-			return queryNode;
+			yield return queryNode;
 		}
 	}
 }

@@ -26,7 +26,7 @@ namespace SolrNet.DSL.Impl {
         }
 
         public void ById(string id) {
-            var cmd = new DeleteCommand(new DeleteByIdParam(id));
+            var cmd = new DeleteCommand(new DeleteByMultipleIdParam(new[] {id}));
             cmd.Execute(connection);
         }
 

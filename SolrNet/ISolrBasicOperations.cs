@@ -44,12 +44,12 @@ namespace SolrNet {
         ISolrBasicOperations<T> Add(IEnumerable<T> docs);
 
         /// <summary>
-        /// Deletes a document (requires the document to have a unique key defined with non-null value)
+        /// Deletes several documents (requires the document to have a unique key defined with non-null value)
         /// </summary>
-        /// <param name="id">document id to delete</param>
+        /// <param name="ids">document ids to delete</param>
         /// <returns></returns>
         /// <exception cref="NoUniqueKeyException">throws if document type doesn't have a unique key or document has null unique key</exception>
-        ISolrBasicOperations<T> Delete(string id);
+        ISolrBasicOperations<T> Delete(IEnumerable<string> ids);
 
         /// <summary>
         /// Deletes all documents that match a query

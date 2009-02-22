@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using SolrNet.Commands.Parameters;
+using SolrNet.Utils;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -53,7 +54,7 @@ namespace SolrNet.Commands {
 					deleteNode.Attributes.Append(att);
 				}
 			}
-			deleteNode.InnerXml = deleteParam.ToXmlNode().OuterXml;
+			deleteNode.InnerXml = Func.Join(Func.Select(deleteParam.ToXmlNode(), n => n.OuterXml));
 			return connection.Post("/update", deleteNode.OuterXml);
 		}
 	}

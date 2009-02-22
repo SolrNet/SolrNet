@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2007-2009 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +14,28 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Commands.Parameters {
     /// <summary>
-    /// Parameter to delete one document, by id
+    /// Parameter to delete several documents by id
     /// </summary>
-	public class DeleteByIdParam : ISolrDeleteParam {
-		private readonly string id;
+    public class DeleteByMultipleIdParam : ISolrDeleteParam {
+        private readonly IEnumerable<string> ids;
 
-		public DeleteByIdParam(string id) {
-			this.id = id;
-		}
+        public DeleteByMultipleIdParam(IEnumerable<string> ids) {
+            this.ids = ids;
+        }
 
-		public XmlNode ToXmlNode() {
-			var xml = new XmlDocument();
-			var idNode = xml.CreateElement("id");
-			idNode.InnerText = id;
-			return idNode;
-		}
-	}
+        public IEnumerable<XmlNode> ToXmlNode() {
+            var xml = new XmlDocument();
+            foreach (var i in ids) {
+                var node = xml.CreateElement("id");
+                node.InnerText = i;
+                yield return node;
+            }
+        }
+    }
 }

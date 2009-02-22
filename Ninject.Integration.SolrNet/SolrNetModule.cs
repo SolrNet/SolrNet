@@ -33,7 +33,6 @@ namespace Ninject.Integration.SolrNet {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Bind<IReadOnlyMappingManager>().ToConstant(mapper);
             Bind<IRNG>().To<RNG>();
-            Bind<IListRandomizer>().To<ListRandomizer>();
             Bind<ISolrConnection>().ToConstant(new SolrConnection(serverURL));
             Bind(typeof (ISolrQueryResultParser<>)).To(typeof (SolrQueryResultParser<>));
             Bind(typeof(ISolrQueryExecuter<>)).To(typeof(SolrQueryExecuter<>));

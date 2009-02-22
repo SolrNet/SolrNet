@@ -33,9 +33,6 @@ namespace SolrNet {
             var rng = new RNG();
             Container.Register<IRNG>(c => rng);
 
-            var randomizer = new ListRandomizer();
-            Container.Register<IListRandomizer>(c => randomizer);
-
         }
 
         public static readonly Container Container;

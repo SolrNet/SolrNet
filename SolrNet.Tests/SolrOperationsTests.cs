@@ -292,9 +292,6 @@ namespace SolrNet.Tests {
                 Expect.Call(connection.Get("/select", query))
                     .Repeat.Once()
                     .Return("");
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
 
                 SetupResult.For(parser.Parse(null))
                     .IgnoreArguments()
@@ -325,9 +322,6 @@ namespace SolrNet.Tests {
                 Expect.Call(connection.Get("/select", query))
                     .Repeat.Once()
                     .Return("");
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
                 SetupResult.For(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
@@ -364,9 +358,6 @@ namespace SolrNet.Tests {
                 query["rows"] = rows.ToString();
                 query["sort"] = "id asc,name desc";
                 Expect.Call(connection.Get("/select", query)).Repeat.Once().Return("");
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
 
                 SetupResult.For(parser.Parse(null))
                     .IgnoreArguments()
@@ -403,9 +394,6 @@ namespace SolrNet.Tests {
                 Expect.Call(connection.Get("/select", query))
                     .Repeat.Once()
                     .Return("");
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
                 SetupResult.For(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
@@ -439,9 +427,6 @@ namespace SolrNet.Tests {
                 Expect.Call(connection.Get("/select", query))
                     .Repeat.Once()
                     .Return("");
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
                 SetupResult.For(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
@@ -471,9 +456,6 @@ namespace SolrNet.Tests {
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
                 Expect.Call(resultParser.Parse(""))
                     .IgnoreArguments()
                     .Repeat.Once()

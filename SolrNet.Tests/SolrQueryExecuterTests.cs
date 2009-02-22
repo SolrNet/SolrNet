@@ -22,7 +22,6 @@ using Rhino.Mocks;
 using SolrNet.Attributes;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
-using SolrNet.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -49,9 +48,6 @@ namespace SolrNet.Tests {
                 q["q"] = queryString;
                 Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
             }).Verify(() => {
                 var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), null);
@@ -80,9 +76,6 @@ namespace SolrNet.Tests {
                     .IgnoreArguments()
                     .Repeat.Once()
                     .Return(mockR);
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
             }).Verify(() => {
                 var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
@@ -100,7 +93,6 @@ namespace SolrNet.Tests {
             var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             With.Mocks(mocks).Expecting(() => {
                 var q = new Dictionary<string, string>();
                 q["q"] = queryString;
@@ -108,9 +100,6 @@ namespace SolrNet.Tests {
                 q["sort"] = "id asc,name desc";
                 Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
             }).Verify(() => {
                 var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
@@ -131,7 +120,6 @@ namespace SolrNet.Tests {
             var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             With.Mocks(mocks).Expecting(delegate {
                 var q = new Dictionary<string, string>();
                 q["q"] = queryString;
@@ -139,9 +127,6 @@ namespace SolrNet.Tests {
                 q["fl"] = "id,name";
                 Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
             }).Verify(() => {
                 var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
@@ -157,7 +142,6 @@ namespace SolrNet.Tests {
             ServiceLocator.SetLocatorProvider(() => container);
             var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             With.Mocks(mocks).Expecting(() => {
                 var q = new Dictionary<string, string>();
                 q["q"] = "";
@@ -167,9 +151,6 @@ namespace SolrNet.Tests {
                 q["facet.query"] = "id:[1 TO 5]";
                 Expect.Call(conn.Get("/select", q))
                     .Repeat.Once().Return("");
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
             }).Verify(() => {
                 var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
@@ -192,7 +173,6 @@ namespace SolrNet.Tests {
             ServiceLocator.SetLocatorProvider(() => container);
             var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             With.Mocks(mocks).Expecting(() => {
                 var q = new List<KeyValuePair<string, string>> {
                     KVP("q", ""),
@@ -203,9 +183,6 @@ namespace SolrNet.Tests {
                 };
                 Expect.Call(conn.Get("/select", q))
                     .Repeat.Once().Return("");
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
             }).Verify(() => {
                 var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
@@ -224,7 +201,6 @@ namespace SolrNet.Tests {
             ServiceLocator.SetLocatorProvider(() => container);
             var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             const string highlightedField = "field1";
             const string afterTerm = "after";
             const string beforeTerm = "before";
@@ -248,9 +224,6 @@ namespace SolrNet.Tests {
                 q["hl.regex.maxAnalyzedChars"] = "8000";
                 Expect.Call(conn.Get("/select", q))
                     .Repeat.Once().Return("");
-                Expect.Call(container.GetInstance<IListRandomizer>())
-                    .Repeat.Any()
-                    .Return(null);
             }).Verify(() => {
                 var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
                 queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
@@ -276,7 +249,6 @@ namespace SolrNet.Tests {
             var container = mocks.CreateMock<IServiceLocator>();
             ServiceLocator.SetLocatorProvider(() => container);
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             var conn = new MockConnection(new[] {
                 KVP("q", "*:*"),
                 KVP("rows", "10"),

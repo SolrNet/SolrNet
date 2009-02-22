@@ -37,7 +37,8 @@ namespace SolrNet.Tests.Integration.Sample {
         public void Add() {
             var p = new Product {
                 Id = "SP2514N",
-                Name = "Samsuñg SpinPoint P120 SP2514N - hárd drívè - 250 GB - ÁTÀ-133", // testing UTF
+                Name = "Samsuñg SpinPoint P120 SP2514N - hárd drívè - 250 GB - ÁTÀ-133",
+                // testing UTF
                 Manufacturer = "Samsung Electronics Co. Ltd.",
                 Categories = new[] {
                     "electronics",
@@ -88,10 +89,30 @@ namespace SolrNet.Tests.Integration.Sample {
         public void FilterQuery() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var r = solr.Query(SolrQuery.All, new QueryOptions {
-                FilterQueries = new[] { new SolrQueryByRange<string>("price", "4", "*"), }
+                FilterQueries = new[] {new SolrQueryByRange<string>("price", "4", "*"),}
             });
             foreach (var product in r) {
                 Console.WriteLine(product.Id);
+            }
+        }
+
+        [Test]
+        public void SpellChecking() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var r = solr.Query(new SolrQuery("hell untrasharp"), new QueryOptions {
+                SpellCheck = new SpellCheckingParameters(),
+            });
+            Console.WriteLine("Products:");
+            foreach (var product in r) {
+                Console.WriteLine(product.Id);
+            }
+            Console.WriteLine();
+            Console.WriteLine("Spell checking:");
+            foreach (var sc in r.SpellChecking) {
+                Console.WriteLine(sc.Query);
+                foreach (var s in sc.Suggestions) {
+                    Console.WriteLine(s);                    
+                }
             }
         }
     }

@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using SolrNet.Impl;
 
 namespace SolrNet {
 	/// <summary>
@@ -51,5 +52,11 @@ namespace SolrNet {
         /// Highlight results
         /// </summary>
 		IDictionary<T, IDictionary<string, string>> Highlights { get; set; }
+
+        /// <summary>
+        /// Spell checking results
+        /// </summary>
+	    SpellCheckResults SpellChecking { get; set; }
+
 	}
 }

@@ -367,6 +367,9 @@
        <str name="version">2.1</str>
         -->
      </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
   </requestHandler>
 
 

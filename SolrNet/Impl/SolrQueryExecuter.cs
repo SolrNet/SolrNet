@@ -75,6 +75,7 @@ namespace SolrNet.Impl {
                 }
 
                 param.AddRange(GetFilterQueries(Options));
+                param.AddRange(GetSpellCheckingParameters(Options));
             }
 
             return param;
@@ -125,6 +126,27 @@ namespace SolrNet.Impl {
                 }
             }
             return param;
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> GetSpellCheckingParameters(QueryOptions Options) {
+            var spellCheck = Options.SpellCheck;
+            if (spellCheck != null) {
+                yield return KVP("spellcheck", "true");
+                if (!string.IsNullOrEmpty(spellCheck.Query))
+                    yield return KVP("spellcheck.q", spellCheck.Query);
+                if (spellCheck.Build.HasValue)
+                    yield return KVP("spellcheck.build", spellCheck.Build.ToString().ToLowerInvariant());
+                if (spellCheck.Collate.HasValue)
+                    yield return KVP("spellcheck.collate", spellCheck.Build.ToString().ToLowerInvariant());
+                if (spellCheck.Count.HasValue)
+                    yield return KVP("spellcheck.count", spellCheck.Count.ToString());
+                if (!string.IsNullOrEmpty(spellCheck.Dictionary))
+                    yield return KVP("spellcheck.dictionary", spellCheck.Dictionary);
+                if (spellCheck.OnlyMorePopular.HasValue)
+                    yield return KVP("spellcheck.onlyMorePopular", spellCheck.OnlyMorePopular.ToString().ToLowerInvariant());
+                if (spellCheck.Reload.HasValue)
+                    yield return KVP("spellcheck.reload", spellCheck.Reload.ToString().ToLowerInvariant());
+            }
         }
 
         /// <summary>

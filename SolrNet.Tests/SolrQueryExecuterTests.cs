@@ -14,9 +14,8 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -279,10 +278,10 @@ namespace SolrNet.Tests {
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             var conn = new MockConnection(new[] {
-                new KeyValuePair<string, string>("q", "*:*"),
-                new KeyValuePair<string, string>("rows", "10"),
-                new KeyValuePair<string, string>("fq", "id:0"),
-                new KeyValuePair<string, string>("fq", "id:2"),
+                KVP("q", "*:*"),
+                KVP("rows", "10"),
+                KVP("fq", "id:0"),
+                KVP("fq", "id:2"),
             });
             var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser) {
                 DefaultRows = 10,
@@ -293,6 +292,60 @@ namespace SolrNet.Tests {
                     new SolrQuery("id:2"),
                 },
             });
+        }
+
+        [Test]
+        public void SpellChecking() {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var p = queryExecuter.GetSpellCheckingParameters(new QueryOptions {
+                SpellCheck = new SpellCheckingParameters {
+                    Query = "hell",
+                    Build = true,
+                    Collate = true,
+                    Count = 4,
+                    Dictionary = "spanish",
+                    OnlyMorePopular = true,
+                    Reload = true,
+                },
+            }).ToList();
+            Assert.Contains(KVP("spellcheck", "true"), p);
+            Assert.Contains(KVP("spellcheck.q", "hell"), p);
+            Assert.Contains(KVP("spellcheck.build", "true"), p);
+            Assert.Contains(KVP("spellcheck.collate", "true"), p);
+            Assert.Contains(KVP("spellcheck.count", "4"), p);
+            Assert.Contains(KVP("spellcheck.dictionary", "spanish"), p);
+            Assert.Contains(KVP("spellcheck.onlyMorePopular", "true"), p);
+            Assert.Contains(KVP("spellcheck.reload", "true"), p);
+        }
+
+        [Test]
+        public void GetAllParameters_with_spelling() {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var p = queryExecuter.GetAllParameters(SolrQuery.All, new QueryOptions {
+                SpellCheck = new SpellCheckingParameters {
+                    Query = "hell",
+                    Build = true,
+                    Collate = true,
+                    Count = 4,
+                    Dictionary = "spanish",
+                    OnlyMorePopular = true,
+                    Reload = true,
+                },
+            }).ToList();
+            Assert.Contains(KVP("spellcheck", "true"), p);
+            Assert.Contains(KVP("spellcheck.q", "hell"), p);
+            Assert.Contains(KVP("spellcheck.build", "true"), p);
+            Assert.Contains(KVP("spellcheck.collate", "true"), p);
+            Assert.Contains(KVP("spellcheck.count", "4"), p);
+            Assert.Contains(KVP("spellcheck.dictionary", "spanish"), p);
+            Assert.Contains(KVP("spellcheck.onlyMorePopular", "true"), p);
+            Assert.Contains(KVP("spellcheck.reload", "true"), p);
         }
     }
 }

@@ -16,6 +16,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using SolrNet.Impl;
 
 namespace SolrNet {
     /// <summary>
@@ -181,7 +182,9 @@ namespace SolrNet {
 
 		public IDictionary<T, IDictionary<string, string>> Highlights { get; set; }
 
-		///<summary>
+        public SpellCheckResults SpellChecking { get; set; }
+
+        ///<summary>
 		///Returns an enumerator that iterates through the collection.
 		///</summary>
 		///

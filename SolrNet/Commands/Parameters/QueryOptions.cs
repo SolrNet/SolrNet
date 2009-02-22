@@ -56,6 +56,8 @@ namespace SolrNet.Commands.Parameters {
 		/// </summary>
 		public HighlightingParameters Highlight { get; set; }
 
+        public SpellCheckingParameters SpellCheck { get; set; }
+
         /// <summary>
         /// This parameter can be used to specify a query that can be used to restrict the super set of documents that can be returned, without influencing score. 
         /// It can be very useful for speeding up complex queries since the queries specified with fq are cached independently from the main query. 

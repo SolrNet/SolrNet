@@ -95,6 +95,8 @@
     <Compile Include="SolrQueryByRangeTests.cs" />
     <Compile Include="SolrQueryInListTests.cs" />
     <Compile Include="SolrQueryResultsParserTests.cs" />
+    <Compile Include="SolrQueryResultsParserTestsDocumentClasses.cs" />
+    <Compile Include="SolrQueryResultsParserTestsXmlResponses.cs" />
     <Compile Include="SolrQueryResultsTests.cs" />
     <Compile Include="SolrQueryTests.cs" />
     <Compile Include="SolrServerTests.cs" />

@@ -288,6 +288,16 @@ namespace SolrNet.Tests {
             Assert.AreEqual(0, container.GetAllInstances<IService>().ToArray().Length);
         }
 
+        [Test]
+        public void GetAllInstances() {
+            var container = new Container();
+            var inst = new ServiceImpl();
+            container.Register<IService>("inst1", c => inst);
+            var inst2 = new ServiceImpl();
+            container.Register<IService>(c => inst2);
+            Assert.AreEqual(2, container.GetAllInstances<IService>().ToArray().Length);
+        }
+
         public interface IService {}
 
         public class ServiceImpl : IService {

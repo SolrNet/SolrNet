@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using NUnit.Framework;
 
 namespace SolrNet.Tests {
@@ -52,6 +53,14 @@ namespace SolrNet.Tests {
         public void Empty() {
             var qm = new SolrMultipleCriteriaQuery(new ISolrQuery[] { });
             Assert.IsEmpty(qm.Query);
+        }
+
+        [Test]
+        public void StaticConstructor() {
+            var q = SolrMultipleCriteriaQuery.Create(new SolrQueryByField("id", "123"), new SolrQuery("solr"));
+            Assert.AreEqual(2, q.Queries.Count());
+            Assert.AreEqual("(id:123  solr)", q.Query);
+            Assert.IsEmpty(q.Oper);
         }
     }
 }

@@ -57,16 +57,6 @@ namespace SolrNet {
         /// <summary>
         /// Static create helper
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="queries"></param>
-        /// <returns></returns>
-        public static SolrMultipleCriteriaQuery Create<T>(params T[] queries) where T: ISolrQuery {
-            return Create((IEnumerable<T>)queries);
-        }
-
-        /// <summary>
-        /// Static create helper
-        /// </summary>
         /// <param name="queries"></param>
         /// <returns></returns>
         public static SolrMultipleCriteriaQuery Create(params ISolrQuery[] queries) {

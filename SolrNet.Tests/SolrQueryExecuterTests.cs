@@ -338,5 +338,37 @@ namespace SolrNet.Tests {
             Assert.Contains(KVP("mlt.mintf", "1"), p);
             Assert.Contains(KVP("q", "apache"), p);
         }
+
+        [Test]
+        public void GetMoreLikeThisParameters() {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var p = queryExecuter.GetMoreLikeThisParameters(new QueryOptions {
+                MoreLikeThis = new MoreLikeThisParameters(new[] {"field1", "field2"}) {
+                    Boost = true,
+                    Count = 10,
+                    QueryFields = new[] {"qf1", "qf2"},
+                    MaxQueryTerms = 2,
+                    MaxTokens = 3,
+                    MaxWordLength = 4,
+                    MinDocFreq = 5,
+                    MinTermFreq = 6,
+                    MinWordLength = 7,
+                }
+            }).ToList();
+            Assert.Contains(KVP("mlt", "true"), p);
+            Assert.Contains(KVP("mlt.boost", "true"), p);
+            Assert.Contains(KVP("mlt.count", "10"), p);
+            Assert.Contains(KVP("mlt.maxqt", "2"), p);
+            Assert.Contains(KVP("mlt.maxntp", "3"), p);
+            Assert.Contains(KVP("mlt.maxwl", "4"), p);
+            Assert.Contains(KVP("mlt.mindf", "5"), p);
+            Assert.Contains(KVP("mlt.mintf", "6"), p);
+            Assert.Contains(KVP("mlt.minwl", "7"), p);
+            Assert.Contains(KVP("mlt.fl", "field1,field2"), p);
+            Assert.Contains(KVP("mlt.qf", "qf1,qf2"), p);
+        }
     }
 }

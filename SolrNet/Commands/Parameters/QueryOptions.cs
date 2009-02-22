@@ -56,6 +56,9 @@ namespace SolrNet.Commands.Parameters {
 		/// </summary>
 		public HighlightingParameters Highlight { get; set; }
 
+        /// <summary>
+        /// Spell-checking parameters
+        /// </summary>
         public SpellCheckingParameters SpellCheck { get; set; }
 
         /// <summary>

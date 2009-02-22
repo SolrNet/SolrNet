@@ -81,6 +81,7 @@
     <Compile Include="MemoizingMappingManagerTests.cs" />
     <Compile Include="MockConnection.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
+    <Compile Include="RandomSortTests.cs" />
     <Compile Include="SolrConnectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolrDocumentSerializerTests.cs" />

@@ -115,5 +115,15 @@ namespace SolrNet.Tests.Integration.Sample {
                 }
             }
         }
+
+        [Test]
+        public void RandomSorting() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var results = solr.Query(SolrQuery.All, new QueryOptions {
+                OrderBy = new[] {new RandomSortOrder("random")}
+            });
+            foreach (var r in results)
+                Console.WriteLine(r.Manufacturer);
+        }
     }
 }

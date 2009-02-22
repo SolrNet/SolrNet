@@ -40,8 +40,6 @@ namespace SolrNet {
 			return string.Format("{0} {1}", fieldName, order.ToString().ToLower());
 		}
 
-		private delegate T F<TP, T>(TP p);
-
 		public static SortOrder Parse(string s) {
             if (string.IsNullOrEmpty(s))
                 throw new InvalidSortOrderException();

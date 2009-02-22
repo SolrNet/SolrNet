@@ -16,6 +16,7 @@
 
 using System;
 using NUnit.Framework;
+using NUnit.Framework.SyntaxHelpers;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -25,6 +26,33 @@ namespace SolrNet.Tests {
             var r = new RandomSortOrder("random");
             var rndSort = r.ToString();
             Console.WriteLine(rndSort);
+            Assert.That(rndSort, Text.Matches("random_\\d+ asc"));
+        }
+
+        [Test]
+        public void RandomWithSeed() {
+            const string seed = "234asd";
+            var r = new RandomSortOrder("random", seed);
+            var rndSort = r.ToString();
+            Console.WriteLine(rndSort);
+            Assert.That(rndSort, Text.Matches(string.Format("random_{0} asc", seed)));
+        }
+
+        [Test]
+        public void RandomWithOrder() {
+            var r = new RandomSortOrder("random", Order.DESC);
+            var rndSort = r.ToString();
+            Console.WriteLine(rndSort);
+            Assert.That(rndSort, Text.Matches("random_\\d+ desc"));
+        }
+
+        [Test]
+        public void RandomWithSeedAndOrder() {
+            const string seed = "234asd";
+            var r = new RandomSortOrder("random", seed, Order.DESC);
+            var rndSort = r.ToString();
+            Console.WriteLine(rndSort);
+            Assert.That(rndSort, Text.Matches(string.Format("random_{0} desc", seed)));
         }
     }
 }

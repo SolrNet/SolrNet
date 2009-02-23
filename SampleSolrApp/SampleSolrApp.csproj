@@ -83,11 +83,13 @@
     <Compile Include="Helpers\EnumerableExtensions.cs" />
     <Compile Include="Helpers\ExpressionExtensions.cs" />
     <Compile Include="Helpers\ExpressionVisitorV.cs" />
+    <Compile Include="Helpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\HtmlHelperMapperExtensions.cs" />
     <Compile Include="Helpers\HtmlHelperRepeatExtensions.cs" />
     <Compile Include="Helpers\IReadOnlyMappingManagerExtensions.cs" />
     <Compile Include="Helpers\KeyValuePairExtensions.cs" />
     <Compile Include="Helpers\ObjectExtensions.cs" />
+    <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\UrlHelperExtensions.cs" />
     <Compile Include="Helpers\UrlHelperFacetExtensions.cs" />

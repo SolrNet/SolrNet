@@ -63,6 +63,12 @@
             <% } else { %>
             <a href="<%= Url.SetParameter("sort", "price") %>">Price</a>
             <% } %>
+            |
+            <% if (Model.Search.Sort.NotNullAnd(s => s.StartsWith("random"))) { %> 
+            <strong>Random</strong>
+            <% } else { %>
+            <a href="<%= Url.SetParameter("sort", "random_" + Html.RandomNumber()) %>">Random</a>
+            <% } %>
         </div>
         
         <div>

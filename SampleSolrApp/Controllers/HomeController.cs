@@ -62,11 +62,16 @@ namespace SampleSolrApp.Controllers {
             return parameters.Facets.Select(f => f.Key);
         }
 
+        public SortOrder[] GetSelectedSort(SearchParameters parameters) {
+            return new[] {SortOrder.Parse(parameters.Sort)}.Where(o => o != null).ToArray();
+        }
+
         public ActionResult Index(SearchParameters parameters) {
             var start = (parameters.PageIndex - 1)*parameters.PageSize;
             var matchingProducts = solr.Query(BuildQuery(parameters), new QueryOptions {
                 Rows = parameters.PageSize,
                 Start = start,
+                OrderBy = GetSelectedSort(parameters),
                 SpellCheck = new SpellCheckingParameters(),
                 FacetQueries = AllFacetFields.Except(SelectedFacetFields(parameters))
                     .Select(f => new SolrFacetFieldQuery(f) {MinCount = 1})

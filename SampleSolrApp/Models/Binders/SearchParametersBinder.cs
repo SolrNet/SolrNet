@@ -42,6 +42,7 @@ namespace SampleSolrApp.Models.Binders {
                 FreeSearch = StringHelper.EmptyToNull(qs["q"]),
                 PageIndex = StringHelper.TryParse(qs["page"], 1),
                 PageSize = StringHelper.TryParse(qs["pageSize"], DefaultPageSize),
+                Sort = StringHelper.EmptyToNull(qs["sort"]),
                 Facets = qsDict.Where(k => FacetRegex.IsMatch(k.Key))
                     .Select(k => k.WithKey(FacetRegex.Replace(k.Key, "")))
                     .ToDictionary()

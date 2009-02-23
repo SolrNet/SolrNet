@@ -27,7 +27,7 @@ namespace SampleSolrApp.Helpers {
         }
 
         public static string RemoveFacet(this UrlHelper helper, string field) {
-            var noFacet = helper.RemoveParameters(helper.RequestContext.HttpContext.Request.RawUrl, string.Format("f_{0}", field));
+            var noFacet = helper.RemoveParametersUrl(helper.RequestContext.HttpContext.Request.RawUrl, string.Format("f_{0}", field));
             return helper.SetParameter(noFacet, "page", "1");
         }
     }

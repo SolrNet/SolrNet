@@ -42,7 +42,7 @@ namespace SolrNet {
 
 		public static SortOrder Parse(string s) {
             if (string.IsNullOrEmpty(s))
-                throw new InvalidSortOrderException();
+                return null;
 			try {
 				var tokens = s.Split(' ');
 				string field = tokens[0];

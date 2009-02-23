@@ -33,15 +33,15 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
-		[ExpectedException(typeof (InvalidSortOrderException))]
-		public void ParseNull_ShouldThrow() {
+		public void ParseNull_ShouldReturnNull() {
 			var o = SortOrder.Parse(null);
+            Assert.IsNull(o);
 		}
 
         [Test]
-        [ExpectedException(typeof(InvalidSortOrderException))]
-        public void ParseEmpty_ShouldThrow() {
+        public void ParseEmpty_ShouldReturnNull() {
             var o = SortOrder.Parse("");
+            Assert.IsNull(o);
         }
 
 		[Test]

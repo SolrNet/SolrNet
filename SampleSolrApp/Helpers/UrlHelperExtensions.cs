@@ -64,7 +64,7 @@ namespace SampleSolrApp.Helpers {
         /// <param name="url">URL to process</param>
         /// <param name="parameters">Query string parameter keys to remove</param>
         /// <returns>Resulting URL</returns>
-        public static string RemoveParameters(this UrlHelper helper, string url, params string[] parameters) {
+        public static string RemoveParametersUrl(this UrlHelper helper, string url, params string[] parameters) {
             var parts = url.Split('?');
             IDictionary<string, string> qs = new Dictionary<string, string>();
             if (parts.Length > 1)
@@ -72,6 +72,10 @@ namespace SampleSolrApp.Helpers {
             foreach (var p in parameters)
                 qs.Remove(p);
             return parts[0] + "?" + DictToQuerystring(qs);
+        }
+
+        public static string RemoveParameters(this UrlHelper helper, params string[] parameters) {
+            return helper.RemoveParametersUrl(helper.RequestContext.HttpContext.Request.RawUrl, parameters);
         }
 
         public static string DictToQuerystring(IDictionary<string, string> qs) {

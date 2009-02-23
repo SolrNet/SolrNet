@@ -26,6 +26,7 @@ namespace SampleSolrApp.Models {
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
         public IDictionary<string, string> Facets { get; set; }
+        public string Sort { get; set; }
 
         public int FirstItemIndex {
             get {

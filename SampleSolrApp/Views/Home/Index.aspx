@@ -43,6 +43,28 @@
     </div>
 
     <div class="rightColumn">
+    
+        <div>
+            Sort by: 
+            <% if (string.IsNullOrEmpty(Model.Search.Sort)) { %>
+            <strong>Best match</strong>
+            <% } else { %>
+            <a href="<%= Url.RemoveParameters("sort") %>">Best match</a>
+            <% } %>
+            |
+            <% if (Model.Search.Sort == "nameSort") { %>
+            <strong>Name</strong>
+            <% } else { %>
+            <a href="<%= Url.SetParameter("sort", "nameSort") %>">Name</a>
+            <% } %>
+            |
+            <% if (Model.Search.Sort == "price") { %>
+            <strong>Price</strong>
+            <% } else { %>
+            <a href="<%= Url.SetParameter("sort", "price") %>">Price</a>
+            <% } %>
+        </div>
+        
         <div>
             <% foreach (var p in Model.Products) { %>
             <div class="product">

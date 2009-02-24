@@ -13,7 +13,7 @@
     </form>
     
     <% if (!string.IsNullOrEmpty(Model.DidYouMean)) { %>
-    Did you mean <strong><em><a href="<%= Url.UrlForQuery(Model.DidYouMean) %>"><%= Model.DidYouMean%></a></em></strong>
+    Did you mean <strong><em><a href="<%= Url.ForQuery(Model.DidYouMean) %>"><%= Model.DidYouMean%></a></em></strong>
     <% } %>
     
     <div class="leftColumn">

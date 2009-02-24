@@ -125,7 +125,7 @@ namespace SampleSolrApp.Helpers {
             return d;
         }
 
-        public static string UrlForQuery(this UrlHelper helper, string solrQuery) {
+        public static string ForQuery(this UrlHelper helper, string solrQuery) {
             return helper.SetParameter("q", solrQuery);
         }
     }

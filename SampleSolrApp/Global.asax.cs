@@ -27,6 +27,7 @@ using Microsoft.Practices.ServiceLocation;
 using SampleSolrApp.Models;
 using SampleSolrApp.Models.Binders;
 using SolrNet;
+using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 
 namespace SampleSolrApp {
@@ -71,6 +72,7 @@ namespace SampleSolrApp {
                 connection.Post("/update", File.ReadAllText(file, Encoding.UTF8));
             }
             solr.Commit();
+            solr.BuildSpellCheckDictionary();
         }
 
         /// <summary>

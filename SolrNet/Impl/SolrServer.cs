@@ -104,6 +104,13 @@ namespace SolrNet.Impl {
             return r.FacetFields[facet.Field];
         }
 
+        public void BuildSpellCheckDictionary() {
+            basicServer.Query(SolrQuery.All, new QueryOptions {
+                Rows = 0,
+                SpellCheck = new SpellCheckingParameters { Build = true },
+            });
+        }
+
         public void Commit(WaitOptions options) {
             basicServer.Commit(options);
         }

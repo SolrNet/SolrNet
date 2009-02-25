@@ -85,5 +85,12 @@ namespace SolrNet {
         /// <param name="ids">document unique keys</param>
         /// <returns></returns>
         new ISolrOperations<T> Delete(IEnumerable<string> ids);
+
+        /// <summary>
+        /// Create the dictionary for use by the SolrSpellChecker. 
+        /// In typical applications, one needs to build the dictionary before using it. 
+        /// However, it may not always be necessary as it is possible to setup the spellchecker with a dictionary that already exists.
+        /// </summary>
+        void BuildSpellCheckDictionary();
     }
 }

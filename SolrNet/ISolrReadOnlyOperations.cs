@@ -68,11 +68,5 @@ namespace SolrNet {
         /// <returns></returns>
         ICollection<KeyValuePair<string, int>> FacetFieldQuery(SolrFacetFieldQuery facets);
 
-        /// <summary>
-        /// Create the dictionary for use by the SolrSpellChecker. 
-        /// In typical applications, one needs to build the dictionary before using it. 
-        /// However, it may not always be necessary as it is possible to setup the spellchecker with a dictionary that already exists.
-        /// </summary>
-        void BuildSpellCheckDictionary();
     }
 }

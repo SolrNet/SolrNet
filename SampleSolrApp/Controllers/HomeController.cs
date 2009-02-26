@@ -39,7 +39,7 @@ namespace SampleSolrApp.Controllers {
         /// <returns></returns>
         public ISolrQuery BuildQuery(SearchParameters parameters) {
             var queriesFromFacets = from p in parameters.Facets
-                                    select Query.Field(p.Key).Is(p.Value);
+                                    select (ISolrQuery) Query.Field(p.Key).Is(p.Value);
             var queries = queriesFromFacets.ToList();
             if (!string.IsNullOrEmpty(parameters.FreeSearch))
                 queries.Add(new SolrQuery(parameters.FreeSearch));

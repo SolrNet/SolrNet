@@ -29,15 +29,15 @@ namespace SolrNet.DSL.Impl {
             return new RangeDefinition<T>(fieldName, from);
         }
 
-        public ISolrQuery In<T>(params T[] values) {
+        public SolrQueryInList In<T>(params T[] values) {
             return new SolrQueryInList(fieldName, Func.Select(values, v => Convert.ToString(v)));
         }
 
-        public ISolrQuery Is<T>(T value) {
+        public SolrQueryByField Is<T>(T value) {
             return new SolrQueryByField(fieldName, Convert.ToString(value));
         }
 
-        public ISolrQuery HasAnyValue() {
+        public SolrQueryByRange<string> HasAnyValue() {
             return From("*").To("*");
         }
     }

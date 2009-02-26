@@ -24,7 +24,7 @@ namespace SolrNet.DSL.Impl {
             this.from = from;
         }
 
-        public ISolrQuery To(T to) {
+        public SolrQueryByRange<T> To(T to) {
             return new SolrQueryByRange<T>(fieldName, from, to);
         }
     }

@@ -18,7 +18,7 @@ using SolrNet.DSL.Impl;
 
 namespace SolrNet.DSL {
     public static class Query {
-        public static ISolrQuery Simple(string s) {
+        public static SolrQuery Simple(string s) {
             return new SolrQuery(s);
         }
 

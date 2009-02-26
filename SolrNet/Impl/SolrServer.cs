@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -143,8 +144,8 @@ namespace SolrNet.Impl {
         }
 
         public ISolrOperations<T> Delete(IEnumerable<T> docs) {
-            foreach (var d in docs)
-                Delete(GetId(d).ToString());
+            basicServer.Delete(Func.Select(docs,
+                                           d => Convert.ToString(mappingManager.GetUniqueKey(typeof (T)).Key.GetValue(d, null))));
             return this;
         }
 

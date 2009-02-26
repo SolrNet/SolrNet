@@ -158,13 +158,17 @@ namespace SolrNet.Tests {
             var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithUniqueKey>>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<delete><query>id:123</query></delete>"))
+                .Expecting(() => Expect.Call(connection.Post("/update", "<delete><id>0</id><id>0</id></delete>"))
                                      .Repeat.Once()
                                      .Return(null))
                 .Verify(delegate {
-                    var ops = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
-                    ops.Delete(new SolrQuery("id:123"));
-                });            
+                    var basic = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
+                    var ops = new SolrServer<TestDocumentWithUniqueKey>(basic, new AttributesMappingManager());
+                    ops.Delete(new[] {
+                        new TestDocumentWithUniqueKey(),
+                        new TestDocumentWithUniqueKey(),
+                    });
+                });
         }
 
         [Test]
@@ -201,26 +205,6 @@ namespace SolrNet.Tests {
                     var ops = new SolrServer<TestDocumentWithUniqueKey>(basicServer, mapper);
                     ops.Delete(new TestDocumentWithUniqueKey());
                 });
-        }
-
-        [Test]
-        public void DeleteMultipleDocs() {
-            var mocks = new MockRepository();
-            var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocumentWithUniqueKey>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
-            With.Mocks(mocks)
-                .Expecting(() => {
-                    Expect.Call(basicServer.Send(null))
-                        .IgnoreArguments()
-                        .Repeat.Once()
-                        .Return("");
-                    Expect.Call(mapper.GetUniqueKey(typeof(TestDocumentWithUniqueKey)))
-                        .Return(new KeyValuePair<PropertyInfo, string>(typeof(TestDocumentWithUniqueKey).GetProperty("id"), "id"));
-                })
-                .Verify(delegate {
-                    var ops = new SolrServer<TestDocumentWithUniqueKey>(basicServer, mapper);
-                    ops.Delete(new[] {new TestDocumentWithUniqueKey()});
-                });            
         }
 
         [Test]

@@ -73,8 +73,14 @@ namespace SolrNet.Commands.Parameters {
         /// </summary>
         public ICollection<ISolrQuery> FilterQueries { get; set; }
 
+        /// <summary>
+        /// Extra arbitrary parameters to be passed in the request querystring
+        /// </summary>
+        public IEnumerable<KeyValuePair<string, string>> ExtraParams { get; set; }
+
 	    public QueryOptions() {
 			OrderBy = new List<SortOrder>();
+	        ExtraParams = new Dictionary<string, string>();
 		}
 	}
 }

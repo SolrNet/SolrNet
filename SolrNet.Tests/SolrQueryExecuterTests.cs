@@ -370,5 +370,24 @@ namespace SolrNet.Tests {
             Assert.Contains(KVP("mlt.fl", "field1,field2"), p);
             Assert.Contains(KVP("mlt.qf", "qf1,qf2"), p);
         }
+
+        [Test]
+        public void ExtraParams() {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var p = queryExecuter.GetAllParameters(new SolrQuery("123123"), new QueryOptions {
+                ExtraParams = new Dictionary<string, string> {
+                    {"qt", "geo"},
+                    {"lat", "40.75141843299745"},
+                    {"long", "-74.0093994140625"},
+                    {"radius", "1"},
+                }
+            }).ToDictionary(x => x.Key, x => x.Value);
+            Assert.AreEqual("123123", p["q"]);
+            Assert.AreEqual("geo", p["qt"]);
+            Assert.AreEqual("1", p["radius"]);
+        }
     }
 }

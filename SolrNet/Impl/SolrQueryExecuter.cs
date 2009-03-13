@@ -84,6 +84,8 @@ namespace SolrNet.Impl {
                 param.AddRange(GetFilterQueries(Options));
                 param.AddRange(GetSpellCheckingParameters(Options));
                 param.AddRange(GetMoreLikeThisParameters(Options));
+                if (Options.ExtraParams != null)
+                    param.AddRange(Options.ExtraParams);
             }
 
             return param;

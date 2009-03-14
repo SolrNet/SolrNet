@@ -15,11 +15,20 @@
 #endregion
 
 using System;
+using System.Xml;
 
-namespace SampleSolrApp.Helpers {
-    public static class StringExtensions {
-        public static bool NotNullAnd(this string s, Func<string, bool> f) {
-            return s != null && f(s);
+namespace SolrNet.Impl.FieldParsers {
+    public class FloatFieldParser : ISolrFieldParser {
+        public bool CanHandleSolrType(string solrType) {
+            return solrType == "float" || solrType == "int";
+        }
+
+        public bool CanHandleType(Type t) {
+            return t == typeof (float);
+        }
+
+        public object Parse(XmlNode field, Type t) {
+            return float.Parse(field.InnerText);
         }
     }
 }

@@ -146,5 +146,12 @@ namespace SolrNet.Utils {
 				r.Add(o);
 			return r.ToArray();
 		}
+
+        public static bool Any<T>(IEnumerable<T> l, Converter<T, bool> condition) {
+            foreach (var p in l)
+                if (condition(p))
+                    return true;
+            return false;
+        }
 	}
 }

@@ -33,20 +33,13 @@ namespace SolrNet.Impl {
     public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : new() {
 
         private readonly IReadOnlyMappingManager mappingManager;
+        private readonly ISolrFieldParser fieldParser;
 
-        private static readonly IDictionary<string, Type> solrTypes;
-
-        static SolrQueryResultParser() {
-            solrTypes = new Dictionary<string, Type>();
-            solrTypes["int"] = typeof (int);
-            solrTypes["str"] = typeof (string);
-            solrTypes["bool"] = typeof (bool);
-            solrTypes["date"] = typeof (DateTime);
+        public SolrQueryResultParser(IReadOnlyMappingManager mappingManager, ISolrFieldParser fieldParser) {
+            this.mappingManager = mappingManager;
+            this.fieldParser = fieldParser;
         }
 
-        public SolrQueryResultParser(IReadOnlyMappingManager mapper) {
-            mappingManager = mapper;
-        }
 
         public IList<T> ParseResults(XmlNode parentNode) {
             var results = new List<T>();
@@ -137,75 +130,11 @@ namespace SolrNet.Impl {
         }
 
         public void SetProperty(T doc, PropertyInfo prop, XmlNode field) {
-            // HACK too messy
-            if (field.Name == "arr") {
-                prop.SetValue(doc, GetCollectionProperty(field, prop), null);
-            } else if (prop.PropertyType == typeof (double?)) {
-                if (!string.IsNullOrEmpty(field.InnerText))
-                    prop.SetValue(doc, double.Parse(field.InnerText, CultureInfo.InvariantCulture), null);
-            } else if (prop.PropertyType == typeof (DateTime)) {
-                prop.SetValue(doc, ParseDate(field.InnerText), null);
-            } else if (prop.PropertyType == typeof (DateTime?)) {
-                if (!string.IsNullOrEmpty(field.InnerText))
-                    prop.SetValue(doc, ParseDate(field.InnerText), null);
-            } else {
-                var converter = TypeDescriptor.GetConverter(prop.PropertyType);
-                if (converter.CanConvertFrom(typeof (string)))
-                    prop.SetValue(doc, converter.ConvertFromInvariantString(field.InnerText), null);
-                else
-                    prop.SetValue(doc, Convert.ChangeType(field.InnerText, prop.PropertyType), null);
+            if (fieldParser.CanHandleSolrType(field.Name) && 
+                fieldParser.CanHandleType(prop.PropertyType)) {
+                    var v = fieldParser.Parse(field, prop.PropertyType);
+                    prop.SetValue(doc, v, null);
             }
-        }
-
-        private static object GetCollectionProperty(XmlNode field, PropertyInfo prop) {
-            try {
-                var genericTypes = prop.PropertyType.GetGenericArguments();
-                if (genericTypes.Length == 1) {
-                    // ICollection<int>, etc
-                    return GetGenericCollectionProperty(field, genericTypes);
-                }
-                if (prop.PropertyType.IsArray) {
-                    // int[], string[], etc
-                    return GetArrayProperty(field, prop);
-                }
-                if (prop.PropertyType.IsInterface) {
-                    // ICollection
-                    return GetNonGenericCollectionProperty(field);
-                }
-            } catch (Exception e) {
-                throw new CollectionTypeNotSupportedException(e, prop.PropertyType);
-            }
-            throw new CollectionTypeNotSupportedException(prop.PropertyType);
-        }
-
-        private static IList GetNonGenericCollectionProperty(XmlNode field) {
-            var l = new ArrayList();
-            foreach (XmlNode arrayValueNode in field.ChildNodes) {
-                l.Add(Convert.ChangeType(arrayValueNode.InnerText, solrTypes[arrayValueNode.Name]));
-            }
-            return l;
-        }
-
-        private static Array GetArrayProperty(XmlNode field, PropertyInfo prop) {
-            // int[], string[], etc
-            var arr = (Array) Activator.CreateInstance(prop.PropertyType, new object[] {field.ChildNodes.Count});
-            var arrType = Type.GetType(prop.PropertyType.ToString().Replace("[]", ""));
-            int i = 0;
-            foreach (XmlNode arrayValueNode in field.ChildNodes) {
-                arr.SetValue(Convert.ChangeType(arrayValueNode.InnerText, arrType), i);
-                i++;
-            }
-            return arr;
-        }
-
-        private static IList GetGenericCollectionProperty(XmlNode field, Type[] genericTypes) {
-            // ICollection<int>, etc
-            var gt = genericTypes[0];
-            var l = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(gt));
-            foreach (XmlNode arrayValueNode in field.ChildNodes) {
-                l.Add(Convert.ChangeType(arrayValueNode.InnerText, gt));
-            }
-            return l;
         }
 
         /// <summary>

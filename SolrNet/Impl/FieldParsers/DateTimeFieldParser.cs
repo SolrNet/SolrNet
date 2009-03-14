@@ -15,11 +15,25 @@
 #endregion
 
 using System;
+using System.Globalization;
+using System.Xml;
 
-namespace SampleSolrApp.Helpers {
-    public static class StringExtensions {
-        public static bool NotNullAnd(this string s, Func<string, bool> f) {
-            return s != null && f(s);
+namespace SolrNet.Impl.FieldParsers {
+    public class DateTimeFieldParser : ISolrFieldParser {
+        public bool CanHandleSolrType(string solrType) {
+            return solrType == "date";
+        }
+
+        public bool CanHandleType(Type t) {
+            return t == typeof (DateTime);
+        }
+
+        public object Parse(XmlNode field, Type t) {
+            return ParseDate(field.InnerText);
+        }
+
+        public DateTime ParseDate(string s) {
+            return DateTime.ParseExact(s, "yyyy-MM-dd'T'HH:mm:ss.FFF'Z'", CultureInfo.InvariantCulture);
         }
     }
 }

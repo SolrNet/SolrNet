@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Collections.Generic;
 using System.Xml;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.DocumentPropertyVisitors {
     public class AggregateDocumentVisitor : ISolrDocumentPropertyVisitor {
@@ -10,10 +7,6 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
 
         public AggregateDocumentVisitor(IEnumerable<ISolrDocumentPropertyVisitor> visitors) {
             this.visitors = visitors;
-        }
-
-        public bool CanHandleType(Type t) {
-            return Func.Any(visitors, v => v.CanHandleType(t));
         }
 
         public void Visit(object doc, string fieldName, XmlNode field) {

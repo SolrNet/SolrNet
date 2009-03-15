@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Xml;
+﻿using System.Xml;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.DocumentPropertyVisitors {
@@ -13,17 +11,13 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
             this.mapper = mapper;
         }
 
-        public bool CanHandleType(Type t) {
-            return parser.CanHandleType(t);
-        }
-
         public void Visit(object doc, string fieldName, XmlNode field) {
             var allFields = mapper.GetFields(doc.GetType());
             var thisField = Func.FirstOrDefault(allFields, p => p.Value == fieldName);
             if (thisField.Key == null)
                 return;
             if (parser.CanHandleSolrType(field.Name) &&
-                parser.CanHandleType(thisField.Key.PropertyType)){
+                parser.CanHandleType(thisField.Key.PropertyType)) {
                 var v = parser.Parse(field, thisField.Key.PropertyType);
                 thisField.Key.SetValue(doc, v, null);
             }

@@ -43,6 +43,13 @@ namespace Ninject.Integration.SolrNet.Tests {
             Assert.AreSame(mapper, m);
         }
 
+        [Test]
+        public void ResolveSolrOperations() {
+            var c = new StandardKernel();
+            c.Load(new SolrNetModule("http://localhost:8983/solr"));
+            var m = c.Get<ISolrOperations<Entity>>();
+        }
+
         public class Entity {}
     }
 }

@@ -24,10 +24,11 @@ namespace SolrNet.Impl.FieldSerializers {
         public DefaultFieldSerializer() {
             serializer = new AggregateFieldSerializer(new ISolrFieldSerializer[] {
                 new CollectionFieldSerializer(this),
+                new GenericDictionaryFieldSerializer(this),
                 new NullableFieldSerializer(new BoolFieldSerializer()),
                 new NullableFieldSerializer(new DateTimeFieldSerializer()),
                 new FormattableFieldSerializer(),
-                new ToStringFieldSerializer(),
+                new TypeConvertingFieldSerializer(),
             });
         }
 

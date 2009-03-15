@@ -22,6 +22,7 @@ using Castle.Windsor;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SolrNet;
+using SolrNet.Impl;
 
 namespace Castle.Facilities.SolrNetIntegration.Tests {
     [TestFixture]
@@ -78,6 +79,38 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.AddFacility("solr", solrFacility);
             var m = container.Resolve<IReadOnlyMappingManager>();
             Assert.AreSame(m, mapper);
+        }
+
+        [Test]
+        public void Container_has_ISolrFieldParser() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            container.Resolve<ISolrFieldParser>();
+        }
+
+        [Test]
+        public void Container_has_ISolrFieldSerializer() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            container.Resolve<ISolrFieldSerializer>();
+        }
+
+        [Test]
+        public void Container_has_ISolrDocumentPropertyVisitor() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            container.Resolve<ISolrDocumentPropertyVisitor>();
+        }
+
+        [Test]
+        public void Resolve_ISolrOperations() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            container.Resolve<ISolrOperations<Document>>();
         }
 
         public class Document {}

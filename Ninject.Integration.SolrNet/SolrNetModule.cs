@@ -17,6 +17,9 @@
 using Ninject.Core;
 using SolrNet;
 using SolrNet.Impl;
+using SolrNet.Impl.DocumentPropertyVisitors;
+using SolrNet.Impl.FieldParsers;
+using SolrNet.Impl.FieldSerializers;
 using SolrNet.Mapping;
 using SolrNet.Utils;
 
@@ -33,6 +36,9 @@ namespace Ninject.Integration.SolrNet {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Bind<IReadOnlyMappingManager>().ToConstant(mapper);
             Bind<IRNG>().To<RNG>();
+            Bind<ISolrDocumentPropertyVisitor>().To<DefaultDocumentVisitor>();
+            Bind<ISolrFieldParser>().To<DefaultFieldParser>();
+            Bind<ISolrFieldSerializer>().To<DefaultFieldSerializer>();
             Bind<ISolrConnection>().ToConstant(new SolrConnection(serverURL));
             Bind(typeof (ISolrQueryResultParser<>)).To(typeof (SolrQueryResultParser<>));
             Bind(typeof(ISolrQueryExecuter<>)).To(typeof(SolrQueryExecuter<>));

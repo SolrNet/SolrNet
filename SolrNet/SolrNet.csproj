@@ -50,6 +50,10 @@
     <Compile Include="Commands\Parameters\MoreLikeThisParameters.cs" />
     <Compile Include="Commands\Parameters\SpellCheckingParameters.cs" />
     <Compile Include="Exceptions\TypeNotSupportedException.cs" />
+    <Compile Include="Impl\DocumentPropertyVisitors\AggregateDocumentVisitor.cs" />
+    <Compile Include="Impl\DocumentPropertyVisitors\DefaultDocumentVisitor.cs" />
+    <Compile Include="Impl\DocumentPropertyVisitors\GenericDictionaryDocumentVisitor.cs" />
+    <Compile Include="Impl\DocumentPropertyVisitors\RegularDocumentVisitor.cs" />
     <Compile Include="Impl\FieldParsers\AggregateFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\CollectionFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\DateTimeFieldParser.cs" />
@@ -66,8 +70,11 @@
     <Compile Include="Impl\FieldSerializers\DateTimeFieldSerializer.cs" />
     <Compile Include="Impl\FieldSerializers\DefaultFieldSerializer.cs" />
     <Compile Include="Impl\FieldSerializers\FormattableFieldSerializer.cs" />
+    <Compile Include="Impl\FieldSerializers\GenericDictionaryFieldSerializer.cs" />
     <Compile Include="Impl\FieldSerializers\NullableFieldSerializer.cs" />
     <Compile Include="Impl\FieldSerializers\ToStringFieldSerializer.cs" />
+    <Compile Include="Impl\FieldSerializers\TypeConvertingFieldSerializer.cs" />
+    <Compile Include="Impl\ISolrDocumentPropertyVisitor.cs" />
     <Compile Include="Impl\ISolrFieldParser.cs" />
     <Compile Include="Impl\ISolrFieldSerializer.cs" />
     <Compile Include="Impl\PropertyNode.cs" />

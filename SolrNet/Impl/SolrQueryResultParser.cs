@@ -33,13 +33,12 @@ namespace SolrNet.Impl {
     public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : new() {
 
         private readonly IReadOnlyMappingManager mappingManager;
-        private readonly ISolrFieldParser fieldParser;
+        private readonly ISolrDocumentPropertyVisitor propVisitor;
 
-        public SolrQueryResultParser(IReadOnlyMappingManager mappingManager, ISolrFieldParser fieldParser) {
+        public SolrQueryResultParser(IReadOnlyMappingManager mappingManager, ISolrDocumentPropertyVisitor propVisitor) {
             this.mappingManager = mappingManager;
-            this.fieldParser = fieldParser;
+            this.propVisitor = propVisitor;
         }
-
 
         public IList<T> ParseResults(XmlNode parentNode) {
             var results = new List<T>();
@@ -129,14 +128,6 @@ namespace SolrNet.Impl {
             return DateTime.ParseExact(s, "yyyy-MM-dd'T'HH:mm:ss.FFF'Z'", CultureInfo.InvariantCulture);
         }
 
-        public void SetProperty(T doc, PropertyInfo prop, XmlNode field) {
-            if (fieldParser.CanHandleSolrType(field.Name) && 
-                fieldParser.CanHandleType(prop.PropertyType)) {
-                    var v = fieldParser.Parse(field, prop.PropertyType);
-                    prop.SetValue(doc, v, null);
-            }
-        }
-
         /// <summary>
         /// Builds a document from the corresponding response xml node
         /// </summary>
@@ -147,14 +138,7 @@ namespace SolrNet.Impl {
             var doc = new T();
             foreach (XmlNode field in node.ChildNodes) {
                 string fieldName = field.Attributes["name"].InnerText;
-                var property = Func.FirstOrDefault(fields, kv => kv.Value == fieldName);
-                if (property.Key == null)
-                    continue;
-                try {
-                    SetProperty(doc, property.Key, field);
-                } catch (Exception e) {
-                    throw new SolrNetException(string.Format("Error setting property {0} from field {1}", property.Key.Name, fieldName), e);
-                }
+                propVisitor.Visit(doc, fieldName, field);
             }
             return doc;
         }

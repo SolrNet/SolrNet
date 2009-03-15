@@ -16,6 +16,7 @@
 
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Impl;
+using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Mapping;
@@ -37,6 +38,9 @@ namespace SolrNet {
 
             var fieldSerializer = new DefaultFieldSerializer();
             Container.Register<ISolrFieldSerializer>(c => fieldSerializer);
+
+            var propertyVisitor = new DefaultDocumentVisitor(mapper, fieldParser);
+            Container.Register<ISolrDocumentPropertyVisitor>(c => propertyVisitor);
 
             var rng = new RNG();
             Container.Register<IRNG>(c => rng);
@@ -65,7 +69,7 @@ namespace SolrNet {
             var connectionKey = string.Format("{0}.{1}.{2}", typeof(SolrConnection), typeof(T), connection.GetType());
             Container.Register(connectionKey, c => connection);
 
-            var resultParser = new SolrQueryResultParser<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrFieldParser>());
+            var resultParser = new SolrQueryResultParser<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrDocumentPropertyVisitor>());
             Container.Register<ISolrQueryResultParser<T>>(c => resultParser);
 
             var queryExecuter = new SolrQueryExecuter<T>(connection, resultParser);

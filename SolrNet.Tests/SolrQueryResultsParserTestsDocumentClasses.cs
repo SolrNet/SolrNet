@@ -143,5 +143,10 @@ namespace SolrNet.Tests {
             [SolrField]
             public Guid Key { get; set; }
         }
+
+        public class TestDocWithGenDict {
+            [SolrField]
+            public IDictionary<string, string> Dict { get; set; }
+        }
     }
 }

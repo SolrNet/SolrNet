@@ -56,6 +56,14 @@ namespace SolrNet.Tests {
             public Guid Key { get; set; }
         }
 
+        public class TestDocWithGenDict {
+            [SolrUniqueKey]
+            public int Id { get; set; }
+
+            [SolrField]
+            public IDictionary<string, string> Dict { get; set; }
+        }
+
 		[Test]
 		public void Serializes() {
 		    var mapper = new AttributesMappingManager();
@@ -147,5 +155,39 @@ namespace SolrNet.Tests {
             Console.WriteLine(fs);
             Assert.AreEqual("<doc><field name=\"Key\">"+doc.Key+"</field></doc>", fs);
         }
+
+        [Test]
+        public void SupportsGenericDictionary_empty() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithGenDict>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithGenDict {
+                Id = 5,
+                Dict = new Dictionary<string, string>(),
+            };
+            string fs = ser.Serialize(doc).OuterXml;
+            var xml = new XmlDocument();
+            xml.LoadXml(fs);
+            Console.WriteLine(fs);
+            Assert.AreEqual("<doc><field name=\"Id\">" + doc.Id + "</field></doc>", fs);
+        }
+
+        [Test]
+        public void SupportsGenericDictionary() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithGenDict>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithGenDict {
+                Id = 5,
+                Dict = new Dictionary<string, string> {
+                    {"one", "1"},
+                    {"two", "2"},
+                },
+            };
+            string fs = ser.Serialize(doc).OuterXml;
+            var xml = new XmlDocument();
+            xml.LoadXml(fs);
+            Console.WriteLine(fs);
+            Assert.AreEqual("<doc><field name=\"Id\">" + doc.Id + "</field><field name=\"Dictone\">1</field><field name=\"Dicttwo\">2</field></doc>", fs);
+        }
+
 	}
 }

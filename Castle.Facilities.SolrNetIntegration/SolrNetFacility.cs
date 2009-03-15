@@ -19,6 +19,9 @@ using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.Registration;
 using SolrNet;
 using SolrNet.Impl;
+using SolrNet.Impl.DocumentPropertyVisitors;
+using SolrNet.Impl.FieldParsers;
+using SolrNet.Impl.FieldSerializers;
 using SolrNet.Mapping;
 using SolrNet.Utils;
 
@@ -60,6 +63,9 @@ namespace Castle.Facilities.SolrNetIntegration {
                 .ImplementedBy(typeof(SolrBasicServer<>)));
             Kernel.Register(Component.For(typeof(ISolrOperations<>), typeof(ISolrReadOnlyOperations<>))
                 .ImplementedBy(typeof(SolrServer<>)));
+            Kernel.Register(Component.For<ISolrFieldParser>().ImplementedBy<DefaultFieldParser>());
+            Kernel.Register(Component.For<ISolrFieldSerializer>().ImplementedBy<DefaultFieldSerializer>());
+            Kernel.Register(Component.For<ISolrDocumentPropertyVisitor>().ImplementedBy<DefaultDocumentVisitor>());
         }
 
         private static void ValidateUrl(string url) {

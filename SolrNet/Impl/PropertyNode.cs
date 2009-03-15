@@ -18,5 +18,6 @@
 namespace SolrNet.Impl {
     public class PropertyNode {
         public string FieldValue { get; set; }
+        public string FieldNameSuffix { get; set; }
     }
 }

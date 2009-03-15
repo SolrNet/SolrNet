@@ -164,6 +164,17 @@ namespace SolrNet.Tests {
 </response>
 ";
 
+        private const string responseXMLWithDictFloat = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+<response>
+<result numFound=""1"" start=""0"">
+	<doc>
+	<str name=""DictOne"">1.45</str>
+    <str name=""DictTwo"">2.234</str>
+	</doc>
+</result>
+</response>
+";
+
         private const string responseXmlWithSpellChecking = @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
 <result numFound=""1"" start=""0"">

@@ -267,6 +267,31 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, doc.Dict["Two"]);
         }
 
+        [Test]
+        public void GenericDictionary_string_float() {
+            var mapper = new AttributesMappingManager();
+            var parser = new SolrQueryResultParser<TestDocWithGenDict3>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()));
+            var results = parser.Parse(responseXMLWithDictFloat);
+            Assert.AreEqual(1, results.Count);
+            var doc = results[0];
+            Assert.IsNotNull(doc.Dict);
+            Assert.AreEqual(2, doc.Dict.Count);
+            Assert.AreEqual(1.45f, doc.Dict["One"]);
+            Assert.AreEqual(2.234f, doc.Dict["Two"]);
+        }
+
+        [Test]
+        public void GenericDictionary_string_decimal() {
+            var mapper = new AttributesMappingManager();
+            var parser = new SolrQueryResultParser<TestDocWithGenDict4>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()));
+            var results = parser.Parse(responseXMLWithDictFloat);
+            Assert.AreEqual(1, results.Count);
+            var doc = results[0];
+            Assert.IsNotNull(doc.Dict);
+            Assert.AreEqual(2, doc.Dict.Count);
+            Assert.AreEqual(1.45m, doc.Dict["One"]);
+            Assert.AreEqual(2.234m, doc.Dict["Two"]);
+        }
 
 		[Test]
 		public void WrongFieldDoesntThrow() {

@@ -20,6 +20,9 @@ using System.ComponentModel;
 using System.Xml;
 
 namespace SolrNet.Impl.FieldParsers {
+    /// <summary>
+    /// Parses using <see cref="TypeConverter"/>
+    /// </summary>
     public class TypeConvertingFieldParser: ISolrFieldParser {
         public bool CanHandleSolrType(string solrType) {
             return true;
@@ -40,6 +43,12 @@ namespace SolrNet.Impl.FieldParsers {
             };
         }
 
+        /// <summary>
+        /// Gets the corresponding CLR Type to a solr type
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public Type GetUnderlyingType(XmlNode field, Type t) {
             if (t != typeof(object))
                 return t;

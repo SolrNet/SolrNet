@@ -18,6 +18,9 @@ using System;
 using System.Xml;
 
 namespace SolrNet.Impl.FieldParsers {
+    /// <summary>
+    /// Parses float values
+    /// </summary>
     public class FloatFieldParser : ISolrFieldParser {
         public bool CanHandleSolrType(string solrType) {
             return solrType == "float" || solrType == "int";

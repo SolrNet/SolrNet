@@ -18,8 +18,15 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace SolrNet.Impl {
+    /// <summary>
+    /// Spell-checking query results
+    /// </summary>
     public class SpellCheckResults : ICollection<SpellCheckResult> {
+        /// <summary>
+        /// Suggestion query from spell-checking
+        /// </summary>
         public string Collation { get; set; }
+
         private readonly ICollection<SpellCheckResult> SpellChecks = new List<SpellCheckResult>();
 
         public IEnumerator<SpellCheckResult> GetEnumerator() {

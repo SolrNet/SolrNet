@@ -40,6 +40,11 @@ namespace SolrNet.Impl {
             this.propVisitor = propVisitor;
         }
 
+        /// <summary>
+        /// Parses documents results
+        /// </summary>
+        /// <param name="parentNode"></param>
+        /// <returns></returns>
         public IList<T> ParseResults(XmlNode parentNode) {
             var results = new List<T>();
             if (parentNode == null)
@@ -99,6 +104,11 @@ namespace SolrNet.Impl {
             return results;
         }
 
+        /// <summary>
+        /// Parses facet fields results
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         public IDictionary<string, ICollection<KeyValuePair<string, int>>> ParseFacetFields(XmlNode node) {
             var d = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
             foreach (XmlNode fieldNode in node.SelectSingleNode("lst[@name='facet_fields']").ChildNodes) {
@@ -114,6 +124,11 @@ namespace SolrNet.Impl {
             return d;
         }
 
+        /// <summary>
+        /// Parses facet queries results
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         public IDictionary<string, int> ParseFacetQueries(XmlNode node) {
             var d = new Dictionary<string, int>();
             foreach (XmlNode fieldNode in node.SelectSingleNode("lst[@name='facet_queries']").ChildNodes) {
@@ -122,10 +137,6 @@ namespace SolrNet.Impl {
                 d[key] = value;
             }
             return d;
-        }
-
-        public DateTime ParseDate(string s) {
-            return DateTime.ParseExact(s, "yyyy-MM-dd'T'HH:mm:ss.FFF'Z'", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -177,6 +188,11 @@ namespace SolrNet.Impl {
             return r;
         }
 
+        /// <summary>
+        /// Parses highlighting results
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <returns></returns>
         public IDictionary<string, string> ParseHighlightingFields(XmlNodeList nodes) {
             var fields = new Dictionary<string, string>();
             foreach (XmlNode field in nodes) {

@@ -18,6 +18,9 @@ using System;
 using System.Xml;
 
 namespace SolrNet.Impl.FieldParsers {
+    /// <summary>
+    /// Parses int values
+    /// </summary>
     public class IntFieldParser : ISolrFieldParser {
         public bool CanHandleSolrType(string solrType) {
             return solrType == "int";

@@ -19,6 +19,9 @@ using System.Xml;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldParsers {
+    /// <summary>
+    /// Wraps a <see cref="ISolrFieldParser"/> making it support the corresponding <see cref="Nullable{T}"/> type
+    /// </summary>
     public class NullableFieldParser: ISolrFieldParser {
         private readonly ISolrFieldParser parser;
 

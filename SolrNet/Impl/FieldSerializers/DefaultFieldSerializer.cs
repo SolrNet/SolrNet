@@ -18,6 +18,9 @@ using System;
 using System.Collections.Generic;
 
 namespace SolrNet.Impl.FieldSerializers {
+    /// <summary>
+    /// Aggregates the default <see cref="ISolrFieldSerializer"/>s
+    /// </summary>
     public class DefaultFieldSerializer : ISolrFieldSerializer {
         private readonly AggregateFieldSerializer serializer;
 

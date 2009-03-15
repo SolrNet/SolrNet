@@ -18,6 +18,9 @@ using System;
 using System.Collections.Generic;
 
 namespace SolrNet.Impl.FieldSerializers {
+    /// <summary>
+    /// Serializes using .ToString()
+    /// </summary>
     public class ToStringFieldSerializer: ISolrFieldSerializer {
         public bool CanHandleType(Type t) {
             return true;

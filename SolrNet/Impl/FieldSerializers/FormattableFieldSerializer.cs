@@ -19,6 +19,9 @@ using System.Collections.Generic;
 using System.Globalization;
 
 namespace SolrNet.Impl.FieldSerializers {
+    /// <summary>
+    /// Serializes objects that implement <see cref="IFormattable"/>
+    /// </summary>
     public class FormattableFieldSerializer : ISolrFieldSerializer {
         public bool CanHandleType(Type t) {
             return typeof (IFormattable).IsAssignableFrom(t);

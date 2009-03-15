@@ -20,9 +20,16 @@ using System.Xml;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldParsers {
+    /// <summary>
+    /// Aggregates <see cref="ISolrFieldParser"/>s
+    /// </summary>
     public class AggregateFieldParser : ISolrFieldParser {
         private readonly IEnumerable<ISolrFieldParser> parsers;
 
+        /// <summary>
+        /// Aggregates <see cref="ISolrFieldParser"/>s
+        /// </summary>
+        /// <param name="parsers"></param>
         public AggregateFieldParser(IEnumerable<ISolrFieldParser> parsers) {
             this.parsers = parsers;
         }

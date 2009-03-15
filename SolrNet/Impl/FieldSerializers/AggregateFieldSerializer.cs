@@ -20,6 +20,9 @@ using SolrNet.Exceptions;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldSerializers {
+    /// <summary>
+    /// Aggregates <see cref="ISolrFieldSerializer"/>s
+    /// </summary>
     public class AggregateFieldSerializer : ISolrFieldSerializer {
         private readonly IEnumerable<ISolrFieldSerializer> serializers;
 

@@ -21,6 +21,9 @@ using System.Xml;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldParsers {
+    /// <summary>
+    /// Parses 1-dimensional fields
+    /// </summary>
     public class CollectionFieldParser : ISolrFieldParser {
         private readonly ISolrFieldParser valueParser;
 

@@ -18,6 +18,9 @@ using System;
 using System.Xml;
 
 namespace SolrNet.Impl.FieldParsers {
+    /// <summary>
+    /// Default field parser
+    /// </summary>
     public class DefaultFieldParser : ISolrFieldParser {
         private readonly AggregateFieldParser parser;
 

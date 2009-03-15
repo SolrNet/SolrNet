@@ -19,6 +19,9 @@ using System.Globalization;
 using System.Xml;
 
 namespace SolrNet.Impl.FieldParsers {
+    /// <summary>
+    /// Parses datetime fields
+    /// </summary>
     public class DateTimeFieldParser : ISolrFieldParser {
         public bool CanHandleSolrType(string solrType) {
             return solrType == "date";

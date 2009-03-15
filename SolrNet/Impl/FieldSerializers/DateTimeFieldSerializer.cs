@@ -18,6 +18,9 @@ using System;
 using System.Collections.Generic;
 
 namespace SolrNet.Impl.FieldSerializers {
+    /// <summary>
+    /// Serializes datetime fields
+    /// </summary>
     public class DateTimeFieldSerializer : AbstractFieldSerializer<DateTime> {
         public override IEnumerable<PropertyNode> Parse(DateTime obj) {
             yield return new PropertyNode {

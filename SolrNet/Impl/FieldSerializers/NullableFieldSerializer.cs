@@ -19,6 +19,9 @@ using System.Collections.Generic;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldSerializers {
+    /// <summary>
+    /// Wraps a <see cref="ISolrFieldSerializer"/> making it support the corresponding <see cref="Nullable{T}"/> type
+    /// </summary>
     public class NullableFieldSerializer : ISolrFieldSerializer {
         private readonly ISolrFieldSerializer serializer;
 

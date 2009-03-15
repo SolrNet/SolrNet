@@ -179,17 +179,15 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void ParseDate_without_milliseconds() {
-            var mapper = new AttributesMappingManager();
-            var parser = new SolrQueryResultParser<TestDocumentWithDate>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()));
+		    var parser = new DateTimeFieldParser();
 			var dt = parser.ParseDate("2001-01-02T03:04:05Z");
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5), dt);
 		}
 
 		[Test]
 		public void ParseDate_with_milliseconds() {
-            var mapper = new AttributesMappingManager();
-            var parser = new SolrQueryResultParser<TestDocumentWithDate>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()));
-			var dt = parser.ParseDate("2001-01-02T03:04:05.245Z");
+            var parser = new DateTimeFieldParser();
+            var dt = parser.ParseDate("2001-01-02T03:04:05.245Z");
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5, 245), dt);
 		}
 

@@ -18,6 +18,9 @@ using System;
 using System.Xml;
 
 namespace SolrNet.Impl.FieldParsers {
+    /// <summary>
+    /// Parses double fields
+    /// </summary>
     public class DoubleFieldParser : ISolrFieldParser {
         public bool CanHandleSolrType(string solrType) {
             return solrType == "float" || solrType == "int";

@@ -15,8 +15,16 @@
 #endregion
 
 namespace SolrNet {
+    /// <summary>
+    /// Abstract Solr query, used to define operator overloading
+    /// </summary>
     public abstract class AbstractSolrQuery : ISolrQuery {
         public abstract string Query { get; }
+
+        /// <summary>
+        /// Negates this query
+        /// </summary>
+        /// <returns></returns>
         public ISolrQuery Not() {
             return new SolrNotQuery(this);
         }

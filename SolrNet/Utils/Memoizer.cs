@@ -23,6 +23,10 @@ namespace SolrNet.Utils {
     /// From http://blogs.msdn.com/wesdyer/archive/2007/01/26/function-memoization.aspx
     /// </summary>
     public class Memoizer {
+        /// <summary>
+        /// Function memoizer
+        /// From http://blogs.msdn.com/wesdyer/archive/2007/01/26/function-memoization.aspx
+        /// </summary>
         public static Converter<TArg, TResult> Memoize<TArg, TResult>(Converter<TArg, TResult> function) {
             var results = new Dictionary<TArg, TResult>();
 

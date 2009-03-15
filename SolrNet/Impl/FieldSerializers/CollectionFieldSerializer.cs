@@ -20,6 +20,9 @@ using System.Collections.Generic;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldSerializers {
+    /// <summary>
+    /// Serializes 1-dimensional collections
+    /// </summary>
     public class CollectionFieldSerializer : ISolrFieldSerializer {
         private readonly ISolrFieldSerializer valueSerializer;
 

@@ -15,29 +15,26 @@
 #endregion
 
 using System;
-using System.Xml;
+using System.Collections.Generic;
 using SolrNet.Utils;
 
-namespace SolrNet.Impl.FieldParsers {
-    public class NullableFieldParser: ISolrFieldParser {
-        private readonly ISolrFieldParser parser;
+namespace SolrNet.Impl.FieldSerializers {
+    public class NullableFieldSerializer : ISolrFieldSerializer {
+        private readonly ISolrFieldSerializer serializer;
 
-        public NullableFieldParser(ISolrFieldParser parser) {
-            this.parser = parser;
-        }
-
-        public bool CanHandleSolrType(string solrType) {
-            return parser.CanHandleSolrType(solrType);
+        public NullableFieldSerializer(ISolrFieldSerializer serializer) {
+            this.serializer = serializer;
         }
 
         public bool CanHandleType(Type t) {
-            return parser.CanHandleType(t) || parser.CanHandleType(TypeHelper.GetUnderlyingNullableType(t));
+            return serializer.CanHandleType(t) || serializer.CanHandleType(TypeHelper.GetUnderlyingNullableType(t));
         }
 
-        public object Parse(XmlNode field, Type t) {
-            if (string.IsNullOrEmpty(field.InnerText))
-                return null;
-            return parser.Parse(field, t);
+        public IEnumerable<PropertyNode> Serialize(object obj) {
+            if (obj == null)
+                yield break;
+            foreach (var i in serializer.Serialize(obj))
+                yield return i;
         }
     }
 }

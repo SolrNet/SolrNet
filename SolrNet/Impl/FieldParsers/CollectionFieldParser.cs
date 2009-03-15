@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldParsers {
     public class CollectionFieldParser : ISolrFieldParser {
@@ -31,18 +32,11 @@ namespace SolrNet.Impl.FieldParsers {
             return solrType == "arr";
         }
 
-        public bool IsGenericAssignableFrom(Type t, Type other) {
-            if (other.GetGenericArguments().Length != t.GetGenericArguments().Length)
-                return false;
-            var genericT = t.MakeGenericType(other.GetGenericArguments());
-            return genericT.IsAssignableFrom(other);
-        }
-
         public bool CanHandleType(Type t) {
             return t != typeof (string) &&
                    typeof (IEnumerable).IsAssignableFrom(t) &&
                    !typeof (IDictionary).IsAssignableFrom(t) &&
-                   !IsGenericAssignableFrom(typeof (IDictionary<,>), t);
+                   !TypeHelper.IsGenericAssignableFrom(typeof (IDictionary<,>), t);
         }
 
         public object Parse(XmlNode field, Type t) {

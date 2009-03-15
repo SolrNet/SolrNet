@@ -25,6 +25,7 @@ using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
+using SolrNet.Impl.FieldSerializers;
 using SolrNet.Mapping;
 using SolrNet.Utils;
 
@@ -45,7 +46,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var connection = mocks.CreateMock<ISolrConnection>();
             var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
-            var docSerializer = new SolrDocumentSerializer<TestDocumentWithoutUniqueKey>(new AttributesMappingManager());
+            var docSerializer = new SolrDocumentSerializer<TestDocumentWithoutUniqueKey>(new AttributesMappingManager(), new DefaultFieldSerializer());
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(connection.Post("/update", "<add><doc /></add>"))
                                      .Repeat.Once()

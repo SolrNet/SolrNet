@@ -49,6 +49,7 @@
     <Compile Include="Commands\Parameters\DeleteByMultipleIdParam.cs" />
     <Compile Include="Commands\Parameters\MoreLikeThisParameters.cs" />
     <Compile Include="Commands\Parameters\SpellCheckingParameters.cs" />
+    <Compile Include="Exceptions\TypeNotSupportedException.cs" />
     <Compile Include="Impl\FieldParsers\AggregateFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\CollectionFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\DateTimeFieldParser.cs" />
@@ -58,7 +59,18 @@
     <Compile Include="Impl\FieldParsers\IntFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\NullableFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\TypeConvertingFieldParser.cs" />
+    <Compile Include="Impl\FieldSerializers\AbstractFieldSerializer.cs" />
+    <Compile Include="Impl\FieldSerializers\AggregateFieldSerializer.cs" />
+    <Compile Include="Impl\FieldSerializers\BoolFieldSerializer.cs" />
+    <Compile Include="Impl\FieldSerializers\CollectionFieldSerializer.cs" />
+    <Compile Include="Impl\FieldSerializers\DateTimeFieldSerializer.cs" />
+    <Compile Include="Impl\FieldSerializers\DefaultFieldSerializer.cs" />
+    <Compile Include="Impl\FieldSerializers\FormattableFieldSerializer.cs" />
+    <Compile Include="Impl\FieldSerializers\NullableFieldSerializer.cs" />
+    <Compile Include="Impl\FieldSerializers\ToStringFieldSerializer.cs" />
     <Compile Include="Impl\ISolrFieldParser.cs" />
+    <Compile Include="Impl\ISolrFieldSerializer.cs" />
+    <Compile Include="Impl\PropertyNode.cs" />
     <Compile Include="Impl\SpellCheckResult.cs" />
     <Compile Include="Impl\SpellCheckResults.cs" />
     <Compile Include="Mapping\AllPropertiesMappingManager.cs" />
@@ -130,6 +142,7 @@
     <Compile Include="Utils\Memoizer.cs" />
     <Compile Include="Utils\RNG.cs" />
     <Compile Include="Utils\StringHelper.cs" />
+    <Compile Include="Utils\TypeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">

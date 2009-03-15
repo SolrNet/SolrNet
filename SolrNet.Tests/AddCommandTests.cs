@@ -21,6 +21,7 @@ using Rhino.Mocks;
 using SolrNet.Attributes;
 using SolrNet.Commands;
 using SolrNet.Impl;
+using SolrNet.Impl.FieldSerializers;
 using SolrNet.Mapping;
 
 namespace SolrNet.Tests {
@@ -51,7 +52,7 @@ namespace SolrNet.Tests {
 		public void Execute() {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
-		    var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager());
+		    var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager(), new DefaultFieldSerializer());
 			With.Mocks(mocks).Expecting(delegate {
 				conn.Post("/update",
 				          "<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc></add>");
@@ -71,7 +72,7 @@ namespace SolrNet.Tests {
 		public void ShouldntAlterOriginalServerUrl() {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
-            var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager());		    
+            var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager(), new DefaultFieldSerializer());
 			var cmd = new AddCommand<SampleDoc>(new[] {new SampleDoc()}, docSerializer);
 			cmd.Execute(conn);
 		}
@@ -80,7 +81,7 @@ namespace SolrNet.Tests {
 		public void SupportsDocumentWithStringCollection() {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
-            var docSerializer = new SolrDocumentSerializer<TestDocWithCollections>(new AttributesMappingManager());		    
+            var docSerializer = new SolrDocumentSerializer<TestDocWithCollections>(new AttributesMappingManager(), new DefaultFieldSerializer());
 			With.Mocks(mocks).Expecting(delegate {
 				conn.Post("/update",
 				          "<add><doc><field name=\"coll\">one</field><field name=\"coll\">two</field></doc></add>");

@@ -148,5 +148,11 @@ namespace SolrNet.Tests {
             [SolrField]
             public IDictionary<string, string> Dict { get; set; }
         }
+
+        public class TestDocWithGenDict2 {
+            [SolrField]
+            public IDictionary<string, int> Dict { get; set; }
+        }
+
     }
 }

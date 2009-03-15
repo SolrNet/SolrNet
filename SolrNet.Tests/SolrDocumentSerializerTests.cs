@@ -64,6 +64,14 @@ namespace SolrNet.Tests {
             public IDictionary<string, string> Dict { get; set; }
         }
 
+        public class TestDocWithGenDict2 {
+            [SolrUniqueKey]
+            public int Id { get; set; }
+
+            [SolrField]
+            public IDictionary<string, int> Dict { get; set; }
+        }
+
 		[Test]
 		public void Serializes() {
 		    var mapper = new AttributesMappingManager();
@@ -172,7 +180,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void SupportsGenericDictionary() {
+        public void SupportsGenericDictionary_string_string() {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithGenDict>(mapper, new DefaultFieldSerializer());
             var doc = new TestDocWithGenDict {
@@ -180,6 +188,24 @@ namespace SolrNet.Tests {
                 Dict = new Dictionary<string, string> {
                     {"one", "1"},
                     {"two", "2"},
+                },
+            };
+            string fs = ser.Serialize(doc).OuterXml;
+            var xml = new XmlDocument();
+            xml.LoadXml(fs);
+            Console.WriteLine(fs);
+            Assert.AreEqual("<doc><field name=\"Id\">" + doc.Id + "</field><field name=\"Dictone\">1</field><field name=\"Dicttwo\">2</field></doc>", fs);
+        }
+
+        [Test]
+        public void SupportsGenericDictionary_string_int() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithGenDict2>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithGenDict2 {
+                Id = 5,
+                Dict = new Dictionary<string, int> {
+                    {"one", 1},
+                    {"two", 2},
                 },
             };
             string fs = ser.Serialize(doc).OuterXml;

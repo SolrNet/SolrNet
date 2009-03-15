@@ -242,7 +242,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void GenericDictionary() {
+        public void GenericDictionary_string_string() {
             var mapper = new AttributesMappingManager();
             var parser = new SolrQueryResultParser<TestDocWithGenDict>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()));
             var results = parser.Parse(responseXMLWithDict);
@@ -252,6 +252,19 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, doc.Dict.Count);
             Assert.AreEqual("1", doc.Dict["One"]);
             Assert.AreEqual("2", doc.Dict["Two"]);
+        }
+
+        [Test]
+        public void GenericDictionary_string_int() {
+            var mapper = new AttributesMappingManager();
+            var parser = new SolrQueryResultParser<TestDocWithGenDict2>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()));
+            var results = parser.Parse(responseXMLWithDict);
+            Assert.AreEqual(1, results.Count);
+            var doc = results[0];
+            Assert.IsNotNull(doc.Dict);
+            Assert.AreEqual(2, doc.Dict.Count);
+            Assert.AreEqual(1, doc.Dict["One"]);
+            Assert.AreEqual(2, doc.Dict["Two"]);
         }
 
 

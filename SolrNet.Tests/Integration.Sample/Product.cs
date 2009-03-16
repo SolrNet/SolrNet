@@ -58,5 +58,8 @@ namespace SolrNet.Tests.Integration.Sample {
 
 		[SolrField("timestamp")]
 		public DateTime Timestamp { get; set; }
+
+        [SolrField("price_")]
+        public IDictionary<string, decimal> Prices { get; set; }
 	}
 }

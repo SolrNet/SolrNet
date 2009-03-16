@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
@@ -35,7 +36,7 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
-        public void Add() {
+        public void Add_then_query() {
             var p = new Product {
                 Id = "SP2514N",
                 Name = "Samsuñg SpinPoint P120 SP2514N - hárd drívè - 250 GB - ÁTÀ-133",
@@ -50,6 +51,10 @@ namespace SolrNet.Tests.Integration.Sample {
                     "NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor",
                     "áéíóúñç", // testing UTF
                 },
+                Prices = new Dictionary<string, decimal> {
+                    {"regular", 150m},
+                    {"afterrebate", 100m},
+                },
                 Price = 92,
                 Popularity = 6,
                 InStock = true,
@@ -62,11 +67,16 @@ namespace SolrNet.Tests.Integration.Sample {
             var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m));
             Assert.AreEqual(1, products.Count);
             Assert.AreEqual("SP2514N", products[0].Id);
+            Assert.AreEqual(92m, products[0].Price);
+            Assert.IsNotNull(products[0].Prices);
+            Assert.AreEqual(2, products[0].Prices.Count);
+            Assert.AreEqual(150m, products[0].Prices["regular"]);
+            Assert.AreEqual(100m, products[0].Prices["afterrebate"]);
         }
 
         [Test]
         public void Highlighting() {
-            Add();
+            Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(new SolrQueryByField("features", "noise"), new QueryOptions {
                 Highlight = new HighlightingParameters {

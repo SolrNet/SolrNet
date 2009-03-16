@@ -86,10 +86,8 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
 
         public void Visit(object doc, string fieldName, XmlNode field) {
             var allFields = mapper.GetFields(doc.GetType());
-            var thisField = Func.FirstOrDefault(allFields, p => fieldName.StartsWith(p.Value));
+            var thisField = Func.FirstOrDefault(allFields, p => fieldName.StartsWith(p.Value) && CanHandleType(p.Key.PropertyType));
             if (thisField.Key == null)
-                return;
-            if (!CanHandleType(thisField.Key.PropertyType))
                 return;
             var thisFieldName = thisField.Value;
             if (!field.Attributes["name"].InnerText.StartsWith(thisFieldName))

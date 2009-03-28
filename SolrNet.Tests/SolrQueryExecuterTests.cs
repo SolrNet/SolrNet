@@ -16,7 +16,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Attributes;
@@ -36,17 +35,13 @@ namespace SolrNet.Tests {
         [Test]
         public void Execute() {
             const string queryString = "id:123456";
+            var q = new Dictionary<string, string>();
+            q["q"] = queryString;
+            var conn = new MockConnection(q);
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             With.Mocks(mocks).Expecting(() => {
-                var q = new Dictionary<string, string>();
-                q["q"] = queryString;
-                Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
             }).Verify(() => {
                 var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
@@ -57,21 +52,15 @@ namespace SolrNet.Tests {
         [Test]
         public void Sort() {
             const string queryString = "id:123456";
+            var q = new Dictionary<string, string>();
+            q["q"] = queryString;
+            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["sort"] = "id asc";
+            var conn = new MockConnection(q);
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             With.Mocks(mocks).Expecting(() => {
-                var q = new Dictionary<string, string>();
-                q["q"] = queryString;
-                q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
-                q["sort"] = "id asc";
-                Expect.Call(conn.Get("/select", q))
-                    .Repeat.Once()
-                    .Return("");
                 Expect.Call(parser.Parse(null))
                     .IgnoreArguments()
                     .Repeat.Once()
@@ -87,18 +76,15 @@ namespace SolrNet.Tests {
         [Test]
         public void SortMultipleWithOrders() {
             const string queryString = "id:123456";
+            var q = new Dictionary<string, string>();
+            q["q"] = queryString;
+            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["sort"] = "id asc,name desc";
+            var conn = new MockConnection(q);
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
             With.Mocks(mocks).Expecting(() => {
-                var q = new Dictionary<string, string>();
-                q["q"] = queryString;
-                q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
-                q["sort"] = "id asc,name desc";
-                Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
             }).Verify(() => {
                 var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
@@ -114,18 +100,15 @@ namespace SolrNet.Tests {
         [Test]
         public void ResultFields() {
             const string queryString = "id:123456";
+            var q = new Dictionary<string, string>();
+            q["q"] = queryString;
+            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["fl"] = "id,name";
+            var conn = new MockConnection(q);
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
             With.Mocks(mocks).Expecting(delegate {
-                var q = new Dictionary<string, string>();
-                q["q"] = queryString;
-                q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
-                q["fl"] = "id,name";
-                Expect.Call(conn.Get("/select", q)).Repeat.Once().Return("");
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
             }).Verify(() => {
                 var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
@@ -137,28 +120,21 @@ namespace SolrNet.Tests {
 
         [Test]
         public void Facets() {
+            var q = new Dictionary<string, string>();
+            q["q"] = "";
+            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["facet"] = "true";
+            q["facet.field"] = "Id";
+            q["facet.query"] = "id:[1 TO 5]";
+            var conn = new MockConnection(q);
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
-            With.Mocks(mocks).Expecting(() => {
-                var q = new Dictionary<string, string>();
-                q["q"] = "";
-                q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
-                q["facet"] = "true";
-                q["facet.field"] = "Id";
-                q["facet.query"] = "id:[1 TO 5]";
-                Expect.Call(conn.Get("/select", q))
-                    .Repeat.Once().Return("");
-            }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
-                queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
-                    FacetQueries = new ISolrFacetQuery[] {
-                        new SolrFacetFieldQuery("Id"),
-                        new SolrFacetQuery(new SolrQuery("id:[1 TO 5]")),
-                    },
-                });
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
+                FacetQueries = new ISolrFacetQuery[] {
+                    new SolrFacetFieldQuery("Id"),
+                    new SolrFacetQuery(new SolrQuery("id:[1 TO 5]")),
+                },
             });
         }
 
@@ -168,38 +144,28 @@ namespace SolrNet.Tests {
 
         [Test]
         public void MultipleFacetFields() {
+            var q = new List<KeyValuePair<string, string>> {
+                KVP("q", ""),
+                KVP("rows", SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString()),
+                KVP("facet", "true"),
+                KVP("facet.field", "Id"),
+                KVP("facet.field", "OtherField"),
+            };
+            var conn = new MockConnection(q);
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
-            With.Mocks(mocks).Expecting(() => {
-                var q = new List<KeyValuePair<string, string>> {
-                    KVP("q", ""),
-                    KVP("rows", SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString()),
-                    KVP("facet", "true"),
-                    KVP("facet.field", "Id"),
-                    KVP("facet.field", "OtherField"),
-                };
-                Expect.Call(conn.Get("/select", q))
-                    .Repeat.Once().Return("");
-            }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
-                queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
-                    FacetQueries = new ISolrFacetQuery[] {
-                        new SolrFacetFieldQuery("Id"),
-                        new SolrFacetFieldQuery("OtherField"),
-                    },
-                });
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
+                FacetQueries = new ISolrFacetQuery[] {
+                    new SolrFacetFieldQuery("Id"),
+                    new SolrFacetFieldQuery("OtherField"),
+                },
             });
         }
 
         [Test]
         public void Highlighting() {
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var conn = mocks.CreateMock<ISolrConnection>();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             const string highlightedField = "field1";
             const string afterTerm = "after";
@@ -207,47 +173,41 @@ namespace SolrNet.Tests {
             const int snippets = 3;
             const string alt = "alt";
             const int fragsize = 7;
-            With.Mocks(mocks).Expecting(() => {
-                var q = new Dictionary<string, string>();
-                q["q"] = "";
-                q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
-                q["hl"] = "true";
-                q["hl.fl"] = highlightedField;
-                q["hl.snippets"] = snippets.ToString();
-                q["hl.fragsize"] = fragsize.ToString();
-                q["hl.requireFieldMatch"] = "true";
-                q["hl.alternateField"] = alt;
-                q["hl.simple.pre"] = beforeTerm;
-                q["hl.simple.post"] = afterTerm;
-                q["hl.regex.slop"] = "4.12";
-                q["hl.regex.pattern"] = "\\.";
-                q["hl.regex.maxAnalyzedChars"] = "8000";
-                Expect.Call(conn.Get("/select", q))
-                    .Repeat.Once().Return("");
-            }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
-                queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
-                    Highlight = new HighlightingParameters {
-                        Fields = new[] {highlightedField},
-                        AfterTerm = afterTerm,
-                        BeforeTerm = beforeTerm,
-                        Snippets = snippets,
-                        AlternateField = alt,
-                        Fragsize = fragsize,
-                        RequireFieldMatch = true,
-                        RegexSlop = 4.12,
-                        RegexPattern = "\\.",
-                        RegexMaxAnalyzedChars = 8000,
-                    }
-                });
+            var q = new Dictionary<string, string>();
+            q["q"] = "";
+            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["hl"] = "true";
+            q["hl.fl"] = highlightedField;
+            q["hl.snippets"] = snippets.ToString();
+            q["hl.fragsize"] = fragsize.ToString();
+            q["hl.requireFieldMatch"] = "true";
+            q["hl.alternateField"] = alt;
+            q["hl.simple.pre"] = beforeTerm;
+            q["hl.simple.post"] = afterTerm;
+            q["hl.regex.slop"] = "4.12";
+            q["hl.regex.pattern"] = "\\.";
+            q["hl.regex.maxAnalyzedChars"] = "8000";
+            var conn = new MockConnection(q);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
+                Highlight = new HighlightingParameters {
+                    Fields = new[] { highlightedField },
+                    AfterTerm = afterTerm,
+                    BeforeTerm = beforeTerm,
+                    Snippets = snippets,
+                    AlternateField = alt,
+                    Fragsize = fragsize,
+                    RequireFieldMatch = true,
+                    RegexSlop = 4.12,
+                    RegexPattern = "\\.",
+                    RegexMaxAnalyzedChars = 8000,
+                }
             });
         }
 
         [Test]
         public void FilterQuery() {
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = new MockConnection(new[] {
                 KVP("q", "*:*"),
@@ -369,6 +329,30 @@ namespace SolrNet.Tests {
             Assert.Contains(KVP("mlt.minwl", "7"), p);
             Assert.Contains(KVP("mlt.fl", "field1,field2"), p);
             Assert.Contains(KVP("mlt.qf", "qf1,qf2"), p);
+        }
+
+        [Test]
+        public void FacetFieldOptions() {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var facetOptions = queryExecuter.GetFacetFieldOptions(new QueryOptions {
+                FacetPrefix = "pref",
+                FacetEnumCacheMinDf = 123,
+                FacetLimit = 100,
+                FacetMinCount = 5,
+                FacetMissing = true,
+                FacetOffset = 55,
+                FacetSort = true,
+            }).ToDictionary(x => x.Key, x => x.Value);
+            Assert.AreEqual("pref", facetOptions["facet.prefix"]);
+            Assert.AreEqual("123", facetOptions["facet.enum.cache.minDf"]);
+            Assert.AreEqual("100", facetOptions["facet.limit"]);
+            Assert.AreEqual("5", facetOptions["facet.mincount"]);
+            Assert.AreEqual("true", facetOptions["facet.missing"]);
+            Assert.AreEqual("55", facetOptions["facet.offset"]);
+            Assert.AreEqual("true", facetOptions["facet.sort"]);
         }
 
         [Test]

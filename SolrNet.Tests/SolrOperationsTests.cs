@@ -17,11 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.Practices.ServiceLocation;
 using NUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Attributes;
-using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
@@ -263,21 +261,15 @@ namespace SolrNet.Tests {
             const int rows = 20;
 
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var connection = mocks.CreateMock<ISolrConnection>();
+            //var connection = mocks.CreateMock<ISolrConnection>();
+            var query = new Dictionary<string, string>();
+            query["q"] = qstring;
+            query["start"] = start.ToString();
+            query["rows"] = rows.ToString();
+            var connection = new MockConnection(query);
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                var query = new Dictionary<string, string>();
-                query["q"] = qstring;
-                query["start"] = start.ToString();
-                query["rows"] = rows.ToString();
-                Expect.Call(connection.Get("/select", query))
-                    .Repeat.Once()
-                    .Return("");
-
                 SetupResult.For(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
@@ -293,20 +285,14 @@ namespace SolrNet.Tests {
             const string qstring = "id:123";
 
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var connection = mocks.CreateMock<ISolrConnection>();
+            var query = new Dictionary<string, string>();
+            query["q"] = qstring;
+            query["rows"] = SolrQueryExecuter<TestDocumentWithUniqueKey>.ConstDefaultRows.ToString();
+            query["sort"] = "id asc,name desc";
+            var connection = new MockConnection(query);
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                IDictionary<string, string> query = new Dictionary<string, string>();
-                query["q"] = qstring;
-                query["rows"] = SolrQueryExecuter<TestDocumentWithUniqueKey>.ConstDefaultRows.ToString();
-                query["sort"] = "id asc,name desc";
-                Expect.Call(connection.Get("/select", query))
-                    .Repeat.Once()
-                    .Return("");
                 SetupResult.For(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
@@ -330,19 +316,15 @@ namespace SolrNet.Tests {
             const int rows = 20;
 
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var connection = mocks.CreateMock<ISolrConnection>();
+            var query = new Dictionary<string, string>();
+            query["q"] = qstring;
+            query["start"] = start.ToString();
+            query["rows"] = rows.ToString();
+            query["sort"] = "id asc,name desc";
+            var connection = new MockConnection(query);
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                var query = new Dictionary<string, string>();
-                query["q"] = qstring;
-                query["start"] = start.ToString();
-                query["rows"] = rows.ToString();
-                query["sort"] = "id asc,name desc";
-                Expect.Call(connection.Get("/select", query)).Repeat.Once().Return("");
 
                 SetupResult.For(parser.Parse(null))
                     .IgnoreArguments()
@@ -364,21 +346,15 @@ namespace SolrNet.Tests {
         [Test]
         public void FacetQuery() {
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var connection = mocks.CreateMock<ISolrConnection>();
+            var query = new Dictionary<string, string>();
+            query["q"] = "";
+            query["rows"] = SolrQueryExecuter<TestDocumentWithUniqueKey>.ConstDefaultRows.ToString();
+            query["facet"] = "true";
+            query["facet.query"] = "id:1";
+            var connection = new MockConnection(query);
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                var query = new Dictionary<string, string>();
-                query["q"] = "";
-                query["rows"] = SolrQueryExecuter<TestDocumentWithUniqueKey>.ConstDefaultRows.ToString();
-                query["facet"] = "true";
-                query["facet.query"] = "id:1";
-                Expect.Call(connection.Get("/select", query))
-                    .Repeat.Once()
-                    .Return("");
                 SetupResult.For(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
@@ -396,22 +372,16 @@ namespace SolrNet.Tests {
         [Test]
         public void FacetField() {
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
-            var connection = mocks.CreateMock<ISolrConnection>();
+            var query = new Dictionary<string, string>();
+            query["q"] = "";
+            query["rows"] = SolrQueryExecuter<TestDocumentWithUniqueKey>.ConstDefaultRows.ToString();
+            query["facet"] = "true";
+            query["facet.field"] = "id";
+            query["f.id.facet.limit"] = "3";
+            var connection = new MockConnection(query);
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                var query = new Dictionary<string, string>();
-                query["q"] = "";
-                query["rows"] = SolrQueryExecuter<TestDocumentWithUniqueKey>.ConstDefaultRows.ToString();
-                query["facet"] = "true";
-                query["facet.field"] = "id";
-                query["facet.limit"] = "3";
-                Expect.Call(connection.Get("/select", query))
-                    .Repeat.Once()
-                    .Return("");
                 SetupResult.For(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
@@ -429,8 +399,6 @@ namespace SolrNet.Tests {
         [Test]
         public void FacetFieldQuery() {
             var mocks = new MockRepository();
-            var container = mocks.CreateMock<IServiceLocator>();
-            ServiceLocator.SetLocatorProvider(() => container);
             var query = new Dictionary<string, string>();
             query["q"] = "*:*";
             query["facet"] = "true";

@@ -53,42 +53,63 @@ namespace SolrNet.Impl {
         /// <param name="Options"></param>
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery Query, QueryOptions Options) {
-            var param = new List<KeyValuePair<string, string>> {
-                KVP("q", Query.Query)
-            };
+            yield return KVP("q", Query.Query);
             if (Options != null) {
                 if (Options.Start.HasValue)
-                    param.Add(KVP("start", Options.Start.ToString()));
+                    yield return KVP("start", Options.Start.ToString());
                 var rows = Options.Rows.HasValue ? Options.Rows.Value : DefaultRows;
-                param.Add(KVP("rows", rows.ToString()));
-                if (Options.OrderBy != null && Options.OrderBy.Count > 0) {
-                    param.Add(KVP("sort", Func.Join(",", Options.OrderBy)));
-                }
+                yield return KVP("rows", rows.ToString());
+                if (Options.OrderBy != null && Options.OrderBy.Count > 0)
+                    yield return KVP("sort", Func.Join(",", Options.OrderBy));
 
                 if (Options.Fields != null && Options.Fields.Count > 0)
-                    param.Add(KVP("fl", Func.Join(",", Options.Fields)));
+                    yield return KVP("fl", Func.Join(",", Options.Fields));
 
                 if (Options.FacetQueries != null && Options.FacetQueries.Count > 0) {
-                    param.Add(KVP("facet", "true"));
+                    yield return KVP("facet", "true");
                     foreach (var fq in Options.FacetQueries) {
                         foreach (var fqv in fq.Query) {
-                            param.Add(fqv);
+                            yield return fqv;
                         }
                     }
                 }
 
-                foreach (var p in GetHighlightingParameters(Options)) {
-                    param.Add(p);
-                }
+                foreach (var p in GetHighlightingParameters(Options))
+                    yield return p;
 
-                param.AddRange(GetFilterQueries(Options));
-                param.AddRange(GetSpellCheckingParameters(Options));
-                param.AddRange(GetMoreLikeThisParameters(Options));
+                foreach (var p in GetFilterQueries(Options))
+                    yield return p;
+
+                foreach (var p in GetSpellCheckingParameters(Options))
+                    yield return p;
+
+                foreach (var p in GetMoreLikeThisParameters(Options))
+                    yield return p;
+
+                foreach (var p in GetFacetFieldOptions(Options))
+                    yield return p;
+
                 if (Options.ExtraParams != null)
-                    param.AddRange(Options.ExtraParams);
+                    foreach (var p in Options.ExtraParams)
+                        yield return p;
             }
+        }
 
-            return param;
+        public IEnumerable<KeyValuePair<string, string>> GetFacetFieldOptions(QueryOptions options) {
+            if (options.FacetPrefix != null)
+                yield return KVP("facet.prefix", options.FacetPrefix);
+            if (options.FacetEnumCacheMinDf.HasValue)
+                yield return KVP("facet.enum.cache.minDf", options.FacetEnumCacheMinDf.ToString());
+            if (options.FacetLimit.HasValue)
+                yield return KVP("facet.limit", options.FacetLimit.ToString());
+            if (options.FacetMinCount.HasValue)
+                yield return KVP("facet.mincount", options.FacetMinCount.ToString());
+            if (options.FacetMissing.HasValue)
+                yield return KVP("facet.missing", options.FacetMissing.ToString().ToLowerInvariant());
+            if (options.FacetOffset.HasValue)
+                yield return KVP("facet.offset", options.FacetOffset.ToString());
+            if (options.FacetSort.HasValue)
+                yield return KVP("facet.sort", options.FacetSort.ToString().ToLowerInvariant());
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, q.Count);
             Assert.AreEqual("facet.field", q[0].Key);
             Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("facet.prefix", q[1].Key);
+            Assert.AreEqual("f.pepe.facet.prefix", q[1].Key);
             Assert.AreEqual("pre", q[1].Value);
         }
 
@@ -49,7 +49,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, q.Count);
             Assert.AreEqual("facet.field", q[0].Key);
             Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("facet.sort", q[1].Key);
+            Assert.AreEqual("f.pepe.facet.sort", q[1].Key);
             Assert.AreEqual("true", q[1].Value);
         }
 
@@ -60,7 +60,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, q.Count);
             Assert.AreEqual("facet.field", q[0].Key);
             Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("facet.limit", q[1].Key);
+            Assert.AreEqual("f.pepe.facet.limit", q[1].Key);
             Assert.AreEqual("5", q[1].Value);
         }
 
@@ -71,7 +71,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, q.Count);
             Assert.AreEqual("facet.field", q[0].Key);
             Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("facet.offset", q[1].Key);
+            Assert.AreEqual("f.pepe.facet.offset", q[1].Key);
             Assert.AreEqual("5", q[1].Value);
         }
 
@@ -82,7 +82,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, q.Count);
             Assert.AreEqual("facet.field", q[0].Key);
             Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("facet.mincount", q[1].Key);
+            Assert.AreEqual("f.pepe.facet.mincount", q[1].Key);
             Assert.AreEqual("5", q[1].Value);
         }
 
@@ -93,7 +93,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, q.Count);
             Assert.AreEqual("facet.field", q[0].Key);
             Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("facet.missing", q[1].Key);
+            Assert.AreEqual("f.pepe.facet.missing", q[1].Key);
             Assert.AreEqual("true", q[1].Value);
         }
 
@@ -104,7 +104,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, q.Count);
             Assert.AreEqual("facet.field", q[0].Key);
             Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("facet.enum.cache.minDf", q[1].Key);
+            Assert.AreEqual("f.pepe.facet.enum.cache.minDf", q[1].Key);
             Assert.AreEqual("5", q[1].Value);
         }
     }

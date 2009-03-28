@@ -49,7 +49,9 @@ namespace SolrNet.DSL.Impl {
             var exe = new SolrQueryExecuter<T>(connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>());
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
-                FacetQueries = facets,
+                Facet = new FacetParameters {
+                    Queries = facets,
+                },
                 Highlight = highlight,
             });
         }
@@ -58,7 +60,9 @@ namespace SolrNet.DSL.Impl {
             var exe = new SolrQueryExecuter<T>(connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>());
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
-                FacetQueries = facets,
+                Facet = new FacetParameters {
+                    Queries = facets,
+                },
                 Start = start,
                 Rows = rows,
                 Highlight = highlight,

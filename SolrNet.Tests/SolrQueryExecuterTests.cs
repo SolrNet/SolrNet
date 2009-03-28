@@ -131,10 +131,12 @@ namespace SolrNet.Tests {
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
             queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
-                FacetQueries = new ISolrFacetQuery[] {
-                    new SolrFacetFieldQuery("Id"),
-                    new SolrFacetQuery(new SolrQuery("id:[1 TO 5]")),
-                },
+                Facet = new FacetParameters {
+                    Queries = new ISolrFacetQuery[] {
+                        new SolrFacetFieldQuery("Id"),
+                        new SolrFacetQuery(new SolrQuery("id:[1 TO 5]")),
+                    }
+                }
             });
         }
 
@@ -156,10 +158,12 @@ namespace SolrNet.Tests {
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
             queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
-                FacetQueries = new ISolrFacetQuery[] {
-                    new SolrFacetFieldQuery("Id"),
-                    new SolrFacetFieldQuery("OtherField"),
-                },
+                Facet = new FacetParameters {
+                    Queries = new ISolrFacetQuery[] {
+                        new SolrFacetFieldQuery("Id"),
+                        new SolrFacetFieldQuery("OtherField"),
+                    }
+                }
             });
         }
 
@@ -338,13 +342,15 @@ namespace SolrNet.Tests {
             var conn = mocks.DynamicMock<ISolrConnection>();
             var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
             var facetOptions = queryExecuter.GetFacetFieldOptions(new QueryOptions {
-                FacetPrefix = "pref",
-                FacetEnumCacheMinDf = 123,
-                FacetLimit = 100,
-                FacetMinCount = 5,
-                FacetMissing = true,
-                FacetOffset = 55,
-                FacetSort = true,
+                Facet = new FacetParameters {
+                    Prefix = "pref",
+                    EnumCacheMinDf = 123,
+                    Limit = 100,
+                    MinCount = 5,
+                    Missing = true,
+                    Offset = 55,
+                    Sort = true,
+                }
             }).ToDictionary(x => x.Key, x => x.Value);
             Assert.AreEqual("pref", facetOptions["facet.prefix"]);
             Assert.AreEqual("123", facetOptions["facet.enum.cache.minDf"]);

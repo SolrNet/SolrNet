@@ -100,7 +100,9 @@ namespace SolrNet.Impl {
         public ICollection<KeyValuePair<string, int>> FacetFieldQuery(SolrFacetFieldQuery facet) {
             var r = basicServer.Query(SolrQuery.All, new QueryOptions {
                 Rows = 0,
-                FacetQueries = new[] {facet},
+                Facet = new FacetParameters {
+                    Queries = new[] {facet},
+                },
             });
             return r.FacetFields[facet.Field];
         }

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
     <Compile Include="Commands\Parameters\DeleteByMultipleIdParam.cs" />
+    <Compile Include="Commands\Parameters\FacetParameters.cs" />
     <Compile Include="Commands\Parameters\MoreLikeThisParameters.cs" />
     <Compile Include="Commands\Parameters\SpellCheckingParameters.cs" />
     <Compile Include="Exceptions\TypeNotSupportedException.cs" />

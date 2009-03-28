@@ -65,9 +65,9 @@ namespace SolrNet.Impl {
                 if (Options.Fields != null && Options.Fields.Count > 0)
                     yield return KVP("fl", Func.Join(",", Options.Fields));
 
-                if (Options.FacetQueries != null && Options.FacetQueries.Count > 0) {
+                if (Options.Facet != null && Options.Facet.Queries != null && Options.Facet.Queries.Count > 0) {
                     yield return KVP("facet", "true");
-                    foreach (var fq in Options.FacetQueries) {
+                    foreach (var fq in Options.Facet.Queries) {
                         foreach (var fqv in fq.Query) {
                             yield return fqv;
                         }
@@ -96,20 +96,22 @@ namespace SolrNet.Impl {
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetFacetFieldOptions(QueryOptions options) {
-            if (options.FacetPrefix != null)
-                yield return KVP("facet.prefix", options.FacetPrefix);
-            if (options.FacetEnumCacheMinDf.HasValue)
-                yield return KVP("facet.enum.cache.minDf", options.FacetEnumCacheMinDf.ToString());
-            if (options.FacetLimit.HasValue)
-                yield return KVP("facet.limit", options.FacetLimit.ToString());
-            if (options.FacetMinCount.HasValue)
-                yield return KVP("facet.mincount", options.FacetMinCount.ToString());
-            if (options.FacetMissing.HasValue)
-                yield return KVP("facet.missing", options.FacetMissing.ToString().ToLowerInvariant());
-            if (options.FacetOffset.HasValue)
-                yield return KVP("facet.offset", options.FacetOffset.ToString());
-            if (options.FacetSort.HasValue)
-                yield return KVP("facet.sort", options.FacetSort.ToString().ToLowerInvariant());
+            if (options.Facet == null)
+                yield break;
+            if (options.Facet.Prefix != null)
+                yield return KVP("facet.prefix", options.Facet.Prefix);
+            if (options.Facet.EnumCacheMinDf.HasValue)
+                yield return KVP("facet.enum.cache.minDf", options.Facet.EnumCacheMinDf.ToString());
+            if (options.Facet.Limit.HasValue)
+                yield return KVP("facet.limit", options.Facet.Limit.ToString());
+            if (options.Facet.MinCount.HasValue)
+                yield return KVP("facet.mincount", options.Facet.MinCount.ToString());
+            if (options.Facet.Missing.HasValue)
+                yield return KVP("facet.missing", options.Facet.Missing.ToString().ToLowerInvariant());
+            if (options.Facet.Offset.HasValue)
+                yield return KVP("facet.offset", options.Facet.Offset.ToString());
+            if (options.Facet.Sort.HasValue)
+                yield return KVP("facet.sort", options.Facet.Sort.ToString().ToLowerInvariant());
         }
 
         /// <summary>

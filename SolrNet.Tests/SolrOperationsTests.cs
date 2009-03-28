@@ -362,9 +362,11 @@ namespace SolrNet.Tests {
                 var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
                 var r = solr.Query(new SolrQuery(""), new QueryOptions {
-                    FacetQueries = new ISolrFacetQuery[] {
-                        new SolrFacetQuery(new SolrQuery("id:1")),
-                    },
+                    Facet = new FacetParameters {
+                        Queries = new ISolrFacetQuery[] {
+                            new SolrFacetQuery(new SolrQuery("id:1")),
+                        },
+                    }
                 });
             });
         }
@@ -389,9 +391,11 @@ namespace SolrNet.Tests {
                 var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
                 var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
                 var r = solr.Query(new SolrQuery(""), new QueryOptions {
-                    FacetQueries = new ISolrFacetQuery[] {
-                        new SolrFacetFieldQuery("id") {Limit = 3},
-                    },
+                    Facet = new FacetParameters {
+                        Queries = new ISolrFacetQuery[] {
+                            new SolrFacetFieldQuery("id") {Limit = 3},
+                        },
+                    }
                 });
             });
         }

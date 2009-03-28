@@ -14,7 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -73,10 +72,12 @@ namespace SampleSolrApp.Controllers {
                 Start = start,
                 OrderBy = GetSelectedSort(parameters),
                 SpellCheck = new SpellCheckingParameters(),
-                FacetQueries = AllFacetFields.Except(SelectedFacetFields(parameters))
-                    .Select(f => new SolrFacetFieldQuery(f) {MinCount = 1})
-                    .Cast<ISolrFacetQuery>()
-                    .ToList(),
+                Facet = new FacetParameters {
+                    Queries = AllFacetFields.Except(SelectedFacetFields(parameters))
+                                                                          .Select(f => new SolrFacetFieldQuery(f) {MinCount = 1})
+                                                                          .Cast<ISolrFacetQuery>()
+                                                                          .ToList(),
+                },
             });
             var view = new ProductView {
                 Products = matchingProducts,
@@ -90,9 +91,9 @@ namespace SampleSolrApp.Controllers {
 
         private string GetSpellCheckingResult(ISolrQueryResults<Product> products) {
             return string.Join(" ", products.SpellChecking
-                .Select(c => c.Suggestions.FirstOrDefault())
-                .Where(c => !string.IsNullOrEmpty(c))
-                .ToArray());
+                                        .Select(c => c.Suggestions.FirstOrDefault())
+                                        .Where(c => !string.IsNullOrEmpty(c))
+                                        .ToArray());
         }
     }
 }

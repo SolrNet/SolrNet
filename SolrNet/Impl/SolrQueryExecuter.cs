@@ -65,15 +65,6 @@ namespace SolrNet.Impl {
                 if (Options.Fields != null && Options.Fields.Count > 0)
                     yield return KVP("fl", Func.Join(",", Options.Fields));
 
-                if (Options.Facet != null && Options.Facet.Queries != null && Options.Facet.Queries.Count > 0) {
-                    yield return KVP("facet", "true");
-                    foreach (var fq in Options.Facet.Queries) {
-                        foreach (var fqv in fq.Query) {
-                            yield return fqv;
-                        }
-                    }
-                }
-
                 foreach (var p in GetHighlightingParameters(Options))
                     yield return p;
 
@@ -95,9 +86,23 @@ namespace SolrNet.Impl {
             }
         }
 
+        /// <summary>
+        /// Gets Solr parameters for facet queries
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetFacetFieldOptions(QueryOptions options) {
             if (options.Facet == null)
                 yield break;
+            if (options.Facet.Queries == null || options.Facet.Queries.Count == 0)
+                yield break;
+
+            yield return KVP("facet", "true");
+
+            foreach (var fq in options.Facet.Queries)
+                foreach (var fqv in fq.Query)
+                    yield return fqv;
+
             if (options.Facet.Prefix != null)
                 yield return KVP("facet.prefix", options.Facet.Prefix);
             if (options.Facet.EnumCacheMinDf.HasValue)

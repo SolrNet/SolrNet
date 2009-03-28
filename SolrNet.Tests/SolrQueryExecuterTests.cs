@@ -343,6 +343,9 @@ namespace SolrNet.Tests {
             var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
             var facetOptions = queryExecuter.GetFacetFieldOptions(new QueryOptions {
                 Facet = new FacetParameters {
+                    Queries = new List<ISolrFacetQuery> {
+                        new SolrFacetQuery(new SolrQuery("q")),
+                    },
                     Prefix = "pref",
                     EnumCacheMinDf = 123,
                     Limit = 100,

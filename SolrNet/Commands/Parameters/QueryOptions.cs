@@ -20,7 +20,7 @@ namespace SolrNet.Commands.Parameters {
     /// <summary>
     /// Query options
     /// </summary>
-	public class QueryOptions {
+	public partial class QueryOptions {
 
 	    /// <summary>
 		/// Fields to retrieve.
@@ -80,6 +80,9 @@ namespace SolrNet.Commands.Parameters {
 
 	    public QueryOptions() {
 			OrderBy = new List<SortOrder>();
+	        Fields = new List<string>();
+	        FilterQueries = new List<ISolrQuery>();
+            Facet = new FacetParameters();
 	        ExtraParams = new Dictionary<string, string>();
 		}
 	}

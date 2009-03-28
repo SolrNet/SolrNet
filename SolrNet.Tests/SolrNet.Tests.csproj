@@ -82,6 +82,7 @@
     <Compile Include="MockConnection.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
+    <Compile Include="QueryOptionsTests.cs" />
     <Compile Include="RandomSortTests.cs" />
     <Compile Include="SolrConnectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

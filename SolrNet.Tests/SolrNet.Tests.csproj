@@ -104,6 +104,7 @@
     <Compile Include="SolrQueryTests.cs" />
     <Compile Include="SolrServerTests.cs" />
     <Compile Include="SortOrderTests.cs" />
+    <Compile Include="TypeHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">

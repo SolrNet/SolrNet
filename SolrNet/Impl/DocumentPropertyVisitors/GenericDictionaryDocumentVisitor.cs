@@ -48,18 +48,6 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
         }
 
         /// <summary>
-        /// Creates a new <see cref="KeyValuePair{TKey,TValue}"/>
-        /// </summary>
-        /// <param name="typeArgs">Key and Value type parameters</param>
-        /// <param name="key">Key value</param>
-        /// <param name="value">Value value</param>
-        /// <returns></returns>
-        public object NewKeyValuePair(Type[] typeArgs, object key, object value) {
-            var genericType = typeof (KeyValuePair<,>).MakeGenericType(typeArgs);
-            return Activator.CreateInstance(genericType, key, value);
-        }
-
-        /// <summary>
         /// Creates a new <see cref="Dictionary{TKey,TValue}"/>
         /// </summary>
         /// <param name="typeArgs">Key and Value type parameters</param>

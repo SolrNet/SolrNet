@@ -14,8 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Impl {
@@ -58,16 +56,6 @@ namespace SolrNet.Impl {
             }
             xml.AppendChild(docNode);
             return xml;
-        }
-
-        private static readonly IDictionary<Type, string> solrTypes;
-
-        static SolrDocumentSerializer() {
-            solrTypes = new Dictionary<Type, string>();
-            solrTypes[typeof (int)] = "int";
-            solrTypes[typeof (string)] = "str";
-            solrTypes[typeof (bool)] = "bool";
-            solrTypes[typeof (DateTime)] = "date";
         }
     }
 }

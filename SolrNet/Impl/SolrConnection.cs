@@ -109,7 +109,7 @@ namespace SolrNet.Impl {
             param.Add(KVP("version", version));
             // TODO clean up, too messy
             u.Query = Func.Reduce(
-                Func.Map(parameters, input => string.Format("{0}={1}", HttpUtility.UrlEncode(input.Key),
+                Func.Select(parameters, input => string.Format("{0}={1}", HttpUtility.UrlEncode(input.Key),
                                                             HttpUtility.UrlEncode(input.Value))), "?",
                 (x, y) => string.Format("{0}&{1}", x, y));
             var request = httpWebRequestFactory.Create(u.Uri);

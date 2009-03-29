@@ -47,14 +47,6 @@ namespace SolrNet.Utils {
 			}
 		}
 
-		public static IEnumerable<TResult> Map<TSource, TResult>(IEnumerable<TSource> source,
-		                                                         Converter<TSource, TResult> converter) {
-
-			foreach (var s in source) {
-				yield return converter(s);
-			}
-		}
-
 		public static T First<T>(IEnumerable<T> e) {
 			foreach (var i in e)
 				return i;
@@ -76,7 +68,7 @@ namespace SolrNet.Utils {
 
 
 		/// <summary>
-		/// This is a conversion cast, unlike LINQ's
+		/// This is a conversion cast, unlike LINQ's Cast()
 		/// </summary>
 		/// <typeparam name="R"></typeparam>
 		/// <param name="e"></param>

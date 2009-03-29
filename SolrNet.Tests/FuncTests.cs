@@ -48,9 +48,15 @@ namespace SolrNet.Tests {
 
 		[Test]
 		[ExpectedException(typeof(InvalidOperationException))]
-		public void FirstOrDefault_without_elements_throws() {
+		public void First_without_elements_throws() {
 			var l = new int[] {};
 			Func.First(l);
 		}
+
+        [Test]
+        public void FirstOrDefault_without_elements_default() {
+            var l = new int[] { };
+            Assert.AreEqual(default(int), Func.FirstOrDefault(l));
+        }
 	}
 }

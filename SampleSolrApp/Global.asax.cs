@@ -97,8 +97,10 @@ namespace SampleSolrApp {
         /// </summary>
         public void RegisterAllControllers() {
             var controllers = typeof (MvcApplication).Assembly.GetTypes().Where(t => typeof (IController).IsAssignableFrom(t));
-            foreach (var controller in controllers)
-                Startup.Container.Register(GetControllerName(controller), controller, c => GetContainerRegistration(c, controller));
+            foreach (var controller in controllers) {
+                Type controllerType = controller;
+                Startup.Container.Register(GetControllerName(controller), controller, c => GetContainerRegistration(c, controllerType));
+            }
         }
     }
 }

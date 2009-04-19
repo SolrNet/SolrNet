@@ -1,0 +1,41 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+  <PropertyGroup>
+    <Version>0.2.1</Version>
+  </PropertyGroup>
+	<Target Name="Build">
+		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)"/>
+	</Target>
+	<Target Name="Release">
+		<PropertyGroup>
+			<BuildConfig>Configuration=Release</BuildConfig>
+		</PropertyGroup>
+	</Target>
+	<Target Name="ReleasePackage" DependsOnTargets="Release;Build">
+    <!-- Sandcastle output has to be created manually -->
+    <PropertyGroup>
+      <BuildOutputPath>build</BuildOutputPath>
+    </PropertyGroup>
+    <RemoveDir Directories="$(BuildOutputPath)"/>
+    <MakeDir Directories="$(BuildOutputPath)" ContinueOnError="true"/>
+    <ItemGroup>
+      <SourceFiles Include="SolrNet.DSL\bin\Release\*.dll"/>
+      <SourceFiles Include="SolrNet.DSL\bin\Release\*.xml"/>
+      <SourceFiles Include="license.txt"/>
+      <SourceFiles Include="lib\Microsoft.Practices.ServiceLocation.license.txt"/>
+      <CastleFacility Include="Castle.Facilities.SolrNetIntegration\bin\Release\Castle.*.dll"/>
+      <CastleFacility Include="lib\Castle.license.txt"/>
+      <NinjectModule Include="Ninject.Integration.SolrNet\bin\Release\Ninject.*.dll"/>
+      <NinjectModule Include="lib\Ninject.license.txt"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(BuildOutputPath)"/>
+    <Copy SourceFiles="@(CastleFacility)" DestinationFolder="$(BuildOutputPath)\Castle.Facilities.SolrNetIntegration"/>
+    <Copy SourceFiles="@(NinjectModule)" DestinationFolder="$(BuildOutputPath)\Ninject.Integration.SolrNet"/>
+    <Copy SourceFiles="help\Documentation.chm" DestinationFiles="$(BuildOutputPath)\SolrNet.chm"/>
+    <CreateItem Include="$(BuildOutputPath)\**\*.*" Exclude="*.zip">
+      <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
+    </CreateItem>
+    <Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-net-2.0.zip" ZipLevel="9"/>
+    <Delete Files="@(AllOutputExceptZip)" />
+  </Target>
+</Project>

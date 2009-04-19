@@ -11,8 +11,14 @@
 			<BuildConfig>Configuration=Release</BuildConfig>
 		</PropertyGroup>
 	</Target>
-	<Target Name="ReleasePackage" DependsOnTargets="Release;Build">
-    <!-- Sandcastle output has to be created manually -->
+	<Target Name="Doc">
+    <PropertyGroup>
+      <SHFBROOT>tools\SHFB</SHFBROOT>
+      <HHCPath>tools\HTMLHelpWorkshop</HHCPath>
+    </PropertyGroup>
+		<MSBuild Projects="sandcastle.shfbproj" StopOnFirstFailure="true" Properties="SHFBROOT=$(SHFBROOT);HtmlHelp1xCompilerPath=$(HHCPath)"/>
+	</Target>
+	<Target Name="ReleasePackage" DependsOnTargets="Release;Build;Doc">
     <PropertyGroup>
       <BuildOutputPath>build</BuildOutputPath>
     </PropertyGroup>

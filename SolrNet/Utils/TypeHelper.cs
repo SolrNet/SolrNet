@@ -18,6 +18,9 @@ using System;
 using System.ComponentModel;
 
 namespace SolrNet.Utils {
+    /// <summary>
+    /// <see cref="Type"/>-related helper functions
+    /// </summary>
     public static class TypeHelper {
         // From http://davidhayden.com/blog/dave/archive/2006/11/26/IsTypeNullableTypeConverter.aspx
         public static Type GetUnderlyingNullableType(Type t) {

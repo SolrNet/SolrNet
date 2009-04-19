@@ -1,9 +1,10 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <PropertyGroup>
     <Version>0.2.1</Version>
+    <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.Community.Tasks</MSBuildCommunityTasksPath>
   </PropertyGroup>
-	<Target Name="Build">
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
+  <Target Name="Build">
 		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)"/>
 	</Target>
 	<Target Name="Release">
@@ -13,8 +14,8 @@
 	</Target>
 	<Target Name="Doc">
     <PropertyGroup>
-      <SHFBROOT>tools\SHFB</SHFBROOT>
-      <HHCPath>tools\HTMLHelpWorkshop</HHCPath>
+      <SHFBROOT>$(MSBuildProjectDirectory)\tools\SHFB</SHFBROOT>
+      <HHCPath>$(MSBuildProjectDirectory)\tools\HTMLHelpWorkshop</HHCPath>
     </PropertyGroup>
 		<MSBuild Projects="sandcastle.shfbproj" StopOnFirstFailure="true" Properties="SHFBROOT=$(SHFBROOT);HtmlHelp1xCompilerPath=$(HHCPath)"/>
 	</Target>
@@ -67,7 +68,7 @@
     <Copy SourceFiles="@(CastleFacility)" DestinationFolder="$(BuildOutputPath)\Castle.Facilities.SolrNetIntegration"/>
     <Copy SourceFiles="@(NinjectModule)" DestinationFolder="$(BuildOutputPath)\Ninject.Integration.SolrNet"/>
     <Copy SourceFiles="help\Documentation.chm" DestinationFiles="$(BuildOutputPath)\SolrNet.chm"/>
-    <CreateItem Include="$(BuildOutputPath)\**\*.*" Exclude="*.zip">
+    <CreateItem Include="$(BuildOutputPath)\**\*.*">
       <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
     </CreateItem>
     <Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-net-2.0.zip" ZipLevel="9"/>

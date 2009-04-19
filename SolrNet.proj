@@ -18,7 +18,36 @@
     </PropertyGroup>
 		<MSBuild Projects="sandcastle.shfbproj" StopOnFirstFailure="true" Properties="SHFBROOT=$(SHFBROOT);HtmlHelp1xCompilerPath=$(HHCPath)"/>
 	</Target>
-	<Target Name="ReleasePackage" DependsOnTargets="Release;Build;Doc">
+  <Target Name="Version">
+    <Message Text="Version: $(Version)"/>
+    <ItemGroup>
+      <InfoFile Include="SolrNet\Properties\AssemblyInfo.cs">
+        <AssemblyTitle>SolrNet</AssemblyTitle>
+      </InfoFile>
+      <InfoFile Include="SolrNet.DSL\Properties\AssemblyInfo.cs">
+        <AssemblyTitle>SolrNet.DSL</AssemblyTitle>
+      </InfoFile>
+      <InfoFile Include="Castle.Facilities.SolrNetIntegration\Properties\AssemblyInfo.cs">
+        <AssemblyTitle>Castle.Facilities.SolrNetIntegration</AssemblyTitle>
+      </InfoFile>
+      <InfoFile Include="Ninject.Integration.SolrNet\Properties\AssemblyInfo.cs">
+        <AssemblyTitle>Ninject.Integration.SolrNet</AssemblyTitle>
+      </InfoFile>
+    </ItemGroup>
+    <AssemblyInfo CodeLanguage="CS"
+      OutputFile="@(InfoFile)"
+      AssemblyTitle="%(InfoFile.AssemblyTitle)"
+      AssemblyDescription="%(InfoFile.AssemblyTitle)"
+      AssemblyCompany=""
+      AssemblyProduct="%(InfoFile.AssemblyTitle)"
+      AssemblyCopyright="Copyright © Mauricio Scheffer 2007-2009"
+      ComVisible="false"
+      CLSCompliant="true"
+      Guid="6688f9b4-5f2d-4fd6-aafc-3a81c84a69f1"
+      AssemblyVersion="$(Version)"
+      AssemblyFileVersion="$(Version)"/>
+  </Target>
+	<Target Name="ReleasePackage" DependsOnTargets="Release;Version;Build;Doc">
     <PropertyGroup>
       <BuildOutputPath>build</BuildOutputPath>
     </PropertyGroup>

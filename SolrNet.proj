@@ -2,8 +2,10 @@
   <PropertyGroup>
     <Version>0.2.1</Version>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.Community.Tasks</MSBuildCommunityTasksPath>
+    <ExtensionTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.ExtensionPack\</ExtensionTasksPath>
   </PropertyGroup>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
+  <Import Project="$(ExtensionTasksPath)\MSBuild.ExtensionPack.tasks"/>
   <Target Name="Build">
 		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)"/>
 	</Target>
@@ -73,5 +75,70 @@
     </CreateItem>
     <Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-net-2.0.zip" ZipLevel="9"/>
     <Delete Files="@(AllOutputExceptZip)" />
+  </Target>
+  <Target Name="SamplePackage" DependsOnTargets="Release;Build">
+    <PropertyGroup>
+      <BuildOutputPath>sample</BuildOutputPath>
+      <Xsl>
+        <![CDATA[<?xml version="1.0"?>
+        <xsl:stylesheet version="1.0" 
+          xmlns:ms="http://schemas.microsoft.com/developer/msbuild/2003"
+          xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+          <xsl:template match="node() | @*">
+              <xsl:copy>
+                  <xsl:apply-templates select="node() | @*" />
+              </xsl:copy>
+          </xsl:template>
+          <xsl:template match="/ms:Project/ms:ItemGroup/ms:Reference[starts-with(@Include, 'log4net')]"/>
+          <xsl:template match="/ms:Project/ms:ItemGroup/ms:Reference[starts-with(@Include, 'Microsoft.Practices.ServiceLocation')]"/>
+          <xsl:template match="/ms:Project/ms:ItemGroup/ms:ProjectReference"/>
+          <xsl:template match="/ms:Project/ms:ItemGroup[1]">
+            <ItemGroup>
+              <Reference Include="HttpWebAdapters">
+                <SpecificVersion>False</SpecificVersion>
+                <HintPath>lib\HttpWebAdapters.dll</HintPath>
+              </Reference>
+              <Reference Include="log4net">
+                <SpecificVersion>False</SpecificVersion>
+                <HintPath>lib\log4net.dll</HintPath>
+              </Reference>
+              <Reference Include="Microsoft.Practices.ServiceLocation">
+                <SpecificVersion>False</SpecificVersion>
+                <HintPath>lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
+              </Reference>
+              <Reference Include="SolrNet">
+                <SpecificVersion>False</SpecificVersion>
+                <HintPath>lib\SolrNet.dll</HintPath>
+              </Reference>
+              <Reference Include="SolrNet.DSL">
+                <SpecificVersion>False</SpecificVersion>
+                <HintPath>lib\SolrNet.DSL.dll</HintPath>
+              </Reference>
+              <xsl:apply-templates select="node() | @*" />
+            </ItemGroup>
+          </xsl:template>
+        </xsl:stylesheet>]]>
+      </Xsl>
+    </PropertyGroup>
+    <RemoveDir Directories="$(BuildOutputPath)"/>
+    <MakeDir Directories="$(BuildOutputPath)" ContinueOnError="true"/>
+    <MakeDir Directories="$(BuildOutputPath)\tools" ContinueOnError="true"/>
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\tools\curl.exe" DestinationFolder="$(BuildOutputPath)\tools" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\license.txt" DestinationFolder="$(BuildOutputPath)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\runsample.bat" DestinationFolder="$(BuildOutputPath)" />
+    <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\solr-1.3.0" LocalPath="$(BuildOutputPath)\solr-1.3.0"/>
+    <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\tools\Cassini" LocalPath="$(BuildOutputPath)\tools\Cassini"/>
+    <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\SampleSolrApp" LocalPath="$(BuildOutputPath)\SampleSolrApp"/>
+    <MakeDir Directories="$(BuildOutputPath)\SampleSolrApp\lib" ContinueOnError="true"/>
+    <ItemGroup>
+      <SampleSolrAppBin Include="$(MSBuildProjectDirectory)\SampleSolrApp\bin\*.dll" Exclude="**\SampleSolrApp.dll"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(SampleSolrAppBin)" DestinationFolder="$(BuildOutputPath)\SampleSolrApp\lib" />
+    <XmlTask TaskAction="TransForm"
+             XmlFile="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.csproj"
+             OutputFile="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.csproj"
+             XslTransform="$(Xsl)"
+             Indent="true"/>
+    <MSBuild Projects="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.sln" StopOnFirstFailure="true"/>
   </Target>
 </Project>

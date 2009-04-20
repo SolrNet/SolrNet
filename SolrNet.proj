@@ -1,4 +1,4 @@
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="3.5">
   <PropertyGroup>
     <Version>0.2.1</Version>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.Community.Tasks</MSBuildCommunityTasksPath>
@@ -73,7 +73,7 @@
     <CreateItem Include="$(BuildOutputPath)\**\*.*">
       <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
     </CreateItem>
-    <Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-net-2.0.zip" ZipLevel="9"/>
+    <MSBuild.Community.Tasks.Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-net-2.0.zip" ZipLevel="9"/>
     <Delete Files="@(AllOutputExceptZip)" />
   </Target>
   <Target Name="SamplePackage" DependsOnTargets="Release;Build">
@@ -82,17 +82,18 @@
       <Xsl>
         <![CDATA[<?xml version="1.0"?>
         <xsl:stylesheet version="1.0" 
-          xmlns:ms="http://schemas.microsoft.com/developer/msbuild/2003"
-          xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+          xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+          xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+          exclude-result-prefixes="#default">
           <xsl:template match="node() | @*">
               <xsl:copy>
                   <xsl:apply-templates select="node() | @*" />
               </xsl:copy>
           </xsl:template>
-          <xsl:template match="/ms:Project/ms:ItemGroup/ms:Reference[starts-with(@Include, 'log4net')]"/>
-          <xsl:template match="/ms:Project/ms:ItemGroup/ms:Reference[starts-with(@Include, 'Microsoft.Practices.ServiceLocation')]"/>
-          <xsl:template match="/ms:Project/ms:ItemGroup/ms:ProjectReference"/>
-          <xsl:template match="/ms:Project/ms:ItemGroup[1]">
+          <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup']/*[local-name()='Reference'][starts-with(@Include, 'log4net')]"/>
+          <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup']/*[local-name()='Reference'][starts-with(@Include, 'Microsoft.Practices.ServiceLocation')]"/>
+          <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup']/*[local-name()='ProjectReference']"/>
+          <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup'][1]">
             <ItemGroup>
               <Reference Include="HttpWebAdapters">
                 <SpecificVersion>False</SpecificVersion>
@@ -114,7 +115,6 @@
                 <SpecificVersion>False</SpecificVersion>
                 <HintPath>lib\SolrNet.DSL.dll</HintPath>
               </Reference>
-              <xsl:apply-templates select="node() | @*" />
             </ItemGroup>
           </xsl:template>
         </xsl:stylesheet>]]>
@@ -139,6 +139,6 @@
              OutputFile="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.csproj"
              XslTransform="$(Xsl)"
              Indent="true"/>
-    <MSBuild Projects="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.sln" StopOnFirstFailure="true"/>
+    <MSBuild Projects="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.sln" StopOnFirstFailure="true" ToolsVersion="3.5"/>
   </Target>
 </Project>

@@ -72,6 +72,11 @@ namespace SolrNet.Tests {
             public IDictionary<string, int> Dict { get; set; }
         }
 
+        public class TestDocWithNullableDate {
+            [SolrField]
+            public DateTime? Date { get; set; }
+        }
+
 		[Test]
 		public void Serializes() {
 		    var mapper = new AttributesMappingManager();
@@ -103,6 +108,7 @@ namespace SolrNet.Tests {
 			Console.WriteLine(fs);
 			var xml = new XmlDocument();
 			xml.LoadXml(fs);
+            Assert.AreEqual("<doc><field name=\"Id\">&lt;quote\"</field><field name=\"Flower\">0</field></doc>", fs);
 		}
 
 		[Test]
@@ -213,6 +219,18 @@ namespace SolrNet.Tests {
             xml.LoadXml(fs);
             Console.WriteLine(fs);
             Assert.AreEqual("<doc><field name=\"Id\">" + doc.Id + "</field><field name=\"Dictone\">1</field><field name=\"Dicttwo\">2</field></doc>", fs);
+        }
+
+        [Test]
+        public void SupportsNullableDateTime() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithNullableDate>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithNullableDate();
+            string fs = ser.Serialize(doc).OuterXml;
+            var xml = new XmlDocument();
+            xml.LoadXml(fs);
+            Console.WriteLine(fs);
+            Assert.AreEqual("<doc/>", fs);
         }
 
 	}

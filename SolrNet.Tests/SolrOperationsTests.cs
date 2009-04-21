@@ -39,6 +39,11 @@ namespace SolrNet.Tests {
             }
         }
 
+        public class TestDocWithNullable {
+            [SolrField]
+            public DateTime? Dt { get; set; }
+        }
+
         [Test]
         public void Add() {
             var mocks = new MockRepository();
@@ -441,6 +446,36 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var results = mocks.CreateMock<ISolrQueryResults<ISolrDocument>>();
             Assert.IsInstanceOfType(typeof (IEnumerable<ISolrDocument>), results);
+        }
+
+        public delegate string Writer(string ignored, string s);
+
+        [Test]
+        public void NullableDateTime() {
+            var mocks = new MockRepository();
+            var connection = mocks.CreateMock<ISolrConnection>();
+            var resultParser = mocks.CreateMock<ISolrQueryResultParser<TestDocWithNullable>>();
+            var queryExecuter = new SolrQueryExecuter<TestDocWithNullable>(connection, resultParser);
+            var mapper = new AttributesMappingManager();
+            var docSerializer = new SolrDocumentSerializer<TestDocWithNullable>(mapper, new DefaultFieldSerializer());
+            var basicSolr = new SolrBasicServer<TestDocWithNullable>(connection, queryExecuter, docSerializer);
+            var solr = new SolrServer<TestDocWithNullable>(basicSolr, mapper);
+            string xml = null;
+            With.Mocks(mocks)
+                .Expecting(() => {
+                    Expect.Call(connection.Post(null, null))
+                        .IgnoreArguments()
+                        .Do(new Writer(delegate(string u, string s) {
+                            Console.WriteLine(s);
+                            xml = s;
+                            return null;
+                        }));
+                })
+                .Verify(() => {
+                    solr.Add(new TestDocWithNullable());
+                    Assert.AreEqual("<add><doc /></add>", xml);
+                });
+
         }
     }
 }

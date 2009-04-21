@@ -7,7 +7,7 @@
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
   <Import Project="$(ExtensionTasksPath)\MSBuild.ExtensionPack.tasks"/>
   <Target Name="Build">
-		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)"/>
+		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)" BuildInParallel="true"/>
 	</Target>
 	<Target Name="Release">
 		<PropertyGroup>
@@ -115,12 +115,13 @@
                 <SpecificVersion>False</SpecificVersion>
                 <HintPath>lib\SolrNet.DSL.dll</HintPath>
               </Reference>
+              <xsl:apply-templates select="node() | @*" />
             </ItemGroup>
           </xsl:template>
         </xsl:stylesheet>]]>
       </Xsl>
     </PropertyGroup>
-    <RemoveDir Directories="$(BuildOutputPath)"/>
+    <RemoveDir Directories="$(BuildOutputPath)" ContinueOnError="true"/>
     <MakeDir Directories="$(BuildOutputPath)" ContinueOnError="true"/>
     <MakeDir Directories="$(BuildOutputPath)\tools" ContinueOnError="true"/>
     <Copy SourceFiles="$(MSBuildProjectDirectory)\tools\curl.exe" DestinationFolder="$(BuildOutputPath)\tools" />
@@ -139,6 +140,13 @@
              OutputFile="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.csproj"
              XslTransform="$(Xsl)"
              Indent="true"/>
-    <MSBuild Projects="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.sln" StopOnFirstFailure="true" ToolsVersion="3.5"/>
+    <MSBuild Projects="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.sln" StopOnFirstFailure="true" ToolsVersion="3.5" BuildInParallel="true"/>
+    <RemoveDir Directories="$(BuildOutputPath)\SampleSolrApp\obj"/>
+    <CreateItem Include="$(BuildOutputPath)\**\*.*">
+      <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
+    </CreateItem>
+    <MSBuild.Community.Tasks.Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-sample.zip" ZipLevel="9"/>
+    <Delete Files="@(AllOutputExceptZip)" />
+    <RemoveDir Directories="@(AllOutputExceptZip)"/>
   </Target>
 </Project>

@@ -230,7 +230,7 @@ namespace SolrNet.Tests {
             var xml = new XmlDocument();
             xml.LoadXml(fs);
             Console.WriteLine(fs);
-            Assert.AreEqual("<doc/>", fs);
+            Assert.AreEqual("<doc />", fs);
         }
 
 	}

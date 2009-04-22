@@ -6,14 +6,28 @@
   </PropertyGroup>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
   <Import Project="$(ExtensionTasksPath)\MSBuild.ExtensionPack.tasks"/>
+	<UsingTask AssemblyFile="$(MSBuildProjectDirectory)\lib\Gallio.MSBuildTasks.dll" TaskName="Gallio" />
   <Target Name="Build">
-		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)" BuildInParallel="true"/>
+		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)" BuildInParallel="true" Targets="Rebuild"/>
 	</Target>
-	<Target Name="Release">
+	<Target Name="SetRelease">
 		<PropertyGroup>
 			<BuildConfig>Configuration=Release</BuildConfig>
 		</PropertyGroup>
 	</Target>
+  <Target Name="Test" DependsOnTargets="Build">
+  	<ItemGroup>
+  		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"/>
+  		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>
+  		<TestAssemblies Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration.Tests\bin\Debug\Castle.Facilities.SolrNetIntegration.Tests.dll"/>
+  		<TestAssemblies Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet.Tests\bin\Debug\Ninject.Integration.SolrNet.Tests.dll"/>
+  		<TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
+  	</ItemGroup>
+    <Gallio IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Assemblies="@(TestAssemblies)">
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
+    </Gallio>
+    <Error Text="Tests execution failed" Condition="'$(ExitCode)' != 0" />
+  </Target>	
 	<Target Name="Doc">
     <PropertyGroup>
       <SHFBROOT>$(MSBuildProjectDirectory)\tools\SHFB</SHFBROOT>
@@ -50,7 +64,7 @@
       AssemblyVersion="$(Version)"
       AssemblyFileVersion="$(Version)"/>
   </Target>
-	<Target Name="ReleasePackage" DependsOnTargets="Release;Version;Build;Doc">
+	<Target Name="ReleasePackage" DependsOnTargets="SetRelease;Version;Build;Doc">
     <PropertyGroup>
       <BuildOutputPath>build</BuildOutputPath>
     </PropertyGroup>
@@ -76,7 +90,7 @@
     <MSBuild.Community.Tasks.Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-net-2.0.zip" ZipLevel="9"/>
     <Delete Files="@(AllOutputExceptZip)" />
   </Target>
-  <Target Name="SamplePackage" DependsOnTargets="Release;Build">
+  <Target Name="SamplePackage" DependsOnTargets="SetRelease;Build">
     <PropertyGroup>
       <BuildOutputPath>sample</BuildOutputPath>
       <Xsl>

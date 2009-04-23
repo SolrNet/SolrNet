@@ -120,12 +120,6 @@ namespace SolrNet.Utils {
 			}
 		}
 
-		public static IEnumerable<R> Select<R>(IEnumerable l, Converter<object, R> f) {
-			foreach (var e in l) {
-				yield return f(e);
-			}
-		}
-
 		public static IEnumerable<R> Select<T, R>(IEnumerable<T> l, Converter<T, R> f) {
 			foreach (var e in l) {
 				yield return f(e);

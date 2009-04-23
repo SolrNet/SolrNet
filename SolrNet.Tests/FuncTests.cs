@@ -16,7 +16,8 @@
 
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
+using System.Linq;
+using MbUnit.Framework;
 using SolrNet.Utils;
 
 namespace SolrNet.Tests {
@@ -57,6 +58,34 @@ namespace SolrNet.Tests {
         public void FirstOrDefault_without_elements_default() {
             var l = new int[] { };
             Assert.AreEqual(default(int), Func.FirstOrDefault(l));
+        }
+
+        [Test]
+        public void ConvertStringToInt() {
+            var l = new[] {"1", "2", "358"};
+            Assert.AreElementsEqual(new[] {1, 2, 358}, Func.Convert<int>(l));
+        }
+
+        [Test]
+        public void ConvertStringToInt_invalid() {
+            var l = new[] { "1", "2", "pepe" };
+            Assert.Throws<FormatException>(() => Func.Convert<int>(l).ToList());
+        }
+
+        [Test]
+        public void Any_true() {
+            Assert.IsTrue(Func.Any(new[] { 1, 2, 3 }, i => i > 2));
+        }
+
+        [Test]
+        public void Any_false() {
+            Assert.IsFalse(Func.Any(new[] { 1, 2, 3 }, i => i > 3));
+        }
+
+        [Test]
+        public void ToArray() {
+            int[] l = Func.ToArray(Enumerable.Range(0, 5));
+            Assert.AreElementsEqual(new[] {0,1,2,3,4}, l);
         }
 	}
 }

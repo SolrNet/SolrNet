@@ -36,8 +36,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         [Ignore("This test requires an actual solr instance running")]
-        public void Add_then_query()
-        {
+        public void Add_then_query() {
             var p = new Product {
                 Id = "SP2514N",
                 Name = "Samsuñg SpinPoint P120 SP2514N - hárd drívè - 250 GB - ÁTÀ-133",
@@ -50,7 +49,8 @@ namespace SolrNet.Tests.Integration.Sample {
                 Features = new[] {
                     "7200RPM, 8MB cache, IDE Ultra ATA-133",
                     "NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor",
-                    "áéíóúñç", // testing UTF
+                    "áéíóúñç & two", // testing UTF
+                    "Có| w tym",
                 },
                 Prices = new Dictionary<string, decimal> {
                     {"regular", 150m},

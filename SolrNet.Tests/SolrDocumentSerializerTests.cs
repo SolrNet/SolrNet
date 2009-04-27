@@ -77,6 +77,11 @@ namespace SolrNet.Tests {
             public DateTime? Date { get; set; }
         }
 
+        public class TestDocWithString {
+            [SolrField]
+            public string Desc { get; set; }
+        }
+
 		[Test]
 		public void Serializes() {
 		    var mapper = new AttributesMappingManager();
@@ -231,6 +236,18 @@ namespace SolrNet.Tests {
             xml.LoadXml(fs);
             Console.WriteLine(fs);
             Assert.AreEqual("<doc />", fs);
+        }
+
+        [Test]
+        public void UTF_XML() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithString>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithString {Desc = "Có| w tym"};
+            string fs = ser.Serialize(doc).OuterXml;
+            var xml = new XmlDocument();
+            xml.LoadXml(fs);
+            Console.WriteLine(fs);
+            Assert.AreEqual("<doc><field name=\"Desc\">Có| w tym</field></doc>", fs);
         }
 
 	}

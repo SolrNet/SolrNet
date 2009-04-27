@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
+using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Attributes;
 using SolrNet.Commands.Parameters;
@@ -45,7 +45,7 @@ namespace SolrNet.DSL.Tests {
 
         public delegate string Writer(string s, IDictionary<string, string> q);
 
-        [TestFixtureSetUp]
+        [FixtureSetUp]
         public void FixtureSetup() {
             Startup.Init<TestDocument>("http://localhost");
             Startup.Init<TestDocumentWithId>("http://localhost");

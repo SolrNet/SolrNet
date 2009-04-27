@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using NUnit.Framework;
+using MbUnit.Framework;
 using SolrNet.Attributes;
 using SolrNet.Impl;
 using SolrNet.Impl.FieldSerializers;

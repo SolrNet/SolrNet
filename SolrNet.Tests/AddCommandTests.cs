@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
+using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Attributes;
 using SolrNet.Commands;

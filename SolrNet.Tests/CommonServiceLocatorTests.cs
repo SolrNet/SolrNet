@@ -18,8 +18,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Web;
+using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
-using NUnit.Framework;
 using SolrNet.Utils;
 
 namespace SolrNet.Tests {

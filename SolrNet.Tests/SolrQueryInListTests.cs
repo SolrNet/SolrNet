@@ -14,7 +14,7 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
+using MbUnit.Framework;
 using System.Linq;
 
 namespace SolrNet.Tests {

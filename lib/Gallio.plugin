@@ -62,6 +62,10 @@
                    service="Gallio.Framework.Pattern.PatternTestController, Gallio"
                    type="Gallio.Framework.Pattern.PatternTestController, Gallio" />
 
+        <component id="Core.DebuggerManager"
+                   service="Gallio.Runtime.Debugging.IDebuggerManager, Gallio"
+                   type="Gallio.Runtime.Debugging.DefaultDebuggerManager, Gallio" />
+
         <component id="Core.LocalHostFactory"
                    service="Gallio.Runtime.Hosting.IHostFactory, Gallio"
                    type="Gallio.Runtime.Hosting.LocalHostFactory, Gallio" />

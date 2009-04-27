@@ -19,8 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+using MbUnit.Framework;
 using SolrNet.Attributes;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
@@ -374,7 +373,7 @@ namespace SolrNet.Tests {
 			var kv = highlights.First().Value;
 			Assert.AreEqual(1, kv.Count);
 			Assert.AreEqual("features", kv.First().Key);
-			Assert.That(kv.First().Value, Text.Contains("Noise"));
+            Assert.Like(kv.First().Value, "Noise");
 		}
 
         [Test]

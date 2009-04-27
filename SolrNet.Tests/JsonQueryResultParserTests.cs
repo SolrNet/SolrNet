@@ -16,12 +16,11 @@
 
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
+using MbUnit.Framework;
 using SolrNet.Attributes;
 
 namespace SolrNet.Tests {
     [TestFixture]
-    [Ignore("not ready yet")]
     public class JsonQueryResultParserTests {
         [Test]
         [Ignore("not ready yet")]

@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
+using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Attributes;
 using SolrNet.Commands.Parameters;
@@ -247,14 +247,14 @@ namespace SolrNet.Tests {
                     Reload = true,
                 },
             }).ToList();
-            Assert.Contains(KVP("spellcheck", "true"), p);
-            Assert.Contains(KVP("spellcheck.q", "hell"), p);
-            Assert.Contains(KVP("spellcheck.build", "true"), p);
-            Assert.Contains(KVP("spellcheck.collate", "true"), p);
-            Assert.Contains(KVP("spellcheck.count", "4"), p);
-            Assert.Contains(KVP("spellcheck.dictionary", "spanish"), p);
-            Assert.Contains(KVP("spellcheck.onlyMorePopular", "true"), p);
-            Assert.Contains(KVP("spellcheck.reload", "true"), p);
+            Assert.Contains(p, KVP("spellcheck", "true"));
+            Assert.Contains(p, KVP("spellcheck.q", "hell"));
+            Assert.Contains(p, KVP("spellcheck.build", "true"));
+            Assert.Contains(p, KVP("spellcheck.collate", "true"));
+            Assert.Contains(p, KVP("spellcheck.count", "4"));
+            Assert.Contains(p, KVP("spellcheck.dictionary", "spanish"));
+            Assert.Contains(p, KVP("spellcheck.onlyMorePopular", "true"));
+            Assert.Contains(p, KVP("spellcheck.reload", "true"));
         }
 
         [Test]
@@ -274,14 +274,14 @@ namespace SolrNet.Tests {
                     Reload = true,
                 },
             }).ToList();
-            Assert.Contains(KVP("spellcheck", "true"), p);
-            Assert.Contains(KVP("spellcheck.q", "hell"), p);
-            Assert.Contains(KVP("spellcheck.build", "true"), p);
-            Assert.Contains(KVP("spellcheck.collate", "true"), p);
-            Assert.Contains(KVP("spellcheck.count", "4"), p);
-            Assert.Contains(KVP("spellcheck.dictionary", "spanish"), p);
-            Assert.Contains(KVP("spellcheck.onlyMorePopular", "true"), p);
-            Assert.Contains(KVP("spellcheck.reload", "true"), p);
+            Assert.Contains(p, KVP("spellcheck", "true"));
+            Assert.Contains(p, KVP("spellcheck.q", "hell"));
+            Assert.Contains(p, KVP("spellcheck.build", "true"));
+            Assert.Contains(p, KVP("spellcheck.collate", "true"));
+            Assert.Contains(p, KVP("spellcheck.count", "4"));
+            Assert.Contains(p, KVP("spellcheck.dictionary", "spanish"));
+            Assert.Contains(p, KVP("spellcheck.onlyMorePopular", "true"));
+            Assert.Contains(p, KVP("spellcheck.reload", "true"));
         }
 
         [Test]
@@ -296,11 +296,11 @@ namespace SolrNet.Tests {
                     MinTermFreq = 1,
                 },
             }).ToList();
-            Assert.Contains(KVP("mlt", "true"), p);
-            Assert.Contains(KVP("mlt.mindf", "1"), p);
-            Assert.Contains(KVP("mlt.fl", "manu,cat"), p);
-            Assert.Contains(KVP("mlt.mintf", "1"), p);
-            Assert.Contains(KVP("q", "apache"), p);
+            Assert.Contains(p, KVP("mlt", "true"));
+            Assert.Contains(p, KVP("mlt.mindf", "1"));
+            Assert.Contains(p, KVP("mlt.fl", "manu,cat"));
+            Assert.Contains(p, KVP("mlt.mintf", "1"));
+            Assert.Contains(p, KVP("q", "apache"));
         }
 
         [Test]
@@ -322,17 +322,17 @@ namespace SolrNet.Tests {
                     MinWordLength = 7,
                 }
             }).ToList();
-            Assert.Contains(KVP("mlt", "true"), p);
-            Assert.Contains(KVP("mlt.boost", "true"), p);
-            Assert.Contains(KVP("mlt.count", "10"), p);
-            Assert.Contains(KVP("mlt.maxqt", "2"), p);
-            Assert.Contains(KVP("mlt.maxntp", "3"), p);
-            Assert.Contains(KVP("mlt.maxwl", "4"), p);
-            Assert.Contains(KVP("mlt.mindf", "5"), p);
-            Assert.Contains(KVP("mlt.mintf", "6"), p);
-            Assert.Contains(KVP("mlt.minwl", "7"), p);
-            Assert.Contains(KVP("mlt.fl", "field1,field2"), p);
-            Assert.Contains(KVP("mlt.qf", "qf1,qf2"), p);
+            Assert.Contains(p, KVP("mlt", "true"));
+            Assert.Contains(p, KVP("mlt.boost", "true"));
+            Assert.Contains(p, KVP("mlt.count", "10"));
+            Assert.Contains(p, KVP("mlt.maxqt", "2"));
+            Assert.Contains(p, KVP("mlt.maxntp", "3"));
+            Assert.Contains(p, KVP("mlt.maxwl", "4"));
+            Assert.Contains(p, KVP("mlt.mindf", "5"));
+            Assert.Contains(p, KVP("mlt.mintf", "6"));
+            Assert.Contains(p, KVP("mlt.minwl", "7"));
+            Assert.Contains(p, KVP("mlt.fl", "field1,field2"));
+            Assert.Contains(p, KVP("mlt.qf", "qf1,qf2"));
         }
 
         [Test]

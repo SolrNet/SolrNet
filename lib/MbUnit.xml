@@ -20,14 +20,14 @@
       <summary>Associates an annotation message of the specified type with the code element.</summary>
     </member>
     <member name="T:MbUnit.Framework.ApartmentStateAttribute">
-      <summary>Sets the apartment state to be used to run the decorated test.</summary>
+      <summary>Sets the apartment state to be used to run the decorated test and its children unless subsequently overridden.</summary>
     </member>
     <member name="P:MbUnit.Framework.ApartmentStateAttribute.ApartmentState">
       <summary>Gets the apartment state to be used to run the decorated test.</summary>
     </member>
-    <member name="M:MbUnit.Framework.ApartmentStateAttribute.DecorateTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.ApartmentStateAttribute.DecorateTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
-        <para> Applies decorations to a method or type-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
+        <para> Applies decorations to a test. </para>
         <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
       </summary>
       <param name="scope">The scope</param>
@@ -36,25 +36,25 @@
     <member name="T:MbUnit.Framework.AssemblyFixtureAttribute">
       <summary>Declares that a class contains assembly-level setup and teardown methods.</summary>
     </member>
-    <member name="M:MbUnit.Framework.AssemblyFixtureAttribute.Consume(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)">
+    <member name="M:MbUnit.Framework.AssemblyFixtureAttribute.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)">
       <summary>
         <para> Consumes a code element and applies its contributions to the scope provided by a containing pattern. </para>
         <para> This method is used to declare new tests, test parameters and other components and add them to a containing test that was defined in some other scope. </para>
-        <para> For example, when enumerating test fixtures, the assembly-level pattern will call the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method of the primary patterns associated with each type in an assembly. Some of these patterns will create new test fixture objects and add them as children of the containing assembly-level test. They will then call the <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)" /> method of each non-primary pattern associated with the type within the scope of the test fixture. Then they will typically recurse into the fixture to apply contributions defined by patterns associated with methods, fields, properties, events, constructors and generic type parameters. </para>
+        <para> For example, when enumerating test fixtures, the assembly-level pattern will call the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method of the primary patterns associated with each type in an assembly. Some of these patterns will create new test fixture objects and add them as children of the containing assembly-level test. They will then call the <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)" /> method of each non-primary pattern associated with the type within the scope of the test fixture. Then they will typically recurse into the fixture to apply contributions defined by patterns associated with methods, fields, properties, events, constructors and generic type parameters. </para>
       </summary>
       <param name="containingScope">The containing scope</param>
       <param name="codeElement">The code element to process</param>
-      <param name="skipChildren">If true, skips generating child tests. Instead the children may be populated on demand using <see cref="P:Gallio.Framework.Pattern.PatternEvaluationScope.PopulateChildrenChain" />. The implementation may safely ignore the value of this flag so long as subsequent attempts to populate children on demand are idempotent (do nothing or have no adverse side-effects).</param>
+      <param name="skipChildren">If true, skips generating child test components. Instead the children may be populated on demand using <see cref="M:Gallio.Framework.Pattern.IPatternScope.AddDeferredComponentPopulator(Gallio.Framework.Pattern.DeferredComponentPopulator)" />. The implementation may safely ignore the value of this flag so long as subsequent attempts to populate children on demand are idempotent (do nothing or have no adverse side-effects).</param>
     </member>
-    <member name="M:MbUnit.Framework.AssemblyFixtureAttribute.SetTestSemantics(Gallio.Framework.Pattern.PatternTest,Gallio.Reflection.ITypeInfo)">
+    <member name="M:MbUnit.Framework.AssemblyFixtureAttribute.SetTestSemantics(Gallio.Framework.Pattern.ITestBuilder,Gallio.Reflection.ITypeInfo)">
       <summary>
-        <para> Applies semantic actions to the <see cref="P:Gallio.Framework.Pattern.PatternTest.TestActions" /> member of a test to set the test's runtime behavior. </para>
-        <para> This method is called after <see cref="M:Gallio.Framework.Pattern.TestTypePatternAttribute.InitializeTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ITypeInfo)" />. </para>
+        <para> Applies semantic actions to a test to estalish its runtime behavior. </para>
+        <para> This method is called after <see cref="M:Gallio.Framework.Pattern.TestTypePatternAttribute.InitializeTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ITypeInfo)" />. </para>
       </summary>
-      <param name="test">The test</param>
+      <param name="testBuilder">The test builder</param>
       <param name="type">The test type</param>
     </member>
-    <member name="M:MbUnit.Framework.AssemblyFixtureAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ITypeInfo)">
+    <member name="M:MbUnit.Framework.AssemblyFixtureAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ITypeInfo)">
       <summary>Verifies that the attribute is being used correctly.</summary>
       <param name="containingScope">The containing scope</param>
       <param name="type">The type</param>
@@ -65,13 +65,16 @@
     <member name="P:MbUnit.Framework.AssemblyResolverAttribute.AssemblyResolverType">
       <summary>Gets the assembly resolver type.</summary>
     </member>
-    <member name="M:MbUnit.Framework.AssemblyResolverAttribute.Initialize(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.IAssemblyInfo)">
+    <member name="M:MbUnit.Framework.AssemblyResolverAttribute.Initialize(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IAssemblyInfo)">
       <summary>Performs early initialization for the specified assembly.</summary>
       <param name="frameworkScope">The framework-level scope that will eventually contain the assembly-level test</param>
       <param name="assembly">The assembly to process</param>
     </member>
     <member name="T:MbUnit.Framework.Assert">
       <summary>Defines a set of assertions that enable a test to verify the expected behavior of the subject under test. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>
+    </member>
+    <member name="P:MbUnit.Framework.Assert.IsFailurePending">
+      <summary>Returns true if there is a pending unreported assertion failure.</summary>
     </member>
     <member name="P:MbUnit.Framework.Assert.Over">
       <summary>Provides methods for composing assertions to map over complex data structures.</summary>
@@ -198,6 +201,30 @@
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
+    <member name="M:MbUnit.Framework.Assert.AreEqual``1(``0,``0)">
+      <summary>Verifies that an actual value equals some expected value.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="expectedValue">The expected value</param>
+      <param name="actualValue">The actual value</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.AreEqual``1(``0,``0,System.String,System.Object[])">
+      <summary>Verifies that an actual value equals some expected value.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="expectedValue">The expected value</param>
+      <param name="actualValue">The actual value</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.AreEqual``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0})">
+      <summary>Verifies that an actual value equals some expected value according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="expectedValue">The expected value</param>
+      <param name="actualValue">The actual value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
     <member name="M:MbUnit.Framework.Assert.AreEqual``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0},System.String,System.Object[])">
       <summary>Verifies that an actual value equals some expected value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
@@ -240,30 +267,6 @@
       <param name="comparisonType">The string comparison type</param>
       <param name="messageFormat">The custom assertion message format, or null if none</param>
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
-      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
-    </member>
-    <member name="M:MbUnit.Framework.Assert.AreEqual``1(``0,``0)">
-      <summary>Verifies that an actual value equals some expected value.</summary>
-      <typeparam name="T">The type of value</typeparam>
-      <param name="expectedValue">The expected value</param>
-      <param name="actualValue">The actual value</param>
-      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
-    </member>
-    <member name="M:MbUnit.Framework.Assert.AreEqual``1(``0,``0,System.String,System.Object[])">
-      <summary>Verifies that an actual value equals some expected value.</summary>
-      <typeparam name="T">The type of value</typeparam>
-      <param name="expectedValue">The expected value</param>
-      <param name="actualValue">The actual value</param>
-      <param name="messageFormat">The custom assertion message format, or null if none</param>
-      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
-      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
-    </member>
-    <member name="M:MbUnit.Framework.Assert.AreEqual``1(``0,``0,System.Collections.Generic.IEqualityComparer{``0})">
-      <summary>Verifies that an actual value equals some expected value according to a particular comparer.</summary>
-      <typeparam name="T">The type of value</typeparam>
-      <param name="expectedValue">The expected value</param>
-      <param name="actualValue">The actual value</param>
-      <param name="comparer">The comparer to use, or null to use the default one</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.AreNotApproximatelyEqual``2(``0,``0,``1)">
@@ -403,6 +406,26 @@
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
+    <member name="M:MbUnit.Framework.Assert.Between``1(``0,``0,``0,System.Collections.Generic.IComparer{``0})">
+      <summary>Verifies that a test value is between left and right values according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="actualValue">The actual value</param>
+      <param name="minimum">Inclusive minimum value</param>
+      <param name="maximum">Inclusive maximum value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.Between``1(``0,``0,``0,System.Collections.Generic.IComparer{``0},System.String,System.Object[])">
+      <summary>Verifies that a test value is between left and right values according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="actualValue">The actual value</param>
+      <param name="minimum">Inclusive minimum value</param>
+      <param name="maximum">Inclusive maximum value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
     <member name="M:MbUnit.Framework.Assert.Between``1(``0,``0,``0,System.Comparison{``0})">
       <summary>Verifies that a test value is between left and right values according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
@@ -421,6 +444,48 @@
       <param name="comparer">The comparer to use, or null to use the default one</param>
       <param name="messageFormat">The custom assertion message format, or null if none</param>
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.BinaryDeserialize``1(System.IO.Stream)">
+      <summary>Verifies that an object can be deserialized from a stream using a <see cref="T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" /> and returns the resulting deserialized object.</summary>
+      <param name="stream">The stream to deserialize</param>
+      <returns>The deserialized object</returns>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.BinaryDeserialize``1(System.IO.Stream,System.String,System.Object[])">
+      <summary>Verifies that an object can be deserialized from a stream using a <see cref="T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" /> and returns the resulting deserialized object.</summary>
+      <param name="stream">The stream to deserialize</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <returns>The deserialized object</returns>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.BinarySerialize(System.Object)">
+      <summary>Verifies that an object can be serialized to a stream using a <see cref="T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" /> and returns the resulting stream.</summary>
+      <param name="value">The value</param>
+      <returns>The serialized stream</returns>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.BinarySerialize(System.Object,System.String,System.Object[])">
+      <summary>Verifies that an object can be serialized to a stream using a <see cref="T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" /> and returns the resulting stream.</summary>
+      <param name="value">The value</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <returns>The serialized stream</returns>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.BinarySerializeThenDeserialize``1(``0)">
+      <summary>Verifies that an object can be serialized then deserialized to and from a stream using a <see cref="T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" /> and returns the resulting deserialized object.</summary>
+      <param name="value">The value</param>
+      <returns>The serialized then deserialized object</returns>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.BinarySerializeThenDeserialize``1(``0,System.String,System.Object[])">
+      <summary>Verifies that an object can be serialized and deserialized to and from a stream using a <see cref="T:System.Runtime.Serialization.Formatters.Binary.BinaryFormatter" /> and returns the resulting deserialized object.</summary>
+      <param name="value">The value</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <returns>The serialized then deserialized object</returns>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.Contains(System.String,System.String)">
@@ -471,6 +536,24 @@
       <param name="expectedKey">The key expected to be found in the dictionary</param>
       <param name="messageFormat">The custom assertion message format, or null if none</param>
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.Deserialize``1(System.IO.Stream,System.Runtime.Serialization.IFormatter)">
+      <summary>Verifies that an object can be deserialized from a stream using the specified <see cref="T:System.Runtime.Serialization.IFormatter" /> and returns the resulting deserialized object.</summary>
+      <param name="stream">The stream to deserialize</param>
+      <param name="formatter">The object serialization formatter</param>
+      <returns>The deserialized object</returns>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="formatter" /> is null</exception>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.Deserialize``1(System.IO.Stream,System.Runtime.Serialization.IFormatter,System.String,System.Object[])">
+      <summary>Verifies that an object can be deserialized from a stream using the specified <see cref="T:System.Runtime.Serialization.IFormatter" /> and returns the resulting deserialized object.</summary>
+      <param name="stream">The stream to deserialize</param>
+      <param name="formatter">The object serialization formatter</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <returns>The deserialized object</returns>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="formatter" /> is null</exception>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.DoesNotContain(System.String,System.String)">
@@ -617,13 +700,13 @@
       <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="regex" /> is null</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.GreaterThan``1(``0,``0)">
-      <summary>Verifies that an left value is greater than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is greater than the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
     </member>
     <member name="M:MbUnit.Framework.Assert.GreaterThan``1(``0,``0,System.String,System.Object[])">
-      <summary>Verifies that an left value is greater than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is greater than the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
@@ -631,8 +714,26 @@
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
+    <member name="M:MbUnit.Framework.Assert.GreaterThan``1(``0,``0,System.Collections.Generic.IComparer{``0})">
+      <summary>Verifies that the left value is greater than the right value according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="left">The expected value</param>
+      <param name="right">The actual value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.GreaterThan``1(``0,``0,System.Collections.Generic.IComparer{``0},System.String,System.Object[])">
+      <summary>Verifies that the left value is greater than the right value according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="left">The expected value</param>
+      <param name="right">The actual value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
     <member name="M:MbUnit.Framework.Assert.GreaterThan``1(``0,``0,System.Comparison{``0})">
-      <summary>Verifies that an left value is greater than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is greater than the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
@@ -640,7 +741,35 @@
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.GreaterThan``1(``0,``0,System.Comparison{``0},System.String,System.Object[])">
-      <summary>Verifies that an left value is greater than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is greater than the right value according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="left">The expected value</param>
+      <param name="right">The actual value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.GreaterThanOrEqualTo``1(``0,``0,System.Collections.Generic.IComparer{``0},System.String,System.Object[])">
+      <summary>Verifies that the left value is greater than or equal to the right value according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="left">The expected value</param>
+      <param name="right">The actual value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.GreaterThanOrEqualTo``1(``0,``0,System.Comparison{``0})">
+      <summary>Verifies that the left value is greater than or equal to the right value according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="left">The expected value</param>
+      <param name="right">The actual value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.GreaterThanOrEqualTo``1(``0,``0,System.Comparison{``0},System.String,System.Object[])">
+      <summary>Verifies that the left value is greater or equal than right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
@@ -650,13 +779,13 @@
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.GreaterThanOrEqualTo``1(``0,``0)">
-      <summary>Verifies that an left value is greater or equal than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is greater than or equal to the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
     </member>
     <member name="M:MbUnit.Framework.Assert.GreaterThanOrEqualTo``1(``0,``0,System.String,System.Object[])">
-      <summary>Verifies that an left value is greater or equal than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is greater than or equal to the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
@@ -664,30 +793,20 @@
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
-    <member name="M:MbUnit.Framework.Assert.GreaterThanOrEqualTo``1(``0,``0,System.Comparison{``0})">
-      <summary>Verifies that an left value is greater or equal than right value according to a particular comparer.</summary>
+    <member name="M:MbUnit.Framework.Assert.GreaterThanOrEqualTo``1(``0,``0,System.Collections.Generic.IComparer{``0})">
+      <summary>Verifies that the left value is greater than or equal to the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
       <param name="comparer">The comparer to use, or null to use the default one</param>
-      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
-    </member>
-    <member name="M:MbUnit.Framework.Assert.GreaterThanOrEqualTo``1(``0,``0,System.Comparison{``0},System.String,System.Object[])">
-      <summary>Verifies that an left value is greater or equal than right value according to a particular comparer.</summary>
-      <typeparam name="T">The type of value</typeparam>
-      <param name="left">The expected value</param>
-      <param name="right">The actual value</param>
-      <param name="comparer">The comparer to use, or null to use the default one</param>
-      <param name="messageFormat">The custom assertion message format, or null if none</param>
-      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.Inconclusive">
-      <summary>Signals that a test has yielded an inconclusive result.</summary>
+      <summary>Terminates the test and reports an inconclusive test outcome.</summary>
       <exception cref="T:Gallio.Framework.TestInconclusiveException">Thrown always</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.Inconclusive(System.String,System.Object[])">
-      <summary>Signals that a test has yielded an inconclusive result.</summary>
+      <summary>Terminates the test and reports an inconclusive test outcome.</summary>
       <param name="messageFormat">The custom message format string, or null if none</param>
       <param name="messageArgs">The custom message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.TestInconclusiveException">Thrown always</exception>
@@ -696,10 +815,24 @@
       <summary>Verifies that an object may be assigned to a variable of the specified type.</summary>
       <param name="expectedType">The Type to compare with the object's Type</param>
       <param name="actualValue">The object under examination</param>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="expectedType" /> is null</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.IsAssignableFrom(System.Type,System.Object,System.String,System.Object[])">
       <summary>Verifies that an object may be assigned to a variable of the specified type.</summary>
       <param name="expectedType">The Type to compare with the object's Type</param>
+      <param name="actualValue">The object under examination</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="expectedType" /> is null</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.IsAssignableFrom``1(System.Object)">
+      <summary>Verifies that an object may be assigned to a variable of the specified type.</summary>
+      <typeparam name="TExpected">The Type to compare with the object's Type</typeparam>
+      <param name="actualValue">The object under examination</param>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.IsAssignableFrom``1(System.Object,System.String,System.Object[])">
+      <summary>Verifies that an object may be assigned to a variable of the specified type.</summary>
+      <typeparam name="TExpected">The Type to compare with the object's Type</typeparam>
       <param name="actualValue">The object under examination</param>
       <param name="messageFormat">The custom assertion message format, or null if none</param>
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
@@ -744,14 +877,42 @@
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
       <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="expectedType" /> is null</exception>
     </member>
+    <member name="M:MbUnit.Framework.Assert.IsInstanceOfType``1(System.Object)">
+      <summary>Verifies that an actual value is an instance of some expected type.</summary>
+      <typeparam name="TExpected">The expected type</typeparam>
+      <param name="actualValue">The actual value</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.IsInstanceOfType``1(System.Object,System.String,System.Object[])">
+      <summary>Verifies that an actual value is an instance of some expected type.</summary>
+      <typeparam name="TExpected">The expected type</typeparam>
+      <param name="actualValue">The actual value</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
     <member name="M:MbUnit.Framework.Assert.IsNotAssignableFrom(System.Type,System.Object)">
       <summary>Verifies that an object may not be assigned to a variable of the specified type.</summary>
-      <param name="expectedType">The Type to compare with the object's Type</param>
+      <param name="unexpectedType">The Type to compare with the object's Type</param>
       <param name="actualValue">The object under examination</param>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="unexpectedType" /> is null</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.IsNotAssignableFrom(System.Type,System.Object,System.String,System.Object[])">
       <summary>Verifies that an object may not be assigned to a variable of the specified type.</summary>
-      <param name="expectedType">The Type to compare with the object's Type</param>
+      <param name="unexpectedType">The Type to compare with the object's Type</param>
+      <param name="actualValue">The object under examination</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="unexpectedType" /> is null</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.IsNotAssignableFrom``1(System.Object)">
+      <summary>Verifies that an object may not be assigned to a variable of the specified type.</summary>
+      <typeparam name="TUnexpected">The Type to compare with the object's Type</typeparam>
+      <param name="actualValue">The object under examination</param>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.IsNotAssignableFrom``1(System.Object,System.String,System.Object[])">
+      <summary>Verifies that an object may not be assigned to a variable of the specified type.</summary>
+      <typeparam name="TUnexpected">The Type to compare with the object's Type</typeparam>
       <param name="actualValue">The object under examination</param>
       <param name="messageFormat">The custom assertion message format, or null if none</param>
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
@@ -784,6 +945,20 @@
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
       <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="unexpectedType" /> is null</exception>
     </member>
+    <member name="M:MbUnit.Framework.Assert.IsNotInstanceOfType``1(System.Object)">
+      <summary>Verifies that an actual value is not an instance of some unexpected type.</summary>
+      <typeparam name="TUnexpected">The unexpected type</typeparam>
+      <param name="actualValue">The actual value</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.IsNotInstanceOfType``1(System.Object,System.String,System.Object[])">
+      <summary>Verifies that an actual value is not an instance of some unexpected type.</summary>
+      <typeparam name="TUnexpected">The unexpected type</typeparam>
+      <param name="actualValue">The actual value</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
     <member name="M:MbUnit.Framework.Assert.IsNotNull(System.Object)">
       <summary>Verifies that an actual value is not null.</summary>
       <param name="actualValue">The actual value</param>
@@ -808,6 +983,20 @@
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
+    <member name="M:MbUnit.Framework.Assert.IsSerializableType(System.Type)">
+      <summary>Verifies that a type supports the runtime serialization protocol.</summary>
+      <param name="type">The type to verify</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="type" /> is null</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.IsSerializableType(System.Type,System.String,System.Object[])">
+      <summary>Verifies that a type supports the runtime serialization protocol.</summary>
+      <param name="type">The type to verify</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="type" /> is null</exception>
+    </member>
     <member name="M:MbUnit.Framework.Assert.IsTrue(System.Boolean)">
       <summary>Verifies that an actual value is true.</summary>
       <param name="actualValue">The actual value</param>
@@ -820,14 +1009,28 @@
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
+    <member name="M:MbUnit.Framework.Assert.IsXmlSerializableType(System.Type)">
+      <summary>Verifies that a type supports the Xml serialization protocol used by <see cref="T:System.Xml.Serialization.XmlSerializer" />.</summary>
+      <param name="type">The type to verify</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="type" /> is null</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.IsXmlSerializableType(System.Type,System.String,System.Object[])">
+      <summary>Verifies that a type supports the Xml serialization protocol used by <see cref="T:System.Xml.Serialization.XmlSerializer" />.</summary>
+      <param name="type">The type to verify</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="type" /> is null</exception>
+    </member>
     <member name="M:MbUnit.Framework.Assert.LessThan``1(``0,``0)">
-      <summary>Verifies that an left value is less than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is less than the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
     </member>
     <member name="M:MbUnit.Framework.Assert.LessThan``1(``0,``0,System.String,System.Object[])">
-      <summary>Verifies that an left value is less than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is less than the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
@@ -835,8 +1038,26 @@
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
+    <member name="M:MbUnit.Framework.Assert.LessThan``1(``0,``0,System.Collections.Generic.IComparer{``0})">
+      <summary>Verifies that the left value is less than the right value according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="left">The expected value</param>
+      <param name="right">The actual value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.LessThan``1(``0,``0,System.Collections.Generic.IComparer{``0},System.String,System.Object[])">
+      <summary>Verifies that the left value is less than the right value according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="left">The expected value</param>
+      <param name="right">The actual value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
     <member name="M:MbUnit.Framework.Assert.LessThan``1(``0,``0,System.Comparison{``0})">
-      <summary>Verifies that an left value is less than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is less than the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
@@ -844,7 +1065,7 @@
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.LessThan``1(``0,``0,System.Comparison{``0},System.String,System.Object[])">
-      <summary>Verifies that an left value is less than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is less than the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
@@ -854,13 +1075,13 @@
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.LessThanOrEqualTo``1(``0,``0)">
-      <summary>Verifies that an left value is less or equal than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is less than or equal to the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
     </member>
     <member name="M:MbUnit.Framework.Assert.LessThanOrEqualTo``1(``0,``0,System.String,System.Object[])">
-      <summary>Verifies that an left value is less or equal than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is less than or equal to the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
@@ -868,8 +1089,26 @@
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
+    <member name="M:MbUnit.Framework.Assert.LessThanOrEqualTo``1(``0,``0,System.Collections.Generic.IComparer{``0})">
+      <summary>Verifies that the left value is less than or equal to the right value according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="left">The expected value</param>
+      <param name="right">The actual value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.LessThanOrEqualTo``1(``0,``0,System.Collections.Generic.IComparer{``0},System.String,System.Object[])">
+      <summary>Verifies that the left value is less than or equal to the right value according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="left">The expected value</param>
+      <param name="right">The actual value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
     <member name="M:MbUnit.Framework.Assert.LessThanOrEqualTo``1(``0,``0,System.Comparison{``0})">
-      <summary>Verifies that an left value is less or equal than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is less than or equal to the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
@@ -877,7 +1116,7 @@
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.LessThanOrEqualTo``1(``0,``0,System.Comparison{``0},System.String,System.Object[])">
-      <summary>Verifies that an left value is less or equal than right value according to a particular comparer.</summary>
+      <summary>Verifies that the left value is less than or equal to the right value according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
       <param name="left">The expected value</param>
       <param name="right">The actual value</param>
@@ -965,6 +1204,26 @@
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
+    <member name="M:MbUnit.Framework.Assert.NotBetween``1(``0,``0,``0,System.Collections.Generic.IComparer{``0})">
+      <summary>Verifies that a test value is not between left and right values according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="actualValue">The actual value</param>
+      <param name="minimum">Inclusive minimum value</param>
+      <param name="maximum">Inclusive maximum value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.NotBetween``1(``0,``0,``0,System.Collections.Generic.IComparer{``0},System.String,System.Object[])">
+      <summary>Verifies that a test value is not between left and right values according to a particular comparer.</summary>
+      <typeparam name="T">The type of value</typeparam>
+      <param name="actualValue">The actual value</param>
+      <param name="minimum">Inclusive minimum value</param>
+      <param name="maximum">Inclusive maximum value</param>
+      <param name="comparer">The comparer to use, or null to use the default one</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
     <member name="M:MbUnit.Framework.Assert.NotBetween``1(``0,``0,``0,System.Comparison{``0})">
       <summary>Verifies that a test value is not between left and right values according to a particular comparer.</summary>
       <typeparam name="T">The type of value</typeparam>
@@ -1038,6 +1297,42 @@
     <member name="M:MbUnit.Framework.Assert.ReferenceEquals(System.Object,System.Object)">
       <summary>Always throws an <see cref="T:System.InvalidOperationException" />. Use <see cref="M:MbUnit.Framework.Assert.AreSame``1(``0,``0)" /> instead.</summary>
     </member>
+    <member name="M:MbUnit.Framework.Assert.Serialize(System.Object,System.Runtime.Serialization.IFormatter)">
+      <summary>Verifies that an object can be serialized to a stream using the specified <see cref="T:System.Runtime.Serialization.IFormatter" /> and returns the resulting stream.</summary>
+      <param name="value">The value</param>
+      <param name="formatter">The object serialization formatter</param>
+      <returns>The serialized stream</returns>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="formatter" /> is null</exception>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.Serialize(System.Object,System.Runtime.Serialization.IFormatter,System.String,System.Object[])">
+      <summary>Verifies that an object can be serialized to a stream using the specified <see cref="T:System.Runtime.Serialization.IFormatter" /> and returns the resulting stream.</summary>
+      <param name="value">The value</param>
+      <param name="formatter">The object serialization formatter</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <returns>The serialized stream</returns>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="formatter" /> is null</exception>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.SerializeThenDeserialize``1(``0,System.Runtime.Serialization.IFormatter)">
+      <summary>Verifies that an object can be serialized then deserialized to and from a stream using the specified <see cref="T:System.Runtime.Serialization.IFormatter" /> and returns the resulting deserialized object.</summary>
+      <param name="value">The value</param>
+      <param name="formatter">The object serialization formatter</param>
+      <returns>The serialized then deserialized object</returns>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="formatter" /> is null</exception>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.SerializeThenDeserialize``1(``0,System.Runtime.Serialization.IFormatter,System.String,System.Object[])">
+      <summary>Verifies that an object can be serialized and deserialized to and from a stream using the specified <see cref="T:System.Runtime.Serialization.IFormatter" /> and returns the resulting deserialized object.</summary>
+      <param name="value">The value</param>
+      <param name="formatter">The object serialization formatter</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <returns>The serialized then deserialized object</returns>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="formatter" /> is null</exception>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
     <member name="M:MbUnit.Framework.Assert.StartsWith(System.String,System.String)">
       <summary>Verifies that a string starts with the specified text.</summary>
       <param name="actualValue">The actual value</param>
@@ -1053,6 +1348,30 @@
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
       <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="expectedText" /> is null</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.Terminate(Gallio.Model.TestOutcome)">
+      <summary>Terminates the test and reports a specific test outcome.</summary>
+      <param name="outcome">The desired test outcome</param>
+      <exception cref="T:Gallio.Framework.TestTerminatedException">Thrown always</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.Terminate(Gallio.Model.TestOutcome,System.String,System.Object[])">
+      <summary>Terminates the test and reports a specific test outcome.</summary>
+      <param name="outcome">The desired test outcome</param>
+      <param name="messageFormat">The custom message format string, or null if none</param>
+      <param name="messageArgs">The custom message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.TestTerminatedException">Thrown always</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.TerminateSilently(Gallio.Model.TestOutcome)">
+      <summary>Terminates the test silently and reports a specific test outcome.</summary>
+      <param name="outcome">The desired test outcome</param>
+      <exception cref="T:Gallio.Framework.SilentTestException">Thrown always</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.TerminateSilently(Gallio.Model.TestOutcome,System.String,System.Object[])">
+      <summary>Terminates the test silently and reports a specific test outcome.</summary>
+      <param name="outcome">The desired test outcome</param>
+      <param name="messageFormat">The custom message format string, or null if none</param>
+      <param name="messageArgs">The custom message arguments, or null if none</param>
+      <exception cref="T:Gallio.Framework.SilentTestException">Thrown always</exception>
     </member>
     <member name="M:MbUnit.Framework.Assert.Throws``1(Gallio.Action)">
       <summary>Verifies that a block of code throws an exception of a particular type.</summary>
@@ -1088,6 +1407,48 @@
       <param name="messageArgs">The custom assertion message arguments, or null if none</param>
       <returns>The exception that was thrown</returns>
       <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="expectedExceptionType" /> or <paramref name="action" /> is null</exception>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.XmlDeserialize``1(System.String)">
+      <summary>Verifies that an object can be deserialized from Xml using an <see cref="T:System.Xml.Serialization.XmlSerializer" /> and returns the resulting deserialized object.</summary>
+      <param name="xml">The Xml</param>
+      <returns>The deserialized object</returns>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.XmlDeserialize``1(System.String,System.String,System.Object[])">
+      <summary>Verifies that an object can be deserialized from Xml using an <see cref="T:System.Xml.Serialization.XmlSerializer" /> and returns the resulting deserialized object.</summary>
+      <param name="xml">The Xml</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <returns>The deserialized object</returns>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.XmlSerialize(System.Object)">
+      <summary>Verifies that an object can be serialized to Xml using an <see cref="T:System.Xml.Serialization.XmlSerializer" /> and returns the resulting Xml as a string.</summary>
+      <param name="value">The value</param>
+      <returns>The serialized Xml</returns>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.XmlSerialize(System.Object,System.String,System.Object[])">
+      <summary>Verifies that an object can be serialized to Xml using an <see cref="T:System.Xml.Serialization.XmlSerializer" /> and returns the resulting Xml as a string.</summary>
+      <param name="value">The value</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <returns>The serialized Xml</returns>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.XmlSerializeThenDeserialize``1(``0)">
+      <summary>Verifies that an object can be serialized then deserialized to and from Xml using an <see cref="T:System.Xml.Serialization.XmlSerializer" /> and returns the resulting deserialized object.</summary>
+      <param name="value">The value</param>
+      <returns>The serialized then deserialized object</returns>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Assert.XmlSerializeThenDeserialize``1(``0,System.String,System.Object[])">
+      <summary>Verifies that an object can be serialized then deserialized to and from Xml using an <see cref="T:System.Xml.Serialization.XmlSerializer" /> and returns the resulting deserialized object.</summary>
+      <param name="value">The value</param>
+      <param name="messageFormat">The custom assertion message format, or null if none</param>
+      <param name="messageArgs">The custom assertion message arguments, or null if none</param>
+      <returns>The serialized then deserialized object</returns>
       <exception cref="T:Gallio.Framework.Assertions.AssertionException">Thrown if the verification failed unless the current <see cref="P:Gallio.Framework.Assertions.AssertionContext.AssertionFailureBehavior" /> indicates otherwise</exception>
     </member>
     <member name="T:MbUnit.Framework.AssertOverSyntax">
@@ -1167,9 +1528,9 @@
     <member name="P:MbUnit.Framework.AuthorAttribute.AuthorName">
       <summary>Gets or sets the author's name.</summary>
     </member>
-    <member name="M:MbUnit.Framework.AuthorAttribute.Apply(Gallio.Model.MetadataMap)">
-      <summary>Applies metadata contributions the metadata map of a test component.</summary>
-      <param name="metadata">The metadata map</param>
+    <member name="M:MbUnit.Framework.AuthorAttribute.GetMetadata">
+      <summary>Gets the metadata key / value pairs to be added to the test component.</summary>
+      <returns>The metadata entries</returns>
     </member>
     <member name="T:MbUnit.Framework.BindAttribute">
       <summary>The bind attribute overrides the default binding rules for a test parameter by specifying a different data source, a binding path or an index. At most one such attribute may appear on any given test parameter.</summary>
@@ -1186,7 +1547,7 @@
         <para> The default source for a test parameter is the anonymous data source defined within the scope of the test parameter or by its enclosing test. </para>
       </summary>
     </member>
-    <member name="M:MbUnit.Framework.BindAttribute.DecorateTestParameter(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ISlotInfo)">
+    <member name="M:MbUnit.Framework.BindAttribute.DecorateTestParameter(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ISlotInfo)">
       <summary>
         <para> Applies decorations to a <see cref="T:Gallio.Framework.Pattern.PatternTestParameter" />. </para>
         <para> A typical use of this method is to augment the test parameter with additional metadata or to add additional behaviors to the test parameter. </para>
@@ -1197,12 +1558,12 @@
     <member name="T:MbUnit.Framework.CategoryAttribute">
       <summary>Associates a category name with a test fixture, test method, test parameter or other test component. The category name can be used to classify tests and build test suites of related tests.</summary>
     </member>
-    <member name="P:MbUnit.Framework.CategoryAttribute.CategoryName">
-      <summary>Gets the category name.</summary>
+    <member name="P:MbUnit.Framework.CategoryAttribute.Category">
+      <summary>Gets the name of the category.</summary>
     </member>
-    <member name="M:MbUnit.Framework.CategoryAttribute.Apply(Gallio.Model.MetadataMap)">
-      <summary>Applies metadata contributions the metadata map of a test component.</summary>
-      <param name="metadata">The metadata map</param>
+    <member name="M:MbUnit.Framework.CategoryAttribute.GetMetadata">
+      <summary>Gets the metadata key / value pairs to be added to the test component.</summary>
+      <returns>The metadata entries</returns>
     </member>
     <member name="T:MbUnit.Framework.ColumnAttribute">
       <summary>Provides a column of literal values as a data source.</summary>
@@ -1210,7 +1571,7 @@
     <member name="P:MbUnit.Framework.ColumnAttribute.Values">
       <summary>Gets the array of values in the column.</summary>
     </member>
-    <member name="M:MbUnit.Framework.ColumnAttribute.PopulateDataSource(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Framework.Data.DataSource,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.ColumnAttribute.PopulateDataSource(Gallio.Framework.Pattern.IPatternScope,Gallio.Framework.Data.DataSource,Gallio.Reflection.ICodeElementInfo)">
       <summary>Populates the data source with the contributions of this attribute.</summary>
       <param name="scope">The scope</param>
       <param name="dataSource">The data source</param>
@@ -1264,10 +1625,15 @@
       <param name="codeElement">The code element to which the attribute was applied</param>
       <returns>The text reader</returns>
     </member>
-    <member name="M:MbUnit.Framework.ContentAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.ContentAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>Verifies that the attribute is being used correctly.</summary>
       <param name="scope">The scope</param>
       <param name="codeElement">The code element</param>
+    </member>
+    <member name="M:MbUnit.Framework.ContentAttribute.ValidateSource(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
+      <summary>Validates the data source properties of the content attribute.</summary>
+      <param name="scope">The pattern scope</param>
+      <param name="codeElement">The code element to which the attribute was applied</param>
     </member>
     <member name="T:MbUnit.Framework.CsvDataAttribute">
       <summary>Provides data from Comma Separated Values contents.</summary>
@@ -1287,7 +1653,7 @@
       <summary>Gets or sets whether the CSV document has a header that should be used to provide aliases for indexed columns.</summary>
       <value>The default value is 'false' which indicates that the file does not have a header.</value>
     </member>
-    <member name="M:MbUnit.Framework.CsvDataAttribute.PopulateDataSource(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Framework.Data.DataSource,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.CsvDataAttribute.PopulateDataSource(Gallio.Framework.Pattern.IPatternScope,Gallio.Framework.Data.DataSource,Gallio.Reflection.ICodeElementInfo)">
       <summary>Populates the data source with the contributions of this attribute.</summary>
       <param name="scope">The scope</param>
       <param name="dataSource">The data source</param>
@@ -1306,17 +1672,36 @@
       <summary>Gets the metadata for the data source.</summary>
       <returns>The metadata keys and values</returns>
     </member>
-    <member name="T:MbUnit.Framework.DependsOnAssemblyAttribute">
-      <summary>Creates a dependency from this test assembly, test fixture or test method on all tests in some other test assembly.</summary>
+    <member name="T:MbUnit.Framework.DefaultTestCaseTimeoutAttribute">
+      <summary>Specifies the default test case timeout for all tests in the test assembly.</summary>
     </member>
-    <member name="P:MbUnit.Framework.DependsOnAssemblyAttribute.TestAssemblyName">
-      <summary>Gets the dependent test assembly name.</summary>
+    <member name="P:MbUnit.Framework.DefaultTestCaseTimeoutAttribute.Timeout">
+      <summary>Gets the timeout, or null if none.</summary>
     </member>
-    <member name="M:MbUnit.Framework.DependsOnAssemblyAttribute.GetDependency(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
-      <summary>Gets the code element that declares the tests on which this test should depend.</summary>
-      <param name="scope">The scope</param>
-      <param name="codeElement">The code element</param>
-      <returns>The code element representing the dependency</returns>
+    <member name="P:MbUnit.Framework.DefaultTestCaseTimeoutAttribute.TimeoutSeconds">
+      <summary>Gets the default timeout in seconds, or zero if none.</summary>
+    </member>
+    <member name="M:MbUnit.Framework.DefaultTestCaseTimeoutAttribute.DecorateAssemblyTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IAssemblyInfo)">
+      <summary>
+        <para> Applies decorations to an assembly-level test. </para>
+        <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
+      </summary>
+      <param name="assemblyScope">The assembly scope</param>
+      <param name="assembly">The assembly</param>
+    </member>
+    <member name="T:MbUnit.Framework.DegreeOfParallelismAttribute">
+      <summary>Specifies the maximum number of concurrent threads to use when tests are run in parallel for all tests in the test assembly.</summary>
+    </member>
+    <member name="P:MbUnit.Framework.DegreeOfParallelismAttribute.DegreeOfParallelism">
+      <summary>Gets the degree of parallelism.</summary>
+    </member>
+    <member name="M:MbUnit.Framework.DegreeOfParallelismAttribute.DecorateAssemblyTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IAssemblyInfo)">
+      <summary>
+        <para> Applies decorations to an assembly-level test. </para>
+        <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
+      </summary>
+      <param name="assemblyScope">The assembly scope</param>
+      <param name="assembly">The assembly</param>
     </member>
     <member name="T:MbUnit.Framework.DependsOnAttribute">
       <summary>Creates a dependency from this test assembly, test fixture or test method on some other test fixture or test method.</summary>
@@ -1327,7 +1712,7 @@
     <member name="P:MbUnit.Framework.DependsOnAttribute.TestMethodName">
       <summary>Gets the dependent test method name, or null if the dependency is on the whole test fixture.</summary>
     </member>
-    <member name="M:MbUnit.Framework.DependsOnAttribute.GetDependency(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.DependsOnAttribute.GetDependency(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>Gets the code element that declares the tests on which this test should depend.</summary>
       <param name="scope">The scope</param>
       <param name="codeElement">The code element</param>
@@ -1339,9 +1724,9 @@
     <member name="P:MbUnit.Framework.DescriptionAttribute.Description">
       <summary>Gets or sets the description.</summary>
     </member>
-    <member name="M:MbUnit.Framework.DescriptionAttribute.Apply(Gallio.Model.MetadataMap)">
-      <summary>Applies metadata contributions the metadata map of a test component.</summary>
-      <param name="metadata">The metadata map</param>
+    <member name="M:MbUnit.Framework.DescriptionAttribute.GetMetadata">
+      <summary>Gets the metadata key / value pairs to be added to the test component.</summary>
+      <returns>The metadata entries</returns>
     </member>
     <member name="T:MbUnit.Framework.DynamicTestFactoryAttribute">
       <summary>Specifies a method that is used to generate tests dynamically at runtime.</summary>
@@ -1369,9 +1754,9 @@
     <member name="P:MbUnit.Framework.ExpectedExceptionAttribute.Message">
       <summary>Gets or sets the expected exception message, or null if none specified.</summary>
     </member>
-    <member name="M:MbUnit.Framework.ExpectedExceptionAttribute.DecorateMethodTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.IMethodInfo)">
+    <member name="M:MbUnit.Framework.ExpectedExceptionAttribute.DecorateMethodTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IMethodInfo)">
       <summary>
-        <para> Applies decorations to a method-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
+        <para> Applies decorations to a method-level test. </para>
         <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
       </summary>
       <param name="methodScope">The method scope</param>
@@ -1383,9 +1768,9 @@
     <member name="P:MbUnit.Framework.ExplicitAttribute.Reason">
       <summary>Gets the reason that the test should only run explicitly.</summary>
     </member>
-    <member name="M:MbUnit.Framework.ExplicitAttribute.DecorateTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.ExplicitAttribute.DecorateTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
-        <para> Applies decorations to a method or type-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
+        <para> Applies decorations to a test. </para>
         <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
       </summary>
       <param name="scope">The scope</param>
@@ -1409,7 +1794,7 @@
     <member name="P:MbUnit.Framework.FactoryAttribute.Type">
       <summary>Gets the declaring type of the factory, or null if it is assumed to be the fixture class.</summary>
     </member>
-    <member name="M:MbUnit.Framework.FactoryAttribute.PopulateDataSource(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Framework.Data.DataSource,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.FactoryAttribute.PopulateDataSource(Gallio.Framework.Pattern.IPatternScope,Gallio.Framework.Data.DataSource,Gallio.Reflection.ICodeElementInfo)">
       <summary>Populates the data source with the contributions of this attribute.</summary>
       <param name="scope">The scope</param>
       <param name="dataSource">The data source</param>
@@ -1418,12 +1803,12 @@
     <member name="T:MbUnit.Framework.FixtureInitializerAttribute">
       <summary>Specifies a method that is to be invoked after a fixture instance has been created to complete its initialization before test fixture setup runs.</summary>
     </member>
-    <member name="M:MbUnit.Framework.FixtureInitializerAttribute.DecorateContainingScope(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.IMethodInfo)">
-      <summary>Applies decorations to the containing <see cref="T:Gallio.Framework.Pattern.PatternTest" />.</summary>
+    <member name="M:MbUnit.Framework.FixtureInitializerAttribute.DecorateContainingScope(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IMethodInfo)">
+      <summary>Applies decorations to the containing test.</summary>
       <param name="containingScope">The containing scope</param>
       <param name="method">The method to process</param>
     </member>
-    <member name="M:MbUnit.Framework.FixtureInitializerAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.IMethodInfo)">
+    <member name="M:MbUnit.Framework.FixtureInitializerAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IMethodInfo)">
       <summary>Verifies that the attribute is being used correctly.</summary>
       <param name="containingScope">The containing scope</param>
       <param name="method">The method</param>
@@ -1431,12 +1816,12 @@
     <member name="T:MbUnit.Framework.FixtureSetUpAttribute">
       <summary>Specifies a method that is to be invoked to set up the state of a fixture before any of its tests are executed.</summary>
     </member>
-    <member name="M:MbUnit.Framework.FixtureSetUpAttribute.DecorateContainingScope(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.IMethodInfo)">
-      <summary>Applies decorations to the containing <see cref="T:Gallio.Framework.Pattern.PatternTest" />.</summary>
+    <member name="M:MbUnit.Framework.FixtureSetUpAttribute.DecorateContainingScope(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IMethodInfo)">
+      <summary>Applies decorations to the containing test.</summary>
       <param name="containingScope">The containing scope</param>
       <param name="method">The method to process</param>
     </member>
-    <member name="M:MbUnit.Framework.FixtureSetUpAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.IMethodInfo)">
+    <member name="M:MbUnit.Framework.FixtureSetUpAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IMethodInfo)">
       <summary>Verifies that the attribute is being used correctly.</summary>
       <param name="containingScope">The containing scope</param>
       <param name="method">The method</param>
@@ -1444,12 +1829,12 @@
     <member name="T:MbUnit.Framework.FixtureTearDownAttribute">
       <summary>Specifies a method that is to be invoked to tear down the state of a fixture after all of its tests have been executed.</summary>
     </member>
-    <member name="M:MbUnit.Framework.FixtureTearDownAttribute.DecorateContainingScope(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.IMethodInfo)">
-      <summary>Applies decorations to the containing <see cref="T:Gallio.Framework.Pattern.PatternTest" />.</summary>
+    <member name="M:MbUnit.Framework.FixtureTearDownAttribute.DecorateContainingScope(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IMethodInfo)">
+      <summary>Applies decorations to the containing test.</summary>
       <param name="containingScope">The containing scope</param>
       <param name="method">The method to process</param>
     </member>
-    <member name="M:MbUnit.Framework.FixtureTearDownAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.IMethodInfo)">
+    <member name="M:MbUnit.Framework.FixtureTearDownAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IMethodInfo)">
       <summary>Verifies that the attribute is being used correctly.</summary>
       <param name="containingScope">The containing scope</param>
       <param name="method">The method</param>
@@ -1460,7 +1845,7 @@
     <member name="P:MbUnit.Framework.HeaderAttribute.ColumnNames">
       <summary>Gets the array of column names.</summary>
     </member>
-    <member name="M:MbUnit.Framework.HeaderAttribute.PopulateDataSource(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Framework.Data.DataSource,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.HeaderAttribute.PopulateDataSource(Gallio.Framework.Pattern.IPatternScope,Gallio.Framework.Data.DataSource,Gallio.Reflection.ICodeElementInfo)">
       <summary>Populates the data source with the contributions of this attribute.</summary>
       <param name="scope">The scope</param>
       <param name="dataSource">The data source</param>
@@ -1472,9 +1857,9 @@
     <member name="P:MbUnit.Framework.IgnoreAttribute.Reason">
       <summary>Gets the reason that the test has been ignored, or an empty string if none.</summary>
     </member>
-    <member name="M:MbUnit.Framework.IgnoreAttribute.DecorateTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.IgnoreAttribute.DecorateTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
-        <para> Applies decorations to a method or type-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
+        <para> Applies decorations to a test. </para>
         <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
       </summary>
       <param name="scope">The scope</param>
@@ -1486,9 +1871,9 @@
     <member name="P:MbUnit.Framework.ImportanceAttribute.Importance">
       <summary>Gets or sets the importance.</summary>
     </member>
-    <member name="M:MbUnit.Framework.ImportanceAttribute.Apply(Gallio.Model.MetadataMap)">
-      <summary>Applies metadata contributions the metadata map of a test component.</summary>
-      <param name="metadata">The metadata map</param>
+    <member name="M:MbUnit.Framework.ImportanceAttribute.GetMetadata">
+      <summary>Gets the metadata key / value pairs to be added to the test component.</summary>
+      <returns>The metadata entries</returns>
     </member>
     <member name="T:MbUnit.Framework.JoinAttribute">
       <summary>An abstract class for attributes that specify the join strategy of a test. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>
@@ -1497,16 +1882,16 @@
       <summary>Gets the join strategy to use.</summary>
       <returns>The join strategy</returns>
     </member>
-    <member name="M:MbUnit.Framework.JoinAttribute.Process(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.JoinAttribute.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
-        <para> Processes a code element and applies contributes to the scope of this pattern. The scope will typically have been introduced by the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method of a primary pattern applied to this code element. </para>
+        <para> Processes a code element and applies its contributions to the scope of this pattern. The scope will typically have been introduced by the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method of a primary pattern applied to this code element. </para>
         <para> This method is used by patterns to decorate tests and test parameters that have been declared by primary patterns. </para>
-        <para> For example, the <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)" /> method will typically be called by another pattern that has just created a new test based on the associated code element, such as a test method. The method then has the opportunity to modify the test to add metadata, change its name, add new behaviors, and so on. </para>
+        <para> For example, the <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)" /> method will typically be called by another pattern that has just created a new test based on the associated code element, such as a test method. The method then has the opportunity to modify the test to add metadata, change its name, add new behaviors, and so on. </para>
       </summary>
       <param name="scope">The scope</param>
       <param name="codeElement">The code element to process</param>
     </member>
-    <member name="M:MbUnit.Framework.JoinAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.JoinAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>Verifies that the attribute is being used correctly.</summary>
       <param name="scope">The scope</param>
       <param name="codeElement">The code element</param>
@@ -1521,16 +1906,16 @@
     <member name="P:MbUnit.Framework.MetadataAttribute.MetadataValue">
       <summary>Gets the metadata value.</summary>
     </member>
-    <member name="M:MbUnit.Framework.MetadataAttribute.Apply(Gallio.Model.MetadataMap)">
-      <summary>Applies metadata contributions the metadata map of a test component.</summary>
-      <param name="metadata">The metadata map</param>
+    <member name="M:MbUnit.Framework.MetadataAttribute.GetMetadata">
+      <summary>Gets the metadata key / value pairs to be added to the test component.</summary>
+      <returns>The metadata entries</returns>
     </member>
     <member name="T:MbUnit.Framework.MultipleAssertsAttribute">
       <summary>Runs the test as if it were surrounded by <see cref="M:MbUnit.Framework.Assert.Multiple(Gallio.Action)" /> so that multiple assertion failures within the test are tolerated.</summary>
     </member>
-    <member name="M:MbUnit.Framework.MultipleAssertsAttribute.DecorateMethodTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.IMethodInfo)">
+    <member name="M:MbUnit.Framework.MultipleAssertsAttribute.DecorateMethodTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IMethodInfo)">
       <summary>
-        <para> Applies decorations to a method-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
+        <para> Applies decorations to a method-level test. </para>
         <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
       </summary>
       <param name="methodScope">The method scope</param>
@@ -1542,16 +1927,16 @@
     <member name="P:MbUnit.Framework.NameAttribute.Name">
       <summary>Gets the overridden name.</summary>
     </member>
-    <member name="M:MbUnit.Framework.NameAttribute.Process(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.NameAttribute.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
-        <para> Processes a code element and applies contributes to the scope of this pattern. The scope will typically have been introduced by the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method of a primary pattern applied to this code element. </para>
+        <para> Processes a code element and applies its contributions to the scope of this pattern. The scope will typically have been introduced by the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method of a primary pattern applied to this code element. </para>
         <para> This method is used by patterns to decorate tests and test parameters that have been declared by primary patterns. </para>
-        <para> For example, the <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)" /> method will typically be called by another pattern that has just created a new test based on the associated code element, such as a test method. The method then has the opportunity to modify the test to add metadata, change its name, add new behaviors, and so on. </para>
+        <para> For example, the <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)" /> method will typically be called by another pattern that has just created a new test based on the associated code element, such as a test method. The method then has the opportunity to modify the test to add metadata, change its name, add new behaviors, and so on. </para>
       </summary>
       <param name="scope">The scope</param>
       <param name="codeElement">The code element to process</param>
     </member>
-    <member name="M:MbUnit.Framework.NameAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.NameAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>Verifies that the attribute is being used correctly.</summary>
       <param name="scope">The scope</param>
       <param name="codeElement">The code element</param>
@@ -1564,6 +1949,17 @@
       <summary>Gets the join strategy to use.</summary>
       <returns>The join strategy</returns>
     </member>
+    <member name="T:MbUnit.Framework.ParallelizableAttribute">
+      <summary>Specifies that a test can be run in parallel with other parallelizable tests.</summary>
+    </member>
+    <member name="M:MbUnit.Framework.ParallelizableAttribute.DecorateTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
+      <summary>
+        <para> Applies decorations to a test. </para>
+        <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
+      </summary>
+      <param name="scope">The scope</param>
+      <param name="codeElement">The code element</param>
+    </member>
     <member name="T:MbUnit.Framework.ParameterAttribute">
       <summary>Declares that a property, field, method parameter, constructor parameter, generic type parameter or generic method parameter represents a test parameter.</summary>
     </member>
@@ -1573,9 +1969,9 @@
     <member name="P:MbUnit.Framework.PendingAttribute.Reason">
       <summary>Gets the reason that the test is pending.</summary>
     </member>
-    <member name="M:MbUnit.Framework.PendingAttribute.DecorateTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.PendingAttribute.DecorateTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
-        <para> Applies decorations to a method or type-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
+        <para> Applies decorations to a test. </para>
         <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
       </summary>
       <param name="scope">The scope</param>
@@ -1584,9 +1980,9 @@
     <member name="T:MbUnit.Framework.RepeatAttribute">
       <summary>Decorates a test method and causes it to be invoked repeatedly.</summary>
     </member>
-    <member name="M:MbUnit.Framework.RepeatAttribute.DecorateTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.RepeatAttribute.DecorateTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
-        <para> Applies decorations to a method or type-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
+        <para> Applies decorations to a test. </para>
         <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
       </summary>
       <param name="scope">The scope</param>
@@ -1601,9 +1997,9 @@
         <para> The fixture setup and teardown is not included regardless unless this attribute is applied to the fixture class itself instead of the test method. </para>
       </summary>
     </member>
-    <member name="M:MbUnit.Framework.RollbackAttribute.DecorateTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.RollbackAttribute.DecorateTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
-        <para> Applies decorations to a method or type-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
+        <para> Applies decorations to a test. </para>
         <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
       </summary>
       <param name="scope">The scope</param>
@@ -1615,7 +2011,7 @@
     <member name="P:MbUnit.Framework.RowAttribute.Values">
       <summary>Gets the array of values in the row.</summary>
     </member>
-    <member name="M:MbUnit.Framework.RowAttribute.PopulateDataSource(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Framework.Data.DataSource,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.RowAttribute.PopulateDataSource(Gallio.Framework.Pattern.IPatternScope,Gallio.Framework.Data.DataSource,Gallio.Reflection.ICodeElementInfo)">
       <summary>Populates the data source with the contributions of this attribute.</summary>
       <param name="scope">The scope</param>
       <param name="dataSource">The data source</param>
@@ -1634,12 +2030,12 @@
     <member name="T:MbUnit.Framework.StaticTestFactoryAttribute">
       <summary>Specifies a method that is used to generate tests statically at test exploration time.</summary>
     </member>
-    <member name="M:MbUnit.Framework.StaticTestFactoryAttribute.DecorateContainingScope(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.IMethodInfo)">
-      <summary>Applies decorations to the containing <see cref="T:Gallio.Framework.Pattern.PatternTest" />.</summary>
+    <member name="M:MbUnit.Framework.StaticTestFactoryAttribute.DecorateContainingScope(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IMethodInfo)">
+      <summary>Applies decorations to the containing test.</summary>
       <param name="containingScope">The containing scope</param>
       <param name="method">The method to process</param>
     </member>
-    <member name="M:MbUnit.Framework.StaticTestFactoryAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.IMethodInfo)">
+    <member name="M:MbUnit.Framework.StaticTestFactoryAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IMethodInfo)">
       <summary>Verifies that the attribute is being used correctly.</summary>
       <param name="containingScope">The containing scope</param>
       <param name="method">The method</param>
@@ -1650,12 +2046,12 @@
     <member name="T:MbUnit.Framework.Test">
       <summary>Describes a test generated either at test exploration time or at test execution time by a test factory. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>
     </member>
-    <member name="M:MbUnit.Framework.Test.BuildStaticTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.Test.BuildStaticTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>Builds a static test during test exploration.</summary>
       <param name="containingScope">The containing pattern evaluation scope</param>
       <param name="declaringCodeElement">The code element that represents the scope in which the test was defined</param>
     </member>
-    <member name="M:MbUnit.Framework.Test.BuildStaticTests(System.Collections.Generic.IEnumerable{MbUnit.Framework.Test},Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.Test.BuildStaticTests(System.Collections.Generic.IEnumerable{MbUnit.Framework.Test},Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>Builds a collection of static tests during test exploration.</summary>
       <param name="tests">The enumeration of tests to build as children of the containing scope</param>
       <param name="containingScope">The containing pattern evaluation scope</param>
@@ -1702,9 +2098,9 @@
     <member name="T:MbUnit.Framework.TestDecoratorAttribute">
       <summary>An abstract base class for implementing new test decorator behaviors. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>
     </member>
-    <member name="M:MbUnit.Framework.TestDecoratorAttribute.DecorateTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.TestDecoratorAttribute.DecorateTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
-        <para> Applies decorations to a method or type-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
+        <para> Applies decorations to a test. </para>
         <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
       </summary>
       <param name="scope">The scope</param>
@@ -1756,7 +2152,7 @@
       <value>The timeout. Default value is null.</value>
       <exception cref="T:System.ArgumentOutOfRangeException">Thrown if <paramref name="value" /> represents a negative time span</exception>
     </member>
-    <member name="M:MbUnit.Framework.TestDefinition.BuildStaticTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.TestDefinition.BuildStaticTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>Builds a static test during test exploration.</summary>
       <param name="containingScope">The containing pattern evaluation scope</param>
       <param name="declaringCodeElement">The code element that represents the scope in which the test was defined</param>
@@ -1794,7 +2190,7 @@
     <member name="P:MbUnit.Framework.TestFixtureReference.TestFixtureType">
       <summary>Gets the referenced test fixture type, or null if the reference is on a test method of the containing test fixture.</summary>
     </member>
-    <member name="M:MbUnit.Framework.TestFixtureReference.BuildStaticTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.TestFixtureReference.BuildStaticTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>Builds a static test during test exploration.</summary>
       <param name="containingScope">The containing pattern evaluation scope</param>
       <param name="declaringCodeElement">The code element that represents the scope in which the test was defined</param>
@@ -1812,9 +2208,9 @@
       <summary>Gets the full name or assembly qualified name of the type under test.</summary>
       <value>The name of the type under test as obtained by <see cref="P:System.Type.FullName" /> or <see cref="P:System.Type.AssemblyQualifiedName" />.</value>
     </member>
-    <member name="M:MbUnit.Framework.TestsOnAttribute.Apply(Gallio.Model.MetadataMap)">
-      <summary>Applies metadata contributions the metadata map of a test component.</summary>
-      <param name="metadata">The metadata map</param>
+    <member name="M:MbUnit.Framework.TestsOnAttribute.GetMetadata">
+      <summary>Gets the metadata key / value pairs to be added to the test component.</summary>
+      <returns>The metadata entries</returns>
     </member>
     <member name="T:MbUnit.Framework.TestSuite">
       <summary>Describes a test suite generated either at test exploration time or at test execution time by a test factory.</summary>
@@ -1858,26 +2254,38 @@
     <member name="T:MbUnit.Framework.ThreadedRepeatAttribute">
       <summary>Decorates a test method and causes it to be invoked repeatedly on multiple concurrent threads.</summary>
     </member>
-    <member name="M:MbUnit.Framework.ThreadedRepeatAttribute.DecorateTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.ThreadedRepeatAttribute.DecorateTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
-        <para> Applies decorations to a method or type-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
+        <para> Applies decorations to a test. </para>
         <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
       </summary>
       <param name="scope">The scope</param>
       <param name="codeElement">The code element</param>
     </member>
     <member name="T:MbUnit.Framework.TimeoutAttribute">
-      <summary>Sets the maximum amount of time that a test or fixture is permitted to run.</summary>
+      <summary>Sets the maximum amount of time in seconds that a test or fixture is permitted to run.</summary>
+    </member>
+    <member name="P:MbUnit.Framework.TimeoutAttribute.Timeout">
+      <summary>Gets the timeout, or null if none.</summary>
     </member>
     <member name="P:MbUnit.Framework.TimeoutAttribute.TimeoutSeconds">
-      <summary>Gets the timeout in seconds.</summary>
+      <summary>Gets the test timeout in seconds, or zero if none.</summary>
     </member>
-    <member name="M:MbUnit.Framework.TimeoutAttribute.DecorateTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
+    <member name="M:MbUnit.Framework.TimeoutAttribute.DecorateTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
-        <para> Applies decorations to a method or type-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
+        <para> Applies decorations to a test. </para>
         <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
       </summary>
       <param name="scope">The scope</param>
+      <param name="codeElement">The code element</param>
+    </member>
+    <member name="T:MbUnit.Framework.XmlDataAttribute">
+      <summary>Provides data from XML contents.</summary>
+    </member>
+    <member name="M:MbUnit.Framework.XmlDataAttribute.PopulateDataSource(Gallio.Framework.Pattern.IPatternScope,Gallio.Framework.Data.DataSource,Gallio.Reflection.ICodeElementInfo)">
+      <summary>Populates the data source with the contributions of this attribute.</summary>
+      <param name="scope">The scope</param>
+      <param name="dataSource">The data source</param>
       <param name="codeElement">The code element</param>
     </member>
     <member name="T:MbUnit.Framework.Importance">
@@ -1898,10 +2306,279 @@
     <member name="F:MbUnit.Framework.Importance.NoOneReallyCaresAbout">
       <summary>Not important.</summary>
     </member>
+    <member name="T:MbUnit.Framework.ContractVerifiers.AbstractContract">
+      <summary>Abstract base class for contracts. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.AbstractContract.Context">
+      <summary>Gets the execution context.</summary>
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.AbstractContract.AssertMethodExists(System.Reflection.MethodInfo,System.String)">
+      <summary>Verifies that the specified method info object is not null, indicating that the method exists, otherwise raises an assertion failure and describes the expected method signature.</summary>
+      <param name="method">The method, or null if missing</param>
+      <param name="methodSignature">The expected method signature for diagnostic output</param>
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.AbstractContract.GetContractVerificationTests(MbUnit.Framework.ContractVerifiers.Core.ContractVerificationContext)">
+      <summary>Gets an enumeration of test cases whose purpose is to verify the contract.</summary>
+      <param name="context">The context of execution.</param>
+      <returns>An enumeration of tests</returns>
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.AbstractContract.GetContractVerificationTests">
+      <summary>Gets an enumeration of test cases whose purpose is to verify the contract.</summary>
+      <returns>An enumeration of tests</returns>
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.AbstractContract.GetInterface(System.Type,System.Type)">
+      <summary>Gets the interface of a particular type if it is implemented by another type, otherwise returns null.</summary>
+      <param name="implementationType">The implementation type</param>
+      <param name="interfaceType">The interface type</param>
+      <returns>The interface type or null if it is not implemented by the implementation type</returns>
+    </member>
+    <member name="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2">
+      <summary>
+        <para> Contract for verifying the implementation of the generic <see cref="T:System.Collections.Generic.ICollection`1" />. </para>
+        <para> Built-in verifications: <list type="bullet"><item><term>VerifyReadOnlyProperty</term><description>The <see cref="P:System.Collections.Generic.ICollection`1.IsReadOnly" /> property returns a value in accordance to the expected result determined in the declaration of the contract verifier, by setting the property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" />. By default, the collection is expected to be not read-only (items can be added and removed, and the collection to be cleared).</description></item><item><term>AddShouldThrowException</term><description>The read-only collection throws an exception when the method <see cref="M:System.Collections.Generic.ICollection`1.Add(`0)" /> is called. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> is set to 'false'. </remarks></description></item><item><term>RemoveShouldThrowException</term><description>The read-only collection throws an exception when the method <see cref="M:System.Collections.Generic.ICollection`1.Remove(`0)" /> is called. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> is set to 'false'. </remarks></description></item><item><term>ClearShouldThrowException</term><description>The read-only collection throws an exception when the method <see cref="M:System.Collections.Generic.ICollection`1.Clear" /> is called. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> is set to 'false'. </remarks></description></item><item><term>AddNullArgument</term><description>The collection throwns a <see cref="T:System.ArgumentNullException" /> when the method <see cref="M:System.Collections.Generic.ICollection`1.Add(`0)" nolink="true" /> is called with a null reference item. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.AcceptNullReference" /> is set to 'true'. </remarks></description></item><item><term>RemoveNullArgument</term><description> The collection throwns a <see cref="T:System.ArgumentNullException" nolink="true" /> when the method <see cref="M:System.Collections.Generic.ICollection`1.Remove(`0)" nolink="true" /> is called with a null reference item. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.AcceptNullReference" nolink="true" /> is set to 'true'. </remarks></description></item><item><term>ContainsNullArgument</term><description> The collection throwns a <see cref="T:System.ArgumentNullException" nolink="true" /> when the method <see cref="M:System.Collections.Generic.ICollection`1.Contains(`0)" /> is called with a null reference item. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.AcceptNullReference" nolink="true" /> is set to 'true'. </remarks></description></item><item><term>AddItems</term><description> The collection handles correctly with the addition of new items. The method <see cref="M:System.Collections.Generic.ICollection`1.Contains(`0)" nolink="true" /> and the property <see cref="P:System.Collections.Generic.ICollection`1.Count" /> are expected to return suited results as well. The case of duplicate items (object equality) is tested too; according to the value of contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.AcceptEqualItems" />. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> is set to 'true'. </remarks></description></item><item><term>RemoveItems</term> The collection handles correctly with the removal of items. The method <see cref="M:System.Collections.Generic.ICollection`1.Contains(`0)" nolink="true" /> and the property <see cref="P:System.Collections.Generic.ICollection`1.Count" nolink="true" /> are expected to return suited results as well. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> is set to 'true'. </remarks></item><item><term>ClearItems</term><description> The collection is cleared as expected when the method <see cref="M:System.Collections.Generic.ICollection`1.Clear" nolink="true" /> is called. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> is set to 'true'. </remarks></description></item><item><term>CopyTo</term><description> Not implemented yet. The test already succeeds. </description></item></list></para>
+      </summary>
+      <typeparam name="TCollection">The type of the collection implementing <see cref="T:System.Collections.Generic.ICollection`1" />.</typeparam>
+      <typeparam name="TItem">The type of items contained in the collection.</typeparam>
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.AcceptEqualItems">
+      <summary>
+        <para> Determines whether the collection is expected to accept several identical items (object equality). The default value is true. </para>
+        <remarks> The default value is 'true'. </remarks>
+      </summary>
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.AcceptNullReference">
+      <summary>
+        <para> Determines whether the collection is expected to accept null references as valid items. </para>
+        <remarks> The default value is 'false'. </remarks>
+      </summary>
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.DistinctInstances">
+      <summary>
+        <para> Gets a collection of distinct object instances that feeds the different tests. </para>
+        <para> In order to optimize the tests, consider to provide: <list type="bullet"><item> items which are not in the default collection instance yet. </item><item> items which are in the default collection instance already (if not empty). </item></list></para>
+      </summary>
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.GetDefaultInstance">
+      <summary>Provides a default instance of the collection to test. By default, the contract verifier attempts to invoke the default constructor to get an valid instance. Overwrite the default provider if the collection has no default constructor, or if you want the contract verifier to use a particular instance. <example><code>
+            [VerifyContract]
+            public readonly IContract CollectionTests = new CollectionContract&lt;MyCollection, int&gt;
+            {
+                GetDefaultInstance = () =&gt; new MyCollection(1, 2, 3)
+            };
+            </code></example></summary>
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly">
+      <summary>
+        <para> Determines whether the tested collection is expected to be read-only. </para>
+        <remarks> The default value is 'false'. </remarks>
+      </summary>
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.CollectionContract`2.AssertDistinctIntancesNotEmpty">
+      <summary>Asserts that the collection of distinct instances specified by the user is not empty.</summary>
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.CollectionContract`2.CreateNotSupportedWriteTest(System.String,Gallio.Action{`0,`1})">
+      <summary>Creates a test that invokes an action over the collection, which is supposed to not be supported. The test expects that an exception be thrown.</summary>
+      <param name="methodName" />
+      <param name="invoke" />
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.CollectionContract`2.CreateNullArgumentTest(System.String,System.Action{`0})">
+      <summary>Creates a test which runs an action over the collection with a null argument. The test expects that an exception be thrown.</summary>
+      <param name="methodName" />
+      <param name="invoke" />
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.CollectionContract`2.GetContractVerificationTests">
+      <summary>Gets an enumeration of test cases whose purpose is to verify the contract.</summary>
+      <returns>An enumeration of tests</returns>
+    </member>
+    <member name="T:MbUnit.Framework.ContractVerifiers.ComparisonContract`1">
+      <summary>
+        <para> Contract for verifying the implementation of the generic <see cref="T:System.IComparable`1" /> interface. </para>
+        <para> Built-in verifications: <list type="bullet"><item><term>ComparableCompareTo</term><description>The type implements the method <see cref="M:System.IComparable`1.CompareTo(`0)" />. The method behaves as expected agains the provided equivalence classes.</description></item><item><term>OperatorGreaterThan</term><description>The type has a static "Greater Than" operator overload which behaves correctly against the provided equivalence classes. Disable that test by setting the <see cref="P:MbUnit.Framework.ContractVerifiers.ComparisonContract`1.ImplementsOperatorOverloads" /> property to <c>false</c>.</description></item><item><term>OperatorGreaterThanOrEqual</term><description>The type has a static "Greater Than Or Equal" operator overload which behaves correctly against the provided equivalence classes. Disable that test by setting the <see cref="P:MbUnit.Framework.ContractVerifiers.ComparisonContract`1.ImplementsOperatorOverloads" nolink="true" /> property to <c>false</c>.</description></item><item><term>OperatorLessThan</term><description>The type has a static "Less Than" operator overload which behaves correctly against the provided equivalence classes. Disable that test by setting the <see cref="P:MbUnit.Framework.ContractVerifiers.ComparisonContract`1.ImplementsOperatorOverloads" nolink="true" /> property to <c>false</c>.</description></item><item><term>OperatorLessThanOrEqual</term><description>The type has a static "Less Than Or Equal" operator overload which behaves correctly against the provided equivalence classes. Disable that test by setting the <see cref="P:MbUnit.Framework.ContractVerifiers.ComparisonContract`1.ImplementsOperatorOverloads" nolink="true" /> property to <c>false</c>.</description></item></list></para>
+        <example> The following example shows a simple class implementing the <see cref="T:System.IComparable`1" nolink="true" /> interface, and a test fixture which uses the comparison contract to test it. <code>
+            public class SampleComparable : IComparable&lt;SampleComparable&gt;
+            {
+                private int value;
+            
+                public SampleComparable(int value)
+                {
+                    this.value = value;
+                }
+            
+                public int CompareTo(SampleComparable other)
+                {
+                    return Object.ReferenceEquals(other, null) 
+                        ? Int32.MaxValue 
+                        : value.CompareTo(other.value);
+                }
+            
+                public static bool operator &gt;=(SampleComparable left, SampleComparable right)
+                {
+                    return (Object.ReferenceEquals(left, null) 
+                        &amp;&amp; Object.ReferenceEquals(right, null)) 
+                        || (!Object.ReferenceEquals(left, null) 
+                        &amp;&amp; (left.CompareTo(right) &gt;= 0));
+                }
+            
+                public static bool operator &lt;=(SampleComparable left, SampleComparable right)
+                {
+                    return Object.ReferenceEquals(left, null) 
+                        || (left.CompareTo(right) &lt;= 0);
+                }
+            
+                public static bool operator &gt;(SampleComparable left, SampleComparable right)
+                {
+                    return !Object.ReferenceEquals(left, null) 
+                        &amp;&amp; (left.CompareTo(right) &gt; 0);
+                }
+            
+                public static bool operator &lt;(SampleComparable left, SampleComparable right)
+                {
+                    return (!Object.ReferenceEquals(left, null) 
+                        || !Object.ReferenceEquals(right, null)) 
+                        &amp;&amp; (Object.ReferenceEquals(left, null) 
+                        || (left.CompareTo(right) &lt; 0));
+                }
+            
+            public class SampleComparableTest
+            {
+                [VerifyContract]
+                public readonly IContract EqualityTests = new ComparisonContract&lt;SampleComparable&gt;
+                {
+                    ImplementsOperatorOverloads = true, // Optional (default is true)
+                    EquivalenceClasses =
+                    {
+                        { new SampleComparable(1) },
+                        { new SampleComparable(2) },
+                        { new SampleComparable(3) },
+                        { new SampleComparable(4) },
+                        { new SampleComparable(5) }
+                    }
+                };
+            }
+            </code></example>
+      </summary>
+      <typeparam name="TTarget" />
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.ComparisonContract`1.EquivalenceClasses">
+      <summary>Gets or sets the collection of equivalence classes of instances to feed the contract verifier.</summary>
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.ComparisonContract`1.ImplementsOperatorOverloads">
+      <summary>Determines whether the verifier will evaluate the presence and the behavior of the four operator overloads "Greater Than", "Greater Than Or Equal", "Less Than", and "Less Than Or Equal". The default value is 'true'.</summary>
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.ComparisonContract`1.GetContractVerificationTests">
+      <summary>Gets an enumeration of test cases whose purpose is to verify the contract.</summary>
+      <returns>An enumeration of tests</returns>
+    </member>
+    <member name="T:MbUnit.Framework.ContractVerifiers.DistinctInstanceCollection`1">
+      <summary>
+        <para> A collection of distinct object instances. Every element represents a valid instance which is different from all the other elements in the collection (object equality). </para>
+        <para> Distinct instances are used by some contract verifiers such as <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" /> to check for the correct implementation of the collection interface. </para>
+        <para> Use the default constructor followed by a list initializer. <example><code>
+            var collection = new DistinctInstanceCollection&lt;Foo&gt;
+            {
+                new Foo(1)
+                new Foo(2),
+                new Foo(3),
+            };
+            </code></example></para>
+        <para> Or, use the single-parameter constructor to create a collection from an pre-existing enumeration. <example><code>
+            var collection = new DistinctInstanceCollection&lt;Foo&gt;(Foo.GetThemAll());
+            </code></example></para>
+      </summary>
+      <typeparam name="T">The type of the object instances in the collection.</typeparam>
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.DistinctInstanceCollection`1.Instances">
+      <summary>Gets all the instances.</summary>
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.DistinctInstanceCollection`1.Add(`0)">
+      <summary>Adds the specified instance to the collection.</summary>
+      <param name="instance">A valid and non-null object instance.</param>
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.DistinctInstanceCollection`1.GetEnumerator">
+      <summary>Returns a strongly-typed enumerator that iterates through the collection.</summary>
+      <returns>A strongly-typed enumerator</returns>
+    </member>
+    <member name="T:MbUnit.Framework.ContractVerifiers.EqualityContract`1">
+      <summary>
+        <para> Contract for verifying the implementation of the generic <see cref="T:System.IEquatable`1" /> interface. </para>
+        <para> Built-in verifications: <list type="bullet"><item><term>ObjectEquals</term><description>The <see cref="M:System.Object.Equals(System.Object)" /> method was overriden and behaves correctly against the provided equivalence classes.</description></item><item><term>ObjectGetHashCode</term><description>The <see cref="M:System.Object.GetHashCode" /> method was overriden and behaves correctly against the provided equivalence classes.</description></item><item><term>EquatableEquals</term><description>The <see cref="M:System.IEquatable`1.Equals(`0)" /> method is implemented and behaves as expected agains the provided equivalence classes.</description></item><item><term>OperatorEquals</term><description>The type has a static equality operator (==) overload which behaves correctly against the provided equivalence classes. Disable that test by setting the <see cref="P:MbUnit.Framework.ContractVerifiers.EqualityContract`1.ImplementsOperatorOverloads" /> property to <code>false</code>.</description></item><item><term>OperatorNotEquals</term><description>The type has a static inequality operator (!=) overload which behaves correctly against the provided equivalence classes. Disable that test by setting the <see cref="P:MbUnit.Framework.ContractVerifiers.EqualityContract`1.ImplementsOperatorOverloads" nolink="true" /> property to <code>false</code>. </description></item></list></para>
+        <example> The following example shows a simple class implementing the <see cref="T:System.IEquatable`1" nolink="true" /> interface, and a test fixture which uses the equality contract to test it. <code>
+            public class SampleEquatable : IEquatable&lt;SampleEquatable&gt;
+            {
+                private int value;
+            
+                public SampleEquatable(int value)
+                {
+                    this.value = value;
+                }
+            
+                public override int GetHashCode()
+                {
+                    return value.GetHashCode();
+                }
+            
+                public override bool Equals(object obj)
+                {
+                    return Equals(obj as SampleEquatable);
+                }
+            
+                public bool Equals(SampleEquatable other)
+                {
+                    return !Object.ReferenceEquals(other, null) 
+                        &amp;&amp; (value == other.value);
+                }
+            
+                public static bool operator ==(SampleEquatable left, SampleEquatable right)
+                {
+                    return (Object.ReferenceEquals(left, null)
+                        &amp;&amp; Object.ReferenceEquals(right, null))
+                        || (!Object.ReferenceEquals(left, null) 
+                        &amp;&amp; left.Equals(right));
+                }
+                
+                public static bool operator !=(SampleEquatable left, SampleEquatable right)
+                {
+                    return !(left == right);
+                }
+            }
+            
+            public class SampleEquatableTest
+            {
+                [VerifyContract]
+                public readonly IContract EqualityTests = new EqualityContract&lt;SampleEquatable&gt;
+                {
+                    ImplementsOperatorOverloads = true, // Optional (default is true)
+                    EquivalenceClasses =
+                    {
+                        { new SampleEquatable(1) },
+                        { new SampleEquatable(2) },
+                        { new SampleEquatable(3) },
+                        { new SampleEquatable(4) },
+                        { new SampleEquatable(5) }
+                    }
+                };
+            }
+            </code></example>
+      </summary>
+      <typeparam name="TTarget">The target tested type which implements the generic <see cref="T:System.IEquatable`1" /> interface.</typeparam>
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.EqualityContract`1.EquivalenceClasses">
+      <summary>Gets or sets the collection of equivalence classes of instances to feed the contract verifier.</summary>
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.EqualityContract`1.ImplementsOperatorOverloads">
+      <summary>
+        <para> Determines whether the verifier will evaluate the presence and the behavior of the equality and the inequality operator overloads. The default value is <code>true</code>. </para>
+        <para> Built-in verifications: <list type="bullet"><item>The type has a static equality operator (==) overload which behaves correctly against the provided equivalence classes.</item><item>The type has a static inequality operator (!=) overload which behaves correctly against the provided equivalence classes.</item><item /></list></para>
+      </summary>
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.EqualityContract`1.GetContractVerificationTests">
+      <summary>Gets an enumeration of test cases whose purpose is to verify the contract.</summary>
+      <returns>An enumeration of tests</returns>
+    </member>
     <member name="T:MbUnit.Framework.ContractVerifiers.EquivalenceClass`1">
       <summary>
         <para> Contains a collection of equivalent object instances. All the elements of the collection should be equal together, in the sense of the local implementation of an equality contract (<see cref="T:System.IEquatable`1" />) or a comparison contract (<see cref="T:System.IComparable`1" />). </para>
-        <para> Equivalent classes are used by some contract verifiers such as <see cref="T:MbUnit.Framework.ContractVerifiers.VerifyEqualityContractAttribute" /> and <see cref="T:MbUnit.Framework.ContractVerifiers.VerifyComparisonContractAttribute" /> to check for the correct implementation of object equality or comparison. </para>
+        <para> Equivalent classes are used by some contract verifiers such as <see cref="T:MbUnit.Framework.ContractVerifiers.EqualityContract`1" /> to check for the correct implementation of object equality or comparison. </para>
       </summary>
       <typeparam name="T">The type of equivalent object instances.</typeparam>
     </member>
@@ -1915,343 +2592,198 @@
     <member name="T:MbUnit.Framework.ContractVerifiers.EquivalenceClassCollection`1">
       <summary>
         <para> A collection of equivalence classes. </para>
-        <para> Equivalent classes are used by some contract verifiers such as <see cref="T:MbUnit.Framework.ContractVerifiers.VerifyEqualityContractAttribute" /> and <see cref="T:MbUnit.Framework.ContractVerifiers.VerifyComparisonContractAttribute" /> to check for the correct implementation of object equality or comparison. </para>
-        <para> You can construct and initialize a collection of equivalence classes either by using the constructor, or by using the factory method <see cref="M:MbUnit.Framework.ContractVerifiers.EquivalenceClassCollection`1.FromDistinctInstances(`0[])" />: <list type="bullet"><item> Use the constructor when you want to create equivalence classes containing a variable number of object instances. <example><code>
-            EquivalenceClassCollection&lt;Foo&gt; collection = new EquivalenceClassCollection&lt;Foo&gt;(
-                new EquivalenceClass&lt;Foo&gt;(
-                    new EquivalenceClass&lt;Foo&gt;(
-                        new Foo(7, 2));
-                    new EquivalenceClass&lt;Foo&gt;(
-                        new Foo(25, 2), 
-                        new Foo(10, 5));
-                    new EquivalenceClass&lt;Foo&gt;(
-                        new Foo(3, 4), 
-                        new Foo(2, 6), 
-                        new Foo(1, 12)));
-            </code></example></item><item> Use the factory method in more simple scenarios, when the equivalence classes will only contain one single object instance. <example><code>
-            EquivalenceClassCollection&lt;Foo&gt; collection = 
-                EquivalenceClassCollection&lt;Foo&gt;.FromDistinctInstances(
-                    new Foo(7, 2),
-                    new Foo(5, 3), 
-                    new Foo(3, 4));
-            </code></example></item></list></para>
+        <para> Equivalent classes are used by some contract verifiers such as <see cref="T:MbUnit.Framework.ContractVerifiers.EqualityContract`1" /> and <see cref="T:MbUnit.Framework.ContractVerifiers.ComparisonContract`1" /> to check for the correct implementation of object equality or comparison. </para>
+        <para> Use the default constructor followed by a list initializer to create a collection of equivalence classes which contains a variable number of object instances. <example><code>
+            var collection = new EquivalenceClassCollection&lt;Foo&gt;
+            {
+                { new Foo(1), new Foo("One") },
+                { new Foo(2), new Foo("Two") },
+                { new Foo(3), new Foo("Three") }
+            };
+            </code></example></para>
+        <para> Use the single-parameter constructor to create a collection of equivalence classes which contains one single object instance each. <example><code>
+            var collection = new EquivalenceClassCollection&lt;Foo&gt;(new Foo(1), new Foo(2), new Foo(3));
+            </code></example></para>
       </summary>
       <typeparam name="T">The type of equivalent object instances.</typeparam>
     </member>
     <member name="P:MbUnit.Framework.ContractVerifiers.EquivalenceClassCollection`1.EquivalenceClasses">
       <summary>Gets the equivalence classes.</summary>
     </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.EquivalenceClassCollection`1.FromDistinctInstances(`0[])">
-      <summary>
-        <para> Constructs a collection of equivalence classes from the specified distinct object instances. The collection will contain one equivalence class for each of the distinct object instances provided. </para>
-        <para> Equivalent classes are used by some contract verifiers such as <see cref="T:MbUnit.Framework.ContractVerifiers.VerifyEqualityContractAttribute" /> and <see cref="T:MbUnit.Framework.ContractVerifiers.VerifyComparisonContractAttribute" /> to check for the correct implementation of object equality or comparison. </para>
-      </summary>
-      <param name="distinctInstances">An array of distinct object instances</param>
+    <member name="M:MbUnit.Framework.ContractVerifiers.EquivalenceClassCollection`1.Add(`0[])">
+      <summary>Adds to the collection a new equivalence class which contains the specified objects.</summary>
+      <param name="equivalentInstances">An array of equivalent instances.</param>
     </member>
     <member name="M:MbUnit.Framework.ContractVerifiers.EquivalenceClassCollection`1.GetEnumerator">
       <summary>Returns a strongly-typed enumerator that iterates through the collection.</summary>
       <returns>A strongly-typed enumerator</returns>
     </member>
-    <member name="T:MbUnit.Framework.ContractVerifiers.VerifyComparisonContractAttribute">
+    <member name="T:MbUnit.Framework.ContractVerifiers.ExceptionContract`1">
       <summary>
-        <para> Attribute for test fixtures that verify the implementation contract of a type implementing the generic <see cref="T:System.IComparable`1" /> interface. </para>
-        <para> The test fixture must implement the <see cref="T:MbUnit.Framework.ContractVerifiers.IEquivalenceClassProvider`1" /> interface which provides a set of equivalence classes of distinct object instances to be used by the contract verifier. </para>
-        <para> By default, the verifier will evaluate the behavior of the <see cref="M:System.IComparable`1.CompareTo(`0)" /> method. It will verify as well the good implementation of the four comparison operator overloads (Greater Than, Less Than, Greater Than Or Equal, and Less Than Or Equal). Use the named parameters <see cref="P:MbUnit.Framework.ContractVerifiers.VerifyEqualityContractAttribute.ImplementsOperatorOverloads" /> to disable that verification. </para>
-        <example>The following example declares a simple comparable "Foo" class and tests it using the comparison contract verifier. The Foo class has a contructor which takes one single Int32 argument, which is used internally by the class for the implementation of the comparison contract. <code>
-             public class Foo : IComparable&lt;Foo&gt;
-             {
-                 private int value;
-                 
-                 public Foo(int value)
-                 {
-                     this.value = value;
-                 }
-             
-                 public int CompareTo(Foo other) 
-                 { 
-                     return (other == null) ? Int32.MaxValue : value.CompareTo(other.value);
-                 }
-             
-                 public static bool operator &gt;=(Foo left, Foo right)
-                 {
-                     return ((left == null) &amp;&amp; (right == null)) || ((left != null) &amp;&amp; (left.CompareTo(right) &gt;= 0));
-                 }
-            
-                 public static bool operator &lt;=(Foo left, Foo right)
-                 {
-                     return (left == null) || (left.CompareTo(right) &lt;= 0);
-                 }
-            
-                 public static bool operator &gt;(Foo left, Foo right)
-                 {
-                     return (left != null) &amp;&amp; (left.CompareTo(right) &gt; 0);
-                 }
-            
-                 public static bool operator &lt;(Foo left, Foo right)
-                 {
-                     return ((left != null) || (right != null)) &amp;&amp; ((left == null) || (left.CompareTo(right) &lt; 0));
-                 }
-             }
-             
-             [VerifyComparisonContract(typeof(Foo))]
-             public class FooTest : IEquivalenceClassProvider&lt;Foo&gt;
-             {
-                 public EquivalenceClassCollection&lt;Foo&gt; GetEquivalenceClasses()
-                 {
-                     return EquivalenceClassCollection&lt;Foo&gt;.FromDistinctInstances(
-                         new Foo(1),
-                         new Foo(2),
-                         new Foo(5),
-                         new Foo(36));
-                 }
-             }
-             </code></example>
-        <para> When testing a nullable type such as a reference type, or a value type decorated with <see cref="T:System.Nullable`1" />, it is not necessary to provide a null reference as an object instance to the constructor of the equivalence classes. The contract verifier will check for you that the tested type handles correctly with null references. In the scope of the comparison contract, it means that: <list type="bullet"><item>Any null reference should compare less than any non-null reference.</item><item>Two null references should compare equal.</item></list></para>
-      </summary>
-    </member>
-    <member name="P:MbUnit.Framework.ContractVerifiers.VerifyComparisonContractAttribute.ImplementsOperatorOverloads">
-      <summary>
-        <para> Determines whether the verifier will evaluate the presence and the behavior of the four comparison operator overloads. The default value is 'true'. </para> Built-in verifications: <list type="bullet"><item>The type has a static "greater than" operator overload which behaves correctly against the provided equivalence classes.</item><item>The type has a static "less than" operator overload which behaves correctly against the provided equivalence classes.</item><item>The type has a static "greater than or equal" operator overload which behaves correctly against the provided equivalence classes.</item><item>The type has a static "less than or equal" operator overload which behaves correctly against the provided equivalence classes.</item></list></summary>
-    </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyComparisonContractAttribute.GetPatterns">
-      <summary>Provides builders of pattern tests for the contract verifier.</summary>
-      <returns>An enumeration of pattern test builders.</returns>
-    </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyComparisonContractAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
-      <summary>Verifies that the attribute is being used correctly.</summary>
-      <param name="scope">The scope</param>
-      <param name="codeElement">The code element</param>
-    </member>
-    <member name="T:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute">
-      <summary>Abstract attribute to qualify test fixtures that verify implementation contracts. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>
-    </member>
-    <member name="P:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute.TargetType">
-      <summary>Gets the type of the object to verify.</summary>
-    </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute.DecorateTest(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
-      <summary>
-        <para> Applies decorations to a method or type-level <see cref="T:Gallio.Framework.Pattern.PatternTest" />. </para>
-        <para> A typical use of this method is to augment the test with additional metadata or to add additional behaviors to the test. </para>
-      </summary>
-      <param name="scope">The scope</param>
-      <param name="codeElement">The code element</param>
-    </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute.GetInterface(System.Type,System.Type)">
-      <summary>Gets the interface of a particular type if it is implemented by another type, otherwise returns null.</summary>
-      <param name="implementationType">The implementation type</param>
-      <param name="interfaceType">The interface type</param>
-      <returns>The interface type or null if it is not implemented by the implementation type</returns>
-    </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute.GetPatterns">
-      <summary>Provides builders of pattern tests for the contract verifier.</summary>
-      <returns>An enumeration of pattern test builders.</returns>
-    </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
-      <summary>Verifies that the attribute is being used correctly.</summary>
-      <param name="scope">The scope</param>
-      <param name="codeElement">The code element</param>
-    </member>
-    <member name="T:MbUnit.Framework.ContractVerifiers.VerifyEqualityContractAttribute">
-      <summary>
-        <para> Attribute for test fixtures that verify the implementation contract of a type implementing the generic <see cref="T:System.IEquatable`1" /> interface. </para>
-        <para> The test fixture must implement the <see cref="T:MbUnit.Framework.ContractVerifiers.IEquivalenceClassProvider`1" /> interface which provides a set of equivalence classes of distinct object instances to be used by the contract verifier. </para>
-        <para> By default, the verifier will evaluated the behavior of the <see cref="M:System.Object.Equals(System.Object)" />, <see cref="M:System.Object.GetHashCode" />, and <see cref="M:System.IEquatable`1.Equals(`0)" /> methods. It will verify as well the good implementation of the equality (==) and the inequality (!=) operator overloads. Use the named parameters <see cref="P:MbUnit.Framework.ContractVerifiers.VerifyEqualityContractAttribute.ImplementsOperatorOverloads" /> to disable that verification. </para>
-        <example>The following example declares a simple equatable "Foo" class and tests it using the equality contract verifier. The "Foo" class has a contructor which takes two Int32 arguments. The equality contract is based on the result of the multiplication of those two arguments. Thus, Foo(25, 2) should be equal to (5, 10) because 25 * 2 = 5 * 10. <code>
-            public class Foo : IEquatable&lt;Foo&gt;
+        <para> Contract for verifying the implementation of a custom exception type. </para>
+        <para> Built-in verifications: <list type="bullet"><item><name>HasSerializableAttribute</name><description>The exception type has the <see cref="T:System.SerializableAttribute" /> attribute. Disable that test by settings the <see cref="P:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.ImplementsSerialization" /> property to <c>false</c>.</description></item><item><name>HasSerializationConstructor</name><description>The exception type has a protected serialization constructor similar to <see cref="M:System.Exception.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)" />. Disable that test by settings the <see cref="P:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.ImplementsSerialization" nolink="true" /> property to <c>false</c>.</description></item><item><name>IsDefaultConstructorWellDefined</name><description>The exception type has a default parameter-less constructor. When the <see cref="P:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.ImplementsSerialization" nolink="true" /> property is set to <c>true</c> as well, the method verifies that the properties of the exception are preserved during a roundtrip serialization. Disable the test by settings the <see cref="P:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.ImplementsStandardConstructors" /> property to <c>false</c>. </description></item><item><name>IsMessageConstructorWellDefined</name><description>The exception type has single argument constructor for the message. When the <see cref="P:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.ImplementsSerialization" nolink="true" /> property is set to <c>true</c> as well, the method verifies that the properties of the exception are preserved during a roundtrip serialization. Disable the test by settings the <see cref="P:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.ImplementsStandardConstructors" nolink="true" /> property to <c>false</c>. </description></item><item><name>IsMessageAndInnerExceptionConstructorWellDefined</name><description>The exception type has two parameters constructor for the message and an inner exception. When the <see cref="P:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.ImplementsSerialization" nolink="true" /> property is set to <c>true</c> as well, the method verifies that the properties of the exception are preserved during a roundtrip serialization. Disable the test by settings the <see cref="P:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.ImplementsStandardConstructors" nolink="true" /> property to <c>false</c>. </description></item></list></para>
+        <example> The following example shows a simple custom exception class with some basic serialization support, and a test fixture which uses the exception contract to test it. <code>
+            [Serializable]
+            public class SampleException : Exception, ISerializable
             {
-                private int value;
-                
-                public Foo(int left, int right)
+                public SampleException()
                 {
-                    value = left * right;
                 }
             
-                public override int GetHashCode() 
+                public SampleException(string message)
+                    : base(message)
                 {
-                    return value.GetHashCode(); 
-                }
-                
-                public override bool Equals(object other) 
-                { 
-                    return Equals(other as Foo);
-                }
-                
-                public bool Equals(Foo other) 
-                { 
-                    return (other != null) &amp;&amp; (value == other.value);
                 }
             
-                public static bool operator ==(Foo left, Foo right) 
+                public SampleException(string message, Exception innerException)
+                    : base(message, innerException)
                 {
-                    return (Object.ReferenceEquals(left, null) 
-                        &amp;&amp; Object.ReferenceEquals(right, null)) 
-                        || (!Object.ReferenceEquals(left, null) 
-                        &amp;&amp; left.Equals(right));
                 }
-                
-                public static bool operator !=(Foo left, Foo right) 
-                { 
-                    return !(left == right);
+            
+                protected SampleException(SerializationInfo info, StreamingContext context)
+                    : base(info, context)
+                {
+                }
+            
+                public override void GetObjectData(SerializationInfo info, StreamingContext context)
+                {
+                    base.GetObjectData(info, context);
                 }
             }
             
-            [VerifyEqualityContract(typeof(Foo)]
-            public class FooTest : IEquivalenceClassProvider&lt;Foo&gt;
+            public class SampleExceptionTest
             {
-                public EquivalenceClassCollection&lt;Foo&gt; GetEquivalenceClasses()
+                [VerifyContract]
+                public readonly IContract ExceptionTests = new ExceptionContract&lt;SampleException&gt;()
                 {
-                    return new EquivalenceClassCollection&lt;Foo&gt;(
-                        new EquivalenceClass&lt;Foo&gt;(
-                            new Foo(7, 2));
-                        new EquivalenceClass&lt;Foo&gt;(
-                            new Foo(25, 2), 
-                            new Foo(10, 5));
-                        new EquivalenceClass&lt;Foo&gt;(
-                            new Foo(3, 4), 
-                            new Foo(2, 6), 
-                            new Foo(1, 12)));
-                }
+                    ImplementsSerialization = true, // Optional (default is true)
+                    ImplementsStandardConstructors = true // Optional (default is true)
+                };
             }
             </code></example>
-        <para> When testing a nullable type such as a reference type, or a value type decorated with <see cref="T:System.Nullable`1" />, it is not necessary to provide a null reference as an object instance to the constructor of the equivalence classes. The contract verifier will check for you that the tested type handles correctly with null references. In the scope of the equality contract, it means that: <list type="bullet"><item>Any null reference should be not equal to any non-null reference.</item><item>Two null references should be equal together.</item></list></para>
       </summary>
+      <typeparam name="TException">The target custom exception type.</typeparam>
     </member>
-    <member name="P:MbUnit.Framework.ContractVerifiers.VerifyEqualityContractAttribute.ImplementsOperatorOverloads">
-      <summary>
-        <para> Determines whether the verifier will evaluate the presence and the behavior of the equality and the inequality operator overloads. The default value is 'true'. </para> Built-in verifications: <list type="bullet"><item>The type has a static equality operator (==) overload which behaves correctly against the provided equivalence classes.</item><item>The type has a static inequality operator (!=) overload which behaves correctly against the provided equivalence classes.</item></list></summary>
-    </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyEqualityContractAttribute.GetPatterns">
-      <summary>Provides builders of pattern tests for the contract verifier.</summary>
-      <returns>An enumeration of pattern test builders.</returns>
-    </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyEqualityContractAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
-      <summary>Verifies that the attribute is being used correctly.</summary>
-      <param name="scope">The scope</param>
-      <param name="codeElement">The code element</param>
-    </member>
-    <member name="T:MbUnit.Framework.ContractVerifiers.VerifyExceptionContractAttribute">
-      <summary>
-        <para> Attribute for a test fixture that verifies the implementation contract of a custom exception type, derived from <see cref="T:System.Exception" />. </para>
-        <para> By default, the verifier will check for the serialization support and the implementation of the 3 recommended constructors. Use the named parameters <see cref="P:MbUnit.Framework.ContractVerifiers.VerifyExceptionContractAttribute.ImplementsSerialization" /> and <see cref="P:MbUnit.Framework.ContractVerifiers.VerifyExceptionContractAttribute.ImplementsStandardConstructors" /> to modify that behavior. </para>
-        <example>The following example declares a simple custom exception, and tests it using the exception contract verifier. <code>
-             [Serializable]
-             public class MyException : Exception, ISerializable
-             {
-                 public MyException()
-                 {
-                 }
-            
-                 public MyException(string message)
-                     : base(message)
-                 {
-                 }
-            
-                 public MyException(string message, Exception innerException)
-                     : base(message, innerException)
-                 {
-                 }
-            
-                 protected MyException(SerializationInfo info, StreamingContext context)
-                     : base(info, context)
-                 {
-                 }
-            
-                 public override void GetObjectData(SerializationInfo info, StreamingContext context)
-                 {
-                     base.GetObjectData(info, context);
-                 }
-             }
-             
-             [VerifyExceptionContract(typeof(MyException)]
-             public class MyExceptionTest
-             {
-             }
-             </code></example>
-      </summary>
-    </member>
-    <member name="P:MbUnit.Framework.ContractVerifiers.VerifyExceptionContractAttribute.ImplementsSerialization">
+    <member name="P:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.ImplementsSerialization">
       <summary>
         <para> Determines whether the verifier will check for the serialization support. The default value is 'true'. </para>
         <para> Built-in verifications: <list type="bullet"><item>The exception implements the <see cref="T:System.Runtime.Serialization.ISerializable" /> interface.</item><item>The exception has the <see cref="T:System.SerializableAttribute" /> attribute.</item><item>The exception type has a protected serialization constructor similar to <see cref="M:System.Exception.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)" />.</item></list></para>
       </summary>
     </member>
-    <member name="P:MbUnit.Framework.ContractVerifiers.VerifyExceptionContractAttribute.ImplementsStandardConstructors">
+    <member name="P:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.ImplementsStandardConstructors">
       <summary>
         <para> Determines whether the verifier will check for the presence of the recommended standard constructors. The default value is 'true'. </para>
-        <para> Built-in verifications: <list type="bullet"><item>The exception has a default argument-less constructor.</item><item>The exception has a single argument constructor for the message.</item><item>The exception two arguments constructor for the message and an inner exception.</item></list></para>
+        <para> Built-in verifications: <list type="bullet"><item>The exception has a default parameter-less constructor.</item><item>The exception has a single parameter constructor for the message.</item><item>The exception two parameters constructor for the message and an inner exception.</item></list></para>
       </summary>
     </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyExceptionContractAttribute.GetPatterns">
-      <summary>Provides builders of pattern tests for the contract verifier.</summary>
-      <returns>An enumeration of pattern test builders.</returns>
+    <member name="M:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.GetContractVerificationTests">
+      <summary>Gets an enumeration of test cases whose purpose is to verify the contract.</summary>
+      <returns>An enumeration of tests</returns>
     </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyExceptionContractAttribute.Validate(Gallio.Framework.Pattern.PatternEvaluationScope,Gallio.Reflection.ICodeElementInfo)">
-      <summary>Verifies that the attribute is being used correctly.</summary>
-      <param name="scope">The scope</param>
-      <param name="codeElement">The code element</param>
+    <member name="M:MbUnit.Framework.ContractVerifiers.ExceptionContract`1.RoundTripSerialize(System.Exception)">
+      <summary>Performs round-trip serialization of the exception and returns the result.</summary>
+      <param name="instance">The exception instance.</param>
+      <returns>The instance produced after serialization and deserialization</returns>
     </member>
-    <member name="T:MbUnit.Framework.ContractVerifiers.IEquivalenceClassProvider`1">
+    <member name="T:MbUnit.Framework.ContractVerifiers.ImmutabilityContract`1">
       <summary>
-        <para> Provides equivalence classes of object instances. </para>
-        <para> That interface is one of the two side parts contracts for the equality contract verifier <see cref="T:MbUnit.Framework.ContractVerifiers.VerifyEqualityContractAttribute" /> and <see cref="T:MbUnit.Framework.ContractVerifiers.VerifyComparisonContractAttribute" />. </para>
-        <para> Equivalent classes are used by some contract verifiers such as <see cref="T:MbUnit.Framework.ContractVerifiers.VerifyEqualityContractAttribute" nolink="true" /> and <see cref="T:MbUnit.Framework.ContractVerifiers.VerifyComparisonContractAttribute" nolink="true" /> to check for the correct implementation of object equality or comparison. </para>
+        <para> Contract for verifying the implementation of an immutable type. </para>
+        <para> Built-in verifications: <list type="bullet"><item><term>AreReadOnlyFields</term><description>All the public and non-public instance fields are marked as read only. The evaluation is made recursively on the field types too.</description></item><item><term>HasNoPublicPropertySetter</term><description>The type does not have any public property setter. The evaluation is made recursively on the property types too.</description></item></list></para>
+        <example> The following example shows a simple immutable class with all the instance fields marked as read only, and a test fixture which invokes the immutability contract to test the class. <code>
+             public class SampleImmutable
+             {
+                 private readonly int number;
+                 private readonly string text;
+             
+                 public SampleImmutable(int number, string text)
+                 {
+                     this.number = number;
+                     this.text = text;
+                 }
+             }
+            
+             public class SampleImmutableTest
+             {
+                 [VerifyContract]
+                 public readonly IContract ImmutabilityTests = new ImmutabilityContract&lt;SampleImmutable&gt;();
+             }
+             </code></example>
+      </summary>
+      <typeparam name="TTarget">The target immutable type.</typeparam>
+    </member>
+    <member name="M:MbUnit.Framework.ContractVerifiers.ImmutabilityContract`1.GetContractVerificationTests">
+      <summary>Gets an enumeration of test cases whose purpose is to verify the contract.</summary>
+      <returns>An enumeration of tests</returns>
+    </member>
+    <member name="T:MbUnit.Framework.ContractVerifiers.ListContract`2">
+      <summary>
+        <para> Contract for verifying the implementation of the generic <see cref="T:System.Collections.Generic.IList`1" /> interface. </para>
+        <para> Since the generic <see cref="T:System.Collections.Generic.IList`1" nolink="true" /> interface is a descendant of the generic <see cref="T:System.Collections.Generic.ICollection`1" /> interface, the contract verifier has the same tests as the <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" /> contract verifier, plus the following built-in verifications: <list type="bullet"><item><term>InsertShouldThrowException</term><description>The read-only collection throws an exception when the method <see cref="M:System.Collections.Generic.IList`1.Insert(System.Int32,`0)" /> is called. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" /> inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />, is set to 'false'. </remarks></description></item><item><term>RemoveAtShouldThrowException</term><description>The read-only collection throws an exception when the method <see cref="M:System.Collections.Generic.IList`1.RemoveAt(System.Int32)" /> is called. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />, is set to 'false'. </remarks></description></item><item><term>IndexerSetShouldThrowException</term><description>The read-only collection throws an exception when the setter of the indexer <see cref="P:System.Collections.Generic.IList`1.Item(System.Int32)" /> is called. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />, is set to 'false'. </remarks></description></item><item><term>InsertNullArgument</term><description>The collection throwns a <see cref="T:System.ArgumentNullException" /> when the method <see cref="M:System.Collections.Generic.IList`1.Insert(System.Int32,`0)" nolink="true" /> is called with a null reference item. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.AcceptNullReference" /> inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />, is set to 'true'. </remarks></description></item><item><term>IndexOfNullArgument</term><description>The collection throwns a <see cref="T:System.ArgumentNullException" nolink="true" /> when the method <see cref="M:System.Collections.Generic.IList`1.IndexOf(`0)" /> is called with a null reference item. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.AcceptNullReference" nolink="true" /> inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />, is set to 'true'. </remarks></description></item><item><term>IndexerSetNullArgument</term><description>The collection throwns a <see cref="T:System.ArgumentNullException" nolink="true" /> when the setter of the indexer <see cref="P:System.Collections.Generic.IList`1.Item(System.Int32)" nolink="true" /> is called with a null reference item. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.AcceptNullReference" nolink="true" /> inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />, is set to 'true'. </remarks></description></item><item><term>InsertItems</term><description> The collection handles correctly with the insertion of new items. The method <see cref="M:System.Collections.Generic.ICollection`1.Contains(`0)" /> and the property <see cref="P:System.Collections.Generic.ICollection`1.Count" /> are expected to return suitable results as well. The case of duplicate items (object equality) is tested too; according to the value of contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.AcceptEqualItems" />, inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />, is set to 'true'. </remarks></description></item><item><term>InsertItemsAtInvalidIndex</term><description> The collection handles correctly with the insertion of new items at an invalid index. The method should throw an <see cref="T:System.ArgumentOutOfRangeException" /> when called with a negative index or with an index greater than the number of items in the list. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />, is set to 'true'. </remarks></description></item><item><term>RemoveItemsAt</term> The collection handles correctly with the removal of items at specific indexes. The method <see cref="M:System.Collections.Generic.ICollection`1.Contains(`0)" nolink="true" /> and the property <see cref="P:System.Collections.Generic.ICollection`1.Count" nolink="true" /> are expected to return suitable results as well. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />, is set to 'true'. </remarks></item><item><term>RemoveItemsAtInvalidIndex</term><description> The collection handles correctly with the removal of items at an invalid index. The method should throw an <see cref="T:System.ArgumentOutOfRangeException" nolink="true" /> when called with a negative index or with an index greater than the number of items in the list. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />, is set to 'true'. </remarks></description></item><item><term>GetItemsAtInvalidIndex</term><description> The collection handles correctly with the retrieval of items at an invalid index. The indexer should throw an <see cref="T:System.ArgumentOutOfRangeException" nolink="true" /> when called with a negative index or with an index greater than the number of items in the list. </description></item><item><term>GetSetItemsWithIndexer</term><description> Setting and getting items by using the indexer property works as expected. <remarks> The test is not run when the contract property <see cref="P:MbUnit.Framework.ContractVerifiers.CollectionContract`2.IsReadOnly" nolink="true" /> inherited from <see cref="T:MbUnit.Framework.ContractVerifiers.CollectionContract`2" nolink="true" />, is set to 'true'. </remarks></description></item><item><term>IndexOfItem</term><description> The retrieval of the index of an item in the collection works as expected, and the index can be used effectively to get the item with the getter of the indexer property. </description></item></list></para>
+      </summary>
+      <typeparam name="TList">The type of the collection implementing <see cref="T:System.Collections.Generic.IList`1" />.</typeparam>
+      <typeparam name="TItem">The type of items contained by the list.</typeparam>
+    </member>
+    <member name="T:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute">
+      <summary>Verifies that a contract has been satisfied. The contract is described by a value assigned to a field of the test fixture.</summary>
+    </member>
+    <member name="P:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute.IsPrimary">
+      <summary>
+        <para> Returns true if this is a primary pattern. </para>
+        <para> A primary pattern is a pattern that defines the ultimate purpose of a code element and the nature of the tests or test parameters that are produced from it. Consequently the primary pattern is the only one on which the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method will be called. </para>
+        <para> Each code element may have at most one primary pattern. It is an error for a code element to have more than one associated primary pattern. </para>
+        <para> If a code element does not have an associated primary pattern, its containing test may choose to apply default processing to it instead. For example, the containing test may give an opportunity to patterns associated with the code element to consume a test method parameter but will revert to default behavior if no primary patterns explicitly claim it. </para>
+        <para> Non-primary patterns still play a very important part in the construction of the test model. Non-primary patterns may implement the <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)" /> method to decorate tests and test parameters declared by the primary pattern. </para>
       </summary>
     </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.IEquivalenceClassProvider`1.GetEquivalenceClasses">
-      <summary>Provides equivalence classes of object instances.</summary>
-      <returns>A collection of equivalence classes</returns>
+    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)">
+      <summary>
+        <para> Consumes a code element and applies its contributions to the scope provided by a containing pattern. </para>
+        <para> This method is used to declare new tests, test parameters and other components and add them to a containing test that was defined in some other scope. </para>
+        <para> For example, when enumerating test fixtures, the assembly-level pattern will call the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method of the primary patterns associated with each type in an assembly. Some of these patterns will create new test fixture objects and add them as children of the containing assembly-level test. They will then call the <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)" /> method of each non-primary pattern associated with the type within the scope of the test fixture. Then they will typically recurse into the fixture to apply contributions defined by patterns associated with methods, fields, properties, events, constructors and generic type parameters. </para>
+      </summary>
+      <param name="containingScope">The containing scope</param>
+      <param name="codeElement">The code element to process</param>
+      <param name="skipChildren">If true, skips generating child test components. Instead the children may be populated on demand using <see cref="M:Gallio.Framework.Pattern.IPatternScope.AddDeferredComponentPopulator(Gallio.Framework.Pattern.DeferredComponentPopulator)" />. The implementation may safely ignore the value of this flag so long as subsequent attempts to populate children on demand are idempotent (do nothing or have no adverse side-effects).</param>
     </member>
-    <member name="T:MbUnit.Framework.ContractVerifiers.Patterns.ContractVerifierPattern">
-      <summary>Abstract test pattern for contract verifiers. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>
+    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute.InitializeTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IFieldInfo)">
+      <summary>Initializes a test for a contract verifier field after it has been added to the test model.</summary>
+      <param name="fieldScope">The field scope</param>
+      <param name="field">The field</param>
     </member>
-    <member name="P:MbUnit.Framework.ContractVerifiers.Patterns.ContractVerifierPattern.Name">
-      <summary>Gets the name of the test pattern.</summary>
+    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute.IsTest(Gallio.Framework.Pattern.IPatternEvaluator,Gallio.Reflection.ICodeElementInfo)">
+      <summary>Returns true if the code element represents a test.</summary>
+      <param name="evaluator">The evaluator</param>
+      <param name="codeElement">The code element</param>
+      <returns>True if the code element represents a test</returns>
     </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.Patterns.ContractVerifierPattern.Build(Gallio.Framework.Pattern.PatternEvaluationScope)">
-      <summary>Builds the test pattern, then adds it to the evaluation scope as a new child test.</summary>
-      <param name="scope">The scope of the test pattern.</param>
+    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute.SetTestSemantics(Gallio.Framework.Pattern.ITestBuilder,Gallio.Reflection.IFieldInfo)">
+      <summary>Establishes the semantics of the contract verifier.</summary>
+      <param name="testBuilder">The test builder</param>
+      <param name="field">The field</param>
     </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.Patterns.ContractVerifierPattern.GetConstructorSignature(System.Collections.Generic.IEnumerable{System.Type})">
-      <summary>Helper methods that builds a friendly displayable constructor signature.</summary>
-      <param name="types">The parameter types of the constructor.</param>
+    <member name="M:MbUnit.Framework.ContractVerifiers.VerifyContractAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IFieldInfo)">
+      <summary>Verifies that the attribute is being used correctly.</summary>
+      <param name="containingScope">The containing scope</param>
+      <param name="field">The field</param>
+      <exception cref="T:Gallio.Framework.Pattern.PatternUsageErrorException">Thrown if the attribute is being used incorrectly</exception>
     </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.Patterns.ContractVerifierPattern.GetEquivalentClasses(System.Type,System.Type,System.Object)">
-      <summary>Casts the instance of the test fixture into a provider of equivalence classes, then returns the resulting collection as an enumeration.</summary>
-      <param name="targetType">The target evaluated type.</param>
-      <param name="fixtureType">The test fixture type.</param>
-      <param name="fixtureInstance">The test fixture instance.</param>
+    <member name="T:MbUnit.Framework.ContractVerifiers.IContract">
+      <summary>Describes a contract that can be verified.</summary>
     </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.Patterns.ContractVerifierPattern.GetIEquivalenceClassProviderInterface(System.Type,System.Type)">
-      <summary>Returns the target type as a generic IEquatable interface, or a null reference if it does not implement such an interface.</summary>
-      <param name="targetType">The target evaluated type.</param>
-      <param name="fixtureType">The test fixture type.</param>
-      <returns>The interface type or a null reference.</returns>
+    <member name="M:MbUnit.Framework.ContractVerifiers.IContract.GetContractVerificationTests(MbUnit.Framework.ContractVerifiers.Core.ContractVerificationContext)">
+      <summary>Gets an enumeration of test cases whose purpose is to verify the contract.</summary>
+      <param name="context">The context of execution.</param>
+      <returns>An enumeration of tests</returns>
     </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.Patterns.ContractVerifierPattern.GetInterface(System.Type,System.Type)">
-      <summary>Gets the interface of a particular type if it is implemented by another type, otherwise returns null.</summary>
-      <param name="implementationType">The implementation type</param>
-      <param name="interfaceType">The interface type</param>
-      <returns>The interface type or null if it is not implemented by the implementation type</returns>
+    <member name="T:MbUnit.Framework.ContractVerifiers.Core.ContractVerificationContext">
+      <summary>Execution context of a contract verification test. This class cannot be inherited.</summary>
     </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.Patterns.ContractVerifierPattern.Run(MbUnit.Framework.ContractVerifiers.Patterns.IContractVerifierPatternInstanceState)">
-      <summary>Runs the test pattern action.</summary>
-      <param name="state" />
+    <member name="P:MbUnit.Framework.ContractVerifiers.Core.ContractVerificationContext.CodeElement">
+      <summary>Gets the code element for the contrat read-only field.</summary>
     </member>
-    <member name="T:MbUnit.Framework.ContractVerifiers.Patterns.ContractVerifierPatternBuilder">
-      <summary>Abstract builder of test pattern for contract verifiers. The builder collects data to construct a test pattern. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>
-    </member>
-    <member name="M:MbUnit.Framework.ContractVerifiers.Patterns.ContractVerifierPatternBuilder.ToPattern">
-      <summary>Constructs the test pattern.</summary>
-      <returns>A new test pattern for a contract verifier.</returns>
-    </member>
-    <member name="T:MbUnit.Framework.ContractVerifiers.Patterns.IContractVerifierPatternInstanceState">
-      <summary>Represents the run-time state of a single instance of a test pattern that is to be executed in the scope of contract verifier.</summary>
-    </member>
-    <member name="P:MbUnit.Framework.ContractVerifiers.Patterns.IContractVerifierPatternInstanceState.FixtureInstance">
-      <summary>Gets the test fixture instance or null if none.</summary>
-    </member>
-    <member name="P:MbUnit.Framework.ContractVerifiers.Patterns.IContractVerifierPatternInstanceState.FixtureType">
-      <summary>Gets othe test fixture type or null if none.</summary>
+    <member name="M:MbUnit.Framework.ContractVerifiers.Core.ContractVerificationContext.GetStackTraceData">
+      <summary>Gets an artificial stack trace data that points to the contrat read-only field.</summary>
+      <returns>An artificial stack trace data that points to the contrat read-only field.</returns>
     </member>
     <member name="T:MbUnit.Framework.Reflection.ReflectionException">
       <summary>Indicates that a reflection operation performed by <see cref="T:MbUnit.Framework.Reflection.Reflector" /> failed.</summary>
@@ -2488,27 +3020,6 @@
     </member>
     <member name="F:MbUnit.Framework.Reflection.MemberType.Property">
       <summary>Property</summary>
-    </member>
-    <member name="T:MbUnit.Framework.Xml.XmlSerializationAssert">
-      <summary>Assertions based on Xml serialization. This is a <see langword="static class" /> and so cannot be inherited or instantiated.</summary>
-    </member>
-    <member name="M:MbUnit.Framework.Xml.XmlSerializationAssert.AreEqualAfterRoundTrip``1(``0)">
-      <summary>Performs XML serialization then deserialization of the specified object then compares the object to ensure that it equals the original.</summary>
-      <typeparam name="T">The type of object to serialize</typeparam>
-      <param name="obj">The object</param>
-      <returns>The deserialized object after serialization</returns>
-      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="obj" /> is null</exception>
-    </member>
-    <member name="M:MbUnit.Framework.Xml.XmlSerializationAssert.IsXmlSerializable(System.Type)">
-      <summary>Asserts that an <see cref="T:System.Xml.Serialization.XmlSerializer" /> can be produced for a <see cref="T:System.Type" />.</summary>
-      <param name="t">The type to check</param>
-    </member>
-    <member name="M:MbUnit.Framework.Xml.XmlSerializationAssert.RoundTrip``1(``0)">
-      <summary>Performs XML serialization then deserialization of the specified object.</summary>
-      <typeparam name="T">The type of object to serialize</typeparam>
-      <param name="obj">The object</param>
-      <returns>The deserialized object after serialization</returns>
-      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="obj" /> is null</exception>
     </member>
   </members>
 </doc>

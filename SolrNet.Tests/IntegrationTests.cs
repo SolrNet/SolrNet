@@ -14,8 +14,8 @@
 // limitations under the License.
 #endregion
 
+using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
-using NUnit.Framework;
 using SolrNet.Mapping;
 using SolrNet.Utils;
 

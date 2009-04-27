@@ -19,7 +19,7 @@ using Castle.Core.Configuration;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using NUnit.Framework;
+using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet;
 using SolrNet.Impl;

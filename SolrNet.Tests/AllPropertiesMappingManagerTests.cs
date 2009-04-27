@@ -15,7 +15,7 @@
 #endregion
 
 using System;
-using NUnit.Framework;
+using MbUnit.Framework;
 using SolrNet.Exceptions;
 using SolrNet.Mapping;
 

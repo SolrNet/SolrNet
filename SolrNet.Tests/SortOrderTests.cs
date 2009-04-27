@@ -14,7 +14,7 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
+using MbUnit.Framework;
 using SolrNet.Exceptions;
 
 namespace SolrNet.Tests {
@@ -53,13 +53,13 @@ namespace SolrNet.Tests {
 		[Test]
 		public void ParseAsc() {
 			var o = SortOrder.Parse("pepe asc");
-			StringAssert.IsMatch("pepe asc", o.ToString());
+            Assert.Like(o.ToString(), "pepe asc");
 		}
 
 		[Test]
 		public void ParseDesc() {
 			var o = SortOrder.Parse("pepe desc");
-			StringAssert.IsMatch("pepe desc", o.ToString());
+            Assert.Like(o.ToString(), "pepe desc");
 		}
 
 		[Test]

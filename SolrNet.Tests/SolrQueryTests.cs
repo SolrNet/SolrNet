@@ -15,11 +15,9 @@
 #endregion
 
 using System;
-using Microsoft.Practices.ServiceLocation;
-using NUnit.Framework;
+using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Impl;
-using SolrNet.Utils;
 
 namespace SolrNet.Tests {
 	[TestFixture]

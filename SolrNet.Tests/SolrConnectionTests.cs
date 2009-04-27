@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using HttpWebAdapters;
-using NUnit.Framework;
+using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Exceptions;
 using SolrNet.Impl;

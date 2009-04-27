@@ -15,7 +15,7 @@
 #endregion
 
 using System.Linq;
-using NUnit.Framework;
+using MbUnit.Framework;
 using SampleSolrApp.Models;
 
 namespace SampleSolrApp.Tests {

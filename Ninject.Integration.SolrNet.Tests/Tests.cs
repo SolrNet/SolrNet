@@ -15,11 +15,10 @@
 #endregion
 
 using System;
+using MbUnit.Framework;
 using Ninject.Core;
-using NUnit.Framework;
 using Rhino.Mocks;
 using SolrNet;
-using SolrNet.Exceptions;
 
 namespace Ninject.Integration.SolrNet.Tests {
     [TestFixture]

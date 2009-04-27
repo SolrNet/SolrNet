@@ -16,7 +16,7 @@
 
 using System;
 using System.Linq;
-using NUnit.Framework;
+using MbUnit.Framework;
 using SampleSolrApp.Helpers;
 
 namespace SampleSolrApp.Tests {

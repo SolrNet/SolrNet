@@ -16,7 +16,7 @@
 
 using System.IO;
 using System.Net;
-using NUnit.Framework;
+using MbUnit.Framework;
 
 namespace SolrNet.Tests {
     [TestFixture]

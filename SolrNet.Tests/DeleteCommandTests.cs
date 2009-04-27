@@ -14,7 +14,7 @@
 // limitations under the License.
 #endregion
 
-using NUnit.Framework;
+using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;

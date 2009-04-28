@@ -46,6 +46,11 @@ namespace SolrNet.Tests {
 			}
 		}
 
+        public class TestDocWithString {
+            [SolrField]
+            public string Desc { get; set; }
+        }
+
 		public delegate string Writer(string ignored, string s);
 
 		[Test]
@@ -96,5 +101,33 @@ namespace SolrNet.Tests {
 				cmd.Execute(conn);
 			});
 		}
+
+        [Test]
+        public void RemovesControlCharactersFromXML() {
+            var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
+            var docs = new[] { new TestDocWithString { Desc = "control" + (char)0x7 + (char)0x1F + (char)0xFFFE + (char)0xFFFF + (char)0xFFF4  } };
+		    var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
+            var xml = cmd.ConvertToXml();
+            xml = cmd.RemoveControlCharacters(xml);
+            Console.WriteLine(xml);
+            Assert.DoesNotContain(xml, "&#x7;");
+            Assert.DoesNotContain(xml, "&#x1;");
+            Assert.DoesNotContain(xml, "&#x1F;");
+            Assert.DoesNotContain(xml, "&#xFFFE;");
+        }
+
+        [Test]
+        public void RemoveControlCharacters() {
+            var mocks = new MockRepository();
+            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocWithString>>();
+            var docs = new[] { new TestDocWithString() };
+            var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
+            var xml = cmd.RemoveControlCharacters("control &#x7; &#x1; &#x9; &#x1F; &#xFFFE;");
+            Assert.DoesNotContain(xml, "&#x7;");
+            Assert.DoesNotContain(xml, "&#x1;");
+            Assert.DoesNotContain(xml, "&#x1F;");
+            Assert.DoesNotContain(xml, "&#xFFFE;");
+            Assert.Contains(xml, "&#x9;");
+        }
 	}
 }

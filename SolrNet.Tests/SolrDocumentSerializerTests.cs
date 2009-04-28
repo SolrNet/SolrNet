@@ -242,12 +242,14 @@ namespace SolrNet.Tests {
         public void UTF_XML() {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithString>(mapper, new DefaultFieldSerializer());
-            var doc = new TestDocWithString {Desc = "Có| w tym"};
+            var doc = new TestDocWithString {
+                Desc = @"ÚóÁ⌠╒"""
+            };
             string fs = ser.Serialize(doc).OuterXml;
             var xml = new XmlDocument();
             xml.LoadXml(fs);
             Console.WriteLine(fs);
-            Assert.AreEqual("<doc><field name=\"Desc\">Có| w tym</field></doc>", fs);
+            Assert.AreEqual(@"<doc><field name=""Desc"">ÚóÁ⌠╒""</field></doc>", fs);
         }
 
 	}

@@ -50,7 +50,8 @@ namespace SolrNet.Tests.Integration.Sample {
                     "7200RPM, 8MB cache, IDE Ultra ATA-133",
                     "NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor",
                     "áéíóúñç & two", // testing UTF
-                    "Có| w tym",
+                    @"ÚóÁ⌠╒""ĥÛē…<>ܐóジャストシステムは、日本で初めてユニコードベースのワードプロセ ッサーを開発しました。このことにより、10年以上も前から、日本のコンピューターユーザーはユニコード、特に日中韓の統合漢 字の恩恵を享受してきました。ジャストシステムは現在、”xfy”というJava環境で稼働する 先進的なXML関連製品の世界市場への展開を積極的に推進していますが、ユニコードを基盤としているために、”xfy”は初めから国際化されているのです。ジャストシステムは、ユニコードの普遍的な思想とアーキテクチャに 感謝するとともに、その第5版の刊行を心から歓迎します",
+                    @"control" + (char)0x07 + (char)0x01 + (char)0x0E +(char)0x1F + (char)0xFFFE, // testing control chars
                 },
                 Prices = new Dictionary<string, decimal> {
                     {"regular", 150m},
@@ -77,8 +78,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         [Ignore("This test requires an actual solr instance running")]
-        public void Highlighting()
-        {
+        public void Highlighting() {
             Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(new SolrQueryByField("features", "noise"), new QueryOptions {

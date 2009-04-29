@@ -7,6 +7,15 @@
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
   <Import Project="$(ExtensionTasksPath)\MSBuild.ExtensionPack.tasks"/>
 	<UsingTask AssemblyFile="$(MSBuildProjectDirectory)\lib\Gallio.MSBuildTasks.dll" TaskName="Gallio" />
+	<UsingTask AssemblyFile="$(MSBuildProjectDirectory)\tools\ILMerge\ILMerge.MSBuild.Tasks.dll" TaskName="ILMerge.MSBuild.Tasks.ILMerge"/>
+	<Target Name="Merge">
+		<ItemGroup>
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\Release\SolrNet.DSL.dll" />
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\Release\SolrNet.dll" />
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\Release\HttpWebAdapters.dll" />
+		</ItemGroup>
+		<ILMerge InputAssemblies="@(MergeAsm)" OutputFile="$(MSBuildProjectDirectory)\SolrNet.dll" Internalize="true"/>
+	</Target>
   <Target Name="Build">
 		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)" BuildInParallel="true" Targets="Rebuild"/>
 	</Target>

@@ -31,7 +31,7 @@ namespace SolrNet {
 		}
 
 		public string quote(string value) {
-			string r = Regex.Replace(value, "(\\+|\\-|\\&\\&|\\|\\||\\!|\\{|\\}|\\[|\\]|\\^|\\(|\\)|\\\"|\\~|\\:|\\\\)", "\\$1");
+            string r = Regex.Replace(value, "(\\+|\\-|\\&\\&|\\|\\||\\!|\\{|\\}|\\[|\\]|\\^|\\(|\\)|\\\"|\\~|\\:|\\;|\\\\)", "\\$1");
 			if (r.IndexOf(' ') != -1)
 				r = string.Format("\"{0}\"", r);
 			return r;

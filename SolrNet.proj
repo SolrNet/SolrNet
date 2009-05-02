@@ -13,6 +13,10 @@
 	<Target Name="Clean">
 		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Clean"/>
 		<MSBuild Projects="SampleSolrApp.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Clean"/>
+		<RemoveDir Directories="$(MergedOutputPath)"/>
+		<RemoveDir Directories="$(MSBuildProjectDirectory)\build"/>
+		<RemoveDir Directories="$(MSBuildProjectDirectory)\sample"/>
+		<RemoveDir Directories="$(MSBuildProjectDirectory)\help"/>
 	</Target>
 	<Target Name="Merge">
 		<ItemGroup>
@@ -93,7 +97,7 @@
       AssemblyVersion="$(Version)"
       AssemblyFileVersion="$(Version)"/>
   </Target>
-	<Target Name="ReleasePackage" DependsOnTargets="SetRelease;Version;Build;Merge;Doc">
+	<Target Name="ReleasePackage" DependsOnTargets="SetRelease;Clean;Version;Build;Merge;Doc">
     <PropertyGroup>
       <BuildOutputPath>build</BuildOutputPath>
     </PropertyGroup>
@@ -119,7 +123,7 @@
     <MSBuild.Community.Tasks.Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-net-2.0.zip" ZipLevel="9"/>
     <Delete Files="@(AllOutputExceptZip)" />
   </Target>
-  <Target Name="SamplePackage" DependsOnTargets="SetRelease;BuildSample">
+  <Target Name="SamplePackage" DependsOnTargets="SetRelease;Clean;BuildSample">
     <PropertyGroup>
       <BuildOutputPath>sample</BuildOutputPath>
       <Xsl>

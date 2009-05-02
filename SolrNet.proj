@@ -4,18 +4,23 @@
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.Community.Tasks</MSBuildCommunityTasksPath>
     <ExtensionTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.ExtensionPack\</ExtensionTasksPath>
     <MergedOutputPath>$(MSBuildProjectDirectory)\merged</MergedOutputPath>
+		<BuildConfig>Debug</BuildConfig>
   </PropertyGroup>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
   <Import Project="$(ExtensionTasksPath)\MSBuild.ExtensionPack.tasks"/>
 	<UsingTask AssemblyFile="$(MSBuildProjectDirectory)\lib\Gallio.MSBuildTasks.dll" TaskName="Gallio" />
 	<UsingTask AssemblyFile="$(MSBuildProjectDirectory)\tools\ILMerge\ILMerge.MSBuild.Tasks.dll" TaskName="ILMerge.MSBuild.Tasks.ILMerge"/>
+	<Target Name="Clean">
+		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Clean"/>
+		<MSBuild Projects="SampleSolrApp.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Clean"/>
+	</Target>
 	<Target Name="Merge">
 		<ItemGroup>
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\Release\SolrNet.dll" />
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\Release\SolrNet.DSL.dll" />
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\Release\HttpWebAdapters.dll" />
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration\bin\Release\Castle.Facilities.SolrNetIntegration.dll" />
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet\bin\Release\Ninject.Integration.SolrNet.dll"/>
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\$(BuildConfig)\SolrNet.dll" />
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\$(BuildConfig)\SolrNet.DSL.dll" />
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\$(BuildConfig)\HttpWebAdapters.dll" />
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration\bin\$(BuildConfig)\Castle.Facilities.SolrNetIntegration.dll" />
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet\bin\$(BuildConfig)\Ninject.Integration.SolrNet.dll"/>
 		</ItemGroup>
     <RemoveDir Directories="$(MergedOutputPath)"/>
     <MakeDir Directories="$(MergedOutputPath)" ContinueOnError="true"/>
@@ -28,14 +33,15 @@
 		<Copy SourceFiles="@(CopyToMerged)" DestinationFolder="$(MergedOutputPath)"/>
 	</Target>
   <Target Name="Build">
-		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)" BuildInParallel="true" Targets="Rebuild"/>
+		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Rebuild"/>
 	</Target>
 	<Target Name="BuildSample" DependsOnTargets="Build;Merge">
-		<MSBuild Projects="SampleSolrApp.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)" BuildInParallel="true" Targets="Rebuild"/>
+		<MSBuild Projects="SampleSolrApp.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Rebuild"/>
 	</Target>
 	<Target Name="SetRelease">
 		<PropertyGroup>
-			<BuildConfig>Configuration=Release</BuildConfig>
+			<BuildConfig>Release</BuildConfig>
+			<BuildConfigProp>Configuration=$(BuildConfig)</BuildConfigProp>
 		</PropertyGroup>
 	</Target>
   <Target Name="Test" DependsOnTargets="Build;BuildSample">

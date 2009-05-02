@@ -3,6 +3,7 @@
     <Version>0.2.1</Version>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.Community.Tasks</MSBuildCommunityTasksPath>
     <ExtensionTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.ExtensionPack\</ExtensionTasksPath>
+    <MergedOutputPath>$(MSBuildProjectDirectory)\merged</MergedOutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
   <Import Project="$(ExtensionTasksPath)\MSBuild.ExtensionPack.tasks"/>
@@ -10,21 +11,34 @@
 	<UsingTask AssemblyFile="$(MSBuildProjectDirectory)\tools\ILMerge\ILMerge.MSBuild.Tasks.dll" TaskName="ILMerge.MSBuild.Tasks.ILMerge"/>
 	<Target Name="Merge">
 		<ItemGroup>
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\Release\SolrNet.DSL.dll" />
     	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\Release\SolrNet.dll" />
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\Release\SolrNet.DSL.dll" />
     	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\Release\HttpWebAdapters.dll" />
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration\bin\Release\Castle.Facilities.SolrNetIntegration.dll" />
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet\bin\Release\Ninject.Integration.SolrNet.dll"/>
 		</ItemGroup>
-		<ILMerge InputAssemblies="@(MergeAsm)" OutputFile="$(MSBuildProjectDirectory)\SolrNet.dll" Internalize="true"/>
+    <RemoveDir Directories="$(MergedOutputPath)"/>
+    <MakeDir Directories="$(MergedOutputPath)" ContinueOnError="true"/>
+		<ILMerge InputAssemblies="@(MergeAsm)" OutputFile="$(MergedOutputPath)\SolrNet.dll" Internalize="true" XmlDocs="true" ExcludeFile="$(MSBuildProjectDirectory)\ilmerge.exclude"/>
+		<ItemGroup>
+			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Castle.*.dll"/>
+			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Microsoft.Practices.ServiceLocation.dll"/>
+			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Ninject.Core.dll"/>
+		</ItemGroup>
+		<Copy SourceFiles="@(CopyToMerged)" DestinationFolder="$(MergedOutputPath)"/>
 	</Target>
   <Target Name="Build">
 		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)" BuildInParallel="true" Targets="Rebuild"/>
+	</Target>
+	<Target Name="BuildSample" DependsOnTargets="Build;Merge">
+		<MSBuild Projects="SampleSolrApp.sln" StopOnFirstFailure="true" Properties="$(BuildConfig)" BuildInParallel="true" Targets="Rebuild"/>
 	</Target>
 	<Target Name="SetRelease">
 		<PropertyGroup>
 			<BuildConfig>Configuration=Release</BuildConfig>
 		</PropertyGroup>
 	</Target>
-  <Target Name="Test" DependsOnTargets="Build">
+  <Target Name="Test" DependsOnTargets="Build;BuildSample">
   	<ItemGroup>
   		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"/>
   		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>
@@ -73,21 +87,21 @@
       AssemblyVersion="$(Version)"
       AssemblyFileVersion="$(Version)"/>
   </Target>
-	<Target Name="ReleasePackage" DependsOnTargets="SetRelease;Version;Build;Doc">
+	<Target Name="ReleasePackage" DependsOnTargets="SetRelease;Version;Build;Merge;Doc">
     <PropertyGroup>
       <BuildOutputPath>build</BuildOutputPath>
     </PropertyGroup>
     <RemoveDir Directories="$(BuildOutputPath)"/>
     <MakeDir Directories="$(BuildOutputPath)" ContinueOnError="true"/>
     <ItemGroup>
-      <SourceFiles Include="SolrNet.DSL\bin\Release\*.dll"/>
-      <SourceFiles Include="SolrNet.DSL\bin\Release\*.xml"/>
+      <SourceFiles Include="$(MergedOutputPath)\SolrNet.dll"/>
+      <SourceFiles Include="$(MergedOutputPath)\SolrNet.xml"/>
       <SourceFiles Include="license.txt"/>
-      <SourceFiles Include="lib\Microsoft.Practices.ServiceLocation.license.txt"/>
-      <CastleFacility Include="Castle.Facilities.SolrNetIntegration\bin\Release\Castle.*.dll"/>
+      <SourceFiles Include="lib\Microsoft.Practices.ServiceLocation.*"/>
+      <!--CastleFacility Include="Castle.Facilities.SolrNetIntegration\bin\Release\Castle.*.dll"/>
       <CastleFacility Include="lib\Castle.license.txt"/>
       <NinjectModule Include="Ninject.Integration.SolrNet\bin\Release\Ninject.*.dll"/>
-      <NinjectModule Include="lib\Ninject.license.txt"/>
+      <NinjectModule Include="lib\Ninject.license.txt"/-->
     </ItemGroup>
     <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(BuildOutputPath)"/>
     <Copy SourceFiles="@(CastleFacility)" DestinationFolder="$(BuildOutputPath)\Castle.Facilities.SolrNetIntegration"/>
@@ -99,7 +113,7 @@
     <MSBuild.Community.Tasks.Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-net-2.0.zip" ZipLevel="9"/>
     <Delete Files="@(AllOutputExceptZip)" />
   </Target>
-  <Target Name="SamplePackage" DependsOnTargets="SetRelease;Build">
+  <Target Name="SamplePackage" DependsOnTargets="SetRelease;BuildSample">
     <PropertyGroup>
       <BuildOutputPath>sample</BuildOutputPath>
       <Xsl>
@@ -118,10 +132,6 @@
           <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup']/*[local-name()='ProjectReference']"/>
           <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup'][1]">
             <ItemGroup>
-              <Reference Include="HttpWebAdapters">
-                <SpecificVersion>False</SpecificVersion>
-                <HintPath>lib\HttpWebAdapters.dll</HintPath>
-              </Reference>
               <Reference Include="log4net">
                 <SpecificVersion>False</SpecificVersion>
                 <HintPath>lib\log4net.dll</HintPath>
@@ -133,10 +143,6 @@
               <Reference Include="SolrNet">
                 <SpecificVersion>False</SpecificVersion>
                 <HintPath>lib\SolrNet.dll</HintPath>
-              </Reference>
-              <Reference Include="SolrNet.DSL">
-                <SpecificVersion>False</SpecificVersion>
-                <HintPath>lib\SolrNet.DSL.dll</HintPath>
               </Reference>
               <xsl:apply-templates select="node() | @*" />
             </ItemGroup>

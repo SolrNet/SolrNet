@@ -1,5 +1,6 @@
 @echo off
 cd solr-1.3.0
+md logs
 start java -jar start.jar
 cd ..
 start tools\cassini\cassini.exe "%cd%\SampleSolrApp" 8082

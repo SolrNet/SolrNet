@@ -17,10 +17,8 @@
     <OutputPath>.\Help\</OutputPath>
     <HtmlHelpName>Documentation</HtmlHelpName>
     <DocumentationSources>
-      <DocumentationSource sourceFile="SolrNet.DSL\bin\Release\SolrNet.dll" />
-      <DocumentationSource sourceFile="SolrNet.DSL\bin\Release\SolrNet.DSL.dll" />
-      <DocumentationSource sourceFile="SolrNet.DSL\bin\Release\SolrNet.DSL.XML" />
-      <DocumentationSource sourceFile="SolrNet.DSL\bin\Release\SolrNet.xml" />
+      <DocumentationSource sourceFile="merged\SolrNet.dll" />
+      <DocumentationSource sourceFile="merged\SolrNet.xml" />
     </DocumentationSources>
     <SandcastlePath>tools\Sandcastle\</SandcastlePath>
     <HelpTitle>SolrNet 0.2.1</HelpTitle>

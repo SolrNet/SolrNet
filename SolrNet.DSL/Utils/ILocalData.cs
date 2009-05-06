@@ -33,7 +33,7 @@ using System.Text;
 
 namespace Rhino.Commons.LocalDataImpl
 {
-    public interface ILocalData
+    internal interface ILocalData
     {
         object this[object key] { get; set; }
 

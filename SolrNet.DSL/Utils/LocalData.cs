@@ -33,7 +33,7 @@ using Rhino.Commons.LocalDataImpl;
 
 namespace Rhino.Commons
 {
-    public class Local
+    internal class Local
     {
         static ILocalData current = new LocalData();
         static object LocalDataHashtableKey = new object();

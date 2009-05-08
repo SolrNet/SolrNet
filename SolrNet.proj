@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="3.5">
   <PropertyGroup>
-    <Version>0.2.1</Version>
+    <Version>0.2.2</Version>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.Community.Tasks</MSBuildCommunityTasksPath>
     <ExtensionTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.ExtensionPack\</ExtensionTasksPath>
     <MergedOutputPath>$(MSBuildProjectDirectory)\merged</MergedOutputPath>
@@ -139,6 +139,10 @@
           </xsl:template>
           <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup']/*[local-name()='Reference'][starts-with(@Include, 'log4net')]"/>
           <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup']/*[local-name()='Reference'][starts-with(@Include, 'Microsoft.Practices.ServiceLocation')]"/>
+          <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup']/*[local-name()='Reference'][starts-with(@Include, 'SolrNet')]"/>
+          <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup']/*[local-name()='Reference'][starts-with(@Include, 'System.Web.Abstractions')]"/>
+          <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup']/*[local-name()='Reference'][starts-with(@Include, 'System.Web.Mvc')]"/>
+          <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup']/*[local-name()='Reference'][starts-with(@Include, 'System.Web.Routing')]"/>
           <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup']/*[local-name()='ProjectReference']"/>
           <xsl:template match="/*[local-name()='Project']/*[local-name()='ItemGroup'][1]">
             <ItemGroup>
@@ -154,6 +158,18 @@
                 <SpecificVersion>False</SpecificVersion>
                 <HintPath>lib\SolrNet.dll</HintPath>
               </Reference>
+					    <Reference Include="System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+					      <SpecificVersion>False</SpecificVersion>
+					      <HintPath>lib\System.Web.Abstractions.dll</HintPath>
+					    </Reference>
+					    <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+					      <SpecificVersion>False</SpecificVersion>
+					      <HintPath>lib\System.Web.Mvc.dll</HintPath>
+					    </Reference>
+					    <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+					      <SpecificVersion>False</SpecificVersion>
+					      <HintPath>lib\System.Web.Routing.dll</HintPath>
+					    </Reference>
               <xsl:apply-templates select="node() | @*" />
             </ItemGroup>
           </xsl:template>
@@ -171,7 +187,7 @@
     <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\SampleSolrApp" LocalPath="$(BuildOutputPath)\SampleSolrApp"/>
     <MakeDir Directories="$(BuildOutputPath)\SampleSolrApp\lib" ContinueOnError="true"/>
     <ItemGroup>
-      <SampleSolrAppBin Include="$(MSBuildProjectDirectory)\SampleSolrApp\bin\*.dll" Exclude="**\SampleSolrApp.dll"/>
+      <SampleSolrAppBin Include="$(MSBuildProjectDirectory)\SampleSolrApp\bin\*.dll"/>
     </ItemGroup>
     <Copy SourceFiles="@(SampleSolrAppBin)" DestinationFolder="$(BuildOutputPath)\SampleSolrApp\lib" />
     <XmlTask TaskAction="TransForm"
@@ -181,6 +197,13 @@
              Indent="true"/>
     <MSBuild Projects="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.sln" StopOnFirstFailure="true" ToolsVersion="3.5" BuildInParallel="true"/>
     <RemoveDir Directories="$(BuildOutputPath)\SampleSolrApp\obj"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\SampleSolrApp.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Ninject.Core.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Castle.MicroKernel.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Castle.Core.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Ninject.Core.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Castle.MicroKernel.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Castle.Core.dll"/>
     <CreateItem Include="$(BuildOutputPath)\**\*.*">
       <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
     </CreateItem>

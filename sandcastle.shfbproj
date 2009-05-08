@@ -21,12 +21,14 @@
       <DocumentationSource sourceFile="merged\SolrNet.xml" />
     </DocumentationSources>
     <SandcastlePath>tools\Sandcastle\</SandcastlePath>
-    <HelpTitle>SolrNet 0.2.1</HelpTitle>
-    <FooterText>SolrNet 0.2.1</FooterText>
+    <HelpTitle>SolrNet 0.2.2</HelpTitle>
+    <FooterText>SolrNet 0.2.2</FooterText>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="Rhino.Commons" isExposed="False" xmlns="" />
       <Filter entryType="Namespace" fullName="Rhino.Commons.LocalDataImpl" isExposed="False" xmlns="" />
     </ApiFilter>
+    <MissingTags>Parameter, Returns, AutoDocumentCtors, TypeParameter</MissingTags>
+    <ShowFeedbackControl>False</ShowFeedbackControl>
   </PropertyGroup>
   <!-- There are no properties for these two groups but they need to appear in
        order for Visual Studio to perform the build. -->

@@ -19,6 +19,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
 using MbUnit.Framework;
 using SolrNet.Attributes;
 using SolrNet.Impl;
@@ -317,15 +319,53 @@ namespace SolrNet.Tests {
 			Assert.IsNull(results.MaxScore);
 		}
 
+        private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
+            return new KeyValuePair<K, V>(key, value);
+        }
+
+        public void ProfileTest(ProfilingContainer container) {
+            var parser = container.Resolve<ISolrQueryResultParser<TestDocumentWithArrays>>();
+
+            for (var i = 0; i < 1000; i++) {
+                parser.Parse(responseXMLWithArrays);
+            }
+
+            var profile = container.GetProfile();
+            var profilems = profile
+                .Select(k => KV(k.Key, KV(k.Value.Count, k.Value.Sum(ts => ts.TotalMilliseconds))))
+                .OrderByDescending(k => k.Value.Value)
+                ;
+            var totalTime = profilems.Sum(k => k.Value.Value);
+            Console.WriteLine("Total time: {0} ms", totalTime);
+            foreach (var p in profilems)
+                Console.WriteLine(string.Format("{0} {1}: {2} executions, total time {3} ms ({4:P})",
+                    p.Key.DeclaringType, p.Key, p.Value.Key, p.Value.Value, p.Value.Value / totalTime));            
+        }
+
+        [Test]
+        [Ignore("Performance test, potentially slow")]
+        public void Performance_MemoizeMapping() {
+            var container = new ProfilingContainer();
+            container.Register(Component.For<IReadOnlyMappingManager>().ImplementedBy<MemoizingMappingManager>()
+                .ServiceOverrides(ServiceOverride.ForKey("mapper").Eq("att")));
+            container.AddComponent<IReadOnlyMappingManager, AttributesMappingManager>("att");
+            container.AddComponent<ISolrQueryResultParser<TestDocumentWithArrays>, SolrQueryResultParser<TestDocumentWithArrays>>();
+            container.AddComponent<ISolrFieldParser, DefaultFieldParser>();
+            container.AddComponent<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>();
+            ProfileTest(container);
+            
+        }
+
 		[Test]
 		[Ignore("Performance test, potentially slow")]
 		public void Performance() {
-			//BasicConfigurator.Configure();
-            var mapper = new AttributesMappingManager();
-            var parser = new SolrQueryResultParser<TestDocumentWithArrays>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()));
-			for (var i = 0; i < 10000; i++) {
-				parser.Parse(responseXMLWithArrays);
-			}
+		    var container = new ProfilingContainer();
+		    container.AddComponent<IReadOnlyMappingManager, AttributesMappingManager>();
+            container.AddComponent<ISolrQueryResultParser<TestDocumentWithArrays>, SolrQueryResultParser<TestDocumentWithArrays>>();
+            container.AddComponent<ISolrFieldParser, DefaultFieldParser>();
+            container.AddComponent<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>();
+            ProfileTest(container);
+
 		}
 
 		[Test]

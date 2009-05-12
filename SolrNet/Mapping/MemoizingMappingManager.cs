@@ -28,8 +28,8 @@ namespace SolrNet.Mapping {
         private readonly Converter<Type, KeyValuePair<PropertyInfo, string>> memoGetUniqueKey;
 
         public MemoizingMappingManager(IReadOnlyMappingManager mapper) {
-            memoGetFields = Memoizer.Memoize<Type, ICollection<KeyValuePair<PropertyInfo, string>>>(t => mapper.GetFields(t));
-            memoGetUniqueKey = Memoizer.Memoize<Type, KeyValuePair<PropertyInfo, string>>(t => mapper.GetUniqueKey(t));
+            memoGetFields = Memoizer.Memoize<Type, ICollection<KeyValuePair<PropertyInfo, string>>>(mapper.GetFields);
+            memoGetUniqueKey = Memoizer.Memoize<Type, KeyValuePair<PropertyInfo, string>>(mapper.GetUniqueKey);
         }
 
         /// <summary>

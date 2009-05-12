@@ -59,7 +59,7 @@ namespace SolrNet.Tests {
 
             public void Intercept(IInvocation invocation) {
                 var prevMethod = GetPreviousMethod();
-                if (prevMethod != null && methods.ContainsKey(prevMethod)) {
+                if (prevMethod != null) {
                     var l = methods[prevMethod];
                     l[l.Count - 1].Stop();
                 }
@@ -71,7 +71,7 @@ namespace SolrNet.Tests {
                 } finally {
                     sw.Stop();
                     methodStack.Pop();
-                    if (prevMethod != null && methods.ContainsKey(prevMethod)) {
+                    if (prevMethod != null) {
                         var l = methods[prevMethod];
                         l[l.Count - 1].Start();
                     }

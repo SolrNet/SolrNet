@@ -11,12 +11,16 @@ using Castle.MicroKernel.Proxy;
 namespace SolrNet.Tests {
     public class ProfilerFacility : AbstractFacility {
         protected override void Init() {
-            Kernel.AddComponent<ProfilingInterceptor>();
+            Kernel.AddComponent<ProfilingInterceptor>(LifestyleType.Thread);
             Kernel.ProxyFactory.AddInterceptorSelector(new ModelInterceptorSelector());
         }
 
         public Dictionary<MethodInfo, List<TimeSpan>> GetProfile() {
             return Kernel.Resolve<ProfilingInterceptor>().GetProfile();
+        }
+
+        public void Clear() {
+            Kernel.Resolve<ProfilingInterceptor>().Clear();
         }
 
         private class ModelInterceptorSelector : IModelInterceptorsSelector {
@@ -41,6 +45,11 @@ namespace SolrNet.Tests {
             public Dictionary<MethodInfo, List<TimeSpan>> GetProfile() {
                 return methods.Select(k => KV(k.Key, k.Value.Select(s => s.Elapsed).ToList()))
                     .ToDictionary(k => k.Key, k => k.Value);
+            }
+
+            public void Clear() {
+                methods.Clear();
+                methodStack.Clear();
             }
 
             private Stopwatch NewStopwatch(MethodInfo m) {

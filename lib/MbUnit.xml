@@ -1952,6 +1952,9 @@
     <member name="T:MbUnit.Framework.ParallelizableAttribute">
       <summary>Specifies that a test can be run in parallel with other parallelizable tests.</summary>
     </member>
+    <member name="P:MbUnit.Framework.ParallelizableAttribute.Scope">
+      <summary>Gets the scope to which the parallelizable attribute applies.</summary>
+    </member>
     <member name="M:MbUnit.Framework.ParallelizableAttribute.DecorateTest(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
         <para> Applies decorations to a test. </para>
@@ -2305,6 +2308,18 @@
     </member>
     <member name="F:MbUnit.Framework.Importance.NoOneReallyCaresAbout">
       <summary>Not important.</summary>
+    </member>
+    <member name="T:MbUnit.Framework.TestScope">
+      <summary>Specifies the scope to which certain attributes apply.</summary>
+    </member>
+    <member name="F:MbUnit.Framework.TestScope.Self">
+      <summary>Applies to this test only.</summary>
+    </member>
+    <member name="F:MbUnit.Framework.TestScope.Descendants">
+      <summary>Applies to the descendants of this test only.</summary>
+    </member>
+    <member name="F:MbUnit.Framework.TestScope.All">
+      <summary>Applies to this test and its descendants.</summary>
     </member>
     <member name="T:MbUnit.Framework.ContractVerifiers.AbstractContract">
       <summary>Abstract base class for contracts. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>

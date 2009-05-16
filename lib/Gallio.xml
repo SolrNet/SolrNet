@@ -3736,6 +3736,12 @@
       <param name="codeElement">The code element</param>
       <returns>True if the code element represents a test</returns>
     </member>
+    <member name="M:Gallio.Framework.Pattern.BasePattern.IsTestPart(Gallio.Framework.Pattern.IPatternEvaluator,Gallio.Reflection.ICodeElementInfo)">
+      <summary>Returns true if the code element represents a part of a test such as a test method or a test contribution like a setup or teardown method.</summary>
+      <param name="evaluator">The evaluator</param>
+      <param name="codeElement">The code element</param>
+      <returns>True if the code element represents a test</returns>
+    </member>
     <member name="M:Gallio.Framework.Pattern.BasePattern.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)">
       <summary>
         <para> Processes a code element and applies its contributions to the scope of this pattern. The scope will typically have been introduced by the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method of a primary pattern applied to this code element. </para>
@@ -3786,40 +3792,6 @@
       <summary>Gets the underlying test component.</summary>
       <returns>The underlying test component</returns>
     </member>
-    <member name="T:Gallio.Framework.Pattern.BootstrapTestAssemblyPattern">
-      <summary>The pattern used to bootstrap test enumeration for assemblies.</summary>
-    </member>
-    <member name="F:Gallio.Framework.Pattern.BootstrapTestAssemblyPattern.Instance">
-      <summary>Gets the singleton instance of the pattern. This field is read-only.</summary>
-    </member>
-    <member name="P:Gallio.Framework.Pattern.BootstrapTestAssemblyPattern.DefaultAssemblyPattern">
-      <summary>Gets the default pattern to apply to assemblies that do not have a primary pattern, or null if none.</summary>
-    </member>
-    <member name="P:Gallio.Framework.Pattern.BootstrapTestAssemblyPattern.IsPrimary">
-      <summary>
-        <para> Returns true if this is a primary pattern. </para>
-        <para> A primary pattern is a pattern that defines the ultimate purpose of a code element and the nature of the tests or test parameters that are produced from it. Consequently the primary pattern is the only one on which the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method will be called. </para>
-        <para> Each code element may have at most one primary pattern. It is an error for a code element to have more than one associated primary pattern. </para>
-        <para> If a code element does not have an associated primary pattern, its containing test may choose to apply default processing to it instead. For example, the containing test may give an opportunity to patterns associated with the code element to consume a test method parameter but will revert to default behavior if no primary patterns explicitly claim it. </para>
-        <para> Non-primary patterns still play a very important part in the construction of the test model. Non-primary patterns may implement the <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)" /> method to decorate tests and test parameters declared by the primary pattern. </para>
-      </summary>
-    </member>
-    <member name="M:Gallio.Framework.Pattern.BootstrapTestAssemblyPattern.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)">
-      <summary>
-        <para> Consumes a code element and applies its contributions to the scope provided by a containing pattern. </para>
-        <para> This method is used to declare new tests, test parameters and other components and add them to a containing test that was defined in some other scope. </para>
-        <para> For example, when enumerating test fixtures, the assembly-level pattern will call the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method of the primary patterns associated with each type in an assembly. Some of these patterns will create new test fixture objects and add them as children of the containing assembly-level test. They will then call the <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)" /> method of each non-primary pattern associated with the type within the scope of the test fixture. Then they will typically recurse into the fixture to apply contributions defined by patterns associated with methods, fields, properties, events, constructors and generic type parameters. </para>
-      </summary>
-      <param name="containingScope">The containing scope</param>
-      <param name="codeElement">The code element to process</param>
-      <param name="skipChildren">If true, skips generating child test components. Instead the children may be populated on demand using <see cref="M:Gallio.Framework.Pattern.IPatternScope.AddDeferredComponentPopulator(Gallio.Framework.Pattern.DeferredComponentPopulator)" />. The implementation may safely ignore the value of this flag so long as subsequent attempts to populate children on demand are idempotent (do nothing or have no adverse side-effects).</param>
-    </member>
-    <member name="M:Gallio.Framework.Pattern.BootstrapTestAssemblyPattern.IsTest(Gallio.Framework.Pattern.IPatternEvaluator,Gallio.Reflection.ICodeElementInfo)">
-      <summary>Returns true if the code element represents a test.</summary>
-      <param name="evaluator">The evaluator</param>
-      <param name="codeElement">The code element</param>
-      <returns>True if the code element represents a test</returns>
-    </member>
     <member name="T:Gallio.Framework.Pattern.ContributionMethodPatternAttribute">
       <summary>A contribution method pattern attribute applies decorations to a containing scope such as by introducing a new setup or teardown action to a test. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>
     </member>
@@ -3846,6 +3818,12 @@
       <summary>Applies decorations to the containing test.</summary>
       <param name="containingScope">The containing scope</param>
       <param name="method">The method to process</param>
+    </member>
+    <member name="M:Gallio.Framework.Pattern.ContributionMethodPatternAttribute.IsTestPart(Gallio.Framework.Pattern.IPatternEvaluator,Gallio.Reflection.ICodeElementInfo)">
+      <summary>Returns true if the code element represents a part of a test such as a test method or a test contribution like a setup or teardown method.</summary>
+      <param name="evaluator">The evaluator</param>
+      <param name="codeElement">The code element</param>
+      <returns>True if the code element represents a test</returns>
     </member>
     <member name="M:Gallio.Framework.Pattern.ContributionMethodPatternAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IMethodInfo)">
       <summary>Verifies that the attribute is being used correctly.</summary>
@@ -3962,6 +3940,12 @@
     </member>
     <member name="M:Gallio.Framework.Pattern.DefaultPatternEvaluator.IsTest(Gallio.Reflection.ICodeElementInfo,Gallio.Framework.Pattern.IPattern)">
       <summary>Returns true if the code element represents a test.</summary>
+      <param name="codeElement">The code element</param>
+      <param name="defaultPrimaryPattern">The default primary pattern to use, if none can be resolved for the code element. May be null if none.</param>
+      <returns>True if the code element represents a test</returns>
+    </member>
+    <member name="M:Gallio.Framework.Pattern.DefaultPatternEvaluator.IsTestPart(Gallio.Reflection.ICodeElementInfo,Gallio.Framework.Pattern.IPattern)">
+      <summary>Returns true if the code element represents a part of a test.</summary>
       <param name="codeElement">The code element</param>
       <param name="defaultPrimaryPattern">The default primary pattern to use, if none can be resolved for the code element. May be null if none.</param>
       <returns>True if the code element represents a test</returns>
@@ -4976,6 +4960,12 @@
       <param name="dataContextScope">The data context scope</param>
       <param name="constructor">The constructor</param>
     </member>
+    <member name="M:Gallio.Framework.Pattern.TestConstructorPatternAttribute.IsTestPart(Gallio.Framework.Pattern.IPatternEvaluator,Gallio.Reflection.ICodeElementInfo)">
+      <summary>Returns true if the code element represents a part of a test such as a test method or a test contribution like a setup or teardown method.</summary>
+      <param name="evaluator">The evaluator</param>
+      <param name="codeElement">The code element</param>
+      <returns>True if the code element represents a test</returns>
+    </member>
     <member name="M:Gallio.Framework.Pattern.TestConstructorPatternAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.IConstructorInfo)">
       <summary>Verifies that the attribute is being used correctly.</summary>
       <param name="containingScope">The containing scope</param>
@@ -5184,6 +5174,12 @@
       <param name="testParameterScope">The test parameter scope</param>
       <param name="slot">The slot</param>
     </member>
+    <member name="M:Gallio.Framework.Pattern.TestParameterPatternAttribute.IsTestPart(Gallio.Framework.Pattern.IPatternEvaluator,Gallio.Reflection.ICodeElementInfo)">
+      <summary>Returns true if the code element represents a part of a test such as a test method or a test contribution like a setup or teardown method.</summary>
+      <param name="evaluator">The evaluator</param>
+      <param name="codeElement">The code element</param>
+      <returns>True if the code element represents a test</returns>
+    </member>
     <member name="M:Gallio.Framework.Pattern.TestParameterPatternAttribute.Validate(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ISlotInfo)">
       <summary>Verifies that the attribute is being used correctly.</summary>
       <param name="containingScope">The containing scope</param>
@@ -5337,7 +5333,7 @@
         <para> A <see cref="T:Gallio.Framework.Pattern.IPattern" /> defines a composable rule for building up a test model using reflection. </para>
         <para> The general idea is that a pattern applies contributions to a <see cref="T:Gallio.Framework.Pattern.IPatternScope" /> that represents the state of the pattern interpretation process. A primary pattern adds contributions to its containing scope with the <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" /> method. All patterns (primary and non-primary) add further contributions to the pattern's own scope with the <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)" /> method. </para>
         <para> A pattern can also defer some of its processing by registering a decorator on the scope. Once all of the decorators have been gathered, they can be applied in sorted order as required. </para>
-        <para> Pattern processing is performed recursively. First a top-level <see cref="T:Gallio.Framework.Pattern.BootstrapTestAssemblyPattern" /> identifies the primary pattern for an assembly. This pattern then takes over and performs reflection over the types within the assembly and hands off control to any primary patterns it finds there. And so on. Each primary pattern also provides an opportunity for non-primary patterns associated with the same code element to run. </para>
+        <para> Pattern processing is performed recursively. First the primary pattern for the assembly is found. If none is registered then the default assembly pattern is used instead. The assembly pattern then performs reflection over the types within the assembly and hands off control (via <see cref="M:Gallio.Framework.Pattern.IPattern.Consume(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo,System.Boolean)" nolink="true" />) to any primary patterns it finds each type. Likewise the types scan their members and call into their primary patterns. And so on. Each primary pattern is responsible for invoking (via <see cref="M:Gallio.Framework.Pattern.IPattern.Process(Gallio.Framework.Pattern.IPatternScope,Gallio.Reflection.ICodeElementInfo)" nolink="true" />) any additional non-primary patterns associated with their code element after they have established the appropriate evaluation scope. </para>
         <para> Typically a pattern is associated with a code element by means of a <see cref="T:Gallio.Framework.Pattern.PatternAttribute" /> but other associations are possible. Some patterns might define default rules for recursively processing code elements that do not have primary patterns of their own. Others might use means other than standard reflection to discover the patterns to be applied. The process is intended to be open and extensible. </para>
       </summary>
     </member>
@@ -5363,6 +5359,13 @@
     </member>
     <member name="M:Gallio.Framework.Pattern.IPattern.IsTest(Gallio.Framework.Pattern.IPatternEvaluator,Gallio.Reflection.ICodeElementInfo)">
       <summary>Returns true if the code element represents a test.</summary>
+      <param name="evaluator">The evaluator</param>
+      <param name="codeElement">The code element</param>
+      <returns>True if the code element represents a test</returns>
+      <exception cref="T:Gallio.Framework.Pattern.PatternUsageErrorException">May be thrown to halt processing of the pattern and report an error message to the user as an annotation that describes how the pattern was misapplied.</exception>
+    </member>
+    <member name="M:Gallio.Framework.Pattern.IPattern.IsTestPart(Gallio.Framework.Pattern.IPatternEvaluator,Gallio.Reflection.ICodeElementInfo)">
+      <summary>Returns true if the code element represents a part of a test such as a test method or a test contribution like a setup or teardown method.</summary>
       <param name="evaluator">The evaluator</param>
       <param name="codeElement">The code element</param>
       <returns>True if the code element represents a test</returns>
@@ -5432,6 +5435,12 @@
     </member>
     <member name="M:Gallio.Framework.Pattern.IPatternEvaluator.IsTest(Gallio.Reflection.ICodeElementInfo,Gallio.Framework.Pattern.IPattern)">
       <summary>Returns true if the code element represents a test.</summary>
+      <param name="codeElement">The code element</param>
+      <param name="defaultPrimaryPattern">The default primary pattern to use, if none can be resolved for the code element. May be null if none.</param>
+      <returns>True if the code element represents a test</returns>
+    </member>
+    <member name="M:Gallio.Framework.Pattern.IPatternEvaluator.IsTestPart(Gallio.Reflection.ICodeElementInfo,Gallio.Framework.Pattern.IPattern)">
+      <summary>Returns true if the code element represents a part of a test.</summary>
       <param name="codeElement">The code element</param>
       <param name="defaultPrimaryPattern">The default primary pattern to use, if none can be resolved for the code element. May be null if none.</param>
       <returns>True if the code element represents a test</returns>
@@ -7532,6 +7541,10 @@
       <summary>Gets or sets the filter set.</summary>
       <value>Defaults to an empty filter set.</value>
       <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="value" /> is null</exception>
+    </member>
+    <member name="P:Gallio.Model.Execution.TestExecutionOptions.SingleThreaded">
+      <summary>Gets or sets whether to run tests within a single thread. This ensures that the tests will run on the same thread as the initial call to the test harness (unless the test framework itself spawns any new threads).</summary>
+      <value>Defaults to false.</value>
     </member>
     <member name="P:Gallio.Model.Execution.TestExecutionOptions.SkipDynamicTests">
       <summary>

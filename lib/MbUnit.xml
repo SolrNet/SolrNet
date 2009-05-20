@@ -2239,6 +2239,72 @@
       <param name="scope">The scope</param>
       <param name="codeElement">The code element</param>
     </member>
+    <member name="T:MbUnit.Framework.Retry">
+      <summary>Evaluates repeatedly the specified condition until it becomes fulfilled, or throws a <see cref="T:Gallio.Framework.Assertions.AssertionFailureException" /> if a timeout occured, or if the evaluation was done unsuccessfully too many times. This class cannot be inherited.</summary>
+    </member>
+    <member name="M:MbUnit.Framework.Retry.DoBetween(Gallio.Common.Action)">
+      <summary>Specifies a custom action to be executed between each consecutive attempt, but not before the first one.</summary>
+      <param name="action">A custom action to be executed.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the option was called more than once.</exception>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="action" /> is null.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Retry.Repeat(System.Int32)">
+      <summary>Specifies the maximum number of evaluation attempts, before the <see cref="M:MbUnit.Framework.Retry.Until(Gallio.Common.Func{System.Boolean})" />, or <see cref="M:MbUnit.Framework.Retry.Until(System.Threading.WaitHandle)" /> operation fails.</summary>
+      <param name="repeat">The maximum number of evaluation cycles, or zero or a negative value to specify an unlimited number of attempts.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the options was called more than once.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Retry.Until(Gallio.Common.Func{System.Boolean})">
+      <summary>Specifies the condition to evaluate repeatedly, and starts the entire operation. The condition is considered fulfilled when it returns true.</summary>
+      <param name="condition">The condition to evaluate</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionFailureException">Thrown when the condition is still false, and a timeout occured, or the maximum number of evaluation attempts was reached.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Retry.Until(Gallio.Common.Func{System.Boolean},System.String,System.Object[])">
+      <summary>Specifies the condition to evaluate repeatedly, and starts the entire operation. The condition is considered fulfilled when it returns true.</summary>
+      <param name="condition">The condition to evaluate</param>
+      <param name="messageFormat">A user-supplied assertion failure message string, or null if none</param>
+      <param name="messageArgs">The format arguments, or null or empty if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionFailureException">Thrown when the condition is still false, and a timeout occured, or the maximum number of evaluation attempts was reached.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Retry.Until(System.Threading.WaitHandle)">
+      <summary>Specifies a <see cref="T:System.Threading.WaitHandle" /> instance to wait for being signaled, and starts the entire operation.</summary>
+      <param name="waitHandle">The wait handle to evaluate</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionFailureException">Thrown when the wait handle is still unsignaled, and a timeout occured, or the maximum number of evaluation attempts was reached.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Retry.Until(System.Threading.WaitHandle,System.String,System.Object[])">
+      <summary>Specifies a <see cref="T:System.Threading.WaitHandle" /> instance to wait for being signaled, and starts the entire operation.</summary>
+      <param name="waitHandle">The wait handle to evaluate</param>
+      <param name="messageFormat">A user-supplied assertion failure message string, or null if none</param>
+      <param name="messageArgs">The format arguments, or null or empty if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionFailureException">Thrown when the wait handle is still unsignaled, and a timeout occured, or the maximum number of evaluation attempts was reached.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Retry.WithPolling(System.Int32)">
+      <summary>Specifies a polling time expressed in milliseconds between each consecutive evaluation of the condition.</summary>
+      <param name="milliseconds">The polling time expressed in milliseconds.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the option was called more than once.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">Thrown if <paramref name="milliseconds" /> is negative.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Retry.WithPolling(System.TimeSpan)">
+      <summary>Specifies a polling time between each consecutive evaluation of the condition.</summary>
+      <param name="polling">The polling time.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the option was called more than once.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">Thrown if <paramref name="polling" /> represents a negative duration.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Retry.WithTimeout(System.Int32)">
+      <summary>Specifies a timeout value expressed in milliseconds. The retry operation fails if the overall duration exceeds the specified timeout value.</summary>
+      <param name="milliseconds">The timeout value expressed in milliseconds, or a negative value to specify no timeout value. A value of zero, will let the condition to be evaluated only once.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the option was called more than once.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.Retry.WithTimeout(System.TimeSpan)">
+      <summary>Specifies a timeout value. The retry operation fails if the overall duration exceeds the specified timeout value.</summary>
+      <param name="timeout">The timeout value, or a negative value to specify no timeout value. A value of zero, will let the condition to be evaluated only once.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the option was called more than once.</exception>
+    </member>
     <member name="T:MbUnit.Framework.RollbackAttribute">
       <summary>Decorates a test method whose database operation must be executed within a transaction and rolled back when it has finished executing.</summary>
     </member>
@@ -2890,6 +2956,72 @@
       <param name="scope">The scope</param>
       <param name="dataSource">The data source</param>
       <param name="codeElement">The code element</param>
+    </member>
+    <member name="T:MbUnit.Framework.IRetryOptions">
+      <summary>Specifies options for the <see cref="T:MbUnit.Framework.Retry" /> operation.</summary>
+    </member>
+    <member name="M:MbUnit.Framework.IRetryOptions.DoBetween(Gallio.Common.Action)">
+      <summary>Specifies a custom action to be executed between each consecutive attempt, but not before the first one.</summary>
+      <param name="action">A custom action to be executed.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the option was called more than once.</exception>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="action" /> is null.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.IRetryOptions.Repeat(System.Int32)">
+      <summary>Specifies the maximum number of evaluation attempts, before the <see cref="M:MbUnit.Framework.Retry.Until(Gallio.Common.Func{System.Boolean})" />, or <see cref="M:MbUnit.Framework.Retry.Until(System.Threading.WaitHandle)" /> operation fails.</summary>
+      <param name="repeat">The maximum number of evaluation cycles, or zero or a negative value to specify an unlimited number of attempts.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the <see cref="M:MbUnit.Framework.IRetryOptions.Repeat(System.Int32)" /> option was called more than once.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.IRetryOptions.Until(Gallio.Common.Func{System.Boolean})">
+      <summary>Specifies the condition to evaluate repeatedly, and starts the entire operation. The condition is considered fulfilled when it returns true.</summary>
+      <param name="condition">The condition to evaluate</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionFailureException">Thrown when the condition is false, and a timeout occured, or the maximum number of evaluation attempts was reached.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.IRetryOptions.Until(Gallio.Common.Func{System.Boolean},System.String,System.Object[])">
+      <summary>Specifies the condition to evaluate repeatedly, and starts the entire operation. The condition is considered fulfilled when it returns true.</summary>
+      <param name="condition">The condition to evaluate</param>
+      <param name="messageFormat">A user-supplied assertion failure message string, or null if none</param>
+      <param name="messageArgs">The format arguments, or null or empty if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionFailureException">Thrown when the condition is false, and a timeout occured, or the maximum number of evaluation attempts was reached.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.IRetryOptions.Until(System.Threading.WaitHandle)">
+      <summary>Specifies a <see cref="T:System.Threading.WaitHandle" /> instance to wait for being signaled, and starts the entire operation.</summary>
+      <param name="waitHandle">The wait handle to evaluate</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionFailureException">Thrown when the wait handle is unsignaled, and a timeout occured, or the maximum number of evaluation attempts was reached.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.IRetryOptions.Until(System.Threading.WaitHandle,System.String,System.Object[])">
+      <summary>Specifies a <see cref="T:System.Threading.WaitHandle" /> instance to wait for being signaled, and starts the entire operation.</summary>
+      <param name="waitHandle">The wait handle to evaluate</param>
+      <param name="messageFormat">A user-supplied assertion failure message string, or null if none</param>
+      <param name="messageArgs">The format arguments, or null or empty if none</param>
+      <exception cref="T:Gallio.Framework.Assertions.AssertionFailureException">Thrown when the wait handle is unsignaled, and a timeout occured, or the maximum number of evaluation attempts was reached.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.IRetryOptions.WithPolling(System.Int32)">
+      <summary>Specifies a polling time expressed in milliseconds between each consecutive evaluation of the condition.</summary>
+      <param name="milliseconds">The polling time expressed in milliseconds.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the option was called more than once.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">Thrown if <paramref name="milliseconds" /> is negative.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.IRetryOptions.WithPolling(System.TimeSpan)">
+      <summary>Specifies a polling time between each consecutive evaluation of the condition.</summary>
+      <param name="polling">The polling time.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the option was called more than once.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">Thrown if <paramref name="polling" /> represents a negative duration.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.IRetryOptions.WithTimeout(System.Int32)">
+      <summary>Specifies a timeout value expressed in milliseconds. The retry operation fails if the overall duration exceeds the specified timeout value.</summary>
+      <param name="milliseconds">The timeout value expressed in milliseconds, or a negative value to specify no timeout value. A value of zero, will let the condition to be evaluated only once.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the option was called more than once.</exception>
+    </member>
+    <member name="M:MbUnit.Framework.IRetryOptions.WithTimeout(System.TimeSpan)">
+      <summary>Specifies a timeout value. The retry operation fails if the overall duration exceeds the specified timeout value.</summary>
+      <param name="timeout">The timeout value, or a negative value to specify no timeout value. A value of zero, will let the condition to be evaluated only once.</param>
+      <returns>An instance to specify other options for the retry operation.</returns>
+      <exception cref="T:System.InvalidOperationException">Thrown if the option was called more than once.</exception>
     </member>
     <member name="T:MbUnit.Framework.Importance">
       <summary>Specifies the test's relative importance which can be used for classifying tests to be executed.</summary>

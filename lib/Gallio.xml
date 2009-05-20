@@ -2861,6 +2861,47 @@
       <param name="sender">The sender</param>
       <param name="e">The event arguments</param>
     </member>
+    <member name="T:Gallio.Common.Policies.SpecialPathPolicy">
+      <summary>Describes a policy for obtaining paths of special resources such as temporary directories and user profile settings files.</summary>
+    </member>
+    <member name="P:Gallio.Common.Policies.SpecialPathPolicy.Partition">
+      <summary>Gets the name of the partition this policy describes.</summary>
+    </member>
+    <member name="M:Gallio.Common.Policies.SpecialPathPolicy.CreateTempDirectoryWithUniqueName">
+      <summary>Creates a temporary directory with a unique name.</summary>
+      <returns>The temporary directory</returns>
+    </member>
+    <member name="M:Gallio.Common.Policies.SpecialPathPolicy.CreateTempFileWithUniqueName">
+      <summary>Creates a zero-byte temporary file with a unique name.</summary>
+      <returns>The temporary file</returns>
+    </member>
+    <member name="M:Gallio.Common.Policies.SpecialPathPolicy.For``1">
+      <summary>Gets the special path policy for a partition whose name is derived from the type's full name.</summary>
+      <typeparam name="TPartition">The type used to define the name of the partition</typeparam>
+      <returns>The special path policy</returns>
+    </member>
+    <member name="M:Gallio.Common.Policies.SpecialPathPolicy.For(System.String)">
+      <summary>Gets the special path policy for a specified partition.</summary>
+      <param name="partition">The partition name</param>
+      <returns>The special path policy</returns>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="partition" /> is null</exception>
+    </member>
+    <member name="M:Gallio.Common.Policies.SpecialPathPolicy.GetCommonApplicationDataDirectory">
+      <summary>Gets the application data directory shared by all users.</summary>
+      <returns>The common application data directory</returns>
+    </member>
+    <member name="M:Gallio.Common.Policies.SpecialPathPolicy.GetLocalUserApplicationDataDirectory">
+      <summary>Gets the application data directory for the local non-roaming user.</summary>
+      <returns>The local non-roaming user application data directory</returns>
+    </member>
+    <member name="M:Gallio.Common.Policies.SpecialPathPolicy.GetRoamingUserApplicationDataDirectory">
+      <summary>Gets the application data directory for the roaming user.</summary>
+      <returns>The roaming user application data directory</returns>
+    </member>
+    <member name="M:Gallio.Common.Policies.SpecialPathPolicy.GetTempDirectory">
+      <summary>Gets the temporary directory.</summary>
+      <returns>The temporary directory</returns>
+    </member>
     <member name="T:Gallio.Common.Policies.UnhandledExceptionPolicy">
       <summary>
         <para> This class provides a mechanism for reporting unhandled exceptions when the infrastructure is otherwise unable to deal with them locally. </para>
@@ -13630,156 +13671,6 @@
       <returns>The test runner</returns>
       <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="factoryName" /> is null</exception>
     </member>
-    <member name="T:Gallio.Runner.Caching.DiskCacheException">
-      <summary>The type of exception thrown when an error occurs while manipulating the disk cache.</summary>
-    </member>
-    <member name="T:Gallio.Runner.Caching.SimpleDiskCache">
-      <summary>A simple disk cache that stores its contents in a particular directory using hashes of the key values to ensure uniqueness.</summary>
-    </member>
-    <member name="P:Gallio.Runner.Caching.SimpleDiskCache.CacheDirectoryPath">
-      <summary>Gets the path of the cache directory.</summary>
-    </member>
-    <member name="P:Gallio.Runner.Caching.SimpleDiskCache.Groups">
-      <summary>Gets the collection of disk cache groups.</summary>
-    </member>
-    <member name="M:Gallio.Runner.Caching.SimpleDiskCache.GetGroup(System.String)">
-      <summary>Gets the group with the given key.</summary>
-      <param name="key">The key, nor null</param>
-      <returns>The cache group</returns>
-    </member>
-    <member name="M:Gallio.Runner.Caching.SimpleDiskCache.Purge">
-      <summary>Deletes all items in the cache.</summary>
-    </member>
-    <member name="T:Gallio.Runner.Caching.SimpleDiskCache.Group">
-      <summary>Represents a disk cache group.</summary>
-    </member>
-    <member name="P:Gallio.Runner.Caching.SimpleDiskCache.Group.Cache">
-      <summary>Gets the disk cache that contains the group.</summary>
-    </member>
-    <member name="P:Gallio.Runner.Caching.SimpleDiskCache.Group.Exists">
-      <summary>Returns true if the group exists on disk.</summary>
-    </member>
-    <member name="P:Gallio.Runner.Caching.SimpleDiskCache.Group.Key">
-      <summary>Gets the key of the group.</summary>
-    </member>
-    <member name="P:Gallio.Runner.Caching.SimpleDiskCache.Group.Location">
-      <summary>Gets the <see cref="T:System.IO.DirectoryInfo" /> that represents the physical storage location of the disk cache group in the filesystem.</summary>
-    </member>
-    <member name="M:Gallio.Runner.Caching.SimpleDiskCache.Group.Create">
-      <summary>Creates the group if it does not exist.</summary>
-    </member>
-    <member name="M:Gallio.Runner.Caching.SimpleDiskCache.Group.CreateSubdirectory(System.String)">
-      <summary>Creates a directory within the group.</summary>
-      <param name="relativeDirectoryPath">The relative path of the directory to create within the group</param>
-      <returns>Directory information for the directory that was created</returns>
-    </member>
-    <member name="M:Gallio.Runner.Caching.SimpleDiskCache.Group.Delete">
-      <summary>Deletes the group and all of its contents if any.</summary>
-    </member>
-    <member name="M:Gallio.Runner.Caching.SimpleDiskCache.Group.GetFileInfo(System.String)">
-      <summary>Gets information about a file within the group.</summary>
-      <param name="relativeFilePath">The relative path of the file within the group</param>
-      <returns>The file info</returns>
-    </member>
-    <member name="M:Gallio.Runner.Caching.SimpleDiskCache.Group.GetSubdirectoryInfo(System.String)">
-      <summary>Gets information about a directory within the group.</summary>
-      <param name="relativeDirectoryPath">The relative path of the directory within the group</param>
-      <returns>The directory info</returns>
-    </member>
-    <member name="M:Gallio.Runner.Caching.SimpleDiskCache.Group.OpenFile(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
-      <summary>
-        <para> Opens a file within the group. </para>
-        <para> If a new file is being created, automatically create the group and the containing directory for the file. </para>
-      </summary>
-      <param name="relativeFilePath">The relative path of the file to open within the group</param>
-      <param name="mode">The file open mode</param>
-      <param name="access">The file access mode</param>
-      <param name="share">The file sharing mode</param>
-      <returns>The file stream</returns>
-    </member>
-    <member name="T:Gallio.Runner.Caching.TemporaryDiskCache">
-      <summary>A disk cache that stores its contents in the user's temporary directory.</summary>
-    </member>
-    <member name="F:Gallio.Runner.Caching.TemporaryDiskCache.DefaultCacheDirectoryName">
-      <summary>The default cache directory name. This field is read-only.</summary>
-    </member>
-    <member name="T:Gallio.Runner.Caching.IDiskCache">
-      <summary>A disk cache manages temporary files and directories stored on disk and arranged into groups associated with arbitrary string keys. The files and directories within each group are assumed to have the same lifetime.</summary>
-    </member>
-    <member name="P:Gallio.Runner.Caching.IDiskCache.Groups">
-      <summary>Gets the collection of disk cache groups.</summary>
-    </member>
-    <member name="M:Gallio.Runner.Caching.IDiskCache.Purge">
-      <summary>Deletes all items in the cache.</summary>
-      <exception cref="T:Gallio.Runner.Caching.DiskCacheException">Thrown if an error occurs.</exception>
-    </member>
-    <member name="T:Gallio.Runner.Caching.IDiskCacheGroup">
-      <summary>A disk cache group represents an indexed partition of the disk cache. It is physically manifested as a directory on disk and may contain any number of related files or directories with the same lifetime.</summary>
-    </member>
-    <member name="P:Gallio.Runner.Caching.IDiskCacheGroup.Cache">
-      <summary>Gets the disk cache that contains the group.</summary>
-    </member>
-    <member name="P:Gallio.Runner.Caching.IDiskCacheGroup.Exists">
-      <summary>Returns true if the group exists on disk.</summary>
-      <exception cref="T:Gallio.Runner.Caching.DiskCacheException">Thrown if an error occurs.</exception>
-    </member>
-    <member name="P:Gallio.Runner.Caching.IDiskCacheGroup.Key">
-      <summary>Gets the key of the group.</summary>
-    </member>
-    <member name="P:Gallio.Runner.Caching.IDiskCacheGroup.Location">
-      <summary>Gets the <see cref="T:System.IO.DirectoryInfo" /> that represents the physical storage location of the disk cache group in the filesystem.</summary>
-    </member>
-    <member name="M:Gallio.Runner.Caching.IDiskCacheGroup.Create">
-      <summary>Creates the group if it does not exist.</summary>
-      <exception cref="T:Gallio.Runner.Caching.DiskCacheException">Thrown if an error occurs.</exception>
-    </member>
-    <member name="M:Gallio.Runner.Caching.IDiskCacheGroup.CreateSubdirectory(System.String)">
-      <summary>Creates a directory within the group.</summary>
-      <param name="relativeDirectoryPath">The relative path of the directory to create within the group</param>
-      <returns>Directory information for the directory that was created</returns>
-      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="relativeDirectoryPath" /> is null</exception>
-      <exception cref="T:Gallio.Runner.Caching.DiskCacheException">Thrown if an error occurs.</exception>
-    </member>
-    <member name="M:Gallio.Runner.Caching.IDiskCacheGroup.Delete">
-      <summary>Deletes the group and all of its contents if any.</summary>
-      <exception cref="T:Gallio.Runner.Caching.DiskCacheException">Thrown if an error occurs.</exception>
-    </member>
-    <member name="M:Gallio.Runner.Caching.IDiskCacheGroup.GetFileInfo(System.String)">
-      <summary>Gets information about a file within the group.</summary>
-      <param name="relativeFilePath">The relative path of the file within the group</param>
-      <returns>The file info</returns>
-      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="relativeFilePath" /> is null</exception>
-      <exception cref="T:Gallio.Runner.Caching.DiskCacheException">Thrown if an error occurs.</exception>
-    </member>
-    <member name="M:Gallio.Runner.Caching.IDiskCacheGroup.GetSubdirectoryInfo(System.String)">
-      <summary>Gets information about a directory within the group.</summary>
-      <param name="relativeDirectoryPath">The relative path of the directory within the group</param>
-      <returns>The directory info</returns>
-      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="relativeDirectoryPath" /> is null</exception>
-      <exception cref="T:Gallio.Runner.Caching.DiskCacheException">Thrown if an error occurs.</exception>
-    </member>
-    <member name="M:Gallio.Runner.Caching.IDiskCacheGroup.OpenFile(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
-      <summary>
-        <para> Opens a file within the group. </para>
-        <para> If a new file is being created, automatically create the group and the containing directory for the file. </para>
-      </summary>
-      <param name="relativeFilePath">The relative path of the file to open within the group</param>
-      <param name="mode">The file open mode</param>
-      <param name="access">The file access mode</param>
-      <param name="share">The file sharing mode</param>
-      <returns>The file stream</returns>
-      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="relativeFilePath" /> is null</exception>
-      <exception cref="T:Gallio.Runner.Caching.DiskCacheException">Thrown if an error occurs.</exception>
-    </member>
-    <member name="T:Gallio.Runner.Caching.IDiskCacheGroupCollection">
-      <summary>Represents a collection of groups in a disk cache indexed by an aritrary key string.</summary>
-    </member>
-    <member name="P:Gallio.Runner.Caching.IDiskCacheGroupCollection.Item(System.String)">
-      <summary>Gets the group with the specified key.</summary>
-      <param name="key">The key</param>
-      <value>The group</value>
-      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="key" /> is null</exception>
-    </member>
     <member name="T:Gallio.Runner.Drivers.AggregateTestDriver">
       <summary>An aggregate test driver partitions the work of running tests among multiple test drivers. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>
     </member>
@@ -15275,6 +15166,156 @@
       <summary>Verifies that the runtime is correctly installed. Writes details to the log.</summary>
       <returns>True if the installation appears ok</returns>
     </member>
+    <member name="T:Gallio.Runtime.Caching.DiskCacheException">
+      <summary>The type of exception thrown when an error occurs while manipulating the disk cache.</summary>
+    </member>
+    <member name="T:Gallio.Runtime.Caching.SimpleDiskCache">
+      <summary>A simple disk cache that stores its contents in a particular directory using hashes of the key values to ensure uniqueness.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.SimpleDiskCache.CacheDirectoryPath">
+      <summary>Gets the path of the cache directory.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.SimpleDiskCache.Groups">
+      <summary>Gets the collection of disk cache groups.</summary>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.SimpleDiskCache.GetGroup(System.String)">
+      <summary>Gets the group with the given key.</summary>
+      <param name="key">The key, nor null</param>
+      <returns>The cache group</returns>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.SimpleDiskCache.Purge">
+      <summary>Deletes all items in the cache.</summary>
+    </member>
+    <member name="T:Gallio.Runtime.Caching.SimpleDiskCache.Group">
+      <summary>Represents a disk cache group.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.SimpleDiskCache.Group.Cache">
+      <summary>Gets the disk cache that contains the group.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.SimpleDiskCache.Group.Exists">
+      <summary>Returns true if the group exists on disk.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.SimpleDiskCache.Group.Key">
+      <summary>Gets the key of the group.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.SimpleDiskCache.Group.Location">
+      <summary>Gets the <see cref="T:System.IO.DirectoryInfo" /> that represents the physical storage location of the disk cache group in the filesystem.</summary>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.SimpleDiskCache.Group.Create">
+      <summary>Creates the group if it does not exist.</summary>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.SimpleDiskCache.Group.CreateSubdirectory(System.String)">
+      <summary>Creates a directory within the group.</summary>
+      <param name="relativeDirectoryPath">The relative path of the directory to create within the group</param>
+      <returns>Directory information for the directory that was created</returns>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.SimpleDiskCache.Group.Delete">
+      <summary>Deletes the group and all of its contents if any.</summary>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.SimpleDiskCache.Group.GetFileInfo(System.String)">
+      <summary>Gets information about a file within the group.</summary>
+      <param name="relativeFilePath">The relative path of the file within the group</param>
+      <returns>The file info</returns>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.SimpleDiskCache.Group.GetSubdirectoryInfo(System.String)">
+      <summary>Gets information about a directory within the group.</summary>
+      <param name="relativeDirectoryPath">The relative path of the directory within the group</param>
+      <returns>The directory info</returns>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.SimpleDiskCache.Group.OpenFile(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
+      <summary>
+        <para> Opens a file within the group. </para>
+        <para> If a new file is being created, automatically create the group and the containing directory for the file. </para>
+      </summary>
+      <param name="relativeFilePath">The relative path of the file to open within the group</param>
+      <param name="mode">The file open mode</param>
+      <param name="access">The file access mode</param>
+      <param name="share">The file sharing mode</param>
+      <returns>The file stream</returns>
+    </member>
+    <member name="T:Gallio.Runtime.Caching.TemporaryDiskCache">
+      <summary>A disk cache that stores its contents in the user's temporary directory.</summary>
+    </member>
+    <member name="F:Gallio.Runtime.Caching.TemporaryDiskCache.DefaultCacheDirectoryName">
+      <summary>The default cache directory name. This field is read-only.</summary>
+    </member>
+    <member name="T:Gallio.Runtime.Caching.IDiskCache">
+      <summary>A disk cache manages temporary files and directories stored on disk and arranged into groups associated with arbitrary string keys. The files and directories within each group are assumed to have the same lifetime.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.IDiskCache.Groups">
+      <summary>Gets the collection of disk cache groups.</summary>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.IDiskCache.Purge">
+      <summary>Deletes all items in the cache.</summary>
+      <exception cref="T:Gallio.Runtime.Caching.DiskCacheException">Thrown if an error occurs.</exception>
+    </member>
+    <member name="T:Gallio.Runtime.Caching.IDiskCacheGroup">
+      <summary>A disk cache group represents an indexed partition of the disk cache. It is physically manifested as a directory on disk and may contain any number of related files or directories with the same lifetime.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.IDiskCacheGroup.Cache">
+      <summary>Gets the disk cache that contains the group.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.IDiskCacheGroup.Exists">
+      <summary>Returns true if the group exists on disk.</summary>
+      <exception cref="T:Gallio.Runtime.Caching.DiskCacheException">Thrown if an error occurs.</exception>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.IDiskCacheGroup.Key">
+      <summary>Gets the key of the group.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.IDiskCacheGroup.Location">
+      <summary>Gets the <see cref="T:System.IO.DirectoryInfo" /> that represents the physical storage location of the disk cache group in the filesystem.</summary>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.IDiskCacheGroup.Create">
+      <summary>Creates the group if it does not exist.</summary>
+      <exception cref="T:Gallio.Runtime.Caching.DiskCacheException">Thrown if an error occurs.</exception>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.IDiskCacheGroup.CreateSubdirectory(System.String)">
+      <summary>Creates a directory within the group.</summary>
+      <param name="relativeDirectoryPath">The relative path of the directory to create within the group</param>
+      <returns>Directory information for the directory that was created</returns>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="relativeDirectoryPath" /> is null</exception>
+      <exception cref="T:Gallio.Runtime.Caching.DiskCacheException">Thrown if an error occurs.</exception>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.IDiskCacheGroup.Delete">
+      <summary>Deletes the group and all of its contents if any.</summary>
+      <exception cref="T:Gallio.Runtime.Caching.DiskCacheException">Thrown if an error occurs.</exception>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.IDiskCacheGroup.GetFileInfo(System.String)">
+      <summary>Gets information about a file within the group.</summary>
+      <param name="relativeFilePath">The relative path of the file within the group</param>
+      <returns>The file info</returns>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="relativeFilePath" /> is null</exception>
+      <exception cref="T:Gallio.Runtime.Caching.DiskCacheException">Thrown if an error occurs.</exception>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.IDiskCacheGroup.GetSubdirectoryInfo(System.String)">
+      <summary>Gets information about a directory within the group.</summary>
+      <param name="relativeDirectoryPath">The relative path of the directory within the group</param>
+      <returns>The directory info</returns>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="relativeDirectoryPath" /> is null</exception>
+      <exception cref="T:Gallio.Runtime.Caching.DiskCacheException">Thrown if an error occurs.</exception>
+    </member>
+    <member name="M:Gallio.Runtime.Caching.IDiskCacheGroup.OpenFile(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
+      <summary>
+        <para> Opens a file within the group. </para>
+        <para> If a new file is being created, automatically create the group and the containing directory for the file. </para>
+      </summary>
+      <param name="relativeFilePath">The relative path of the file to open within the group</param>
+      <param name="mode">The file open mode</param>
+      <param name="access">The file access mode</param>
+      <param name="share">The file sharing mode</param>
+      <returns>The file stream</returns>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="relativeFilePath" /> is null</exception>
+      <exception cref="T:Gallio.Runtime.Caching.DiskCacheException">Thrown if an error occurs.</exception>
+    </member>
+    <member name="T:Gallio.Runtime.Caching.IDiskCacheGroupCollection">
+      <summary>Represents a collection of groups in a disk cache indexed by an aritrary key string.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Caching.IDiskCacheGroupCollection.Item(System.String)">
+      <summary>Gets the group with the specified key.</summary>
+      <param name="key">The key</param>
+      <value>The group</value>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="key" /> is null</exception>
+    </member>
     <member name="T:Gallio.Runtime.ConsoleSupport.CommandLineArgumentAttribute">
       <summary>Allows control of command line parsing. Attach this attribute to instance fields of types used as the destination of command line argument parsing.</summary>
     </member>
@@ -16558,7 +16599,7 @@
       <summary>Gets the plugin type name.</summary>
     </member>
     <member name="P:Gallio.Runtime.Extensibility.IPluginDescriptor.ProbingPaths">
-      <summary>Gets the list of additional probing paths in which to attempt to locate referenced assemblies.</summary>
+      <summary>Gets the list of additional relative or absolute probing paths in which to attempt to locate referenced assemblies.</summary>
     </member>
     <member name="P:Gallio.Runtime.Extensibility.IPluginDescriptor.ResourceLocator">
       <summary>Gets the plugin's resource locator.</summary>
@@ -16570,6 +16611,11 @@
       <summary>Disables the plugin.</summary>
       <param name="reason">The reason the plugin was disabled</param>
       <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="reason" /> is null</exception>
+    </member>
+    <member name="M:Gallio.Runtime.Extensibility.IPluginDescriptor.GetSearchPaths(System.String)">
+      <summary>Gets an enumeration of all absolute paths to be searched in order to find a given resource.</summary>
+      <param name="resourcePath">The relative or absolute path of the resource to find or null to return the paths of the search directories themselves</param>
+      <returns>An enumeration of search paths</returns>
     </member>
     <member name="M:Gallio.Runtime.Extensibility.IPluginDescriptor.ResolvePlugin">
       <summary>Resolves the plugin instance.</summary>
@@ -18068,21 +18114,33 @@
     <member name="F:Gallio.Runtime.Hosting.ConfigurationFileLocation.AppBase">
       <summary>Stores the configuration file in the application base directory of the hosted components.</summary>
     </member>
+    <member name="T:Gallio.Runtime.Installer.BaseInstaller">
+      <summary>Abstract base class for installers. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>
+    </member>
+    <member name="M:Gallio.Runtime.Installer.BaseInstaller.Install(Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
+      <summary>Installs components.</summary>
+      <param name="progressMonitor">The progress monitor, not null</param>
+    </member>
+    <member name="M:Gallio.Runtime.Installer.BaseInstaller.Uninstall(Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
+      <summary>Uninstalls components.</summary>
+      <param name="progressMonitor">The progress monitor, not null</param>
+    </member>
     <member name="T:Gallio.Runtime.Installer.DefaultInstallerManager">
       <summary>The default installer manager implementation.</summary>
     </member>
-    <member name="M:Gallio.Runtime.Installer.DefaultInstallerManager.Install(Gallio.Runtime.Logging.ILogger,Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
+    <member name="M:Gallio.Runtime.Installer.DefaultInstallerManager.Install(Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
       <summary>Installs components.</summary>
-      <param name="logger">The logger</param>
       <param name="progressMonitor">The progress monitor</param>
     </member>
-    <member name="M:Gallio.Runtime.Installer.DefaultInstallerManager.Uninstall(Gallio.Runtime.Logging.ILogger,Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
+    <member name="M:Gallio.Runtime.Installer.DefaultInstallerManager.Uninstall(Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
       <summary>Uninstalls components.</summary>
-      <param name="logger">The logger</param>
       <param name="progressMonitor">The progress monitor</param>
     </member>
     <member name="T:Gallio.Runtime.Installer.InstallerTraits">
       <summary>Traits for <see cref="T:Gallio.Runtime.Installer.IInstaller" /> components.</summary>
+    </member>
+    <member name="P:Gallio.Runtime.Installer.InstallerTraits.RequiresElevation">
+      <summary>Gets or sets whether an installer requires privilege elevation (admin access) to run.</summary>
     </member>
     <member name="T:Gallio.Runtime.Installer.SetupCommand">
       <summary>Installs or uninstalls components using the <see cref="T:Gallio.Runtime.Installer.IInstallerManager" />.</summary>
@@ -18099,30 +18157,26 @@
     <member name="T:Gallio.Runtime.Installer.IInstaller">
       <summary>Installs or uninstalls components on the local machine.</summary>
     </member>
-    <member name="M:Gallio.Runtime.Installer.IInstaller.Install(Gallio.Runtime.Logging.ILogger,Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
+    <member name="M:Gallio.Runtime.Installer.IInstaller.Install(Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
       <summary>Installs components.</summary>
-      <param name="logger">The logger, not null</param>
       <param name="progressMonitor">The progress monitor, not null</param>
     </member>
-    <member name="M:Gallio.Runtime.Installer.IInstaller.Uninstall(Gallio.Runtime.Logging.ILogger,Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
+    <member name="M:Gallio.Runtime.Installer.IInstaller.Uninstall(Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
       <summary>Uninstalls components.</summary>
-      <param name="logger">The logger, not null</param>
       <param name="progressMonitor">The progress monitor, not null</param>
     </member>
     <member name="T:Gallio.Runtime.Installer.IInstallerManager">
       <summary>Performs installation tasks and manages the set of registered <see cref="T:Gallio.Runtime.Installer.IInstaller" /> components.</summary>
     </member>
-    <member name="M:Gallio.Runtime.Installer.IInstallerManager.Install(Gallio.Runtime.Logging.ILogger,Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
+    <member name="M:Gallio.Runtime.Installer.IInstallerManager.Install(Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
       <summary>Installs components.</summary>
-      <param name="logger">The logger</param>
       <param name="progressMonitor">The progress monitor</param>
-      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="logger" /> or <paramref name="progressMonitor" /> is null</exception>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="progressMonitor" /> is null</exception>
     </member>
-    <member name="M:Gallio.Runtime.Installer.IInstallerManager.Uninstall(Gallio.Runtime.Logging.ILogger,Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
+    <member name="M:Gallio.Runtime.Installer.IInstallerManager.Uninstall(Gallio.Runtime.ProgressMonitoring.IProgressMonitor)">
       <summary>Uninstalls components.</summary>
-      <param name="logger">The logger</param>
       <param name="progressMonitor">The progress monitor</param>
-      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="logger" /> or <paramref name="progressMonitor" /> is null</exception>
+      <exception cref="T:System.ArgumentNullException">Thrown if <paramref name="progressMonitor" /> is null</exception>
     </member>
     <member name="T:Gallio.Runtime.Loader.AssemblyResolverBootstrap">
       <summary>Bootstraps a globally reachable assembly resolver manager within the Gallio installation path. May be used by clients to ensure that Gallio assemblies can be resolved assuming we were able to load the main assembly and access the bootstrap. This is a <see langword="static class" /> and so cannot be inherited or instantiated.</summary>
@@ -18356,6 +18410,9 @@
     </member>
     <member name="F:Gallio.Runtime.Logging.Verbosity.Debug">
       <summary>Will display all messages.</summary>
+    </member>
+    <member name="T:Gallio.Runtime.Preferences.IPreferenceManager">
+      <summary>Stores and retrieves user and machine preferences.</summary>
     </member>
     <member name="T:Gallio.Runtime.ProgressMonitoring.BaseProgressMonitorPresenter">
       <summary>Abstract base class for objects whose purpose is to present progress information to the user. This class is <see langword="abstract" /> and so cannot be instantiated.</summary>

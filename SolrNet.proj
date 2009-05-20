@@ -56,7 +56,7 @@
   		<TestAssemblies Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet.Tests\bin\Debug\Ninject.Integration.SolrNet.Tests.dll"/>
   		<TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
   	</ItemGroup>
-    <Gallio RunnerExtensions="TeamCityExtension,Gallio.TeamCityIntegration" IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Assemblies="@(TestAssemblies)">
+    <Gallio IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Assemblies="@(TestAssemblies)">
       <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
     </Gallio>
     <Error Text="Tests execution failed" Condition="'$(ExitCode)' != 0" />

@@ -78,7 +78,8 @@ namespace SolrNet {
 		/// </summary>
 		public override string Query {
 			get {
-                var q = Func.Join(string.Format(" {0} ", oper), queries, query => query.Query, true);
+			    var queryStrings = Func.Filter(queries, x => x != null && !string.IsNullOrEmpty(x.Query));
+                var q = Func.Join(string.Format(" {0} ", oper), queryStrings, query => query.Query, true);
                 if (!string.IsNullOrEmpty(q))
                     q = "(" + q + ")";
 			    return q;

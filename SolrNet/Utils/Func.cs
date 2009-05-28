@@ -47,6 +47,12 @@ namespace SolrNet.Utils {
 			}
 		}
 
+        public static bool IsEmpty(IEnumerable e) {
+            foreach (var i in e)
+                return false;
+            return true;
+        }
+
 		public static T First<T>(IEnumerable<T> e) {
 			foreach (var i in e)
 				return i;

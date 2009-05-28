@@ -25,7 +25,8 @@ namespace SolrNet {
         private readonly string q;
 
         public SolrQueryInList(string fieldName, IEnumerable<string> list) {
-            q = "(" + Func.Join(" OR ", Func.Select(list, l => new SolrQueryByField(fieldName, l).Query)) + ")";
+            if (list != null && !Func.IsEmpty(list))
+                q = "(" + Func.Join(" OR ", Func.Select(list, l => new SolrQueryByField(fieldName, l).Query)) + ")";
         }
 
         public SolrQueryInList(string fieldName, params string[] values) : this(fieldName, (IEnumerable<string>) values) {}

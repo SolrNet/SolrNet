@@ -56,6 +56,18 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void EmptyQueries_are_ignored() {
+            var qm = new SolrMultipleCriteriaQuery(new ISolrQuery[] { new SolrQuery(""), });
+            Assert.IsEmpty(qm.Query);
+        }
+
+        [Test]
+        public void NullQueries_are_ignored() {
+            var qm = new SolrMultipleCriteriaQuery(new ISolrQuery[] { new SolrQuery(null), });
+            Assert.IsEmpty(qm.Query);
+        }
+
+        [Test]
         public void StaticConstructor() {
             var q = SolrMultipleCriteriaQuery.Create(new SolrQueryByField("id", "123"), new SolrQuery("solr"));
             Assert.AreEqual(2, q.Queries.Count());

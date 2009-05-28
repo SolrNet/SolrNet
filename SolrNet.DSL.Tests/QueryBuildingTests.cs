@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using MbUnit.Framework;
 
 namespace SolrNet.DSL.Tests {
@@ -53,6 +54,13 @@ namespace SolrNet.DSL.Tests {
         public void InList() {
             var q = Query.Field("price").In(10, 20, 30);
             Assert.AreEqual("(price:10 OR price:20 OR price:30)", q.Query);
+        }
+
+        [Test]
+        public void InList_empty_is_ignored() {
+            var q = Query.Field("price").In(new string[0]) && Query.Field("id").Is(123);
+            Console.WriteLine(q.Query);
+            Assert.AreEqual("(id:123)", q.Query);
         }
 
         [Test]

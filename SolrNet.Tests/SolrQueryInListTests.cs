@@ -31,5 +31,11 @@ namespace SolrNet.Tests {
             var q = new SolrQueryInList("id", new[] {"one", "two thousand"});
             Assert.AreEqual("(id:one OR id:\"two thousand\")", q.Query);
         }
+
+        [Test]
+        public void EmptyList_should_be_null_query() {
+            var q = new SolrQueryInList("id", new string[0]);
+            Assert.IsNull(q.Query);
+        }
 	}
 }

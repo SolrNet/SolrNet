@@ -1,0 +1,1 @@
+msbuild solrnet.proj /m /t:ReleasePackage

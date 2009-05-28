@@ -60,5 +60,10 @@ namespace SolrNet.Tests {
             var q = SolrMultipleCriteriaQuery.Create(new SolrQueryByField("desc", "samsung"), new SolrQueryByRange<decimal>("price", 100, 200));
             Assert.AreEqual("-(desc:samsung  price:[100 TO 200])", q.Not().Query);
         }
+
+        [Test]
+        public void NotQuery_is_AbstractSolrQuery() {
+            AbstractSolrQuery q = new SolrQuery("").Not();
+        }
     }
 }

@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using MbUnit.Framework;
 
 namespace SolrNet.Tests {
@@ -65,6 +66,13 @@ namespace SolrNet.Tests {
         public void Not() {
             var q = !new SolrQuery("solr");
             Assert.AreEqual("-solr", q.Query);
+        }
+
+        [Test]
+        public void AndNot() {
+            var q = new SolrQuery("a") && !new SolrQuery("b");
+            Console.WriteLine(q.Query);
+            Assert.AreEqual("(a AND -b)", q.Query);
         }
     }
 }

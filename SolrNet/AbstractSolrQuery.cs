@@ -25,7 +25,7 @@ namespace SolrNet {
         /// Negates this query
         /// </summary>
         /// <returns></returns>
-        public ISolrQuery Not() {
+        public AbstractSolrQuery Not() {
             return new SolrNotQuery(this);
         }
 
@@ -49,7 +49,7 @@ namespace SolrNet {
             return false;
         }
 
-        public static ISolrQuery operator ! (AbstractSolrQuery a) {
+        public static AbstractSolrQuery operator !(AbstractSolrQuery a) {
             return a.Not();
         }
     }

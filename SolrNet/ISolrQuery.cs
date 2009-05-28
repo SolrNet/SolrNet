@@ -23,11 +23,5 @@ namespace SolrNet {
 		/// query string
 		/// </summary>
 		string Query { get; }
-
-        /// <summary>
-        /// Negates this query
-        /// </summary>
-        /// <returns></returns>
-	    ISolrQuery Not();
 	}
 }

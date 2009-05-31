@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MbUnit.Framework;
-using NHibernate.Cfg;
 using NHibernate.Event;
 using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
 using SolrNet;
+using Environment=NHibernate.Cfg.Environment;
 
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]
@@ -37,15 +38,23 @@ namespace NHibernate.SolrNet.Tests {
 
         private ISessionFactory sessionFactory;
 
+        [Test]
+        public void PostInsert() {
+            using (var session = sessionFactory.OpenSession()) {
+                session.Save(new Entity());
+            }
+        }
+
         [FixtureSetUp]
         public void FixtureSetup() {
-            var nhConfig = new Configuration();
-            nhConfig.SetProperties(new Dictionary<string, string> {
-                {Environment.ConnectionProvider, "NHibernate.Connection.DriverConnectionProvider"},
-                {Environment.ConnectionDriver, "NHibernate.Driver.SQLite20Driver"},
-                {Environment.Dialect, "NHibernate.Dialect.SQLiteDialect"},
-                {Environment.ConnectionString, "Data Source=test.db;Version=3;New=True;"},
-            });
+            var nhConfig = new Configuration {
+                Properties = new Dictionary<string, string> {
+                    {Environment.ConnectionProvider, "NHibernate.Connection.DriverConnectionProvider"},
+                    {Environment.ConnectionDriver, "NHibernate.Driver.SQLite20Driver"},
+                    {Environment.Dialect, "NHibernate.Dialect.SQLiteDialect"},
+                    {Environment.ConnectionString, "Data Source=test.db;Version=3;New=True;"},
+                }
+            };
             nhConfig.Register(typeof (Entity));
             var solr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
             nhConfig.SetListener(ListenerType.PostInsert, new SolrNetListener<Entity>(solr));
@@ -53,17 +62,15 @@ namespace NHibernate.SolrNet.Tests {
             sessionFactory = nhConfig.BuildSessionFactory();
         }
 
-        [Test]
-        public void PostInsert() {
-            using (var session = sessionFactory.OpenSession()) {
-                session.Save(new Entity());
-            }
+        [FixtureTearDown]
+        public void FixtureTeardown() {
+            sessionFactory.Dispose();
         }
     }
 
     public class Entity {
         public virtual int Id { get; set; }
         public virtual string Description { get; set; }
-        //public virtual IList<string> Tags { get; set; }
+        public virtual IList<string> Tags { get; set; }
     }
 }

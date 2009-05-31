@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -88,6 +89,8 @@ namespace NHibernate.SolrNet.Tests {
             var table = pclass.Table;
 
             foreach (var propertyInfo in infos) {
+                if (typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType) && propertyInfo.PropertyType != typeof(string))
+                    continue;
                 // Bind a simple value property
                 IValue value = new SimpleValue(table);
                 BindColumn((SimpleValue) value, true, propertyInfo.Name);

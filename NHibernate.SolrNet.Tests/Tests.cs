@@ -1,7 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Xml;
+﻿using System.Collections.Generic;
 using MbUnit.Framework;
+using NHibernate.Cfg;
 using NHibernate.Event;
 using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
@@ -10,40 +9,52 @@ using SolrNet;
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]
     public class Tests {
-        public class SolrNetInsertListener : IPostInsertEventListener {
-            private readonly IReadOnlyMappingManager mapper;
+        public class SolrNetListener<T> : IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener {
+            private readonly ISolrOperations<T> solr;
 
-            public SolrNetInsertListener(IReadOnlyMappingManager mapper) {
-                this.mapper = mapper;
+            public SolrNetListener(ISolrOperations<T> solr) {
+                this.solr = solr;
             }
 
-            public void OnPostInsert(PostInsertEvent e) {
-                throw new NotImplementedException();
-                //var fields = mapper.GetFields(e.Entity.GetType());
-                //if (fields == null || fields.Count == 0)
-                //    return;
+            public virtual void OnPostInsert(PostInsertEvent e) {
+                if (e.Entity.GetType() != typeof (T))
+                    return;
+                solr.Add((T) e.Entity);
             }
+
+            public virtual void OnPostDelete(PostDeleteEvent e) {
+                if (e.Entity.GetType() != typeof (T))
+                    return;
+                solr.Delete((T) e.Entity);
+            }
+
+            public virtual void OnPostUpdate(PostUpdateEvent e) {
+                if (e.Entity.GetType() != typeof (T))
+                    return;
+                solr.Add((T) e.Entity);
+            }
+        }
+
+        private ISessionFactory sessionFactory;
+
+        [FixtureSetUp]
+        public void FixtureSetup() {
+            var nhConfig = new Configuration();
+            nhConfig.SetProperties(new Dictionary<string, string> {
+                {Environment.ConnectionProvider, "NHibernate.Connection.DriverConnectionProvider"},
+                {Environment.ConnectionDriver, "NHibernate.Driver.SQLite20Driver"},
+                {Environment.Dialect, "NHibernate.Dialect.SQLiteDialect"},
+                {Environment.ConnectionString, "Data Source=test.db;Version=3;New=True;"},
+            });
+            nhConfig.Register(typeof (Entity));
+            var solr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
+            nhConfig.SetListener(ListenerType.PostInsert, new SolrNetListener<Entity>(solr));
+            new SchemaExport(nhConfig).Execute(false, true, false, false);
+            sessionFactory = nhConfig.BuildSessionFactory();
         }
 
         [Test]
         public void PostInsert() {
-            var nhConfig = new Configuration();
-            nhConfig.Configure(
-                new XmlTextReader(
-                    new StringReader(
-                        @"<hibernate-configuration xmlns=""urn:nhibernate-configuration-2.2"">
-<session-factory name=""LessThanFew"">
-<property name=""connection.provider"">NHibernate.Connection.DriverConnectionProvider</property>
-<property name=""connection.driver_class"">NHibernate.Driver.SQLite20Driver</property>
-<property name=""dialect"">NHibernate.Dialect.SQLiteDialect</property>
-<property name=""connection.connection_string"">Data Source=test.db;Version=3;New=True;</property>
-</session-factory>
-</hibernate-configuration>")));
-            nhConfig.Register(typeof (Entity));
-            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
-            nhConfig.SetListener(ListenerType.PostInsert, new SolrNetInsertListener(mapper));
-            new SchemaExport(nhConfig).Execute(false, true, false, false);
-            using (var sessionFactory = nhConfig.BuildSessionFactory())
             using (var session = sessionFactory.OpenSession()) {
                 session.Save(new Entity());
             }
@@ -53,5 +64,6 @@ namespace NHibernate.SolrNet.Tests {
     public class Entity {
         public virtual int Id { get; set; }
         public virtual string Description { get; set; }
+        //public virtual IList<string> Tags { get; set; }
     }
 }

@@ -78,8 +78,10 @@ namespace SolrNet.Impl {
             var request = httpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.POST;
             request.KeepAlive = false;
-            if (Timeout > 0)
-                request.Timeout = Timeout;
+            if (Timeout > 0) {
+                request.ReadWriteTimeout = Timeout;
+                request.Timeout = Timeout;                
+            }
             request.ContentType = "text/xml; charset=utf-8";
             var bytes = Encoding.UTF8.GetBytes(s);
             request.ContentLength = bytes.Length;

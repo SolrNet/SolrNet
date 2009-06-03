@@ -15,11 +15,13 @@
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 
 namespace SolrNet.Exceptions {
     /// <summary>
     /// Invalid URL specified
     /// </summary>
+    [Serializable]
 	public class InvalidURLException : SolrNetException {
 		public InvalidURLException(Exception innerException) : base(innerException) {}
 
@@ -28,5 +30,7 @@ namespace SolrNet.Exceptions {
 		public InvalidURLException(string message, Exception innerException) : base(message, innerException) {}
 
 		public InvalidURLException() {}
+
+        protected InvalidURLException(SerializationInfo info, StreamingContext context) : base(info, context) {}
 	}
 }

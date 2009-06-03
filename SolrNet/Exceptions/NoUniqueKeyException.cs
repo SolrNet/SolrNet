@@ -15,11 +15,13 @@
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 
 namespace SolrNet.Exceptions {
     /// <summary>
     /// No unique key found (either mapping or value) when one was required.
     /// </summary>
+    [Serializable]
     public class NoUniqueKeyException : SolrNetException {
         private readonly Type _t;
 
@@ -32,5 +34,7 @@ namespace SolrNet.Exceptions {
         public NoUniqueKeyException(Type t, string message) : base(message) {
             _t = t;
         }
+
+        protected NoUniqueKeyException(SerializationInfo info, StreamingContext context) : base(info, context) {}
     }
 }

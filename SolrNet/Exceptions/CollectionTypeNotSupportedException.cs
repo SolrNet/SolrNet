@@ -15,11 +15,13 @@
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 
 namespace SolrNet.Exceptions {
     /// <summary>
     /// Thrown when an unknown collection type needed to be mapped to Solr
     /// </summary>
+    [Serializable]
 	public class CollectionTypeNotSupportedException : BadMappingException {
 		private readonly Type collectionType;
 
@@ -46,5 +48,7 @@ namespace SolrNet.Exceptions {
 		public CollectionTypeNotSupportedException(string message, Type collectionType) : base(message) {
 			this.collectionType = collectionType;
 		}
+
+        protected CollectionTypeNotSupportedException(SerializationInfo info, StreamingContext context) : base(info, context) {}
 	}
 }

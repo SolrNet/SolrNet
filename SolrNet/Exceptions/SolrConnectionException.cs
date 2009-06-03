@@ -15,15 +15,18 @@
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 
 namespace SolrNet.Exceptions {
     /// <summary>
     /// Error connecting to Solr. See inner exception for more information.
     /// </summary>
+    [Serializable]
 	public class SolrConnectionException : SolrNetException {
 		public SolrConnectionException(string message) : base(message) {}
 		public SolrConnectionException(Exception innerException) : base(innerException) {}
 		public SolrConnectionException(string message, Exception innerException) : base(message, innerException) {}
 		public SolrConnectionException() {}
+        protected SolrConnectionException(SerializationInfo info, StreamingContext context) : base(info, context) {}
 	}
 }

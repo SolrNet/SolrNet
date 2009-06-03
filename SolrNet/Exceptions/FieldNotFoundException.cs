@@ -15,12 +15,14 @@
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 
 namespace SolrNet.Exceptions {
     /// <summary>
     /// OBSOLETE
     /// </summary>
     [Obsolete("Fields not mapped are now simply ignored")]
+    [Serializable]
 	public class FieldNotFoundException : BadMappingException {
 		public string FieldName { get; set; }
 
@@ -28,5 +30,6 @@ namespace SolrNet.Exceptions {
 		public FieldNotFoundException(string message, Exception innerException) : base(message, innerException) {}
 		public FieldNotFoundException(string message) : base(message) {}
 		public FieldNotFoundException(Exception innerException) : base(innerException) {}
+        protected FieldNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context) {}
 	}
 }

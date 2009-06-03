@@ -14,19 +14,19 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Runtime.Serialization;
+using System.Linq;
+using MbUnit.Framework;
+using SolrNet.Exceptions;
 
-namespace SolrNet.Exceptions {
-    /// <summary>
-    /// Base exception for mapping errors
-    /// </summary>
-    [Serializable]
-	public class BadMappingException : SolrNetException {
-		public BadMappingException(Exception innerException) : base(innerException) {}
-		public BadMappingException(string message) : base(message) {}
-		public BadMappingException() {}
-		public BadMappingException(string message, Exception innerException) : base(message, innerException) {}
-        protected BadMappingException(SerializationInfo info, StreamingContext context) : base(info, context) {}
-	}
+namespace SolrNet.Tests {
+    [TestFixture]
+    public class ExceptionTests {
+        [Test]
+        public void All_exceptions_are_serializable() {
+            var allExceptions = typeof (SolrNetException).Assembly.GetTypes().Where(t => typeof (SolrNetException).IsAssignableFrom(t));
+            foreach (var e in allExceptions) {
+                Assert.IsSerializableType(e);
+            }
+        }
+    }
 }

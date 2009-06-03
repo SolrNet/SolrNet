@@ -86,6 +86,7 @@
     <Compile Include="CommonServiceLocatorTests.cs" />
     <Compile Include="DefaultFieldParserTests.cs" />
     <Compile Include="DeleteCommandTests.cs" />
+    <Compile Include="ExceptionTests.cs" />
     <Compile Include="FieldParserTests.cs" />
     <Compile Include="FilterQueryTests.cs" />
     <Compile Include="FuncTests.cs" />

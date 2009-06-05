@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Xml;
 
 namespace SolrNet.Impl.FieldParsers {
@@ -31,7 +32,7 @@ namespace SolrNet.Impl.FieldParsers {
         }
 
         public object Parse(XmlNode field, Type t) {
-            return float.Parse(field.InnerText);
+            return float.Parse(field.InnerText, CultureInfo.InvariantCulture.NumberFormat);
         }
     }
 }

@@ -161,8 +161,8 @@ namespace SolrNet.Impl {
         /// <returns></returns>
         public ResponseHeader ParseHeader(XmlNode node) {
             var r = new ResponseHeader();
-            r.Status = int.Parse(node.SelectSingleNode("int[@name='status']").InnerText);
-            r.QTime = int.Parse(node.SelectSingleNode("int[@name='QTime']").InnerText);
+            r.Status = int.Parse(node.SelectSingleNode("int[@name='status']").InnerText, CultureInfo.InvariantCulture.NumberFormat);
+            r.QTime = int.Parse(node.SelectSingleNode("int[@name='QTime']").InnerText, CultureInfo.InvariantCulture.NumberFormat);
             r.Params = new Dictionary<string, string>();
             var paramNodes = node.SelectNodes("lst[@name='params']/str");
             if (paramNodes != null) {

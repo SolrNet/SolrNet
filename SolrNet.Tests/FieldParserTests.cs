@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml;
 using MbUnit.Framework;
 using Rhino.Mocks;
@@ -82,6 +83,14 @@ namespace SolrNet.Tests {
         public void CollectionFieldParser_can_handle_types(Type t) {
             var p = CreateCollectionFieldParser();
             Assert.IsTrue(p.CanHandleType(t));
+        }
+
+        [Test]
+        public void DoubleFieldParser_with_culture() {
+            using (ThreadSettings.Culture("fr-FR")) {
+                var p = new DoubleFieldParser();
+                p.Parse(CreateNode("item", "123.99"), typeof(float));
+            }
         }
     }
 }

@@ -26,38 +26,19 @@ using Environment=NHibernate.Cfg.Environment;
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]
     public class Tests {
-        public class SolrNetListener<T> : IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener {
-            private readonly ISolrOperations<T> solr;
-
-            public SolrNetListener(ISolrOperations<T> solr) {
-                this.solr = solr;
-            }
-
-            public virtual void OnPostInsert(PostInsertEvent e) {
-                if (e.Entity.GetType() != typeof (T))
-                    return;
-                solr.Add((T) e.Entity);
-            }
-
-            public virtual void OnPostDelete(PostDeleteEvent e) {
-                if (e.Entity.GetType() != typeof (T))
-                    return;
-                solr.Delete((T) e.Entity);
-            }
-
-            public virtual void OnPostUpdate(PostUpdateEvent e) {
-                if (e.Entity.GetType() != typeof (T))
-                    return;
-                solr.Add((T) e.Entity);
-            }
-        }
-
         private ISessionFactory sessionFactory;
 
         [Test]
         public void PostInsert() {
             using (var session = sessionFactory.OpenSession()) {
                 session.Save(new Entity());
+            }
+        }
+
+        [Test]
+        public void tt() {
+            using (var session = new SolrSession(sessionFactory.OpenSession())) {
+                
             }
         }
 
@@ -82,11 +63,5 @@ namespace NHibernate.SolrNet.Tests {
         public void FixtureTeardown() {
             sessionFactory.Dispose();
         }
-    }
-
-    public class Entity {
-        public virtual int Id { get; set; }
-        public virtual string Description { get; set; }
-        public virtual IList<string> Tags { get; set; }
     }
 }

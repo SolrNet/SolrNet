@@ -67,6 +67,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity.cs" />
+    <Compile Include="SolrNetListener.cs" />
+    <Compile Include="SolrSession.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="NHibernateMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

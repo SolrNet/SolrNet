@@ -61,6 +61,22 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void AddWithBoost() {
+            var mocks = new MockRepository();
+            var connection = mocks.CreateMock<ISolrConnection>();
+            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var docSerializer = new SolrDocumentSerializer<TestDocumentWithoutUniqueKey>(new AttributesMappingManager(), new DefaultFieldSerializer());
+            With.Mocks(mocks)
+                .Expecting(() => Expect.Call(connection.Post("/update", "<add><doc boost=\"2.1\" /></add>"))
+                                     .Repeat.Once()
+                                     .Return(null))
+                .Verify(() => {
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
+                    ops.AddWithBoost(new[] {new KeyValuePair<TestDocumentWithoutUniqueKey, double?>(new TestDocumentWithoutUniqueKey(), 2.1),});
+                });            
+        }
+
+        [Test]
         public void Commit() {
             var mocks = new MockRepository();
             var connection = mocks.CreateMock<ISolrConnection>();

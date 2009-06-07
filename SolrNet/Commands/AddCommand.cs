@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Xml;
+using SolrNet.Utils;
 
 namespace SolrNet.Commands {
 	/// <summary>
@@ -24,7 +25,7 @@ namespace SolrNet.Commands {
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
 	public class AddCommand<T> : ISolrCommand {
-		private readonly IEnumerable<T> documents = new List<T>();
+	    private readonly IEnumerable<KeyValuePair<T, double?>> documents = new List<KeyValuePair<T, double?>>();
 	    private readonly ISolrDocumentSerializer<T> documentSerializer;
 
 	    /// <summary>
@@ -33,9 +34,14 @@ namespace SolrNet.Commands {
 		/// <param name="documents">Documents to add</param>
 		/// <param name="serializer">document serializer</param>
 		public AddCommand(IEnumerable<T> documents, ISolrDocumentSerializer<T> serializer) {
-	        this.documents = documents;
+	        this.documents = Func.Select(documents, d => new KeyValuePair<T, double?>(d, null));
 	        documentSerializer = serializer;
 		}
+
+        public AddCommand(IEnumerable<KeyValuePair<T, double?>> documents, ISolrDocumentSerializer<T> serializer) {
+            this.documents = documents;
+            documentSerializer = serializer;            
+        }
 
         /// <summary>
         /// Removes UTF control characters, not valid in XML
@@ -50,8 +56,8 @@ namespace SolrNet.Commands {
         public string ConvertToXml() {
             var xml = new XmlDocument();
             var addElement = xml.CreateElement("add");
-            foreach (T doc in documents) {
-                var xmlDoc = documentSerializer.Serialize(doc);
+            foreach (var docWithBoost in documents) {
+                var xmlDoc = documentSerializer.Serialize(docWithBoost.Key, docWithBoost.Value);
                 addElement.AppendChild(xml.ImportNode(xmlDoc.DocumentElement, true));
             }
             xml.AppendChild(addElement);

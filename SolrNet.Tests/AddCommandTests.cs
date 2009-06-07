@@ -58,20 +58,40 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
 		    var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager(), new DefaultFieldSerializer());
-			With.Mocks(mocks).Expecting(delegate {
-				conn.Post("/update",
-				          "<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc></add>");
-				LastCall.Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
-					Console.WriteLine(s);
-					return null;
-				}));
-				SetupResult.For(conn.ServerURL).Return("");
-			}).Verify(delegate {
-				var docs = new[] {new SampleDoc()};
-				var cmd = new AddCommand<SampleDoc>(docs, docSerializer);
-				cmd.Execute(conn);
+			With.Mocks(mocks).Expecting(() => {
+			    conn.Post("/update",
+			              "<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc></add>");
+			    LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
+			        Console.WriteLine(s);
+			        return null;
+			    }));
+			    SetupResult.For(conn.ServerURL).Return("");
+			}).Verify(() => {
+			    var docs = new[] {new SampleDoc()};
+			    var cmd = new AddCommand<SampleDoc>(docs, docSerializer);
+			    cmd.Execute(conn);
 			});
 		}
+
+        [Test]
+        public void DocumentBoost() {
+            var mocks = new MockRepository();
+            var conn = mocks.CreateMock<ISolrConnection>();
+            var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
+            With.Mocks(mocks).Expecting(() => {
+                conn.Post("/update",
+                          "<add><doc boost=\"2.1\" /></add>");
+                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
+                    Console.WriteLine(s);
+                    return null;
+                }));
+                SetupResult.For(conn.ServerURL).Return("");
+            }).Verify(() => {
+                var docs = new[] { new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), 2.1) };
+                var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
+                cmd.Execute(conn);
+            });            
+        }
 
 		[Test]
 		public void ShouldntAlterOriginalServerUrl() {
@@ -87,18 +107,18 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
             var docSerializer = new SolrDocumentSerializer<TestDocWithCollections>(new AttributesMappingManager(), new DefaultFieldSerializer());
-			With.Mocks(mocks).Expecting(delegate {
-				conn.Post("/update",
-				          "<add><doc><field name=\"coll\">one</field><field name=\"coll\">two</field></doc></add>");
-				LastCall.Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
-					Console.WriteLine(s);
-					return null;
-				}));
-				SetupResult.For(conn.ServerURL).Return("");
-			}).Verify(delegate {
-				var docs = new[] {new TestDocWithCollections()};
-				var cmd = new AddCommand<TestDocWithCollections>(docs, docSerializer);
-				cmd.Execute(conn);
+			With.Mocks(mocks).Expecting(() => {
+			    conn.Post("/update",
+			              "<add><doc><field name=\"coll\">one</field><field name=\"coll\">two</field></doc></add>");
+			    LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
+			        Console.WriteLine(s);
+			        return null;
+			    }));
+			    SetupResult.For(conn.ServerURL).Return("");
+			}).Verify(() => {
+			    var docs = new[] {new TestDocWithCollections()};
+			    var cmd = new AddCommand<TestDocWithCollections>(docs, docSerializer);
+			    cmd.Execute(conn);
 			});
 		}
 

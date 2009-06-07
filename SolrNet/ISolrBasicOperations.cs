@@ -44,6 +44,13 @@ namespace SolrNet {
         ISolrBasicOperations<T> Add(IEnumerable<T> docs);
 
         /// <summary>
+        /// Adds / updates several documents with index-time boost
+        /// </summary>
+        /// <param name="docs"></param>
+        /// <returns></returns>
+        ISolrBasicOperations<T> AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs);
+
+        /// <summary>
         /// Deletes several documents (requires the document to have a unique key defined with non-null value)
         /// </summary>
         /// <param name="ids">document ids to delete</param>

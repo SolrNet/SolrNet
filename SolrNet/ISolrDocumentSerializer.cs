@@ -23,11 +23,12 @@ namespace SolrNet {
 	/// <typeparam name="T">document type</typeparam>
 	public interface ISolrDocumentSerializer<T> {
 		/// <summary>
-		/// Serializes a Solr document to xml
-		/// </summary>
+        /// Serializes a Solr document to xml, applying an index-time boost
+        /// </summary>
 		/// <param name="doc">document to serialize</param>
+		/// <param name="boost"></param>
 		/// <returns>serialized document</returns>
-		XmlDocument Serialize(T doc);
+		XmlDocument Serialize(T doc, double? boost);
 
 		/* TODO maybe I should use XmlSerializer (http://msdn2.microsoft.com/en-us/library/system.xml.serialization.xmlserializer(vs.80).aspx)
 		 * or attributes http://msdn2.microsoft.com/en-us/library/83y7df3e(VS.80).aspx

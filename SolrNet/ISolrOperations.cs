@@ -43,11 +43,26 @@ namespace SolrNet {
         ISolrOperations<T> Add(T doc);
 
         /// <summary>
+        /// Adds / updates a document with index-time boost
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="boost"></param>
+        /// <returns></returns>
+        ISolrOperations<T> AddWithBoost(T doc, double boost);
+
+        /// <summary>
         /// Adds / updates several documents at once
         /// </summary>
         /// <param name="docs">documents to add/update</param>
         /// <returns></returns>
         new ISolrOperations<T> Add(IEnumerable<T> docs);
+
+        /// <summary>
+        /// Adds / updates documents with index-time boost
+        /// </summary>
+        /// <param name="docs">List of docs / boost. If boost is null, no boost is applied</param>
+        /// <returns></returns>
+        new ISolrOperations<T> AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs);
 
         /// <summary>
         /// Deletes a document (requires the document to have a unique key defined with non-null value)

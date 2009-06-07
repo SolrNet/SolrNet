@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
@@ -47,6 +48,12 @@ namespace SolrNet.Impl {
         }
 
         public ISolrBasicOperations<T> Add(IEnumerable<T> docs) {
+            var cmd = new AddCommand<T>(docs, documentSerializer);
+            Send(cmd);
+            return this;
+        }
+
+        public ISolrBasicOperations<T> AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
             var cmd = new AddCommand<T>(docs, documentSerializer);
             Send(cmd);
             return this;

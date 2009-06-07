@@ -30,7 +30,7 @@ namespace SolrNet {
         }
 
         /// <summary>
-        /// 
+        /// Boosts this query
         /// </summary>
         /// <param name="factor"></param>
         /// <returns></returns>

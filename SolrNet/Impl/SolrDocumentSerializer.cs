@@ -14,6 +14,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Globalization;
 using System.Xml;
 
 namespace SolrNet.Impl {
@@ -30,15 +32,15 @@ namespace SolrNet.Impl {
             this.fieldSerializer = fieldSerializer;
         }
 
-        /// <summary>
-        /// Serializes a Solr document to xml
-        /// </summary>
-        /// <param name="doc">document to serialize</param>
-        /// <returns>serialized document</returns>
-        public XmlDocument Serialize(T doc) {
+        public XmlDocument Serialize(T doc, double? boost) {
             var xml = new XmlDocument();
             var docNode = xml.CreateElement("doc");
-            var fields = mappingManager.GetFields(typeof (T));
+            if (boost.HasValue) {
+                var boostAttr = xml.CreateAttribute("boost");
+                boostAttr.Value = boost.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
+                docNode.Attributes.Append(boostAttr);
+            }
+            var fields = mappingManager.GetFields(typeof(T));
             foreach (var kv in fields) {
                 var p = kv.Key;
                 var value = p.GetValue(doc, null);
@@ -55,7 +57,7 @@ namespace SolrNet.Impl {
                 }
             }
             xml.AppendChild(docNode);
-            return xml;
+            return xml;            
         }
     }
 }

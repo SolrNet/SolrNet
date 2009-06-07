@@ -125,9 +125,22 @@ namespace SolrNet.Impl {
             basicServer.Optimize(options);
         }
 
+        public ISolrOperations<T> AddWithBoost(T doc, double boost) {
+            return ((ISolrOperations<T>)this).AddWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) });
+        }
+
         public ISolrOperations<T> Add(IEnumerable<T> docs) {
             basicServer.Add(docs);
             return this;
+        }
+
+        ISolrOperations<T> ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
+            basicServer.AddWithBoost(docs);
+            return this;
+        }
+
+        ISolrBasicOperations<T> ISolrBasicOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
+            return basicServer.AddWithBoost(docs);
         }
 
         public ISolrOperations<T> Delete(IEnumerable<string> ids) {

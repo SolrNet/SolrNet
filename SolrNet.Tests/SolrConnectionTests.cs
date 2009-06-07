@@ -160,7 +160,7 @@ namespace SolrNet.Tests {
                     .Repeat.Once()
                     .Return(request);
 				request.Method = HttpWebRequestMethod.POST;
-				LastCall.Repeat.Once();
+				LastCall.On(request).Repeat.Once();
 				Expect.Call(request.GetResponse())
                     .Repeat.Once()
                     .Return(response);

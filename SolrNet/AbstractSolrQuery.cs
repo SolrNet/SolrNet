@@ -29,6 +29,15 @@ namespace SolrNet {
             return new SolrNotQuery(this);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="factor"></param>
+        /// <returns></returns>
+        public AbstractSolrQuery Boost(double factor) {
+            return new SolrQueryBoost(this, factor);
+        }
+
         public static AbstractSolrQuery operator & (AbstractSolrQuery a, AbstractSolrQuery b) {
             return new SolrMultipleCriteriaQuery(new[] {a, b}, "AND");
         }

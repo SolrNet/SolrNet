@@ -105,6 +105,7 @@
     <Compile Include="ProfilingContainer.cs" />
     <Compile Include="QueryOptionsTests.cs" />
     <Compile Include="RandomSortTests.cs" />
+    <Compile Include="SolrQueryBoostTests.cs" />
     <Compile Include="SolrConnectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolrDocumentSerializerTests.cs" />

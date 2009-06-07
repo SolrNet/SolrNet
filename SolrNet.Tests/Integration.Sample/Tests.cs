@@ -67,7 +67,7 @@ namespace SolrNet.Tests.Integration.Sample {
                 .Add(p)
                 .Commit();
             solr.Query(new SolrQueryByField("name", @"3;Furniture"));
-            var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m));
+            var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m).Boost(2));
             Assert.AreEqual(1, products.Count);
             Assert.AreEqual("SP2514N", products[0].Id);
             Assert.AreEqual(92m, products[0].Price);

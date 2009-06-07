@@ -29,7 +29,6 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var connection = mocks.CreateMock<ISolrConnection>();
 			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
-		    var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(connection.Get(null, null))
                     .IgnoreArguments()

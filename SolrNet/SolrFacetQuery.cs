@@ -21,7 +21,7 @@ namespace SolrNet {
     /// Arbitrary facet query
     /// </summary>
 	public class SolrFacetQuery : ISolrFacetQuery {
-		public readonly string query;
+		private readonly string query;
 
 		public SolrFacetQuery(ISolrQuery q) {
 			query = q.Query;

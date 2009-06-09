@@ -291,7 +291,7 @@ namespace SolrNet.Tests {
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                SetupResult.For(parser.Parse(null))
+                Expect.On(parser).Call(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
@@ -314,7 +314,7 @@ namespace SolrNet.Tests {
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                SetupResult.For(parser.Parse(null))
+                Expect.On(parser).Call(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
@@ -346,8 +346,7 @@ namespace SolrNet.Tests {
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-
-                SetupResult.For(parser.Parse(null))
+                Expect.On(parser).Call(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
@@ -376,7 +375,7 @@ namespace SolrNet.Tests {
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                SetupResult.For(parser.Parse(null))
+                Expect.On(parser).Call(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
@@ -405,7 +404,7 @@ namespace SolrNet.Tests {
             var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                SetupResult.For(parser.Parse(null))
+                Expect.On(parser).Call(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {

@@ -48,7 +48,27 @@
   <SourceFileRebasing FromPath="" ToPath="" />
   <CQLQueries>
     <CQLGroup Name="Code Quality" Active="True">
-      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Quick summary of methods to refactor&lt;/Name&gt;\r\n\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 METHODS /*OUT OF "YourGeneratedCode" */ WHERE \r\n\r\n                                           // Metrics' definitions\r\n     (  NbLinesOfCode &gt; 30 OR              // http://www.ndepend.com/Metrics.aspx#NbLinesOfCode\r\n        NbILInstructions &gt; 200 OR          // http://www.ndepend.com/Metrics.aspx#NbILInstructions\r\n        CyclomaticComplexity &gt; 20 OR       // http://www.ndepend.com/Metrics.aspx#CC\r\n        ILCyclomaticComplexity &gt; 50 OR     // http://www.ndepend.com/Metrics.aspx#ILCC\r\n        ILNestingDepth &gt; 4 OR              // http://www.ndepend.com/Metrics.aspx#ILNestingDepth\r\n        NbParameters &gt; 5 OR                // http://www.ndepend.com/Metrics.aspx#NbParameters\r\n        NbVariables &gt; 8 OR                 // http://www.ndepend.com/Metrics.aspx#NbVariables\r\n        NbOverloads &gt; 6 )                  // http://www.ndepend.com/Metrics.aspx#NbOverloads\r\n     AND \r\n\r\n     // Here are some ways to avoid taking account of generated methods.\r\n     !( NameIs "InitializeComponent()" OR\r\n        // NDepend.CQL.GeneratedAttribute is defined in the redistributable assembly $NDependInstallDir$\Lib\NDepend.CQL.dll\r\n        // You can define your own attribute to mark "Generated".\r\n        HasAttribute "OPTIONAL:NDepend.CQL.GeneratedAttribute") </CQLQuery>
+      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Quick summary of methods to refactor&lt;/Name&gt;
+
+WARN IF Count &gt; 0 IN SELECT TOP 10 METHODS /*OUT OF "YourGeneratedCode" */ WHERE 
+
+                                           // Metrics' definitions
+     (  NbLinesOfCode &gt; 30 OR              // http://www.ndepend.com/Metrics.aspx#NbLinesOfCode
+        NbILInstructions &gt; 200 OR          // http://www.ndepend.com/Metrics.aspx#NbILInstructions
+        CyclomaticComplexity &gt; 20 OR       // http://www.ndepend.com/Metrics.aspx#CC
+        ILCyclomaticComplexity &gt; 50 OR     // http://www.ndepend.com/Metrics.aspx#ILCC
+        ILNestingDepth &gt; 4 OR              // http://www.ndepend.com/Metrics.aspx#ILNestingDepth
+        NbParameters &gt; 5 OR                // http://www.ndepend.com/Metrics.aspx#NbParameters
+        NbVariables &gt; 8 OR                 // http://www.ndepend.com/Metrics.aspx#NbVariables
+        NbOverloads &gt; 6 )                  // http://www.ndepend.com/Metrics.aspx#NbOverloads
+     AND 
+
+     // Here are some ways to avoid taking account of generated methods.
+     !( NameIs "InitializeComponent()" OR
+        // NDepend.CQL.GeneratedAttribute is defined in the redistributable assembly $NDependInstallDir$\Lib\NDepend.CQL.dll
+        // You can define your own attribute to mark "Generated".
+        HasAttribute "OPTIONAL:NDepend.CQL.GeneratedAttribute" OR FullNameLike "Tests" OR FullNameLike "__" 
+) </CQLQuery>
       <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Methods too big (NbLinesOfCode)&lt;/Name&gt;
 WARN IF Count &gt; 0 IN SELECT TOP 10 METHODS 
 WHERE NbLinesOfCode &gt; 30 
@@ -99,7 +119,20 @@ ORDER BY ILNestingDepth DESC
     </CQLGroup>
     <CQLGroup Name="Design" Active="True">
       <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Assembly should not contain namespaces dependency cycles&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 ASSEMBLIES WHERE ContainsNamespaceDependencyCycle\r\n// Dependency cycles between namespaces must be avoided \r\n// in order to have a levelized and comprehensive design.\r\n// More info available on the screencast 'Reduce the complexity' http://s3.amazonaws.com/NDependOnlineDemos/NDependReducingComplexity_viewlet_swf.html\r\n// You can also read this article http://www.theserverside.net/tt/articles/showarticle.tss?id=ControllingDependencies</CQLQuery>
-      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Type should not have too many responsabilities (Efferent Coupling)&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 TYPES WHERE TypeCe &gt; 50 ORDER BY TypeCe DESC \r\n// The Efferent Coupling (TypeCe) for a particular type is the number of types \r\n// it directly depends on. Notice that types declared in tier assemblies are taken into account. \r\n\r\n// Types that depends on too many others type (more than 50) are complex and have\r\n// more than one responsability. They are good candidate for refactoring.\r\n\r\n// More information available in this article:\r\n// http://codebetter.com/blogs/patricksmacchia/archive/2008/02/15/code-metrics-on-coupling-dead-code-design-flaws-and-re-engineering.aspx\r\n\r\n</CQLQuery>
+      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Type should not have too many responsabilities (Efferent Coupling)&lt;/Name&gt;
+WARN IF Count &gt; 0 IN SELECT TOP 10 TYPES 
+WHERE TypeCe &gt; 50 AND !FullNameLike "Tests" 
+ORDER BY TypeCe DESC 
+// The Efferent Coupling (TypeCe) for a particular type is the number of types 
+// it directly depends on. Notice that types declared in tier assemblies are taken into account. 
+
+// Types that depends on too many others type (more than 50) are complex and have
+// more than one responsability. They are good candidate for refactoring.
+
+// More information available in this article:
+// http://codebetter.com/blogs/patricksmacchia/archive/2008/02/15/code-metrics-on-coupling-dead-code-design-flaws-and-re-engineering.aspx
+
+</CQLQuery>
       <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;A stateless type might be turned into a static type&lt;/Name&gt;
 WARN IF Count &gt; 0 IN SELECT TOP 10 TYPES WHERE 
   SizeOfInst ==0 AND 
@@ -172,9 +205,47 @@ AND !FullNameLike "__"
       </CQLGroup>
     </CQLGroup>
     <CQLGroup Name="Diff / Changes / Evolution" Active="True">
-      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;API Breaking Changes: Methods&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 METHODS\r\nWHERE IsPublic AND (VisibilityWasChanged OR WasRemoved)\r\n\r\n// This constraint warns if a public method is not public anymore or if it has been removed.\r\n// This can break the code of your clients.\r\n// More information on breaking changes here: \r\n// http://codebetter.com/blogs/patricksmacchia/archive/2008/01/20/avoid-api-breaking-changes.aspx\r\n\r\n// To run this constraint properly 2 analysis must be compared.\r\n// This can be done in VisualNDepend throught the menu: Start Page -&gt; Compare 2 versions of a code base\r\n// This can be done at analysis time throught the menu: Project Properties -&gt; Analysis -&gt; Analysis Comparison\r\n\r\n</CQLQuery>
-      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;API Breaking Changes: Types&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 TYPES\r\nWHERE IsPublic AND (VisibilityWasChanged OR WasRemoved)\r\n\r\n// This constraint warns if a public type is not public anymore or if it has been removed.\r\n// This can break the code of your clients.\r\n// More information on breaking changes here: \r\n// http://codebetter.com/blogs/patricksmacchia/archive/2008/01/20/avoid-api-breaking-changes.aspx\r\n\r\n// To run this constraint properly 2 analysis must be compared.\r\n// This can be done in VisualNDepend throught the menu: Start Page -&gt; Compare 2 versions of a code base\r\n// This can be done at analysis time throught the menu: Project Properties -&gt; Analysis -&gt; Analysis Comparison\r\n\r\n\r\n</CQLQuery>
-      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;API Breaking Changes: Interfaces&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 TYPES\r\nWHERE IsInterface AND IsPublic AND (WasChanged AND !CommentsWereChanged)\r\n\r\n// This constraint warns if a public interface has been changed, but not because of comment change.\r\n// This can break the code of your clients that implements such interface.\r\n// More information on breaking changes here: \r\n// http://codebetter.com/blogs/patricksmacchia/archive/2008/01/20/avoid-api-breaking-changes.aspx\r\n\r\n// To run this constraint properly 2 analysis must be compared.\r\n// This can be done in VisualNDepend throught the menu: Start Page -&gt; Compare 2 versions of a code base\r\n// This can be done at analysis time throught the menu: Project Properties -&gt; Analysis -&gt; Analysis Comparison</CQLQuery>
+      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;API Breaking Changes: Methods&lt;/Name&gt;
+WARN IF Count &gt; 0 IN SELECT METHODS
+WHERE IsPublic AND (VisibilityWasChanged OR WasRemoved)
+
+// This constraint warns if a public method is not public anymore or if it has been removed.
+// This can break the code of your clients.
+// More information on breaking changes here: 
+// http://codebetter.com/blogs/patricksmacchia/archive/2008/01/20/avoid-api-breaking-changes.aspx
+
+// To run this constraint properly 2 analysis must be compared.
+// This can be done in VisualNDepend throught the menu: Start Page -&gt; Compare 2 versions of a code base
+// This can be done at analysis time throught the menu: Project Properties -&gt; Analysis -&gt; Analysis Comparison
+
+</CQLQuery>
+      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;API Breaking Changes: Types&lt;/Name&gt;
+WARN IF Count &gt; 0 IN SELECT  TYPES
+WHERE IsPublic AND (VisibilityWasChanged OR WasRemoved)
+
+// This constraint warns if a public type is not public anymore or if it has been removed.
+// This can break the code of your clients.
+// More information on breaking changes here: 
+// http://codebetter.com/blogs/patricksmacchia/archive/2008/01/20/avoid-api-breaking-changes.aspx
+
+// To run this constraint properly 2 analysis must be compared.
+// This can be done in VisualNDepend throught the menu: Start Page -&gt; Compare 2 versions of a code base
+// This can be done at analysis time throught the menu: Project Properties -&gt; Analysis -&gt; Analysis Comparison
+
+
+</CQLQuery>
+      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;API Breaking Changes: Interfaces&lt;/Name&gt;
+WARN IF Count &gt; 0 IN SELECT TYPES
+WHERE IsInterface AND IsPublic AND (WasChanged AND !CommentsWereChanged)
+
+// This constraint warns if a public interface has been changed, but not because of comment change.
+// This can break the code of your clients that implements such interface.
+// More information on breaking changes here: 
+// http://codebetter.com/blogs/patricksmacchia/archive/2008/01/20/avoid-api-breaking-changes.aspx
+
+// To run this constraint properly 2 analysis must be compared.
+// This can be done in VisualNDepend throught the menu: Start Page -&gt; Compare 2 versions of a code base
+// This can be done at analysis time throught the menu: Project Properties -&gt; Analysis -&gt; Analysis Comparison</CQLQuery>
       <CQLGroup Name="Changes Summary" Active="True">
         <CQLGroup Name="Methods" Active="True">
           <CQLQuery Active="False" DisplayList="False" DisplayStat="False" DisplaySelectionView="False">// &lt;Name&gt;Methods added&lt;/Name&gt;
@@ -271,7 +342,21 @@ SELECT METHODS WHERE WasAdded //AND !NameLike "__"
       </CQLGroup>
     </CQLGroup>
     <CQLGroup Name="Purity / Immutability / Side-Effects" Active="True">
-      <CQLQuery Active="True" DisplayList="False" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Fields should be marked as ReadOnly when possible&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT FIELDS WHERE IsImmutable AND !IsInitOnly\r\n\r\n// A field that matches the condition IsImmutable is a field that is assigned only by constructors of its class.\r\n// For an instance field, this means its value will remain constant throught the lifetime of the object.\r\n// For a static field, this means its value will remain constant throught the lifetime of the program.\r\n// In both cases, such field can safely be marked with the C# readonly keyword (ReadOnly in VB.NET).\r\n\r\n// The condition IsInitOnly matches fields that are marked with the C# readonly keyword (ReadOnly in VB.NET).\r\n\r\n\r\n\r\n</CQLQuery>
+      <CQLQuery Active="True" DisplayList="False" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Fields should be marked as ReadOnly when possible&lt;/Name&gt;
+WARN IF Count &gt; 0 IN SELECT FIELDS 
+WHERE IsImmutable AND !IsInitOnly
+AND !NameLike "__" 
+
+// A field that matches the condition IsImmutable is a field that is assigned only by constructors of its class.
+// For an instance field, this means its value will remain constant throught the lifetime of the object.
+// For a static field, this means its value will remain constant throught the lifetime of the program.
+// In both cases, such field can safely be marked with the C# readonly keyword (ReadOnly in VB.NET).
+
+// The condition IsInitOnly matches fields that are marked with the C# readonly keyword (ReadOnly in VB.NET).
+
+
+
+</CQLQuery>
       <CQLQuery Active="True" DisplayList="False" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Structures should be immutable&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TYPES WHERE IsStructure AND !IsImmutable AND !IsInFrameworkAssembly\r\n\r\n// It is deemed as a good practice to make your structure immutable.\r\n// An object is immutable if its state doesn’t change once the object has been created. \r\n// Consequently, a structure is immutable if its instances are immutable.\r\n// Immutable types naturally simplify code by limiting side-effects.\r\n// See some explanations on immutability and how NDepend supports it here:\r\n// http://codebetter.com/blogs/patricksmacchia/archive/2008/01/13/immutable-types-understand-them-and-use-them.aspx\r\n</CQLQuery>
       <CQLQuery Active="True" DisplayList="False" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Regression on immutable types&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TYPES WHERE HasAttribute "OPTIONAL:NDepend.CQL.ImmutableAttribute" AND !IsImmutable\r\n\r\n// An object is immutable if its state doesn’t change once the object has been created. \r\n// Consequently, a class or a structure is immutable if its instances are immutable.\r\n// Immutable types naturally simplify code by limiting side-effects.\r\n// See some explanations on immutability and how NDepend supports it here:\r\n// http://codebetter.com/blogs/patricksmacchia/archive/2008/01/13/immutable-types-understand-them-and-use-them.aspx\r\n\r\n// NDepend.CQL.ImmutableAttribute is defined in the redistributable assembly $NDependInstallDir$\Lib\NDepend.CQL.dll\r\n// You can define your own attribute to tag 'immutable' types.\r\n\r\n</CQLQuery>
       <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Regression on pure methods&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT METHODS WHERE \r\n  HasAttribute "OPTIONAL:NDepend.CQL.PureAttribute" AND \r\n  ( ChangesObjectState OR ChangesTypeState ) AND\r\n  NbLinesOfCode &gt; 0\r\n\r\n// A method is pure if its execution doesn’t change the value of any instance or static field. \r\n// Pure methods naturally simplify code by limiting side-effects.\r\n// See some explanations on immutability / purity and how NDepend supports it here:\r\n// http://codebetter.com/blogs/patricksmacchia/archive/2008/01/13/immutable-types-understand-them-and-use-them.aspx\r\n\r\n// NDepend.CQL.PureAttribute is defined in the redistributable assembly $NDependInstallDir$\Lib\NDepend.CQL.dll\r\n// You can define your own attribute to tag 'pure' methods.\r\n\r\n</CQLQuery>
@@ -279,10 +364,7 @@ SELECT METHODS WHERE WasAdded //AND !NameLike "__"
       <CQLQuery Active="False" DisplayList="False" DisplayStat="False" DisplaySelectionView="False">// &lt;Name&gt;Missing usage of PureAttribute&lt;/Name&gt;\r\nSELECT METHODS WHERE \r\n  !HasAttribute "OPTIONAL:NDepend.CQL.PureAttribute" AND \r\n  !ChangesObjectState AND !ChangesTypeState AND\r\n  NbLinesOfCode &gt; 0\r\n\r\n// Methods matched by this query are pure but are not tagged with the PureAttribute.\r\n// The benefit of tagging them with the PureAttribute is that the constraint 'Regression on pure methods'\r\n// will warn when the purity of a method gets broken.\r\n\r\n// NDepend.CQL.PureAttribute is defined in the redistributable assembly $NDependInstallDir$\Lib\NDepend.CQL.dll\r\n// You can define your own attribute to tag 'pure' methods.</CQLQuery>
     </CQLGroup>
     <CQLGroup Name="Naming Conventions" Active="True">
-      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Instance fields should be prefixed with a 'm_'&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 FIELDS WHERE \r\n  !NameLike "^m_" AND \r\n  !IsStatic AND \r\n  !IsLiteral AND \r\n  !IsGeneratedByCompiler  AND \r\n  !IsSpecialName AND \r\n  !IsEventDelegateObject \r\n\r\n// This naming convention provokes debate.\r\n// Don't hesitate to customize the regex of NameLike to your preference.</CQLQuery>
-      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Static fields should be prefixed with a 's_'&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 FIELDS WHERE \r\n  !NameLike "^s_" AND \r\n  IsStatic AND \r\n  !IsLiteral AND \r\n  !IsGeneratedByCompiler AND \r\n  !IsSpecialName AND \r\n  !IsEventDelegateObject  \r\n\r\n// This naming convention provokes debate.\r\n// Don't hesitate to customize the regex of NameLike to your preference.\r\n</CQLQuery>
       <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Interface name should begin with a 'I'&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 TYPES WHERE IsInterface AND !NameLike "^I" AND !IsNested AND !IsInFrameworkAssembly\r\n</CQLQuery>
-      <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Abstract base class should be suffixed with 'Base'&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 TYPES WHERE \r\n  IsAbstract AND \r\n  IsClass AND\r\n  DepthOfInheritance == 1 AND // equivalent to:   DepthOfDeriveFrom "System.Object" == 1\r\n  !NameLike "Base$"\r\n</CQLQuery>
       <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Exception class name should be suffixed with 'Exception'&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 TYPES WHERE IsExceptionClass AND !NameLike "Exception$" AND !IsInFrameworkAssembly\r\n// The name of an exception class should end with 'Exception'.</CQLQuery>
       <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Attribute class name should be suffixed with 'Attribute'&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 TYPES WHERE IsAttributeClass AND !NameLike "Attribute$" AND !IsInFrameworkAssembly\r\n</CQLQuery>
       <CQLQuery Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Types name should begin with an Upper character&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 TYPES WHERE \r\n !NameLike "^[A-Z]" AND     // The name of a type should begin with an Upper letter.\r\n !IsGeneratedByCompiler AND // Except if it is generated by compiler or ...\r\n !IsInFrameworkAssembly     // ... if it is declared in a framework assembly.</CQLQuery>
@@ -312,7 +394,6 @@ SELECT METHODS WHERE WasAdded //AND !NameLike "__"
         <CQLQuery Active="True" DisplayList="False" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Types should not extend System.ApplicationException&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TYPES WHERE\r\n  DepthOfDeriveFrom "OPTIONAL:System.ApplicationException" == 1 AND\r\n  !IsInFrameworkAssembly\r\n\r\n// For .NET Framework version 1, it was recommended to derive new exceptions from ApplicationException. \r\n// The recommendation has changed and new exceptions should derive from System.Exception or one of its \r\n// subclasses in the System namespace.</CQLQuery>
       </CQLGroup>
       <CQLGroup Name="System.Collection" Active="True">
-        <CQLQuery Active="True" DisplayList="False" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Don't use .NET 1.x HashTable and ArrayList&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TOP 10 METHODS WHERE\r\n\r\n // Prefer using the class System.Collections.Generic.Dictionary&lt;K,V&gt; over System.Collections.HashTable.\r\n CreateA "OPTIONAL:System.Collections.HashTable" OR\r\n\r\n // Prefer using the class System.Collections.Generic.List&lt;T&gt; over System.Collections.ArrayList.\r\n CreateA "OPTIONAL:System.Collections.ArrayList"\r\n\r\n// You can be forced to use HashTable or ArrayList \r\n// because if you are using tier code that requires working with these classes\r\n// or because you are coding with .NET 1.x.</CQLQuery>
         <CQLQuery Active="False" DisplayList="False" DisplayStat="False" DisplaySelectionView="False">// &lt;Name&gt;Caution with List.Contains()&lt;/Name&gt;\r\nSELECT METHODS WHERE \r\nIsDirectlyUsing "OPTIONAL:System.Collections.Generic.List&lt;T&gt;.Contains(T)" OR\r\nIsDirectlyUsing "OPTIONAL:System.Collections.Generic.IList&lt;T&gt;.Contains(T)" OR\r\nIsDirectlyUsing "OPTIONAL:System.Collections.ArrayList.Contains(Object)"\r\n\r\n// The cost of checking if a list contains an object is proportional to the size of the list (O(N) operation).\r\n// For large lists and/or frequent calls to Contains(), prefer using the System.Collections.Generic.HashSet&lt;T&gt; class \r\n// where calls to Contains() takes a constant time (O(0) operation).</CQLQuery>
         <CQLQuery Active="False" DisplayList="False" DisplayStat="False" DisplaySelectionView="False">// &lt;Name&gt;Prefer return collection abstraction instead of implementation&lt;/Name&gt;\r\nSELECT METHODS WHERE \r\n ReturnTypeIs "OPTIONAL:System.Collections.Generic.List&lt;T&gt;" OR \r\n ReturnTypeIs "OPTIONAL:System.Collections.Generic.HashSet&lt;T&gt;" OR\r\n ReturnTypeIs "OPTIONAL:System.Collections.Generic.Dictionary&lt;TKey,TValue&gt;"\r\n\r\n// Most of the time, clients of a method doesn't need to know the exact implementation of the collection returned.\r\n// It is preferrable to return a collection interface such as IList&lt;T&gt;, ICollection&lt;T&gt; or IEnumerable&lt;T&gt;.</CQLQuery>
       </CQLGroup>
@@ -332,7 +413,6 @@ SELECT METHODS WHERE WasAdded //AND !NameLike "__"
         <CQLQuery Active="True" DisplayList="False" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;ReaderWriterLock AcquireWriterLock/ReleaseLock must be both called within the same method&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT METHODS WHERE\r\n  ( IsDirectlyUsing "OPTIONAL:System.Threading.ReaderWriterLock.AcquireWriterLock(Int32)" OR\r\n    IsDirectlyUsing "OPTIONAL:System.Threading.ReaderWriterLock.AcquireWriterLock(TimeSpan)" OR\r\n    IsDirectlyUsing "OPTIONAL:System.Threading.Monitor.TryEnter(Object,TimeSpan)") \r\nAND\r\n !( IsDirectlyUsing "OPTIONAL:System.Threading.ReaderWriterLock.ReleaseWriterLock()" OR \r\n    IsDirectlyUsing "OPTIONAL:System.Threading.ReaderWriterLock.ReleaseLock()") </CQLQuery>
       </CQLGroup>
       <CQLGroup Name="System.Xml" Active="True">
-        <CQLQuery Active="True" DisplayList="False" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Method should not return concrete XmlNode&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT METHODS WHERE \r\n( ReturnTypeIs "OPTIONAL:System.Xml.XmlDocument" OR \r\n  ReturnTypeIs "OPTIONAL:System.Xml.XmlAttribute" OR \r\n  ReturnTypeIs "OPTIONAL:System.Xml.XmlDocumentFragment" OR \r\n  ReturnTypeIs "OPTIONAL:System.Xml.XmlEntity" OR \r\n  ReturnTypeIs "OPTIONAL:System.Xml.XmlLinkedNode" OR \r\n  ReturnTypeIs "OPTIONAL:System.Xml.XmlNotation" OR\r\n  ReturnTypeIs "OPTIONAL:System.Xml.XmlNode" )\r\n\r\n// The class System.Xml.XmlNode implements the interface System.Xml.Xpath.IXPathNavigable.\r\n// It is preferrable to return this interface instead of a concrete class.\r\n</CQLQuery>
         <CQLQuery Active="True" DisplayList="False" DisplayStat="True" DisplaySelectionView="False">// &lt;Name&gt;Types should not extend System.Xml.XmlDocument&lt;/Name&gt;\r\nWARN IF Count &gt; 0 IN SELECT TYPES WHERE DepthOfDeriveFrom "OPTIONAL:System.Xml.XmlDocument" == 1\r\n\r\n// Do not create a subclass of XmlDocument if you want to create an XML view of an underlying object model or data source.</CQLQuery>
       </CQLGroup>
     </CQLGroup>

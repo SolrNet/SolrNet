@@ -85,6 +85,17 @@ namespace SolrNet.Tests {
             Assert.AreEqual("Id", uniqueKey.Value);
         }
 
+        [Test]
+        public void GetRegisteredTypes() {
+            var m = new AttributesMappingManager();
+            var types = m.GetRegisteredTypes();
+            Assert.GreaterThan(types.Count, 0);
+            Assert.Contains(types, typeof(Entity));
+            Assert.Contains(types, typeof(InheritedEntity));
+            Assert.Contains(types, typeof(AnotherEntity));
+            Assert.DoesNotContain(types, typeof(NoProperties));
+        }
+
         public class NoProperties {}
 
 		public class Entity {

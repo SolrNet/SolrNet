@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using NHibernate.Event;
 using SolrNet;
 
@@ -22,6 +23,8 @@ namespace NHibernate.SolrNet.Tests {
         private readonly ISolrOperations<T> solr;
 
         public SolrNetListener(ISolrOperations<T> solr) {
+            if (solr == null)
+                throw new ArgumentNullException("solr");
             this.solr = solr;
         }
 

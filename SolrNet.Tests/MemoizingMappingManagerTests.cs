@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using MbUnit.Framework;
 using Rhino.Mocks;
@@ -53,6 +54,18 @@ namespace SolrNet.Tests {
                     mapper.GetUniqueKey(typeof (TestDocument));
                     mapper.GetUniqueKey(typeof(TestDocument));
                 });
+        }
+
+        [Test]
+        public void GetRegistered() {
+            var innerMapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
+            innerMapper.Expect(x => x.GetRegisteredTypes()).Repeat.Once().Return(new[] { typeof(TestDocument) });
+            var mapper = new MemoizingMappingManager(innerMapper);
+            var types = mapper.GetRegisteredTypes();
+            Assert.AreEqual(1, types.Count);
+            Assert.AreEqual(typeof (TestDocument), types.First());
+            types = mapper.GetRegisteredTypes();
+            innerMapper.VerifyAllExpectations();
         }
 
         public class TestDocument {

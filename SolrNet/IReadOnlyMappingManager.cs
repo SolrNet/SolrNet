@@ -38,5 +38,7 @@ namespace SolrNet {
         /// <param name="type"></param>
         /// <returns></returns>
         KeyValuePair<PropertyInfo, string> GetUniqueKey(Type type);
+
+        ICollection<Type> GetRegisteredTypes();
     }
 }

@@ -130,6 +130,15 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, inheritedEntityFields.Count);
         }
 
+        [Test]
+        public void GetRegistered() {
+            var mgr = new MappingManager();
+            mgr.Add(typeof(Entity).GetProperty("Id"), "id");
+            var types = mgr.GetRegisteredTypes();
+            Assert.AreEqual(1, types.Count);
+            Assert.Contains(types, typeof(Entity));
+        }
+
     }
 
     public class Entity {

@@ -145,5 +145,15 @@ namespace SolrNet.Utils {
                     return true;
             return false;
         }
+
+        public static IEnumerable<T> Distinct<T>(IEnumerable<T> l) {
+            var enumerated = new List<T>();
+            foreach (var e in l) {
+                if (enumerated.Contains(e))
+                    continue;
+                enumerated.Add(e);
+                yield return e;
+            }
+        }
 	}
 }

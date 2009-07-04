@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using SolrNet.Utils;
 
 namespace SolrNet.Mapping {
     /// <summary>
@@ -70,6 +71,10 @@ namespace SolrNet.Mapping {
                 throw new ArgumentNullException("type");
             var prop = uniqueKeys[type];
             return new KeyValuePair<PropertyInfo, string>(prop, mappings[type][prop]);
+        }
+
+        public ICollection<Type> GetRegisteredTypes() {
+            return new List<Type>(Func.Distinct(Func.Select(mappings, k => k.Key)));
         }
     }
 }

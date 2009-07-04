@@ -74,8 +74,14 @@ namespace SolrNet.Tests {
         public void Inherited() {
             var m = new AllPropertiesMappingManager();
             var fields = m.GetFields(typeof (InheritedEntity));
-            Assert.AreEqual(3, fields.Count);
-            
+            Assert.AreEqual(3, fields.Count);            
+        }
+
+        [Test]
+        public void GetRegistered() {
+            var m = new AllPropertiesMappingManager();
+            var types = m.GetRegisteredTypes();
+            Assert.IsEmpty(types);
         }
 
         public class NoProperties {}

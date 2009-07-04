@@ -26,10 +26,14 @@ namespace SolrNet.Mapping {
     public class MemoizingMappingManager : IReadOnlyMappingManager {
         private readonly Converter<Type, ICollection<KeyValuePair<PropertyInfo, string>>> memoGetFields;
         private readonly Converter<Type, KeyValuePair<PropertyInfo, string>> memoGetUniqueKey;
+        private readonly IReadOnlyMappingManager mapper;
+        private ICollection<Type> registeredTypes;
+        private readonly object registeredTypesLock = new object();
 
         public MemoizingMappingManager(IReadOnlyMappingManager mapper) {
             memoGetFields = Memoizer.Memoize<Type, ICollection<KeyValuePair<PropertyInfo, string>>>(mapper.GetFields);
             memoGetUniqueKey = Memoizer.Memoize<Type, KeyValuePair<PropertyInfo, string>>(mapper.GetUniqueKey);
+            this.mapper = mapper;
         }
 
         /// <summary>
@@ -43,6 +47,14 @@ namespace SolrNet.Mapping {
 
         public KeyValuePair<PropertyInfo, string> GetUniqueKey(Type type) {
             return memoGetUniqueKey(type);
+        }
+
+        public ICollection<Type> GetRegisteredTypes() {
+            lock (registeredTypesLock) {
+                if (registeredTypes == null)
+                    registeredTypes = mapper.GetRegisteredTypes();
+                return new List<Type>(registeredTypes);
+            }
         }
     }
 }

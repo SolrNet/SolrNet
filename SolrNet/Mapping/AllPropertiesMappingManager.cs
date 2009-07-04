@@ -43,6 +43,10 @@ namespace SolrNet.Mapping {
             }
         }
 
+        public ICollection<Type> GetRegisteredTypes() {
+            return new List<Type>();
+        }
+
         /// <summary>
         /// Sets the property that acts as unique key for a document type
         /// </summary>

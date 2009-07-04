@@ -26,11 +26,11 @@ namespace SolrNet.Mapping {
     /// Gets mapping info from attributes like <see cref="SolrFieldAttribute"/> and <see cref="SolrUniqueKeyAttribute"/>
     /// </summary>
     public class AttributesMappingManager : IReadOnlyMappingManager {
-        public IEnumerable<KeyValuePair<PropertyInfo, T[]>> GetPropertiesWithAttribute<T>(Type type) where T: Attribute {
+        public IEnumerable<KeyValuePair<PropertyInfo, T[]>> GetPropertiesWithAttribute<T>(Type type) where T : Attribute {
             var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
             var kvAttrs = Func.Select(props, prop => new KeyValuePair<PropertyInfo, T[]>(prop, GetCustomAttributes<T>(prop)));
             var propsAttrs = Func.Filter(kvAttrs, kv => kv.Value.Length > 0);
-            return propsAttrs;			
+            return propsAttrs;
         }
 
         public ICollection<KeyValuePair<PropertyInfo, string>> GetFields(Type type) {
@@ -39,8 +39,8 @@ namespace SolrNet.Mapping {
             return new List<KeyValuePair<PropertyInfo, string>>(fields);
         }
 
-        public T[] GetCustomAttributes<T>(PropertyInfo prop) where T: Attribute {
-            return (T[])prop.GetCustomAttributes(typeof(T), true);
+        public T[] GetCustomAttributes<T>(PropertyInfo prop) where T : Attribute {
+            return (T[]) prop.GetCustomAttributes(typeof (T), true);
         }
 
         public KeyValuePair<PropertyInfo, string> GetUniqueKey(Type type) {
@@ -51,6 +51,21 @@ namespace SolrNet.Mapping {
             } catch (InvalidOperationException) {
                 throw new NoUniqueKeyException(type);
             }
+        }
+
+        public ICollection<Type> GetRegisteredTypes() {
+            var types = new List<Type>();
+            foreach (var a in AppDomain.CurrentDomain.GetAssemblies()) {
+                try {
+                    foreach (var t in a.GetTypes()) {
+                        if (GetFields(t).Count > 0)
+                            types.Add(t);
+                    }
+                } catch (ReflectionTypeLoadException) {
+                    // if I can't get an assembly's types, just ignore it
+                }
+            }
+            return types;
         }
     }
 }

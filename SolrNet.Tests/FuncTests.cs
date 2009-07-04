@@ -87,5 +87,11 @@ namespace SolrNet.Tests {
             int[] l = Func.ToArray(Enumerable.Range(0, 5));
             Assert.AreElementsEqual(new[] {0,1,2,3,4}, l);
         }
+
+        [Test]
+        public void Distinct() {
+            var l = new[] {1, 1, 2, 3, 2, 4, 5};
+            Assert.AreElementsEqual(new[] {1,2,3,4,5}, Func.Distinct(l));
+        }
 	}
 }

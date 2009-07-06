@@ -16,73 +16,56 @@
 
 using System.Collections.Generic;
 using MbUnit.Framework;
+using Microsoft.Practices.ServiceLocation;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
 using SolrNet;
+using SolrNet.Commands.Parameters;
 
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]
-    public class ListenersTests {
+    public class SolrSessionTests {
         private ISessionFactory sessionFactory;
         private ISolrOperations<Entity> mockSolr;
 
+        public delegate ISolrQueryResults<Entity> SQuery(string q, QueryOptions options);
+
         [Test]
-        public void PostInsert_manual_flush() {
-            var entity = new Entity {Description = "pepe"};
-            mockSolr.Expect(x => x.Add(entity))
-                .Repeat.Once()
-                .Return(mockSolr);
-            mockSolr.Replay();
-            using (var session = sessionFactory.OpenSession()) {
-                session.FlushMode = FlushMode.Never;
-                session.Save(entity);
-                session.Flush();
+        public void QueryAll() {
+            var serviceLocator = MockRepository.GenerateMock<IServiceLocator>();
+            serviceLocator.Expect(x => x.GetService(typeof (ISolrReadOnlyOperations<Entity>))).Return(mockSolr);
+            ServiceLocator.SetLocatorProvider(() => serviceLocator);
+            mockSolr.Expect(x => x.Query("*:*", new QueryOptions()))
+                .IgnoreArguments()
+                .Do(new SQuery((s, o) => {
+                    Assert.AreEqual("*:*", s);
+                    return new SolrQueryResults<Entity>();
+                }))
+                ;
+            using (var session = new SolrSession(sessionFactory.OpenSession())) {
+                var entities = session.CreateSolrQuery("*:*").List<Entity>();
             }
-            mockSolr.VerifyAllExpectations();
         }
 
         [Test]
-        public void PostInsert_manual_flush_without_flush() {
-            var entity = new Entity {Description = "pepe"};
-            mockSolr.Expect(x => x.Add(entity))
-                .Repeat.Never()
-                .Return(mockSolr);
-            mockSolr.Replay();
-            using (var session = sessionFactory.OpenSession()) {
-                session.FlushMode = FlushMode.Never;
-                session.Save(entity);
+        public void QueryAll_with_pagination() {
+            var serviceLocator = MockRepository.GenerateMock<IServiceLocator>();
+            serviceLocator.Expect(x => x.GetService(typeof (ISolrReadOnlyOperations<Entity>))).Return(mockSolr);
+            ServiceLocator.SetLocatorProvider(() => serviceLocator);
+            mockSolr.Expect(x => x.Query("*:*", new QueryOptions()))
+                .IgnoreArguments()
+                .Do(new SQuery((s, o) => {
+                    Assert.AreEqual("*:*", s);
+                    Assert.AreEqual(5, o.Rows);
+                    return new SolrQueryResults<Entity>();
+                }))
+                ;
+            using (var session = new SolrSession(sessionFactory.OpenSession())) {
+                var entities = session.CreateSolrQuery("*:*")
+                    .SetMaxResults(5)
+                    .List<Entity>();
             }
-            mockSolr.VerifyAllExpectations();
-        }
-
-        [Test]
-        public void PostInsert_autoflush_without_flush() {
-            var entity = new Entity {Description = "pepe"};
-            mockSolr.Expect(x => x.Add(entity))
-                .Repeat.Once()
-                .Return(mockSolr);
-            mockSolr.Replay();
-            using (var session = sessionFactory.OpenSession()) {
-                session.Save(entity);
-            }
-            mockSolr.VerifyAllExpectations();
-        }
-
-        [Test]
-        public void PostInsert_without_commit() {
-            var entity = new Entity();
-            mockSolr.Expect(x => x.Add(entity))
-                .Repeat.Never()
-                .Return(mockSolr);
-            mockSolr.Replay();
-            using (var session = sessionFactory.OpenSession()) {
-                using (var tx = session.BeginTransaction()) {
-                    session.Save(entity);
-                    tx.Rollback();
-                }
-            }
-            mockSolr.VerifyAllExpectations();
         }
 
         [SetUp]

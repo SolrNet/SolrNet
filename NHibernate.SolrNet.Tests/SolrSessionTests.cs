@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using NHibernate.Cfg;
@@ -53,17 +54,22 @@ namespace NHibernate.SolrNet.Tests {
             var serviceLocator = MockRepository.GenerateMock<IServiceLocator>();
             serviceLocator.Expect(x => x.GetService(typeof (ISolrReadOnlyOperations<Entity>))).Return(mockSolr);
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
-            mockSolr.Expect(x => x.Query("*:*", new QueryOptions()))
+            mockSolr.Expect(x => x.Query("", new QueryOptions()))
                 .IgnoreArguments()
                 .Do(new SQuery((s, o) => {
-                    Assert.AreEqual("*:*", s);
+                    Assert.AreEqual("id:123456", s);
                     Assert.AreEqual(5, o.Rows);
+                    Assert.AreEqual(3, o.Start);
+                    Assert.AreEqual(1, o.OrderBy.Count);
+                    Assert.AreEqual("pepe asc", o.OrderBy.First().ToString());
                     return new SolrQueryResults<Entity>();
                 }))
                 ;
             using (var session = new SolrSession(sessionFactory.OpenSession())) {
-                var entities = session.CreateSolrQuery("*:*")
+                var entities = session.CreateSolrQuery(new SolrQueryByField("id", "123456"))
                     .SetMaxResults(5)
+                    .SetFirstResult(3)
+                    .SetSort(Criterion.Order.Asc("pepe"))
                     .List<Entity>();
             }
         }

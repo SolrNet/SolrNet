@@ -19,7 +19,7 @@ using Microsoft.Practices.ServiceLocation;
 using NHibernate.Event;
 using SolrNet;
 
-namespace NHibernate.SolrNet.Tests {
+namespace NHibernate.SolrNet {
     public class CfgHelper {
 
         private readonly IReadOnlyMappingManager mapper;

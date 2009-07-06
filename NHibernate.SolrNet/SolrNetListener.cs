@@ -18,7 +18,7 @@ using System;
 using NHibernate.Event;
 using SolrNet;
 
-namespace NHibernate.SolrNet.Tests {
+namespace NHibernate.SolrNet {
     public class SolrNetListener<T> : IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener {
         private readonly ISolrOperations<T> solr;
 

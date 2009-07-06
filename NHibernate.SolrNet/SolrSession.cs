@@ -18,7 +18,7 @@ using System;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet;
 
-namespace NHibernate.SolrNet.Tests {
+namespace NHibernate.SolrNet {
     public class SolrSession : DelegatingSession, ISolrSession {
         private readonly ISession session;
         private readonly IServiceProvider provider;

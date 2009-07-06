@@ -15,12 +15,19 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using NHibernate.Event;
 using SolrNet;
 
 namespace NHibernate.SolrNet {
-    public class SolrNetListener<T> : IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener {
+    public class SolrNetListener<T> : IEvictEventListener, IAutoFlushEventListener, IFlushEventListener, IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener where T : class {
         private readonly ISolrOperations<T> solr;
+        private readonly IDictionary<ISession, List<T>> entitiesToAdd = new Dictionary<ISession, List<T>>();
+        private readonly IDictionary<ISession, List<T>> entitiesToDelete = new Dictionary<ISession, List<T>>();
+        private readonly object addLock = new object();
+        private readonly object deleteLock = new object();
+
+        public bool Commit { get; set; }
 
         public SolrNetListener(ISolrOperations<T> solr) {
             if (solr == null)
@@ -28,22 +35,88 @@ namespace NHibernate.SolrNet {
             this.solr = solr;
         }
 
-        public virtual void OnPostInsert(PostInsertEvent e) {
-            if (e.Entity.GetType() != typeof (T))
-                return;
-            solr.Add((T) e.Entity);
+        private void Add(ISession s, T entity) {
+            lock (addLock) {
+                if (!entitiesToAdd.ContainsKey(s))
+                    entitiesToAdd[s] = new List<T>();
+                entitiesToAdd[s].Add(entity);
+            }
         }
+
+        private void Delete(ISession s, T entity) {
+            lock (deleteLock) {
+                if (!entitiesToDelete.ContainsKey(s))
+                    entitiesToDelete[s] = new List<T>();
+                entitiesToDelete[s].Add(entity);
+            }
+        }
+
+        public virtual void OnPostInsert(PostInsertEvent e) {
+            UpdateInternal(e, e.Entity as T);
+        }
+
+        public virtual void OnPostUpdate(PostUpdateEvent e) {
+            UpdateInternal(e, e.Entity as T);
+        }
+
+        private readonly List<FlushMode> deferFlushModes = new List<FlushMode> {
+            FlushMode.Commit, 
+            FlushMode.Never,
+        };
+
+        public bool DeferAction(IEventSource e) {
+            if (e.TransactionInProgress)
+                return true;
+            var s = (ISession) e;
+            return deferFlushModes.Contains(s.FlushMode);
+        }
+
+        public void UpdateInternal(AbstractEvent e, T entity) {
+            if (entity == null)
+                return;
+            if (DeferAction(e.Session))
+                Add(e.Session, entity);
+            else
+                solr.Add(entity);
+        }
+
 
         public virtual void OnPostDelete(PostDeleteEvent e) {
             if (e.Entity.GetType() != typeof (T))
                 return;
-            solr.Delete((T) e.Entity);
+            if (DeferAction(e.Session))
+                Delete(e.Session, (T) e.Entity);
+            else
+                solr.Delete((T) e.Entity);
         }
 
-        public virtual void OnPostUpdate(PostUpdateEvent e) {
-            if (e.Entity.GetType() != typeof (T))
-                return;
-            solr.Add((T) e.Entity);
+        public bool DoWithEntities(IDictionary<ISession, List<T>> entities, ISession s, Action<T> action) {
+            var hasToDo = entities.ContainsKey(s);
+            if (hasToDo)
+                foreach (var i in entities[s])
+                    action(i);
+            entities.Remove(s);
+            return hasToDo;
+        }
+
+        public void OnFlush(FlushEvent e) {
+            OnFlushInternal(e);
+        }
+
+        public void OnFlushInternal(AbstractEvent e) {
+            var added = DoWithEntities(entitiesToAdd, e.Session, d => solr.Add(d));
+            var deleted = DoWithEntities(entitiesToDelete, e.Session, d => solr.Delete(d));
+            if (Commit && (added || deleted))
+                solr.Commit();
+        }
+
+        public void OnEvict(EvictEvent e) {
+            entitiesToAdd.Remove(e.Session);
+            entitiesToDelete.Remove(e.Session);
+        }
+
+        public void OnAutoFlush(AutoFlushEvent e) {
+            OnFlushInternal(e);
         }
     }
 }

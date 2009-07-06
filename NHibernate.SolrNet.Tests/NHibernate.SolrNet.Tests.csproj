@@ -72,8 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CfgHelperTests.cs" />
+    <Compile Include="ConfigurationExtensions.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="Tests.cs" />
+    <Compile Include="ListenersTests.cs" />
     <Compile Include="NHibernateMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

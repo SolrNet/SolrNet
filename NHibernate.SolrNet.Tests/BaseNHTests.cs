@@ -14,9 +14,7 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
 using MbUnit.Framework;
-using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
 using SolrNet;
@@ -29,15 +27,7 @@ namespace NHibernate.SolrNet.Tests {
 
         [SetUp]
         public void FixtureSetup() {
-            var nhConfig = new Configuration {
-                Properties = new Dictionary<string, string> {
-                    {Environment.ConnectionProvider, "NHibernate.Connection.DriverConnectionProvider"},
-                    {Environment.ConnectionDriver, "NHibernate.Driver.SQLite20Driver"},
-                    {Environment.Dialect, "NHibernate.Dialect.SQLiteDialect"},
-                    {Environment.ConnectionString, "Data Source=test.db;Version=3;New=True;"},
-                }
-            };
-            nhConfig.Register(typeof (Entity));
+            var nhConfig = ConfigurationExtensions.GetNhConfig();
             mockSolr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
             nhConfig.SetListener(new SolrNetListener<Entity>(mockSolr));
             new SchemaExport(nhConfig).Execute(false, true, false, false);

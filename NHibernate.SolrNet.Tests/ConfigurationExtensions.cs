@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using NHibernate.Event;
+using Environment=NHibernate.Cfg.Environment;
 
 namespace NHibernate.SolrNet.Tests {
     public static class ConfigurationExtensions {
@@ -44,6 +45,19 @@ namespace NHibernate.SolrNet.Tests {
                 if (listenerDict.ContainsKey(intf))
                     foreach (var t in listenerDict[intf])
                         config.SetListener(t, listener);
+        }
+
+        public static Configuration GetNhConfig() {
+            var nhConfig = new Configuration {
+                Properties = new Dictionary<string, string> {
+                    {Environment.ConnectionProvider, "NHibernate.Connection.DriverConnectionProvider"},
+                    {Environment.ConnectionDriver, "NHibernate.Driver.SQLite20Driver"},
+                    {Environment.Dialect, "NHibernate.Dialect.SQLiteDialect"},
+                    {Environment.ConnectionString, "Data Source=test.db;Version=3;New=True;"},
+                }
+            };
+            nhConfig.Register(typeof (Entity));
+            return nhConfig;
         }
     }
 }

@@ -15,12 +15,10 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using Rhino.Mocks;
 using SolrNet;
-using Environment = NHibernate.Cfg.Environment;
 
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]
@@ -34,7 +32,7 @@ namespace NHibernate.SolrNet.Tests {
             var solr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
             serviceLocator.Expect(x => x.GetService(typeof(ISolrOperations<Entity>))).Return(solr);
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
-            var nhConfig = GetNhConfig();
+            var nhConfig = ConfigurationExtensions.GetNhConfig();
             var helper = new CfgHelper();
             helper.Configure(nhConfig);
             Assert.GreaterThan(nhConfig.EventListeners.PostInsertEventListeners.Length, 0);
@@ -46,7 +44,7 @@ namespace NHibernate.SolrNet.Tests {
 
         [Test]
         public void Configure_from_serviceprovider() {
-            var nhConfig = GetNhConfig();
+            var nhConfig = ConfigurationExtensions.GetNhConfig();
             var provider = MockRepository.GenerateMock<IServiceProvider>();
             var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
             mapper.Expect(x => x.GetRegisteredTypes()).Return(new[] {typeof (Entity)});
@@ -62,17 +60,5 @@ namespace NHibernate.SolrNet.Tests {
             Assert.IsInstanceOfType<SolrNetListener<Entity>>(listener);
         }
 
-        private Configuration GetNhConfig() {
-            var nhConfig = new Configuration {
-                Properties = new Dictionary<string, string> {
-                    {Environment.ConnectionProvider, "NHibernate.Connection.DriverConnectionProvider"},
-                    {Environment.ConnectionDriver, "NHibernate.Driver.SQLite20Driver"},
-                    {Environment.Dialect, "NHibernate.Dialect.SQLiteDialect"},
-                    {Environment.ConnectionString, "Data Source=test.db;Version=3;New=True;"},
-                }
-            };
-            nhConfig.Register(typeof (Entity));
-            return nhConfig;
-        }
     }
 }

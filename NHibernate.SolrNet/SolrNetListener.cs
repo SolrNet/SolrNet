@@ -17,10 +17,11 @@
 using System;
 using System.Collections.Generic;
 using NHibernate.Event;
+using NHibernate.Event.Default;
 using SolrNet;
 
 namespace NHibernate.SolrNet {
-    public class SolrNetListener<T> : IEvictEventListener, IAutoFlushEventListener, IFlushEventListener, IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener where T : class {
+    public class SolrNetListener<T> : ICommitSetting, IAutoFlushEventListener, IFlushEventListener, IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener where T : class {
         private readonly ISolrOperations<T> solr;
         private readonly IDictionary<ISession, List<T>> entitiesToAdd = new Dictionary<ISession, List<T>>();
         private readonly IDictionary<ISession, List<T>> entitiesToDelete = new Dictionary<ISession, List<T>>();
@@ -76,8 +77,11 @@ namespace NHibernate.SolrNet {
                 return;
             if (DeferAction(e.Session))
                 Add(e.Session, entity);
-            else
+            else {
                 solr.Add(entity);
+                if (Commit)
+                    solr.Commit();
+            }
         }
 
 
@@ -86,8 +90,11 @@ namespace NHibernate.SolrNet {
                 return;
             if (DeferAction(e.Session))
                 Delete(e.Session, (T) e.Entity);
-            else
-                solr.Delete((T) e.Entity);
+            else {
+                solr.Delete((T)e.Entity);
+                if (Commit)
+                    solr.Commit();
+            }
         }
 
         public bool DoWithEntities(IDictionary<ISession, List<T>> entities, ISession s, Action<T> action) {
@@ -101,6 +108,8 @@ namespace NHibernate.SolrNet {
 
         public void OnFlush(FlushEvent e) {
             OnFlushInternal(e);
+            var l = new DefaultFlushEventListener();
+            l.OnFlush(e); // NHibernate seems to allow only one flush listener, and it overrides the default listener? TODO CHECK
         }
 
         public void OnFlushInternal(AbstractEvent e) {
@@ -110,13 +119,10 @@ namespace NHibernate.SolrNet {
                 solr.Commit();
         }
 
-        public void OnEvict(EvictEvent e) {
-            entitiesToAdd.Remove(e.Session);
-            entitiesToDelete.Remove(e.Session);
-        }
-
         public void OnAutoFlush(AutoFlushEvent e) {
             OnFlushInternal(e);
+            var l = new DefaultAutoFlushEventListener();
+            l.OnAutoFlush(e);
         }
     }
 }

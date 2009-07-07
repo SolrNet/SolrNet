@@ -16,38 +16,21 @@
 
 using System;
 using System.Collections.Generic;
-using NHibernate.Event;
 using Environment=NHibernate.Cfg.Environment;
 
 namespace NHibernate.SolrNet.Tests {
     public static class ConfigurationExtensions {
-        private static readonly Dictionary<System.Type, ListenerType[]> listenerDict = new Dictionary<System.Type, ListenerType[]> {
-            {typeof (IEvictEventListener), new[] {ListenerType.Evict}},
-            {typeof (IPostInsertEventListener), new[] {ListenerType.PostInsert, ListenerType.PostCommitInsert}},
-            {typeof (IPostDeleteEventListener), new[] {ListenerType.PostDelete, ListenerType.PostCommitDelete}},
-            {typeof (IPostUpdateEventListener), new[] {ListenerType.PostUpdate, ListenerType.PostCommitUpdate}},
-            {typeof (IPreInsertEventListener), new[] {ListenerType.PreInsert}},
-            {typeof (IPreDeleteEventListener), new[] {ListenerType.PreDelete}},
-            {typeof (IPreUpdateEventListener), new[] {ListenerType.PreUpdate}},
-            {typeof (ILoadEventListener), new[] {ListenerType.Load}},
-            {typeof (ILockEventListener), new[] {ListenerType.Lock}},
-            {typeof (IRefreshEventListener), new[] {ListenerType.Refresh}},
-            {typeof (IMergeEventListener), new[] {ListenerType.Merge}},
-            {typeof (IFlushEventListener), new[] {ListenerType.Flush}},
-            {typeof (IFlushEntityEventListener), new[] {ListenerType.FlushEntity}},
-            {typeof (IAutoFlushEventListener), new[] {ListenerType.Autoflush}},
-        };
 
         public static void SetListener(this Cfg.Configuration config, object listener) {
             if (listener == null)
                 throw new ArgumentNullException("listener");
             foreach (var intf in listener.GetType().GetInterfaces())
-                if (listenerDict.ContainsKey(intf))
-                    foreach (var t in listenerDict[intf])
+                if (CfgHelper.ListenerDict.ContainsKey(intf))
+                    foreach (var t in CfgHelper.ListenerDict[intf])
                         config.SetListener(t, listener);
         }
 
-        public static Configuration GetNhConfig() {
+        public static Configuration GetEmptyNHConfig() {
             var nhConfig = new Configuration {
                 Properties = new Dictionary<string, string> {
                     {Environment.ConnectionProvider, "NHibernate.Connection.DriverConnectionProvider"},
@@ -56,6 +39,11 @@ namespace NHibernate.SolrNet.Tests {
                     {Environment.ConnectionString, "Data Source=test.db;Version=3;New=True;"},
                 }
             };
+            return nhConfig;
+        }
+
+        public static Configuration GetNhConfig() {
+            var nhConfig = GetEmptyNHConfig();
             nhConfig.Register(typeof (Entity));
             return nhConfig;
         }

@@ -14,12 +14,8 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-
-namespace NHibernate.SolrNet.Tests {
-    public class Entity {
-        public virtual string Id { get; set; }
-        public virtual string Description { get; set; }
-        public virtual IList<string> Tags { get; set; }
+namespace NHibernate.SolrNet {
+    public interface ICommitSetting {
+        bool Commit { get; set; }
     }
 }

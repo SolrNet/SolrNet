@@ -34,7 +34,7 @@ namespace NHibernate.SolrNet.Tests {
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
             var nhConfig = ConfigurationExtensions.GetNhConfig();
             var helper = new CfgHelper();
-            helper.Configure(nhConfig);
+            helper.Configure(nhConfig, true);
             Assert.GreaterThan(nhConfig.EventListeners.PostInsertEventListeners.Length, 0);
             Assert.GreaterThan(nhConfig.EventListeners.PostUpdateEventListeners.Length, 0);
             Assert.GreaterThan(nhConfig.EventListeners.PostDeleteEventListeners.Length, 0);
@@ -52,7 +52,7 @@ namespace NHibernate.SolrNet.Tests {
             provider.Expect(x => x.GetService(typeof (IReadOnlyMappingManager))).Return(mapper);
             provider.Expect(x => x.GetService(typeof (ISolrOperations<Entity>))).Return(solr);
             var helper = new CfgHelper(provider);
-            helper.Configure(nhConfig);
+            helper.Configure(nhConfig, true);
             Assert.GreaterThan(nhConfig.EventListeners.PostInsertEventListeners.Length, 0);
             Assert.GreaterThan(nhConfig.EventListeners.PostUpdateEventListeners.Length, 0);
             Assert.GreaterThan(nhConfig.EventListeners.PostDeleteEventListeners.Length, 0);

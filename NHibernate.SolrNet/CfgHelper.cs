@@ -15,12 +15,33 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
+using NHibernate.Cfg;
 using NHibernate.Event;
 using SolrNet;
 
 namespace NHibernate.SolrNet {
     public class CfgHelper {
+
+        public static readonly Dictionary<System.Type, ListenerType[]> ListenerDict = new Dictionary<System.Type, ListenerType[]> {
+            {typeof (IEvictEventListener), new[] {ListenerType.Evict}},
+            {typeof (IPostInsertEventListener), new[] {ListenerType.PostInsert, ListenerType.PostCommitInsert}},
+            {typeof (IPostDeleteEventListener), new[] {ListenerType.PostDelete, ListenerType.PostCommitDelete}},
+            {typeof (IPostUpdateEventListener), new[] {ListenerType.PostUpdate, ListenerType.PostCommitUpdate}},
+            {typeof (IPreInsertEventListener), new[] {ListenerType.PreInsert}},
+            {typeof (IPreDeleteEventListener), new[] {ListenerType.PreDelete}},
+            {typeof (IPreUpdateEventListener), new[] {ListenerType.PreUpdate}},
+            {typeof (ILoadEventListener), new[] {ListenerType.Load}},
+            {typeof (ILockEventListener), new[] {ListenerType.Lock}},
+            {typeof (IRefreshEventListener), new[] {ListenerType.Refresh}},
+            {typeof (IMergeEventListener), new[] {ListenerType.Merge}},
+            {typeof (IFlushEventListener), new[] {ListenerType.Flush}},
+            {typeof (IFlushEntityEventListener), new[] {ListenerType.FlushEntity}},
+            {typeof (IAutoFlushEventListener), new[] {ListenerType.Autoflush}},
+        };
+
+
 
         private readonly IReadOnlyMappingManager mapper;
         private readonly IServiceProvider provider;
@@ -43,17 +64,26 @@ namespace NHibernate.SolrNet {
             mapper = ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>();
         }
 
-        public Cfg.Configuration Configure(Cfg.Configuration config) {
+        public Configuration Configure(Configuration config, bool autoCommit) {
             foreach (var t in mapper.GetRegisteredTypes()) {
                 var listenerType = typeof (SolrNetListener<>).MakeGenericType(t);
                 var solrType = typeof (ISolrOperations<>).MakeGenericType(t);
                 var solr = provider.GetService(solrType);
-                var listener = Activator.CreateInstance(listenerType, solr);
-                config.SetListener(ListenerType.PostInsert, listener);
-                config.SetListener(ListenerType.PostDelete, listener);
-                config.SetListener(ListenerType.PostUpdate, listener);
+                var listener = (ICommitSetting) Activator.CreateInstance(listenerType, solr);
+                listener.Commit = autoCommit;
+                SetListener(config, listener);
             }
             return config;
         }
+
+        public void SetListener(Configuration config, object listener) {
+            if (listener == null)
+                throw new ArgumentNullException("listener");
+            foreach (var intf in listener.GetType().GetInterfaces())
+                if (ListenerDict.ContainsKey(intf))
+                    foreach (var t in ListenerDict[intf])
+                        config.SetListener(t, listener);
+        }
+
     }
 }

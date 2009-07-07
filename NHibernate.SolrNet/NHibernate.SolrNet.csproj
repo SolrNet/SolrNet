@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="CfgHelper.cs" />
     <Compile Include="DelegatingSession.cs" />
+    <Compile Include="ICommitSetting.cs" />
     <Compile Include="INHSolrQuery.cs" />
     <Compile Include="ISolrSession.cs" />
     <Compile Include="NHSolrQueryImpl.cs" />

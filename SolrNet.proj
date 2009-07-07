@@ -25,6 +25,7 @@
     	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\$(BuildConfig)\HttpWebAdapters.dll" />
     	<MergeAsm Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration\bin\$(BuildConfig)\Castle.Facilities.SolrNetIntegration.dll" />
     	<MergeAsm Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet\bin\$(BuildConfig)\Ninject.Integration.SolrNet.dll"/>
+    	<MergeAsm Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet\bin\$(BuildConfig)\NHibernate.SolrNet.dll"/>
 		</ItemGroup>
     <RemoveDir Directories="$(MergedOutputPath)"/>
     <MakeDir Directories="$(MergedOutputPath)" ContinueOnError="true"/>
@@ -33,6 +34,8 @@
 			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Castle.*.dll"/>
 			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Microsoft.Practices.ServiceLocation.dll"/>
 			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Ninject.Core.dll"/>
+			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\NHibernate.dll"/>
+			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\log4net.dll"/>
 		</ItemGroup>
 		<Copy SourceFiles="@(CopyToMerged)" DestinationFolder="$(MergedOutputPath)"/>
 	</Target>
@@ -54,6 +57,7 @@
   		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>
   		<TestAssemblies Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration.Tests\bin\Debug\Castle.Facilities.SolrNetIntegration.Tests.dll"/>
   		<TestAssemblies Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet.Tests\bin\Debug\Ninject.Integration.SolrNet.Tests.dll"/>
+  		<TestAssemblies Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet.Tests\bin\Debug\NHibernate.SolrNet.Tests.dll"/>
   		<TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
   	</ItemGroup>
     <Gallio RunnerExtensions="TeamCityExtension,Gallio.TeamCityIntegration" IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Assemblies="@(TestAssemblies)">

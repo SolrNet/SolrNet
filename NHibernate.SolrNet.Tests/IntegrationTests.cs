@@ -19,6 +19,8 @@ using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using NHibernate.Tool.hbm2ddl;
 using SolrNet;
+using SolrNet.Impl;
+using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Mapping;
 
 namespace NHibernate.SolrNet.Tests {
@@ -35,15 +37,20 @@ namespace NHibernate.SolrNet.Tests {
             var cfgHelper = new CfgHelper();
             cfgHelper.Configure(cfg, true);
 
-            using (var sessionFactory = cfg.BuildSessionFactory())
-            using (var session = sessionFactory.OpenSession())
-            using (var tx = session.BeginTransaction()) {
-                session.Save(new Entity {
-                    Id = "abcd",
-                    Description = "Testing NH-Solr integration",
-                    Tags = new[] {"cat1", "aoe"},
-                });
-                tx.Commit();
+            using (var sessionFactory = cfg.BuildSessionFactory()) {
+                using (var session = sessionFactory.OpenSession()) {
+                    session.Save(new Entity {
+                        Id = "abcd",
+                        Description = "Testing NH-Solr integration",
+                        Tags = new[] { "cat1", "aoe" },
+                    });
+                    session.Flush();
+                }
+                using (var session = new SolrSession(sessionFactory.OpenSession())) {
+                    var entities = session.CreateSolrQuery("solr").List<Entity>();
+                    Assert.AreEqual(1, entities.Count);
+                    Assert.AreEqual(2, entities[0].Tags.Count);
+                }
             }
         }
 
@@ -63,12 +70,19 @@ namespace NHibernate.SolrNet.Tests {
         }
 
         private void SetupSolr() {
+            Startup.InitContainer();
+
             Startup.Container.Remove<IReadOnlyMappingManager>();
             var mapper = new MappingManager();
             mapper.Add(typeof(Entity).GetProperty("Description"), "name");
             mapper.Add(typeof(Entity).GetProperty("Id"), "id");
             mapper.Add(typeof(Entity).GetProperty("Tags"), "cat");
             Startup.Container.Register<IReadOnlyMappingManager>(c => mapper);
+
+            Startup.Container.Remove<ISolrDocumentPropertyVisitor>();
+            var propertyVisitor = new DefaultDocumentVisitor(mapper, Startup.Container.GetInstance<ISolrFieldParser>());
+            Startup.Container.Register<ISolrDocumentPropertyVisitor>(c => propertyVisitor);
+
             Startup.Init<Entity>("http://localhost:8983/solr");
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Entity>>();
             solr.Delete(SolrQuery.All).Commit();

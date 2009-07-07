@@ -27,9 +27,15 @@ namespace SolrNet {
     /// SolrNet initialization manager
     /// </summary>
     public static class Startup {
+        public static readonly Container Container = new Container();
+
         static Startup() {
-            Container = new Container();
+            InitContainer();
+        }
+
+        public static void InitContainer() {
             ServiceLocator.SetLocatorProvider(() => Container);
+            Container.Clear();
             var mapper = new MemoizingMappingManager(new AttributesMappingManager());
             Container.Register<IReadOnlyMappingManager>(c => mapper);
 
@@ -44,10 +50,7 @@ namespace SolrNet {
 
             var rng = new RNG();
             Container.Register<IRNG>(c => rng);
-
         }
-
-        public static readonly Container Container;
 
         /// <summary>
         /// Initializes SolrNet with the built-in container

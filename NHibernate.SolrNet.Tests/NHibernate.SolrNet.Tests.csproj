@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseNHTests.cs" />
     <Compile Include="CfgHelperTests.cs" />
     <Compile Include="ConfigurationExtensions.cs" />
     <Compile Include="Entity.cs" />

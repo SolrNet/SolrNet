@@ -16,6 +16,7 @@
 
 using System;
 using Microsoft.Practices.ServiceLocation;
+using NHibernate.SolrNet.Impl;
 using SolrNet;
 
 namespace NHibernate.SolrNet {

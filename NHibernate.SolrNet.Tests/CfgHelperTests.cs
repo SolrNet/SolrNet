@@ -17,6 +17,7 @@
 using System;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
+using NHibernate.SolrNet.Impl;
 using Rhino.Mocks;
 using SolrNet;
 

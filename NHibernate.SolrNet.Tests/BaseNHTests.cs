@@ -15,6 +15,7 @@
 #endregion
 
 using MbUnit.Framework;
+using NHibernate.SolrNet.Impl;
 using NHibernate.Tool.hbm2ddl;
 using Rhino.Mocks;
 using SolrNet;

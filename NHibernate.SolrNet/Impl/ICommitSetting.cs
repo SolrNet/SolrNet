@@ -14,7 +14,7 @@
 // limitations under the License.
 #endregion
 
-namespace NHibernate.SolrNet {
+namespace NHibernate.SolrNet.Impl {
     public interface ICommitSetting {
         bool Commit { get; set; }
     }

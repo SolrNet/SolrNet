@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
 using NHibernate.Cfg;
 using NHibernate.Event;
+using NHibernate.SolrNet.Impl;
 using SolrNet;
 
 namespace NHibernate.SolrNet {
@@ -83,6 +84,14 @@ namespace NHibernate.SolrNet {
                 if (ListenerDict.ContainsKey(intf))
                     foreach (var t in ListenerDict[intf])
                         config.SetListener(t, listener);
+        }
+
+        public ISolrSession OpenSession(ISession session) {
+            return new SolrSession(session, provider);
+        }
+
+        public ISolrSession OpenSession(ISessionFactory sessionFactory) {
+            return OpenSession(sessionFactory.OpenSession());
         }
 
     }

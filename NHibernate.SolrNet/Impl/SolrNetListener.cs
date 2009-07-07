@@ -20,7 +20,7 @@ using NHibernate.Event;
 using NHibernate.Event.Default;
 using SolrNet;
 
-namespace NHibernate.SolrNet {
+namespace NHibernate.SolrNet.Impl {
     public class SolrNetListener<T> : ICommitSetting, IAutoFlushEventListener, IFlushEventListener, IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener where T : class {
         private readonly ISolrOperations<T> solr;
         private readonly IDictionary<ISession, List<T>> entitiesToAdd = new Dictionary<ISession, List<T>>();

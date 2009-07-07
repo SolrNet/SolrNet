@@ -45,13 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CfgHelper.cs" />
-    <Compile Include="DelegatingSession.cs" />
-    <Compile Include="ICommitSetting.cs" />
+    <Compile Include="Impl\DelegatingSession.cs" />
+    <Compile Include="Impl\ICommitSetting.cs" />
     <Compile Include="INHSolrQuery.cs" />
     <Compile Include="ISolrSession.cs" />
-    <Compile Include="NHSolrQueryImpl.cs" />
+    <Compile Include="Impl\NHSolrQueryImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SolrNetListener.cs" />
+    <Compile Include="Impl\SolrNetListener.cs" />
     <Compile Include="SolrSession.cs" />
   </ItemGroup>
   <ItemGroup>

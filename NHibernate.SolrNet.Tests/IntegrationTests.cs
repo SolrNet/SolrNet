@@ -46,7 +46,7 @@ namespace NHibernate.SolrNet.Tests {
                     });
                     session.Flush();
                 }
-                using (var session = new SolrSession(sessionFactory.OpenSession())) {
+                using (var session = cfgHelper.OpenSession(sessionFactory)) {
                     var entities = session.CreateSolrQuery("solr").List<Entity>();
                     Assert.AreEqual(1, entities.Count);
                     Assert.AreEqual(2, entities[0].Tags.Count);

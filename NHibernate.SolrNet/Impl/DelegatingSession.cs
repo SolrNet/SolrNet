@@ -21,7 +21,7 @@ using NHibernate.Engine;
 using NHibernate.Stat;
 using NHibernate.Type;
 
-namespace NHibernate.SolrNet {
+namespace NHibernate.SolrNet.Impl {
     public class DelegatingSession : ISession {
         private readonly ISession session;
 

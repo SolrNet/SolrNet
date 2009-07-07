@@ -24,7 +24,7 @@ using SolrNet;
 using SolrNet.Commands.Parameters;
 using Order=NHibernate.Criterion.Order;
 
-namespace NHibernate.SolrNet {
+namespace NHibernate.SolrNet.Impl {
     public class NHSolrQueryImpl : AbstractQueryImpl, INHSolrQuery {
         private readonly QueryOptions options = new QueryOptions();
         private readonly IServiceProvider provider;
@@ -39,11 +39,11 @@ namespace NHibernate.SolrNet {
         }
 
         public override int ExecuteUpdate() {
-            throw new HibernateException("Not supported operation");
+            throw new HibernateException("Operation not supported");
         }
 
         public override IEnumerable Enumerable() {
-            throw new HibernateException("Not supported operation");
+            throw new HibernateException("Operation not supported. Please use Enumerable<T>() instead.");
         }
 
         public override IEnumerable<T> Enumerable<T>() {
@@ -51,11 +51,11 @@ namespace NHibernate.SolrNet {
         }
 
         public override IList List() {
-            throw new HibernateException("Not supported operation");
+            throw new HibernateException("Operation not supported. Please use List<T>() instead.");
         }
 
         public override void List(IList results) {
-            throw new HibernateException("Not supported operation");
+            throw new HibernateException("Operation not supported. Please use List<T>() instead.");
         }
 
         public override IList<T> List<T>() {

@@ -30,8 +30,8 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
         /// <param name="parser"></param>
         public DefaultDocumentVisitor(IReadOnlyMappingManager mapper, ISolrFieldParser parser) {
             visitor = new AggregateDocumentVisitor(new ISolrDocumentPropertyVisitor[] {
-                new GenericDictionaryDocumentVisitor(mapper, parser),
                 new RegularDocumentVisitor(parser, mapper),
+                new GenericDictionaryDocumentVisitor(mapper, parser),
             });
         }
 

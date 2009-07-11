@@ -294,6 +294,17 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2.234m, doc.Dict["Two"]);
         }
 
+        [Test]
+        public void GenericDictionary_rest_of_fields() {
+            var mapper = new AttributesMappingManager();
+            var parser = new SolrQueryResultParser<TestDocWithGenDict5>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()));
+            var results = parser.Parse(responseXMLWithDictFloat);
+            Assert.AreEqual("1.45", results[0].DictOne);
+            Assert.IsNotNull(results[0].Dict);
+            Assert.AreEqual(1, results[0].Dict.Count);
+            Assert.AreEqual("2.234", results[0].Dict["DictTwo"]);
+        }
+
 		[Test]
 		public void WrongFieldDoesntThrow() {
             var mapper = new AttributesMappingManager();

@@ -18,70 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using MbUnit.Framework;
-using SolrNet.Attributes;
 using SolrNet.Impl;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Mapping;
 
 namespace SolrNet.Tests {
 	[TestFixture]
-	public class SolrDocumentSerializerTests {
-		public class SampleDoc : ISolrDocument {
-			[SolrField]
-			public string Id { get; set; }
-
-			[SolrField("Flower")]
-			public decimal Dd { get; set; }
-		}
-
-		public class TestDocWithCollections : ISolrDocument {
-			[SolrField]
-			public ICollection<string> coll {
-				get { return new[] {"one", "two"}; }
-			}
-		}
-
-		public class TestDocWithDate : ISolrDocument {
-			[SolrField]
-			public DateTime Date { get; set; }
-		}
-
-		public class TestDocWithBool : ISolrDocument {
-			[SolrField]
-			public bool B { get; set; }
-		}
-
-        public class TestDocWithGuid {
-            [SolrField]
-            public Guid Key { get; set; }
-        }
-
-        public class TestDocWithGenDict {
-            [SolrUniqueKey]
-            public int Id { get; set; }
-
-            [SolrField]
-            public IDictionary<string, string> Dict { get; set; }
-        }
-
-        public class TestDocWithGenDict2 {
-            [SolrUniqueKey]
-            public int Id { get; set; }
-
-            [SolrField]
-            public IDictionary<string, int> Dict { get; set; }
-        }
-
-        public class TestDocWithNullableDate {
-            [SolrField]
-            public DateTime? Date { get; set; }
-        }
-
-        public class TestDocWithString {
-            [SolrField]
-            public string Desc { get; set; }
-        }
-
+	public partial class SolrDocumentSerializerTests {
 		[Test]
 		public void Serializes() {
 		    var mapper = new AttributesMappingManager();
@@ -224,6 +167,24 @@ namespace SolrNet.Tests {
             xml.LoadXml(fs);
             Console.WriteLine(fs);
             Assert.AreEqual("<doc><field name=\"Id\">" + doc.Id + "</field><field name=\"Dictone\">1</field><field name=\"Dicttwo\">2</field></doc>", fs);
+        }
+
+        [Test]
+        public void SupportsGenericDictionary_rest() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithGenDict3>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithGenDict3 {
+                Id = 5,
+                Dict = new Dictionary<string, object> {
+                    {"one", 1},
+                    {"two", 2},
+                },
+            };
+            string fs = ser.Serialize(doc, null).OuterXml;
+            var xml = new XmlDocument();
+            xml.LoadXml(fs);
+            Console.WriteLine(fs);
+            Assert.AreEqual("<doc><field name=\"Id\">" + doc.Id + "</field><field name=\"one\">1</field><field name=\"two\">2</field></doc>", fs);            
         }
 
         [Test]

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 using System.Xml;
 using SolrNet.Utils;
 
@@ -72,19 +73,31 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
             return converter.ConvertFrom(s);
         }
 
+        public KeyValuePair<PropertyInfo, string> GetThisField(Type t, string fieldName) {
+            var allFields = mapper.GetFields(t);
+            var fieldsICanHandle = Func.Filter(allFields, f => CanHandleType(f.Key.PropertyType));
+            var matchingFields = Func.Filter(fieldsICanHandle, f => f.Value == "*" || fieldName.StartsWith(f.Value));
+            return Func.FirstOrDefault(matchingFields, f => !Func.Any(allFields, x => x.Value == fieldName && !Equals(x, f)));
+        }
+
+        public string GetKeyToUse(string k, string fieldName) {
+            if (fieldName == "*")
+                return k;
+            return k.Substring(fieldName.Length);
+        }
+
         public void Visit(object doc, string fieldName, XmlNode field) {
-            var allFields = mapper.GetFields(doc.GetType());
-            var thisField = Func.FirstOrDefault(allFields, p => fieldName.StartsWith(p.Value) && CanHandleType(p.Key.PropertyType));
+            var thisField = GetThisField(doc.GetType(), fieldName);
             if (thisField.Key == null)
                 return;
             var thisFieldName = thisField.Value;
-            if (!field.Attributes["name"].InnerText.StartsWith(thisFieldName))
-                return;
+            //if (!field.Attributes["name"].InnerText.StartsWith(thisFieldName))
+            //    return;
             var typeArgs = thisField.Key.PropertyType.GetGenericArguments();
             var keyType = typeArgs[0];
             var valueType = typeArgs[1];
             var dict = thisField.Key.GetValue(doc, null) ?? NewDictionary(typeArgs);
-            var key = field.Attributes["name"].InnerText.Substring(thisFieldName.Length);
+            var key = GetKeyToUse(field.Attributes["name"].InnerText, thisFieldName);
             var value = parser.Parse(field, valueType);
             SetKV(dict, ConvertTo(key, keyType), value);
             thisField.Key.SetValue(doc, dict, null);

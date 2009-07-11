@@ -50,7 +50,7 @@ namespace SolrNet.Impl {
                 foreach (var n in nodes) {
                     var fieldNode = xml.CreateElement("field");
                     var nameAtt = xml.CreateAttribute("name");
-                    nameAtt.InnerText = kv.Value + n.FieldNameSuffix;
+                    nameAtt.InnerText = (kv.Value == "*" ? "" : kv.Value) + n.FieldNameSuffix;
                     fieldNode.Attributes.Append(nameAtt);
                     fieldNode.InnerText = n.FieldValue;
                     docNode.AppendChild(fieldNode);

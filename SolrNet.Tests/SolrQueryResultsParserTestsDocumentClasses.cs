@@ -164,5 +164,13 @@ namespace SolrNet.Tests {
             public IDictionary<string, decimal> Dict { get; set; }
         }
 
+        public class TestDocWithGenDict5 {
+            [SolrField]
+            public string DictOne { get; set; }
+
+            [SolrField("*")]
+            public IDictionary<string, object> Dict { get; set; }
+        }
+
     }
 }

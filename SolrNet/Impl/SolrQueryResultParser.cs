@@ -15,14 +15,10 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using System.Xml;
-using SolrNet.Exceptions;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl {
     /// <summary>

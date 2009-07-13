@@ -140,6 +140,7 @@
     <Compile Include="Impl\SolrServer.cs" />
     <Compile Include="SortOrder.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="StatsResult.cs" />
     <Compile Include="Utils\Container.cs" />
     <Compile Include="Utils\Func.cs" />
     <Compile Include="Exceptions\InvalidURLException.cs" />

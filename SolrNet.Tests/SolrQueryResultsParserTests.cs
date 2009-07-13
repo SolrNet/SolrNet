@@ -22,6 +22,7 @@ using System.Xml;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using MbUnit.Framework;
+using Rhino.Mocks;
 using SolrNet.Attributes;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
@@ -460,6 +461,52 @@ namespace SolrNet.Tests {
             Assert.AreEqual(1, mlt[product1].Count);
             Assert.AreEqual(1, mlt[product2].Count);
             Console.WriteLine(mlt[product1][0].Id);
+        }
+
+        [Test]
+        public void ParseStatsResults() {
+            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
+            var docVisitor = MockRepository.GenerateMock<ISolrDocumentPropertyVisitor>();
+            var parser = new SolrQueryResultParser<Product>(mapper, docVisitor);
+            var xml = new XmlDocument();
+            xml.LoadXml(responseXmlWithStatsResults);
+            var docNode = xml.SelectSingleNode("response/lst[@name='stats']");
+            var stats = parser.ParseStats(docNode, "stats_fields");
+            Assert.AreEqual(1, stats.Count);
+            Assert.IsTrue(stats.ContainsKey("price"));
+            var priceStats = stats["price"];
+            Assert.AreEqual(0.0, priceStats.Min);
+            Assert.AreEqual(2199.0, priceStats.Max);
+            Assert.AreEqual(5251.2699999999995, priceStats.Sum);
+            Assert.AreEqual(15, priceStats.Count);
+            Assert.AreEqual(11, priceStats.Missing);
+            Assert.AreEqual(6038619.160300001, priceStats.SumOfSquares);
+            Assert.AreEqual(350.08466666666664, priceStats.Mean);
+            Assert.AreEqual(547.737557906113, priceStats.StdDev);
+            Assert.AreEqual(1, priceStats.FacetResults.Count);
+            Assert.IsTrue(priceStats.FacetResults.ContainsKey("inStock"));
+            var priceInStockStats = priceStats.FacetResults["inStock"];
+            Assert.AreEqual(2, priceInStockStats.Count);
+            Assert.IsTrue(priceInStockStats.ContainsKey("true"));
+            Assert.IsTrue(priceInStockStats.ContainsKey("false"));
+            var priceInStockFalseStats = priceInStockStats["false"];
+            Assert.AreEqual(11.5, priceInStockFalseStats.Min);
+            Assert.AreEqual(649.99, priceInStockFalseStats.Max);
+            Assert.AreEqual(1161.39, priceInStockFalseStats.Sum);
+            Assert.AreEqual(4, priceInStockFalseStats.Count);
+            Assert.AreEqual(0, priceInStockFalseStats.Missing);
+            Assert.AreEqual(653369.2551, priceInStockFalseStats.SumOfSquares);
+            Assert.AreEqual(290.3475, priceInStockFalseStats.Mean);
+            Assert.AreEqual(324.63444676281654, priceInStockFalseStats.StdDev);
+            var priceInStockTrueStats = priceInStockStats["true"];
+            Assert.AreEqual(0.0, priceInStockTrueStats.Min);
+            Assert.AreEqual(2199.0, priceInStockTrueStats.Max);
+            Assert.AreEqual(4089.879999999999, priceInStockTrueStats.Sum);
+            Assert.AreEqual(11, priceInStockTrueStats.Count);
+            Assert.AreEqual(0, priceInStockTrueStats.Missing);
+            Assert.AreEqual(5385249.905200001, priceInStockTrueStats.SumOfSquares);
+            Assert.AreEqual(371.8072727272727, priceInStockTrueStats.Mean);
+            Assert.AreEqual(621.6592938755265, priceInStockTrueStats.StdDev);
         }
 
         public enum AEnum {

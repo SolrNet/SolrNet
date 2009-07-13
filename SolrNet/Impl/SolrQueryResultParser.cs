@@ -27,7 +27,6 @@ namespace SolrNet.Impl {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : new() {
-
         private readonly IReadOnlyMappingManager mappingManager;
         private readonly ISolrDocumentPropertyVisitor propVisitor;
 
@@ -45,7 +44,7 @@ namespace SolrNet.Impl {
             var results = new List<T>();
             if (parentNode == null)
                 return results;
-            var allFields = mappingManager.GetFields(typeof(T));
+            var allFields = mappingManager.GetFields(typeof (T));
             var nodes = parentNode.SelectNodes("doc");
             if (nodes == null)
                 return results;
@@ -73,7 +72,7 @@ namespace SolrNet.Impl {
 
             foreach (var result in ParseResults(resultNode))
                 results.Add(result);
-            
+
             var mainFacetNode = xml.SelectSingleNode("response/lst[@name='facet_counts']");
             if (mainFacetNode != null) {
                 results.FacetQueries = ParseFacetQueries(mainFacetNode);
@@ -164,7 +163,7 @@ namespace SolrNet.Impl {
             if (paramNodes != null) {
                 foreach (XmlNode n in paramNodes) {
                     r.Params[n.Attributes["name"].InnerText] = n.InnerText;
-                }				
+                }
             }
             return r;
         }
@@ -242,7 +241,7 @@ namespace SolrNet.Impl {
                     if (suggestionNodes != null) {
                         foreach (XmlNode suggestionNode in suggestionNodes) {
                             suggestions.Add(suggestionNode.InnerText);
-                        }                        
+                        }
                     }
                     result.Suggestions = suggestions;
                     r.Add(result);
@@ -267,6 +266,69 @@ namespace SolrNet.Impl {
                 var docRefKey = docRef.Attributes["name"].InnerText;
                 var doc = resultsByKey[docRefKey];
                 r[doc] = ParseResults(docRef);
+            }
+            return r;
+        }
+
+        /// <summary>
+        /// Parses the stats results and uses recursion to get any facet results
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="selector">Start with 'stats_fields'</param>
+        /// <returns></returns>
+        public Dictionary<string, StatsResult> ParseStats(XmlNode node, string selector) {
+            var d = new Dictionary<string, StatsResult>();
+            var mainNode = node.SelectSingleNode(string.Format("lst[@name='{0}']", selector));
+            foreach (XmlNode n in mainNode.ChildNodes) {
+                var name = n.Attributes["name"].Value;
+                d[name] = ParseStatsNode(n);
+            }
+
+            return d;
+        }
+
+        public IDictionary<string, Dictionary<string, StatsResult>> ParseFacetNode(XmlNode node) {
+            var r = new Dictionary<string, Dictionary<string, StatsResult>>();
+            foreach (XmlNode n in node.ChildNodes) {
+                var facetName = n.Attributes["name"].Value;
+                r[facetName] = ParseStats(n.ParentNode, facetName);
+            }
+            return r;
+        }
+
+        public StatsResult ParseStatsNode(XmlNode node) {
+            var r = new StatsResult();
+            foreach (XmlNode statNode in node.ChildNodes) {
+                var name = statNode.Attributes["name"].Value;
+                switch (name) {
+                    case "min":
+                        r.Min = Convert.ToDouble(statNode.InnerText);
+                        break;
+                    case "max":
+                        r.Max = Convert.ToDouble(statNode.InnerText);
+                        break;
+                    case "sum":
+                        r.Sum = Convert.ToDouble(statNode.InnerText);
+                        break;
+                    case "sumOfSquares":
+                        r.SumOfSquares = Convert.ToDouble(statNode.InnerText);
+                        break;
+                    case "mean":
+                        r.Mean = Convert.ToDouble(statNode.InnerText);
+                        break;
+                    case "stddev":
+                        r.StdDev = Convert.ToDouble(statNode.InnerText);
+                        break;
+                    case "count":
+                        r.Count = Convert.ToInt64(statNode.InnerText);
+                        break;
+                    case "missing":
+                        r.Missing = Convert.ToInt64(statNode.InnerText);
+                        break;
+                    default:
+                        r.FacetResults = ParseFacetNode(statNode);
+                        break;
+                }
             }
             return r;
         }

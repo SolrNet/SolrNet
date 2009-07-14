@@ -21,7 +21,9 @@ using System.Xml;
 namespace SolrNet.Impl.ResponseParsers {
     public class StatsResponseParser<T> : ISolrResponseParser<T> {
         public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
-            throw new NotImplementedException();
+            var statsNode = xml.SelectSingleNode("response/lst[@name='stats']");
+            if (statsNode != null)
+                results.Stats = ParseStats(statsNode, "stats_fields");
         }
 
         /// <summary>

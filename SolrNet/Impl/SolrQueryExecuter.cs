@@ -80,6 +80,9 @@ namespace SolrNet.Impl {
                 foreach (var p in GetFacetFieldOptions(Options))
                     yield return p;
 
+                foreach (var p in GetStatsQueryOptions(Options))
+                    yield return p;
+
                 if (Options.ExtraParams != null)
                     foreach (var p in Options.ExtraParams)
                         yield return p;
@@ -231,6 +234,42 @@ namespace SolrNet.Impl {
                     yield return KVP("spellcheck.onlyMorePopular", spellCheck.OnlyMorePopular.ToString().ToLowerInvariant());
                 if (spellCheck.Reload.HasValue)
                     yield return KVP("spellcheck.reload", spellCheck.Reload.ToString().ToLowerInvariant());
+            }
+        }
+
+        /// <summary>
+        /// Gets the Solr parameters for stats queries
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public IEnumerable<KeyValuePair<string, string>> GetStatsQueryOptions(QueryOptions options) {
+            if (options.Stats == null || options.Stats.FieldsWithFacets.Count == 0)
+                yield break;
+
+            yield return KVP("stats", "true");
+
+            foreach (var fieldAndFacet in options.Stats.FieldsWithFacets) {
+                var field = fieldAndFacet.Key;
+                if (string.IsNullOrEmpty(field))
+                    continue;
+                var facets = fieldAndFacet.Value;
+                yield return KVP("stats.field", field);
+                if (facets != null && facets.Count > 0) {
+                    foreach (var facet in facets) {
+                        if (string.IsNullOrEmpty(facet))
+                            continue;
+                        yield return KVP(string.Format("f.{0}.stats.facet", field), facet);
+                    }
+                }
+            }
+
+            if (options.Stats.Facets == null || options.Stats.Facets.Count == 0)
+                yield break;
+
+            foreach (var facet in options.Stats.Facets) {
+                if (string.IsNullOrEmpty(facet))
+                    continue;
+                yield return KVP("stats.facet", facet);
             }
         }
 

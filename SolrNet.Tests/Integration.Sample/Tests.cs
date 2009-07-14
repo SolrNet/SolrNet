@@ -150,8 +150,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         [Ignore("This test requires an actual solr instance running")]
-        public void MoreLikeThis()
-        {
+        public void MoreLikeThis() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(new SolrQuery("apache"), new QueryOptions {
                 MoreLikeThis = new MoreLikeThisParameters(new[] {"cat", "manu"}) {
@@ -165,6 +164,44 @@ namespace SolrNet.Tests.Integration.Sample {
                 foreach (var similar in r.Value)
                     Console.WriteLine(similar.Id);
                 Console.WriteLine();
+            }
+        }
+
+        [Test]
+        [Ignore("This test requires an actual solr instance running")]
+        public void Stats() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var results = solr.Query(SolrQuery.All, new QueryOptions {
+                Rows = 0,
+                Stats = new StatsParameters {
+                    Facets = new[] { "inStock" },
+                    FieldsWithFacets = new Dictionary<string, ICollection<string>> {
+                        {"popularity", new List<string> {"price"}}
+                    }
+                }
+            });
+            Assert.IsNotNull(results.Stats);
+            foreach (var kv in results.Stats) {
+                Console.WriteLine("Field {0}: ", kv.Key);
+                DumpStats(kv.Value, 1);
+            }
+        }
+
+        public void print(int tabs, string format, params object[] args) {
+            Console.Write(new string('\t', tabs));
+            Console.WriteLine(format, args);
+        }
+
+        public void DumpStats(StatsResult s, int tabs) {
+            print(tabs, "Min: {0}", s.Min);
+            print(tabs, "Max: {0}", s.Max);
+            print(tabs, "Sum of squares: {0}", s.SumOfSquares);
+            foreach (var f in s.FacetResults) {
+                print(tabs, "Facet: {0}", f.Key);
+                foreach (var fv in f.Value) {
+                    print(tabs+1, "Facet value: {0}", fv.Key);
+                    DumpStats(fv.Value, tabs+2);
+                }
             }
         }
     }

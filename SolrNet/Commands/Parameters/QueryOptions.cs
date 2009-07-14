@@ -74,6 +74,12 @@ namespace SolrNet.Commands.Parameters {
         public ICollection<ISolrQuery> FilterQueries { get; set; }
 
         /// <summary>
+        /// This parameter can be used to return the stats for a specific query on top of the results that are normally returned.  Included in the stats are
+        /// min, max, sum, count, missing, sumOfSquares, mean, and stddev values.  
+        /// </summary>
+        public StatsParameters Stats { get; set; }
+
+        /// <summary>
         /// Extra arbitrary parameters to be passed in the request querystring
         /// </summary>
         public IEnumerable<KeyValuePair<string, string>> ExtraParams { get; set; }

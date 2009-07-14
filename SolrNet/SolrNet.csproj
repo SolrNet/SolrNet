@@ -51,6 +51,7 @@
     <Compile Include="Commands\Parameters\MoreLikeThisParameters.cs" />
     <Compile Include="Commands\Parameters\QueryOptions_Fluent.cs" />
     <Compile Include="Commands\Parameters\SpellCheckingParameters.cs" />
+    <Compile Include="Commands\Parameters\StatsParameters.cs" />
     <Compile Include="Exceptions\TypeNotSupportedException.cs" />
     <Compile Include="Impl\DocumentPropertyVisitors\AggregateDocumentVisitor.cs" />
     <Compile Include="Impl\DocumentPropertyVisitors\DefaultDocumentVisitor.cs" />

@@ -63,5 +63,6 @@ namespace SolrNet {
         /// </summary>
         IDictionary<T, IList<T>> SimilarResults { get; set; }
 
+        IDictionary<string, StatsResult> Stats { get; set; }
 	}
 }

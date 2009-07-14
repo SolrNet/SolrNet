@@ -69,7 +69,7 @@ namespace Castle.Facilities.SolrNetIntegration {
                 typeof(HighlightingResponseParser<>),
                 typeof(MoreLikeThisResponseParser<>),
                 typeof(SpellCheckResponseParser<>),
-                //typeof(StatsResponseParser<>),
+                typeof(StatsResponseParser<>),
             }) {
                 Kernel.Register(Component.For(typeof(ISolrResponseParser<>)).ImplementedBy(parserType));
             }

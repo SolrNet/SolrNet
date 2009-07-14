@@ -365,6 +365,38 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void StatsOptions() {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var statsOptions = queryExecuter.GetStatsQueryOptions(new QueryOptions {
+                Stats = new StatsParameters()
+                .AddField("popularity")
+                .AddFieldWithFacet("price", "inStock")
+                .AddFieldWithFacets("afield", "facet1", "facet2")
+                .AddFacet("globalfacet")
+            }).ToList();
+            Assert.AreEqual(8, statsOptions.Count);
+            AssertContains(statsOptions, "stats", "true");
+            AssertContains(statsOptions, "stats.field", "popularity");
+            AssertContains(statsOptions, "stats.field", "price");
+            AssertContains(statsOptions, "f.price.stats.facet", "inStock");
+            AssertContains(statsOptions, "stats.field", "afield");
+            AssertContains(statsOptions, "f.afield.stats.facet", "facet1");
+            AssertContains(statsOptions, "f.afield.stats.facet", "facet2");
+            AssertContains(statsOptions, "stats.facet", "globalfacet");
+        }
+
+        public void AssertContains<K, V>(IEnumerable<KeyValuePair<K, V>> d, K key, V value) {
+            foreach (var kv in d) {
+                if (Equals(kv.Key, key) && Equals(kv.Value, value))
+                    return;
+            }
+            Assert.Fail("KeyValue ('{0}','{1}') not found", key, value);
+        }
+
+        [Test]
         public void ExtraParams() {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();

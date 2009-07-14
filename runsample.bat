@@ -1,5 +1,5 @@
 @echo off
-cd solr-1.3.0
+cd solr-2009-07-12
 md logs
 start java -jar start.jar
 cd ..

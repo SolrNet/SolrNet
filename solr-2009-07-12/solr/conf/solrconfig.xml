@@ -427,7 +427,6 @@
      </lst>
     <arr name="last-components">
       <str>spellcheck</str>
-      <str>stats</str>
     </arr>     
   </requestHandler>
 

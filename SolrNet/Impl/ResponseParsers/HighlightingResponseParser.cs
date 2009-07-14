@@ -18,6 +18,10 @@ using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Impl.ResponseParsers {
+    /// <summary>
+    /// Parses highlighting results from a query response
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
     public class HighlightingResponseParser<T> : ISolrResponseParser<T> {
         private readonly ISolrDocumentIndexer<T> docIndexer;
 

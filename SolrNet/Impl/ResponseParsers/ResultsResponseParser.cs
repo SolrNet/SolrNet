@@ -19,6 +19,10 @@ using System.Globalization;
 using System.Xml;
 
 namespace SolrNet.Impl.ResponseParsers {
+    /// <summary>
+    /// Parses documents from a query response
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
     public class ResultsResponseParser<T> : ISolrResponseParser<T> where T : new() {
         private readonly ISolrDocumentResponseParser<T> docParser;
 

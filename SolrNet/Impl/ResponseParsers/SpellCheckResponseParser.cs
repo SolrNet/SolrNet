@@ -19,6 +19,10 @@ using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Impl.ResponseParsers {
+    /// <summary>
+    /// Parses spell-checking results from a query response
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
     public class SpellCheckResponseParser<T> : ISolrResponseParser<T> {
         public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
             var spellCheckingNode = xml.SelectSingleNode("response/lst[@name='spellcheck']");

@@ -19,6 +19,10 @@ using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Impl.ResponseParsers {
+    /// <summary>
+    /// Parses facets from query response
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
     public class FacetsResponseParser<T> : ISolrResponseParser<T> {
         public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
             var mainFacetNode = xml.SelectSingleNode("response/lst[@name='facet_counts']");

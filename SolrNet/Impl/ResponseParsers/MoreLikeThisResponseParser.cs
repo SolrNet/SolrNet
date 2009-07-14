@@ -18,6 +18,10 @@ using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Impl.ResponseParsers {
+    /// <summary>
+    /// Parses more-like-this results from a query response
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class MoreLikeThisResponseParser<T> : ISolrResponseParser<T> {
         private readonly ISolrDocumentResponseParser<T> docParser;
         private readonly ISolrDocumentIndexer<T> docIndexer;

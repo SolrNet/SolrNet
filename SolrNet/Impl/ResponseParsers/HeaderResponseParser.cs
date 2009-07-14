@@ -19,6 +19,10 @@ using System.Globalization;
 using System.Xml;
 
 namespace SolrNet.Impl.ResponseParsers {
+    /// <summary>
+    /// Parses header (status, QTime, etc) from a query response
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
     public class HeaderResponseParser<T> : ISolrResponseParser<T> {
         public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
             var responseHeaderNode = xml.SelectSingleNode("response/lst[@name='responseHeader']");

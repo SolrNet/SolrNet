@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -37,15 +38,17 @@ namespace SampleSolrApp.Controllers {
         /// <param name="parameters"></param>
         /// <returns></returns>
         public ISolrQuery BuildQuery(SearchParameters parameters) {
-            var queriesFromFacets = from p in parameters.Facets
-                                    select (ISolrQuery) Query.Field(p.Key).Is(p.Value);
-            var queries = queriesFromFacets.ToList();
             if (!string.IsNullOrEmpty(parameters.FreeSearch))
-                queries.Add(new SolrQuery(parameters.FreeSearch));
-            if (queries.Count == 0)
-                return SolrQuery.All;
-            return new SolrMultipleCriteriaQuery(queries, SolrMultipleCriteriaQuery.Operator.AND);
+                return new SolrQuery(parameters.FreeSearch);
+            return SolrQuery.All;
         }
+
+        public ICollection<ISolrQuery> BuildFilterQueries(SearchParameters parameters) {
+            var queriesFromFacets = from p in parameters.Facets
+                                    select (ISolrQuery)Query.Field(p.Key).Is(p.Value);
+            return queriesFromFacets.ToList();
+        }
+
 
         /// <summary>
         /// All selectable facet fields
@@ -68,6 +71,7 @@ namespace SampleSolrApp.Controllers {
         public ActionResult Index(SearchParameters parameters) {
             var start = (parameters.PageIndex - 1)*parameters.PageSize;
             var matchingProducts = solr.Query(BuildQuery(parameters), new QueryOptions {
+                FilterQueries = BuildFilterQueries(parameters),
                 Rows = parameters.PageSize,
                 Start = start,
                 OrderBy = GetSelectedSort(parameters),

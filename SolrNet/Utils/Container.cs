@@ -92,6 +92,8 @@ namespace SolrNet.Utils {
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
         public void RemoveAll<T>() {
+            if (!componentsByType.ContainsKey(typeof(T)))
+                return;
             foreach (var c in componentsByType[typeof(T)]) {
                 var removeList = new List<string>();
                 foreach (var cn in componentsByName) {

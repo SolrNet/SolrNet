@@ -16,7 +16,6 @@
 
 using System;
 using MbUnit.Framework;
-using Ninject.Core;
 using Rhino.Mocks;
 using SolrNet;
 

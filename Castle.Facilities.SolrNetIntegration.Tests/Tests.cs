@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Reflection;
 using Castle.Core.Configuration;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.SubSystems.Configuration;
@@ -111,6 +112,20 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             var container = new WindsorContainer();
             container.AddFacility("solr", solrFacility);
             container.Resolve<ISolrOperations<Document>>();
+        }
+
+        [Test]
+        public void ResponseParsers() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            var parser = container.Resolve<ISolrQueryResultParser<Document>>() as SolrQueryResultParser<Document>;
+            var field = parser.GetType().GetField("parsers", BindingFlags.NonPublic | BindingFlags.Instance);
+            var parsers = (ISolrResponseParser<Document>[]) field.GetValue(parser);
+            Assert.AreEqual(6, parsers.Length);
+            foreach (var t in parsers)
+                Console.WriteLine(t);
+            
         }
 
         public class Document {}

@@ -19,6 +19,7 @@ using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
 using SolrNet.Utils;
 
@@ -72,7 +73,18 @@ namespace SolrNet {
             var connectionKey = string.Format("{0}.{1}.{2}", typeof(SolrConnection), typeof(T), connection.GetType());
             Container.Register(connectionKey, c => connection);
 
-            var resultParser = new SolrQueryResultParser<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrDocumentPropertyVisitor>());
+            Container.Register<ISolrDocumentResponseParser<T>>(c => new SolrDocumentResponseParser<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrDocumentPropertyVisitor>()));
+            Container.Register<ISolrDocumentIndexer<T>>(c => new SolrDocumentIndexer<T>(Container.GetInstance<IReadOnlyMappingManager>()));
+
+            Container.Register<ISolrResponseParser<T>>(typeof(ResultsResponseParser<T>).FullName, c => new ResultsResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
+            Container.Register<ISolrResponseParser<T>>(typeof (HeaderResponseParser<T>).FullName, c => new HeaderResponseParser<T>());
+            Container.Register<ISolrResponseParser<T>>(typeof(FacetsResponseParser<T>).FullName, c => new FacetsResponseParser<T>());
+            Container.Register<ISolrResponseParser<T>>(typeof(HighlightingResponseParser<T>).FullName, c => new HighlightingResponseParser<T>(c.GetInstance<ISolrDocumentIndexer<T>>()));
+            Container.Register<ISolrResponseParser<T>>(typeof(MoreLikeThisResponseParser<T>).FullName, c => new MoreLikeThisResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>(), c.GetInstance<ISolrDocumentIndexer<T>>()));
+            Container.Register<ISolrResponseParser<T>>(typeof(SpellCheckResponseParser<T>).FullName, c => new SpellCheckResponseParser<T>());
+            //Container.Register<ISolrResponseParser<T>>(typeof(StatsResponseParser<T>).FullName, c => new StatsResponseParser<T>());
+
+            var resultParser = new SolrQueryResultParser<T>(Func.ToArray(Container.GetAllInstances<ISolrResponseParser<T>>()));
             Container.Register<ISolrQueryResultParser<T>>(c => resultParser);
 
             var queryExecuter = new SolrQueryExecuter<T>(connection, resultParser);

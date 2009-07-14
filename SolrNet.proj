@@ -33,7 +33,7 @@
 		<ItemGroup>
 			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Castle.*.dll"/>
 			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Microsoft.Practices.ServiceLocation.dll"/>
-			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Ninject.Core.dll"/>
+			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Ninject.dll"/>
 			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\NHibernate.dll"/>
 			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\log4net.dll"/>
 		</ItemGroup>
@@ -202,9 +202,6 @@
     <MSBuild Projects="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.sln" StopOnFirstFailure="true" ToolsVersion="3.5" BuildInParallel="true"/>
     <RemoveDir Directories="$(BuildOutputPath)\SampleSolrApp\obj"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\SampleSolrApp.dll"/>
-    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Ninject.Core.dll"/>
-    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Castle.MicroKernel.dll"/>
-    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Castle.Core.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Ninject.Core.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Castle.MicroKernel.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Castle.Core.dll"/>

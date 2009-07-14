@@ -22,26 +22,17 @@ using SolrNet.Utils;
 namespace SolrNet.Tests {
     [TestFixture]
     public class IntegrationTests {
-        [TearDown]
-        public void Teardown() {
-            Startup.Container.RemoveAll<ISolrConnection>();
-            Startup.Container.RemoveAll<ISolrQueryResultParser<Document>>();
-            Startup.Container.RemoveAll<ISolrQueryExecuter<Document>>();
-            Startup.Container.RemoveAll<ISolrDocumentSerializer<Document>>();
-            Startup.Container.RemoveAll<ISolrBasicOperations<Document>>();
-            Startup.Container.RemoveAll<ISolrBasicReadOnlyOperations<Document>>();
-            Startup.Container.RemoveAll<ISolrOperations<Document>>();
-            Startup.Container.RemoveAll<ISolrReadOnlyOperations<Document>>();
-        }
 
         [Test]
         public void SwappingMappingManager() {
             var mapper = new MappingManager();
+            Startup.Container.Clear();
+            Startup.InitContainer();
             var container = new Container(Startup.Container);
             container.RemoveAll<IReadOnlyMappingManager>();
             container.Register<IReadOnlyMappingManager>(c => mapper);
-            Startup.Init<Document>("http://localhost");
             ServiceLocator.SetLocatorProvider(() => container);
+            Startup.Init<Document>("http://localhost");
             var mapperFromFactory = ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>();
             Assert.AreSame(mapper, mapperFromFactory);
         }
@@ -49,10 +40,12 @@ namespace SolrNet.Tests {
         [Test]
         public void SwappingMappingManager2() {
             var mapper = new MappingManager();
+            Startup.Container.Clear();
+            Startup.InitContainer();
             Startup.Container.RemoveAll<IReadOnlyMappingManager>();
             Startup.Container.Register<IReadOnlyMappingManager>(c => mapper);
-            Startup.Init<Document>("http://localhost");
             ServiceLocator.SetLocatorProvider(() => Startup.Container);
+            Startup.Init<Document>("http://localhost");
             var mapperFromFactory = ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>();
             Assert.AreSame(mapper, mapperFromFactory);
         }

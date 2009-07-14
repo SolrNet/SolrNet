@@ -14,17 +14,18 @@
 // limitations under the License.
 #endregion
 
-using Ninject.Core;
+using Ninject.Modules;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
 using SolrNet.Utils;
 
 namespace Ninject.Integration.SolrNet {
-    public class SolrNetModule : StandardModule {
+    public class SolrNetModule : NinjectModule {
         private readonly string serverURL;
         public IReadOnlyMappingManager Mapper { get; set; }
 
@@ -38,7 +39,19 @@ namespace Ninject.Integration.SolrNet {
             Bind<IRNG>().To<RNG>();
             Bind<ISolrDocumentPropertyVisitor>().To<DefaultDocumentVisitor>();
             Bind<ISolrFieldParser>().To<DefaultFieldParser>();
+            Bind(typeof(ISolrDocumentResponseParser<>)).To(typeof(SolrDocumentResponseParser<>));
+            Bind(typeof(ISolrDocumentIndexer<>)).To(typeof(SolrDocumentIndexer<>));
             Bind<ISolrFieldSerializer>().To<DefaultFieldSerializer>();
+            foreach (var p in new[] {
+                typeof(ResultsResponseParser<>),
+                typeof(HeaderResponseParser<>),
+                typeof(FacetsResponseParser<>),
+                typeof(HighlightingResponseParser<>),
+                typeof(MoreLikeThisResponseParser<>),
+                typeof(SpellCheckResponseParser<>),
+                //typeof(StatsResponseParser<>),
+            })
+                Bind(typeof(ISolrResponseParser<>)).To(p);
             Bind<ISolrConnection>().ToConstant(new SolrConnection(serverURL));
             Bind(typeof (ISolrQueryResultParser<>)).To(typeof (SolrQueryResultParser<>));
             Bind(typeof(ISolrQueryExecuter<>)).To(typeof(SolrQueryExecuter<>));

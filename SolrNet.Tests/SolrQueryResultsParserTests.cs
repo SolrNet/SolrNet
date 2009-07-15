@@ -376,10 +376,13 @@ namespace SolrNet.Tests {
         [Ignore("Performance test, potentially slow")]
         public void Performance_MemoizeMapping() {
             var container = new ProfilingContainer();
+            container.AddComponent<ISolrDocumentResponseParser<TestDocumentWithArrays>, SolrDocumentResponseParser<TestDocumentWithArrays>>();
+            container.AddComponent<ISolrResponseParser<TestDocumentWithArrays>, ResultsResponseParser<TestDocumentWithArrays>>("resultsParser");
             container.Register(Component.For<IReadOnlyMappingManager>().ImplementedBy<MemoizingMappingManager>()
                 .ServiceOverrides(ServiceOverride.ForKey("mapper").Eq("att")));
             container.AddComponent<IReadOnlyMappingManager, AttributesMappingManager>("att");
-            container.AddComponent<ISolrQueryResultParser<TestDocumentWithArrays>, SolrQueryResultParser<TestDocumentWithArrays>>();
+            container.Register(Component.For<ISolrQueryResultParser<TestDocumentWithArrays>>().ImplementedBy<SolrQueryResultParser<TestDocumentWithArrays>>()
+                .ServiceOverrides(ServiceOverride.ForKey("parsers").Eq(new[] { "resultsParser" })));
             container.AddComponent<ISolrFieldParser, DefaultFieldParser>();
             container.AddComponent<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>();
             ProfileTest(container);
@@ -390,8 +393,11 @@ namespace SolrNet.Tests {
 		[Ignore("Performance test, potentially slow")]
 		public void Performance() {
 		    var container = new ProfilingContainer();
-		    container.AddComponent<IReadOnlyMappingManager, AttributesMappingManager>();
-            container.AddComponent<ISolrQueryResultParser<TestDocumentWithArrays>, SolrQueryResultParser<TestDocumentWithArrays>>();
+            container.AddComponent<ISolrDocumentResponseParser<TestDocumentWithArrays>, SolrDocumentResponseParser<TestDocumentWithArrays>>();
+            container.AddComponent<ISolrResponseParser<TestDocumentWithArrays>, ResultsResponseParser<TestDocumentWithArrays>>("resultsParser");
+            container.AddComponent<IReadOnlyMappingManager, AttributesMappingManager>();
+            container.Register(Component.For<ISolrQueryResultParser<TestDocumentWithArrays>>().ImplementedBy<SolrQueryResultParser<TestDocumentWithArrays>>()
+                .ServiceOverrides(ServiceOverride.ForKey("parsers").Eq(new[] { "resultsParser" })));
             container.AddComponent<ISolrFieldParser, DefaultFieldParser>();
             container.AddComponent<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>();
             ProfileTest(container);

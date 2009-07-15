@@ -17,6 +17,10 @@
 using System.Collections.Generic;
 
 namespace SolrNet.Impl {
+    /// <summary>
+    /// Indexes documents by primary key
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
     public class SolrDocumentIndexer<T> : ISolrDocumentIndexer<T> {
         private readonly IReadOnlyMappingManager mappingManager;
 

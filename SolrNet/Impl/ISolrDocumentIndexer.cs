@@ -17,7 +17,16 @@
 using System.Collections.Generic;
 
 namespace SolrNet.Impl {
+    /// <summary>
+    /// Indexes documents by primary key
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
     public interface ISolrDocumentIndexer<T> {
+        /// <summary>
+        /// Creates an index of documents by unique key
+        /// </summary>
+        /// <param name="results"></param>
+        /// <returns></returns>
         IDictionary<string, T> IndexResultsByKey(IEnumerable<T> results);
     }
 }

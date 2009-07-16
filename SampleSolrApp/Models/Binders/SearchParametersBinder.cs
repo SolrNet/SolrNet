@@ -24,7 +24,7 @@ using SampleSolrApp.Helpers;
 
 namespace SampleSolrApp.Models.Binders {
     public class SearchParametersBinder : IModelBinder {
-        public const int DefaultPageSize = 5;
+        public const int DefaultPageSize = SearchParameters.DefaultPageSize;
 
         public IDictionary<string, string> NVToDict(NameValueCollection nv) {
             var d = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);

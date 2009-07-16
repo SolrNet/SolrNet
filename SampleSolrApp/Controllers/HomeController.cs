@@ -22,6 +22,7 @@ using SampleSolrApp.Models;
 using SolrNet;
 using SolrNet.Commands.Parameters;
 using SolrNet.DSL;
+using SolrNet.Exceptions;
 
 namespace SampleSolrApp.Controllers {
     [HandleError]
@@ -69,28 +70,34 @@ namespace SampleSolrApp.Controllers {
         }
 
         public ActionResult Index(SearchParameters parameters) {
-            var start = (parameters.PageIndex - 1)*parameters.PageSize;
-            var matchingProducts = solr.Query(BuildQuery(parameters), new QueryOptions {
-                FilterQueries = BuildFilterQueries(parameters),
-                Rows = parameters.PageSize,
-                Start = start,
-                OrderBy = GetSelectedSort(parameters),
-                SpellCheck = new SpellCheckingParameters(),
-                Facet = new FacetParameters {
-                    Queries = AllFacetFields.Except(SelectedFacetFields(parameters))
-                                                                          .Select(f => new SolrFacetFieldQuery(f) {MinCount = 1})
-                                                                          .Cast<ISolrFacetQuery>()
-                                                                          .ToList(),
-                },
-            });
-            var view = new ProductView {
-                Products = matchingProducts,
-                Search = parameters,
-                TotalCount = matchingProducts.NumFound,
-                Facets = matchingProducts.FacetFields,
-                DidYouMean = GetSpellCheckingResult(matchingProducts),
-            };
-            return View(view);
+            try {
+                var start = (parameters.PageIndex - 1)*parameters.PageSize;
+                var matchingProducts = solr.Query(BuildQuery(parameters), new QueryOptions {
+                    FilterQueries = BuildFilterQueries(parameters),
+                    Rows = parameters.PageSize,
+                    Start = start,
+                    OrderBy = GetSelectedSort(parameters),
+                    SpellCheck = new SpellCheckingParameters(),
+                    Facet = new FacetParameters {
+                        Queries = AllFacetFields.Except(SelectedFacetFields(parameters))
+                                                                              .Select(f => new SolrFacetFieldQuery(f) {MinCount = 1})
+                                                                              .Cast<ISolrFacetQuery>()
+                                                                              .ToList(),
+                    },
+                });
+                var view = new ProductView {
+                    Products = matchingProducts,
+                    Search = parameters,
+                    TotalCount = matchingProducts.NumFound,
+                    Facets = matchingProducts.FacetFields,
+                    DidYouMean = GetSpellCheckingResult(matchingProducts),
+                };
+                return View(view);
+            } catch (InvalidFieldException) {
+                return View(new ProductView {
+                    QueryError = true,
+                });
+            }
         }
 
         private string GetSpellCheckingResult(ISolrQueryResults<Product> products) {

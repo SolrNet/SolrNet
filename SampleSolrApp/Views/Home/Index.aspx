@@ -10,11 +10,14 @@
     <form method="get" action="<%= Url.Action("Index") %>">
         <%= Html.TextBox("q", Model.Search.FreeSearch) %>
         <input type="submit" value="Search" />
+        <% if (!string.IsNullOrEmpty(Model.DidYouMean)) { %>
+        Did you mean <strong><em><a href="<%= Url.ForQuery(Model.DidYouMean) %>"><%= Model.DidYouMean%></a></em></strong>
+        <% } %>
+        <% if (Model.QueryError) { %> 
+        <span class="error">Invalid query</span>
+        <% } %>
     </form>
     
-    <% if (!string.IsNullOrEmpty(Model.DidYouMean)) { %>
-    Did you mean <strong><em><a href="<%= Url.ForQuery(Model.DidYouMean) %>"><%= Model.DidYouMean%></a></em></strong>
-    <% } %>
     
     <div class="leftColumn">
         <% foreach (var f in Model.Search.Facets) { %>

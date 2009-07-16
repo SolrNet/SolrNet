@@ -23,5 +23,12 @@ namespace SampleSolrApp.Models {
         public int TotalCount { get; set; }
         public IDictionary<string, ICollection<KeyValuePair<string, int>>> Facets { get; set; }
         public string DidYouMean { get; set; }
+        public bool QueryError { get; set; }
+
+        public ProductView() {
+            Search = new SearchParameters();
+            Facets = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
+            Products = new List<Product>();
+        }
     }
 }

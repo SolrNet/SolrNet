@@ -112,14 +112,8 @@
       <SourceFiles Include="$(MergedOutputPath)\SolrNet.xml"/>
       <SourceFiles Include="license.txt"/>
       <SourceFiles Include="lib\Microsoft.Practices.ServiceLocation.*"/>
-      <!--CastleFacility Include="Castle.Facilities.SolrNetIntegration\bin\Release\Castle.*.dll"/>
-      <CastleFacility Include="lib\Castle.license.txt"/>
-      <NinjectModule Include="Ninject.Integration.SolrNet\bin\Release\Ninject.*.dll"/>
-      <NinjectModule Include="lib\Ninject.license.txt"/-->
     </ItemGroup>
     <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(BuildOutputPath)"/>
-    <Copy SourceFiles="@(CastleFacility)" DestinationFolder="$(BuildOutputPath)\Castle.Facilities.SolrNetIntegration"/>
-    <Copy SourceFiles="@(NinjectModule)" DestinationFolder="$(BuildOutputPath)\Ninject.Integration.SolrNet"/>
     <Copy SourceFiles="help\Documentation.chm" DestinationFiles="$(BuildOutputPath)\SolrNet.chm"/>
     <CreateItem Include="$(BuildOutputPath)\**\*.*">
       <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
@@ -186,7 +180,7 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\tools\curl.exe" DestinationFolder="$(BuildOutputPath)\tools" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\license.txt" DestinationFolder="$(BuildOutputPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\runsample.bat" DestinationFolder="$(BuildOutputPath)" />
-    <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\solr-1.3.0" LocalPath="$(BuildOutputPath)\solr-1.3.0"/>
+    <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\solr-2009-07-12" LocalPath="$(BuildOutputPath)\solr-2009-07-12"/>
     <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\tools\Cassini" LocalPath="$(BuildOutputPath)\tools\Cassini"/>
     <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\SampleSolrApp" LocalPath="$(BuildOutputPath)\SampleSolrApp"/>
     <MakeDir Directories="$(BuildOutputPath)\SampleSolrApp\lib" ContinueOnError="true"/>
@@ -202,9 +196,14 @@
     <MSBuild Projects="$(BuildOutputPath)\SampleSolrApp\SampleSolrApp.sln" StopOnFirstFailure="true" ToolsVersion="3.5" BuildInParallel="true"/>
     <RemoveDir Directories="$(BuildOutputPath)\SampleSolrApp\obj"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\SampleSolrApp.dll"/>
-    <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Ninject.Core.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Ninject.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Castle.MicroKernel.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Castle.Core.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\NHibernate.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Ninject.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Castle.MicroKernel.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Castle.Core.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\NHibernate.dll"/>
     <CreateItem Include="$(BuildOutputPath)\**\*.*">
       <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
     </CreateItem>

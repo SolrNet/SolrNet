@@ -1,13 +1,40 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<configuration>
-  <gallio>
-    <assemblies>
-      <assembly file="Gallio.TeamCityIntegration.dll" />
-    </assemblies>
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<plugin pluginId="Gallio.TeamCityIntegration"
+        recommendedInstallationPath="TeamCity"
+        xmlns="http://www.gallio.org/">
+  <traits>
+    <name>TeamCity Integration Plugin</name>
+    <version>3.1.0.0</version>
+    <description>Provides a test runner extension capable of formatting test results to be presented within TeamCity.</description>
+  </traits>
 
-    <runtime>
-      <components>
-      </components>
-    </runtime>
-  </gallio>
-</configuration>
+  <dependencies>
+    <dependency pluginId="Gallio" />
+  </dependencies>
+
+  <files>
+    <file path="Gallio.TeamCityIntegration.plugin" />
+    <file path="Gallio.TeamCityIntegration.dll" />
+    <file path="Readme.txt" />
+  </files>
+
+  <assemblies>
+    <assembly fullName="Gallio.TeamCityIntegration, Version=3.1.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
+              codeBase="Gallio.TeamCityIntegration.dll">
+      <qualifyPartialName>true</qualifyPartialName>
+      <bindingRedirects>
+        <bindingRedirect oldVersion="3.1.0.0-65535.65535.65535.65535" />
+      </bindingRedirects>
+    </assembly>
+  </assemblies>
+
+  <components>
+    <component componentId="TeamCityIntegration.TeamCityExtensionFactory"
+               serviceId="Gallio.TestRunnerExtensionFactory"
+               componentType="Gallio.TeamCityIntegration.TeamCityExtensionFactory, Gallio.TeamCityIntegration">
+      <traits>
+        <autoActivationCondition>${env:TEAMCITY_VERSION}</autoActivationCondition>
+      </traits>
+    </component>
+  </components>
+</plugin>

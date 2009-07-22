@@ -51,7 +51,7 @@
 			<BuildConfigProp>Configuration=$(BuildConfig)</BuildConfigProp>
 		</PropertyGroup>
 	</Target>
-  <Target Name="Test" DependsOnTargets="Build;BuildSample">
+  <Target Name="Test">
   	<ItemGroup>
   		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"/>
   		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>

@@ -75,23 +75,21 @@ namespace SolrNet.Tests {
 
         [Test]
         public void DocumentBoost() {
-            ThreadHelper.Run(() => {
-                var mocks = new MockRepository();
-                var conn = mocks.CreateMock<ISolrConnection>();
-                var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
-                With.Mocks(mocks).Expecting(() => {
-                    conn.Post("/update",
-                              "<add><doc boost=\"2.1\" /></add>");
-                    LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
-                        Console.WriteLine(s);
-                        return null;
-                    }));
-                    SetupResult.For(conn.ServerURL).Return("");
-                }).Verify(() => {
-                    var docs = new[] { new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), 2.1) };
-                    var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
-                    cmd.Execute(conn);
-                });
+            var mocks = new MockRepository();
+            var conn = mocks.CreateMock<ISolrConnection>();
+            var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
+            With.Mocks(mocks).Expecting(() => {
+                conn.Post("/update",
+                          "<add><doc boost=\"2.1\" /></add>");
+                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
+                    Console.WriteLine(s);
+                    return null;
+                }));
+                SetupResult.For(conn.ServerURL).Return("");
+            }).Verify(() => {
+                var docs = new[] { new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), 2.1) };
+                var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
+                cmd.Execute(conn);
             });
         }
 

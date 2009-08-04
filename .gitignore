@@ -1,0 +1,7 @@
+_ReSharper.SolrNet
+*/bin
+*/obj
+*.resharper.user
+*.suo
+*.bak
+merged

@@ -19,8 +19,8 @@ using System;
 
 namespace SolrNet {
     /// <summary>
-    /// Stats results
-    /// <see cref="http://wiki.apache.org/solr/StatsComponent"/>
+    /// Date faceting result
+    /// <see cref="http://wiki.apache.org/solr/SimpleFacetParameters#head-068dc96b0dac1cfc7264fe85528d7df5bf391acd"/>
     /// </summary>
     public class DateFacetingResult {
 
@@ -39,8 +39,7 @@ namespace SolrNet {
 		/// </summary>
 		public IDictionary<string, Int64> DateResults { get; set; }
 
-		public DateFacetingResult()
-		{
+		public DateFacetingResult() {
 			DateResults = new Dictionary<string, Int64>();
         }
     }

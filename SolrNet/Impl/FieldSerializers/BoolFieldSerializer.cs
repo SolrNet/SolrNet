@@ -14,7 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
 
 namespace SolrNet.Impl.FieldSerializers {
@@ -22,9 +21,13 @@ namespace SolrNet.Impl.FieldSerializers {
     /// Parses bool values
     /// </summary>
     public class BoolFieldSerializer : AbstractFieldSerializer<bool> {
+        public string SerializeBool(bool o) {
+            return o.ToString().ToLowerInvariant();
+        }
+
         public override IEnumerable<PropertyNode> Parse(bool obj) {
             yield return new PropertyNode {
-                FieldValue = obj.ToString().ToLowerInvariant(),
+                FieldValue = SerializeBool(obj),
             };
         }
     }

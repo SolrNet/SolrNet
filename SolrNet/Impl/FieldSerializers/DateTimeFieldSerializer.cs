@@ -22,9 +22,13 @@ namespace SolrNet.Impl.FieldSerializers {
     /// Serializes datetime fields
     /// </summary>
     public class DateTimeFieldSerializer : AbstractFieldSerializer<DateTime> {
+        public string SerializeDate(DateTime dt) {
+            return dt.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        }
+
         public override IEnumerable<PropertyNode> Parse(DateTime obj) {
             yield return new PropertyNode {
-                FieldValue = obj.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'"),
+                FieldValue = SerializeDate(obj),
             };
         }
     }

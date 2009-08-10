@@ -16,8 +16,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Xml;
+using SolrNet.Impl.FieldParsers;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -86,19 +86,27 @@ namespace SolrNet.Impl.ResponseParsers {
             return d;
         }
 
+        public KeyValuePair<K, V> KV<K, V>(K key, V value) {
+            return new KeyValuePair<K, V>(key, value);
+        }
+
         public DateFacetingResult ParseDateFacetingNode(XmlNode node) {
             var r = new DateFacetingResult();
-            foreach (XmlNode dateFactingNode in node.ChildNodes) {
-                var name = dateFactingNode.Attributes["name"].Value;
+            var dateParser = new DateTimeFieldParser();
+            var intParser = new IntFieldParser();
+            foreach (XmlNode dateFacetingNode in node.ChildNodes) {
+                var name = dateFacetingNode.Attributes["name"].Value;
                 switch (name) {
                     case "gap":
-                        r.Gap = dateFactingNode.InnerText;
+                        r.Gap = dateFacetingNode.InnerText;
                         break;
                     case "end":
-                        r.End = Convert.ToDateTime(dateFactingNode.InnerText);
+                        r.End = (DateTime) dateParser.Parse(dateFacetingNode, typeof (DateTime));
                         break;
                     default:
-                        r.DateResults.Add(name, Convert.ToInt64(dateFactingNode.InnerText, CultureInfo.InvariantCulture));
+                        var d = dateParser.ParseDate(name);
+                        var count = (int) intParser.Parse(dateFacetingNode, typeof (int));
+                        r.DateResults.Add(KV(d, count));
                         break;
                 }
             }

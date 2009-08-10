@@ -95,6 +95,27 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         [Ignore("This test requires an actual solr instance running")]
+        public void DateFacet() {
+            Add_then_query();
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var results = solr.Query(SolrQuery.All, new QueryOptions {
+                Rows = 0,
+                Facet = new FacetParameters {
+                    Queries = new[] {
+                        new SolrFacetDateQuery("timestamp", DateTime.Now.AddHours(-1), DateTime.Now.AddHours(1), "+1DAY") {
+                            HardEnd = true,
+                            Other = new[] {FacetDateOther.After, FacetDateOther.Before}
+                        },
+                    }
+                }
+            });
+            var dateFacetResult = results.FacetDates["timestamp"];
+            Console.WriteLine(dateFacetResult.DateResults[0].Key);
+            Console.WriteLine(dateFacetResult.DateResults[0].Value);
+        }
+
+        [Test]
+        [Ignore("This test requires an actual solr instance running")]
         public void Ping()
         {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();

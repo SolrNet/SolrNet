@@ -29,11 +29,11 @@ namespace SolrNet.Tests {
             };
             var r = q.Query;
             Assert.Contains(r, KV("facet.date", "timestamp"));
-            Assert.Contains(r, KV("facet.timestamp.start", "2009-01-01T00:00:00Z"));
-            Assert.Contains(r, KV("facet.timestamp.end", "2009-02-02T00:00:00Z"));
-            Assert.Contains(r, KV("facet.timestamp.gap", "+1DAY"));
-            Assert.Contains(r, KV("facet.timestamp.hardend", "true"));
-            Assert.Contains(r, KV("facet.timestamp.other", "after"));
+            Assert.Contains(r, KV("f.timestamp.facet.date.start", "2009-01-01T00:00:00Z"));
+            Assert.Contains(r, KV("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"));
+            Assert.Contains(r, KV("f.timestamp.facet.date.gap", "+1DAY"));
+            Assert.Contains(r, KV("f.timestamp.facet.date.hardend", "true"));
+            Assert.Contains(r, KV("f.timestamp.facet.date.other", "after"));
         }
 
         public KeyValuePair<K, V> KV<K, V>(K key, V value) {

@@ -64,5 +64,7 @@ namespace SolrNet {
         IDictionary<T, IList<T>> SimilarResults { get; set; }
 
         IDictionary<string, StatsResult> Stats { get; set; }
+
+		IDictionary<string, DateFacetingResult> FacetDates { get; set; }
 	}
 }

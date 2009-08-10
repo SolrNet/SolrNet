@@ -23,6 +23,52 @@ namespace SolrNet.Commands.Parameters {
         /// </summary>
         public ICollection<ISolrFacetQuery> Queries { get; set; }
 
+
+		/// <summary>
+		/// This param allows you to specify names of fields (of type DateField) which should be treated as date facets.
+		/// </summary>
+		/// <value>The dates.</value>
+		public ICollection<string> Dates { get; set; }
+
+		/// <summary>
+		/// The lower bound for the first date range for all Date Faceting on this field.
+		/// This should be a single date expression which may use the [WWW] DateMathParser syntax.
+		/// </summary>
+		/// <value>The date start.</value>
+		public string DateStart { get; set; }
+
+		/// <summary>
+		/// The minimum upper bound for the last date range for all Date Faceting on this field (see facet.date.hardend for an explanation of what the actual end value may be greater).
+		/// This should be a single date expression which may use the [WWW] DateMathParser syntax. 
+		/// </summary>
+		/// <value>The date end.</value>
+		public string DateEnd { get; set; }
+
+		/// <summary>
+		/// The size of each date range expressed as an interval to be added to the lower bound using the [WWW] DateMathParser syntax.
+		/// </summary>
+		/// <value>The date gap.</value>
+		public string DateGap { get; set; }
+
+		/// <summary>
+		/// A Boolean parameter instructing Solr what to do in the event that facet.date.gap does not divide evenly between facet.date.start and facet.date.end.
+		/// If this is true, the last date range constraint will have an upper bound of facet.date.end; if false,
+		/// the last date range will have the smallest possible upper bound greater then facet.date.end such that the range is exactly facet.date.gap wide. 
+		/// </summary>
+		/// <value>The date hard end.</value>
+		public bool? DateHardEnd { get; set; }
+
+		/// <summary>
+		/// This param indicates that in addition to the counts for each date range constraint between facet.date.start and facet.date.end, counts should also be computed for...
+		/// *     before all records with field values lower then lower bound of the first range
+		///	*     after all records with field values greater then the upper bound of the last range
+		///	*     between all records with field values between the start and end bounds of all ranges
+		///	*     none compute none of this information
+		///	*     all shortcut for before, between, and after
+		/// </summary>
+		/// <value>The date other.</value>
+		public string DateOther { get; set; }
+
         /// <summary>
         /// Limits the terms on which to facet to those starting with the given string prefix.
         /// </summary>
@@ -60,6 +106,8 @@ namespace SolrNet.Commands.Parameters {
         /// Default is false
         /// </summary>
         public bool? Missing { get; set; }
+
+		
 
         /// <summary>
         /// This param indicates the minimum document frequency (number of documents matching a term) for which the filterCache should be used when determining the constraint count for that term. 

@@ -178,6 +178,8 @@ namespace SolrNet {
 
 		public IDictionary<string, int> FacetQueries { get; set; }
 		public IDictionary<string, ICollection<KeyValuePair<string, int>>> FacetFields { get; set; }
+		public IDictionary<string, DateFacetingResult> FacetDates { get; set; }
+
 		public ResponseHeader Header { get; set;}
 
 		public IDictionary<T, IDictionary<string, string>> Highlights { get; set; }
@@ -185,7 +187,7 @@ namespace SolrNet {
         public SpellCheckResults SpellChecking { get; set; }
         public IDictionary<T, IList<T>> SimilarResults { get; set; }
         public IDictionary<string, StatsResult> Stats { get; set; }
-
+		
         ///<summary>
 		///Returns an enumerator that iterates through the collection.
 		///</summary>

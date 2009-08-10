@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Globalization;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -62,28 +63,28 @@ namespace SolrNet.Impl.ResponseParsers {
                 var name = statNode.Attributes["name"].Value;
                 switch (name) {
                     case "min":
-                        r.Min = Convert.ToDouble(statNode.InnerText);
+						r.Min = Convert.ToDouble( statNode.InnerText, CultureInfo.InvariantCulture );
                         break;
                     case "max":
-                        r.Max = Convert.ToDouble(statNode.InnerText);
+						r.Max = Convert.ToDouble( statNode.InnerText, CultureInfo.InvariantCulture );
                         break;
                     case "sum":
-                        r.Sum = Convert.ToDouble(statNode.InnerText);
+						r.Sum = Convert.ToDouble( statNode.InnerText, CultureInfo.InvariantCulture );
                         break;
                     case "sumOfSquares":
-                        r.SumOfSquares = Convert.ToDouble(statNode.InnerText);
+						r.SumOfSquares = Convert.ToDouble( statNode.InnerText, CultureInfo.InvariantCulture );
                         break;
                     case "mean":
-                        r.Mean = Convert.ToDouble(statNode.InnerText);
+						r.Mean = Convert.ToDouble( statNode.InnerText, CultureInfo.InvariantCulture );
                         break;
                     case "stddev":
-                        r.StdDev = Convert.ToDouble(statNode.InnerText);
+						r.StdDev = Convert.ToDouble( statNode.InnerText, CultureInfo.InvariantCulture );
                         break;
                     case "count":
-                        r.Count = Convert.ToInt64(statNode.InnerText);
+						r.Count = Convert.ToInt64( statNode.InnerText, CultureInfo.InvariantCulture );
                         break;
                     case "missing":
-                        r.Missing = Convert.ToInt64(statNode.InnerText);
+						r.Missing = Convert.ToInt64( statNode.InnerText, CultureInfo.InvariantCulture );
                         break;
                     default:
                         r.FacetResults = ParseFacetNode(statNode);

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Globalization;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -29,6 +30,7 @@ namespace SolrNet.Impl.ResponseParsers {
             if (mainFacetNode != null) {
                 results.FacetQueries = ParseFacetQueries(mainFacetNode);
                 results.FacetFields = ParseFacetFields(mainFacetNode);
+				results.FacetDates = ParseFacetDates( mainFacetNode );
             }
         }
 
@@ -66,5 +68,44 @@ namespace SolrNet.Impl.ResponseParsers {
             }
             return d;
         }
+
+		/// <summary>
+		/// Parses facet dates results
+		/// </summary>
+		/// <param name="node"></param>
+		/// <returns></returns>
+		public IDictionary<string, DateFacetingResult> ParseFacetDates(XmlNode node)
+		{
+			var d = new Dictionary<string, DateFacetingResult>();
+			foreach (XmlNode fieldNode in node.SelectSingleNode( "lst[@name='facet_dates']" ).ChildNodes)
+			{
+				var name = fieldNode.Attributes["name"].Value;
+				d[name] = ParseDateFacetingNode( fieldNode );
+
+			}
+			return d;
+		}
+
+		public DateFacetingResult ParseDateFacetingNode(XmlNode node)
+		{
+			var r = new DateFacetingResult();
+			foreach (XmlNode dateFactingNode in node.ChildNodes)
+			{
+				var name = dateFactingNode.Attributes["name"].Value;
+				switch (name)
+				{
+					case "gap":
+						r.Gap = dateFactingNode.InnerText;
+						break;
+					case "end":
+						r.End = Convert.ToDateTime( dateFactingNode.InnerText );
+						break;
+					default:
+						r.DateResults.Add( name, Convert.ToInt64( dateFactingNode.InnerText, CultureInfo.InvariantCulture ) );
+						break;
+				}
+			}
+			return r;
+		}
     }
 }

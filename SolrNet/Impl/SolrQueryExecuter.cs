@@ -97,7 +97,7 @@ namespace SolrNet.Impl {
         public IEnumerable<KeyValuePair<string, string>> GetFacetFieldOptions(QueryOptions options) {
             if (options.Facet == null)
                 yield break;
-            if ( (options.Facet.Queries == null || options.Facet.Queries.Count == 0) && (options.Facet.Dates == null || options.Facet.Dates.Count == 0))
+            if (options.Facet.Queries == null || options.Facet.Queries.Count == 0)
                 yield break;
 
             yield return KVP("facet", "true");
@@ -105,24 +105,6 @@ namespace SolrNet.Impl {
             foreach (var fq in options.Facet.Queries)
                 foreach (var fqv in fq.Query)
                     yield return fqv;
-
-
-			if (options.Facet.Dates != null && options.Facet.Dates.Count > 0)
-			{
-				foreach (string date in options.Facet.Dates)
-				{
-					yield return KVP( "facet.date", date );
-				}
-
-				yield return KVP( "facet.date.start", options.Facet.DateStart );
-				yield return KVP( "facet.date.end", options.Facet.DateEnd );
-				yield return KVP( "facet.date.gap", options.Facet.DateGap );
-
-				if (options.Facet.DateHardEnd != null)
-					yield return KVP( "facet.date.hardend", options.Facet.DateHardEnd.ToString().ToLowerInvariant() );
-				if (!string.IsNullOrEmpty(options.Facet.DateOther))
-					yield return KVP( "facet.date.other", options.Facet.DateOther );
-			}
 
             if (options.Facet.Prefix != null)
                 yield return KVP("facet.prefix", options.Facet.Prefix);

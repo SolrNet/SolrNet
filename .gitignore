@@ -6,3 +6,6 @@ _ReSharper.SolrNet
 *.bak
 *.sln.cache
 merged
+solr-2009-07-12/solr/data
+solr-2009-07-12/logs
+log.txt

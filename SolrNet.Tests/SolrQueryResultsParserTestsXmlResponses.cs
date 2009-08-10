@@ -305,5 +305,17 @@ namespace SolrNet.Tests {
 </lst>
 </lst>";
 
+        private const string partialResponseXmlWithDateFacetAndOther = 
+@"<lst name='facet_dates'>
+    <lst name='timestamp'>
+        <int name='2009-08-09T22:46:29Z'>0</int>
+        <str name='gap'>+1DAY</str>
+        <date name='end'>2009-08-10T00:46:29Z</date>
+        <int name='before'>1</int>
+        <int name='after'>0</int>
+        <int name='between'>0</int>
+    </lst>
+</lst>";
+
     }
 }

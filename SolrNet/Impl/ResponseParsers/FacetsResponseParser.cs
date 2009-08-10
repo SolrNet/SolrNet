@@ -104,9 +104,17 @@ namespace SolrNet.Impl.ResponseParsers {
                         r.End = (DateTime) dateParser.Parse(dateFacetingNode, typeof (DateTime));
                         break;
                     default:
-                        var d = dateParser.ParseDate(name);
                         var count = (int) intParser.Parse(dateFacetingNode, typeof (int));
-                        r.DateResults.Add(KV(d, count));
+                        if (name == FacetDateOther.After.ToString())
+                            r.OtherResults[FacetDateOther.After] = count;
+                        else if (name == FacetDateOther.Before.ToString())
+                            r.OtherResults[FacetDateOther.Before] = count;
+                        else if (name == FacetDateOther.Between.ToString())
+                            r.OtherResults[FacetDateOther.Between] = count;
+                        else {
+                            var d = dateParser.ParseDate(name);
+                            r.DateResults.Add(KV(d, count));
+                        }
                         break;
                 }
             }

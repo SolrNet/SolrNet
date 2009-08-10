@@ -546,6 +546,29 @@ namespace SolrNet.Tests {
             }
         }
 
+        [Test]
+        public void ParseFacetDateResultsWithOther() {
+            var xml = new XmlDocument();
+            xml.LoadXml(partialResponseXmlWithDateFacetAndOther);
+            var p = new FacetsResponseParser<Product>();
+            var results = p.ParseFacetDates(xml);
+            Assert.AreEqual(1, results.Count);
+            foreach (var kv in results) {
+                Console.WriteLine("date facets for field '{0}'", kv.Key);
+                Console.WriteLine("gap: {0}", kv.Value.Gap);
+                Console.WriteLine("end: {0}", kv.Value.End);
+                foreach (var vv in kv.Value.DateResults) {
+                    Console.WriteLine("Facet count for '{0}': {1}", vv.Key, vv.Value);
+                }
+                foreach (var vv in kv.Value.OtherResults) {
+                    Console.WriteLine("Facet count for '{0}': {1}", vv.Key, vv.Value);
+                }
+            }
+            Assert.AreEqual(1, results["timestamp"].OtherResults[FacetDateOther.Before]);
+            Assert.AreEqual(0, results["timestamp"].OtherResults[FacetDateOther.After]);
+            Assert.AreEqual(0, results["timestamp"].OtherResults[FacetDateOther.Between]);
+        }
+
         public enum AEnum {
             One,
             Two,

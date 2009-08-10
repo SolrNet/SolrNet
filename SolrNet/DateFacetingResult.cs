@@ -39,8 +39,14 @@ namespace SolrNet {
 		/// </summary>
 		public IList<KeyValuePair<DateTime, int>> DateResults { get; set; }
 
+        /// <summary>
+        /// Other date faceting results.
+        /// </summary>
+        public IDictionary<FacetDateOther, int> OtherResults { get; set; }
+
 		public DateFacetingResult() {
 			DateResults = new List<KeyValuePair<DateTime, int>>();
+            OtherResults = new Dictionary<FacetDateOther, int>();
         }
     }
 }

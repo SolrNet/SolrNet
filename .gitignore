@@ -4,4 +4,5 @@ _ReSharper.SolrNet
 *.resharper.user
 *.suo
 *.bak
+*.sln.cache
 merged

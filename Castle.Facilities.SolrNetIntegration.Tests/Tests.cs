@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using Castle.Core.Configuration;
 using Castle.MicroKernel.Facilities;
+using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using MbUnit.Framework;
@@ -124,10 +125,44 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             var parsers = (ISolrResponseParser<Document>[]) field.GetValue(parser);
             Assert.AreEqual(7, parsers.Length);
             foreach (var t in parsers)
-                Console.WriteLine(t);
-            
+                Console.WriteLine(t);            
         }
 
+        [Test]
+        public void MultiCore() {
+            const string core0url = "http://localhost:8983/solr/core0";
+            const string core1url = "http://localhost:8983/solr/core1";
+            var solrFacility = new SolrNetFacility(core0url);
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+
+            // override core1 components
+            const string core1Connection = "core1.connection";
+            container.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>().Named(core1Connection)
+                                   .Parameters(Parameter.ForKey("serverURL").Eq(core1url)));
+            container.Register(Component.For(typeof (ISolrBasicOperations<Core1Entity>), typeof (ISolrBasicReadOnlyOperations<Core1Entity>))
+                                   .ImplementedBy<SolrBasicServer<Core1Entity>>()
+                                   .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(core1Connection)));
+            container.Register(Component.For<ISolrQueryExecuter<Core1Entity>>().ImplementedBy<SolrQueryExecuter<Core1Entity>>()
+                                   .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(core1Connection)));
+
+            // assert that everything is correctly wired
+            container.Kernel.DependencyResolving += (client, model, dep) => {
+                if (model.TargetType == typeof(ISolrConnection)) {
+                    if (client.Service == typeof(ISolrBasicOperations<Core1Entity>) || client.Service == typeof(ISolrQueryExecuter<Core1Entity>))
+                        Assert.AreEqual(core1url, ((ISolrConnection) dep).ServerURL);
+                    if (client.Service == typeof(ISolrBasicOperations<Document>) || client.Service == typeof(ISolrQueryExecuter<Document>))
+                        Assert.AreEqual(core0url, ((ISolrConnection) dep).ServerURL);
+                }
+            };
+
+            container.Resolve<ISolrOperations<Core1Entity>>();
+            container.Resolve<ISolrOperations<Document>>();
+        }
+
+
         public class Document {}
+
+        public class Core1Entity {}
     }
 }

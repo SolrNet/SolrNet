@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2007-2009 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +14,26 @@
 // limitations under the License.
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Reflection;
-using Castle.Windsor;
 
 namespace SolrNet.Tests.Utils {
-    public class ProfilingContainer : WindsorContainer {
-        private readonly ProfilerFacility profiler;
+    public class Node<T> {
+        public List<Node<T>> Children { get; private set; }
 
-        public ProfilingContainer() {
-            profiler = new ProfilerFacility();
-            AddFacility("profiler", profiler);
+        public Node<T> Parent { get; private set; }
+
+        public T Value { get; private set; }
+
+        public Node<T> AddChild(T value) {
+            var node = new Node<T>(this, value);
+            Children.Add(node);
+            return node;
         }
 
-        public Node<KeyValuePair<MethodInfo, TimeSpan>> GetProfile() {
-            return profiler.GetProfile();
+        public Node(Node<T> parent, T value) {
+            Children = new List<Node<T>>();
+            Parent = parent;
+            Value = value;
         }
     }
 }

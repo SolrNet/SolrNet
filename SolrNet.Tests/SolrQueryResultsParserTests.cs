@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
@@ -361,17 +362,25 @@ namespace SolrNet.Tests {
                 parser.Parse(responseXMLWithArrays);
             }
 
-            var profile = container.GetProfile();
-            var profilems = profile
-                .Select(k => KV(k.Key, KV(k.Value.Count, k.Value.Sum(ts => ts.TotalMilliseconds))))
-                .OrderByDescending(k => k.Value.Value)
-                ;
-            var totalTime = profilems.Sum(k => k.Value.Value);
-            Console.WriteLine("Total time: {0} ms", totalTime);
-            foreach (var p in profilems)
-                Console.WriteLine(string.Format("{0} {1}: {2} executions, total time {3} ms ({4:P})",
-                    p.Key.DeclaringType, p.Key, p.Value.Key, p.Value.Value, p.Value.Value / totalTime));            
+            var profile = Flatten(container.GetProfile());
+            var q = from n in profile
+                    group n.Value by n.Key into x
+                    let kv = new { method = x.Key, count = x.Count(), total = x.Sum(t => t.TotalMilliseconds)}
+                    orderby kv.total descending
+                    select kv;
+
+            foreach (var i in q)
+                Console.WriteLine("{0} {1}: {2} executions, {3}ms", i.method.DeclaringType, i.method, i.count, i.total);
+
         }
+
+        public IEnumerable<KeyValuePair<MethodInfo, TimeSpan>> Flatten(Node<KeyValuePair<MethodInfo, TimeSpan>> n) {
+            if (n.Value.Key != null)
+                yield return n.Value;
+            foreach (var i in n.Children.SelectMany(c => Flatten(c)))
+                yield return i;
+        }
+
 
         [Test]
         [Ignore("Performance test, potentially slow")]

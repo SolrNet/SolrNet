@@ -33,7 +33,7 @@ namespace SolrNet.Tests.Utils {
             };
         }
 
-        public Dictionary<MethodInfo, List<TimeSpan>> GetProfile() {
+        public Node<KeyValuePair<MethodInfo, TimeSpan>> GetProfile() {
             return Kernel.Resolve<ProfilingInterceptor>().GetProfile();
         }
 
@@ -41,56 +41,47 @@ namespace SolrNet.Tests.Utils {
             Kernel.Resolve<ProfilingInterceptor>().Clear();
         }
 
-        private class ProfilingInterceptor : IInterceptor {
-            private readonly Dictionary<MethodInfo, List<Stopwatch>> methods = new Dictionary<MethodInfo, List<Stopwatch>>();
-            private readonly Stack<MethodInfo> methodStack = new Stack<MethodInfo>();
-
+        private class ProfilingInterceptor: IInterceptor {
             private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
                 return new KeyValuePair<K, V>(key, value);
             }
 
-            public Dictionary<MethodInfo, List<TimeSpan>> GetProfile() {
-                return methods.Select(k => KV(k.Key, k.Value.Select(s => s.Elapsed).ToList()))
-                    .ToDictionary(k => k.Key, k => k.Value);
+            private Node<KeyValuePair<MethodInfo, Stopwatch>> currentElement;
+
+            public Node<KeyValuePair<MethodInfo, TimeSpan>> GetProfile() {
+                var node = new Node<KeyValuePair<MethodInfo, TimeSpan>>(null, new KeyValuePair<MethodInfo, TimeSpan>(null, new TimeSpan()));
+                node.Children.AddRange(currentElement.Children.Select(c => GetProfile(c, node)));
+                return node;
+            }
+
+            private Node<KeyValuePair<MethodInfo, TimeSpan>> GetProfile(Node<KeyValuePair<MethodInfo, Stopwatch>> n, Node<KeyValuePair<MethodInfo, TimeSpan>> parent) {
+                var node = new Node<KeyValuePair<MethodInfo, TimeSpan>>(parent, KV(n.Value.Key, n.Value.Value.Elapsed));
+                node.Children.AddRange(n.Children.Select(c => GetProfile(c, node)));
+                return node;
+            }
+
+            public ProfilingInterceptor() {
+                Clear();
             }
 
             public void Clear() {
-                methods.Clear();
-                methodStack.Clear();
-            }
-
-            private Stopwatch NewStopwatch(MethodInfo m) {
-                if (!methods.ContainsKey(m))
-                    methods[m] = new List<Stopwatch>();
-                var r = new Stopwatch();
-                methods[m].Add(r);
-                return r;
-            }
-
-            private MethodInfo GetPreviousMethod() {
-                if (methodStack.Count == 0)
-                    return null;
-                return methodStack.Peek();
+                currentElement = new Node<KeyValuePair<MethodInfo, Stopwatch>>(null, new KeyValuePair<MethodInfo, Stopwatch>(null, null));                
             }
 
             public void Intercept(IInvocation invocation) {
-                var prevMethod = GetPreviousMethod();
-                if (prevMethod != null) {
-                    var l = methods[prevMethod];
-                    l[l.Count - 1].Stop();
-                }
-                methodStack.Push(invocation.MethodInvocationTarget);
-                var sw = NewStopwatch(invocation.MethodInvocationTarget);
+                if (currentElement.Value.Value != null)
+                    currentElement.Value.Value.Stop();
+                var sw = new Stopwatch();
+                var newChild = currentElement.AddChild(KV(invocation.MethodInvocationTarget, sw));
+                currentElement = newChild;
+                sw.Start();
                 try {
-                    sw.Start();
                     invocation.Proceed();
                 } finally {
                     sw.Stop();
-                    methodStack.Pop();
-                    if (prevMethod != null) {
-                        var l = methods[prevMethod];
-                        l[l.Count - 1].Start();
-                    }
+                    currentElement = currentElement.Parent;
+                    if (currentElement.Value.Value != null)
+                        currentElement.Value.Value.Start();
                 }
             }
         }

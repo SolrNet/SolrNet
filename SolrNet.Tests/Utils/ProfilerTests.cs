@@ -15,7 +15,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using MbUnit.Framework;
 
@@ -40,7 +42,21 @@ namespace SolrNet.Tests.Utils {
             container.AddComponent<NonProxyable>();
             container.Resolve<NonProxyable>().LongOperation();
             var profile = container.GetProfile();
-            Assert.AreEqual(0, profile.Count);
+            Assert.AreEqual(0, profile.Children.Count);
+        }
+
+        // Y-combinator
+        public delegate Func<A, R> Recursive<A, R>(Recursive<A, R> r);
+        public static Func<A, R> Y<A, R>(Func<Func<A, R>, Func<A, R>> f) {
+            Recursive<A, R> rec = r => a => f(r(r))(a); 
+            return rec(rec);
+        }
+
+        public IEnumerable<KeyValuePair<MethodInfo, TimeSpan>> Flatten(Node<KeyValuePair<MethodInfo, TimeSpan>> n) {
+            if (n.Value.Key != null)
+                yield return n.Value;
+            foreach (var i in n.Children.SelectMany(c => Flatten(c)))
+                yield return i;
         }
 
         [Test]
@@ -49,8 +65,19 @@ namespace SolrNet.Tests.Utils {
             container.AddComponent<Proxyable>();
             container.Resolve<Proxyable>().LongOperation();
             var profile = container.GetProfile();
-            Assert.AreEqual(1, profile.Count);
-            Console.WriteLine(profile.Values.ToList()[0][0].TotalMilliseconds);
+            Assert.AreEqual(1, profile.Children.Count);
+            Console.WriteLine("{0}: {1}", profile.Children[0].Value.Key, profile.Children[0].Value.Value);
+            var fProfile = Flatten(profile);
+            var q = from n in fProfile
+                    group n.Value by n.Key into x
+                    let kv = new KeyValuePair<MethodInfo, double>(x.Key, x.Sum(t => t.TotalMilliseconds))
+                    orderby kv.Value descending
+                    select kv;
+
+            foreach (var i in q)
+                Console.WriteLine("{0}: {1}", i.Key, i.Value);
+
+            //Console.WriteLine(profile.Values.ToList()[0][0].TotalMilliseconds);
         }
     }
 }

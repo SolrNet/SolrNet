@@ -101,6 +101,7 @@
     <Compile Include="MockConnection.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
+    <Compile Include="Utils\Node.cs" />
     <Compile Include="Utils\ProfilerFacility.cs" />
     <Compile Include="Utils\ProfilerTests.cs" />
     <Compile Include="Utils\ProfilingContainer.cs" />

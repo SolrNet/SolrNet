@@ -29,6 +29,7 @@ using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
+using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
 	[TestFixture]

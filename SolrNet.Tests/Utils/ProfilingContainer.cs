@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Castle.Windsor;
 
-namespace SolrNet.Tests {
+namespace SolrNet.Tests.Utils {
     public class ProfilingContainer : WindsorContainer {
         private readonly ProfilerFacility profiler;
 

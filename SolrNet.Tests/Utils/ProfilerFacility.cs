@@ -22,13 +22,15 @@ using System.Reflection;
 using Castle.Core;
 using Castle.Core.Interceptor;
 using Castle.MicroKernel.Facilities;
-using Castle.MicroKernel.Proxy;
 
-namespace SolrNet.Tests {
+namespace SolrNet.Tests.Utils {
     public class ProfilerFacility : AbstractFacility {
         protected override void Init() {
             Kernel.AddComponent<ProfilingInterceptor>(LifestyleType.Thread);
-            Kernel.ProxyFactory.AddInterceptorSelector(new ModelInterceptorSelector());
+            Kernel.ComponentModelCreated += model => {
+                if (model.Implementation != typeof(ProfilingInterceptor))
+                    model.Interceptors.AddFirst(InterceptorReference.ForType<ProfilingInterceptor>());
+            };
         }
 
         public Dictionary<MethodInfo, List<TimeSpan>> GetProfile() {
@@ -38,17 +40,6 @@ namespace SolrNet.Tests {
         public void Clear() {
             Kernel.Resolve<ProfilingInterceptor>().Clear();
         }
-
-        private class ModelInterceptorSelector : IModelInterceptorsSelector {
-            public InterceptorReference[] SelectInterceptors(ComponentModel model) {
-                return new[] {InterceptorReference.ForType<ProfilingInterceptor>()};
-            }
-
-            public bool HasInterceptors(ComponentModel model) {
-                return model.Implementation != typeof (ProfilingInterceptor);
-            }
-        }
-
 
         private class ProfilingInterceptor : IInterceptor {
             private readonly Dictionary<MethodInfo, List<Stopwatch>> methods = new Dictionary<MethodInfo, List<Stopwatch>>();

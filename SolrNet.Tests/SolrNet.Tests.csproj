@@ -102,6 +102,7 @@
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="Utils\ProfilerFacility.cs" />
+    <Compile Include="Utils\ProfilerTests.cs" />
     <Compile Include="Utils\ProfilingContainer.cs" />
     <Compile Include="QueryOptionsTests.cs" />
     <Compile Include="RandomSortTests.cs" />

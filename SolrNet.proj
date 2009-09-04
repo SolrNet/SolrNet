@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="3.5">
   <PropertyGroup>
-    <Version>0.2.2</Version>
+    <Version>0.2.3</Version>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.Community.Tasks</MSBuildCommunityTasksPath>
     <ExtensionTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.ExtensionPack\</ExtensionTasksPath>
     <MergedOutputPath>$(MSBuildProjectDirectory)\merged</MergedOutputPath>
@@ -86,6 +86,9 @@
       </InfoFile>
       <InfoFile Include="Ninject.Integration.SolrNet\Properties\AssemblyInfo.cs">
         <AssemblyTitle>Ninject.Integration.SolrNet</AssemblyTitle>
+      </InfoFile>
+      <InfoFile Include="NHibernate.SolrNet\Properties\AssemblyInfo.cs">
+        <AssemblyTitle>NHibernate.SolrNet</AssemblyTitle>
       </InfoFile>
     </ItemGroup>
     <AssemblyInfo CodeLanguage="CS"

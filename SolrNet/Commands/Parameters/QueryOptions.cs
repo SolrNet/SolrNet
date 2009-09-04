@@ -80,6 +80,12 @@ namespace SolrNet.Commands.Parameters {
         public StatsParameters Stats { get; set; }
 
         /// <summary>
+        /// This parameter can be used to collapse - or group - documents by the unique values of a specified field. Included in the results are the number of
+        /// records by document key and by field value
+        /// </summary>
+        public CollapseParameters Collapse { get; set; }
+
+        /// <summary>
         /// Extra arbitrary parameters to be passed in the request querystring
         /// </summary>
         public IEnumerable<KeyValuePair<string, string>> ExtraParams { get; set; }

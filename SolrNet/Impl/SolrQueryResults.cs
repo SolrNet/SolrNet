@@ -187,7 +187,8 @@ namespace SolrNet {
         public SpellCheckResults SpellChecking { get; set; }
         public IDictionary<T, IList<T>> SimilarResults { get; set; }
         public IDictionary<string, StatsResult> Stats { get; set; }
-		
+        public CollapseResults Collapsing { get; set; }
+
         ///<summary>
 		///Returns an enumerator that iterates through the collection.
 		///</summary>
@@ -206,6 +207,7 @@ namespace SolrNet {
             SpellChecking = new SpellCheckResults();
             SimilarResults = new Dictionary<T, IList<T>>();
             Stats = new Dictionary<string, StatsResult>();
+            Collapsing = new CollapseResults();
         }
 	}
 }

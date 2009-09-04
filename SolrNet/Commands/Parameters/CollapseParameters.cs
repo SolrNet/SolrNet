@@ -1,0 +1,71 @@
+﻿#region license
+// Copyright (c) 2007-2009 Mauricio Scheffer
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//      http://www.apache.org/licenses/LICENSE-2.0
+//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+#endregion
+
+using System;
+using System.Collections.Generic;
+
+namespace SolrNet.Commands.Parameters {
+
+    /// <summary>
+    /// Parameters to query collapse
+    /// <see cref="https://issues.apache.org/jira/browse/SOLR-236"/>
+    /// </summary>
+    public enum CollapseType { Normal, Adjacent }
+    public enum CollapseFacetMode { Before, After }
+    
+    /// <summary>
+    /// Parameters to query collapse
+    /// <see cref="https://issues.apache.org/jira/browse/SOLR-236"/>
+    /// </summary>
+    public class CollapseParameters {
+        /// <summary>
+        /// Field to group results by
+        /// </summary>
+        public string Field { get; set; }
+
+        /// <summary>
+        /// Number of continuous results allowed before collapsing
+        /// </summary>
+        public int Max { get; set; }
+
+        /// <summary>
+        /// limits the number of documents that CollapseFilter will process to create the filter DocSet. 
+        /// The intention of this is to be able to limit the time collapsing will take for very large result sets 
+        /// (obviously at the expense of accurate collapsing in those cases).
+        /// </summary>
+        public int MaxDocs { get; set; }
+
+        /// <summary>
+        /// Number of continuous results allowed before collapsing
+        /// </summary>
+        public CollapseFacetMode FacetMode { get; set; }
+
+        /// <summary>
+        /// Collapse type: Adjacent or Normal
+        /// </summary>
+        /// <param name="facet"></param>
+        /// <returns></returns>
+        public CollapseType Type { get; set; }
+
+        public CollapseParameters()
+        {
+            this.Type = CollapseType.Normal;
+            this.FacetMode = CollapseFacetMode.Before;
+            this.Max = 1;
+        }
+
+    }
+}

@@ -83,6 +83,9 @@ namespace SolrNet.Impl {
                 foreach (var p in GetStatsQueryOptions(Options))
                     yield return p;
 
+                foreach (var p in GetCollapseQueryOptions(Options))
+                    yield return p;
+
                 if (Options.ExtraParams != null)
                     foreach (var p in Options.ExtraParams)
                         yield return p;
@@ -271,6 +274,28 @@ namespace SolrNet.Impl {
                     continue;
                 yield return KVP("stats.facet", facet);
             }
+        }
+
+        /// <summary>
+        /// Gets the Solr parameters for collapse queries
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public IEnumerable<KeyValuePair<string, string>> GetCollapseQueryOptions(QueryOptions options)
+        {
+            if (options.Collapse == null || string.IsNullOrEmpty(options.Collapse.Field))
+                yield break;
+
+            yield return KVP("collapse.field", options.Collapse.Field);
+            yield return KVP("collapse.threshold", options.Collapse.Max.ToString());
+            yield return KVP("collapse.type", options.Collapse.Type.ToString());
+            if (options.Collapse.FacetMode == CollapseFacetMode.Before)
+                yield return KVP("collapse.facet", "before");
+            else
+                yield return KVP("collapse.facet", "after");
+            if (options.Collapse.MaxDocs > 0)
+                yield return KVP("collapse.maxdocs", options.Collapse.MaxDocs.ToString());
+
         }
 
         /// <summary>

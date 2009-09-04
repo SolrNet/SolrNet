@@ -65,6 +65,8 @@ namespace SolrNet {
 
         IDictionary<string, StatsResult> Stats { get; set; }
 
+        CollapseResults Collapsing { get; set; }
+
 		IDictionary<string, DateFacetingResult> FacetDates { get; set; }
 	}
 }

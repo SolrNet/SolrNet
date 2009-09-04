@@ -180,7 +180,7 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\tools\curl.exe" DestinationFolder="$(BuildOutputPath)\tools" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\license.txt" DestinationFolder="$(BuildOutputPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\runsample.bat" DestinationFolder="$(BuildOutputPath)" />
-    <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\solr-2009-07-12" LocalPath="$(BuildOutputPath)\solr-2009-07-12"/>
+    <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\solr-2009-08-29" LocalPath="$(BuildOutputPath)\solr-2009-08-29"/>
     <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\tools\Cassini" LocalPath="$(BuildOutputPath)\tools\Cassini"/>
     <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\SampleSolrApp" LocalPath="$(BuildOutputPath)\SampleSolrApp"/>
     <MakeDir Directories="$(BuildOutputPath)\SampleSolrApp\lib" ContinueOnError="true"/>

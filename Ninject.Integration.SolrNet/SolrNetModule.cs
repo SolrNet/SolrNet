@@ -50,6 +50,7 @@ namespace Ninject.Integration.SolrNet {
                 typeof(MoreLikeThisResponseParser<>),
                 typeof(SpellCheckResponseParser<>),
                 typeof(StatsResponseParser<>),
+                typeof(CollapseResponseParser<>),
             })
                 Bind(typeof(ISolrResponseParser<>)).To(p);
             Bind<ISolrConnection>().ToConstant(new SolrConnection(serverURL));

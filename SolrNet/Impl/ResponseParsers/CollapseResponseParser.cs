@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using SolrNet.Impl.FieldParsers;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -40,11 +39,9 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IDictionary<string, int> ParseDocResults(XmlNode node)
-        {
+        public IDictionary<string, int> ParseDocResults(XmlNode node) {
             var d = new Dictionary<string, int>();
-            foreach (XmlNode countNode in node.SelectSingleNode("lst[@name='doc']").ChildNodes)
-            {
+            foreach (XmlNode countNode in node.SelectSingleNode("lst[@name='doc']").ChildNodes) {
                 var key = countNode.Attributes["name"].Value;
                 var value = Convert.ToInt32(countNode.InnerText);
                 d[key] = value;
@@ -57,11 +54,9 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IDictionary<string, int> ParseCountResults(XmlNode node)
-        {
+        public IDictionary<string, int> ParseCountResults(XmlNode node) {
             var d = new Dictionary<string, int>();
-            foreach (XmlNode countNode in node.SelectSingleNode("lst[@name='count']").ChildNodes)
-            {
+            foreach (XmlNode countNode in node.SelectSingleNode("lst[@name='count']").ChildNodes) {
                 var key = countNode.Attributes["name"].Value;
                 var value = Convert.ToInt32(countNode.InnerText);
                 d[key] = value;

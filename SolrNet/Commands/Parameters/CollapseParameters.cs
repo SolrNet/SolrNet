@@ -14,18 +14,36 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace SolrNet.Commands.Parameters {
-
     /// <summary>
     /// Parameters to query collapse
     /// <see cref="https://issues.apache.org/jira/browse/SOLR-236"/>
     /// </summary>
-    public enum CollapseType { Normal, Adjacent }
-    public enum CollapseFacetMode { Before, After }
-    
+    public enum CollapseType {
+        /// <summary>
+        /// Collapse all documents having equal collapsing field
+        /// </summary>
+        Normal,
+        /// <summary>
+        /// Collapse only consecutive documents
+        /// </summary>
+        Adjacent
+    }
+
+    /// <summary>
+    /// Controls if collapsing happens before or after faceting
+    /// </summary>
+    public enum CollapseFacetMode {
+        /// <summary>
+        /// Faceting happens before collapsing
+        /// </summary>
+        Before,
+        /// <summary>
+        /// Faceting happens after collapsing
+        /// </summary>
+        After
+    }
+
     /// <summary>
     /// Parameters to query collapse
     /// <see cref="https://issues.apache.org/jira/browse/SOLR-236"/>
@@ -56,16 +74,12 @@ namespace SolrNet.Commands.Parameters {
         /// <summary>
         /// Collapse type: Adjacent or Normal
         /// </summary>
-        /// <param name="facet"></param>
-        /// <returns></returns>
         public CollapseType Type { get; set; }
 
-        public CollapseParameters()
-        {
-            this.Type = CollapseType.Normal;
-            this.FacetMode = CollapseFacetMode.Before;
-            this.Max = 1;
+        public CollapseParameters() {
+            Type = CollapseType.Normal;
+            FacetMode = CollapseFacetMode.Before;
+            Max = 1;
         }
-
     }
 }

@@ -38,8 +38,7 @@ namespace SolrNet {
         /// </summary>
         public IDictionary<string, int> CountResults { get; set; }
 
-        public CollapseResults()
-        {
+        public CollapseResults() {
             DocResults = new Dictionary<string, int>();
             CountResults = new Dictionary<string, int>();
         }

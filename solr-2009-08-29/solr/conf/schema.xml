@@ -416,9 +416,7 @@
    <!-- Uncommenting the following will create a "timestamp" field using
         a default value of "NOW" to indicate when each document was indexed.
      -->
-   <!--
    <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
-     -->
    
 
    <!-- Dynamic field definitions.  If a field name is not found, dynamicFields
@@ -450,6 +448,7 @@
    <dynamicField name="attr_*" type="textgen" indexed="true" stored="true" multiValued="true"/>
 
    <dynamicField name="random_*" type="random" />
+   <dynamicField name="price_*" type="sfloat" indexed="true" stored="true"/>
 
    <!-- uncomment the following to ignore any fields that don't already match an existing 
         field name or dynamic field, rather than reporting them as an error. 

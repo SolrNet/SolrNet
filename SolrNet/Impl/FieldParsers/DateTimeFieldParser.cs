@@ -17,6 +17,7 @@
 using System;
 using System.Globalization;
 using System.Xml;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldParsers {
     /// <summary>
@@ -36,6 +37,8 @@ namespace SolrNet.Impl.FieldParsers {
         }
 
         public DateTime ParseDate(string s) {
+            var p = s.Split('-');
+            s = p[0].PadLeft(4, '0') + '-' + string.Join("-", Func.ToArray(Func.Tail(p)));
             return DateTime.ParseExact(s, "yyyy-MM-dd'T'HH:mm:ss.FFF'Z'", CultureInfo.InvariantCulture);
         }
     }

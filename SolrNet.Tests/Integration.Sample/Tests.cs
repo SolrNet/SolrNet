@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
+using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests.Integration.Sample {
     /// <summary>
@@ -30,7 +32,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [FixtureSetUp]
         public void FixtureSetup() {
-            Startup.Init<Product>(serverURL);
+            Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL)));
         }
 
         [Test]

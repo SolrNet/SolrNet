@@ -84,6 +84,7 @@
     <Compile Include="AllPropertiesMappingManagerTests.cs" />
     <Compile Include="AttributesMappingManagerTests.cs" />
     <Compile Include="CommonServiceLocatorTests.cs" />
+    <Compile Include="DateTimeFieldParserTests.cs" />
     <Compile Include="DefaultFieldParserTests.cs" />
     <Compile Include="DeleteCommandTests.cs" />
     <Compile Include="ExceptionTests.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="MockConnection.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
+    <Compile Include="Utils\LoggingConnection.cs" />
     <Compile Include="Utils\Node.cs" />
     <Compile Include="Utils\ProfilerFacility.cs" />
     <Compile Include="Utils\ProfilerTests.cs" />

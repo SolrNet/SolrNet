@@ -93,5 +93,11 @@ namespace SolrNet.Tests {
             var l = new[] {1, 1, 2, 3, 2, 4, 5};
             Assert.AreElementsEqual(new[] {1,2,3,4,5}, Func.Distinct(l));
         }
+
+        [Test]
+        public void Skip() {
+            var l = new[] { 1, 2, 3, 4, 5 };
+            Assert.AreElementsEqual(new[] {2,3,4,5}, Func.Skip(l, 1));
+        }
 	}
 }

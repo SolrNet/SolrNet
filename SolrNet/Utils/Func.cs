@@ -155,5 +155,15 @@ namespace SolrNet.Utils {
                 yield return e;
             }
         }
+
+        public static IEnumerable<T> Skip<T>(IEnumerable<T> l, int skipCount) {
+            foreach (var e in l)
+                if (skipCount-- <= 0)
+                    yield return e;
+        }
+
+        public static IEnumerable<T> Tail<T>(IEnumerable<T> l) {
+            return Skip(l, 1);
+        }
 	}
 }

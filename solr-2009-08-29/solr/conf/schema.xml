@@ -489,7 +489,7 @@
    <!-- <copyField source="*_t" dest="text" maxChars="3000"/> -->
 
    <!-- copy name to alphaNameSort, a field designed for sorting by name -->
-   <!-- <copyField source="name" dest="alphaNameSort"/> -->
+   <copyField source="name" dest="nameSort"/>
  
 
  <!-- Similarity is the scoring routine for each document vs. a query.

@@ -79,6 +79,10 @@ namespace NHibernate.SolrNet.Impl {
             return session.Load(theType, id, lockMode);
         }
 
+        public object Load(string entityName, object id, LockMode lockMode) {
+            return session.Load(entityName, id, lockMode);
+        }
+
         public object Load(System.Type theType, object id) {
             return session.Load(theType, id);
         }
@@ -89,6 +93,10 @@ namespace NHibernate.SolrNet.Impl {
 
         public T Load<T>(object id) {
             return session.Load<T>(id);
+        }
+
+        public object Load(string entityName, object id) {
+            return session.Load(entityName, id);
         }
 
         public void Load(object obj, object id) {
@@ -161,6 +169,10 @@ namespace NHibernate.SolrNet.Impl {
 
         public void Delete(object obj) {
             session.Delete(obj);
+        }
+
+        public void Delete(string entityName, object obj) {
+            session.Delete(entityName, obj);
         }
 
         public IList Find(string query) {
@@ -239,12 +251,28 @@ namespace NHibernate.SolrNet.Impl {
             return session.BeginTransaction(isolationLevel);
         }
 
+        public ICriteria CreateCriteria<T>() where T : class {
+            return session.CreateCriteria<T>();
+        }
+
+        public ICriteria CreateCriteria<T>(string alias) where T : class {
+            return session.CreateCriteria<T>(alias);
+        }
+
         public ICriteria CreateCriteria(System.Type persistentClass) {
             return session.CreateCriteria(persistentClass);
         }
 
         public ICriteria CreateCriteria(System.Type persistentClass, string alias) {
             return session.CreateCriteria(persistentClass, alias);
+        }
+
+        public ICriteria CreateCriteria(string entityName) {
+            return session.CreateCriteria(entityName);
+        }
+
+        public ICriteria CreateCriteria(string entityName, string alias) {
+            return session.CreateCriteria(entityName, alias);
         }
 
         public IQuery CreateQuery(string queryString) {
@@ -329,6 +357,10 @@ namespace NHibernate.SolrNet.Impl {
 
         public ISession GetSession(EntityMode entityMode) {
             return session.GetSession(entityMode);
+        }
+
+        public EntityMode ActiveEntityMode {
+            get { return session.ActiveEntityMode; }
         }
 
         public FlushMode FlushMode {

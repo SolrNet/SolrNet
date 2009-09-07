@@ -97,13 +97,15 @@ namespace NHibernate.SolrNet.Impl {
             }
         }
 
-        public bool DoWithEntities(IDictionary<ISession, List<T>> entities, ISession s, Action<T> action) {
-            var hasToDo = entities.ContainsKey(s);
-            if (hasToDo)
-                foreach (var i in entities[s])
-                    action(i);
-            entities.Remove(s);
-            return hasToDo;
+        public bool DoWithEntities(IDictionary<ISession, List<T>> entities, ISession s, Action<T> action, object locker) {
+            lock (locker) {
+                var hasToDo = entities.ContainsKey(s);
+                if (hasToDo)
+                    foreach (var i in entities[s])
+                        action(i);
+                entities.Remove(s);
+                return hasToDo;
+            }
         }
 
         public void OnFlush(FlushEvent e) {
@@ -113,8 +115,8 @@ namespace NHibernate.SolrNet.Impl {
         }
 
         public void OnFlushInternal(AbstractEvent e) {
-            var added = DoWithEntities(entitiesToAdd, e.Session, d => solr.Add(d));
-            var deleted = DoWithEntities(entitiesToDelete, e.Session, d => solr.Delete(d));
+            var added = DoWithEntities(entitiesToAdd, e.Session, d => solr.Add(d), addLock);
+            var deleted = DoWithEntities(entitiesToDelete, e.Session, d => solr.Delete(d), deleteLock);
             if (Commit && (added || deleted))
                 solr.Commit();
         }

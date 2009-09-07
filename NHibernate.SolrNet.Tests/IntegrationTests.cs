@@ -65,7 +65,7 @@ namespace NHibernate.SolrNet.Tests {
     <property name='Description'/>
   </class>
 </hibernate-mapping>");
-            new SchemaExport(cfg).Execute(false, true, false, false);
+            new SchemaExport(cfg).Execute(false, true, false);
             return cfg;
         }
 

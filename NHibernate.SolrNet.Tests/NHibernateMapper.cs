@@ -30,7 +30,7 @@ namespace NHibernate.SolrNet.Tests {
     public class Configuration : Cfg.Configuration {
         public void Register(System.Type entity) {
             var dialect = Dialect.Dialect.GetDialect(Properties);
-            var mappings = CreateMappings();
+            var mappings = CreateMappings(dialect);
             SetDefaultMappingsProperties(mappings);
             new EntityMapper(mappings, dialect).Bind(entity);
         }
@@ -83,7 +83,7 @@ namespace NHibernate.SolrNet.Tests {
             pclass.ClassName = entity.AssemblyQualifiedName;
             pclass.ProxyInterfaceName = entity.AssemblyQualifiedName;
             string tableName = GetClassTableName(pclass);
-            Table table = mappings.AddTable(null, null, tableName, null, pclass.IsAbstract.GetValueOrDefault());
+            Table table = mappings.AddTable(null, null, tableName, null, pclass.IsAbstract.GetValueOrDefault(), null);
             ((ITableOwner) pclass).Table = table;
             pclass.IsMutable = true;
             PropertyInfo[] propInfos = entity.GetProperties();

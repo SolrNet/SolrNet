@@ -65,6 +65,12 @@ namespace NHibernate.SolrNet {
             mapper = ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>();
         }
 
+        /// <summary>
+        /// Registers SolrNet's NHibernate listeners
+        /// </summary>
+        /// <param name="config">NHibernate configuration</param>
+        /// <param name="autoCommit"></param>
+        /// <returns></returns>
         public Configuration Configure(Configuration config, bool autoCommit) {
             foreach (var t in mapper.GetRegisteredTypes()) {
                 var listenerType = typeof (SolrNetListener<>).MakeGenericType(t);
@@ -77,7 +83,7 @@ namespace NHibernate.SolrNet {
             return config;
         }
 
-        public void SetListener(Configuration config, object listener) {
+        private void SetListener(Configuration config, object listener) {
             if (listener == null)
                 throw new ArgumentNullException("listener");
             foreach (var intf in listener.GetType().GetInterfaces())

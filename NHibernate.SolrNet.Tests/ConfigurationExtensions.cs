@@ -16,6 +16,10 @@
 
 using System;
 using System.Collections.Generic;
+using NHibernate.ByteCode.Castle;
+using NHibernate.Connection;
+using NHibernate.Dialect;
+using NHibernate.Driver;
 using Environment=NHibernate.Cfg.Environment;
 
 namespace NHibernate.SolrNet.Tests {
@@ -33,10 +37,11 @@ namespace NHibernate.SolrNet.Tests {
         public static Configuration GetEmptyNHConfig() {
             var nhConfig = new Configuration {
                 Properties = new Dictionary<string, string> {
-                    {Environment.ConnectionProvider, "NHibernate.Connection.DriverConnectionProvider"},
-                    {Environment.ConnectionDriver, "NHibernate.Driver.SQLite20Driver"},
-                    {Environment.Dialect, "NHibernate.Dialect.SQLiteDialect"},
+                    {Environment.ConnectionProvider, typeof(DriverConnectionProvider).FullName},
+                    {Environment.ConnectionDriver, typeof(SQLite20Driver).FullName},
+                    {Environment.Dialect, typeof(SQLiteDialect).FullName},
                     {Environment.ConnectionString, "Data Source=test.db;Version=3;New=True;"},
+                    {Environment.ProxyFactoryFactoryClass, typeof(ProxyFactoryFactory).AssemblyQualifiedName},
                 }
             };
             return nhConfig;

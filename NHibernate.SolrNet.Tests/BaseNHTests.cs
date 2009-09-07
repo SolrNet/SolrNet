@@ -31,7 +31,7 @@ namespace NHibernate.SolrNet.Tests {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
             mockSolr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
             nhConfig.SetListener(new SolrNetListener<Entity>(mockSolr));
-            new SchemaExport(nhConfig).Execute(false, true, false, false);
+            new SchemaExport(nhConfig).Execute(false, true, false);
             sessionFactory = nhConfig.BuildSessionFactory();
         }
 

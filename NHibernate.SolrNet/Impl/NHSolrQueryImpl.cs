@@ -62,6 +62,10 @@ namespace NHibernate.SolrNet.Impl {
             return new List<T>(Execute<T>());
         }
 
+        protected override IDictionary<string, LockMode> LockModes {
+            get { return null; }
+        }
+
         private ICollection<T> Execute<T>() {
             var solrType = typeof(ISolrReadOnlyOperations<>).MakeGenericType(typeof(T));
             var solr = (ISolrReadOnlyOperations<T>) provider.GetService(solrType);
@@ -85,10 +89,6 @@ namespace NHibernate.SolrNet.Impl {
         public INHSolrQuery SetSort(Order o) {
             options.OrderBy = new[] {ConvertOrder(o)};
             return this;
-        }
-
-        protected override IDictionary LockModes {
-            get { return null; }
         }
     }
 }

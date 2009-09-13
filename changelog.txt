@@ -1,0 +1,61 @@
+- Fixed minor date parsing bug
+- Added support for field collapsing
+- Added support for date-faceting (issue #7)
+- Upgraded to Ninject trunk
+- Upgraded sample app's Solr to nightly
+- Added StatsComponent support (issue #67)
+- Added index-time document boosting (issue #65)
+- Added query-time document boosting (issue #57)
+- Bugfix: response parsing was not fully culture-independent (issue #61)
+- All exceptions are now serializable
+- Fixed potential timeout issue
+- NHibernate integration
+- Fixed Not() query operator returning wrong type
+
+0.2.2 (2009-05-07)
+===
+
+- Bugfix: semicolons are now correctly escaped in queries.
+- Bugfix: invalid xml characters (control chars) are now correctly filtered.
+- Deleting a list (IEnumerable) of documents now uses a single request (requires unique key and Solr 1.3+) 
+- Added support for arbitrary parameters, using the QueryOptions.ExtraParams dictionary.
+- Added per-field facet parameters.
+- Breaking change: as a consequence of the previous change, facet queries and other facet parameters were moved to FacetParameters.
+- Added a couple of fluenty QueryOptions building methods.
+- Added dictionary mapping support.
+- Upgraded Windsor facility to use Windsor 2.0
+- Merged all SolrNet assemblies (SolrNet, SolrNet.DSL, the Castle facility, the Ninject module and the internal HttpWebAdapters).
+- Windsor and Ninject are not packaged anymore.
+
+0.2.1 (2009-02-25)
+===
+
+- Added support for Spell checking
+- Added support for More like this
+- Added explicit support for random sorting
+- Added "has any value" query
+- Fluent interface for query building
+
+0.2.0 (2009-02-18)
+===
+
+- Major rewrite
+- Deprecated ISolrDocument interface
+- Dropped query by example 
+- Dropped random sorting
+- Added several ways to map solr fields to properties
+- Added highlighting 
+- Added filter queries 
+- Added ping 
+- Added sample application 
+- Added Windsor facility 
+- Added Ninject module 
+- Added operator overloading for queries 
+- Added MSDN-style docs 
+- Added more code samples, better organized wiki
+- Changed initialization and instantiation of the service
+
+0.1 (2008-09-15)
+===
+
+- Initial release

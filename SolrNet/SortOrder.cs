@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using SolrNet.Exceptions;
 
 namespace SolrNet {
@@ -40,11 +41,13 @@ namespace SolrNet {
 			return string.Format("{0} {1}", fieldName, order.ToString().ToLower());
 		}
 
+        private static Regex parseRx = new Regex("\\s+", RegexOptions.Compiled);
+
 		public static SortOrder Parse(string s) {
             if (string.IsNullOrEmpty(s))
                 return null;
 			try {
-				var tokens = s.Split(' ');
+			    var tokens = parseRx.Split(s);
 				string field = tokens[0];
 				if (tokens.Length > 1) {
 					Order o = (Order) Enum.Parse(typeof (Order), tokens[1].ToUpper());

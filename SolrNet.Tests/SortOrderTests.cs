@@ -62,6 +62,12 @@ namespace SolrNet.Tests {
             Assert.Like(o.ToString(), "pepe desc");
 		}
 
+        [Test]
+        public void ParseDescWithSpaces() {
+            var o = SortOrder.Parse("pepe  desc");
+            Assert.Like(o.ToString(), "pepe desc");
+        }
+
 		[Test]
 		[ExpectedException(typeof (InvalidSortOrderException))]
 		public void InvalidParse_ShouldThrow() {

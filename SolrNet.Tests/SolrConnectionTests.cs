@@ -27,11 +27,13 @@ using SolrNet.Impl;
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class SolrConnectionTests {
+        private const string solrURL = "http://localhost:8983/solr";
+
 		[Test]
 		[Category("Integration")]
 		[Ignore]
 		public void ActualConnectionTest() {
-			var conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
+			var conn = new SolrConnection(solrURL, new HttpWebRequestFactory());
 			var p = new Dictionary<string, string>();
 			p["version"] = "2.1";
 			p["indent"] = "on";
@@ -44,7 +46,7 @@ namespace SolrNet.Tests {
 		[ExpectedException(typeof (InvalidFieldException))]
 		[Ignore]
 		public void ActualInvalidFieldException() {
-			var conn = new SolrConnection("http://localhost:8983/solr", new HttpWebRequestFactory());
+            var conn = new SolrConnection(solrURL, new HttpWebRequestFactory());
 			var p = new Dictionary<string, string>();
 			p["version"] = "2.1";
 			p["indent"] = "on";

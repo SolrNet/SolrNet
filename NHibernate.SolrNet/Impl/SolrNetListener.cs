@@ -18,15 +18,14 @@ using System;
 using System.Collections.Generic;
 using NHibernate.Event;
 using NHibernate.Event.Default;
+using NHibernate.Util;
 using SolrNet;
 
 namespace NHibernate.SolrNet.Impl {
     public class SolrNetListener<T> : ICommitSetting, IAutoFlushEventListener, IFlushEventListener, IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener where T : class {
         private readonly ISolrOperations<T> solr;
-        private readonly IDictionary<ISession, List<T>> entitiesToAdd = new Dictionary<ISession, List<T>>();
-        private readonly IDictionary<ISession, List<T>> entitiesToDelete = new Dictionary<ISession, List<T>>();
-        private readonly object addLock = new object();
-        private readonly object deleteLock = new object();
+        private readonly WeakHashtable entitiesToAdd = new WeakHashtable();
+        private readonly WeakHashtable entitiesToDelete = new WeakHashtable();
 
         public bool Commit { get; set; }
 
@@ -37,18 +36,18 @@ namespace NHibernate.SolrNet.Impl {
         }
 
         private void Add(ISession s, T entity) {
-            lock (addLock) {
-                if (!entitiesToAdd.ContainsKey(s))
+            lock (entitiesToAdd.SyncRoot) {
+                if (!entitiesToAdd.Contains(s))
                     entitiesToAdd[s] = new List<T>();
-                entitiesToAdd[s].Add(entity);
+                ((IList<T>)entitiesToAdd[s]).Add(entity);
             }
         }
 
         private void Delete(ISession s, T entity) {
-            lock (deleteLock) {
-                if (!entitiesToDelete.ContainsKey(s))
+            lock (entitiesToDelete.SyncRoot) {
+                if (!entitiesToDelete.Contains(s))
                     entitiesToDelete[s] = new List<T>();
-                entitiesToDelete[s].Add(entity);
+                ((IList<T>)entitiesToAdd[s]).Add(entity);
             }
         }
 
@@ -97,11 +96,11 @@ namespace NHibernate.SolrNet.Impl {
             }
         }
 
-        public bool DoWithEntities(IDictionary<ISession, List<T>> entities, ISession s, Action<T> action, object locker) {
-            lock (locker) {
-                var hasToDo = entities.ContainsKey(s);
+        public bool DoWithEntities(WeakHashtable entities, ISession s, Action<T> action) {
+            lock (entities.SyncRoot) {
+                var hasToDo = entities.Contains(s);
                 if (hasToDo)
-                    foreach (var i in entities[s])
+                    foreach (var i in (IList<T>)entities[s])
                         action(i);
                 entities.Remove(s);
                 return hasToDo;
@@ -115,8 +114,8 @@ namespace NHibernate.SolrNet.Impl {
         }
 
         public void OnFlushInternal(AbstractEvent e) {
-            var added = DoWithEntities(entitiesToAdd, e.Session, d => solr.Add(d), addLock);
-            var deleted = DoWithEntities(entitiesToDelete, e.Session, d => solr.Delete(d), deleteLock);
+            var added = DoWithEntities(entitiesToAdd, e.Session, d => solr.Add(d));
+            var deleted = DoWithEntities(entitiesToDelete, e.Session, d => solr.Delete(d));
             if (Commit && (added || deleted))
                 solr.Commit();
         }

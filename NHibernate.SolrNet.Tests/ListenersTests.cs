@@ -78,5 +78,49 @@ namespace NHibernate.SolrNet.Tests {
             }
             mockSolr.VerifyAllExpectations();
         }
+
+        [Test]
+        [Ignore("Session dispose should follow transaction rollback. See http://www.nhforge.org/doc/nh/en/index.html#manipulatingdata-endingsession-commit")]
+        public void Insert_with_multiple_transactions() {
+            var entity = new Entity();
+            mockSolr.Expect(x => x.Add(entity))
+                .Repeat.Once()
+                .Return(mockSolr);
+            mockSolr.Replay();
+            using (var session = sessionFactory.OpenSession()) {
+                session.FlushMode = FlushMode.Commit;
+                using (var tx = session.BeginTransaction()) {
+                    session.Save(entity);
+                    tx.Rollback();
+                }
+                using (var tx = session.BeginTransaction()) {
+                    session.Save(entity);
+                    tx.Commit();
+                }
+            }
+            mockSolr.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Insert_with_multiple_transactions2() {
+            var entity = new Entity();
+            mockSolr.Expect(x => x.Add(entity))
+                .Repeat.Once()
+                .Return(mockSolr);
+            mockSolr.Replay();
+            using (var session = sessionFactory.OpenSession()) {
+                session.FlushMode = FlushMode.Commit;
+                using (var tx = session.BeginTransaction()) {
+                    session.Save(entity);
+                    tx.Commit();
+                }
+                using (var tx = session.BeginTransaction()) {
+                    session.Save(entity);
+                    tx.Rollback();
+                }
+            }
+            mockSolr.VerifyAllExpectations();
+        }
+
     }
 }

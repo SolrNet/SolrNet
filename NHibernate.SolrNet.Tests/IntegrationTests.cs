@@ -14,10 +14,14 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
+using System.Reflection;
 using log4net.Config;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
+using NHibernate.SolrNet.Impl;
 using NHibernate.Tool.hbm2ddl;
+using NHibernate.Util;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
@@ -25,9 +29,9 @@ using SolrNet.Mapping;
 
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]
+    [Ignore("Requires running Solr instance")]
     public class IntegrationTests {
         [Test]
-        [Ignore("Requires running Solr instance")]
         public void Insert() {
             using (var session = sessionFactory.OpenSession()) {
                 session.Save(new Entity {
@@ -42,6 +46,22 @@ namespace NHibernate.SolrNet.Tests {
                 Assert.AreEqual(1, entities.Count);
                 Assert.AreEqual(2, entities[0].Tags.Count);
             }
+        }
+
+        [Test]
+        public void DoesntLeakMem() {
+            using (var session = cfgHelper.OpenSession(sessionFactory)) {
+                session.FlushMode = FlushMode.Never;
+                session.Save(new Entity {
+                    Id = "abcd",
+                    Description = "Testing NH-Solr integration",
+                    Tags = new[] { "cat1", "aoe" },
+                });
+            }
+            var listener = cfg.EventListeners.PostInsertEventListeners[0];
+            var addField = typeof (SolrNetListener<Entity>).GetField("entitiesToAdd", BindingFlags.NonPublic | BindingFlags.Instance);
+            var addDict = (WeakHashtable)addField.GetValue(listener);
+            Assert.AreEqual(0, addDict.Count);
         }
 
         private Configuration SetupNHibernate() {
@@ -83,7 +103,7 @@ namespace NHibernate.SolrNet.Tests {
             BasicConfigurator.Configure();
             SetupSolr();
 
-            var cfg = SetupNHibernate();
+            cfg = SetupNHibernate();
 
             cfgHelper = new CfgHelper();
             cfgHelper.Configure(cfg, true);
@@ -95,6 +115,7 @@ namespace NHibernate.SolrNet.Tests {
             sessionFactory.Dispose();
         }
 
+        private Configuration cfg;
         private CfgHelper cfgHelper;
         private ISessionFactory sessionFactory;
     }

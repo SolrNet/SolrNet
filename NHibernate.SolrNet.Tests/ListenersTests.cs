@@ -22,7 +22,7 @@ namespace NHibernate.SolrNet.Tests {
     public class ListenersTests: BaseNHTests {
 
         [Test]
-        public void PostInsert_manual_flush() {
+        public void PostInsert_manual_flush_adds_to_solr() {
             var entity = new Entity {Description = "pepe"};
             mockSolr.Expect(x => x.Add(entity))
                 .Repeat.Once()
@@ -37,7 +37,7 @@ namespace NHibernate.SolrNet.Tests {
         }
 
         [Test]
-        public void PostInsert_manual_flush_without_flush() {
+        public void PostInsert_manual_flush_without_flush_doesnt_add_to_solr() {
             var entity = new Entity {Description = "pepe"};
             mockSolr.Expect(x => x.Add(entity))
                 .Repeat.Never()
@@ -51,7 +51,7 @@ namespace NHibernate.SolrNet.Tests {
         }
 
         [Test]
-        public void PostInsert_autoflush_without_flush() {
+        public void PostInsert_autoflush_without_flush_adds_to_solr() {
             var entity = new Entity {Description = "pepe"};
             mockSolr.Expect(x => x.Add(entity))
                 .Repeat.Once()
@@ -64,7 +64,7 @@ namespace NHibernate.SolrNet.Tests {
         }
 
         [Test]
-        public void PostInsert_without_commit() {
+        public void PostInsert_without_commit_doesnt_add_to_solr() {
             var entity = new Entity();
             mockSolr.Expect(x => x.Add(entity))
                 .Repeat.Never()

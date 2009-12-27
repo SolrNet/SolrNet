@@ -22,11 +22,18 @@ using NHibernate.Util;
 using SolrNet;
 
 namespace NHibernate.SolrNet.Impl {
+    /// <summary>
+    /// NHibernate event listener for updating Solr index
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class SolrNetListener<T> : ICommitSetting, IAutoFlushEventListener, IFlushEventListener, IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener where T : class {
         private readonly ISolrOperations<T> solr;
         private readonly WeakHashtable entitiesToAdd = new WeakHashtable();
         private readonly WeakHashtable entitiesToDelete = new WeakHashtable();
 
+        /// <summary>
+        /// Automatically commit Solr after each update
+        /// </summary>
         public bool Commit { get; set; }
 
         public SolrNetListener(ISolrOperations<T> solr) {
@@ -35,7 +42,7 @@ namespace NHibernate.SolrNet.Impl {
             this.solr = solr;
         }
 
-        private void Add(ISession s, T entity) {
+        private void Add(ITransaction s, T entity) {
             lock (entitiesToAdd.SyncRoot) {
                 if (!entitiesToAdd.Contains(s))
                     entitiesToAdd[s] = new List<T>();
@@ -43,7 +50,7 @@ namespace NHibernate.SolrNet.Impl {
             }
         }
 
-        private void Delete(ISession s, T entity) {
+        private void Delete(ITransaction s, T entity) {
             lock (entitiesToDelete.SyncRoot) {
                 if (!entitiesToDelete.Contains(s))
                     entitiesToDelete[s] = new List<T>();
@@ -75,7 +82,7 @@ namespace NHibernate.SolrNet.Impl {
             if (entity == null)
                 return;
             if (DeferAction(e.Session))
-                Add(e.Session, entity);
+                Add(e.Session.Transaction, entity);
             else {
                 solr.Add(entity);
                 if (Commit)
@@ -88,7 +95,7 @@ namespace NHibernate.SolrNet.Impl {
             if (e.Entity.GetType() != typeof (T))
                 return;
             if (DeferAction(e.Session))
-                Delete(e.Session, (T) e.Entity);
+                Delete(e.Session.Transaction, (T) e.Entity);
             else {
                 solr.Delete((T)e.Entity);
                 if (Commit)
@@ -96,7 +103,7 @@ namespace NHibernate.SolrNet.Impl {
             }
         }
 
-        public bool DoWithEntities(WeakHashtable entities, ISession s, Action<T> action) {
+        public bool DoWithEntities(WeakHashtable entities, ITransaction s, Action<T> action) {
             lock (entities.SyncRoot) {
                 var hasToDo = entities.Contains(s);
                 if (hasToDo)
@@ -114,8 +121,8 @@ namespace NHibernate.SolrNet.Impl {
         }
 
         public void OnFlushInternal(AbstractEvent e) {
-            var added = DoWithEntities(entitiesToAdd, e.Session, d => solr.Add(d));
-            var deleted = DoWithEntities(entitiesToDelete, e.Session, d => solr.Delete(d));
+            var added = DoWithEntities(entitiesToAdd, e.Session.Transaction, d => solr.Add(d));
+            var deleted = DoWithEntities(entitiesToDelete, e.Session.Transaction, d => solr.Delete(d));
             if (Commit && (added || deleted))
                 solr.Commit();
         }

@@ -17,8 +17,22 @@
 using SolrNet;
 
 namespace NHibernate.SolrNet {
+    /// <summary>
+    /// NHibernate <see cref="ISession"/> with SolrNet extensions for querying
+    /// </summary>
     public interface ISolrSession: ISession {
+        /// <summary>
+        /// Creates a Solr query
+        /// </summary>
+        /// <param name="query">Solr query</param>
+        /// <returns>query object</returns>
         INHSolrQuery CreateSolrQuery(string query);
+
+        /// <summary>
+        /// Creates a Solr query
+        /// </summary>
+        /// <param name="query">Solr query</param>
+        /// <returns>query object</returns>
         INHSolrQuery CreateSolrQuery(ISolrQuery query);
     }
 }

@@ -17,9 +17,29 @@
 using NHibernate.Criterion;
 
 namespace NHibernate.SolrNet {
+    /// <summary>
+    /// NHibernate <see cref="IQuery"/> for SolrNet queries
+    /// </summary>
     public interface INHSolrQuery : IQuery {
+        /// <summary>
+        /// Set the maximum number of rows to retrieve.
+        /// </summary>
+        /// <param name="maxResults">The maximum number of rows to retreive</param>
+        /// <returns>this</returns>
         new INHSolrQuery SetMaxResults(int maxResults);
+
+        /// <summary>
+        /// Sets the first row to retrieve.
+        /// </summary>
+        /// <param name="firstResult">The first row to retreive.</param>
+        /// <returns>this</returns>
         new INHSolrQuery SetFirstResult(int firstResult);
+
+        /// <summary>
+        /// Sets sort order
+        /// </summary>
+        /// <param name="o">Sort order</param>
+        /// <returns>this</returns>
         INHSolrQuery SetSort(Order o);
     }
 }

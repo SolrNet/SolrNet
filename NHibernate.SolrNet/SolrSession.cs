@@ -20,12 +20,26 @@ using NHibernate.SolrNet.Impl;
 using SolrNet;
 
 namespace NHibernate.SolrNet {
+    /// <summary>
+    /// NHibernate <see cref="ISession"/> with SolrNet extensions for querying
+    /// </summary>
     public class SolrSession : DelegatingSession, ISolrSession {
         private readonly ISession session;
         private readonly IServiceProvider provider;
 
+        /// <summary>
+        /// Creates a session using the current <see cref="ServiceLocator"/>
+        /// </summary>
+        /// <param name="session">NHibernate session to wrap</param>
+        /// <remarks>The wrapped session is owned by this session. It will be disposed when this session is disposed</remarks>
         public SolrSession(ISession session) : this(session, ServiceLocator.Current) {}
 
+        /// <summary>
+        /// Creates a session using a defined <see cref="IServiceProvider"/> to fetch SolrNet components
+        /// </summary>
+        /// <param name="session">NHibernate session to wrap</param>
+        /// <param name="provider">Used to fetch SolrNet components</param>
+        /// <remarks>The wrapped session is owned by this session. It will be disposed when this session is disposed</remarks>
         public SolrSession(ISession session, IServiceProvider provider) : base(session) {
             if (session == null)
                 throw new ArgumentNullException("session");
@@ -35,10 +49,20 @@ namespace NHibernate.SolrNet {
             this.provider = provider;
         }
 
+        /// <summary>
+        /// Creates a Solr query
+        /// </summary>
+        /// <param name="query">Solr query</param>
+        /// <returns>query object</returns>
         public INHSolrQuery CreateSolrQuery(string query) {
             return new NHSolrQueryImpl(provider, query, session.FlushMode, session.GetSessionImplementation(), null);
         }
 
+        /// <summary>
+        /// Creates a Solr query
+        /// </summary>
+        /// <param name="query">Solr query</param>
+        /// <returns>query object</returns>
         public INHSolrQuery CreateSolrQuery(ISolrQuery query) {
             return CreateSolrQuery(query.Query);
         }

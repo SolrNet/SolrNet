@@ -16,6 +16,9 @@
 
 namespace NHibernate.SolrNet.Impl {
     public interface ICommitSetting {
+        /// <summary>
+        /// Automatically commit Solr after each update
+        /// </summary>
         bool Commit { get; set; }
     }
 }

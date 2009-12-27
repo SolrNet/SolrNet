@@ -23,6 +23,9 @@ using NHibernate.SolrNet.Impl;
 using SolrNet;
 
 namespace NHibernate.SolrNet {
+    /// <summary>
+    /// Helper class to configure NHibernate-SolrNet integration.
+    /// </summary>
     public class CfgHelper {
 
         public static readonly Dictionary<System.Type, ListenerType[]> ListenerDict = new Dictionary<System.Type, ListenerType[]> {
@@ -42,23 +45,30 @@ namespace NHibernate.SolrNet {
             {typeof (IAutoFlushEventListener), new[] {ListenerType.Autoflush}},
         };
 
-
-
         private readonly IReadOnlyMappingManager mapper;
         private readonly IServiceProvider provider;
 
+        /// <summary>
+        /// Gets SolrNet components from a <see cref="IServiceProvider"/>, except for the <see cref="IReadOnlyMappingManager"/>
+        /// </summary>
+        /// <param name="mapper">Use this mapper for NHibernate-SolrNet integration</param>
+        /// <param name="provider">Used to fetch SolrNet components</param>
         public CfgHelper(IReadOnlyMappingManager mapper, IServiceProvider provider) {
             this.mapper = mapper;
             this.provider = provider;
         }
 
+        /// <summary>
+        /// Gets SolrNet components from a <see cref="IServiceProvider"/>
+        /// </summary>
+        /// <param name="provider">Used to fetch SolrNet components</param>
         public CfgHelper(IServiceProvider provider) {
             this.provider = provider;
             mapper = (IReadOnlyMappingManager) provider.GetService(typeof (IReadOnlyMappingManager));
         }
 
         /// <summary>
-        /// Gets required services from the current <see cref="ServiceLocator"/>
+        /// Gets SolrNet components from the current <see cref="ServiceLocator"/>
         /// </summary>
         public CfgHelper() {
             provider = ServiceLocator.Current;
@@ -92,10 +102,19 @@ namespace NHibernate.SolrNet {
                         config.SetListener(t, listener);
         }
 
+        /// <summary>
+        /// Wraps a NHibernate <see cref="ISession"/> and adds Solr operations
+        /// </summary>
+        /// <param name="session"><see cref="ISession"/> to wrap</param>
+        /// <returns></returns>
         public ISolrSession OpenSession(ISession session) {
             return new SolrSession(session, provider);
         }
 
+        /// <summary>
+        /// Opens a new NHibernate <see cref="ISession"/> and wraps it to add Solr operations
+        /// </summary>
+        /// <returns></returns>
         public ISolrSession OpenSession(ISessionFactory sessionFactory) {
             return OpenSession(sessionFactory.OpenSession());
         }

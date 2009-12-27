@@ -29,28 +29,18 @@ namespace NHibernate.SolrNet.Tests {
         [Test]
         [Ignore("Requires running Solr instance")]
         public void Insert() {
-            BasicConfigurator.Configure();
-            SetupSolr();
-
-            var cfg = SetupNHibernate();
-
-            var cfgHelper = new CfgHelper();
-            cfgHelper.Configure(cfg, true);
-
-            using (var sessionFactory = cfg.BuildSessionFactory()) {
-                using (var session = sessionFactory.OpenSession()) {
-                    session.Save(new Entity {
-                        Id = "abcd",
-                        Description = "Testing NH-Solr integration",
-                        Tags = new[] { "cat1", "aoe" },
-                    });
-                    session.Flush();
-                }
-                using (var session = cfgHelper.OpenSession(sessionFactory)) {
-                    var entities = session.CreateSolrQuery("solr").List<Entity>();
-                    Assert.AreEqual(1, entities.Count);
-                    Assert.AreEqual(2, entities[0].Tags.Count);
-                }
+            using (var session = sessionFactory.OpenSession()) {
+                session.Save(new Entity {
+                    Id = "abcd",
+                    Description = "Testing NH-Solr integration",
+                    Tags = new[] {"cat1", "aoe"},
+                });
+                session.Flush();
+            }
+            using (var session = cfgHelper.OpenSession(sessionFactory)) {
+                var entities = session.CreateSolrQuery("solr").List<Entity>();
+                Assert.AreEqual(1, entities.Count);
+                Assert.AreEqual(2, entities[0].Tags.Count);
             }
         }
 
@@ -74,9 +64,9 @@ namespace NHibernate.SolrNet.Tests {
 
             Startup.Container.Remove<IReadOnlyMappingManager>();
             var mapper = new MappingManager();
-            mapper.Add(typeof(Entity).GetProperty("Description"), "name");
-            mapper.Add(typeof(Entity).GetProperty("Id"), "id");
-            mapper.Add(typeof(Entity).GetProperty("Tags"), "cat");
+            mapper.Add(typeof (Entity).GetProperty("Description"), "name");
+            mapper.Add(typeof (Entity).GetProperty("Id"), "id");
+            mapper.Add(typeof (Entity).GetProperty("Tags"), "cat");
             Startup.Container.Register<IReadOnlyMappingManager>(c => mapper);
 
             Startup.Container.Remove<ISolrDocumentPropertyVisitor>();
@@ -87,5 +77,25 @@ namespace NHibernate.SolrNet.Tests {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Entity>>();
             solr.Delete(SolrQuery.All).Commit();
         }
+
+        [FixtureSetUp]
+        public void FixtureSetup() {
+            BasicConfigurator.Configure();
+            SetupSolr();
+
+            var cfg = SetupNHibernate();
+
+            cfgHelper = new CfgHelper();
+            cfgHelper.Configure(cfg, true);
+            sessionFactory = cfg.BuildSessionFactory();
+        }
+
+        [FixtureTearDown]
+        public void FixtureTearDown() {
+            sessionFactory.Dispose();
+        }
+
+        private CfgHelper cfgHelper;
+        private ISessionFactory sessionFactory;
     }
 }

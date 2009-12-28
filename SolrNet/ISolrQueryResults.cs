@@ -63,10 +63,19 @@ namespace SolrNet {
         /// </summary>
         IDictionary<T, IList<T>> SimilarResults { get; set; }
 
+        /// <summary>
+        /// Stats results
+        /// </summary>
         IDictionary<string, StatsResult> Stats { get; set; }
 
+        /// <summary>
+        /// Collapse results
+        /// </summary>
         CollapseResults Collapsing { get; set; }
 
+        /// <summary>
+        /// Date faceting results
+        /// </summary>
 		IDictionary<string, DateFacetingResult> FacetDates { get; set; }
 	}
 }

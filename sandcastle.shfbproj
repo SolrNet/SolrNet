@@ -21,8 +21,8 @@
       <DocumentationSource sourceFile="merged\SolrNet.xml" />
     </DocumentationSources>
     <SandcastlePath>tools\Sandcastle\</SandcastlePath>
-    <HelpTitle>SolrNet 0.2.2</HelpTitle>
-    <FooterText>SolrNet 0.2.2</FooterText>
+    <HelpTitle>SolrNet 0.2.3</HelpTitle>
+    <FooterText>SolrNet 0.2.3</FooterText>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="Rhino.Commons" isExposed="False" xmlns="" />
       <Filter entryType="Namespace" fullName="Rhino.Commons.LocalDataImpl" isExposed="False" xmlns="" />

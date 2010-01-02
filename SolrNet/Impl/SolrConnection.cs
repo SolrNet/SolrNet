@@ -116,12 +116,11 @@ namespace SolrNet.Impl {
                 (x, y) => string.Format("{0}&{1}", x, y));
             var request = httpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.GET;
-            request.KeepAlive = false;
+            request.KeepAlive = true;
             if (Timeout > 0) {
                 request.ReadWriteTimeout = Timeout;
                 request.Timeout = Timeout;                
             }
-            request.ProtocolVersion = HttpVersion.Version10; // for some reason Version11 throws
             try {
                 return GetResponse(request);
             } catch (WebException e) {

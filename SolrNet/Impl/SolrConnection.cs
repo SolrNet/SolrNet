@@ -34,9 +34,15 @@ namespace SolrNet.Impl {
         private string serverURL;
         private string version = "2.2";
 
+        /// <summary>
+        /// HTTP cache implementation
+        /// </summary>
+        public ISolrCache Cache { get; set; }
+
         public SolrConnection(string serverURL) {
             ServerURL = serverURL;
             Timeout = -1;
+            Cache = new NullCache();
         }
 
         public SolrConnection(string serverURL, IHttpWebRequestFactory httpWebRequestFactory) : this(serverURL) {
@@ -91,7 +97,7 @@ namespace SolrNet.Impl {
                 using (var sw = new StreamWriter(postParams)) {
                     sw.Write(s);
                 }
-                return GetResponse(request);
+                return GetResponse(request).Value;
             }
             catch (WebException e) {
                 throw new SolrConnectionException(e);
@@ -117,15 +123,24 @@ namespace SolrNet.Impl {
             var request = httpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.GET;
             request.KeepAlive = true;
+            var cached = Cache[u.Uri.ToString()];
+            if (cached != null) {
+                request.Headers.Add(HttpRequestHeader.IfNoneMatch, cached.ETag);
+            }
             if (Timeout > 0) {
                 request.ReadWriteTimeout = Timeout;
                 request.Timeout = Timeout;                
             }
             try {
-                return GetResponse(request);
+                var response = GetResponse(request);
+                Cache.Add(new SolrCacheEntity(u.Uri.ToString(), response.Key, response.Value));
+                return response.Value;
             } catch (WebException e) {
                 if (e.Response != null) {
                     var r = new HttpWebResponseAdapter(e.Response);
+                    if (r.StatusCode == HttpStatusCode.NotModified) {
+                        return cached.Data;
+                    }
                     if (r.StatusCode == HttpStatusCode.BadRequest) {
                         throw new InvalidFieldException(r.StatusDescription, e);
                     }
@@ -134,11 +149,18 @@ namespace SolrNet.Impl {
             }
         }
 
-        private string GetResponse(IHttpWebRequest request) {
-            using (var response = request.GetResponse())
-            using (var rStream = response.GetResponseStream())
-            using (var sr = new StreamReader(rStream, TryGetEncoding(response))) {
-                return sr.ReadToEnd();
+        /// <summary>
+        /// Gets http response, returns (etag, data)
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        private KeyValuePair<string, string> GetResponse(IHttpWebRequest request) {
+            using (var response = request.GetResponse()) {
+                var etag = response.Headers[HttpResponseHeader.ETag];
+                using (var rStream = response.GetResponseStream())
+                using (var sr = new StreamReader(rStream, TryGetEncoding(response))) {
+                    return KVP(etag, sr.ReadToEnd());
+                }
             }
         }
 

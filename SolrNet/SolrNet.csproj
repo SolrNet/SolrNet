@@ -81,12 +81,14 @@
     <Compile Include="Impl\FieldSerializers\NullableFieldSerializer.cs" />
     <Compile Include="Impl\FieldSerializers\ToStringFieldSerializer.cs" />
     <Compile Include="Impl\FieldSerializers\TypeConvertingFieldSerializer.cs" />
+    <Compile Include="Impl\ISolrCache.cs" />
     <Compile Include="Impl\ISolrDocumentIndexer.cs" />
     <Compile Include="Impl\ISolrDocumentPropertyVisitor.cs" />
     <Compile Include="Impl\ISolrDocumentResponseParser.cs" />
     <Compile Include="Impl\ISolrFieldParser.cs" />
     <Compile Include="Impl\ISolrFieldSerializer.cs" />
     <Compile Include="Impl\ISolrResponseParser.cs" />
+    <Compile Include="Impl\NullCache.cs" />
     <Compile Include="Impl\PropertyNode.cs" />
     <Compile Include="Impl\ResponseParsers\CollapseResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\FacetsResponseParser.cs" />
@@ -96,6 +98,8 @@
     <Compile Include="Impl\ResponseParsers\ResultsResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\SpellCheckResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\StatsResponseParser.cs" />
+    <Compile Include="Impl\HttpRuntimeCache.cs" />
+    <Compile Include="Impl\SolrCacheEntity.cs" />
     <Compile Include="Impl\SolrDocumentIndexer.cs" />
     <Compile Include="Impl\SolrDocumentResponseParser.cs" />
     <Compile Include="Impl\SpellCheckResult.cs" />

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using HttpWebAdapters;
 using MbUnit.Framework;
@@ -217,5 +218,61 @@ namespace SolrNet.Tests {
 			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
 			new SolrConnection("ftp://pepe", reqFactory);
 		}
+
+        [Test]
+        [Ignore]
+        public void Cache_mocked() {
+            var conn = new SolrConnection(solrURL, new HttpWebRequestFactory());
+            var cache = MockRepository.GenerateMock<ISolrCache>();
+            cache.Expect(x => x["http://localhost:8983/solr/select/?q=*:*"])
+                .Repeat.Once()
+                .Return(null);
+            cache.Expect(x => x.Add(null)).Repeat.Once();
+            conn.Cache = cache;
+            var response1 = conn.Get("/select/", new Dictionary<string, string> {
+                {"q", "*:*"},
+            });
+            var response2 = conn.Get("/select/", new Dictionary<string, string> {
+                {"q", "*:*"},
+            });
+        }
+
+        [Test]
+        [Ignore]
+        public void Cache() {
+            var conn = new SolrConnection(solrURL, new HttpWebRequestFactory());
+            var response1 = conn.Get("/select/", new Dictionary<string, string> {
+                {"q", "*:*"},
+            });
+            var response2 = conn.Get("/select/", new Dictionary<string, string> {
+                {"q", "*:*"},
+            });
+        }
+
+        [Test]
+        [Ignore]
+        public void Cache_performance() {
+            var conn = new SolrConnection(solrURL, new HttpWebRequestFactory()) {
+                Cache = new HttpRuntimeCache(),
+            };
+            TestCache(conn);
+        }
+
+        [Test]
+        [Ignore]
+        public void NoCache_performance() {
+            var conn = new SolrConnection(solrURL, new HttpWebRequestFactory()) {
+                Cache = new NullCache(),
+            };
+            TestCache(conn);
+        }
+
+        public void TestCache(ISolrConnection conn) {
+            foreach (var i in Enumerable.Range(0, 1000)) {
+                conn.Get("/select/", new Dictionary<string, string> {
+                    {"q", "*:*"},
+                });
+            }
+        }
 	}
 }

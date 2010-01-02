@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SolrNet")]
 [assembly: AssemblyDescription("SolrNet")]
 [assembly: AssemblyProduct("SolrNet")]
-[assembly: AssemblyCopyright("Copyright © Mauricio Scheffer 2007-2009")]
+[assembly: AssemblyCopyright("Copyright © Mauricio Scheffer 2007-2010")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
 [assembly: Guid("6688f9b4-5f2d-4fd6-aafc-3a81c84a69f1")]

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SampleSolrApp")]
-[assembly: AssemblyCopyright("Copyright © Mauricio Scheffer 2007-2009")]
+[assembly: AssemblyCopyright("Copyright © Mauricio Scheffer 2007-2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

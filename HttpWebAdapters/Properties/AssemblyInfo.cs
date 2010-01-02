@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly : AssemblyConfiguration("")]
 [assembly : AssemblyCompany("")]
 [assembly : AssemblyProduct("HttpWebAdapters")]
-[assembly: AssemblyCopyright("Copyright © Mauricio Scheffer 2007-2009")]
+[assembly: AssemblyCopyright("Copyright © Mauricio Scheffer 2007-2010")]
 [assembly : AssemblyTrademark("")]
 [assembly : AssemblyCulture("")]
 

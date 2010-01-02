@@ -47,6 +47,10 @@ namespace SolrNet.Impl {
             Send(cmd);
         }
 
+        public void Rollback() {
+            Send(new RollbackCommand());
+        }
+
         public ISolrBasicOperations<T> Add(IEnumerable<T> docs) {
             var cmd = new AddCommand<T>(docs, documentSerializer);
             Send(cmd);

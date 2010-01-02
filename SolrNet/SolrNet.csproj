@@ -54,6 +54,7 @@
     <Compile Include="Commands\Parameters\SpellCheckingParameters.cs" />
     <Compile Include="Commands\Parameters\StatsParameters.cs" />
     <Compile Include="CollapseResults.cs" />
+    <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
     <Compile Include="Exceptions\TypeNotSupportedException.cs" />
     <Compile Include="FacetDateOther.cs" />

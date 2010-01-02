@@ -31,10 +31,15 @@ namespace SolrNet {
         void Commit(WaitOptions options);
 
         /// <summary>
-        /// Optimized Solr's index
+        /// Optimizes Solr's index
         /// </summary>
         /// <param name="options">Optimization options</param>
         void Optimize(WaitOptions options);
+
+        /// <summary>
+        /// Rollbacks all add/deletes made to the index since the last commit.
+        /// </summary>
+        void Rollback();
 
         /// <summary>
         /// Adds / updates several documents at once

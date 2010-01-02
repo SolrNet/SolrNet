@@ -125,6 +125,10 @@ namespace SolrNet.Impl {
             basicServer.Optimize(options);
         }
 
+        public void Rollback() {
+            basicServer.Rollback();
+        }
+
         public ISolrOperations<T> AddWithBoost(T doc, double boost) {
             return ((ISolrOperations<T>)this).AddWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) });
         }

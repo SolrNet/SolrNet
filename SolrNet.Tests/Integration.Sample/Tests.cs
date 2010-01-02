@@ -227,5 +227,12 @@ namespace SolrNet.Tests.Integration.Sample {
                 }
             }
         }
+
+        [Test]
+        public void LocalParams() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            var results = solr.Query(new LocalParams {{"q.op", "AND"}} + "solr ipod");
+            Assert.AreEqual(0, results.Count);
+        }
     }
 }

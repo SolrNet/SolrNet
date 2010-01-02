@@ -97,6 +97,7 @@
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="JsonQueryResultParser.cs" />
     <Compile Include="JsonQueryResultParserTests.cs" />
+    <Compile Include="LocalParamsTests.cs" />
     <Compile Include="MappingManagerTests.cs" />
     <Compile Include="MemoizingMappingManagerTests.cs" />
     <Compile Include="MockConnection.cs" />

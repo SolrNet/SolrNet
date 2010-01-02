@@ -27,6 +27,7 @@ namespace SolrNet.Tests.Integration.Sample {
     /// These tests run against the sample schema that comes with solr
     /// </summary>
     [TestFixture]
+    [Ignore("This test requires an actual solr instance running")]
     public class Tests {
         private const string serverURL = "http://localhost:8983/solr";
 
@@ -36,7 +37,6 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
-        [Ignore("This test requires an actual solr instance running")]
         public void Add_then_query() {
             var p = new Product {
                 Id = "SP2514N",
@@ -79,7 +79,6 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
-        [Ignore("This test requires an actual solr instance running")]
         public void Highlighting() {
             Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
@@ -96,7 +95,6 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
-        [Ignore("This test requires an actual solr instance running")]
         public void DateFacet() {
             Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
@@ -117,17 +115,13 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
-        [Ignore("This test requires an actual solr instance running")]
-        public void Ping()
-        {
+        public void Ping() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             solr.Ping();
         }
 
         [Test]
-        [Ignore("This test requires an actual solr instance running")]
-        public void FilterQuery()
-        {
+        public void FilterQuery() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var r = solr.Query(SolrQuery.All, new QueryOptions {
                 FilterQueries = new[] {new SolrQueryByRange<string>("price", "4", "*"),}
@@ -138,9 +132,7 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
-        [Ignore("This test requires an actual solr instance running")]
-        public void SpellChecking()
-        {
+        public void SpellChecking() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var r = solr.Query(new SolrQuery("hell untrasharp"), new QueryOptions {
                 SpellCheck = new SpellCheckingParameters(),
@@ -160,9 +152,7 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
-        [Ignore("This test requires an actual solr instance running")]
-        public void RandomSorting()
-        {
+        public void RandomSorting() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(SolrQuery.All, new QueryOptions {
                 OrderBy = new[] {new RandomSortOrder("random")}
@@ -172,7 +162,6 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
-        [Ignore("This test requires an actual solr instance running")]
         public void MoreLikeThis() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(new SolrQuery("apache"), new QueryOptions {
@@ -191,7 +180,6 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
-        [Ignore("This test requires an actual solr instance running")]
         public void Stats() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(SolrQuery.All, new QueryOptions {

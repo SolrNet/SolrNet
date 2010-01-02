@@ -66,6 +66,9 @@ namespace SolrNet.Tests {
                     .IgnoreArguments()
                     .Repeat.Once()
                     .Return(request);
+			    Expect.Call(response.Headers)
+                    .Repeat.Any()
+                    .Return(new WebHeaderCollection());
 				Expect.Call(request.GetResponse())
                     .Repeat.Once()
                     .Return(response);
@@ -89,6 +92,9 @@ namespace SolrNet.Tests {
                     .IgnoreArguments()
                     .Repeat.Once()
                     .Return(request);
+                Expect.Call(response.Headers)
+                    .Repeat.Any()
+                    .Return(new WebHeaderCollection());
 				Expect.Call(request.GetResponse())
                     .Repeat.Once()
                     .Return(response);
@@ -167,6 +173,9 @@ namespace SolrNet.Tests {
 				Expect.Call(request.GetResponse())
                     .Repeat.Once()
                     .Return(response);
+                Expect.Call(response.Headers)
+                    .Repeat.Any()
+                    .Return(new WebHeaderCollection());
 				Expect.Call(response.GetResponseStream())
                     .Repeat.Once()
                     .Return(new MemoryStream());

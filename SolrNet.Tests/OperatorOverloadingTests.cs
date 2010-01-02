@@ -74,5 +74,11 @@ namespace SolrNet.Tests {
             Console.WriteLine(q.Query);
             Assert.AreEqual("(a AND -b)", q.Query);
         }
+
+        [Test]
+        public void Minus() {
+            var q = new SolrQuery("solr") - new SolrQuery("name:desc");
+            Assert.AreEqual("(solr  -name:desc)", q.Query);
+        }
     }
 }

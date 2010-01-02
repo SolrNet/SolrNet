@@ -50,6 +50,10 @@ namespace SolrNet {
             return new SolrMultipleCriteriaQuery(new[] {a, b});
         }
 
+        public static AbstractSolrQuery operator - (AbstractSolrQuery a, AbstractSolrQuery b) {
+            return new SolrMultipleCriteriaQuery(new[] { a, b.Not() });
+        }
+
         public static bool operator false (AbstractSolrQuery a) {
             return false;
         }

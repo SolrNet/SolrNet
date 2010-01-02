@@ -12,7 +12,7 @@ namespace SolrNet.Impl {
         /// </summary>
         public int SlidingMinutes { get; set; }
 
-        private static readonly string id = Guid.NewGuid().ToString();
+        private readonly string id = Guid.NewGuid().ToString();
 
         public HttpRuntimeCache() {
             SlidingMinutes = 10;

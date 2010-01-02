@@ -51,6 +51,9 @@ namespace SolrNet {
 
             var rng = new RNG();
             Container.Register<IRNG>(c => rng);
+
+            var cache = new HttpRuntimeCache();
+            Container.Register<ISolrCache>(c => cache);
         }
 
         /// <summary>
@@ -59,7 +62,9 @@ namespace SolrNet {
         /// <typeparam name="T">Document type</typeparam>
         /// <param name="serverURL">Solr URL (i.e. "http://localhost:8983/solr")</param>
         public static void Init<T>(string serverURL) where T: new() {
-            var connection = new SolrConnection(serverURL);
+            var connection = new SolrConnection(serverURL) {
+                Cache = Container.GetInstance<ISolrCache>(),
+            };
 
             Init<T>(connection);
         }

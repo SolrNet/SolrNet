@@ -17,10 +17,12 @@
 using System;
 using System.Reflection;
 using Castle.Core.Configuration;
+using Castle.Core.Resource;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using Castle.Windsor.Configuration.Interpreters;
 using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet;
@@ -171,15 +173,47 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             var container = new WindsorContainer();
             container.AddFacility("solr", solrFacility);
 
+            TestCores(container);
+        }
+
+        [Test]
+        public void AddCoreFromXML() {
+            var solrFacility = new SolrNetFacility();
+            var container = new WindsorContainer(new XmlInterpreter(new StaticContentResource(@"<castle>
+<facilities>
+    <facility id='solr'>
+        <solrURL>http://localhost:8983/solr/defaultCore</solrURL>
+        <cores>
+            <core id='core0-id'>
+                <documentType>Castle.Facilities.SolrNetIntegration.Tests.Tests+Document, Castle.Facilities.SolrNetIntegration.Tests</documentType>
+                <url>http://localhost:8983/solr/core0</url>
+            </core>
+            <core id='core1-id'>
+                <documentType>Castle.Facilities.SolrNetIntegration.Tests.Tests+Document, Castle.Facilities.SolrNetIntegration.Tests</documentType>
+                <url>http://localhost:8983/solr/core1</url>
+            </core>
+            <core id='core2-id'>
+                <documentType>Castle.Facilities.SolrNetIntegration.Tests.Tests+Core1Entity, Castle.Facilities.SolrNetIntegration.Tests</documentType>
+                <url>http://localhost:8983/solr/core1</url>
+            </core>
+        </cores>
+    </facility>
+</facilities>
+</castle>")));
+            container.AddFacility("solr", solrFacility);
+            TestCores(container);
+        }
+
+        public void TestCores(IWindsorContainer container) {
             // assert that everything is correctly wired
             container.Kernel.DependencyResolving += (client, model, dep) => {
                 if (model.TargetType == typeof(ISolrConnection)) {
                     if (client.Name.StartsWith("core0-id"))
-                        Assert.AreEqual(core0url, ((ISolrConnection)dep).ServerURL);
+                        Assert.AreEqual("http://localhost:8983/solr/core0", ((ISolrConnection)dep).ServerURL);
                     if (client.Name.StartsWith("core1-id"))
-                        Assert.AreEqual(core1url, ((ISolrConnection)dep).ServerURL);
+                        Assert.AreEqual("http://localhost:8983/solr/core1", ((ISolrConnection)dep).ServerURL);
                     if (client.Name.StartsWith("core2-id"))
-                        Assert.AreEqual(core1url, ((ISolrConnection)dep).ServerURL);
+                        Assert.AreEqual("http://localhost:8983/solr/core1", ((ISolrConnection)dep).ServerURL);
                 }
             };
 

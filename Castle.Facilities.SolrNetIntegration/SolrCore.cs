@@ -17,7 +17,7 @@
 using System;
 
 namespace Castle.Facilities.SolrNetIntegration {
-    internal class SolrCore {
+    public class SolrCore {
         public string Id { get; private set; }
         public Type DocumentType { get; private set; }
         public string Url { get; private set; }

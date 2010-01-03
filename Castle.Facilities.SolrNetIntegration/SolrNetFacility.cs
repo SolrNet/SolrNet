@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using Castle.Core.Configuration;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.Registration;
 using SolrNet;
@@ -88,6 +89,7 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For<ISolrDocumentPropertyVisitor>().ImplementedBy<DefaultDocumentVisitor>());
 
             // set up cores
+            AddCoresFromConfig();
             foreach (var core in cores) {
                 var coreConnectionId = core.Id + typeof (SolrConnection);
                 Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
@@ -128,9 +130,45 @@ namespace Castle.Facilities.SolrNetIntegration {
             }
         }
 
+        public void AddCore(Type documentType, string coreUrl) {
+            AddCore(Guid.NewGuid().ToString(), documentType, coreUrl);
+        }
+
         public void AddCore(string coreId, Type documentType, string coreUrl) {
             ValidateUrl(coreUrl);
             cores.Add(new SolrCore(coreId, documentType, coreUrl));
+        }
+
+        private void AddCoresFromConfig() {
+            if (FacilityConfig == null)
+                return;
+            var coresConfig = FacilityConfig.Children["cores"];
+            if (coresConfig == null)
+                return;
+            foreach (var coreConfig in coresConfig.Children) {
+                var id = coreConfig.Attributes["id"] ?? Guid.NewGuid().ToString();
+                var documentType = GetCoreDocumentType(coreConfig);
+                var coreUrl = GetCoreUrl(coreConfig);
+                AddCore(id, documentType, coreUrl);
+            }
+        }
+
+        private string GetCoreUrl(IConfiguration coreConfig) {
+            var node = coreConfig.Children["url"];
+            if (node == null)
+                throw new FacilityException("Core url missing in SolrNet core configuration");
+            return node.Value;
+        }
+
+        private Type GetCoreDocumentType(IConfiguration coreConfig) {
+            var node = coreConfig.Children["documentType"];
+            if (node == null)
+                throw new FacilityException("Document type missing in SolrNet core configuration");
+            try {
+                return Type.GetType(node.Value);                
+            } catch (Exception e) {
+                throw new FacilityException(string.Format("Error getting document type '{0}'", node.Value), e);
+            }
         }
 
         private readonly List<SolrCore> cores = new List<SolrCore>();

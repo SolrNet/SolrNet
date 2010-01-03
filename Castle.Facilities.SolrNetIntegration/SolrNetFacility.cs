@@ -29,8 +29,15 @@ using SolrNet.Mapping;
 using SolrNet.Utils;
 
 namespace Castle.Facilities.SolrNetIntegration {
+    /// <summary>
+    /// Configures SolrNet in a Windsor container
+    /// </summary>
     public class SolrNetFacility : AbstractFacility {
         private readonly string solrURL;
+
+        /// <summary>
+        /// Default mapper override
+        /// </summary>
         public IReadOnlyMappingManager Mapper { get; set; }
 
         public SolrNetFacility() {}
@@ -88,34 +95,42 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For<ISolrFieldSerializer>().ImplementedBy<DefaultFieldSerializer>());
             Kernel.Register(Component.For<ISolrDocumentPropertyVisitor>().ImplementedBy<DefaultDocumentVisitor>());
 
-            // set up cores
             AddCoresFromConfig();
             foreach (var core in cores) {
-                var coreConnectionId = core.Id + typeof (SolrConnection);
-                Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
-                                    .Named(coreConnectionId)
-                                    .Parameters(Parameter.ForKey("serverURL").Eq(core.Url)));
-
-                var ISolrBasicOperations = typeof(ISolrBasicOperations<>).MakeGenericType(core.DocumentType);
-                var ISolrBasicReadOnlyOperations = typeof(ISolrBasicReadOnlyOperations<>).MakeGenericType(core.DocumentType);
-                var SolrBasicServer = typeof(SolrBasicServer<>).MakeGenericType(core.DocumentType);
-                Kernel.Register(Component.For(ISolrBasicOperations, ISolrBasicReadOnlyOperations)
-                                    .ImplementedBy(SolrBasicServer)
-                                    .Named(core.Id + SolrBasicServer)
-                                    .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId)));
-
-                var ISolrQueryExecuter = typeof (ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
-                var SolrQueryExecuter = typeof (SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
-                Kernel.Register(Component.For(ISolrQueryExecuter).ImplementedBy(SolrQueryExecuter)
-                                    .Named(core.Id + SolrQueryExecuter)
-                                    .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId)));
-
-                var ISolrOperations = typeof (ISolrOperations<>).MakeGenericType(core.DocumentType);
-                var SolrServer = typeof(SolrServer<>).MakeGenericType(core.DocumentType);
-                Kernel.Register(Component.For(ISolrOperations).ImplementedBy(SolrServer)
-                                    .Named(core.Id)
-                                    .ServiceOverrides(ServiceOverride.ForKey("basicServer").Eq(core.Id + SolrBasicServer)));
+                RegisterCore(core);
             }
+        }
+
+        /// <summary>
+        /// Registers a new core in the container.
+        /// This method is meant to be used after the facility initialization
+        /// </summary>
+        /// <param name="core"></param>
+        private void RegisterCore(SolrCore core) {
+            var coreConnectionId = core.Id + typeof (SolrConnection);
+            Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
+                                .Named(coreConnectionId)
+                                .Parameters(Parameter.ForKey("serverURL").Eq(core.Url)));
+
+            var ISolrBasicOperations = typeof(ISolrBasicOperations<>).MakeGenericType(core.DocumentType);
+            var ISolrBasicReadOnlyOperations = typeof(ISolrBasicReadOnlyOperations<>).MakeGenericType(core.DocumentType);
+            var SolrBasicServer = typeof(SolrBasicServer<>).MakeGenericType(core.DocumentType);
+            Kernel.Register(Component.For(ISolrBasicOperations, ISolrBasicReadOnlyOperations)
+                                .ImplementedBy(SolrBasicServer)
+                                .Named(core.Id + SolrBasicServer)
+                                .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId)));
+
+            var ISolrQueryExecuter = typeof (ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
+            var SolrQueryExecuter = typeof (SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
+            Kernel.Register(Component.For(ISolrQueryExecuter).ImplementedBy(SolrQueryExecuter)
+                                .Named(core.Id + SolrQueryExecuter)
+                                .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId)));
+
+            var ISolrOperations = typeof (ISolrOperations<>).MakeGenericType(core.DocumentType);
+            var SolrServer = typeof(SolrServer<>).MakeGenericType(core.DocumentType);
+            Kernel.Register(Component.For(ISolrOperations).ImplementedBy(SolrServer)
+                                .Named(core.Id)
+                                .ServiceOverrides(ServiceOverride.ForKey("basicServer").Eq(core.Id + SolrBasicServer)));
         }
 
         private static void ValidateUrl(string url) {
@@ -130,10 +145,21 @@ namespace Castle.Facilities.SolrNetIntegration {
             }
         }
 
+        /// <summary>
+        /// Adds a new core configuration to the facility
+        /// </summary>
+        /// <param name="documentType"></param>
+        /// <param name="coreUrl"></param>
         public void AddCore(Type documentType, string coreUrl) {
             AddCore(Guid.NewGuid().ToString(), documentType, coreUrl);
         }
 
+        /// <summary>
+        /// Adds a new core configuration to the facility
+        /// </summary>
+        /// <param name="coreId">Component name for <see cref="ISolrOperations{T}"/></param>
+        /// <param name="documentType"></param>
+        /// <param name="coreUrl"></param>
         public void AddCore(string coreId, Type documentType, string coreUrl) {
             ValidateUrl(coreUrl);
             cores.Add(new SolrCore(coreId, documentType, coreUrl));

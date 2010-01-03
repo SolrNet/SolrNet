@@ -160,6 +160,33 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Resolve<ISolrOperations<Document>>();
         }
 
+        [Test]
+        public void AddCore() {
+            const string core0url = "http://localhost:8983/solr/core0";
+            const string core1url = "http://localhost:8983/solr/core1";
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr/defaultCore");
+            solrFacility.AddCore("core0-id", typeof(Document), core0url);
+            solrFacility.AddCore("core1-id", typeof(Document), core1url);
+            solrFacility.AddCore("core2-id", typeof(Core1Entity), core1url);
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+
+            // assert that everything is correctly wired
+            container.Kernel.DependencyResolving += (client, model, dep) => {
+                if (model.TargetType == typeof(ISolrConnection)) {
+                    if (client.Name.StartsWith("core0-id"))
+                        Assert.AreEqual(core0url, ((ISolrConnection)dep).ServerURL);
+                    if (client.Name.StartsWith("core1-id"))
+                        Assert.AreEqual(core1url, ((ISolrConnection)dep).ServerURL);
+                    if (client.Name.StartsWith("core2-id"))
+                        Assert.AreEqual(core1url, ((ISolrConnection)dep).ServerURL);
+                }
+            };
+
+            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve("core0-id"));
+            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve("core1-id"));
+            Assert.IsInstanceOfType<ISolrOperations<Core1Entity>>(container.Resolve("core2-id"));
+        }
 
         public class Document {}
 

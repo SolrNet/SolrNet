@@ -112,19 +112,20 @@ namespace Castle.Facilities.SolrNetIntegration {
                                 .Named(coreConnectionId)
                                 .Parameters(Parameter.ForKey("serverURL").Eq(core.Url)));
 
+            var ISolrQueryExecuter = typeof (ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
+            var SolrQueryExecuter = typeof (SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
+            Kernel.Register(Component.For(ISolrQueryExecuter).ImplementedBy(SolrQueryExecuter)
+                                .Named(core.Id + SolrQueryExecuter)
+                                .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId)));
+
             var ISolrBasicOperations = typeof(ISolrBasicOperations<>).MakeGenericType(core.DocumentType);
             var ISolrBasicReadOnlyOperations = typeof(ISolrBasicReadOnlyOperations<>).MakeGenericType(core.DocumentType);
             var SolrBasicServer = typeof(SolrBasicServer<>).MakeGenericType(core.DocumentType);
             Kernel.Register(Component.For(ISolrBasicOperations, ISolrBasicReadOnlyOperations)
                                 .ImplementedBy(SolrBasicServer)
                                 .Named(core.Id + SolrBasicServer)
-                                .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId)));
-
-            var ISolrQueryExecuter = typeof (ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
-            var SolrQueryExecuter = typeof (SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
-            Kernel.Register(Component.For(ISolrQueryExecuter).ImplementedBy(SolrQueryExecuter)
-                                .Named(core.Id + SolrQueryExecuter)
-                                .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId)));
+                                .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId),
+                                    ServiceOverride.ForKey("queryExecuter").Eq(core.Id + SolrQueryExecuter)));
 
             var ISolrOperations = typeof (ISolrOperations<>).MakeGenericType(core.DocumentType);
             var SolrServer = typeof(SolrServer<>).MakeGenericType(core.DocumentType);

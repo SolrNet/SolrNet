@@ -174,9 +174,7 @@
     <Compile Include="Impl\SolrConnection.cs" />
     <Compile Include="Exceptions\SolrNetException.cs" />
     <Compile Include="Utils\IContainer.cs" />
-    <Compile Include="Utils\IRNG.cs" />
     <Compile Include="Utils\Memoizer.cs" />
-    <Compile Include="Utils\RNG.cs" />
     <Compile Include="Utils\StringHelper.cs" />
     <Compile Include="Utils\TypeHelper.cs" />
   </ItemGroup>

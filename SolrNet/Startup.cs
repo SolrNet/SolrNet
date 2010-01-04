@@ -49,9 +49,6 @@ namespace SolrNet {
             var propertyVisitor = new DefaultDocumentVisitor(mapper, fieldParser);
             Container.Register<ISolrDocumentPropertyVisitor>(c => propertyVisitor);
 
-            var rng = new RNG();
-            Container.Register<IRNG>(c => rng);
-
             var cache = new HttpRuntimeCache();
             Container.Register<ISolrCache>(c => cache);
         }

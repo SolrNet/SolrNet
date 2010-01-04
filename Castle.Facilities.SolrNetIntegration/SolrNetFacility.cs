@@ -63,7 +63,6 @@ namespace Castle.Facilities.SolrNetIntegration {
         protected override void Init() {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Kernel.AddComponentInstance<IReadOnlyMappingManager>(mapper);
-            Kernel.Register(Component.For<IRNG>().ImplementedBy<RNG>());
             Kernel.Register(Component.For<ISolrCache>().ImplementedBy<HttpRuntimeCache>());
             Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
                                 .Parameters(Parameter.ForKey("serverURL").Eq(GetSolrUrl())));

@@ -104,6 +104,7 @@
     <Compile Include="MockConnection.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
+    <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="Utils\LoggingConnection.cs" />
     <Compile Include="Utils\Node.cs" />
     <Compile Include="Utils\ProfilerFacility.cs" />

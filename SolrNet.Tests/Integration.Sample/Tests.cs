@@ -246,6 +246,18 @@ namespace SolrNet.Tests.Integration.Sample {
                 }
         }
 
+        [Test]
+        public void LooseMappingAdd() {
+            Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
+            solr.Add(new Dictionary<string, object> {
+                {"id", "id1234"},
+                {"manu", "pepe"},
+                {"popularity", 6},
+            });
+            
+        }
+
         public Type TypeOrNull(object o) {
             if (o == null)
                 return null;

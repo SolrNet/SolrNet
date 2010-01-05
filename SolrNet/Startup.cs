@@ -95,8 +95,8 @@ namespace SolrNet {
             var queryExecuter = new SolrQueryExecuter<T>(connection, resultParser);
             Container.Register<ISolrQueryExecuter<T>>(c => queryExecuter);
 
-            var documentSerializer = new SolrDocumentSerializer<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrFieldSerializer>());
-            Container.Register<ISolrDocumentSerializer<T>>(c => documentSerializer);
+            var documentSerializer = ChooseDocumentSerializer<T>();
+            Container.Register(c => documentSerializer);
 
             var basicServer = new SolrBasicServer<T>(connection, queryExecuter, documentSerializer);
             Container.Register<ISolrBasicOperations<T>>(c => basicServer);
@@ -105,7 +105,12 @@ namespace SolrNet {
             var server = new SolrServer<T>(basicServer, Container.GetInstance<IReadOnlyMappingManager>());
             Container.Register<ISolrOperations<T>>(c => server);
             Container.Register<ISolrReadOnlyOperations<T>>(c => server);
-            
+        }
+
+        private static ISolrDocumentSerializer<T> ChooseDocumentSerializer<T>() {
+            if (typeof(T) == typeof(Dictionary<string, object>))
+                return (ISolrDocumentSerializer<T>) new SolrDictionarySerializer(Container.GetInstance<ISolrFieldSerializer>());
+            return new SolrDocumentSerializer<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrFieldSerializer>());
         }
 
         private static ISolrDocumentResponseParser<T> ChooseDocumentResponseParser<T>() where T: new() {

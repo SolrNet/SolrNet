@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using SolrNet.Attributes;
 
 namespace SolrNet.Tests.Integration.Sample {
-	public class Product : ISolrDocument {
+	public class Product {
 		[SolrUniqueKey("id")]
 		public string Id { get; set; }
 

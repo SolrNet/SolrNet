@@ -21,7 +21,7 @@ using SolrNet.Attributes;
 
 namespace SolrNet.Tests {
     public partial class SolrQueryResultsParserTests {
-        public class Product : ISolrDocument {
+        public class Product  {
             [SolrUniqueKey("id")]
             public string Id { get; set; }
 
@@ -62,7 +62,7 @@ namespace SolrNet.Tests {
             public DateTime Timestamp { get; set; }
         }
 
-        public class TestDocument : ISolrDocument {
+        public class TestDocument  {
             [SolrField("advancedview")]
             public string AdvancedView { get; set; }
 
@@ -77,12 +77,12 @@ namespace SolrNet.Tests {
             public int Id { get; set; }
         }
 
-        public class TestDocumentWithNullableDouble : ISolrDocument {
+        public class TestDocumentWithNullableDouble  {
             [SolrField("price")]
             public double? Price { get; set; }
         }
 
-        public class TestDocumentWithArrays : ISolrDocument {
+        public class TestDocumentWithArrays  {
             [SolrField("cat")]
             public ICollection<string> Cat { get; set; }
 
@@ -114,27 +114,27 @@ namespace SolrNet.Tests {
             public ICollection<int> Numbers { get; set; }
         }
 
-        public class TestDocumentWithArrays2 : ISolrDocument {
+        public class TestDocumentWithArrays2  {
             [SolrField("numbers")]
             public int[] Numbers { get; set; }
         }
 
-        public class TestDocumentWithArrays3 : ISolrDocument {
+        public class TestDocumentWithArrays3  {
             [SolrField("numbers")]
             public ICollection Numbers { get; set; }
         }
 
-        public class TestDocumentWithArrays4 : ISolrDocument {
+        public class TestDocumentWithArrays4  {
             [SolrField("features")]
             public IEnumerable<string> Features { get; set; }
         }
 
-        public class TestDocumentWithDate : ISolrDocument {
+        public class TestDocumentWithDate  {
             [SolrField]
             public DateTime Fecha { get; set; }
         }
 
-        public class TestDocumentWithNullableDate : ISolrDocument {
+        public class TestDocumentWithNullableDate  {
             [SolrField]
             public DateTime? Fecha { get; set; }
         }

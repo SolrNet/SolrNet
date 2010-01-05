@@ -30,9 +30,9 @@ using SolrNet.Utils;
 namespace SolrNet.Tests {
     [TestFixture]
     public class SolrOperationsTests {
-        public class TestDocumentWithoutUniqueKey : ISolrDocument {}
+        public class TestDocumentWithoutUniqueKey  {}
 
-        public class TestDocumentWithUniqueKey : ISolrDocument {
+        public class TestDocumentWithUniqueKey  {
             [SolrUniqueKey]
             public int id {
                 get { return 0; }
@@ -459,8 +459,8 @@ namespace SolrNet.Tests {
         [Test]
         public void SearchResults_ShouldBeIterable() {
             var mocks = new MockRepository();
-            var results = mocks.CreateMock<ISolrQueryResults<ISolrDocument>>();
-            Assert.IsInstanceOfType(typeof (IEnumerable<ISolrDocument>), results);
+            var results = mocks.CreateMock<ISolrQueryResults<string>>();
+            Assert.IsInstanceOfType(typeof(IEnumerable<string>), results);
         }
 
         public delegate string Writer(string ignored, string s);

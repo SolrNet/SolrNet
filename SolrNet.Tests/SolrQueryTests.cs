@@ -22,7 +22,7 @@ using SolrNet.Impl;
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class SolrQueryTests {
-		public class TestDocument : ISolrDocument {}
+		public class TestDocument  {}
 
 		[Test]
 		public void tt() {

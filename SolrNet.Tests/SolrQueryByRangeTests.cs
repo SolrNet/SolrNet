@@ -19,7 +19,7 @@ using MbUnit.Framework;
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class SolrQueryByRangeTests {
-		public class TestDocument : ISolrDocument {}
+		public class TestDocument {}
 
 		[Test]
 		public void IntInclusive() {

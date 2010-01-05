@@ -29,9 +29,9 @@ namespace SolrNet.DSL.Tests {
     /// </summary>
     [TestFixture]
     public class DSLTests {
-        public class TestDocument : ISolrDocument {}
+        public class TestDocument  {}
 
-        public class TestDocumentWithId : ISolrDocument {
+        public class TestDocumentWithId  {
             [SolrField]
             public int Id { get; set; }
         }

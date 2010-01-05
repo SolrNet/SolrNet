@@ -27,7 +27,7 @@ using SolrNet.Mapping;
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class AddCommandTests {
-		public class SampleDoc : ISolrDocument {
+		public class SampleDoc  {
 			[SolrField]
 			public string Id {
 				get { return "id"; }
@@ -39,7 +39,7 @@ namespace SolrNet.Tests {
 			}
 		}
 
-		public class TestDocWithCollections : ISolrDocument {
+		public class TestDocWithCollections  {
 			[SolrField]
 			public ICollection<string> coll {
 				get { return new[] {"one", "two"}; }

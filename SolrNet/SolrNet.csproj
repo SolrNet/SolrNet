@@ -133,7 +133,6 @@
     <Compile Include="ISolrBasicOperations.cs" />
     <Compile Include="ISolrBasicReadOnlyOperations.cs" />
     <Compile Include="ISolrCommand.cs" />
-    <Compile Include="ISolrDocument.cs" />
     <Compile Include="ISolrDocumentSerializer.cs" />
     <Compile Include="ISolrFacetQuery.cs" />
     <Compile Include="ISolrQueryExecuter.cs" />

@@ -25,7 +25,7 @@ using SolrNet.Impl;
 namespace SolrNet.Tests {
     [TestFixture]
     public class SolrQueryExecuterTests {
-        public class TestDocument : ISolrDocument {
+        public class TestDocument  {
             [SolrUniqueKey]
             public int Id { get; set; }
 

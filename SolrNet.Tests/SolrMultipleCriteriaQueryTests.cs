@@ -21,7 +21,7 @@ using MbUnit.Framework;
 namespace SolrNet.Tests {
     [TestFixture]
     public class SolrMultipleCriteriaQueryTests {
-        public class TestDocument : ISolrDocument {}
+        public class TestDocument  {}
 
         [Test]
         public void Concat() {

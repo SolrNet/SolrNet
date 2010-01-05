@@ -20,7 +20,7 @@ using SolrNet.Attributes;
 
 namespace SolrNet.Tests {
     public partial class SolrDocumentSerializerTests {
-        public class SampleDoc : ISolrDocument {
+        public class SampleDoc {
             [SolrField]
             public string Id { get; set; }
 
@@ -28,19 +28,19 @@ namespace SolrNet.Tests {
             public decimal Dd { get; set; }
         }
 
-        public class TestDocWithCollections : ISolrDocument {
+        public class TestDocWithCollections {
             [SolrField]
             public ICollection<string> coll {
                 get { return new[] {"one", "two"}; }
             }
         }
 
-        public class TestDocWithDate : ISolrDocument {
+        public class TestDocWithDate  {
             [SolrField]
             public DateTime Date { get; set; }
         }
 
-        public class TestDocWithBool : ISolrDocument {
+        public class TestDocWithBool  {
             [SolrField]
             public bool B { get; set; }
         }

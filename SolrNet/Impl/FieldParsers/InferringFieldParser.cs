@@ -20,6 +20,9 @@ using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Impl.FieldParsers {
+    /// <summary>
+    /// Parser that infers .net type based on solr type
+    /// </summary>
     public class InferringFieldParser : ISolrFieldParser {
         private readonly ISolrFieldParser parser;
 

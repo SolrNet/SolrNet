@@ -20,6 +20,9 @@ using System.Globalization;
 using System.Xml;
 
 namespace SolrNet.Impl {
+    /// <summary>
+    /// Serializes a dictionary document
+    /// </summary>
     public class SolrDictionarySerializer : ISolrDocumentSerializer<Dictionary<string, object>> {
         private readonly ISolrFieldSerializer serializer;
 

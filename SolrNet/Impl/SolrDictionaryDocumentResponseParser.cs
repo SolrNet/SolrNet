@@ -19,6 +19,9 @@ using System.Collections.Generic;
 using System.Xml;
 
 namespace SolrNet.Impl {
+    /// <summary>
+    /// Parses a solr result into a dictionary of (string, object)
+    /// </summary>
     public class SolrDictionaryDocumentResponseParser: ISolrDocumentResponseParser<Dictionary<string, object>> {
         private readonly ISolrFieldParser fieldParser;
 

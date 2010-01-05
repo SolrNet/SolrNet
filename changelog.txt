@@ -1,3 +1,20 @@
+- Removed ISolrDocument interface
+- Added support for loose mapping
+- Improved multi-core configuration in Windsor facility
+- Added Rollback command
+- Added HTTP-level caching
+- Added operator - for queries
+- Added support for LocalParams
+
+0.2.3 (2009-12-29)
+===
+
+- Upgraded to NHibernate 2.1.2
+- Upgraded Solr in sample app to 1.4.0
+
+0.2.3 beta1 (2009-09-13)
+===
+
 - Fixed minor date parsing bug
 - Added support for field collapsing
 - Added support for date-faceting (issue #7)

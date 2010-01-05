@@ -63,10 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Rhino.Mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\net-3.5\Rhino.Mocks.dll</HintPath>
@@ -96,8 +92,6 @@
     <Compile Include="Integration.Sample\Product.cs" />
     <Compile Include="Integration.Sample\Tests.cs" />
     <Compile Include="IntegrationTests.cs" />
-    <Compile Include="JsonQueryResultParser.cs" />
-    <Compile Include="JsonQueryResultParserTests.cs" />
     <Compile Include="LocalParamsTests.cs" />
     <Compile Include="MappingManagerTests.cs" />
     <Compile Include="MemoizingMappingManagerTests.cs" />

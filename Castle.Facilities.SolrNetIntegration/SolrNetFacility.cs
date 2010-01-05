@@ -91,7 +91,12 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For(typeof (ISolrQueryResultParser<>))
                                 .ImplementedBy(typeof (SolrQueryResultParser<>)));
             Kernel.Register(Component.For(typeof (ISolrQueryExecuter<>)).ImplementedBy(typeof (SolrQueryExecuter<>)));
-            Kernel.Register(Component.For(typeof (ISolrDocumentSerializer<>)).ImplementedBy(typeof (SolrDocumentSerializer<>)));
+
+            Kernel.Register(Component.For(typeof (ISolrDocumentSerializer<>))
+                .ImplementedBy(typeof (SolrDocumentSerializer<>)));
+            Kernel.Register(Component.For<ISolrDocumentSerializer<Dictionary<string, object>>>()
+                .ImplementedBy<SolrDictionarySerializer>());
+
             Kernel.Register(Component.For(typeof (ISolrBasicOperations<>), typeof (ISolrBasicReadOnlyOperations<>))
                                 .ImplementedBy(typeof (SolrBasicServer<>)));
             Kernel.Register(Component.For(typeof (ISolrOperations<>), typeof (ISolrReadOnlyOperations<>))

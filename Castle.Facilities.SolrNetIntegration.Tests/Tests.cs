@@ -240,12 +240,36 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         }
 
         [Test]
+        [Ignore("Requires a running solr instance")]
+        public void DictionaryDocument_add() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
+            solr.Add(new Dictionary<string, object> {
+                {"id", "ababa"},
+                {"manu", "who knows"},
+                {"popularity", 55},
+                {"timestamp", DateTime.UtcNow},
+            });
+        }
+
+        [Test]
         public void DictionaryDocument_ResponseParser() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
             container.AddFacility("solr", solrFacility);
             var parser = container.Resolve<ISolrDocumentResponseParser<Dictionary<string, object>>>();
             Assert.IsInstanceOfType<SolrDictionaryDocumentResponseParser>(parser);
+        }
+
+        [Test]
+        public void DictionaryDocument_Serializer() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            var serializer = container.Resolve<ISolrDocumentSerializer<Dictionary<string, object>>>();
+            Assert.IsInstanceOfType<SolrDictionarySerializer>(serializer);
         }
 
         public class Document {}

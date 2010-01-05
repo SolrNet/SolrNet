@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
@@ -221,6 +222,34 @@ namespace SolrNet.Tests.Integration.Sample {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             var results = solr.Query(new LocalParams {{"q.op", "AND"}} + "solr ipod");
             Assert.AreEqual(0, results.Count);
+        }
+
+        [Test]
+        public void LooseMapping() {
+            Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
+            var results = solr.Query(SolrQuery.All);
+            Assert.IsInstanceOfType<ArrayList>(results[0]["cat"]);
+            Assert.IsInstanceOfType<string>(results[0]["id"]);
+            Assert.IsInstanceOfType<bool>(results[0]["inStock"]);
+            Assert.IsInstanceOfType<int>(results[0]["popularity"]);
+            Assert.IsInstanceOfType<float>(results[0]["price"]);
+            Assert.IsInstanceOfType<DateTime>(results[0]["timestamp"]);
+            Assert.IsInstanceOfType<string>(((IList) results[0]["cat"])[0]);
+            foreach (var r in results)
+                foreach (var kv in r) {
+                    Console.WriteLine("{0} ({1}): {2}", kv.Key, TypeOrNull(kv.Value), kv.Value);
+                    if (kv.Value is IList) {
+                        foreach (var e in (IList)kv.Value)
+                            Console.WriteLine("\t{0} ({1})", e, TypeOrNull(e));
+                    }
+                }
+        }
+
+        public Type TypeOrNull(object o) {
+            if (o == null)
+                return null;
+            return o.GetType();
         }
     }
 }

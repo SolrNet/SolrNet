@@ -14,6 +14,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
@@ -75,7 +77,7 @@ namespace SolrNet {
             var connectionKey = string.Format("{0}.{1}.{2}", typeof(SolrConnection), typeof(T), connection.GetType());
             Container.Register(connectionKey, c => connection);
 
-            Container.Register<ISolrDocumentResponseParser<T>>(c => new SolrDocumentResponseParser<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrDocumentPropertyVisitor>()));
+            Container.Register(c => ChooseDocumentResponseParser<T>());
             Container.Register<ISolrDocumentIndexer<T>>(c => new SolrDocumentIndexer<T>(Container.GetInstance<IReadOnlyMappingManager>()));
 
             Container.Register<ISolrResponseParser<T>>(typeof(ResultsResponseParser<T>).FullName, c => new ResultsResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
@@ -104,6 +106,12 @@ namespace SolrNet {
             Container.Register<ISolrOperations<T>>(c => server);
             Container.Register<ISolrReadOnlyOperations<T>>(c => server);
             
+        }
+
+        private static ISolrDocumentResponseParser<T> ChooseDocumentResponseParser<T>() where T: new() {
+            if (typeof(T) == typeof(Dictionary<string, object>))
+                return (ISolrDocumentResponseParser<T>) new SolrDictionaryDocumentResponseParser(new InferringFieldParser(new DefaultFieldParser()));
+            return new SolrDocumentResponseParser<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrDocumentPropertyVisitor>());
         }
     }
 }

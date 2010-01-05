@@ -85,6 +85,7 @@
     <Compile Include="AttributesMappingManagerTests.cs" />
     <Compile Include="CommonServiceLocatorTests.cs" />
     <Compile Include="DateTimeFieldParserTests.cs" />
+    <Compile Include="InferringFieldParserTests.cs" />
     <Compile Include="DefaultFieldParserTests.cs" />
     <Compile Include="DeleteCommandTests.cs" />
     <Compile Include="ExceptionTests.cs" />

@@ -68,6 +68,7 @@
     <Compile Include="Impl\FieldParsers\DefaultFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\DoubleFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\FloatFieldParser.cs" />
+    <Compile Include="Impl\FieldParsers\InferringFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\IntFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\NullableFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\TypeConvertingFieldParser.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Impl\ResponseParsers\StatsResponseParser.cs" />
     <Compile Include="Impl\HttpRuntimeCache.cs" />
     <Compile Include="Impl\SolrCacheEntity.cs" />
+    <Compile Include="Impl\SolrDictionaryDocumentResponseParser.cs" />
     <Compile Include="Impl\SolrDocumentIndexer.cs" />
     <Compile Include="Impl\SolrDocumentResponseParser.cs" />
     <Compile Include="Impl\SpellCheckResult.cs" />

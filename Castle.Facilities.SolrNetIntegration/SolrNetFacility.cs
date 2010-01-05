@@ -67,8 +67,14 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
                                 .Parameters(Parameter.ForKey("serverURL").Eq(GetSolrUrl())));
 
-            Kernel.Register(Component.For(typeof (ISolrDocumentResponseParser<>)).ImplementedBy(typeof (SolrDocumentResponseParser<>)));
-            Kernel.Register(Component.For(typeof (ISolrDocumentIndexer<>)).ImplementedBy(typeof (SolrDocumentIndexer<>)));
+            Kernel.Register(Component.For(typeof (ISolrDocumentResponseParser<>))
+                .ImplementedBy(typeof (SolrDocumentResponseParser<>)));
+            Kernel.Register(Component.For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
+                .ImplementedBy<SolrDictionaryDocumentResponseParser>()
+                .ServiceOverrides(ServiceOverride.ForKey("fieldParser").Eq(typeof(InferringFieldParser).Name)));
+
+            Kernel.Register(Component.For(typeof(ISolrDocumentIndexer<>))
+                .ImplementedBy(typeof (SolrDocumentIndexer<>)));
             foreach (var parserType in new[] {
                 typeof (ResultsResponseParser<>),
                 typeof (HeaderResponseParser<>),
@@ -90,7 +96,14 @@ namespace Castle.Facilities.SolrNetIntegration {
                                 .ImplementedBy(typeof (SolrBasicServer<>)));
             Kernel.Register(Component.For(typeof (ISolrOperations<>), typeof (ISolrReadOnlyOperations<>))
                                 .ImplementedBy(typeof (SolrServer<>)));
-            Kernel.Register(Component.For<ISolrFieldParser>().ImplementedBy<DefaultFieldParser>());
+
+            Kernel.Register(Component.For<ISolrFieldParser>()
+                .ImplementedBy<DefaultFieldParser>());
+
+            Kernel.Register(Component.For<ISolrFieldParser>()
+                .ImplementedBy<InferringFieldParser>()
+                .Named(typeof(InferringFieldParser).Name));
+
             Kernel.Register(Component.For<ISolrFieldSerializer>().ImplementedBy<DefaultFieldSerializer>());
             Kernel.Register(Component.For<ISolrDocumentPropertyVisitor>().ImplementedBy<DefaultDocumentVisitor>());
 

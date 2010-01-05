@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Castle.Core.Configuration;
 using Castle.Core.Resource;
@@ -220,6 +221,31 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve("core0-id"));
             Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve("core1-id"));
             Assert.IsInstanceOfType<ISolrOperations<Core1Entity>>(container.Resolve("core2-id"));
+        }
+
+        [Test]
+        [Ignore("Requires a running solr instance")]
+        public void DictionaryDocument() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
+            var results = solr.Query(SolrQuery.All);
+            Assert.GreaterThan(results.Count, 0);
+            foreach (var d in results) {
+                Assert.GreaterThan(d.Count, 0);
+                foreach (var kv in d)
+                    Console.WriteLine("{0}: {1}", kv.Key, kv.Value);
+            }
+        }
+
+        [Test]
+        public void DictionaryDocument_ResponseParser() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            var parser = container.Resolve<ISolrDocumentResponseParser<Dictionary<string, object>>>();
+            Assert.IsInstanceOfType<SolrDictionaryDocumentResponseParser>(parser);
         }
 
         public class Document {}

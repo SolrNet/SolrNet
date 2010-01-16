@@ -450,5 +450,10 @@ namespace HttpWebAdapters {
 		///</returns>
 		///<PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
 		DateTime IfModifiedSince { get; set; }
+
+	    IAsyncResult BeginGetResponse(AsyncCallback callback, object state);
+	    IHttpWebResponse EndGetResponse(IAsyncResult result);
+	    IAsyncResult BeginGetRequestStream(AsyncCallback callback, object state);
+	    Stream EndGetRequestStream(IAsyncResult result);
 	}
 }

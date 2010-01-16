@@ -36,6 +36,22 @@ namespace HttpWebAdapters.Adapters {
 			return new HttpWebResponseAdapter(request.GetResponse());
 		}
 
+        public IAsyncResult BeginGetResponse(AsyncCallback callback, object state) {
+            return request.BeginGetResponse(callback, state);
+        }
+
+        public IHttpWebResponse EndGetResponse(IAsyncResult result) {
+            return new HttpWebResponseAdapter(request.EndGetResponse(result));
+        }
+
+        public IAsyncResult BeginGetRequestStream(AsyncCallback callback, object state) {
+            return request.BeginGetRequestStream(callback, state);
+        }
+
+        public Stream EndGetRequestStream(IAsyncResult result) {
+            return request.EndGetRequestStream(result);
+        }
+
 		///<summary>
 		///Gets a <see cref="T:System.IO.Stream"></see> object to use to write request data.
 		///</summary>

@@ -14,12 +14,18 @@
 // limitations under the License.
 #endregion
 
+using System;
+using SolrNet.Impl;
+using SolrNet.Impl.FieldSerializers;
+
 namespace SolrNet {
     /// <summary>
     /// Queries a field for a range
     /// </summary>
     /// <typeparam name="RT"></typeparam>
 	public class SolrQueryByRange<RT> : AbstractSolrQuery {
+        private readonly DateTimeFieldSerializer dateSerializer = new DateTimeFieldSerializer();
+
 		private readonly string q;
 		public SolrQueryByRange(string fieldName, RT from, RT to) : this(fieldName, from, to, true) {}
 
@@ -28,9 +34,15 @@ namespace SolrNet {
 				.Replace("$field", fieldName)
 				.Replace("$ii", inclusive ? "[" : "{")
 				.Replace("$if", inclusive ? "]" : "}")
-				.Replace("$from", from.ToString())
-				.Replace("$to", to.ToString());
+				.Replace("$from", Serialize(from))
+				.Replace("$to", Serialize(to));
 		}
+
+        private string Serialize(RT o) {
+            if (typeof(RT) == typeof(DateTime))
+                return dateSerializer.SerializeDate((DateTime)(object)o);
+            return o.ToString();
+        }
 
 		/// <summary>
 		/// query string

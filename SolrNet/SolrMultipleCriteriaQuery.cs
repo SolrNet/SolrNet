@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Text;
 using SolrNet.Utils;
 
 namespace SolrNet {
@@ -78,12 +79,22 @@ namespace SolrNet {
 		/// </summary>
 		public override string Query {
 			get {
-			    var queryStrings = Func.Filter(queries, x => x != null && !string.IsNullOrEmpty(x.Query));
-                var q = Func.Join(string.Format(" {0} ", oper), queryStrings, query => query.Query, true);
-                if (!string.IsNullOrEmpty(q))
-                    q = "(" + q + ")";
-			    return q;
-			}
+                var queryBuilder = new StringBuilder();
+                foreach (var query in Queries) {
+                    if (query == null) 
+                        continue;
+                    var q = query.Query;
+                    if (string.IsNullOrEmpty(q)) 
+                        continue;
+                    if (queryBuilder.Length > 0)
+                        queryBuilder.AppendFormat(" {0} ", oper);
+                    queryBuilder.Append(q);
+                }
+                var queryString = queryBuilder.ToString();
+                if (!string.IsNullOrEmpty(queryString)) 
+                    queryString = "(" + queryString + ")";
+                return queryString;
+            }
 		}
 	}
 }

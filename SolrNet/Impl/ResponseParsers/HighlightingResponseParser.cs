@@ -41,8 +41,8 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <param name="results"></param>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IDictionary<T, IDictionary<string, string>> ParseHighlighting(IEnumerable<T> results, XmlNode node) {
-            var r = new Dictionary<T, IDictionary<string, string>>();
+        public IDictionary<T, IDictionary<string, ICollection<string>>> ParseHighlighting(IEnumerable<T> results, XmlNode node) {
+            var r = new Dictionary<T, IDictionary<string, ICollection<string>>>();
             var docRefs = node.SelectNodes("lst");
             if (docRefs == null)
                 return r;
@@ -60,11 +60,15 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="nodes"></param>
         /// <returns></returns>
-        public IDictionary<string, string> ParseHighlightingFields(XmlNodeList nodes) {
-            var fields = new Dictionary<string, string>();
+        public IDictionary<string, ICollection<string>> ParseHighlightingFields(XmlNodeList nodes) {
+            var fields = new Dictionary<string, ICollection<string>>();
             foreach (XmlNode field in nodes) {
                 var fieldName = field.Attributes["name"].InnerText;
-                fields[fieldName] = field.InnerText;
+                var snippets = new List<string>();
+                foreach (XmlNode str in field.SelectNodes("str")) {
+                    snippets.Add(str.InnerText);
+                }
+                fields[fieldName] = snippets;
             }
             return fields;
         }

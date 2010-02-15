@@ -444,22 +444,36 @@ namespace SolrNet.Tests {
 			Assert.AreEqual("2.2", header.Params["version"]);
 		}
 
+        private IDictionary<Product, IDictionary<string, ICollection<string>>> ParseHighlightingResults(string rawXml) {
+            var mapper = new AttributesMappingManager();
+            var parser = new HighlightingResponseParser<Product>(new SolrDocumentIndexer<Product>(mapper));
+            var xml = new XmlDocument();
+            xml.LoadXml(rawXml);
+            var docNode = xml.SelectSingleNode("response/lst[@name='highlighting']");
+            var item = new Product { Id = "SP2514N" };
+            return parser.ParseHighlighting(new SolrQueryResults<Product> { item }, docNode);
+        }
+
 		[Test]
 		public void ParseHighlighting() {
-            var mapper = new AttributesMappingManager();
-		    var parser = new HighlightingResponseParser<Product>(new SolrDocumentIndexer<Product>(mapper));
-			var xml = new XmlDocument();
-			xml.LoadXml(responseXmlWithHighlighting);
-			var docNode = xml.SelectSingleNode("response/lst[@name='highlighting']");
-			var item = new Product { Id = "SP2514N" };
-			var highlights = parser.ParseHighlighting(new SolrQueryResults<Product> { item }, docNode);
+		    var highlights = ParseHighlightingResults(responseXmlWithHighlighting);
 			Assert.AreEqual(1, highlights.Count);
-			Assert.AreSame(item, highlights.First().Key);
 			var kv = highlights.First().Value;
 			Assert.AreEqual(1, kv.Count);
 			Assert.AreEqual("features", kv.First().Key);
-            Assert.Like(kv.First().Value, "Noise");
+            Assert.AreEqual(1, kv.First().Value.Count);
+            //Console.WriteLine(kv.First().Value.First());
+            Assert.Like(kv.First().Value.First(), "Noise");
 		}
+
+        [Test]
+        public void ParseHighlighting2() {
+            var highlights = ParseHighlightingResults(responseXmlWithHighlighting2);
+            var first = highlights.First();
+            first.Value.Keys.ToList().ForEach(Console.WriteLine);
+            first.Value["source_en"].ToList().ForEach(Console.WriteLine);
+            Assert.AreEqual(3, first.Value["source_en"].Count);
+        }
 
         [Test]
         public void ParseSpellChecking() {

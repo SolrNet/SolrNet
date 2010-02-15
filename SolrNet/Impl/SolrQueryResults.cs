@@ -182,7 +182,7 @@ namespace SolrNet {
 
 		public ResponseHeader Header { get; set;}
 
-		public IDictionary<T, IDictionary<string, string>> Highlights { get; set; }
+		public IDictionary<T, IDictionary<string, ICollection<string>>> Highlights { get; set; }
 
         public SpellCheckResults SpellChecking { get; set; }
         public IDictionary<T, IList<T>> SimilarResults { get; set; }

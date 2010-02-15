@@ -51,7 +51,7 @@ namespace SolrNet {
         /// <summary>
         /// Highlight results
         /// </summary>
-		IDictionary<T, IDictionary<string, string>> Highlights { get; set; }
+		IDictionary<T, IDictionary<string, ICollection<string>>> Highlights { get; set; }
 
         /// <summary>
         /// Spell checking results

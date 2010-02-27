@@ -1,3 +1,6 @@
+- Added support for delete by id+query in the same request (issue #50)
+- Fixed issue #95 : Highlights didn't support several snippets in results
+- Fixed performance issue with SolrMultipleCriteriaQuery (issue #94)
 - Removed ISolrDocument interface
 - Added support for loose mapping
 - Improved multi-core configuration in Windsor facility

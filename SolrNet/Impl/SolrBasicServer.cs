@@ -64,13 +64,19 @@ namespace SolrNet.Impl {
         }
 
         public ISolrBasicOperations<T> Delete(IEnumerable<string> ids) {
-            var cmd = new DeleteCommand(new DeleteByMultipleIdParam(ids));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null));
             Send(cmd);
             return this;
         }
 
         public ISolrBasicOperations<T> Delete(ISolrQuery q) {
-            var delete = new DeleteCommand(new DeleteByQueryParam(q));
+            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q));
+            delete.Execute(connection);
+            return this;
+        }
+
+         public ISolrBasicOperations<T> Delete(IEnumerable<string> ids, ISolrQuery q) {
+            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q));
             delete.Execute(connection);
             return this;
         }

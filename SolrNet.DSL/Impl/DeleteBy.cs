@@ -27,17 +27,17 @@ namespace SolrNet.DSL.Impl {
         }
 
         public void ById(string id) {
-            var cmd = new DeleteCommand(new DeleteByMultipleIdParam(new[] {id}));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null));
             cmd.Execute(connection);
         }
 
         public void ByIds(IEnumerable<string> ids) {
-            var cmd = new DeleteCommand(new DeleteByMultipleIdParam(ids));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null));
             cmd.Execute(connection);
         }
        
         public void ByQuery(ISolrQuery q) {
-            var cmd = new DeleteCommand(new DeleteByQueryParam(q));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q));
             cmd.Execute(connection);
         }
 

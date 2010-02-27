@@ -78,6 +78,92 @@ namespace SolrNet.Tests.Integration.Sample {
             Assert.AreEqual(150m, products[0].Prices["regular"]);
             Assert.AreEqual(100m, products[0].Prices["afterrebate"]);
         }
+        
+        [Test]
+        public void DeleteByIdAndOrQuery() {
+            Add_then_query();
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+
+            #region Delete test data
+            var products = new List<Product> 
+            {
+                    new Product
+                    {
+                        Id = "DEL12345",
+                        Name = "Delete test product 1",
+                        Manufacturer = "Acme ltd",
+                        Categories = new[] {
+                            "electronics",
+                            "test products",
+                        },
+                        Features = new[] {
+                            "feature 1",
+                            "feature 2",
+                        },
+                        Prices = new Dictionary<string, decimal> {
+                            {"regular", 150m},
+                            {"afterrebate", 100m},
+                        },
+                        Price = 92,
+                        Popularity = 6,
+                        InStock = false,
+                    },
+                    new Product
+                    {
+                        Id = "DEL12346",
+                        Name = "Delete test product 2",
+                        Manufacturer = "Acme ltd",
+                        Categories = new[] {
+                            "electronics",
+                            "test products",
+                        },
+                        Features = new[] {
+                            "feature 1",
+                            "feature 3",
+                        },
+                        Prices = new Dictionary<string, decimal> {
+                            {"regular", 150m},
+                            {"afterrebate", 100m},
+                        },
+                        Price = 92,
+                        Popularity = 6,
+                        InStock = false,
+                    },
+                    new Product
+                    {
+                        Id = "DEL12347",
+                        Name = "Delete test product 3",
+                        Manufacturer = "Acme ltd",
+                        Categories = new[] {
+                            "electronics",
+                            "test products",
+                        },
+                        Features = new[] {
+                            "feature 1",
+                            "feature 3",
+                        },
+                        Prices = new Dictionary<string, decimal> {
+                            {"regular", 150m},
+                            {"afterrebate", 100m},
+                        },
+                        Price = 92,
+                        Popularity = 6,
+                        InStock = false,
+                    }
+            };
+            #endregion
+
+            var productsBeforeAddition = solr.Query(SolrQuery.All);
+            solr.Add(products).Commit();
+            var productsAfterAddition = solr.Query(SolrQuery.All);
+            
+            Assert.AreEqual(productsBeforeAddition.Count + products.Count, productsAfterAddition.Count);
+
+            solr.Delete(new string[] { "DEL12345", "DEL12346" }, new SolrQueryByField("features", "feature 3")).Commit();
+            var productsAfterDelete = solr.Query(SolrQuery.All);
+
+            Assert.AreEqual(productsAfterAddition.Count - products.Count, productsAfterDelete.Count);
+        }
 
         [Test]
         public void Highlighting() {

@@ -71,6 +71,14 @@ namespace SolrNet {
         ISolrBasicOperations<T> Delete(ISolrQuery q);
 
         /// <summary>
+        /// Deletes all documents that match the given id's or the query
+        /// </summary>
+        /// <param name="ids">document ids to delete</param>
+        /// <param name="q">query to match</param>
+        /// <returns></returns>
+        ISolrBasicOperations<T> Delete(IEnumerable<string> ids, ISolrQuery q);
+
+        /// <summary>
         /// Sends a custom command
         /// </summary>
         /// <param name="cmd">command to send</param>

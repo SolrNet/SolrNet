@@ -167,7 +167,7 @@ namespace SolrNet.Tests {
                                      .Return(null))
                 .Verify(delegate {
                     var ops = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
-                    ops.Delete(new SolrQuery("id:123"));
+                    ops.Delete(null, new SolrQuery("id:123"));
                 });
         }
 

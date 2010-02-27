@@ -148,12 +148,8 @@ namespace SolrNet.Impl {
         }
 
         public ISolrOperations<T> Delete(IEnumerable<string> ids) {
-            basicServer.Delete(ids);
+            basicServer.Delete(ids, null);
             return this;
-        }
-
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.Delete(IEnumerable<string> id) {
-            return Delete(id);
         }
 
         public ISolrOperations<T> Delete(T doc) {
@@ -164,7 +160,7 @@ namespace SolrNet.Impl {
 
         public ISolrOperations<T> Delete(IEnumerable<T> docs) {
             basicServer.Delete(Func.Select(docs,
-                                           d => Convert.ToString(mappingManager.GetUniqueKey(typeof (T)).Key.GetValue(d, null))));
+                                           d => Convert.ToString(mappingManager.GetUniqueKey(typeof (T)).Key.GetValue(d, null))), null);
             return this;
         }
 
@@ -177,7 +173,7 @@ namespace SolrNet.Impl {
         }
 
         ISolrOperations<T> ISolrOperations<T>.Delete(ISolrQuery q) {
-            basicServer.Delete(q);
+            basicServer.Delete(null, q);
             return this;
         }
 
@@ -217,10 +213,6 @@ namespace SolrNet.Impl {
 
         ISolrBasicOperations<T> ISolrBasicOperations<T>.Add(IEnumerable<T> docs) {
             return basicServer.Add(docs);
-        }
-
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.Delete(ISolrQuery q) {
-            return basicServer.Delete(q);
         }
 
         public string Send(ISolrCommand cmd) {

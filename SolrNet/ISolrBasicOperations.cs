@@ -56,21 +56,6 @@ namespace SolrNet {
         ISolrBasicOperations<T> AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs);
 
         /// <summary>
-        /// Deletes several documents (requires the document to have a unique key defined with non-null value)
-        /// </summary>
-        /// <param name="ids">document ids to delete</param>
-        /// <returns></returns>
-        /// <exception cref="NoUniqueKeyException">throws if document type doesn't have a unique key or document has null unique key</exception>
-        ISolrBasicOperations<T> Delete(IEnumerable<string> ids);
-
-        /// <summary>
-        /// Deletes all documents that match a query
-        /// </summary>
-        /// <param name="q">query to match</param>
-        /// <returns></returns>
-        ISolrBasicOperations<T> Delete(ISolrQuery q);
-
-        /// <summary>
         /// Deletes all documents that match the given id's or the query
         /// </summary>
         /// <param name="ids">document ids to delete</param>

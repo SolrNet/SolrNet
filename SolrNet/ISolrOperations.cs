@@ -85,7 +85,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="q">query to match</param>
         /// <returns></returns>
-        new ISolrOperations<T> Delete(ISolrQuery q);
+        ISolrOperations<T> Delete(ISolrQuery q);
 
         /// <summary>
         /// Deletes a document by its id (unique key)
@@ -99,7 +99,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="ids">document unique keys</param>
         /// <returns></returns>
-        new ISolrOperations<T> Delete(IEnumerable<string> ids);
+        ISolrOperations<T> Delete(IEnumerable<string> ids);
 
         /// <summary>
         /// Deletes all documents that match the given id's or the query

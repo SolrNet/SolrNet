@@ -162,7 +162,6 @@
     <Compile Include="Mapping\Validation\MappingValidationItem.cs" />
     <Compile Include="Mapping\Validation\MappingValidationWarning.cs" />
     <Compile Include="Mapping\Validation\MappingValidationManager.cs" />
-    <Compile Include="Mapping\Validation\MappingValidationResultSet.cs" />
     <Compile Include="Schema\SolrSchemaParser.cs" />
     <Compile Include="SolrFacetDateQuery.cs" />
     <Compile Include="SolrFacetFieldQuery.cs" />

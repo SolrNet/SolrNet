@@ -37,7 +37,6 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// A collection of <see cref="MappingValidationItem"/> objects with any issues found during validation.
         /// </returns>
         public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
-            var result = new List<MappingValidationItem>();
 
             foreach (SolrField solrField in solrSchema.SolrFields) {
                 if (solrField.IsRequired) {
@@ -59,13 +58,10 @@ namespace SolrNet.Mapping.Validation.Rules {
                     }
 
                     if (!fieldFoundInMappingOrCopyFields)
-                        result.Add(new MappingValidationError(
-                                       String.Format("Required field '{0}' in the Solr schema is not mapped in type '{1}'.",
-                                                     solrField.Name, typeof (T).FullName)));
+                        yield return new MappingValidationError(String.Format("Required field '{0}' in the Solr schema is not mapped in type '{1}'.",
+                                                     solrField.Name, typeof (T).FullName));
                 }
             }
-
-            return result;
         }
     }
 }

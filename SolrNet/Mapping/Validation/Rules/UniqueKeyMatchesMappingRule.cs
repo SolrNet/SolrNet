@@ -20,13 +20,11 @@ using System;
 using System.Collections.Generic;
 using SolrNet.Schema;
 
-namespace SolrNet.Mapping.Validation.Rules
-{
+namespace SolrNet.Mapping.Validation.Rules {
     /// <summary>
     /// Validation rule for making sure the uniqueKey mapped in the type is the same as in the Solr schema.
     /// </summary>
-    public class UniqueKeyMatchesMappingRule : IValidationRule
-    {
+    public class UniqueKeyMatchesMappingRule : IValidationRule {
         /// <summary>
         /// Validates that the uniqueKey mapped in the type is the same as in the Solr schema.
         /// </summary>
@@ -37,15 +35,11 @@ namespace SolrNet.Mapping.Validation.Rules
         /// A collection of <see cref="MappingValidationItem"/> objects with any issues found during validation.
         /// </returns>
         public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
-            var result = new List<MappingValidationItem>();
-
             if (solrSchema.UniqueKey != null)
-                if (!mappingManager.GetUniqueKey(typeof(T)).Value.Equals(solrSchema.UniqueKey))
-                    result.Add(new MappingValidationError(
-                                            String.Format("Solr schema unique key '{0}' does not match document unique key '{1}'.",
-                                                          solrSchema.UniqueKey, mappingManager.GetUniqueKey(typeof(T)))));
-            
-            return result;
+                if (!mappingManager.GetUniqueKey(typeof (T)).Value.Equals(solrSchema.UniqueKey))
+                    yield return new MappingValidationError(String.Format("Solr schema unique key '{0}' does not match document unique key '{1}'.",
+                                                 solrSchema.UniqueKey, mappingManager.GetUniqueKey(typeof (T))));
+
         }
     }
 }

@@ -22,7 +22,7 @@ using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
-using SolrNet.Utils;
+using SolrNet.Schema;
 
 namespace Ninject.Integration.SolrNet {
     public class SolrNetModule : NinjectModule {
@@ -61,6 +61,8 @@ namespace Ninject.Integration.SolrNet {
             Bind(typeof(ISolrBasicReadOnlyOperations<>)).To(typeof(SolrBasicServer<>));
             Bind(typeof(ISolrOperations<>)).To(typeof(SolrServer<>));
             Bind(typeof(ISolrReadOnlyOperations<>)).To(typeof(SolrServer<>));
+            Bind<ISolrSchemaParser>().To<SolrSchemaParser>();
+            Bind<ISolrSchemaMappingValidationManager>().To<SolrSchemaMappingValidationManager>();
         }
     }
 }

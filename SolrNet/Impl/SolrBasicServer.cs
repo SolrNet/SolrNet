@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 
@@ -79,6 +80,18 @@ namespace SolrNet.Impl {
 
         public void Ping() {
             new PingCommand().Execute(connection);
+        }
+
+        public XmlDocument GetSchema() {
+            XmlDocument result = null;
+            var getSchema = new GetSchemaCommand();
+            string schemaXml = getSchema.Execute(connection);
+            if(!string.IsNullOrEmpty(schemaXml)) {
+                result = new XmlDocument();
+                result.LoadXml(schemaXml);
+            }
+
+            return result;
         }
     }
 }

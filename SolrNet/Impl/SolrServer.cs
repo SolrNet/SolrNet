@@ -16,9 +16,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
+using SolrNet.Schema;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl {
@@ -29,10 +31,13 @@ namespace SolrNet.Impl {
     public class SolrServer<T> : ISolrOperations<T> where T : new() {
         private readonly ISolrBasicOperations<T> basicServer;
         private readonly IReadOnlyMappingManager mappingManager;
+        private readonly ISolrSchemaMappingValidationManager schemaMappingValidationManager;
 
-        public SolrServer(ISolrBasicOperations<T> basicServer, IReadOnlyMappingManager mappingManager) {
+        public SolrServer(ISolrBasicOperations<T> basicServer, IReadOnlyMappingManager mappingManager, ISolrSchemaMappingValidationManager schemaMappingValidationManager)
+        {
             this.basicServer = basicServer;
             this.mappingManager = mappingManager;
+            this.schemaMappingValidationManager = schemaMappingValidationManager;
         }
 
         /// <summary>
@@ -213,6 +218,14 @@ namespace SolrNet.Impl {
 
         ISolrBasicOperations<T> ISolrBasicOperations<T>.Add(IEnumerable<T> docs) {
             return basicServer.Add(docs);
+        }
+
+        public XmlDocument GetSchema() {
+            return basicServer.GetSchema();
+        }
+
+        public SolrSchemaMappingValidationResultSet Validate() {
+            return this.schemaMappingValidationManager.Validate(typeof(T), this.GetSchema());
         }
 
         public string Send(ISolrCommand cmd) {

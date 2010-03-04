@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System.Xml;
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet {
@@ -36,5 +37,11 @@ namespace SolrNet {
         /// See http://wiki.apache.org/solr/SolrConfigXml for more information.
         /// </summary>
         void Ping();
+
+        /// <summary>
+        /// Gets the schema.
+        /// </summary>
+        /// <returns>A XmlDocument containing the Solr schema XML.</returns>
+        XmlDocument GetSchema();
     }
 }

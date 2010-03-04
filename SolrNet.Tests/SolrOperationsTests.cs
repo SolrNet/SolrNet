@@ -25,6 +25,7 @@ using SolrNet.Exceptions;
 using SolrNet.Impl;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Mapping;
+using SolrNet.Schema;
 using SolrNet.Utils;
 
 namespace SolrNet.Tests {
@@ -177,13 +178,14 @@ namespace SolrNet.Tests {
             var connection = mocks.CreateMock<ISolrConnection>();
             var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithUniqueKey>>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var validationManager = mocks.CreateMock<ISolrSchemaMappingValidationManager>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(connection.Post("/update", "<delete><id>0</id><id>0</id></delete>"))
                                      .Repeat.Once()
                                      .Return(null))
                 .Verify(delegate {
                     var basic = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
-                    var ops = new SolrServer<TestDocumentWithUniqueKey>(basic, new AttributesMappingManager());
+                    var ops = new SolrServer<TestDocumentWithUniqueKey>(basic, new AttributesMappingManager(), validationManager);
                     ops.Delete(new[] {
                         new TestDocumentWithUniqueKey(),
                         new TestDocumentWithUniqueKey(),
@@ -197,12 +199,13 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocumentWithoutUniqueKey>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.CreateMock<ISolrSchemaMappingValidationManager>();
             With.Mocks(mocks)
                 .Expecting(() => {
                     Expect.Call(mapper.GetUniqueKey(typeof (TestDocumentWithoutUniqueKey)))
                         .Throw(new NoUniqueKeyException(typeof(TestDocumentWithoutUniqueKey)));
                 }).Verify(() => {
-                    var ops = new SolrServer<TestDocumentWithoutUniqueKey>(basicServer, mapper);
+                    var ops = new SolrServer<TestDocumentWithoutUniqueKey>(basicServer, mapper, validationManager);
                     ops.Delete(new TestDocumentWithoutUniqueKey());
                 });
         }
@@ -212,6 +215,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocumentWithUniqueKey>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.CreateMock<ISolrSchemaMappingValidationManager>();
             With.Mocks(mocks)
                 .Expecting(() => {
                     Expect.Call(basicServer.Send(null))
@@ -222,7 +226,7 @@ namespace SolrNet.Tests {
                         .Return(new KeyValuePair<PropertyInfo, string>(typeof (TestDocumentWithUniqueKey).GetProperty("id"), "id"));
                 })
                 .Verify(delegate {
-                    var ops = new SolrServer<TestDocumentWithUniqueKey>(basicServer, mapper);
+                    var ops = new SolrServer<TestDocumentWithUniqueKey>(basicServer, mapper, validationManager);
                     ops.Delete(new TestDocumentWithUniqueKey());
                 });
         }
@@ -431,6 +435,7 @@ namespace SolrNet.Tests {
             var connection = new MockConnection(query);
             var resultParser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.CreateMock<ISolrSchemaMappingValidationManager>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(resultParser.Parse(""))
@@ -449,7 +454,7 @@ namespace SolrNet.Tests {
             }).Verify(() => {
                 var queryExecuter = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, resultParser);
                 var basicSolr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, queryExecuter, docSerializer);
-                var solr = new SolrServer<TestDocumentWithUniqueKey>(basicSolr, mapper);
+                var solr = new SolrServer<TestDocumentWithUniqueKey>(basicSolr, mapper, validationManager);
                 var r = solr.FacetFieldQuery(new SolrFacetFieldQuery("cat"));
                 Assert.AreEqual(2, r.Count);
                 Assert.AreEqual("electronics", Func.First(r).Key);
@@ -473,8 +478,9 @@ namespace SolrNet.Tests {
             var queryExecuter = new SolrQueryExecuter<TestDocWithNullable>(connection, resultParser);
             var mapper = new AttributesMappingManager();
             var docSerializer = new SolrDocumentSerializer<TestDocWithNullable>(mapper, new DefaultFieldSerializer());
+            var validationManager = mocks.CreateMock<ISolrSchemaMappingValidationManager>();
             var basicSolr = new SolrBasicServer<TestDocWithNullable>(connection, queryExecuter, docSerializer);
-            var solr = new SolrServer<TestDocWithNullable>(basicSolr, mapper);
+            var solr = new SolrServer<TestDocWithNullable>(basicSolr, mapper, validationManager);
             string xml = null;
             With.Mocks(mocks)
                 .Expecting(() => {

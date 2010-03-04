@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using SolrNet.Exceptions;
+using SolrNet.Schema;
 
 namespace SolrNet {
     /// <summary>
@@ -115,5 +116,13 @@ namespace SolrNet {
         /// However, it may not always be necessary as it is possible to setup the spellchecker with a dictionary that already exists.
         /// </summary>
         void BuildSpellCheckDictionary();
+
+        ///<summary>
+        /// Validates the mapping of the type T against the Solr schema XML document.
+        ///</summary>
+        ///<returns>
+        /// A <see cref="SolrSchemaMappingValidationResultSet"/> containing warnings and error found validating
+        /// the type's mapping against the Solr schema if any.</returns>
+        SolrSchemaMappingValidationResultSet Validate();
     }
 }

@@ -81,6 +81,7 @@
     <Compile Include="AttributesMappingManagerTests.cs" />
     <Compile Include="CommonServiceLocatorTests.cs" />
     <Compile Include="DateTimeFieldParserTests.cs" />
+    <Compile Include="GetSchemaCommandTests.cs" />
     <Compile Include="InferringFieldParserTests.cs" />
     <Compile Include="DefaultFieldParserTests.cs" />
     <Compile Include="DeleteCommandTests.cs" />
@@ -99,6 +100,9 @@
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
+    <Compile Include="SolrSchemaMappingValidationManagerTests.cs" />
+    <Compile Include="SolrSchemaParserTests.cs" />
+    <Compile Include="Utils\EmbeddedResource.cs" />
     <Compile Include="Utils\LoggingConnection.cs" />
     <Compile Include="Utils\Node.cs" />
     <Compile Include="Utils\ProfilerFacility.cs" />
@@ -147,6 +151,12 @@
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\solrSchemaBasic.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaDefault.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaEmptyUniqueKey.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaNoUniqueKey.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

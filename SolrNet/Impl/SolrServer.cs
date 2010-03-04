@@ -147,10 +147,6 @@ namespace SolrNet.Impl {
             return this;
         }
 
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
-            return basicServer.AddWithBoost(docs);
-        }
-
         public ISolrOperations<T> Delete(IEnumerable<string> ids) {
             basicServer.Delete(ids, null);
             return this;
@@ -187,11 +183,6 @@ namespace SolrNet.Impl {
             return this;
         }
 
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q){
-            basicServer.Delete(ids, q);
-            return this;
-        }
-
         ISolrOperations<T> ISolrOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q) {
             basicServer.Delete(ids, q);
             return this;
@@ -213,10 +204,6 @@ namespace SolrNet.Impl {
         public ISolrOperations<T> Add(T doc) {
             Add(new[] { doc });
             return this;
-        }
-
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.Add(IEnumerable<T> docs) {
-            return basicServer.Add(docs);
         }
 
         public XmlDocument GetSchema() {

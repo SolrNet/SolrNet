@@ -24,7 +24,7 @@ namespace SolrNet {
     /// Consolidating interface, exposes all operations
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public interface ISolrOperations<T> : ISolrReadOnlyOperations<T>, ISolrBasicOperations<T> {
+    public interface ISolrOperations<T> : ISolrReadOnlyOperations<T> {
         /// <summary>
         /// Commits posted documents, 
         /// blocking until index changes are flushed to disk and
@@ -57,14 +57,14 @@ namespace SolrNet {
         /// </summary>
         /// <param name="docs">documents to add/update</param>
         /// <returns></returns>
-        new ISolrOperations<T> Add(IEnumerable<T> docs);
+        ISolrOperations<T> Add(IEnumerable<T> docs);
 
         /// <summary>
         /// Adds / updates documents with index-time boost
         /// </summary>
         /// <param name="docs">List of docs / boost. If boost is null, no boost is applied</param>
         /// <returns></returns>
-        new ISolrOperations<T> AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs);
+        ISolrOperations<T> AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs);
 
         /// <summary>
         /// Deletes a document (requires the document to have a unique key defined with non-null value)
@@ -109,7 +109,7 @@ namespace SolrNet {
         /// <param name="ids">document unique keys</param>
         /// <param name="q">query to match</param>
         /// <returns></returns>
-        new ISolrOperations<T> Delete(IEnumerable<string> ids, ISolrQuery q);
+        ISolrOperations<T> Delete(IEnumerable<string> ids, ISolrQuery q);
 
         /// <summary>
         /// Create the dictionary for use by the SolrSpellChecker. 

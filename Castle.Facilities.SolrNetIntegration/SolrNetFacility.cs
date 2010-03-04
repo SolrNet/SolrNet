@@ -91,8 +91,8 @@ namespace Castle.Facilities.SolrNetIntegration {
                 Kernel.Register(Component.For(typeof (ISolrResponseParser<>)).ImplementedBy(parserType));
             }
             foreach (var validationRule in new[] {
-                typeof(MappedPropertiesShouldBeInSolrSchemaRule),
-                typeof(RequiredFieldsShouldBeMappedRule),
+                typeof(MappedPropertiesIsInSolrSchemaRule),
+                typeof(RequiredFieldsAreMappedRule),
                 typeof(UniqueKeyMatchesMappingRule),
             })
                 Kernel.Register(Component.For<IValidationRule>().ImplementedBy(validationRule));

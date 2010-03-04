@@ -56,8 +56,8 @@ namespace Ninject.Integration.SolrNet {
             })
                 Bind(typeof(ISolrResponseParser<>)).To(p);
             foreach (var p in new[] {
-                typeof(MappedPropertiesShouldBeInSolrSchemaRule),
-                typeof(RequiredFieldsShouldBeMappedRule),
+                typeof(MappedPropertiesIsInSolrSchemaRule),
+                typeof(RequiredFieldsAreMappedRule),
                 typeof(UniqueKeyMatchesMappingRule),
             })
                 Bind<IValidationRule>().To(p);

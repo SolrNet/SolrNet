@@ -67,7 +67,7 @@ namespace SolrNet.Tests {
 
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] {new RequiredFieldsShouldBeMappedRule()});
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] {new RequiredFieldsAreMappedRule()});
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
@@ -83,7 +83,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] { new MappedPropertiesShouldBeInSolrSchemaRule() });
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] { new MappedPropertiesIsInSolrSchemaRule() });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
@@ -100,7 +100,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Producer"), "producer_s");
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] { new MappedPropertiesShouldBeInSolrSchemaRule() });
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] { new MappedPropertiesIsInSolrSchemaRule() });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
@@ -117,7 +117,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("FieldNotSolrSchema"), "FieldNotSolrSchema");
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] { new MappedPropertiesShouldBeInSolrSchemaRule() });
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] { new MappedPropertiesIsInSolrSchemaRule() });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 

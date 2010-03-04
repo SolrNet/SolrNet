@@ -26,7 +26,7 @@ namespace SolrNet.Mapping.Validation.Rules {
     /// Represents a rule validation that all properties in the mapping are present in the Solr schema
     /// as either a SolrField or a DynamicField
     /// </summary>
-    public class MappedPropertiesShouldBeInSolrSchemaRule : IValidationRule {
+    public class MappedPropertiesIsInSolrSchemaRule : IValidationRule {
         /// <summary>
         /// Validates that all properties in the mapping are present in the Solr schema
         /// as either a SolrField or a DynamicField

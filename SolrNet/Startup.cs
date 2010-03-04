@@ -60,8 +60,8 @@ namespace SolrNet {
             var solrSchemaParser = new SolrSchemaParser();
             Container.Register<ISolrSchemaParser>(c => solrSchemaParser);
 
-            Container.Register<IValidationRule>(typeof(MappedPropertiesShouldBeInSolrSchemaRule).FullName, c => new MappedPropertiesShouldBeInSolrSchemaRule());
-            Container.Register<IValidationRule>(typeof(RequiredFieldsShouldBeMappedRule).FullName, c => new RequiredFieldsShouldBeMappedRule());
+            Container.Register<IValidationRule>(typeof(MappedPropertiesIsInSolrSchemaRule).FullName, c => new MappedPropertiesIsInSolrSchemaRule());
+            Container.Register<IValidationRule>(typeof(RequiredFieldsAreMappedRule).FullName, c => new RequiredFieldsAreMappedRule());
             Container.Register<IValidationRule>(typeof(UniqueKeyMatchesMappingRule).FullName, c => new UniqueKeyMatchesMappingRule());
 
             var schemaMappingValidationManager = new MappingValidationManager(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrSchemaParser>(), Func.ToArray(Container.GetAllInstances<IValidationRule>()));

@@ -25,7 +25,7 @@ namespace SolrNet.Mapping.Validation.Rules {
     /// Represents a rule validating that all SolrFields in the SolrSchema which are required are
     /// either present in the mapping or as a CopyField.
     /// </summary>
-    public class RequiredFieldsShouldBeMappedRule : IValidationRule {
+    public class RequiredFieldsAreMappedRule : IValidationRule {
         /// <summary>
         /// Validates that all SolrFields in the SolrSchema which are required are
         /// either present in the mapping or as a CopyField.

@@ -24,59 +24,48 @@ namespace SolrNet.Schema {
     /// Parses a Solr schema xml document into a strongly typed
     /// <see cref="SolrSchema"/> object.
     /// </summary>
-    public class SolrSchemaParser : ISolrSchemaParser
-    {
-        #region ISolrSchemaParser Members
-
+    public class SolrSchemaParser : ISolrSchemaParser {
         /// <summary>
         /// Parses the specified Solr schema xml.
         /// </summary>
         /// <param name="solrSchemaXml">The Solr schema xml to parse.</param>
         /// <returns>A strongly styped representation of the Solr schema xml.</returns>
-        public SolrSchema Parse(XmlDocument solrSchemaXml)
-        {
+        public SolrSchema Parse(XmlDocument solrSchemaXml) {
             var result = new SolrSchema();
 
-            foreach (XmlNode fieldNode in solrSchemaXml.SelectNodes("/schema/types/fieldType"))
-            {
+            foreach (XmlNode fieldNode in solrSchemaXml.SelectNodes("/schema/types/fieldType")) {
                 var field = new SolrFieldType();
                 field.Name = fieldNode.Attributes["name"].Value;
                 field.Type = fieldNode.Attributes["class"] != null ? fieldNode.Attributes["class"].Value : null;
                 result.SolrFieldTypes.Add(field);
             }
 
-            foreach (XmlNode fieldNode in solrSchemaXml.SelectNodes("/schema/fields/field"))
-            {
+            foreach (XmlNode fieldNode in solrSchemaXml.SelectNodes("/schema/fields/field")) {
                 var field = new SolrField();
                 field.Name = fieldNode.Attributes["name"].Value;
                 field.IsRequired = fieldNode.Attributes["required"] != null ? fieldNode.Attributes["required"].Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
                 result.SolrFields.Add(field);
             }
 
-            foreach (XmlNode dynamicFieldNode in solrSchemaXml.SelectNodes("/schema/fields/dynamicField"))
-            {
+            foreach (XmlNode dynamicFieldNode in solrSchemaXml.SelectNodes("/schema/fields/dynamicField")) {
                 var dynamicField = new SolrDynamicField();
                 dynamicField.Name = dynamicFieldNode.Attributes["name"].Value;
                 result.SolrDynamicFields.Add(dynamicField);
             }
 
-            foreach (XmlNode copyFieldNode in solrSchemaXml.SelectNodes("/schema/copyField"))
-            {
+            foreach (XmlNode copyFieldNode in solrSchemaXml.SelectNodes("/schema/copyField")) {
                 var copyField = new SolrCopyField();
                 copyField.Source = copyFieldNode.Attributes["source"].Value;
                 copyField.Destination = copyFieldNode.Attributes["dest"].Value;
                 result.SolrCopyFields.Add(copyField);
             }
 
-            XmlNode uniqueKeyNode = solrSchemaXml.SelectSingleNode("/schema/uniqueKey");
-            if (uniqueKeyNode != null && !string.IsNullOrEmpty(uniqueKeyNode.InnerText))
-            {
+            var uniqueKeyNode = solrSchemaXml.SelectSingleNode("/schema/uniqueKey");
+            if (uniqueKeyNode != null && !string.IsNullOrEmpty(uniqueKeyNode.InnerText)) {
                 result.UniqueKey = uniqueKeyNode.InnerText;
             }
 
             return result;
         }
-
-        #endregion
     }
 }

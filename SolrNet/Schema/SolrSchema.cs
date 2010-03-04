@@ -18,13 +18,11 @@
 
 using System.Collections.Generic;
 
-namespace SolrNet.Schema
-{
+namespace SolrNet.Schema {
     /// <summary>
     /// Represents a Solr schema.
     /// </summary>
-    public class SolrSchema
-    {
+    public class SolrSchema {
         /// <summary>
         /// Gets or sets the solr fields types.
         /// </summary>
@@ -36,7 +34,7 @@ namespace SolrNet.Schema
         /// </summary>
         /// <value>The solr fields.</value>
         public List<SolrField> SolrFields { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the solr dynamic fields.
         /// </summary>
@@ -59,12 +57,11 @@ namespace SolrNet.Schema
         /// <summary>
         /// Initializes a new instance of the <see cref="SolrSchema"/> class.
         /// </summary>
-        public SolrSchema()
-        {
-            this.SolrFieldTypes = new List<SolrFieldType>();
-            this.SolrFields = new List<SolrField>();
-            this.SolrDynamicFields = new List<SolrDynamicField>();
-            this.SolrCopyFields = new List<SolrCopyField>();
+        public SolrSchema() {
+            SolrFieldTypes = new List<SolrFieldType>();
+            SolrFields = new List<SolrField>();
+            SolrDynamicFields = new List<SolrDynamicField>();
+            SolrCopyFields = new List<SolrCopyField>();
         }
     }
 }

@@ -224,8 +224,8 @@ namespace SolrNet.Impl {
             return basicServer.GetSchema();
         }
 
-        public MappingValidationResultSet Validate() {
-            return this.schemaMappingValidationManager.Validate(typeof(T), this.GetSchema());
+        public ICollection<MappingValidationItem> Validate(IEnumerable<Type> validationRules) {
+            return this.schemaMappingValidationManager.Validate<T>(this.GetSchema(), validationRules);
         }
 
         public string Send(ISolrCommand cmd) {

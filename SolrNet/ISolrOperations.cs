@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using SolrNet.Exceptions;
 using SolrNet.Mapping.Validation;
@@ -120,9 +121,10 @@ namespace SolrNet {
         ///<summary>
         /// Validates the mapping of the type T against the Solr schema XML document.
         ///</summary>
+        /// <param name="validationRules">The validation rules to use.</param>
         ///<returns>
-        /// A <see cref="SolrSchemaMappingValidationResultSet"/> containing warnings and error found validating
+        /// A collection of <see cref="MappingValidationItem"/> objects containing warnings and error found validating
         /// the type's mapping against the Solr schema if any.</returns>
-        MappingValidationResultSet Validate();
+        ICollection<MappingValidationItem> Validate(IEnumerable<Type> validationRules);
     }
 }

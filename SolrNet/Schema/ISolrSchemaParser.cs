@@ -25,7 +25,6 @@ namespace SolrNet.Schema
     /// </summary>
     public interface ISolrSchemaParser
     {
-
         /// <summary>
         /// Parses the specified solr schema XML.
         /// </summary>

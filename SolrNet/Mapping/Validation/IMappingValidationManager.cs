@@ -17,19 +17,29 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
+using SolrNet.Mapping.Validation.Rules;
 
 namespace SolrNet.Mapping.Validation {
 	/// <summary>
 	/// Provides an interface to validation a Solr schema against a type's mapping.
 	/// </summary>
 	public interface IMappingValidationManager {
-		/// <summary>
-		/// Validates the specified type.
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="schemaXml">The schema XML.</param>
-		/// <returns>A <see cref="MappingValidationResultSet"/> containing all found warnings and errors. If any.</returns>
-		MappingValidationResultSet Validate(Type type, XmlDocument schemaXml);
+        /// <summary>
+        /// Validates the specified validation rules.
+        /// </summary>
+        /// <typeparam name="T">The type of which the mapping needs to be validated</typeparam>
+        /// <param name="solrSchemaXml">The Solr schema XML.</param>
+        /// <param name="validationRules">The validation rules.</param>
+        /// <returns>A collection of <see cref="MappingValidationItem"/> objects with the problems found during validation. If Any.</returns>
+	    ICollection<MappingValidationItem> Validate<T>(XmlDocument solrSchemaXml, IEnumerable<Type> validationRules);
+
+        /// <summary>
+        /// Gets the validation rules.
+        /// </summary>
+        /// <param name="types">The types.</param>
+        /// <returns>A collection of types implementing <see cref="IValidationRule"/>.</returns>
+        ICollection<Type> GetValidationRules(IEnumerable<Type> types);
 	}
 }

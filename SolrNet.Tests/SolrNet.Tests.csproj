@@ -100,7 +100,7 @@
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
-    <Compile Include="SolrSchemaMappingValidationManagerTests.cs" />
+    <Compile Include="MappingValidationManagerTests.cs" />
     <Compile Include="SolrSchemaParserTests.cs" />
     <Compile Include="Utils\EmbeddedResource.cs" />
     <Compile Include="Utils\LoggingConnection.cs" />
@@ -136,6 +136,7 @@
     <Compile Include="ThreadHelper.cs" />
     <Compile Include="ThreadSettings.cs" />
     <Compile Include="TypeHelperTests.cs" />
+    <Compile Include="ValidationRuleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">

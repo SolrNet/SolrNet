@@ -14,6 +14,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Xml;
 using MbUnit.Framework;
 using Rhino.Mocks;
@@ -73,11 +75,11 @@ namespace SolrNet.Tests {
             With.Mocks(mocks)
                 .Expecting(() => {
                     Expect.Call(basicServer.GetSchema()).Repeat.Once().Return(new XmlDocument());
-                    Expect.Call(validationManager.Validate(typeof (TestDocument), new XmlDocument())).Repeat.Once().IgnoreArguments().Return(new MappingValidationResultSet());
+                    Expect.Call(validationManager.Validate<TestDocument>(new XmlDocument(), new Type[] {})).Repeat.Once().IgnoreArguments().Return(new List<MappingValidationItem>());
                 })
                 .Verify(() => {
                     var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
-                    s.Validate();
+                    s.Validate(new Type[] {});
                 });
         }
 

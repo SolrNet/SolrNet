@@ -17,6 +17,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Xml;
 using MbUnit.Framework;
 using SolrNet.Mapping;
@@ -41,7 +42,7 @@ namespace SolrNet.Tests {
 
             XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new Type[] { typeof(UniqueKeyMatchesMappingRule) });
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(UniqueKeyMatchesMappingRule) }).ToList();
             Assert.AreEqual(1, validationResults.Count);
         }
 
@@ -58,7 +59,7 @@ namespace SolrNet.Tests {
 
             XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new Type[] { typeof(UniqueKeyMatchesMappingRule) });
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(UniqueKeyMatchesMappingRule) }).ToList();
             Assert.AreEqual(0, validationResults.Count);
         }
 
@@ -75,7 +76,7 @@ namespace SolrNet.Tests {
 
             XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new Type[] { typeof(RequiredFieldsShouldBeMappedRule) });
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(RequiredFieldsShouldBeMappedRule) }).ToList();
             Assert.AreEqual(1, validationResults.Count);
         }
 
@@ -92,7 +93,7 @@ namespace SolrNet.Tests {
 
             XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new Type[] { typeof(MappedPropertiesShouldBeInSolrSchemaRule) });
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(MappedPropertiesShouldBeInSolrSchemaRule) }).ToList();
             Assert.AreEqual(0, validationResults.Count);
         }
 
@@ -110,7 +111,7 @@ namespace SolrNet.Tests {
 
             XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new Type[] { typeof(MappedPropertiesShouldBeInSolrSchemaRule) });
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(MappedPropertiesShouldBeInSolrSchemaRule) }).ToList();
             Assert.AreEqual(0, validationResults.Count);
         }
 
@@ -128,7 +129,7 @@ namespace SolrNet.Tests {
 
             XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new Type[] { typeof(MappedPropertiesShouldBeInSolrSchemaRule) });
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(MappedPropertiesShouldBeInSolrSchemaRule) }).ToList();
             Assert.AreEqual(1, validationResults.Count);
         }             
     }

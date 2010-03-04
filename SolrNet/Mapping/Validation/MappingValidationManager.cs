@@ -49,15 +49,15 @@ namespace SolrNet.Mapping.Validation {
         /// <param name="solrSchemaXml">The Solr schema XML.</param>
         /// <param name="validationRules">The validation rules.</param>
         /// <returns>A collection of <see cref="MappingValidationItem"/> objects with the problems found during validation. If Any.</returns>
-        public ICollection<MappingValidationItem> Validate<T>(XmlDocument solrSchemaXml, IEnumerable<Type> validationRules) {
+        public IEnumerable<MappingValidationItem> Validate<T>(XmlDocument solrSchemaXml, IEnumerable<Type> validationRules) {
             solrSchema = schemaParser.Parse(solrSchemaXml);
 
-            var result = new List<MappingValidationItem>();
             foreach (Type type in GetValidationRules(validationRules)) {
                 var validationRule = (IValidationRule) Activator.CreateInstance(type);
-                result.AddRange(validationRule.Validate<T>(solrSchema, mappingManager));
+                var items = validationRule.Validate<T>(solrSchema, mappingManager);
+                foreach (var i in items)
+                    yield return i;
             }
-            return result;
         }
 
         /// <summary>

@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using MbUnit.Framework;
 using SolrNet.Mapping;
@@ -49,7 +50,7 @@ namespace SolrNet.Tests {
             var mappingValidationManager = new MappingValidationManager(mappingManager, solrSchemaParser);
 
             var types = new[] { typeof(DummyValidationRuleError)};
-            var validationResults = mappingValidationManager.Validate<SchemaMappingTestDocument>(new XmlDocument(), types);
+            var validationResults = mappingValidationManager.Validate<SchemaMappingTestDocument>(new XmlDocument(), types).ToList();
             
             Assert.AreEqual(1, validationResults.Count);
         }

@@ -33,7 +33,7 @@ namespace SolrNet.Mapping.Validation {
         /// <param name="solrSchemaXml">The Solr schema XML.</param>
         /// <param name="validationRules">The validation rules.</param>
         /// <returns>A collection of <see cref="MappingValidationItem"/> objects with the problems found during validation. If Any.</returns>
-	    ICollection<MappingValidationItem> Validate<T>(XmlDocument solrSchemaXml, IEnumerable<Type> validationRules);
+	    IEnumerable<MappingValidationItem> Validate<T>(XmlDocument solrSchemaXml, IEnumerable<Type> validationRules);
 
         /// <summary>
         /// Gets the validation rules.

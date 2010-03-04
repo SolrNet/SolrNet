@@ -60,6 +60,10 @@ namespace SolrNet {
             var solrSchemaParser = new SolrSchemaParser();
             Container.Register<ISolrSchemaParser>(c => solrSchemaParser);
 
+            Container.Register<IValidationRule>(typeof(MappedPropertiesShouldBeInSolrSchemaRule).FullName, c => new MappedPropertiesShouldBeInSolrSchemaRule());
+            Container.Register<IValidationRule>(typeof(RequiredFieldsShouldBeMappedRule).FullName, c => new RequiredFieldsShouldBeMappedRule());
+            Container.Register<IValidationRule>(typeof(UniqueKeyMatchesMappingRule).FullName, c => new UniqueKeyMatchesMappingRule());
+
             var schemaMappingValidationManager = new MappingValidationManager(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrSchemaParser>(), Func.ToArray(Container.GetAllInstances<IValidationRule>()));
             Container.Register<IMappingValidationManager>(c => schemaMappingValidationManager);
         }
@@ -97,10 +101,6 @@ namespace SolrNet {
             Container.Register<ISolrResponseParser<T>>(typeof(SpellCheckResponseParser<T>).FullName, c => new SpellCheckResponseParser<T>());
             Container.Register<ISolrResponseParser<T>>(typeof(StatsResponseParser<T>).FullName, c => new StatsResponseParser<T>());
             Container.Register<ISolrResponseParser<T>>(typeof(CollapseResponseParser<T>).FullName, c => new CollapseResponseParser<T>());
-
-            Container.Register<IValidationRule>(typeof(MappedPropertiesShouldBeInSolrSchemaRule).FullName, c => new MappedPropertiesShouldBeInSolrSchemaRule());
-            Container.Register<IValidationRule>(typeof(RequiredFieldsShouldBeMappedRule).FullName, c => new RequiredFieldsShouldBeMappedRule());
-            Container.Register<IValidationRule>(typeof(UniqueKeyMatchesMappingRule).FullName, c => new UniqueKeyMatchesMappingRule());
 
             var resultParser = new SolrQueryResultParser<T>(Func.ToArray(Container.GetAllInstances<ISolrResponseParser<T>>()));
             Container.Register<ISolrQueryResultParser<T>>(c => resultParser);

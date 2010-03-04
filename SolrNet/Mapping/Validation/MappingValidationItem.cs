@@ -21,12 +21,12 @@ namespace SolrNet.Mapping.Validation {
 	/// Represents a Solr schema mapping validation issue.
 	/// </summary>
 	public abstract class MappingValidationItem {
-		private string message;
+		private readonly string message;
 		/// <summary>
 		/// Gets the message.
 		/// </summary>
 		/// <value>The message.</value>
-		public string Message { get { return this.message; } }
+		public string Message { get { return message; } }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MappingValidationItem"/> class.

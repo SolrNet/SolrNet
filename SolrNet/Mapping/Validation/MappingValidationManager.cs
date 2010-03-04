@@ -42,8 +42,6 @@ namespace SolrNet.Mapping.Validation {
             this.schemaParser = schemaParser;
         }
 
-        #region IMappingValidationManager Members
-
         /// <summary>
         /// Validates the specified validation rules.
         /// </summary>
@@ -75,7 +73,5 @@ namespace SolrNet.Mapping.Validation {
 
             return result;
         }
-
-        #endregion
     }
 }

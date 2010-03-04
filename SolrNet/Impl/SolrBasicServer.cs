@@ -86,7 +86,7 @@ namespace SolrNet.Impl {
             XmlDocument result = null;
             var getSchema = new GetSchemaCommand();
             string schemaXml = getSchema.Execute(connection);
-            if(!string.IsNullOrEmpty(schemaXml)) {
+            if (!string.IsNullOrEmpty(schemaXml)) {
                 result = new XmlDocument();
                 result.LoadXml(schemaXml);
             }

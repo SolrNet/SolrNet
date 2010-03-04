@@ -23,18 +23,20 @@ namespace SolrNet.Mapping.Validation {
 	/// Represents the results of validating a mapping agains the Solr schema XML. If any.
 	/// </summary>
 	public class MappingValidationResultSet {
-		private List<MappingValidationWarning> warnings = new List<MappingValidationWarning>();
+		private readonly List<MappingValidationWarning> warnings = new List<MappingValidationWarning>();
+
 		/// <summary>
 		/// Gets collection of the warnings.
 		/// </summary>
 		/// <value>The warnings.</value>
-		public List<MappingValidationWarning> Warnings { get { return this.warnings; } }
+		public List<MappingValidationWarning> Warnings { get { return warnings; } }
 
-		private List<MappingValidationError> errors = new List<MappingValidationError>();
+		private readonly List<MappingValidationError> errors = new List<MappingValidationError>();
+
 		/// <summary>
 		/// Gets a collection of the errors.
 		/// </summary>
 		/// <value>The errors.</value>
-		public List<MappingValidationError> Errors { get { return this.errors; } }
+		public List<MappingValidationError> Errors { get { return errors; } }
 	}
 }

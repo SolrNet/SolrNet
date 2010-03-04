@@ -26,8 +26,6 @@ namespace SolrNet.Mapping.Validation.Rules {
     /// either present in the mapping or as a CopyField.
     /// </summary>
     public class RequiredFieldsShouldBeMappedRule : IValidationRule {
-        #region IValidationRule Members
-
         /// <summary>
         /// Validates that all SolrFields in the SolrSchema which are required are
         /// either present in the mapping or as a CopyField.
@@ -69,7 +67,5 @@ namespace SolrNet.Mapping.Validation.Rules {
 
             return result;
         }
-
-        #endregion
     }
 }

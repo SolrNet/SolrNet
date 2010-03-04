@@ -18,13 +18,13 @@
 
 using System.Collections.Generic;
 
-namespace SolrNet.Commands
-{
-    public class GetSchemaCommand : ISolrCommand
-    {
-        public string Execute(ISolrConnection connection)
-        {
-            return connection.Get("/admin/file", new List<KeyValuePair<string, string>>  {new KeyValuePair<string, string>("file", "schema.xml")});
+namespace SolrNet.Commands {
+    /// <summary>
+    /// Gets the raw Solr schema
+    /// </summary>
+    public class GetSchemaCommand : ISolrCommand {
+        public string Execute(ISolrConnection connection) {
+            return connection.Get("/admin/file", new[] {new KeyValuePair<string, string>("file", "schema.xml")});
         }
     }
 }

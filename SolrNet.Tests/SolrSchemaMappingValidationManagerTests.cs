@@ -19,6 +19,7 @@
 using System.Xml;
 using MbUnit.Framework;
 using SolrNet.Mapping;
+using SolrNet.Mapping.Validation;
 using SolrNet.Schema;
 using SolrNet.Tests.Utils;
 
@@ -33,7 +34,7 @@ namespace SolrNet.Tests {
 
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new SolrSchemaMappingValidationManager(mgr, solrSchemaParser);
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser);
 
             XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
              
@@ -50,7 +51,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("Name"), "name");
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new SolrSchemaMappingValidationManager(mgr, solrSchemaParser);
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser);
 
             XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
@@ -68,7 +69,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("Producer"), "producer_s");
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new SolrSchemaMappingValidationManager(mgr, solrSchemaParser);
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser);
 
             XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
@@ -86,7 +87,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("FieldNotSolrSchema"), "FieldNotSolrSchema");
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new SolrSchemaMappingValidationManager(mgr, solrSchemaParser);
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser);
 
             XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 

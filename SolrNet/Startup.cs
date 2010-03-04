@@ -23,6 +23,7 @@ using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
+using SolrNet.Mapping.Validation;
 using SolrNet.Schema;
 using SolrNet.Utils;
 
@@ -58,8 +59,8 @@ namespace SolrNet {
             var solrSchemaParser = new SolrSchemaParser();
             Container.Register<ISolrSchemaParser>(c => solrSchemaParser);
 
-            var schemaMappingValidationManager = new SolrSchemaMappingValidationManager(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrSchemaParser>());
-            Container.Register<ISolrSchemaMappingValidationManager>(c => schemaMappingValidationManager);
+            var schemaMappingValidationManager = new MappingValidationManager(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrSchemaParser>());
+            Container.Register<IMappingValidationManager>(c => schemaMappingValidationManager);
         }
 
         /// <summary>
@@ -109,7 +110,7 @@ namespace SolrNet {
             Container.Register<ISolrBasicOperations<T>>(c => basicServer);
             Container.Register<ISolrBasicReadOnlyOperations<T>>(c => basicServer);
 
-            var server = new SolrServer<T>(basicServer, Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrSchemaMappingValidationManager>());
+            var server = new SolrServer<T>(basicServer, Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidationManager>());
             Container.Register<ISolrOperations<T>>(c => server);
             Container.Register<ISolrReadOnlyOperations<T>>(c => server);
         }

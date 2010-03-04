@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 using SolrNet.Exceptions;
-using SolrNet.Schema;
+using SolrNet.Mapping.Validation;
 
 namespace SolrNet {
     /// <summary>
@@ -123,6 +123,6 @@ namespace SolrNet {
         ///<returns>
         /// A <see cref="SolrSchemaMappingValidationResultSet"/> containing warnings and error found validating
         /// the type's mapping against the Solr schema if any.</returns>
-        SolrSchemaMappingValidationResultSet Validate();
+        MappingValidationResultSet Validate();
     }
 }

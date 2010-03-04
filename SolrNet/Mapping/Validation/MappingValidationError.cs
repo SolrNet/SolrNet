@@ -16,15 +16,15 @@
 
 #endregion
 
-namespace SolrNet.Schema {
-    /// <summary>
-    /// Represents a Solr schema mapping validation warning.
-    /// </summary>
-    public class SolrSchemaMappingValidationWarning : SolrSchemaMappingValidationItem {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SolrSchemaMappingValidationWarning"/> class.
-        /// </summary>
-        /// <param name="message">The warning message.</param>
-        public SolrSchemaMappingValidationWarning(string message) : base(message) {}
-    }
+namespace SolrNet.Mapping.Validation {
+	/// <summary>
+	/// Represents a Solr schema mapping validation error.
+	/// </summary>   
+	public class MappingValidationError : MappingValidationItem {
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MappingValidationError"/> class.
+		/// </summary>
+		/// <param name="message">The error message.</param>
+		public MappingValidationError(string message) : base(message) {}
+	}
 }

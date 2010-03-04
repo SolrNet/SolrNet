@@ -22,6 +22,7 @@ using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
+using SolrNet.Mapping.Validation;
 using SolrNet.Schema;
 
 namespace Ninject.Integration.SolrNet {
@@ -62,7 +63,7 @@ namespace Ninject.Integration.SolrNet {
             Bind(typeof(ISolrOperations<>)).To(typeof(SolrServer<>));
             Bind(typeof(ISolrReadOnlyOperations<>)).To(typeof(SolrServer<>));
             Bind<ISolrSchemaParser>().To<SolrSchemaParser>();
-            Bind<ISolrSchemaMappingValidationManager>().To<SolrSchemaMappingValidationManager>();
+            Bind<IMappingValidationManager>().To<MappingValidationManager>();
         }
     }
 }

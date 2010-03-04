@@ -26,6 +26,7 @@ using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
+using SolrNet.Mapping.Validation;
 using SolrNet.Schema;
 using SolrNet.Utils;
 
@@ -114,7 +115,7 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For<ISolrDocumentPropertyVisitor>().ImplementedBy<DefaultDocumentVisitor>());
 
             Kernel.Register(Component.For<ISolrSchemaParser>().ImplementedBy<SolrSchemaParser>());
-            Kernel.Register(Component.For<ISolrSchemaMappingValidationManager>().ImplementedBy<SolrSchemaMappingValidationManager>());
+            Kernel.Register(Component.For<IMappingValidationManager>().ImplementedBy<MappingValidationManager>());
 
             AddCoresFromConfig();
             foreach (var core in cores) {

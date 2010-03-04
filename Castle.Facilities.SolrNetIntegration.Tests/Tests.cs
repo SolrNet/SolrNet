@@ -28,6 +28,7 @@ using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet;
 using SolrNet.Impl;
+using SolrNet.Mapping.Validation;
 
 namespace Castle.Facilities.SolrNetIntegration.Tests {
     [TestFixture]
@@ -270,6 +271,14 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.AddFacility("solr", solrFacility);
             var serializer = container.Resolve<ISolrDocumentSerializer<Dictionary<string, object>>>();
             Assert.IsInstanceOfType<SolrDictionarySerializer>(serializer);
+        }
+
+        [Test]
+        public void MappingValidationManager() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            var validator = container.Resolve<IMappingValidationManager>();
         }
 
         public class Document {}

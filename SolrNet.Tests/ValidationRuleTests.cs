@@ -16,7 +16,6 @@
 
 #endregion
 
-using System;
 using System.Linq;
 using System.Xml;
 using MbUnit.Framework;
@@ -29,108 +28,101 @@ using SolrNet.Tests.Utils;
 namespace SolrNet.Tests {
     [TestFixture]
     public class ValidationRuleTests {
-        
         [Test]
         public void NonMatchingUniqueKeyMappingShouldReturnError() {
             var mgr = new MappingManager();
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("Name"), "name");
-            mgr.SetUniqueKey(typeof(SchemaMappingTestDocument).GetProperty("Name"));
-
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
+            mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("Name"));
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser);
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] {new UniqueKeyMatchesMappingRule()});
 
-            XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
+            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(UniqueKeyMatchesMappingRule) }).ToList();
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument).ToList();
             Assert.AreEqual(1, validationResults.Count);
         }
 
         [Test]
-        public void MatchingUniqueKeyMappingShouldNotReturnError()
-        {
+        public void MatchingUniqueKeyMappingShouldNotReturnError() {
             var mgr = new MappingManager();
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("ID"), "id");
-            mgr.SetUniqueKey(typeof(SchemaMappingTestDocument).GetProperty("ID"));
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
+            mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("ID"));
 
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser);
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] { new UniqueKeyMatchesMappingRule() });
 
-            XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
+            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(UniqueKeyMatchesMappingRule) }).ToList();
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument).ToList();
             Assert.AreEqual(0, validationResults.Count);
         }
 
         [Test]
-        public void RequiredSolrFieldForWhichNoCopyFieldExistsShouldReturnError()
-        {
+        public void RequiredSolrFieldForWhichNoCopyFieldExistsShouldReturnError() {
             var mgr = new MappingManager();
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("ID"), "id");
-            mgr.SetUniqueKey(typeof(SchemaMappingTestDocument).GetProperty("ID"));
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
+            mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("ID"));
 
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser);
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] {new RequiredFieldsShouldBeMappedRule()});
 
-            XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
+            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(RequiredFieldsShouldBeMappedRule) }).ToList();
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument).ToList();
             Assert.AreEqual(1, validationResults.Count);
         }
 
         [Test]
-        public void MappedPropertyForWhichSolrFieldExistsInSchemaShouldNotReturnError()
-        {
+        public void MappedPropertyForWhichSolrFieldExistsInSchemaShouldNotReturnError() {
             var mgr = new MappingManager();
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("ID"), "id");
-            mgr.SetUniqueKey(typeof(SchemaMappingTestDocument).GetProperty("ID"));
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("Name"), "name");
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
+            mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("ID"));
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser);
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] { new MappedPropertiesShouldBeInSolrSchemaRule() });
 
-            XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
+            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(MappedPropertiesShouldBeInSolrSchemaRule) }).ToList();
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument).ToList();
             Assert.AreEqual(0, validationResults.Count);
         }
 
         [Test]
-        public void MappedPropertyForWhichDynamicFieldExistsInSchemaShouldNotReturnError()
-        {
+        public void MappedPropertyForWhichDynamicFieldExistsInSchemaShouldNotReturnError() {
             var mgr = new MappingManager();
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("ID"), "id");
-            mgr.SetUniqueKey(typeof(SchemaMappingTestDocument).GetProperty("ID"));
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("Name"), "name");
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("Producer"), "producer_s");
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
+            mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("ID"));
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Producer"), "producer_s");
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser);
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] { new MappedPropertiesShouldBeInSolrSchemaRule() });
 
-            XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
+            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(MappedPropertiesShouldBeInSolrSchemaRule) }).ToList();
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument).ToList();
             Assert.AreEqual(0, validationResults.Count);
         }
 
         [Test]
-        public void MappedPropertyForWhichNoSolrFieldOrDynamicFieldExistsShouldReturnError()
-        {
+        public void MappedPropertyForWhichNoSolrFieldOrDynamicFieldExistsShouldReturnError() {
             var mgr = new MappingManager();
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("ID"), "id");
-            mgr.SetUniqueKey(typeof(SchemaMappingTestDocument).GetProperty("ID"));
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("Name"), "name");
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("FieldNotSolrSchema"), "FieldNotSolrSchema");
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
+            mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("ID"));
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("FieldNotSolrSchema"), "FieldNotSolrSchema");
 
             var solrSchemaParser = new SolrSchemaParser();
-            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser);
+            var schemaManager = new MappingValidationManager(mgr, solrSchemaParser, new[] { new MappedPropertiesShouldBeInSolrSchemaRule() });
 
-            XmlDocument schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
+            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
 
-            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument, new[] { typeof(MappedPropertiesShouldBeInSolrSchemaRule) }).ToList();
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schemaXmlDocument).ToList();
             Assert.AreEqual(1, validationResults.Count);
-        }             
+        }
     }
 }

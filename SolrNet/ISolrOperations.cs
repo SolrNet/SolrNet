@@ -121,10 +121,9 @@ namespace SolrNet {
         ///<summary>
         /// Validates the mapping of the type T against the Solr schema XML document.
         ///</summary>
-        /// <param name="validationRules">The validation rules to use.</param>
         ///<returns>
         /// A collection of <see cref="MappingValidationItem"/> objects containing warnings and error found validating
         /// the type's mapping against the Solr schema if any.</returns>
-        IEnumerable<MappingValidationItem> Validate(IEnumerable<Type> validationRules);
+        IEnumerable<MappingValidationItem> Validate();
     }
 }

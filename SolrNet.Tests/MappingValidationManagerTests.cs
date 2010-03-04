@@ -16,7 +16,6 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -25,58 +24,38 @@ using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
-using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
     public class MappingValidationManagerTests {
         [Test]
-        public void FindValidationRulesInCollectionOfTypes() {
-            var mappingManager = new MappingManager();
-            var solrSchemaParser = new SolrSchemaParser();
-            var mappingValidationManager = new MappingValidationManager(mappingManager, solrSchemaParser);
-
-            var types = new[] { typeof(DummyValidationRuleError), typeof(String), typeof(DummyValidationRuleWarning) };
-
-            var typesImplementingIValidationRule = mappingValidationManager.GetValidationRules(types);
-
-            Assert.AreEqual(2, typesImplementingIValidationRule.Count);
-        }
-
-        [Test]
         public void ValidatingRuleSetReturnsValidationResults() {
             var mappingManager = new MappingManager();
             var solrSchemaParser = new SolrSchemaParser();
-            var mappingValidationManager = new MappingValidationManager(mappingManager, solrSchemaParser);
+            var mappingValidationManager = new MappingValidationManager(mappingManager, solrSchemaParser, new[] {new DummyValidationRuleError()});
 
-            var types = new[] { typeof(DummyValidationRuleError)};
-            var validationResults = mappingValidationManager.Validate<SchemaMappingTestDocument>(new XmlDocument(), types).ToList();
-            
+            var validationResults = mappingValidationManager.Validate<SchemaMappingTestDocument>(new XmlDocument()).ToList();
+
             Assert.AreEqual(1, validationResults.Count);
         }
     }
 
-    public class SchemaMappingTestDocument
-    {
+    public class SchemaMappingTestDocument {
         public string ID { get; set; }
         public string Name { get; set; }
         public string Producer { get; set; }
         public string FieldNotSolrSchema { get; set; }
     }
 
-    public class DummyValidationRuleError : IValidationRule
-    {
-        public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager)
-        {
+    public class DummyValidationRuleError : IValidationRule {
+        public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             return new MappingValidationItem[] {new MappingValidationError("Dummy error validation rule")};
         }
     }
 
-    public class DummyValidationRuleWarning : IValidationRule
-    {
-        public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager)
-        {
-            return new MappingValidationItem[] { new MappingValidationError("Dummy warning validation rule") };
+    public class DummyValidationRuleWarning : IValidationRule {
+        public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+            return new MappingValidationItem[] {new MappingValidationError("Dummy warning validation rule")};
         }
     }
 }

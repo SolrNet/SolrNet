@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using MbUnit.Framework;
 using Rhino.Mocks;
@@ -75,11 +76,11 @@ namespace SolrNet.Tests {
             With.Mocks(mocks)
                 .Expecting(() => {
                     Expect.Call(basicServer.GetSchema()).Repeat.Once().Return(new XmlDocument());
-                    Expect.Call(validationManager.Validate<TestDocument>(new XmlDocument(), new Type[] {})).Repeat.Once().IgnoreArguments().Return(new List<MappingValidationItem>());
+                    Expect.Call(validationManager.Validate<TestDocument>(new XmlDocument())).Repeat.Once().IgnoreArguments().Return(new List<MappingValidationItem>());
                 })
                 .Verify(() => {
                     var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
-                    s.Validate(new Type[] {});
+                    s.Validate().ToList();
                 });
         }
 

@@ -23,6 +23,7 @@ using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
+using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 
 namespace Ninject.Integration.SolrNet {
@@ -54,6 +55,12 @@ namespace Ninject.Integration.SolrNet {
                 typeof(CollapseResponseParser<>),
             })
                 Bind(typeof(ISolrResponseParser<>)).To(p);
+            foreach (var p in new[] {
+                typeof(MappedPropertiesShouldBeInSolrSchemaRule),
+                typeof(RequiredFieldsShouldBeMappedRule),
+                typeof(UniqueKeyMatchesMappingRule),
+            })
+                Bind<IValidationRule>().To(p);
             Bind<ISolrConnection>().ToConstant(new SolrConnection(serverURL));
             Bind(typeof (ISolrQueryResultParser<>)).To(typeof (SolrQueryResultParser<>));
             Bind(typeof(ISolrQueryExecuter<>)).To(typeof(SolrQueryExecuter<>));

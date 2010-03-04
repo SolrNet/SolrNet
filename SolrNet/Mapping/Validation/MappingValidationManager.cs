@@ -29,17 +29,18 @@ namespace SolrNet.Mapping.Validation {
     public class MappingValidationManager : IMappingValidationManager {
         private readonly IReadOnlyMappingManager mappingManager;
         private readonly ISolrSchemaParser schemaParser;
-
-        private SolrSchema solrSchema;
+        private readonly IValidationRule[] rules;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MappingValidationManager"/> class.
         /// </summary>
         /// <param name="mappingManager">The mapping manager that is used to map types to and from their Solr representation.</param>
         /// <param name="schemaParser">The schema parser to use to parse the Solr schema XML.</param>
-        public MappingValidationManager(IReadOnlyMappingManager mappingManager, ISolrSchemaParser schemaParser) {
+        /// <param name="rules">Validation rules</param>
+        public MappingValidationManager(IReadOnlyMappingManager mappingManager, ISolrSchemaParser schemaParser, IValidationRule[] rules) {
             this.mappingManager = mappingManager;
             this.schemaParser = schemaParser;
+            this.rules = rules;
         }
 
         /// <summary>
@@ -47,31 +48,15 @@ namespace SolrNet.Mapping.Validation {
         /// </summary>
         /// <typeparam name="T">The type of which the mapping needs to be validated</typeparam>
         /// <param name="solrSchemaXml">The Solr schema XML.</param>
-        /// <param name="validationRules">The validation rules.</param>
         /// <returns>A collection of <see cref="MappingValidationItem"/> objects with the problems found during validation. If Any.</returns>
-        public IEnumerable<MappingValidationItem> Validate<T>(XmlDocument solrSchemaXml, IEnumerable<Type> validationRules) {
-            solrSchema = schemaParser.Parse(solrSchemaXml);
+        public IEnumerable<MappingValidationItem> Validate<T>(XmlDocument solrSchemaXml) {
+            var solrSchema = schemaParser.Parse(solrSchemaXml);
 
-            foreach (Type type in GetValidationRules(validationRules)) {
-                var validationRule = (IValidationRule) Activator.CreateInstance(type);
-                var items = validationRule.Validate<T>(solrSchema, mappingManager);
+            foreach (var rule in rules) {
+                var items = rule.Validate<T>(solrSchema, mappingManager);
                 foreach (var i in items)
                     yield return i;
             }
-        }
-
-        /// <summary>
-        /// Gets the validation rules.
-        /// </summary>
-        /// <param name="types">The types.</param>
-        /// <returns>A collection of types implementing <see cref="IValidationRule"/>.</returns>
-        public ICollection<Type> GetValidationRules(IEnumerable<Type> types) {
-            var result = new List<Type>();
-            foreach (Type type in types)
-                if (typeof (IValidationRule).IsAssignableFrom(type))
-                    result.Add(type);
-
-            return result;
         }
     }
 }

@@ -28,18 +28,15 @@ namespace SolrNet.Mapping.Validation {
     /// </summary>
     public class MappingValidationManager : IMappingValidationManager {
         private readonly IReadOnlyMappingManager mappingManager;
-        private readonly ISolrSchemaParser schemaParser;
         private readonly IValidationRule[] rules;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MappingValidationManager"/> class.
         /// </summary>
         /// <param name="mappingManager">The mapping manager that is used to map types to and from their Solr representation.</param>
-        /// <param name="schemaParser">The schema parser to use to parse the Solr schema XML.</param>
         /// <param name="rules">Validation rules</param>
-        public MappingValidationManager(IReadOnlyMappingManager mappingManager, ISolrSchemaParser schemaParser, IValidationRule[] rules) {
+        public MappingValidationManager(IReadOnlyMappingManager mappingManager, IValidationRule[] rules) {
             this.mappingManager = mappingManager;
-            this.schemaParser = schemaParser;
             this.rules = rules;
         }
 
@@ -47,13 +44,11 @@ namespace SolrNet.Mapping.Validation {
         /// Validates the specified validation rules.
         /// </summary>
         /// <typeparam name="T">The type of which the mapping needs to be validated</typeparam>
-        /// <param name="solrSchemaXml">The Solr schema XML.</param>
+        /// <param name="schema">The Solr schema.</param>
         /// <returns>A collection of <see cref="MappingValidationItem"/> objects with the problems found during validation. If Any.</returns>
-        public IEnumerable<MappingValidationItem> Validate<T>(XmlDocument solrSchemaXml) {
-            var solrSchema = schemaParser.Parse(solrSchemaXml);
-
+        public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema schema) {
             foreach (var rule in rules) {
-                var items = rule.Validate<T>(solrSchema, mappingManager);
+                var items = rule.Validate<T>(schema, mappingManager);
                 foreach (var i in items)
                     yield return i;
             }

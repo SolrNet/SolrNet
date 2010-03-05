@@ -18,7 +18,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
+using SolrNet.Schema;
 
 namespace SolrNet.Mapping.Validation {
 	/// <summary>
@@ -29,8 +29,8 @@ namespace SolrNet.Mapping.Validation {
         /// Validates the specified validation rules.
         /// </summary>
         /// <typeparam name="T">The type of which the mapping needs to be validated</typeparam>
-        /// <param name="solrSchemaXml">The Solr schema XML.</param>
+        /// <param name="schema">The Solr schema.</param>
         /// <returns>A collection of <see cref="MappingValidationItem"/> objects with the problems found during validation. If Any.</returns>
-	    IEnumerable<MappingValidationItem> Validate<T>(XmlDocument solrSchemaXml);
+	    IEnumerable<MappingValidationItem> Validate<T>(SolrSchema schema);
 	}
 }

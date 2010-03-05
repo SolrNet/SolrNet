@@ -31,10 +31,9 @@ namespace SolrNet.Tests {
         [Test]
         public void ValidatingRuleSetReturnsValidationResults() {
             var mappingManager = new MappingManager();
-            var solrSchemaParser = new SolrSchemaParser();
-            var mappingValidationManager = new MappingValidationManager(mappingManager, solrSchemaParser, new[] {new DummyValidationRuleError()});
+            var mappingValidationManager = new MappingValidationManager(mappingManager, new[] {new DummyValidationRuleError()});
 
-            var validationResults = mappingValidationManager.Validate<SchemaMappingTestDocument>(new XmlDocument()).ToList();
+            var validationResults = mappingValidationManager.Validate<SchemaMappingTestDocument>(new SolrSchema()).ToList();
 
             Assert.AreEqual(1, validationResults.Count);
         }

@@ -21,6 +21,7 @@ using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 using SolrNet.Mapping.Validation;
+using SolrNet.Schema;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl {
@@ -32,11 +33,13 @@ namespace SolrNet.Impl {
         private readonly ISolrBasicOperations<T> basicServer;
         private readonly IReadOnlyMappingManager mappingManager;
         private readonly IMappingValidationManager schemaMappingValidationManager;
+        private readonly ISolrSchemaParser schemaParser;
 
-        public SolrServer(ISolrBasicOperations<T> basicServer, IReadOnlyMappingManager mappingManager, IMappingValidationManager schemaMappingValidationManager) {
+        public SolrServer(ISolrBasicOperations<T> basicServer, IReadOnlyMappingManager mappingManager, IMappingValidationManager schemaMappingValidationManager, ISolrSchemaParser schemaParser) {
             this.basicServer = basicServer;
             this.mappingManager = mappingManager;
             this.schemaMappingValidationManager = schemaMappingValidationManager;
+            this.schemaParser = schemaParser;
         }
 
         /// <summary>
@@ -211,7 +214,8 @@ namespace SolrNet.Impl {
         }
 
         public IEnumerable<MappingValidationItem> Validate() {
-            return schemaMappingValidationManager.Validate<T>(GetSchema());
+            var schema = schemaParser.Parse(GetSchema());
+            return schemaMappingValidationManager.Validate<T>(schema);
         }
 
         public string Send(ISolrCommand cmd) {

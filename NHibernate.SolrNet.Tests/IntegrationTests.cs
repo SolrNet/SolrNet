@@ -29,7 +29,7 @@ using SolrNet.Mapping;
 
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]
-    [Ignore("Requires running Solr instance")]
+    //[Ignore("Requires running Solr instance")]
     public class IntegrationTests {
         [Test]
         public void Insert() {

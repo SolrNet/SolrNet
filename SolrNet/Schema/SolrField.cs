@@ -36,5 +36,11 @@ namespace SolrNet.Schema
         /// 	<c>true</c> if this instance is required; otherwise, <c>false</c>.
         /// </value>
         public bool IsRequired { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>The type.</value>
+        public SolrFieldType Type { get; set; }
     }
 }

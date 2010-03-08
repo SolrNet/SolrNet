@@ -44,6 +44,12 @@ namespace SolrNet.Schema {
                 var field = new SolrField();
                 field.Name = fieldNode.Attributes["name"].Value;
                 field.IsRequired = fieldNode.Attributes["required"] != null ? fieldNode.Attributes["required"].Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
+                foreach(var type in result.SolrFieldTypes) {
+                    if (type.Name.Equals(fieldNode.Attributes["type"].Value)) {
+                        field.Type = type;
+                        break;
+                    }
+                }
                 result.SolrFields.Add(field);
             }
 

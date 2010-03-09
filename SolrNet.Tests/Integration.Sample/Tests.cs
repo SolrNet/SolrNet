@@ -28,7 +28,7 @@ namespace SolrNet.Tests.Integration.Sample {
     /// These tests run against the sample schema that comes with solr
     /// </summary>
     [TestFixture]
-    //[Ignore("This test requires an actual solr instance running")]
+    [Category("Integration")]
     public class Tests {
         private const string serverURL = "http://localhost:8983/solr";
 
@@ -341,7 +341,6 @@ namespace SolrNet.Tests.Integration.Sample {
                 {"manu", "pepe"},
                 {"popularity", 6},
             });
-            
         }
 
         public Type TypeOrNull(object o) {

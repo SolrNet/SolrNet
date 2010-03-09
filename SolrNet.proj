@@ -3,75 +3,100 @@
     <Version>0.2.3</Version>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.Community.Tasks</MSBuildCommunityTasksPath>
     <ExtensionTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.ExtensionPack\</ExtensionTasksPath>
+    <EndforwardMSBuildPath>$(MSBuildProjectDirectory)\tools\Endforward.MSBuild-0.1.0</EndforwardMSBuildPath>
     <MergedOutputPath>$(MSBuildProjectDirectory)\merged</MergedOutputPath>
-		<BuildConfig>Debug</BuildConfig>
+    <BuildConfig>Debug</BuildConfig>
   </PropertyGroup>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
   <Import Project="$(ExtensionTasksPath)\MSBuild.ExtensionPack.tasks"/>
-	<UsingTask AssemblyFile="$(MSBuildProjectDirectory)\lib\Gallio.MSBuildTasks.dll" TaskName="Gallio" />
-	<UsingTask AssemblyFile="$(MSBuildProjectDirectory)\tools\ILMerge\ILMerge.MSBuild.Tasks.dll" TaskName="ILMerge.MSBuild.Tasks.ILMerge"/>
-	<Target Name="Clean">
-		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Clean"/>
-		<MSBuild Projects="SampleSolrApp.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Clean"/>
-		<RemoveDir Directories="$(MergedOutputPath)"/>
-		<RemoveDir Directories="$(MSBuildProjectDirectory)\build"/>
-		<RemoveDir Directories="$(MSBuildProjectDirectory)\sample"/>
-		<RemoveDir Directories="$(MSBuildProjectDirectory)\help"/>
-	</Target>
-	<Target Name="Merge">
-		<ItemGroup>
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\$(BuildConfig)\SolrNet.dll" />
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\$(BuildConfig)\SolrNet.DSL.dll" />
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\$(BuildConfig)\HttpWebAdapters.dll" />
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration\bin\$(BuildConfig)\Castle.Facilities.SolrNetIntegration.dll" />
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet\bin\$(BuildConfig)\Ninject.Integration.SolrNet.dll"/>
-    	<MergeAsm Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet\bin\$(BuildConfig)\NHibernate.SolrNet.dll"/>
-		</ItemGroup>
+  <Import Project="$(EndforwardMSBuildPath)\Endforward.MSBuild.Targets"/>
+  <UsingTask AssemblyFile="$(MSBuildProjectDirectory)\lib\Gallio.MSBuildTasks.dll" TaskName="Gallio" />
+  <UsingTask AssemblyFile="$(MSBuildProjectDirectory)\tools\ILMerge\ILMerge.MSBuild.Tasks.dll" TaskName="ILMerge.MSBuild.Tasks.ILMerge"/>
+  <Target Name="Clean">
+    <MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Clean"/>
+    <MSBuild Projects="SampleSolrApp.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Clean"/>
+    <RemoveDir Directories="$(MergedOutputPath)"/>
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\build"/>
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\sample"/>
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\help"/>
+  </Target>
+  <Target Name="Merge">
+    <ItemGroup>
+      <MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\$(BuildConfig)\SolrNet.dll" />
+      <MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\$(BuildConfig)\SolrNet.DSL.dll" />
+      <MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\$(BuildConfig)\HttpWebAdapters.dll" />
+      <MergeAsm Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration\bin\$(BuildConfig)\Castle.Facilities.SolrNetIntegration.dll" />
+      <MergeAsm Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet\bin\$(BuildConfig)\Ninject.Integration.SolrNet.dll"/>
+      <MergeAsm Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet\bin\$(BuildConfig)\NHibernate.SolrNet.dll"/>
+    </ItemGroup>
     <RemoveDir Directories="$(MergedOutputPath)"/>
     <MakeDir Directories="$(MergedOutputPath)" ContinueOnError="true"/>
-		<ILMerge InputAssemblies="@(MergeAsm)" OutputFile="$(MergedOutputPath)\SolrNet.dll" Internalize="true" XmlDocs="true" ExcludeFile="$(MSBuildProjectDirectory)\ilmerge.exclude"/>
-		<ItemGroup>
-			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Castle.*.dll"/>
-			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Microsoft.Practices.ServiceLocation.dll"/>
-			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Ninject.dll"/>
-			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\NHibernate.dll"/>
-			<CopyToMerged Include="$(MSBuildProjectDirectory)\lib\log4net.dll"/>
-		</ItemGroup>
-		<Copy SourceFiles="@(CopyToMerged)" DestinationFolder="$(MergedOutputPath)"/>
-	</Target>
+    <ILMerge InputAssemblies="@(MergeAsm)" OutputFile="$(MergedOutputPath)\SolrNet.dll" Internalize="true" XmlDocs="true" ExcludeFile="$(MSBuildProjectDirectory)\ilmerge.exclude"/>
+    <ItemGroup>
+      <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Castle.*.dll"/>
+      <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Microsoft.Practices.ServiceLocation.dll"/>
+      <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Ninject.dll"/>
+      <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\NHibernate.dll"/>
+      <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\log4net.dll"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(CopyToMerged)" DestinationFolder="$(MergedOutputPath)"/>
+  </Target>
   <Target Name="Build">
-		<MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Rebuild"/>
-	</Target>
-	<Target Name="BuildSample" DependsOnTargets="Build;Merge">
-		<MSBuild Projects="SampleSolrApp.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Rebuild"/>
-	</Target>
-	<Target Name="SetRelease">
-		<PropertyGroup>
-			<BuildConfig>Release</BuildConfig>
-			<BuildConfigProp>Configuration=$(BuildConfig)</BuildConfigProp>
-		</PropertyGroup>
-	</Target>
+    <MSBuild Projects="SolrNet.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Rebuild"/>
+  </Target>
+  <Target Name="BuildSample" DependsOnTargets="Build;Merge">
+    <MSBuild Projects="SampleSolrApp.sln" StopOnFirstFailure="true" Properties="$(BuildConfigProp)" BuildInParallel="true" Targets="Rebuild"/>
+  </Target>
+  <Target Name="SetRelease">
+    <PropertyGroup>
+      <BuildConfig>Release</BuildConfig>
+      <BuildConfigProp>Configuration=$(BuildConfig)</BuildConfigProp>
+    </PropertyGroup>
+  </Target>
   <Target Name="Test" DependsOnTargets="Build;BuildSample">
-  	<ItemGroup>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"/>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration.Tests\bin\Debug\Castle.Facilities.SolrNetIntegration.Tests.dll"/>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet.Tests\bin\Debug\Ninject.Integration.SolrNet.Tests.dll"/>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet.Tests\bin\Debug\NHibernate.SolrNet.Tests.dll"/>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
-  	</ItemGroup>
-    <Gallio IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)">
+    <ItemGroup>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration.Tests\bin\Debug\Castle.Facilities.SolrNetIntegration.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet.Tests\bin\Debug\Ninject.Integration.SolrNet.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet.Tests\bin\Debug\NHibernate.SolrNet.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
+    </ItemGroup>
+    <Gallio IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)" Filter="exclude Category: Integration">
       <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
     </Gallio>
     <Error Text="Tests execution failed" Condition="'$(ExitCode)' != 0" />
-  </Target>	
-	<Target Name="Doc">
+  </Target>
+  <Target Name="IntegrationTests" DependsOnTargets="Build;BuildSample">
+    <ItemGroup>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration.Tests\bin\Debug\Castle.Facilities.SolrNetIntegration.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet.Tests\bin\Debug\Ninject.Integration.SolrNet.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet.Tests\bin\Debug\NHibernate.SolrNet.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
+    </ItemGroup>
+    <PropertyGroup>
+      <SolrPid></SolrPid>
+    </PropertyGroup>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\solr-1.4.0\logs" ContinueOnError="true"/>
+    <SpawnProcess Process="java" Arguments="-jar start.jar" WorkingDirectory="$(MSBuildProjectDirectory)\solr-1.4.0">
+      <Output TaskParameter="Pid" PropertyName="SolrPid" />
+    </SpawnProcess>
+    <Sleep Milliseconds="5000" />
+    <Gallio IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)" Filter="Category: Integration">
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
+    </Gallio>
+    <KillProcess Pid="$(SolrPid)" />
+    <Error Text="Tests execution failed" Condition="'$(ExitCode)' != 0" />
+  </Target>
+  <Target Name="Doc">
     <PropertyGroup>
       <SHFBROOT>$(MSBuildProjectDirectory)\tools\SHFB</SHFBROOT>
       <HHCPath>$(MSBuildProjectDirectory)\tools\HTMLHelpWorkshop</HHCPath>
     </PropertyGroup>
-		<MSBuild Projects="sandcastle.shfbproj" StopOnFirstFailure="true" Properties="SHFBROOT=$(SHFBROOT);HtmlHelp1xCompilerPath=$(HHCPath)"/>
-	</Target>
+    <MSBuild Projects="sandcastle.shfbproj" StopOnFirstFailure="true" Properties="SHFBROOT=$(SHFBROOT);HtmlHelp1xCompilerPath=$(HHCPath)"/>
+  </Target>
   <Target Name="Version">
     <Message Text="Version: $(Version)"/>
     <ItemGroup>
@@ -104,7 +129,7 @@
       AssemblyVersion="$(Version)"
       AssemblyFileVersion="$(Version)"/>
   </Target>
-	<Target Name="ReleasePackage" DependsOnTargets="SetRelease;Clean;Version;Build;Merge;Doc">
+  <Target Name="ReleasePackage" DependsOnTargets="SetRelease;Clean;Version;Build;Merge;Doc">
     <PropertyGroup>
       <BuildOutputPath>build</BuildOutputPath>
     </PropertyGroup>

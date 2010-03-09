@@ -67,7 +67,7 @@
     </Gallio>
     <Error Text="Tests execution failed" Condition="'$(ExitCode)' != 0" />
   </Target>
-  <Target Name="IntegrationTests" DependsOnTargets="Build;BuildSample">
+  <Target Name="IntegrationTests" DependsOnTargets="Build;BuildSample;Test">
     <ItemGroup>
       <TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"/>
       <TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>

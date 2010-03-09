@@ -81,8 +81,9 @@ namespace SolrNet.Tests.Integration.Sample {
         
         [Test]
         public void DeleteByIdAndOrQuery() {
-            Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+
+            solr.Delete(SolrQuery.All).Commit();
 
             #region Delete test data
             var products = new List<Product> 
@@ -153,12 +154,9 @@ namespace SolrNet.Tests.Integration.Sample {
             };
             #endregion
 
-            var productsBeforeAddition = solr.Query(SolrQuery.All);
             solr.Add(products).Commit();
             var productsAfterAddition = solr.Query(SolrQuery.All);
             
-            Assert.AreEqual(productsBeforeAddition.Count + products.Count, productsAfterAddition.Count);
-
             solr.Delete(new string[] { "DEL12345", "DEL12346" }, new SolrQueryByField("features", "feature 3")).Commit();
             var productsAfterDelete = solr.Query(SolrQuery.All);
 

@@ -152,7 +152,9 @@
     <Compile Include="ResponseHeader.cs" />
     <Compile Include="Impl\SolrDocumentSerializer.cs" />
     <Compile Include="Mapping\Validation\IMappingValidationManager.cs" />
+    <Compile Include="Schema\ISolrFieldTypeChecker.cs" />
     <Compile Include="Schema\ISolrSchemaParser.cs" />
+    <Compile Include="Schema\MappingTypesAreCompatibleWithSolrTypesRule.cs" />
     <Compile Include="Schema\SolrCopyField.cs" />
     <Compile Include="Schema\SolrDynamicField.cs" />
     <Compile Include="Schema\SolrField.cs" />
@@ -163,6 +165,7 @@
     <Compile Include="Mapping\Validation\MappingValidationWarning.cs" />
     <Compile Include="Mapping\Validation\MappingValidationManager.cs" />
     <Compile Include="Schema\SolrSchemaParser.cs" />
+    <Compile Include="Schema\StringSolrFieldTypeChecker.cs" />
     <Compile Include="SolrFacetDateQuery.cs" />
     <Compile Include="SolrFacetFieldQuery.cs" />
     <Compile Include="SolrFacetQuery.cs" />

@@ -63,5 +63,18 @@ namespace SolrNet.Schema {
             SolrDynamicFields = new List<SolrDynamicField>();
             SolrCopyFields = new List<SolrCopyField>();
         }
+
+        /// <summary>
+        /// Finds the solr field by name.
+        /// </summary>
+        /// <param name="name">The name of the solr field to find.</param>
+        /// <returns>The solr field if found. Null otherwise.</returns>
+        public SolrField FindSolrFieldByName(string name) {
+            foreach(var field in SolrFields) {
+                if (field.Name.Equals(name))
+                    return field;
+            }
+            return null;
+        }
     }
 }

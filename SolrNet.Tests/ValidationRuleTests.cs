@@ -16,6 +16,8 @@
 
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using MbUnit.Framework;
@@ -128,6 +130,42 @@ namespace SolrNet.Tests {
 
             var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schema).ToList();
             Assert.AreEqual(1, validationResults.Count);
+        }
+
+        [Test]
+        public void StringMappedToIntShouldReturnError() {
+            var mappingTypesCompatibleRule = new MappingTypesAreCompatibleWithSolrTypesRule(new Dictionary<Type, ISolrFieldTypeChecker> {
+                {typeof(string), new StringSolrFieldTypeChecker()}
+            });
+
+            var mgr = new MappingManager();
+            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("FieldNotSolrSchema"), "popularity");
+
+            var schemaManager = new MappingValidationManager(mgr, new[] { mappingTypesCompatibleRule });
+
+            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMappingTypes.xml");
+            var solrSchemaParser = new SolrSchemaParser();
+            var schema = solrSchemaParser.Parse(schemaXmlDocument);
+
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schema).ToList();
+            Assert.AreEqual(1, validationResults.Count);           
+        }
+
+        public void StringMappedToStringShouldNotReturnError()
+        {
+            var mappingTypesCompatibleRule = new MappingTypesAreCompatibleWithSolrTypesRule(new Dictionary<Type, ISolrFieldTypeChecker> {
+                {typeof(string), new StringSolrFieldTypeChecker()}
+            });
+
+            var mgr = new MappingManager();
+            var schemaManager = new MappingValidationManager(mgr, new[] { mappingTypesCompatibleRule });
+
+            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMappingTypes.xml");
+            var solrSchemaParser = new SolrSchemaParser();
+            var schema = solrSchemaParser.Parse(schemaXmlDocument);
+
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schema).ToList();
+            Assert.AreEqual(0, validationResults.Count);
         }
     }
 }

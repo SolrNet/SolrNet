@@ -32,9 +32,16 @@ namespace SolrNet.Tests.Integration.Sample {
     public class Tests {
         private const string serverURL = "http://localhost:8983/solr";
 
+
         [FixtureSetUp]
         public void FixtureSetup() {
             Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL)));
+        }
+
+        [SetUp]
+        public void Setup() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Delete(SolrQuery.All).Commit();
         }
 
         [Test]
@@ -68,6 +75,7 @@ namespace SolrNet.Tests.Integration.Sample {
             solr.Delete(SolrQuery.All)
                 .AddWithBoost(p, 2.2)
                 .Commit();
+
             solr.Query(new SolrQueryByField("name", @"3;Furniture"));
             var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m).Boost(2));
             Assert.AreEqual(1, products.Count);
@@ -78,12 +86,10 @@ namespace SolrNet.Tests.Integration.Sample {
             Assert.AreEqual(150m, products[0].Prices["regular"]);
             Assert.AreEqual(100m, products[0].Prices["afterrebate"]);
         }
-        
+
         [Test]
         public void DeleteByIdAndOrQuery() {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-
-            solr.Delete(SolrQuery.All).Commit();
 
             #region Delete test data
             var products = new List<Product> 
@@ -155,14 +161,14 @@ namespace SolrNet.Tests.Integration.Sample {
             #endregion
 
             solr.Add(products).Commit();
-            var productsAfterAddition = solr.Query(SolrQuery.All);
             
-            solr.Delete(new string[] { "DEL12345", "DEL12346" }, new SolrQueryByField("features", "feature 3")).Commit();
+            solr.Delete(new[] { "DEL12345", "DEL12346" }, new SolrQueryByField("features", "feature 3")).Commit();
             var productsAfterDelete = solr.Query(SolrQuery.All);
 
-            Assert.AreEqual(productsAfterAddition.Count - products.Count, productsAfterDelete.Count);
+            Assert.AreEqual(0, productsAfterDelete.Count);
         }
-
+        
+         
         [Test]
         public void Highlighting() {
             Add_then_query();
@@ -248,6 +254,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void MoreLikeThis() {
+            Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(new SolrQuery("apache"), new QueryOptions {
                 MoreLikeThis = new MoreLikeThisParameters(new[] {"cat", "manu"}) {
@@ -266,6 +273,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void Stats() {
+            Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(SolrQuery.All, new QueryOptions {
                 Rows = 0,
@@ -303,6 +311,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void LocalParams() {
+            Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             var results = solr.Query(new LocalParams {{"q.op", "AND"}} + "solr ipod");
             Assert.AreEqual(0, results.Count);
@@ -310,6 +319,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void LooseMapping() {
+            Add_then_query();
             Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
             var results = solr.Query(SolrQuery.All);
@@ -329,8 +339,9 @@ namespace SolrNet.Tests.Integration.Sample {
                     }
                 }
         }
-
+        
         [Test]
+        [Ignore("Registering the connection in the container causes a side effect.")]
         public void LooseMappingAdd() {
             Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
@@ -340,7 +351,7 @@ namespace SolrNet.Tests.Integration.Sample {
                 {"popularity", 6},
             });
         }
-
+        
         public Type TypeOrNull(object o) {
             if (o == null)
                 return null;

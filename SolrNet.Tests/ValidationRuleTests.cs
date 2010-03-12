@@ -167,5 +167,35 @@ namespace SolrNet.Tests {
             var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schema).ToList();
             Assert.AreEqual(0, validationResults.Count);
         }
+
+        [Test]
+        public void MutivaluedSolrFieldNotMappedToCollectionShouldReturnError() {
+            var mgr = new MappingManager();
+            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("Name"), "name");
+
+            var schemaManager = new MappingValidationManager(mgr, new[] { new MultivaluedMappedToCollectionRule() });
+
+            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMultiValuedName.xml");
+            var solrSchemaParser = new SolrSchemaParser();
+            var schema = solrSchemaParser.Parse(schemaXmlDocument);
+
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schema).ToList();
+            Assert.AreEqual(1, validationResults.Count);
+        }
+
+        [Test]
+        public void MultivaluedSolrFieldMappedToCollectionShouldNotReturnError() {
+            var mgr = new MappingManager();
+                mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("NameCollection"), "name");
+
+            var schemaManager = new MappingValidationManager(mgr, new[] { new MultivaluedMappedToCollectionRule() });
+
+            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMultiValuedName.xml");
+            var solrSchemaParser = new SolrSchemaParser();
+            var schema = solrSchemaParser.Parse(schemaXmlDocument);
+
+            var validationResults = schemaManager.Validate<SchemaMappingTestDocument>(schema).ToList();
+            Assert.AreEqual(0, validationResults.Count);
+        }
     }
 }

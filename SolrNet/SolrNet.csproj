@@ -152,9 +152,16 @@
     <Compile Include="ResponseHeader.cs" />
     <Compile Include="Impl\SolrDocumentSerializer.cs" />
     <Compile Include="Mapping\Validation\IMappingValidationManager.cs" />
-    <Compile Include="Schema\ISolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\BoolSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\DateTimeSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\DecimalSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\DoubleSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\FloatSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\IntSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\ISolrFieldTypeChecker.cs" />
     <Compile Include="Schema\ISolrSchemaParser.cs" />
-    <Compile Include="Schema\MappingTypesAreCompatibleWithSolrTypesRule.cs" />
+    <Compile Include="Mapping\Validation\Rules\LongSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\MappingTypesAreCompatibleWithSolrTypesRule.cs" />
     <Compile Include="Schema\SolrCopyField.cs" />
     <Compile Include="Schema\SolrDynamicField.cs" />
     <Compile Include="Schema\SolrField.cs" />
@@ -165,7 +172,7 @@
     <Compile Include="Mapping\Validation\MappingValidationWarning.cs" />
     <Compile Include="Mapping\Validation\MappingValidationManager.cs" />
     <Compile Include="Schema\SolrSchemaParser.cs" />
-    <Compile Include="Schema\StringSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\StringSolrFieldTypeChecker.cs" />
     <Compile Include="SolrFacetDateQuery.cs" />
     <Compile Include="SolrFacetFieldQuery.cs" />
     <Compile Include="SolrFacetQuery.cs" />

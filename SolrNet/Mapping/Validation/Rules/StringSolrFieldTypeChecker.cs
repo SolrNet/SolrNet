@@ -18,9 +18,9 @@
 
 using System;
 using System.Collections.Generic;
-using SolrNet.Mapping.Validation;
+using SolrNet.Schema;
 
-namespace SolrNet.Schema {
+namespace SolrNet.Mapping.Validation.Rules {
     public class StringSolrFieldTypeChecker : ISolrFieldTypeChecker {
         public StringSolrFieldTypeChecker() {
             SafeTypes = new List<string> {"solr.StrField", "solr.TextField"};

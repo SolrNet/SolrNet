@@ -4,5 +4,6 @@
   </types>
   <fields>
     <field name="name" type="string" indexed="true" stored="false" required="true" multiValued="true" />
+    <field name="author" type="string" indexed="true" stored="false" required="true" multiValued="false" />
   </fields>
 </schema>

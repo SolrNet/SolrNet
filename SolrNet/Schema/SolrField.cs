@@ -38,6 +38,14 @@ namespace SolrNet.Schema
         public bool IsRequired { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is multi valued.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is multi valued; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsMultiValued { get; set; }
+
+        /// <summary>
         /// Gets or sets the type.
         /// </summary>
         /// <value>The type.</value>

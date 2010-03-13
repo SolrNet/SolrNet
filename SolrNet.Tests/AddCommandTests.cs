@@ -51,6 +51,21 @@ namespace SolrNet.Tests {
             public string Desc { get; set; }
         }
 
+        public class TestDocWithFieldBoost
+        {
+            [SolrField(20)]
+            public string SimpleBoost
+            {
+                get { return "simple"; }
+            }
+
+            [SolrField("nameandboost", 20)]
+            public string NameAndBoost
+            {
+                get { return "boost"; }
+            }
+        }
+
 		public delegate string Writer(string ignored, string s);
 
 		[Test]
@@ -89,6 +104,30 @@ namespace SolrNet.Tests {
             }).Verify(() => {
                 var docs = new[] { new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), 2.1) };
                 var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
+                cmd.Execute(conn);
+            });
+        }
+
+        [Test]
+        public void FieldBoost()
+        {
+            var mocks = new MockRepository();
+            var conn = mocks.CreateMock<ISolrConnection>();
+            var docSerializer = new SolrDocumentSerializer<TestDocWithFieldBoost>(new AttributesMappingManager(), new DefaultFieldSerializer());
+            With.Mocks(mocks).Expecting(() =>
+            {
+                conn.Post("/update",
+                          "<add><doc><field name=\"SimpleBoost\" boost=\"20\">simple</field><field name=\"nameandboost\" boost=\"20\">boost</field></doc></add>");
+                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s)
+                {
+                    Console.WriteLine(s);
+                    return null;
+                }));
+                SetupResult.For(conn.ServerURL).Return("");
+            }).Verify(() =>
+            {
+                var docs = new[] { new TestDocWithFieldBoost() };
+                var cmd = new AddCommand<TestDocWithFieldBoost>(docs, docSerializer);
                 cmd.Execute(conn);
             });
         }

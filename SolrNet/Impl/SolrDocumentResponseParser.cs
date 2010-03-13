@@ -57,7 +57,7 @@ namespace SolrNet.Impl {
         /// <param name="node">response xml node</param>
         /// <param name="fields">document fields</param>
         /// <returns>populated document</returns>
-        public T ParseDocument(XmlNode node, ICollection<KeyValuePair<PropertyInfo, string>> fields) {
+        public T ParseDocument(XmlNode node, ICollection<SolrField> fields) {
             var doc = new T();
             foreach (XmlNode field in node.ChildNodes) {
                 string fieldName = field.Attributes["name"].InnerText;

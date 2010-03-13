@@ -219,7 +219,7 @@ namespace SolrNet.Tests {
                         .Repeat.Once()
                         .Return("");
                     Expect.Call(mapper.GetUniqueKey(typeof (TestDocumentWithUniqueKey)))
-                        .Return(new KeyValuePair<PropertyInfo, string>(typeof (TestDocumentWithUniqueKey).GetProperty("id"), "id"));
+                        .Return(new SolrField { Property = typeof(TestDocumentWithUniqueKey).GetProperty("id"), FieldName = "id" });
                 })
                 .Verify(delegate {
                     var ops = new SolrServer<TestDocumentWithUniqueKey>(basicServer, mapper);

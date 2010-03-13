@@ -41,8 +41,8 @@ namespace SolrNet.Impl {
                 docNode.Attributes.Append(boostAttr);
             }
             var fields = mappingManager.GetFields(typeof(T));
-            foreach (var kv in fields) {
-                var p = kv.Key;
+            foreach (var field in fields) {
+                var p = field.Property;
                 var value = p.GetValue(doc, null);
                 if (value == null)
                     continue;
@@ -50,8 +50,16 @@ namespace SolrNet.Impl {
                 foreach (var n in nodes) {
                     var fieldNode = xml.CreateElement("field");
                     var nameAtt = xml.CreateAttribute("name");
-                    nameAtt.InnerText = (kv.Value == "*" ? "" : kv.Value) + n.FieldNameSuffix;
+                    var boostAtt = xml.CreateAttribute("boost");
+                    nameAtt.InnerText = (field.FieldName == "*" ? "" : field.FieldName) + n.FieldNameSuffix;
                     fieldNode.Attributes.Append(nameAtt);
+
+                    if (field.Boost != null && field.Boost > 0)
+                    {
+                        boostAtt.InnerText = field.Boost.ToString();
+                        fieldNode.Attributes.Append(boostAtt);
+                    }
+
                     fieldNode.InnerText = n.FieldValue;
                     docNode.AppendChild(fieldNode);
                 }

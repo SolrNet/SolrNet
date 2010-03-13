@@ -30,12 +30,12 @@ namespace SolrNet.Tests {
 			var fields = m.GetFields(typeof (Entity));
 			Assert.AreEqual(2, fields.Count);
 			foreach (var f in fields) {
-				if (f.Value == "Id")
-					Assert.AreEqual("Id", f.Key.Name);
-				else if (f.Value == "desc")
-					Assert.AreEqual("Description", f.Key.Name);
+				if (f.FieldName == "Id")
+					Assert.AreEqual("Id", f.Property.Name);
+				else if (f.FieldName == "desc")
+					Assert.AreEqual("Description", f.Property.Name);
 				else
-					Assert.Fail("Invalid field '{0}'", f.Value);
+					Assert.Fail("Invalid field '{0}'", f.FieldName);
 			}
 		}
 
@@ -44,9 +44,9 @@ namespace SolrNet.Tests {
 			var m = new AttributesMappingManager();
 			var key = m.GetUniqueKey(typeof (Entity));
 			Assert.IsNotNull(key);
-			Assert.IsNotNull(key.Key);
-			Assert.AreEqual("Id", key.Key.Name);
-			Assert.AreEqual("Id", key.Value);
+			Assert.IsNotNull(key.Property);
+			Assert.AreEqual("Id", key.Property.Name);
+			Assert.AreEqual("Id", key.FieldName);
 		}
 
         [Test]
@@ -54,9 +54,9 @@ namespace SolrNet.Tests {
             var m = new AttributesMappingManager();
             var key = m.GetUniqueKey(typeof(Entity));
             Assert.IsNotNull(key);
-            Assert.IsNotNull(key.Key);
-            Assert.AreEqual("Id", key.Key.Name);
-            Assert.AreEqual("Id", key.Value);
+            Assert.IsNotNull(key.Property);
+            Assert.AreEqual("Id", key.Property.Name);
+            Assert.AreEqual("Id", key.FieldName);
             var fields = m.GetFields(typeof (AnotherEntity));
             Assert.AreEqual(1, fields.Count);
         }
@@ -82,7 +82,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual(3, fields.Count);
             var uniqueKey = m.GetUniqueKey(typeof(InheritedEntity));
             Assert.IsNotNull(uniqueKey);
-            Assert.AreEqual("Id", uniqueKey.Value);
+            Assert.AreEqual("Id", uniqueKey.FieldName);
         }
 
         [Test]

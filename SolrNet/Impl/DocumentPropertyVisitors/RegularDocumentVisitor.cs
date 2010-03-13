@@ -37,13 +37,13 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
 
         public void Visit(object doc, string fieldName, XmlNode field) {
             var allFields = mapper.GetFields(doc.GetType());
-            var thisField = Func.FirstOrDefault(allFields, p => p.Value == fieldName);
-            if (thisField.Key == null)
+            var thisField = Func.FirstOrDefault(allFields, p => p.FieldName == fieldName);
+            if (thisField == null)
                 return;
             if (parser.CanHandleSolrType(field.Name) &&
-                parser.CanHandleType(thisField.Key.PropertyType)) {
-                var v = parser.Parse(field, thisField.Key.PropertyType);
-                thisField.Key.SetValue(doc, v, null);
+                parser.CanHandleType(thisField.Property.PropertyType)) {
+                var v = parser.Parse(field, thisField.Property.PropertyType);
+                thisField.Property.SetValue(doc, v, null);
             }
         }
     }

@@ -44,7 +44,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof (Entity).GetProperty("Id"), "id2");
             var fields = mgr.GetFields(typeof (Entity));
             Assert.AreEqual(1, fields.Count);
-            Assert.AreEqual("id2", fields.First().Value);
+            Assert.AreEqual("id2", fields.First().FieldName);
         }
 
         [Test]
@@ -54,8 +54,8 @@ namespace SolrNet.Tests {
             mgr.Add(property, "id");
             mgr.SetUniqueKey(property);
             var key = mgr.GetUniqueKey(typeof (Entity));
-            Assert.AreEqual(property, key.Key);
-            Assert.AreEqual("id", key.Value);
+            Assert.AreEqual(property, key.Property);
+            Assert.AreEqual("id", key.FieldName);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace SolrNet.Tests {
             mgr.Add(property);
             var fields = mgr.GetFields(typeof (Entity));
             Assert.AreEqual(1, fields.Count);
-            Assert.AreEqual("Id", fields.First().Value);
+            Assert.AreEqual("Id", fields.First().FieldName);
         }
 
         [Test]

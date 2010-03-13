@@ -160,12 +160,12 @@ namespace SolrNet.Impl {
 
         public ISolrOperations<T> Delete(IEnumerable<T> docs) {
             basicServer.Delete(Func.Select(docs,
-                                           d => Convert.ToString(mappingManager.GetUniqueKey(typeof (T)).Key.GetValue(d, null))), null);
+                                           d => Convert.ToString(mappingManager.GetUniqueKey(typeof (T)).Property.GetValue(d, null))), null);
             return this;
         }
 
         private object GetId(T doc) {
-            var prop = mappingManager.GetUniqueKey(typeof(T)).Key;
+            var prop = mappingManager.GetUniqueKey(typeof(T)).Property;
             var id = prop.GetValue(doc, null);
             if (id == null)
                 throw new NoUniqueKeyException(typeof(T));

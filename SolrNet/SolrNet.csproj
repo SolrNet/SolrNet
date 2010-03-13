@@ -151,6 +151,7 @@
     <Compile Include="SolrFacetQuery.cs" />
     <Compile Include="Impl\SolrQueryExecuter.cs" />
     <Compile Include="Attributes\SolrFieldAttribute.cs" />
+    <Compile Include="SolrField.cs" />
     <Compile Include="SolrHasValueQuery.cs" />
     <Compile Include="SolrMultipleCriteriaQuery.cs" />
     <Compile Include="SolrNotQuery.cs" />

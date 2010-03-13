@@ -51,20 +51,25 @@
 			<BuildConfigProp>Configuration=$(BuildConfig)</BuildConfigProp>
 		</PropertyGroup>
 	</Target>
+	<ItemGroup>
+		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"/>
+		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>
+		<TestAssemblies Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration.Tests\bin\Debug\Castle.Facilities.SolrNetIntegration.Tests.dll"/>
+		<TestAssemblies Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet.Tests\bin\Debug\Ninject.Integration.SolrNet.Tests.dll"/>
+		<TestAssemblies Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet.Tests\bin\Debug\NHibernate.SolrNet.Tests.dll"/>
+		<TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
+	</ItemGroup>
   <Target Name="Test" DependsOnTargets="Build;BuildSample">
-  	<ItemGroup>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"/>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration.Tests\bin\Debug\Castle.Facilities.SolrNetIntegration.Tests.dll"/>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet.Tests\bin\Debug\Ninject.Integration.SolrNet.Tests.dll"/>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet.Tests\bin\Debug\NHibernate.SolrNet.Tests.dll"/>
-  		<TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
-  	</ItemGroup>
     <Gallio IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)">
       <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
     </Gallio>
     <Error Text="Tests execution failed" Condition="'$(ExitCode)' != 0" />
   </Target>	
+  <Target Name="Coverage">
+    <Gallio RunnerType="NCover" IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)">
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
+    </Gallio>
+  </Target>
 	<Target Name="Doc">
     <PropertyGroup>
       <SHFBROOT>$(MSBuildProjectDirectory)\tools\SHFB</SHFBROOT>

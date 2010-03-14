@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,7 @@ using SampleSolrApp.Models;
 using SampleSolrApp.Models.Binders;
 using SolrNet;
 using SolrNet.Commands.Parameters;
+using SolrNet.Exceptions;
 using SolrNet.Impl;
 
 namespace SampleSolrApp {
@@ -45,13 +47,14 @@ namespace SampleSolrApp {
                 );
         }
 
+        private static readonly string solrURL = ConfigurationManager.AppSettings["solrUrl"];
+
         protected void Application_Start() {
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Server.MapPath("/"), "log4net.config")));
 
             RegisterRoutes(RouteTable.Routes);
-            var serverURL = "http://localhost:8983/solr";
 
-            var connection = new SolrConnection(serverURL);
+            var connection = new SolrConnection(solrURL);
             var loggingConnection = new LoggingConnection(connection);
             Startup.Init<Product>(loggingConnection);
 
@@ -65,14 +68,18 @@ namespace SampleSolrApp {
         /// Adds some sample documents to Solr
         /// </summary>
         private void AddInitialDocuments() {
-            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-            solr.Delete(SolrQuery.All);
-            var connection = ServiceLocator.Current.GetInstance<ISolrConnection>();
-            foreach (var file in Directory.GetFiles(Server.MapPath("/exampledocs"), "*.xml")) {
-                connection.Post("/update", File.ReadAllText(file, Encoding.UTF8));
+            try {
+                var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+                solr.Delete(SolrQuery.All);
+                var connection = ServiceLocator.Current.GetInstance<ISolrConnection>();
+                foreach (var file in Directory.GetFiles(Server.MapPath("/exampledocs"), "*.xml")) {
+                    connection.Post("/update", File.ReadAllText(file, Encoding.UTF8));
+                }
+                solr.Commit();
+                solr.BuildSpellCheckDictionary();                
+            } catch (SolrConnectionException) {
+                throw new Exception(string.Format("Couldn't connect to Solr. Please make sure that Solr is running on '{0}' or change the address in your web.config, then restart the application.", solrURL));
             }
-            solr.Commit();
-            solr.BuildSpellCheckDictionary();
         }
 
         /// <summary>

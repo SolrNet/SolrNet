@@ -191,9 +191,19 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\tools\curl.exe" DestinationFolder="$(BuildOutputPath)\tools" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\license.txt" DestinationFolder="$(BuildOutputPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\runsample.bat" DestinationFolder="$(BuildOutputPath)" />
-    <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\solr-1.4.0" LocalPath="$(BuildOutputPath)\solr-1.4.0"/>
-    <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\tools\Cassini" LocalPath="$(BuildOutputPath)\tools\Cassini"/>
-    <SvnExport RepositoryPath="$(MSBuildProjectDirectory)\SampleSolrApp" LocalPath="$(BuildOutputPath)\SampleSolrApp"/>
+    <ItemGroup>
+    	<SolrFiles Include="$(MSBuildProjectDirectory)\solr-1.4.0\**\*"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(SolrFiles)" DestinationFiles="@(SolrFiles->'$(BuildOutputPath)\solr-1.4.0%(Identity)')"/>
+    <ItemGroup>
+    	<CassiniFiles Include="$(MSBuildProjectDirectory)\tools\Cassini\**\*"/>
+    </ItemGroup>
+    <ItemGroup>
+    	<SampleAppFiles Include="$(MSBuildProjectDirectory)\SampleSolrApp\**\*"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(SolrFiles)" DestinationFiles="@(SolrFiles->'$(BuildOutputPath)\solr-1.4.0%(Identity)')"/>
+    <Copy SourceFiles="@(CassiniFiles)" DestinationFiles="@(CassiniFiles->'$(BuildOutputPath)\tools\Cassini%(Identity)')"/>
+    <Copy SourceFiles="@(SampleAppFiles)" DestinationFiles="@(SampleAppFiles->'$(BuildOutputPath)\SampleSolrApp%(Identity)')"/>
     <MakeDir Directories="$(BuildOutputPath)\SampleSolrApp\lib" ContinueOnError="true"/>
     <ItemGroup>
       <SampleSolrAppBin Include="$(MSBuildProjectDirectory)\SampleSolrApp\bin\*.dll"/>

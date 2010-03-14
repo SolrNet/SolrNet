@@ -40,6 +40,6 @@ namespace SolrNet.Attributes {
         /// <summary>
         /// Adds an index time boost to a field.
         /// </summary>
-        public int Boost { get; set; }
+        public float Boost { get; set; }
 	}
 }

@@ -18,6 +18,6 @@ namespace SolrNet {
         /// <summary>
         /// Optional index-time field boosting
         /// </summary>
-        public int? Boost { get; set; }
+        public float? Boost { get; set; }
     }
 }

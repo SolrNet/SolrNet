@@ -42,7 +42,7 @@ namespace SolrNet.Mapping {
             Add(property, fieldName, null);
         }
 
-        public void Add(PropertyInfo property, string fieldName, int? boost) {
+        public void Add(PropertyInfo property, string fieldName, float? boost) {
             if (property == null)
                 throw new ArgumentNullException("property");
             if (fieldName == null)

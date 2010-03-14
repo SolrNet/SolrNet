@@ -40,7 +40,7 @@ namespace SolrNet.Mapping {
         /// <param name="property">Document type property</param>
         /// <param name="fieldName">Solr field name</param>
         /// <param name="boost">Index-time boosting</param>
-        void Add(PropertyInfo property, string fieldName, int? boost);
+        void Add(PropertyInfo property, string fieldName, float? boost);
 
         /// <summary>
         /// Sets unique key for a document type

@@ -71,7 +71,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void Execute() {
 			var mocks = new MockRepository();
-			var conn = mocks.CreateMock<ISolrConnection>();
+			var conn = mocks.StrictMock<ISolrConnection>();
 		    var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager(), new DefaultFieldSerializer());
 			With.Mocks(mocks).Expecting(() => {
 			    conn.Post("/update",
@@ -80,7 +80,7 @@ namespace SolrNet.Tests {
 			        Console.WriteLine(s);
 			        return null;
 			    }));
-			    SetupResult.For(conn.ServerURL).Return("");
+                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
 			}).Verify(() => {
 			    var docs = new[] {new SampleDoc()};
 			    var cmd = new AddCommand<SampleDoc>(docs, docSerializer);
@@ -91,7 +91,7 @@ namespace SolrNet.Tests {
         [Test]
         public void DocumentBoost() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
             With.Mocks(mocks).Expecting(() => {
                 conn.Post("/update",
@@ -100,7 +100,7 @@ namespace SolrNet.Tests {
                     Console.WriteLine(s);
                     return null;
                 }));
-                SetupResult.For(conn.ServerURL).Return("");
+                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
             }).Verify(() => {
                 var docs = new[] { new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), 2.1) };
                 var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
@@ -112,7 +112,7 @@ namespace SolrNet.Tests {
         public void FieldBoost()
         {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             var docSerializer = new SolrDocumentSerializer<TestDocWithFieldBoost>(new AttributesMappingManager(), new DefaultFieldSerializer());
             With.Mocks(mocks).Expecting(() =>
             {
@@ -123,7 +123,7 @@ namespace SolrNet.Tests {
                     Console.WriteLine(s);
                     return null;
                 }));
-                SetupResult.For(conn.ServerURL).Return("");
+                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
             }).Verify(() =>
             {
                 var docs = new[] { new TestDocWithFieldBoost() };
@@ -135,7 +135,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void ShouldntAlterOriginalServerUrl() {
 			var mocks = new MockRepository();
-			var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager(), new DefaultFieldSerializer());
 			var cmd = new AddCommand<SampleDoc>(new[] {new SampleDoc()}, docSerializer);
 			cmd.Execute(conn);
@@ -144,7 +144,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void SupportsDocumentWithStringCollection() {
 			var mocks = new MockRepository();
-			var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             var docSerializer = new SolrDocumentSerializer<TestDocWithCollections>(new AttributesMappingManager(), new DefaultFieldSerializer());
 			With.Mocks(mocks).Expecting(() => {
 			    conn.Post("/update",
@@ -153,7 +153,7 @@ namespace SolrNet.Tests {
 			        Console.WriteLine(s);
 			        return null;
 			    }));
-			    SetupResult.For(conn.ServerURL).Return("");
+                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
 			}).Verify(() => {
 			    var docs = new[] {new TestDocWithCollections()};
 			    var cmd = new AddCommand<TestDocWithCollections>(docs, docSerializer);
@@ -178,7 +178,7 @@ namespace SolrNet.Tests {
         [Test]
         public void RemoveControlCharacters() {
             var mocks = new MockRepository();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocWithString>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocWithString>>();
             var docs = new[] { new TestDocWithString() };
             var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
             var xml = cmd.RemoveControlCharacters("control &#x7; &#x1; &#x9; &#x1F; &#xFFFE;");

@@ -1,0 +1,9 @@
+﻿<schema name="example" version="1.2">
+  <types>
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+  </types>
+  <fields>
+    <field name="name" type="string" indexed="true" stored="false" required="true" multiValued="true" />
+    <field name="author" type="string" indexed="true" stored="false" required="true" multiValued="false" />
+  </fields>
+</schema>

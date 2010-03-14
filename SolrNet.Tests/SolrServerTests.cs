@@ -14,10 +14,16 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Attributes;
 using SolrNet.Impl;
+using SolrNet.Mapping.Validation;
+using SolrNet.Schema;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -27,10 +33,11 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocument>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.CreateMock<IMappingValidationManager>();
             With.Mocks(mocks)
                 .Expecting(basicServer.Ping)
                 .Verify(() => {
-                    var s = new SolrServer<TestDocument>(basicServer, mapper);
+                    var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager, null);
                     s.Ping();
                 });
         }
@@ -40,12 +47,44 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocument>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.CreateMock<IMappingValidationManager>();
             With.Mocks(mocks)
                 .Expecting(() => basicServer.Commit(null))
                 .Verify(() => {
-                    var s = new SolrServer<TestDocument>(basicServer, mapper);
+                    var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager, null);
                     s.Commit();
                 });            
+        }
+
+        [Test]
+        public void GetSchema() {
+            var mocks = new MockRepository();
+            var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.CreateMock<IMappingValidationManager>();
+            With.Mocks(mocks).Expecting(() => Expect.Call(basicServer.GetSchema()).Repeat.Once().Return(new XmlDocument())).Verify(() => {
+                var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager, null);
+                s.GetSchema();
+            });
+        }
+
+        [Test]
+        public void Validate() {
+            var mocks = new MockRepository();
+            var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.CreateMock<IMappingValidationManager>();
+            var parser = mocks.CreateMock<ISolrSchemaParser>();
+            With.Mocks(mocks)
+                .Expecting(() => {
+                    Expect.Call(basicServer.GetSchema()).Repeat.Once().Return(new XmlDocument());
+                    Expect.Call(parser.Parse(null)).IgnoreArguments().Return(null);
+                    Expect.Call(validationManager.Validate<TestDocument>(new SolrSchema())).Repeat.Once().IgnoreArguments().Return(new List<MappingValidationItem>());
+                })
+                .Verify(() => {
+                    var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager, parser);
+                    s.Validate().ToList();
+                });
         }
 
         public class TestDocument {

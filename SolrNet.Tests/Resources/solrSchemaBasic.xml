@@ -1,0 +1,15 @@
+﻿<schema name="example" version="1.2">
+  <types>
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
+  </types>
+  <fields>
+    <field name="id" type="string" indexed="true" stored="true" required="true" />
+    <field name="name" type="string" indexed="true" stored="false" required="true" />
+    <field name="nameSort" type="string" indexed="true" stored="false"/>
+    <field name="features" type="string" indexed="true" stored="false" multiValued="true"/>
+    <dynamicField name="*_s"  type="string"  indexed="true"  stored="true"/>
+  </fields>
+  <uniqueKey>id</uniqueKey>
+  <copyField source="name" dest="nameSort"/>
+</schema>

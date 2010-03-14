@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
+    <Compile Include="Commands\GetSchemaCommand.cs" />
     <Compile Include="Commands\Parameters\CollapseParameters.cs" />
     <Compile Include="Commands\Parameters\DeleteByIdAndOrQueryParam.cs" />
     <Compile Include="Commands\Parameters\FacetParameters.cs" />
@@ -142,10 +143,37 @@
     <Compile Include="ISolrReadOnlyOperations.cs" />
     <Compile Include="Mapping\MappingManager.cs" />
     <Compile Include="Mapping\MemoizingMappingManager.cs" />
+    <Compile Include="Mapping\Validation\Rules\IValidationRule.cs" />
+    <Compile Include="Mapping\Validation\Rules\MappedPropertiesIsInSolrSchemaRule.cs" />
+    <Compile Include="Mapping\Validation\Rules\MultivaluedMappedToCollectionRule.cs" />
+    <Compile Include="Mapping\Validation\Rules\RequiredFieldsAreMappedRule.cs" />
+    <Compile Include="Mapping\Validation\Rules\UniqueKeyMatchesMappingRule.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="RandomSortOrder.cs" />
     <Compile Include="ResponseHeader.cs" />
     <Compile Include="Impl\SolrDocumentSerializer.cs" />
+    <Compile Include="Mapping\Validation\IMappingValidationManager.cs" />
+    <Compile Include="Mapping\Validation\Rules\BoolSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\DateTimeSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\DecimalSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\DoubleSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\FloatSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\IntSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\ISolrFieldTypeChecker.cs" />
+    <Compile Include="Schema\ISolrSchemaParser.cs" />
+    <Compile Include="Mapping\Validation\Rules\LongSolrFieldTypeChecker.cs" />
+    <Compile Include="Mapping\Validation\Rules\MappingTypesAreCompatibleWithSolrTypesRule.cs" />
+    <Compile Include="Schema\SolrCopyField.cs" />
+    <Compile Include="Schema\SolrDynamicField.cs" />
+    <Compile Include="Schema\SolrField.cs" />
+    <Compile Include="Schema\SolrFieldType.cs" />
+    <Compile Include="Schema\SolrSchema.cs" />
+    <Compile Include="Mapping\Validation\MappingValidationError.cs" />
+    <Compile Include="Mapping\Validation\MappingValidationItem.cs" />
+    <Compile Include="Mapping\Validation\MappingValidationWarning.cs" />
+    <Compile Include="Mapping\Validation\MappingValidationManager.cs" />
+    <Compile Include="Schema\SolrSchemaParser.cs" />
+    <Compile Include="Mapping\Validation\Rules\StringSolrFieldTypeChecker.cs" />
     <Compile Include="SolrFacetDateQuery.cs" />
     <Compile Include="SolrFacetFieldQuery.cs" />
     <Compile Include="SolrFacetQuery.cs" />

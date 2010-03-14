@@ -26,6 +26,9 @@ using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
+using SolrNet.Mapping.Validation;
+using SolrNet.Mapping.Validation.Rules;
+using SolrNet.Schema;
 using SolrNet.Utils;
 
 namespace Castle.Facilities.SolrNetIntegration {
@@ -87,6 +90,12 @@ namespace Castle.Facilities.SolrNetIntegration {
             }) {
                 Kernel.Register(Component.For(typeof (ISolrResponseParser<>)).ImplementedBy(parserType));
             }
+            foreach (var validationRule in new[] {
+                typeof(MappedPropertiesIsInSolrSchemaRule),
+                typeof(RequiredFieldsAreMappedRule),
+                typeof(UniqueKeyMatchesMappingRule),
+            })
+                Kernel.Register(Component.For<IValidationRule>().ImplementedBy(validationRule));
             Kernel.Resolver.AddSubResolver(new StrictArrayResolver(Kernel));
             Kernel.Register(Component.For(typeof (ISolrQueryResultParser<>))
                                 .ImplementedBy(typeof (SolrQueryResultParser<>)));
@@ -111,6 +120,9 @@ namespace Castle.Facilities.SolrNetIntegration {
 
             Kernel.Register(Component.For<ISolrFieldSerializer>().ImplementedBy<DefaultFieldSerializer>());
             Kernel.Register(Component.For<ISolrDocumentPropertyVisitor>().ImplementedBy<DefaultDocumentVisitor>());
+
+            Kernel.Register(Component.For<ISolrSchemaParser>().ImplementedBy<SolrSchemaParser>());
+            Kernel.Register(Component.For<IMappingValidationManager>().ImplementedBy<MappingValidationManager>());
 
             AddCoresFromConfig();
             foreach (var core in cores) {

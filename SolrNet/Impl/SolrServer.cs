@@ -16,9 +16,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
+using SolrNet.Mapping.Validation;
+using SolrNet.Schema;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl {
@@ -29,10 +32,14 @@ namespace SolrNet.Impl {
     public class SolrServer<T> : ISolrOperations<T> where T : new() {
         private readonly ISolrBasicOperations<T> basicServer;
         private readonly IReadOnlyMappingManager mappingManager;
+        private readonly IMappingValidationManager schemaMappingValidationManager;
+        private readonly ISolrSchemaParser schemaParser;
 
-        public SolrServer(ISolrBasicOperations<T> basicServer, IReadOnlyMappingManager mappingManager) {
+        public SolrServer(ISolrBasicOperations<T> basicServer, IReadOnlyMappingManager mappingManager, IMappingValidationManager schemaMappingValidationManager, ISolrSchemaParser schemaParser) {
             this.basicServer = basicServer;
             this.mappingManager = mappingManager;
+            this.schemaMappingValidationManager = schemaMappingValidationManager;
+            this.schemaParser = schemaParser;
         }
 
         /// <summary>
@@ -143,10 +150,6 @@ namespace SolrNet.Impl {
             return this;
         }
 
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
-            return basicServer.AddWithBoost(docs);
-        }
-
         public ISolrOperations<T> Delete(IEnumerable<string> ids) {
             basicServer.Delete(ids, null);
             return this;
@@ -183,11 +186,6 @@ namespace SolrNet.Impl {
             return this;
         }
 
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q){
-            basicServer.Delete(ids, q);
-            return this;
-        }
-
         ISolrOperations<T> ISolrOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q) {
             basicServer.Delete(ids, q);
             return this;
@@ -211,8 +209,13 @@ namespace SolrNet.Impl {
             return this;
         }
 
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.Add(IEnumerable<T> docs) {
-            return basicServer.Add(docs);
+        public XmlDocument GetSchema() {
+            return basicServer.GetSchema();
+        }
+
+        public IEnumerable<MappingValidationItem> Validate() {
+            var schema = schemaParser.Parse(GetSchema());
+            return schemaMappingValidationManager.Validate<T>(schema);
         }
 
         public string Send(ISolrCommand cmd) {

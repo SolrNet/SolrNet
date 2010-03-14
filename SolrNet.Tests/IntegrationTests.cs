@@ -17,6 +17,7 @@
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Mapping;
+using SolrNet.Mapping.Validation;
 using SolrNet.Utils;
 
 namespace SolrNet.Tests {
@@ -48,6 +49,13 @@ namespace SolrNet.Tests {
             Startup.Init<Document>("http://localhost");
             var mapperFromFactory = ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>();
             Assert.AreSame(mapper, mapperFromFactory);
+        }
+
+        [Test]
+        public void MappingValidationManager() {
+            Startup.Container.Clear();
+            Startup.InitContainer();
+            var manager = Startup.Container.GetInstance<IMappingValidationManager>();
         }
 
         public class Document {}

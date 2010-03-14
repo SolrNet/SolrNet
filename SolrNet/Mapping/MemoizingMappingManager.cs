@@ -24,15 +24,15 @@ namespace SolrNet.Mapping {
     /// Memoizing decorator for a mapping manager
     /// </summary>
     public class MemoizingMappingManager : IReadOnlyMappingManager {
-        private readonly Converter<Type, ICollection<SolrField>> memoGetFields;
-        private readonly Converter<Type, SolrField> memoGetUniqueKey;
+        private readonly Converter<Type, ICollection<SolrFieldModel>> memoGetFields;
+        private readonly Converter<Type, SolrFieldModel> memoGetUniqueKey;
         private readonly IReadOnlyMappingManager mapper;
         private ICollection<Type> registeredTypes;
         private readonly object registeredTypesLock = new object();
 
         public MemoizingMappingManager(IReadOnlyMappingManager mapper) {
-            memoGetFields = Memoizer.Memoize<Type, ICollection<SolrField>>(mapper.GetFields);
-            memoGetUniqueKey = Memoizer.Memoize<Type, SolrField>(mapper.GetUniqueKey);
+            memoGetFields = Memoizer.Memoize<Type, ICollection<SolrFieldModel>>(mapper.GetFields);
+            memoGetUniqueKey = Memoizer.Memoize<Type, SolrFieldModel>(mapper.GetUniqueKey);
             this.mapper = mapper;
         }
 
@@ -41,11 +41,11 @@ namespace SolrNet.Mapping {
         /// </summary>
         /// <param name="type"></param>
         /// <returns>Null if <paramref name="type"/> is not mapped</returns>
-        public ICollection<SolrField> GetFields(Type type) {
+        public ICollection<SolrFieldModel> GetFields(Type type) {
             return memoGetFields(type);
         }
 
-        public SolrField GetUniqueKey(Type type) {
+        public SolrFieldModel GetUniqueKey(Type type) {
             return memoGetUniqueKey(type);
         }
 

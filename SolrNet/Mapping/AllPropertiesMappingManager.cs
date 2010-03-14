@@ -30,19 +30,19 @@ namespace SolrNet.Mapping
     {
         private readonly IDictionary<Type, PropertyInfo> uniqueKeys = new Dictionary<Type, PropertyInfo>();
 
-        public ICollection<SolrField> GetFields(Type type)
+        public ICollection<SolrFieldModel> GetFields(Type type)
         {
             var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            var fldProps = Func.Select(props, prop => new SolrField { Property = prop, FieldName = prop.Name });
-            return new List<SolrField>(fldProps);
+            var fldProps = Func.Select(props, prop => new SolrFieldModel { Property = prop, FieldName = prop.Name });
+            return new List<SolrFieldModel>(fldProps);
         }
 
-        public SolrField GetUniqueKey(Type type)
+        public SolrFieldModel GetUniqueKey(Type type)
         {
             try
             {
                 var propertyInfo = uniqueKeys[type];
-                return new SolrField { Property = propertyInfo, FieldName = propertyInfo.Name };
+                return new SolrFieldModel { Property = propertyInfo, FieldName = propertyInfo.Name };
             }
             catch (KeyNotFoundException)
             {

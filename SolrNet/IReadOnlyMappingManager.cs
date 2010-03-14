@@ -30,7 +30,7 @@ namespace SolrNet {
         /// <param name="type"></param>
         /// <returns>Empty collection if <paramref name="type"/> is not mapped</returns>
         //ICollection<KeyValuePair<PropertyInfo, string>> GetFields(Type type);
-        ICollection<SolrField> GetFields(Type type);
+        ICollection<SolrFieldModel> GetFields(Type type);
 
         /// <summary>
         /// Gets unique key for the type
@@ -38,7 +38,7 @@ namespace SolrNet {
         /// <exception cref="NoUniqueKeyException">Thrown when <paramref name="type"/> has no unique key defined</exception>
         /// <param name="type"></param>
         /// <returns></returns>
-        SolrField GetUniqueKey(Type type);
+        SolrFieldModel GetUniqueKey(Type type);
 
         ICollection<Type> GetRegisteredTypes();
     }

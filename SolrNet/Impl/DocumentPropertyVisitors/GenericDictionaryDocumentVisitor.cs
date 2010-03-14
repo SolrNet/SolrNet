@@ -73,7 +73,7 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
             return converter.ConvertFrom(s);
         }
 
-        public SolrField GetThisField(Type t, string fieldName) {
+        public SolrFieldModel GetThisField(Type t, string fieldName) {
             var allFields = mapper.GetFields(t);
             var fieldsICanHandle = Func.Filter(allFields, f => CanHandleType(f.Property.PropertyType));
             var matchingFields = Func.Filter(fieldsICanHandle, f => f.FieldName == "*" || fieldName.StartsWith(f.FieldName));

@@ -24,7 +24,7 @@ namespace SolrNet.Mapping {
     /// Manual mapping manager
     /// </summary>
     public class MappingManager : IMappingManager {
-        private readonly IDictionary<Type, List<SolrField>> mappings = new Dictionary<Type, List<SolrField>>();
+        private readonly IDictionary<Type, List<SolrFieldModel>> mappings = new Dictionary<Type, List<SolrFieldModel>>();
         private readonly IDictionary<Type, PropertyInfo> uniqueKeys = new Dictionary<Type, PropertyInfo>();
 
         public void Add(PropertyInfo property) {
@@ -48,13 +48,13 @@ namespace SolrNet.Mapping {
             if (fieldName == null)
                 throw new ArgumentNullException("fieldName");
 
-            var fld = new SolrField {Property = property, FieldName = fieldName, Boost = boost};
+            var fld = new SolrFieldModel {Property = property, FieldName = fieldName, Boost = boost};
 
             var t = property.ReflectedType;
 
             if (!mappings.ContainsKey(t))
             {
-                mappings[t] = new List<SolrField>(); // new List<KeyValuePair<PropertyInfo, string>>();
+                mappings[t] = new List<SolrFieldModel>(); // new List<KeyValuePair<PropertyInfo, string>>();
             }
 
             var idx = mappings[t].FindIndex(f => f.Property == fld.Property);
@@ -73,11 +73,11 @@ namespace SolrNet.Mapping {
         /// </summary>
         /// <param name="type">Document type</param>
         /// <returns>Null if <paramref name="type"/> is not mapped</returns>
-        public ICollection<SolrField> GetFields(Type type) {
+        public ICollection<SolrFieldModel> GetFields(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
             if (!mappings.ContainsKey(type))
-                return new SolrField[0];// KeyValuePair<PropertyInfo, string>[0];
+                return new SolrFieldModel[0];// KeyValuePair<PropertyInfo, string>[0];
             return mappings[type];
         }
 
@@ -90,7 +90,7 @@ namespace SolrNet.Mapping {
             uniqueKeys[t] = property;
         }
 
-        public SolrField GetUniqueKey(Type type) {
+        public SolrFieldModel GetUniqueKey(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
             var prop = uniqueKeys[type];

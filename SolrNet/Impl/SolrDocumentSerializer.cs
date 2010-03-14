@@ -50,12 +50,11 @@ namespace SolrNet.Impl {
                 foreach (var n in nodes) {
                     var fieldNode = xml.CreateElement("field");
                     var nameAtt = xml.CreateAttribute("name");
-                    var boostAtt = xml.CreateAttribute("boost");
                     nameAtt.InnerText = (field.FieldName == "*" ? "" : field.FieldName) + n.FieldNameSuffix;
                     fieldNode.Attributes.Append(nameAtt);
 
-                    if (field.Boost != null && field.Boost > 0)
-                    {
+                    if (field.Boost != null && field.Boost > 0) {
+                        var boostAtt = xml.CreateAttribute("boost");
                         boostAtt.InnerText = field.Boost.ToString();
                         fieldNode.Attributes.Append(boostAtt);
                     }

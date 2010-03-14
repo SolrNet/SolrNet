@@ -54,7 +54,7 @@ namespace SolrNet.Mapping {
 
             if (!mappings.ContainsKey(t))
             {
-                mappings[t] = new List<SolrFieldModel>(); // new List<KeyValuePair<PropertyInfo, string>>();
+                mappings[t] = new List<SolrFieldModel>();
             }
 
             var idx = mappings[t].FindIndex(f => f.Property == fld.Property);

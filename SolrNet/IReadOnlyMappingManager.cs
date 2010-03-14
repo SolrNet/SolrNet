@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using SolrNet.Exceptions;
 
 namespace SolrNet {
@@ -29,7 +28,6 @@ namespace SolrNet {
         /// </summary>
         /// <param name="type"></param>
         /// <returns>Empty collection if <paramref name="type"/> is not mapped</returns>
-        //ICollection<KeyValuePair<PropertyInfo, string>> GetFields(Type type);
         ICollection<SolrFieldModel> GetFields(Type type);
 
         /// <summary>

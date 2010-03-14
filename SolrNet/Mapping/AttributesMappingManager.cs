@@ -37,7 +37,11 @@ namespace SolrNet.Mapping {
         {
             var propsAttrs = GetPropertiesWithAttribute<SolrFieldAttribute>(type);
 
-            var fields = Func.Select(propsAttrs, kv => new SolrFieldModel { Property = kv.Key, FieldName = kv.Value[0].FieldName ?? kv.Key.Name, Boost = kv.Value[0].Boost });
+            var fields = Func.Select(propsAttrs, kv => new SolrFieldModel {
+                Property = kv.Key, 
+                FieldName = kv.Value[0].FieldName ?? kv.Key.Name, 
+                Boost = kv.Value[0].Boost
+            });
             return new List<SolrFieldModel>(fields);
         }
 
@@ -48,8 +52,10 @@ namespace SolrNet.Mapping {
         public SolrFieldModel GetUniqueKey(Type type) {
             var propsAttrs = GetPropertiesWithAttribute<SolrUniqueKeyAttribute>(type);
             var fields = Func.Select(propsAttrs,
-                                     kv =>
-                                     new SolrFieldModel {Property = kv.Key, FieldName = kv.Value[0].FieldName ?? kv.Key.Name});
+                                     kv => new SolrFieldModel {
+                                         Property = kv.Key, 
+                                         FieldName = kv.Value[0].FieldName ?? kv.Key.Name
+                                     });
             try {
                 return Func.First(fields);
             } catch (InvalidOperationException) {

@@ -32,26 +32,6 @@ namespace SolrNet.Attributes {
 			FieldName = fieldName;
 		}
 
-        ///<summary>
-        /// Adds an index time boost to a field.
-        ///</summary>
-        ///<param name="boost">Boost factor</param>
-        public SolrFieldAttribute(int boost)
-        {
-            Boost = boost;
-        }
-
-        ///<summary>
-        /// Overrides field name and adds an index time boost.
-        ///</summary>
-        ///<param name="fieldName">Name of the field</param>
-        ///<param name="boost">Boost factor</param>
-        public SolrFieldAttribute(string fieldName, int boost)
-        {
-            FieldName = fieldName;
-            Boost = boost;
-        }
-
 		/// <summary>
 		/// Overrides field name
 		/// </summary>

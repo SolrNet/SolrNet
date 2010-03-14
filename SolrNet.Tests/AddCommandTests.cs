@@ -53,13 +53,13 @@ namespace SolrNet.Tests {
 
         public class TestDocWithFieldBoost
         {
-            [SolrField(20)]
+            [SolrField(Boost = 20)]
             public string SimpleBoost
             {
                 get { return "simple"; }
             }
 
-            [SolrField("nameandboost", 20)]
+            [SolrField("nameandboost", Boost = 20)]
             public string NameAndBoost
             {
                 get { return "boost"; }

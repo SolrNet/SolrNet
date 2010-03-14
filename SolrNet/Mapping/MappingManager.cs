@@ -24,7 +24,7 @@ namespace SolrNet.Mapping {
     /// Manual mapping manager
     /// </summary>
     public class MappingManager : IMappingManager {
-        private readonly IDictionary<Type, Dictionary<PropertyInfo, string>> mappings = new Dictionary<Type, Dictionary<PropertyInfo, string>>();
+        private readonly IDictionary<Type, List<SolrField>> mappings = new Dictionary<Type, List<SolrField>>();
         private readonly IDictionary<Type, PropertyInfo> uniqueKeys = new Dictionary<Type, PropertyInfo>();
 
         public void Add(PropertyInfo property) {
@@ -33,15 +33,39 @@ namespace SolrNet.Mapping {
             Add(property, property.Name);
         }
 
-        public void Add(PropertyInfo property, string fieldName) {
+        public void Add(PropertyInfo property, string fieldName)
+        {
             if (property == null)
                 throw new ArgumentNullException("property");
             if (fieldName == null)
                 throw new ArgumentNullException("fieldName");
+            Add(property, fieldName, null);
+        }
+
+        public void Add(PropertyInfo property, string fieldName, int? boost) {
+            if (property == null)
+                throw new ArgumentNullException("property");
+            if (fieldName == null)
+                throw new ArgumentNullException("fieldName");
+
+            var fld = new SolrField {Property = property, FieldName = fieldName, Boost = boost};
+
             var t = property.ReflectedType;
+
             if (!mappings.ContainsKey(t))
-                mappings[t] = new Dictionary<PropertyInfo, string>(); // new List<KeyValuePair<PropertyInfo, string>>();
-            mappings[t][property] = fieldName;
+            {
+                mappings[t] = new List<SolrField>(); // new List<KeyValuePair<PropertyInfo, string>>();
+            }
+
+            var idx = mappings[t].FindIndex(f => f.Property == fld.Property);
+
+            if(idx >= 0)
+            {
+                mappings[t][idx] = fld;
+                return;
+            }
+
+            mappings[t].Add(fld);
         }
 
         /// <summary>
@@ -49,11 +73,11 @@ namespace SolrNet.Mapping {
         /// </summary>
         /// <param name="type">Document type</param>
         /// <returns>Null if <paramref name="type"/> is not mapped</returns>
-        public ICollection<KeyValuePair<PropertyInfo, string>> GetFields(Type type) {
+        public ICollection<SolrField> GetFields(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
             if (!mappings.ContainsKey(type))
-                return new KeyValuePair<PropertyInfo, string>[0];
+                return new SolrField[0];// KeyValuePair<PropertyInfo, string>[0];
             return mappings[type];
         }
 
@@ -66,11 +90,12 @@ namespace SolrNet.Mapping {
             uniqueKeys[t] = property;
         }
 
-        public KeyValuePair<PropertyInfo, string> GetUniqueKey(Type type) {
+        public SolrField GetUniqueKey(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
             var prop = uniqueKeys[type];
-            return new KeyValuePair<PropertyInfo, string>(prop, mappings[type][prop]);
+            var unique = mappings[type].Find(t => t.Property == prop); //TODO: check null ? Throw NoUniqueKeyException ?
+            return unique;
         }
 
         public ICollection<Type> GetRegisteredTypes() {

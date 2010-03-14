@@ -35,7 +35,7 @@ namespace SolrNet.Impl {
         /// <returns></returns>
         public IDictionary<string, T> IndexResultsByKey(IEnumerable<T> results) {
             var r = new Dictionary<string, T>();
-            var prop = mappingManager.GetUniqueKey(typeof (T)).Key;
+            var prop = mappingManager.GetUniqueKey(typeof (T)).Property;
             foreach (var d in results) {
                 var key = prop.GetValue(d, null).ToString();
                 r[key] = d;

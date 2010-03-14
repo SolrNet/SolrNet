@@ -33,19 +33,23 @@ namespace SolrNet.Mapping {
             return propsAttrs;
         }
 
-        public ICollection<KeyValuePair<PropertyInfo, string>> GetFields(Type type) {
+        public ICollection<SolrField> GetFields(Type type) 
+        {
             var propsAttrs = GetPropertiesWithAttribute<SolrFieldAttribute>(type);
-            var fields = Func.Select(propsAttrs, kv => new KeyValuePair<PropertyInfo, string>(kv.Key, kv.Value[0].FieldName ?? kv.Key.Name));
-            return new List<KeyValuePair<PropertyInfo, string>>(fields);
+
+            var fields = Func.Select(propsAttrs, kv => new SolrField { Property = kv.Key, FieldName = kv.Value[0].FieldName ?? kv.Key.Name, Boost = kv.Value[0].Boost });
+            return new List<SolrField>(fields);
         }
 
         public T[] GetCustomAttributes<T>(PropertyInfo prop) where T : Attribute {
             return (T[]) prop.GetCustomAttributes(typeof (T), true);
         }
 
-        public KeyValuePair<PropertyInfo, string> GetUniqueKey(Type type) {
+        public SolrField GetUniqueKey(Type type) {
             var propsAttrs = GetPropertiesWithAttribute<SolrUniqueKeyAttribute>(type);
-            var fields = Func.Select(propsAttrs, kv => new KeyValuePair<PropertyInfo, string>(kv.Key, kv.Value[0].FieldName ?? kv.Key.Name));
+            var fields = Func.Select(propsAttrs,
+                                     kv =>
+                                     new SolrField {Property = kv.Key, FieldName = kv.Value[0].FieldName ?? kv.Key.Name});
             try {
                 return Func.First(fields);
             } catch (InvalidOperationException) {

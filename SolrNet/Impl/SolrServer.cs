@@ -134,7 +134,7 @@ namespace SolrNet.Impl {
         }
 
         public ISolrOperations<T> Add(IEnumerable<T> docs) {
-            basicServer.Add(docs);
+            basicServer.AddWithBoost(Func.Select(docs, d => new KeyValuePair<T, double?>(d, null)));
             return this;
         }
 
@@ -209,10 +209,6 @@ namespace SolrNet.Impl {
         public ISolrOperations<T> Add(T doc) {
             Add(new[] { doc });
             return this;
-        }
-
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.Add(IEnumerable<T> docs) {
-            return basicServer.Add(docs);
         }
 
         public string Send(ISolrCommand cmd) {

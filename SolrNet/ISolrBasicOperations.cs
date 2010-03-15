@@ -42,13 +42,6 @@ namespace SolrNet {
         void Rollback();
 
         /// <summary>
-        /// Adds / updates several documents at once
-        /// </summary>
-        /// <param name="docs">documents to add/update</param>
-        /// <returns></returns>
-        ISolrBasicOperations<T> Add(IEnumerable<T> docs);
-
-        /// <summary>
         /// Adds / updates several documents with index-time boost
         /// </summary>
         /// <param name="docs"></param>

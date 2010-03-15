@@ -21,6 +21,7 @@ using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.DSL.Impl;
 using SolrNet.Impl;
+using SolrNet.Utils;
 
 namespace SolrNet.DSL {
     /// <summary>
@@ -58,7 +59,8 @@ namespace SolrNet.DSL {
         /// <typeparam name="T"></typeparam>
         /// <param name="documents"></param>
         public static void Add<T>(IEnumerable<T> documents) {
-            var cmd = new AddCommand<T>(documents, ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<T>>());
+            var docs = Func.Select(documents, d => new KeyValuePair<T, double?>(d, null));
+            var cmd = new AddCommand<T>(docs, ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<T>>());
             cmd.Execute(Connection);
         }
 

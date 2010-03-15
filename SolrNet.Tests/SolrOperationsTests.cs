@@ -56,7 +56,9 @@ namespace SolrNet.Tests {
                                      .Return(null))
                 .Verify(() => {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
-                    ops.Add(new[] {new TestDocumentWithoutUniqueKey()});
+                    ops.AddWithBoost(new[] {
+                        new KeyValuePair<TestDocumentWithoutUniqueKey, double?>(new TestDocumentWithoutUniqueKey(), null),
+                    });
                 });
         }
 

@@ -28,16 +28,6 @@ namespace SolrNet.Commands {
 	    private readonly IEnumerable<KeyValuePair<T, double?>> documents = new List<KeyValuePair<T, double?>>();
 	    private readonly ISolrDocumentSerializer<T> documentSerializer;
 
-	    /// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="documents">Documents to add</param>
-		/// <param name="serializer">document serializer</param>
-		public AddCommand(IEnumerable<T> documents, ISolrDocumentSerializer<T> serializer) {
-	        this.documents = Func.Select(documents, d => new KeyValuePair<T, double?>(d, null));
-	        documentSerializer = serializer;
-		}
-
         public AddCommand(IEnumerable<KeyValuePair<T, double?>> documents, ISolrDocumentSerializer<T> serializer) {
             this.documents = documents;
             documentSerializer = serializer;            

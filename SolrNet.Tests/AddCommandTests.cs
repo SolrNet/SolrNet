@@ -82,7 +82,9 @@ namespace SolrNet.Tests {
 			    }));
                 Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
 			}).Verify(() => {
-			    var docs = new[] {new SampleDoc()};
+			    var docs = new[] {
+                    new KeyValuePair<SampleDoc, double?>(new SampleDoc(), null), 
+			    };
 			    var cmd = new AddCommand<SampleDoc>(docs, docSerializer);
 			    cmd.Execute(conn);
 			});
@@ -126,7 +128,9 @@ namespace SolrNet.Tests {
                 Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
             }).Verify(() =>
             {
-                var docs = new[] { new TestDocWithFieldBoost() };
+                var docs = new[] {
+                    new KeyValuePair<TestDocWithFieldBoost, double?>(new TestDocWithFieldBoost(), null),
+                };
                 var cmd = new AddCommand<TestDocWithFieldBoost>(docs, docSerializer);
                 cmd.Execute(conn);
             });
@@ -137,7 +141,9 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
             var conn = mocks.StrictMock<ISolrConnection>();
             var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager(), new DefaultFieldSerializer());
-			var cmd = new AddCommand<SampleDoc>(new[] {new SampleDoc()}, docSerializer);
+			var cmd = new AddCommand<SampleDoc>(new[] {
+                new KeyValuePair<SampleDoc, double?>(new SampleDoc(), null), 
+			}, docSerializer);
 			cmd.Execute(conn);
 		}
 
@@ -155,7 +161,9 @@ namespace SolrNet.Tests {
 			    }));
                 Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
 			}).Verify(() => {
-			    var docs = new[] {new TestDocWithCollections()};
+			    var docs = new[] {
+                    new KeyValuePair<TestDocWithCollections, double?>(new TestDocWithCollections(), null), 
+			    };
 			    var cmd = new AddCommand<TestDocWithCollections>(docs, docSerializer);
 			    cmd.Execute(conn);
 			});
@@ -164,7 +172,8 @@ namespace SolrNet.Tests {
         [Test]
         public void RemovesControlCharactersFromXML() {
             var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
-            var docs = new[] { new TestDocWithString { Desc = "control" + (char)0x7 + (char)0x1F + (char)0xFFFE + (char)0xFFFF + (char)0xFFF4  } };
+            var doc = new TestDocWithString { Desc = "control" + (char)0x7 + (char)0x1F + (char)0xFFFE + (char)0xFFFF + (char)0xFFF4  };
+            var docs = new[] {new KeyValuePair<TestDocWithString, double?>(doc, null),  };
 		    var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
             var xml = cmd.ConvertToXml();
             xml = cmd.RemoveControlCharacters(xml);
@@ -179,7 +188,9 @@ namespace SolrNet.Tests {
         public void RemoveControlCharacters() {
             var mocks = new MockRepository();
             var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocWithString>>();
-            var docs = new[] { new TestDocWithString() };
+            var docs = new[] {
+                new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), null), 
+            };
             var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
             var xml = cmd.RemoveControlCharacters("control &#x7; &#x1; &#x9; &#x1F; &#xFFFE;");
             Assert.DoesNotContain(xml, "&#x7;");

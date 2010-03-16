@@ -37,6 +37,18 @@ namespace SolrNet.Commands {
 		public bool? WaitSearcher { get; set; }
 
         /// <summary>
+        /// Merge segments with deletes away
+        /// Default is false
+        /// </summary>
+        public bool? ExpungeDeletes { get; set; }
+
+        /// <summary>
+        /// Optimizes down to, at most, this number of segments
+        /// Default is 1
+        /// </summary>
+        public int? MaxSegments { get; set; }
+
+        /// <summary>
         /// Executes this command
         /// </summary>
         /// <param name="connection"></param>
@@ -44,13 +56,23 @@ namespace SolrNet.Commands {
 		public string Execute(ISolrConnection connection) {
 			var xml = new XmlDocument();
 			var node = xml.CreateElement("optimize");
-			foreach (var p in new[] {new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), new KeyValuePair<bool?, string>(WaitFlush, "waitFlush")}) {
-				if (p.Key.HasValue) {
-					var att = xml.CreateAttribute(p.Value);
-					att.InnerText = p.Key.Value.ToString().ToLower();
-					node.Attributes.Append(att);
-				}
-			}
+
+            foreach (var p in new[] { new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), new KeyValuePair<bool?, string>(ExpungeDeletes, "expungeDeletes") })
+            {
+                if (!p.Key.HasValue) continue;
+
+                var att = xml.CreateAttribute(p.Value);
+                att.InnerText = p.Key.Value.ToString().ToLower();
+                node.Attributes.Append(att);
+            }
+
+            if (MaxSegments.HasValue)
+            {
+                var att = xml.CreateAttribute("maxSegments");
+                att.InnerText = MaxSegments.ToString();
+                node.Attributes.Append(att);
+            }
+
 			return connection.Post("/update", node.OuterXml);
 		}
 	}

@@ -37,13 +37,23 @@ namespace SolrNet.Impl {
 
         public void Commit(CommitOptions options) {
             options = options ?? new CommitOptions();
-            var cmd = new CommitCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
+            var cmd = new CommitCommand {
+                WaitFlush = options.WaitFlush, 
+                WaitSearcher = options.WaitSearcher,
+                ExpungeDeletes = options.ExpungeDeletes,
+                MaxSegments = options.MaxSegments,
+            };
             Send(cmd);
         }
 
         public void Optimize(CommitOptions options) {
             options = options ?? new CommitOptions();
-            var cmd = new OptimizeCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
+            var cmd = new OptimizeCommand {
+                WaitFlush = options.WaitFlush, 
+                WaitSearcher = options.WaitSearcher,
+                ExpungeDeletes = options.ExpungeDeletes,
+                MaxSegments = options.MaxSegments,
+            };
             Send(cmd);
         }
 

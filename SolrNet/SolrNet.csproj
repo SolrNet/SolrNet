@@ -113,7 +113,7 @@
     <Compile Include="Mapping\AttributesMappingManager.cs" />
     <Compile Include="Commands\Parameters\HighlightingParameters.cs" />
     <Compile Include="Commands\Parameters\QueryOptions.cs" />
-    <Compile Include="Commands\Parameters\WaitOptions.cs" />
+    <Compile Include="Commands\Parameters\CommitOptions.cs" />
     <Compile Include="Commands\PingCommand.cs" />
     <Compile Include="Exceptions\CollectionTypeNotSupportedException.cs" />
     <Compile Include="Commands\AddCommand.cs" />

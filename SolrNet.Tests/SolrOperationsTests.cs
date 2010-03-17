@@ -106,7 +106,7 @@ namespace SolrNet.Tests {
                                      .Return(null))
                 .Verify(() => {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
-                    ops.Commit(new WaitOptions());
+                    ops.Commit(new CommitOptions());
                 });
         }
 
@@ -122,7 +122,7 @@ namespace SolrNet.Tests {
                                      .Return(null))
                 .Verify(() => {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
-                    ops.Commit(new WaitOptions {WaitSearcher = true, WaitFlush = true});
+                    ops.Commit(new CommitOptions {WaitSearcher = true, WaitFlush = true});
                 });
         }
 
@@ -137,7 +137,7 @@ namespace SolrNet.Tests {
                                                   .Return(null))
                 .Verify(() => {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
-                    ops.Commit(new WaitOptions {WaitSearcher = false});
+                    ops.Commit(new CommitOptions {WaitSearcher = false});
                 });
         }
 
@@ -153,7 +153,7 @@ namespace SolrNet.Tests {
                                      .Return(null))
                 .Verify(() => {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
-                    ops.Commit(new WaitOptions {WaitFlush = true});
+                    ops.Commit(new CommitOptions {WaitFlush = true});
                 });
         }
 
@@ -257,7 +257,7 @@ namespace SolrNet.Tests {
                                      .Return(null))
                 .Verify(() => {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
-                    ops.Optimize(new WaitOptions {WaitFlush = true, WaitSearcher = true});
+                    ops.Optimize(new CommitOptions {WaitFlush = true, WaitSearcher = true});
                 });
         }
 
@@ -273,7 +273,7 @@ namespace SolrNet.Tests {
                                      .Return(null))
                 .Verify(() => {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
-                    ops.Optimize(new WaitOptions {WaitFlush = true, WaitSearcher = true});
+                    ops.Optimize(new CommitOptions {WaitFlush = true, WaitSearcher = true});
                 });
         }
 

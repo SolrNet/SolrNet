@@ -35,14 +35,14 @@ namespace SolrNet.Impl {
             this.documentSerializer = documentSerializer;
         }
 
-        public void Commit(WaitOptions options) {
-            options = options ?? new WaitOptions();
+        public void Commit(CommitOptions options) {
+            options = options ?? new CommitOptions();
             var cmd = new CommitCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
             Send(cmd);
         }
 
-        public void Optimize(WaitOptions options) {
-            options = options ?? new WaitOptions();
+        public void Optimize(CommitOptions options) {
+            options = options ?? new CommitOptions();
             var cmd = new OptimizeCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
             Send(cmd);
         }

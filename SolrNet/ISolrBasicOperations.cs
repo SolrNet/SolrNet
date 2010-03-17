@@ -28,13 +28,13 @@ namespace SolrNet {
         /// Commits posted documents
         /// </summary>
         /// <param name="options">Commit options</param>
-        void Commit(WaitOptions options);
+        void Commit(CommitOptions options);
 
         /// <summary>
         /// Optimizes Solr's index
         /// </summary>
         /// <param name="options">Optimization options</param>
-        void Optimize(WaitOptions options);
+        void Optimize(CommitOptions options);
 
         /// <summary>
         /// Rollbacks all add/deletes made to the index since the last commit.

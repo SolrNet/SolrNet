@@ -15,7 +15,7 @@
 #endregion
 
 namespace SolrNet.Commands.Parameters {
-	public class WaitOptions {
+	public class CommitOptions {
         /// <summary>
         /// Block until a new searcher is opened and registered as the main query searcher, making the changes visible. 
         /// Default is true
@@ -28,7 +28,7 @@ namespace SolrNet.Commands.Parameters {
         /// </summary>
 		public bool? WaitFlush { get; set; }
 
-	    public WaitOptions() {
+	    public CommitOptions() {
 	        WaitSearcher = true;
 	        WaitFlush = true;
 	    }

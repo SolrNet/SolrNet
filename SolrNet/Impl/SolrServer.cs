@@ -114,14 +114,14 @@ namespace SolrNet.Impl {
             });
         }
 
-        public void Commit(WaitOptions options) {
+        public void Commit(CommitOptions options) {
             basicServer.Commit(options);
         }
 
         /// <summary>
         /// Commits posts
         /// </summary>
-        public void Optimize(WaitOptions options) {
+        public void Optimize(CommitOptions options) {
             basicServer.Optimize(options);
         }
 

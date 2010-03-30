@@ -15,7 +15,7 @@
 #endregion
 
 using System;
-using SolrNet.Impl;
+using System.Globalization;
 using SolrNet.Impl.FieldSerializers;
 
 namespace SolrNet {
@@ -41,7 +41,7 @@ namespace SolrNet {
         private string Serialize(RT o) {
             if (typeof(RT) == typeof(DateTime))
                 return dateSerializer.SerializeDate((DateTime)(object)o);
-            return o.ToString();
+            return Convert.ToString(o, CultureInfo.InvariantCulture);
         }
 
 		/// <summary>

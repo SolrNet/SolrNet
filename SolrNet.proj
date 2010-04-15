@@ -3,11 +3,13 @@
     <Version>0.2.3</Version>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.Community.Tasks</MSBuildCommunityTasksPath>
     <ExtensionTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.ExtensionPack\</ExtensionTasksPath>
+   <EndforwardMSBuildPath>$(MSBuildProjectDirectory)\tools\Endforward.MSBuild-0.1.0</EndforwardMSBuildPath>
     <MergedOutputPath>$(MSBuildProjectDirectory)\merged</MergedOutputPath>
 		<BuildConfig>Debug</BuildConfig>
   </PropertyGroup>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets"/>
   <Import Project="$(ExtensionTasksPath)\MSBuild.ExtensionPack.tasks"/>
+  <Import Project="$(EndforwardMSBuildPath)\Endforward.MSBuild.Targets"/>
 	<UsingTask AssemblyFile="$(MSBuildProjectDirectory)\lib\Gallio.MSBuildTasks.dll" TaskName="Gallio" />
 	<UsingTask AssemblyFile="$(MSBuildProjectDirectory)\tools\ILMerge\ILMerge.MSBuild.Tasks.dll" TaskName="ILMerge.MSBuild.Tasks.ILMerge"/>
 	<Target Name="Clean">
@@ -51,6 +53,7 @@
 			<BuildConfigProp>Configuration=$(BuildConfig)</BuildConfigProp>
 		</PropertyGroup>
 	</Target>
+  <Target Name="Test" DependsOnTargets="Build;BuildSample">
 	<ItemGroup>
 		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"/>
 		<TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>
@@ -59,12 +62,34 @@
 		<TestAssemblies Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet.Tests\bin\Debug\NHibernate.SolrNet.Tests.dll"/>
 		<TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
 	</ItemGroup>
-  <Target Name="Test" DependsOnTargets="Build;BuildSample">
-    <Gallio IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)">
+    <Gallio IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)" Filter="exclude Category: Integration">
       <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
     </Gallio>
     <Error Text="Tests execution failed" Condition="'$(ExitCode)' != 0" />
-  </Target>	
+  </Target>
+  <Target Name="IntegrationTests" DependsOnTargets="Build;BuildSample;Test">
+    <ItemGroup>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration.Tests\bin\Debug\Castle.Facilities.SolrNetIntegration.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet.Tests\bin\Debug\Ninject.Integration.SolrNet.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet.Tests\bin\Debug\NHibernate.SolrNet.Tests.dll"/>
+      <TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
+    </ItemGroup>
+    <PropertyGroup>
+      <SolrPid></SolrPid>
+    </PropertyGroup>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\solr-1.4.0\logs" ContinueOnError="true"/>
+    <SpawnProcess Process="java" Arguments="-jar start.jar" WorkingDirectory="$(MSBuildProjectDirectory)\solr-1.4.0">
+      <Output TaskParameter="Pid" PropertyName="SolrPid" />
+    </SpawnProcess>
+    <Sleep Milliseconds="5000" />
+    <Gallio IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)" Filter="Category: Integration">
+      <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
+    </Gallio>
+    <KillProcess Pid="$(SolrPid)" />
+    <Error Text="Tests execution failed" Condition="'$(ExitCode)' != 0" />
+  </Target>
   <Target Name="Coverage">
     <Gallio RunnerType="NCover" IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)">
       <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>

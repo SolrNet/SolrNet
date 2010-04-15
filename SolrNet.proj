@@ -127,7 +127,7 @@
       AssemblyDescription="%(InfoFile.AssemblyTitle)"
       AssemblyCompany=""
       AssemblyProduct="%(InfoFile.AssemblyTitle)"
-      AssemblyCopyright="Copyright © Mauricio Scheffer 2007-2009"
+      AssemblyCopyright="Copyright © Mauricio Scheffer 2007-2010"
       ComVisible="false"
       CLSCompliant="true"
       Guid="6688f9b4-5f2d-4fd6-aafc-3a81c84a69f1"

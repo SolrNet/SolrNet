@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -132,7 +132,6 @@
     <Compile Include="SolrServerTests.cs" />
     <Compile Include="SortOrderTests.cs" />
     <Compile Include="ThreadHelper.cs" />
-    <Compile Include="ThreadSettings.cs" />
     <Compile Include="TypeHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@ _ReSharper.*
 *.suo
 *.bak
 *.sln.cache
+*.user
 merged
 solr-*/solr/data
 solr-*/logs

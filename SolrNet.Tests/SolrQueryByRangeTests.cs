@@ -40,11 +40,9 @@ namespace SolrNet.Tests {
 		}
 
         [Test]
-        public void IsCultureInvariant() {
-            using (ThreadSettings.Culture("nl-NL")) {
-                var q = new SolrQueryByRange<float>("price", 123.45f, 234.56f);
-                Assert.AreEqual("price:[123.45 TO 234.56]", q.Query);
-            }
+        public void FloatInclusive() {
+            var q = new SolrQueryByRange<float>("price", 123.45f, 234.56f);
+            Assert.AreEqual("price:[123.45 TO 234.56]", q.Query);
         }
 	}
 }

@@ -86,11 +86,9 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void DoubleFieldParser_with_culture() {
-            using (ThreadSettings.Culture("fr-FR")) {
-                var p = new DoubleFieldParser();
-                p.Parse(CreateNode("item", "123.99"), typeof(float));
-            }
+        public void DoubleFieldParser() {
+            var p = new DoubleFieldParser();
+            p.Parse(CreateNode("item", "123.99"), typeof(float));
         }
     }
 }

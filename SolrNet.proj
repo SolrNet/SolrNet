@@ -28,6 +28,7 @@
       <MergeAsm Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration\bin\$(BuildConfig)\Castle.Facilities.SolrNetIntegration.dll" />
       <MergeAsm Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet\bin\$(BuildConfig)\Ninject.Integration.SolrNet.dll"/>
       <MergeAsm Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet\bin\$(BuildConfig)\NHibernate.SolrNet.dll"/>
+	  <MergeAsm Include="$(MSBuildProjectDirectory)\Structuremap.SolrNetIntegration\bin\$(BuildConfig)\Structuremap.SolrNetIntegration.dll"/>
     </ItemGroup>
     <RemoveDir Directories="$(MergedOutputPath)"/>
     <MakeDir Directories="$(MergedOutputPath)" ContinueOnError="true"/>
@@ -38,6 +39,7 @@
       <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Ninject.dll"/>
       <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\NHibernate.dll"/>
       <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\log4net.dll"/>
+	  <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\StructureMap.dll"/>
     </ItemGroup>
     <Copy SourceFiles="@(CopyToMerged)" DestinationFolder="$(MergedOutputPath)"/>
   </Target>
@@ -60,6 +62,7 @@
     <TestAssemblies Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet.Tests\bin\Debug\Ninject.Integration.SolrNet.Tests.dll"/>
     <TestAssemblies Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet.Tests\bin\Debug\NHibernate.SolrNet.Tests.dll"/>
     <TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
+	<TestAssemblies Include="$(MSBuildProjectDirectory)\StructureMap.SolrNetIntegration.Tests\bin\Debug\StructureMap.SolrNetIntegration.Tests.dll"/>
   </ItemGroup>
   <Target Name="Test" DependsOnTargets="Build;BuildSample">
     <Gallio IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)" Filter="exclude Category: Integration">
@@ -111,6 +114,9 @@
       </InfoFile>
       <InfoFile Include="NHibernate.SolrNet\Properties\AssemblyInfo.cs">
         <AssemblyTitle>NHibernate.SolrNet</AssemblyTitle>
+      </InfoFile>
+	  <InfoFile Include="StructureMap.SolrNetIntegration\Properties\AssemblyInfo.cs">
+        <AssemblyTitle>StructureMap.SolrNetIntegration</AssemblyTitle>
       </InfoFile>
     </ItemGroup>
     <AssemblyInfo CodeLanguage="CS"

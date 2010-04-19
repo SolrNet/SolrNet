@@ -13,9 +13,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("NHibernate.SolrNet")]
-[assembly: AssemblyDescription("NHibernate.SolrNet")]
-[assembly: AssemblyProduct("NHibernate.SolrNet")]
+[assembly: AssemblyTitle("StructureMap.SolrNetIntegration")]
+[assembly: AssemblyDescription("StructureMap.SolrNetIntegration")]
+[assembly: AssemblyProduct("StructureMap.SolrNetIntegration")]
 [assembly: AssemblyCopyright("Copyright © Mauricio Scheffer 2007-2010")]
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]

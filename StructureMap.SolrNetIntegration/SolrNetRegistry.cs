@@ -32,7 +32,6 @@ namespace Structuremap.SolrNetIntegration
             For<ISolrFieldParser>().Use<DefaultFieldParser>();
             
             For(typeof(ISolrDocumentResponseParser<>)).Use(typeof(SolrDocumentResponseParser<>));
-            For(typeof(ISolrDocumentResponseParser<>)).Use(typeof(SolrDocumentResponseParser<>));
 
             For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
                 .Use<SolrDictionaryDocumentResponseParser>();              

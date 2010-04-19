@@ -9,7 +9,6 @@ using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
-using StructureMap.Configuration.DSL;
 
 namespace Structuremap.SolrNetIntegration
 {
@@ -60,10 +59,12 @@ namespace Structuremap.SolrNetIntegration
             For(typeof(ISolrOperations<>)).Use(typeof(SolrServer<>));
 
             For<ISolrFieldParser>().Use<DefaultFieldParser>();
-            For<ISolrFieldParser>().Use<InferringFieldParser>().Named(typeof(InferringFieldParser).Name);
+            For<ISolrFieldParser>().Add<InferringFieldParser>().Named(typeof(InferringFieldParser).Name);
 
             For<ISolrFieldSerializer>().Use<DefaultFieldSerializer>();
             For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();
+
+            For<IHttpWebRequestFactory>().Use<HttpWebRequestFactory>();
         }
 
         public SolrNetRegistry(string solrURL)

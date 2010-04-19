@@ -34,6 +34,7 @@ namespace StructureMap.SolrNetIntegration.Tests
         }
 
         [Test]
+        [Category("Integration")]
         public void Ping_And_Query()
         {
             SetupContainer();
@@ -117,7 +118,7 @@ namespace StructureMap.SolrNetIntegration.Tests
 
 
         [Test]
-        [Ignore("Requires a running solr instance")]
+        [Category("Integration")]
         public void DictionaryDocument()
         {
             SetupContainer();
@@ -134,7 +135,7 @@ namespace StructureMap.SolrNetIntegration.Tests
         }
 
         [Test]
-        [Ignore("Requires a running solr instance")]
+        [Category("Integration")]
         public void DictionaryDocument_add()
         {
             SetupContainer();

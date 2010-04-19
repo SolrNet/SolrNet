@@ -23,8 +23,6 @@ namespace Structuremap.SolrNetIntegration
             For<IReadOnlyMappingManager>().Use(mappingManager);
             For<ISolrCache>().Use<HttpRuntimeCache>();
 
-            For<IHttpWebRequestFactory>().Use<HttpWebRequestFactory>();
-
             For<ISolrConnection>().Use<SolrConnection>()
                 .Ctor<string>("serverURL").Is(solrURL);
 

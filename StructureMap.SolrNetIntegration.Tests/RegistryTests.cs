@@ -11,6 +11,7 @@ using System.Reflection;
 
 namespace StructureMap.SolrNetIntegration.Tests
 {
+    [TestFixture]
     public class RegistryTests
     {        
         

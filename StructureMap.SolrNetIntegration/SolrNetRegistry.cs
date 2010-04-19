@@ -22,15 +22,17 @@ namespace Structuremap.SolrNetIntegration
             For<IReadOnlyMappingManager>().Use(mappingManager);
             For<ISolrCache>().Use<HttpRuntimeCache>();
 
-            For<ISolrConnection>().Use<SolrConnection>()
-                .Ctor<string>("serverURL").Is(solrURL);
+            //For<ISolrConnection>().Use<SolrConnection>().Ctor<string>("serverURL").Is(solrURL);
+
+            For<ISolrConnection>().Use(c => new SolrConnection(solrURL));           
 
             For(typeof(ISolrDocumentResponseParser<>)).Use(typeof(SolrDocumentResponseParser<>));
 
             For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
                 .Use<SolrDictionaryDocumentResponseParser>()
-                .Ctor<ISolrFieldParser>("fieldParser").Is(i => i.TheInstanceNamed(typeof(InferringFieldParser).Name));
-
+                .Ctor<ISolrFieldParser>("fieldParser")
+                .Is(i => i.TheInstanceNamed(typeof(InferringFieldParser).Name));
+            
             For(typeof(ISolrDocumentIndexer<>)).Use(typeof(SolrDocumentIndexer<>));
 
             foreach (var p in new[] {
@@ -64,7 +66,7 @@ namespace Structuremap.SolrNetIntegration
             For<ISolrFieldSerializer>().Use<DefaultFieldSerializer>();
             For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();
 
-            For<IHttpWebRequestFactory>().Use<HttpWebRequestFactory>();
+            //For<IHttpWebRequestFactory>().Use<HttpWebRequestFactory>();
         }
 
         public SolrNetRegistry(string solrURL)

@@ -141,7 +141,8 @@ namespace StructureMap.SolrNetIntegration.Tests
         {
             SetupContainer();
 
-            var solr = ObjectFactory.GetInstance<ISolrOperations<Dictionary<string, object>>>();
+            var solr = ObjectFactory.GetInstance<ISolrOperations<Dictionary<string, object>>>();        
+
             solr.Add(new Dictionary<string, object> {
                 {"id", "ababa"},
                 {"manu", "who knows"},
@@ -166,9 +167,6 @@ namespace StructureMap.SolrNetIntegration.Tests
             var serializer = ObjectFactory.GetInstance<ISolrDocumentSerializer<Dictionary<string, object>>>();
             Assert.IsInstanceOfType<SolrDictionarySerializer>(serializer);
         }
-
-
-
 
         private static void SetupContainer()
         {

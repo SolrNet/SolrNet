@@ -28,11 +28,13 @@ namespace Structuremap.SolrNetIntegration
 
             For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();
             For<ISolrFieldParser>().Use<DefaultFieldParser>();
+            For<ISolrFieldParser>().Use<InferringFieldParser>().Named(typeof(InferringFieldParser).Name);
             
             For(typeof(ISolrDocumentResponseParser<>)).Use(typeof(SolrDocumentResponseParser<>));
 
             For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
-                .Use<SolrDictionaryDocumentResponseParser>();              
+                .Use<SolrDictionaryDocumentResponseParser>()
+                .Ctor<ISolrFieldParser>("fieldParser").Is(i => i.TheInstanceNamed(typeof(InferringFieldParser).Name));
             
             For(typeof(ISolrDocumentIndexer<>)).Use(typeof(SolrDocumentIndexer<>));
             For<ISolrFieldSerializer>().Use<DefaultFieldSerializer>();

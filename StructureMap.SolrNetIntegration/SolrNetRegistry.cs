@@ -21,9 +21,7 @@ namespace Structuremap.SolrNetIntegration
 
             For<IReadOnlyMappingManager>().Use(mappingManager);
             For<ISolrCache>().Use<HttpRuntimeCache>();
-
-            //For<ISolrConnection>().Use<SolrConnection>().Ctor<string>("serverURL").Is(solrURL);
-
+            
             For<ISolrConnection>().Use(c => new SolrConnection(solrURL));           
 
             For(typeof(ISolrDocumentResponseParser<>)).Use(typeof(SolrDocumentResponseParser<>));
@@ -65,8 +63,7 @@ namespace Structuremap.SolrNetIntegration
 
             For<ISolrFieldSerializer>().Use<DefaultFieldSerializer>();
             For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();
-
-            //For<IHttpWebRequestFactory>().Use<HttpWebRequestFactory>();
+            
         }
 
         public SolrNetRegistry(string solrURL)

@@ -26,18 +26,13 @@ namespace Structuremap.SolrNetIntegration
             For<ISolrConnection>().Use<SolrConnection>()
                 .Ctor<string>("serverURL").Is(solrURL);
 
-            For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();
-            For<ISolrFieldParser>().Use<DefaultFieldParser>();
-            For<ISolrFieldParser>().Use<InferringFieldParser>().Named(typeof(InferringFieldParser).Name);
-            
             For(typeof(ISolrDocumentResponseParser<>)).Use(typeof(SolrDocumentResponseParser<>));
 
             For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
                 .Use<SolrDictionaryDocumentResponseParser>()
                 .Ctor<ISolrFieldParser>("fieldParser").Is(i => i.TheInstanceNamed(typeof(InferringFieldParser).Name));
-            
+
             For(typeof(ISolrDocumentIndexer<>)).Use(typeof(SolrDocumentIndexer<>));
-            For<ISolrFieldSerializer>().Use<DefaultFieldSerializer>();
 
             foreach (var p in new[] {
                                         typeof(ResultsResponseParser<>),
@@ -50,18 +45,25 @@ namespace Structuremap.SolrNetIntegration
                                         typeof(CollapseResponseParser<>),
                                     })
             {
-                For(typeof (ISolrResponseParser<>)).Use(p);
+                For(typeof(ISolrResponseParser<>)).Use(p);
             }
 
             For(typeof(ISolrQueryResultParser<>)).Use(typeof(SolrQueryResultParser<>));
             For(typeof(ISolrQueryExecuter<>)).Use(typeof(SolrQueryExecuter<>));
-            For(typeof(ISolrDocumentSerializer<>)).Use(typeof(SolrDocumentSerializer<>));
 
-            For(typeof(ISolrDocumentSerializer<Dictionary<string,object>>)).Use(typeof(SolrDictionarySerializer));
-            For(typeof(ISolrBasicOperations<>)).Use(typeof(SolrBasicServer<>));
+            For(typeof(ISolrDocumentSerializer<>)).Use(typeof(SolrDocumentSerializer<>));
+            For(typeof(ISolrDocumentSerializer<Dictionary<string, object>>)).Use(typeof(SolrDictionarySerializer));
+
             For(typeof(ISolrBasicReadOnlyOperations<>)).Use(typeof(SolrBasicServer<>));
-            For(typeof(ISolrOperations<>)).Use(typeof(SolrServer<>));
+            For(typeof(ISolrBasicOperations<>)).Use(typeof(SolrBasicServer<>));
             For(typeof(ISolrReadOnlyOperations<>)).Use(typeof(SolrServer<>));
+            For(typeof(ISolrOperations<>)).Use(typeof(SolrServer<>));
+
+            For<ISolrFieldParser>().Use<DefaultFieldParser>();
+            For<ISolrFieldParser>().Use<InferringFieldParser>().Named(typeof(InferringFieldParser).Name);
+
+            For<ISolrFieldSerializer>().Use<DefaultFieldSerializer>();
+            For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();
         }
 
         public SolrNetRegistry(string solrURL)

@@ -1,3 +1,5 @@
+- Upgraded to Windsor 2.1.1
+- Added StructureMap integration
 - Fixed culture-related bug in highlighting parameters
 - Fixed culture-related bug in range query
 - Added MaxSegments and ExpungeDeletes parameters to commit/optimize

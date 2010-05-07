@@ -4,7 +4,7 @@
         xmlns="http://www.gallio.org/">
   <traits>
     <name>Gallio</name>
-    <version>3.1.0.0</version>
+    <version>3.2.0.0</version>
     <description>The heart of Gallio.</description>
     <icon>plugin://Gallio/Resources/Gallio.ico</icon>
   </traits>
@@ -19,11 +19,6 @@
     <file path="Gallio.pdb" />
     <file path="Gallio.xml" />
     <file path="Gallio.XmlSerializers.dll" />
-    <!-- These assemblies are installed in the GAC.
-    <file path="Gallio.Loader.dll" />
-    <file path="Gallio.Loader.pdb" />
-    <file path="Gallio.Loader.xml" />
-    -->
     <file path="Gallio.Host.exe" />
     <file path="Gallio.Host.exe.config" />
     <file path="Gallio.Host.x86.exe" />
@@ -32,26 +27,28 @@
     <file path="Gallio.Host.Elevated.exe.config" />
     <file path="Gallio.Host.Elevated.x86.exe" />
     <file path="Gallio.Host.Elevated.x86.exe.config" />
-    <file path="Gallio.xsd" />
 
     <file path="Resources\Assembly.ico" />
     <file path="Resources\Container.ico" />
     <file path="Resources\Fixture.ico" />
     <file path="Resources\Gallio.ico" />
     <file path="Resources\Test.ico" />
+    <file path="Resources\Unsupported.ico" />
   </files>
 
   <assemblies>
-    <assembly fullName="Gallio, Version=3.1.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
-              codeBase="Gallio.dll">
-      <qualifyPartialName>true</qualifyPartialName>
-      <bindingRedirects>
-        <bindingRedirect oldVersion="3.1.0.0-65535.65535.65535.65535" />
-      </bindingRedirects>
-    </assembly>
+    <assembly fullName="Gallio, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
+              codeBase="Gallio.dll"
+              qualifyPartialName="true" />
   </assemblies>
 
   <services>
+    <service serviceId="Gallio.Common.Concurrency.ProcessCreator"
+             serviceType="Gallio.Common.Concurrency.IProcessCreator, Gallio" />
+
+    <service serviceId="Gallio.Common.Concurrency.ProcessFinder"
+             serviceType="Gallio.Common.Concurrency.IProcessFinder, Gallio" />
+
     <service serviceId="Gallio.FileSystem"
              serviceType="Gallio.Common.IO.IFileSystem, Gallio" />
 
@@ -155,12 +152,31 @@
 
     <service serviceId="Gallio.PatternTestController"
              serviceType="Gallio.Framework.Pattern.PatternTestController, Gallio" />
+
+    <service serviceId="Gallio.ExtensionPoints"
+             serviceType="Gallio.Runtime.Extensibility.IExtensionPoints, Gallio" />
+
+    <service serviceId="Gallio.ComparisonSemantics"
+             serviceType="Gallio.Framework.IComparisonSemantics, Gallio" />
   </services>
   
   <components>
+    <component componentId="Gallio.FallbackTestFramework"
+               serviceId="Gallio.TestFramework"
+               componentType="Gallio.Model.FallbackTestFramework, Gallio">
+      <traits>
+        <name>Fallback</name>
+        <icon>plugin://Gallio/Resources/Gallio.ico</icon>
+      </traits>
+    </component>
+
     <component componentId="Gallio.TestFrameworkManager"
                serviceId="Gallio.TestFrameworkManager"
-               componentType="Gallio.Model.DefaultTestFrameworkManager, Gallio" />
+               componentType="Gallio.Model.DefaultTestFrameworkManager, Gallio">
+      <parameters>
+        <fallbackTestFrameworkHandle>${Gallio.FallbackTestFramework}</fallbackTestFrameworkHandle>
+      </parameters>
+    </component>
 
     <component componentId="Gallio.TestRunnerManager"
                serviceId="Gallio.TestRunnerManager"
@@ -181,6 +197,10 @@
     <component componentId="Gallio.UnhandledExceptionTestEnvironment"
                serviceId="Gallio.TestEnvironment"
                componentType="Gallio.Model.Environments.UnhandledExceptionTestEnvironment, Gallio" />
+
+    <component componentId="Gallio.CustomTestEnvironment"
+               serviceId="Gallio.TestEnvironment"
+               componentType="Gallio.Model.Environments.CustomTestEnvironment, Gallio" />
 
     <component componentId="Gallio.WindowsFormsTestEnvironment"
                serviceId="Gallio.TestEnvironment"
@@ -214,6 +234,14 @@
                serviceId="Gallio.PreferenceManager"
                componentType="Gallio.Runtime.Preferences.FilePreferenceManager, Gallio" />
     
+    <component componentId="Gallio.ExtensionPoints"
+               serviceId="Gallio.ExtensionPoints"
+               componentType="Gallio.Runtime.Extensibility.DefaultExtensionPoints, Gallio" />
+	
+    <component componentId="Gallio.ComparisonSemantics"
+               serviceId="Gallio.ComparisonSemantics"
+               componentType="Gallio.Framework.DefaultComparisonSemantics, Gallio" />
+
     <!-- Host Factories -->
     
     <component componentId="Gallio.LocalHostFactory"
@@ -442,6 +470,14 @@
     
     <!-- Common helpers -->
 
+    <component componentId="Gallio.Common.Concurrency.ProcessCreator"
+               serviceId="Gallio.Common.Concurrency.ProcessCreator"
+               componentType="Gallio.Common.Concurrency.ProcessCreator, Gallio" />
+
+    <component componentId="Gallio.Common.Concurrency.ProcessFinder"
+               serviceId="Gallio.Common.Concurrency.ProcessFinder"
+               componentType="Gallio.Common.Concurrency.ProcessFinder, Gallio" />
+
     <component componentId="Gallio.FileSystem" 
                serviceId="Gallio.FileSystem" 
                componentType="Gallio.Common.IO.FileSystem, Gallio" />
@@ -468,6 +504,21 @@
       </traits>
     </component>
 
+    <component componentId="Gallio.FormatReportUtilityCommand"
+               serviceId="Gallio.UtilityCommand"
+               componentType="Gallio.Runtime.UtilityCommands.FormatReportUtilityCommand, Gallio">
+      <traits>
+        <name>FormatReport</name>
+        <description>Formats an existing XML test report. The command must be used with the following syntax: 
+		"FormatReport {file} /ReportType:{type} [/ReportNameFormat:{format} /ReportOutput:{dir} /ReportArchive]"
+		- {file} is the relative or absolute path of the existing XML test report.
+		- ReportType (short form: /rt) specifies the type of the output report ('txt', 'txt-common', 'txt-condensed', 'html', 'html+xhtml', 'html-condensed', 'xhtml', 'xhtml-condensed', 'ccnet-details', or 'ccnet-details-condensed')
+		- ReportNameFormat (short form: /rnf) specifies the format of the output report (optional; if not specified, the same name is kept). The tags '{0}' and '{1}' are replaced respectively by the date and the time of the test run, or by the curent date/time if not applicable.
+		- ReportOutput (short form: /ro) specifies the output directory (optional; if not specified the current directory is used).
+		- ReportArchive (short form: /ra) compresses the output report in a file archive (zip).</description>
+      </traits>
+    </component>
+	
     <component componentId="Gallio.VerifyInstallationUtilityCommand"
                serviceId="Gallio.UtilityCommand"
                componentType="Gallio.Runtime.UtilityCommands.VerifyInstallationUtilityCommand, Gallio">
@@ -584,6 +635,15 @@
         <name>Test</name>
         <description>A test case.</description>
         <icon>plugin://Gallio/Resources/Test.ico</icon>
+      </traits>
+    </component>
+
+    <component componentId="Gallio.TestKinds.Unsupported"
+               serviceId="Gallio.TestKind">
+      <traits>
+        <name>Unsupported</name>
+        <description>An unsupported test.</description>
+        <icon>plugin://Gallio/Resources/Unsupported.ico</icon>
       </traits>
     </component>
   </components>

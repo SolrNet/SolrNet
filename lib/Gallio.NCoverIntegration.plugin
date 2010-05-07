@@ -4,7 +4,7 @@
         xmlns="http://www.gallio.org/">
   <traits>
     <name>NCover Integration Plugin</name>
-    <version>3.1.0.0</version>
+    <version>3.2.0.0</version>
     <description>Provides support for running tests with NCover code coverage.</description>
   </traits>
 
@@ -15,6 +15,7 @@
   <files>
     <file path="Gallio.NCoverIntegration.plugin" />
     <file path="Gallio.NCoverIntegration.dll" />
+
     <file path="NCover\Coverage.xsl" />
     <file path="NCover\CoverLib.dll" />
     <file path="NCover\Microsoft.VC80.CRT.manifest" />
@@ -26,21 +27,10 @@
     <file path="NCover\NCoverFAQ.html" />
   </files>
 
-  <probingPaths>
-    <probingPath>NCover</probingPath>
-  </probingPaths>
-
   <assemblies>
-    <assembly fullName="Gallio.NCoverIntegration, Version=3.1.0.0, Culture=neutral, PublicKeyToken=null"
-              codeBase="Gallio.NCoverIntegration.dll">
-      <qualifyPartialName>true</qualifyPartialName>
-      <bindingRedirects>
-        <bindingRedirect oldVersion="3.1.0.0-65535.65535.65535.65535" />
-      </bindingRedirects>
-    </assembly>
-
-    <assembly fullName="NCover.Framework, Version=1.5.8.0, Culture=neutral, PublicKeyToken=f4018786f4b01bc6"
-              codeBase="NCover.Framework.dll" />
+    <assembly fullName="Gallio.NCoverIntegration, Version=3.2.0.0, Culture=neutral, PublicKeyToken=null"
+              codeBase="Gallio.NCoverIntegration.dll"
+              qualifyPartialName="true" />
   </assemblies>
 
   <components>
@@ -60,7 +50,7 @@
 
           Supported test runner properties:
           - NCoverArguments: Specifies additional command-line arguments for NCover.  eg. "//eas Gallio"
-          - NCoverCoverageFile: Specifies the path of the coverage file to write.  The default is 'Coverage.xml'.
+          - NCoverCoverageFile: Specifies the path of the coverage file to write.  The default is 'Coverage.xml' in the current working directory.
         </description>
       </traits>
     </component>

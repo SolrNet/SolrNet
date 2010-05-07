@@ -35,7 +35,7 @@ namespace SolrNet.Tests {
 
             var parser = new InferringFieldParser(new DefaultFieldParser());
             var value = parser.Parse(node, typeof (object));
-            Assert.IsAssignableFrom<ArrayList>(value);
+            Assert.IsInstanceOfType<ArrayList>(value);
         }
     }
 }

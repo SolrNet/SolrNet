@@ -41,7 +41,7 @@ namespace SolrNet.Mapping.Validation.Rules {
             foreach (var mappedField in mappingManager.GetFields(typeof (T))) {
                 var fieldFoundInSolrSchema = false;
                 foreach (var solrField in solrSchema.SolrFields) {
-                    if (solrField.Name.Equals(mappedField.Value)) {
+                    if (solrField.Name.Equals(mappedField.FieldName)) {
                         fieldFoundInSolrSchema = true;
                         break;
                     }
@@ -49,7 +49,7 @@ namespace SolrNet.Mapping.Validation.Rules {
 
                 if (!fieldFoundInSolrSchema) {
                     foreach (var dynamicField in solrSchema.SolrDynamicFields) {
-                        if (IsGlobMatch(dynamicField.Name, mappedField.Value)) {
+                        if (IsGlobMatch(dynamicField.Name, mappedField.FieldName)) {
                             fieldFoundInSolrSchema = true;
                             break;
                         }
@@ -59,7 +59,7 @@ namespace SolrNet.Mapping.Validation.Rules {
                 if (!fieldFoundInSolrSchema)
                     // If field couldn't be matched to any of the solrfield, dynamicfields throw an exception.
                     yield return new MappingValidationError(String.Format("No matching SolrField or DynamicField found in the Solr schema for document property '{0}' in type '{1}'.",
-                                                                          mappedField.Key.Name, typeof (T).FullName));
+                                                                          mappedField.Property.Name, typeof (T).FullName));
             }
         }
 

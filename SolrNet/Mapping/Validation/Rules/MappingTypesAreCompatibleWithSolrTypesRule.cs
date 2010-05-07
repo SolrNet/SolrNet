@@ -33,8 +33,8 @@ namespace SolrNet.Schema {
 
         public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             foreach (var x in mappingManager.GetFields(typeof (T)))
-                if (fieldTypeCheckers.ContainsKey(x.Key.PropertyType)) {
-                    MappingValidationItem i = fieldTypeCheckers[x.Key.PropertyType].Validate(solrSchema.FindSolrFieldByName(x.Value).Type, x.Key.Name, typeof(T));
+                if (fieldTypeCheckers.ContainsKey(x.Property.PropertyType)) {
+                    MappingValidationItem i = fieldTypeCheckers[x.Property.PropertyType].Validate(solrSchema.FindSolrFieldByName(x.FieldName).Type, x.Property.Name, typeof(T));
                     if (i != null)
                         yield return i;
                 }

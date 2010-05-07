@@ -40,20 +40,20 @@ namespace SolrNet.Mapping.Validation.Rules {
             var collectionFieldParser = new CollectionFieldParser(null); // Used to check if the type is a collection type.
             
             foreach(var prop in mappingManager.GetFields(typeof(T))) {
-                if (collectionFieldParser.CanHandleType(prop.Key.PropertyType)) { // Field is a collection so solr field should be too.
-                    var solrField = solrSchema.FindSolrFieldByName(prop.Value);
+                if (collectionFieldParser.CanHandleType(prop.Property.PropertyType)) { // Field is a collection so solr field should be too.
+                    var solrField = solrSchema.FindSolrFieldByName(prop.FieldName);
                     if (solrField != null) {
                         if(!solrField.IsMultiValued) {
-                            yield return new MappingValidationError(String.Format("SolrField '{0}' is not multivalued while mapped type '{1}' implements IEnumberable<T>.", solrField.Name, prop.Key.Name));
+                            yield return new MappingValidationError(String.Format("SolrField '{0}' is not multivalued while mapped type '{1}' implements IEnumberable<T>.", solrField.Name, prop.Property.Name));
                         }
                     }
                 } else { //Mapped type is not a collection so solr field shouldn't be either.
-                    var solrField = solrSchema.FindSolrFieldByName(prop.Value);
+                    var solrField = solrSchema.FindSolrFieldByName(prop.FieldName);
                     if (solrField != null)
                     {
                         if (solrField.IsMultiValued)
                         {
-                            yield return new MappingValidationError(String.Format("SolrField '{0}' is multivalued while mapped type '{1}' does not implement IEnumberable<T>.", solrField.Name, prop.Key.Name));
+                            yield return new MappingValidationError(String.Format("SolrField '{0}' is multivalued while mapped type '{1}' does not implement IEnumberable<T>.", solrField.Name, prop.Property.Name));
                         }
                     }
                 }

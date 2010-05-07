@@ -42,7 +42,7 @@ namespace SolrNet.Mapping.Validation.Rules {
                 if (solrField.IsRequired) {
                     bool fieldFoundInMappingOrCopyFields = false;
                     foreach (var mappedField in mappingManager.GetFields(typeof (T))) {
-                        if (mappedField.Value.Equals(solrField.Name)) {
+                        if (mappedField.FieldName.Equals(solrField.Name)) {
                             fieldFoundInMappingOrCopyFields = true;
                             break;
                         }

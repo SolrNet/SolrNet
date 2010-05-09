@@ -63,6 +63,27 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void UniqueKeyMatchesMappingRule_SchemaNull_MappingNotNull() {
+            var rule = new UniqueKeyMatchesMappingRule();
+            var mapper = new MappingManager();
+            var idProperty = typeof(SchemaMappingTestDocument).GetProperty("ID");
+            mapper.Add(idProperty);
+            mapper.SetUniqueKey(idProperty);
+            var validations = rule.Validate(typeof (SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
+            Assert.IsNotNull(validations);
+            Assert.GreaterThan(validations.Count, 0);
+        }
+
+        [Test]
+        public void UniqueKeyMatchesMappingRule_SchemaNotNull_MappingNull() {
+            var rule = new UniqueKeyMatchesMappingRule();
+            var schema = new SolrSchema {UniqueKey = "id"};
+            var validations = rule.Validate(typeof(SchemaMappingTestDocument), schema, new MappingManager()).ToList();
+            Assert.IsNotNull(validations);
+            Assert.GreaterThan(validations.Count, 0);            
+        }
+
+        [Test]
         public void RequiredSolrFieldForWhichNoCopyFieldExistsShouldReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");

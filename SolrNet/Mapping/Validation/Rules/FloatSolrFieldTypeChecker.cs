@@ -16,10 +16,16 @@
 
 #endregion
 
+using System;
+
 namespace SolrNet.Mapping.Validation.Rules {
     public class FloatSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
         public FloatSolrFieldTypeChecker()
             : base(new[] {"solr.TrieFloatField", "solr.FloatField", "solr.SortableFloatField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}
+
+        public override bool CanHandleType(Type propertyType) {
+            return propertyType == typeof (float);
+        }
     }
 }

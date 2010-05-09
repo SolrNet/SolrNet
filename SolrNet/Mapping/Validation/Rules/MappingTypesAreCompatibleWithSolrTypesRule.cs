@@ -22,23 +22,24 @@ using SolrNet.Schema;
 
 namespace SolrNet.Mapping.Validation.Rules {
     public class MappingTypesAreCompatibleWithSolrTypesRule : IValidationRule {
-        private readonly IDictionary<Type, ISolrFieldTypeChecker> fieldTypeCheckers;
+        private readonly ISolrFieldTypeChecker[] fieldTypeCheckers;
 
-        public MappingTypesAreCompatibleWithSolrTypesRule(IDictionary<Type, ISolrFieldTypeChecker> fieldTypeCheckers) {
+        public MappingTypesAreCompatibleWithSolrTypesRule(ISolrFieldTypeChecker[] fieldTypeCheckers) {
             this.fieldTypeCheckers = fieldTypeCheckers;
         }
 
         public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             foreach (var x in mappingManager.GetFields(propertyType)) {
-                if (!fieldTypeCheckers.ContainsKey(x.Property.PropertyType))
-                    continue;
                 var solrField = solrSchema.FindSolrFieldByName(x.FieldName);
                 if (solrField == null)
                     continue;
-                var checker = fieldTypeCheckers[x.Property.PropertyType];
-                var i = checker.Validate(solrField.Type, x.Property.Name, propertyType);
-                if (i != null)
-                    yield return i;
+                foreach (var checker in fieldTypeCheckers) {
+                    if (!checker.CanHandleType(propertyType))
+                        continue;
+                    var i = checker.Validate(solrField.Type, x.Property.Name, propertyType);
+                    if (i != null)
+                        yield return i;
+                }
             }
         }
     }

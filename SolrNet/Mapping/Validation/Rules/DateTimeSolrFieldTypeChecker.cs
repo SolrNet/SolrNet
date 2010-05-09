@@ -16,10 +16,16 @@
 
 #endregion
 
+using System;
+
 namespace SolrNet.Mapping.Validation.Rules {
     public class DateTimeSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
         public DateTimeSolrFieldTypeChecker()
             : base(new[] {"solr.TrieDateField", "solr.DateField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}
+
+        public override bool CanHandleType(Type propertyType) {
+            return propertyType == typeof (DateTime);
+        }
     }
 }

@@ -16,10 +16,16 @@
 
 #endregion
 
+using System;
+
 namespace SolrNet.Mapping.Validation.Rules {
     public class IntSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
         public IntSolrFieldTypeChecker()
             : base(new[] {"solr.TrieIntField", "solr.IntField", "solr.SortableIntField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}
+
+        public override bool CanHandleType(Type propertyType) {
+            return propertyType == typeof (int);
+        }
     }
 }

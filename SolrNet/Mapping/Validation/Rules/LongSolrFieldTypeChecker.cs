@@ -16,10 +16,16 @@
 
 #endregion
 
+using System;
+
 namespace SolrNet.Mapping.Validation.Rules {
     public class LongSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
         public LongSolrFieldTypeChecker()
             : base(new[] {"solr.TrieLongField", "solr.LongField", "solr.SortableLongField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}
+
+        public override bool CanHandleType(Type propertyType) {
+            return propertyType == typeof (long);
+        }
     }
 }

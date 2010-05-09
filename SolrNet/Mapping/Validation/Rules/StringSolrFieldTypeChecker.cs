@@ -16,10 +16,16 @@
 
 #endregion
 
+using System;
+
 namespace SolrNet.Mapping.Validation.Rules {
     public class StringSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
         public StringSolrFieldTypeChecker()
             : base(new[] {"solr.StrField", "solr.TextField"},
                    null) {}
+
+        public override bool CanHandleType(Type propertyType) {
+            return propertyType == typeof (string);
+        }
     }
 }

@@ -39,5 +39,7 @@ namespace SolrNet.Mapping.Validation.Rules {
 
             return new MappingValidationError(String.Format("Property '{0}' of type '{1}' cannot be stored in solr field type '{2}'.", propertyName, propertyType.FullName, solrFieldType.Name));
         }
+
+        public abstract bool CanHandleType(Type propertyType);
     }
 }

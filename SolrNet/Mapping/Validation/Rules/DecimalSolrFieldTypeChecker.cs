@@ -16,10 +16,16 @@
 
 #endregion
 
+using System;
+
 namespace SolrNet.Mapping.Validation.Rules {
     public class DecimalSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
         public DecimalSolrFieldTypeChecker()
             : base(new[] {"solr.TrieFloatField", "solr.TrieDoubleField", "solr.FloatField", "solr.DoubleField", "solr.SortableFloatField", "solr.SortableDoubleField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}
+
+        public override bool CanHandleType(Type propertyType) {
+            return propertyType == typeof (decimal);
+        }
     }
 }

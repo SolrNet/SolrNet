@@ -63,7 +63,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         }
 
         [Test]
-        [Ignore("Requires a running solr instance")]
+        [Category("Integration")]
         public void Ping_Query() {
             var configStore = new DefaultConfigurationStore();
             var configuration = new MutableConfiguration("facility");
@@ -225,7 +225,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         }
 
         [Test]
-        [Ignore("Requires a running solr instance")]
+        [Category("Integration")]
         public void DictionaryDocument() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
@@ -241,7 +241,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         }
 
         [Test]
-        [Ignore("Requires a running solr instance")]
+        [Category("Integration")]
         public void DictionaryDocument_add() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();

@@ -1,3 +1,12 @@
+- Upgraded to Windsor 2.1.1
+- Added StructureMap integration
+- Fixed culture-related bug in highlighting parameters
+- Fixed culture-related bug in range query
+- Added MaxSegments and ExpungeDeletes parameters to commit/optimize
+- Breaking change: renamed WaitOptions to CommitOptions
+- Breaking change: fixed field boosting, was of type int, now is float
+- Added field index-time boosting (issue #98)
+- Removed obsolete exceptions: BadMappingException, CollectionTypeNotSupportedException, FieldNotFoundException
 - Added support for delete by id+query in the same request (issue #50)
 - Fixed issue #95 : Highlights didn't support several snippets in results
 - Fixed performance issue with SolrMultipleCriteriaQuery (issue #94)

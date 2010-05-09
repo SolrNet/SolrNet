@@ -21,6 +21,7 @@ using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.DSL.Impl;
 using SolrNet.Impl;
+using SolrNet.Utils;
 
 namespace SolrNet.DSL {
     /// <summary>
@@ -58,7 +59,8 @@ namespace SolrNet.DSL {
         /// <typeparam name="T"></typeparam>
         /// <param name="documents"></param>
         public static void Add<T>(IEnumerable<T> documents) {
-            var cmd = new AddCommand<T>(documents, ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<T>>());
+            var docs = Func.Select(documents, d => new KeyValuePair<T, double?>(d, null));
+            var cmd = new AddCommand<T>(docs, ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<T>>());
             cmd.Execute(Connection);
         }
 
@@ -210,6 +212,31 @@ namespace SolrNet.DSL {
         }
 
         /// <summary>
+        /// Commits posted documents
+        /// </summary>
+        /// <param name="waitFlush">wait for flush</param>
+        /// <param name="waitSearcher">wait for new searcher</param>
+        /// <param name="expungeDeletes">Merge segments with deletes away</param>
+        public static void Commit(bool waitFlush, bool waitSearcher, bool expungeDeletes)
+        {
+            var cmd = new CommitCommand { WaitFlush = waitFlush, WaitSearcher = waitSearcher, ExpungeDeletes = expungeDeletes };
+            cmd.Execute(Connection);
+        }
+
+        /// <summary>
+        /// Commits posted documents
+        /// </summary>
+        /// <param name="waitFlush">wait for flush</param>
+        /// <param name="waitSearcher">wait for new searcher</param>
+        /// <param name="expungeDeletes">Merge segments with deletes away</param>
+        /// <param name="maxSegments">Optimizes down to, at most, this number of segments</param>
+        public static void Commit(bool waitFlush, bool waitSearcher, bool expungeDeletes, int maxSegments)
+        {
+            var cmd = new CommitCommand { WaitFlush = waitFlush, WaitSearcher = waitSearcher, ExpungeDeletes = expungeDeletes, MaxSegments = maxSegments };
+            cmd.Execute(Connection);
+        }
+
+        /// <summary>
         /// Optimizes Solr's index
         /// </summary>
         public static void Optimize() {
@@ -224,6 +251,31 @@ namespace SolrNet.DSL {
         /// <param name="waitSearcher">Wait for new searcher</param>
         public static void Optimize(bool waitFlush, bool waitSearcher) {
             var cmd = new OptimizeCommand {WaitFlush = waitFlush, WaitSearcher = waitSearcher};
+            cmd.Execute(Connection);
+        }
+
+        /// <summary>
+        /// Optimizes Solr's index
+        /// </summary>
+        /// <param name="waitFlush">Wait for flush</param>
+        /// <param name="waitSearcher">Wait for new searcher</param>
+        /// <param name="expungeDeletes">Merge segments with deletes away</param>
+        public static void Optimize(bool waitFlush, bool waitSearcher, bool expungeDeletes)
+        {
+            var cmd = new OptimizeCommand { WaitFlush = waitFlush, WaitSearcher = waitSearcher, ExpungeDeletes = expungeDeletes };
+            cmd.Execute(Connection);
+        }
+
+        /// <summary>
+        /// Optimizes Solr's index
+        /// </summary>
+        /// <param name="waitFlush">Wait for flush</param>
+        /// <param name="waitSearcher">Wait for new searcher</param>
+        /// <param name="expungeDeletes">Merge segments with deletes away</param>
+        /// <param name="maxSegments">Optimizes down to, at most, this number of segments</param>
+        public static void Optimize(bool waitFlush, bool waitSearcher, bool expungeDeletes, int maxSegments)
+        {
+            var cmd = new OptimizeCommand { WaitFlush = waitFlush, WaitSearcher = waitSearcher, ExpungeDeletes = expungeDeletes, MaxSegments = maxSegments };
             cmd.Execute(Connection);
         }
     }

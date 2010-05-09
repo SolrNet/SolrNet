@@ -1,1 +1,1 @@
-msbuild solrnet.proj /m /t:test
+msbuild solrnet.proj /m /t:integrationtests

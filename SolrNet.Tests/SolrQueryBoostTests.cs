@@ -27,14 +27,6 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void Boost_with_culture() {
-            using (ThreadSettings.Culture("fr-FR")) {
-                var q = new SolrQueryBoost(new SolrQuery("solr"), 34.2);
-                Assert.AreEqual("(solr)^34.2", q.Query);                
-            }
-        }
-
-        [Test]
         public void Boost_with_high_value() {
             var q = new SolrQueryBoost(new SolrQuery("solr"), 34.2E10);
             Assert.AreEqual("(solr)^342000000000", q.Query);

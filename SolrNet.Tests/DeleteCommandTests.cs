@@ -55,9 +55,10 @@ namespace SolrNet.Tests {
 			var q = mocks.CreateMock<ISolrQuery>();
 			With.Mocks(mocks).Expecting(delegate {
 				const string queryString = "someQuery";
-				Expect.Call(q.Query).Repeat.Once().Return(queryString);
-				Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", queryString))).Repeat.Once().
-					Return("");
+				Expect.On(q).Call(q.Query).Repeat.Once().Return(queryString);
+				Expect.On(conn).Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", queryString)))
+                    .Repeat.Once()
+                    .Return("");
 			}).Verify(delegate {
                 var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q));
 				cmd.Execute(conn);
@@ -73,8 +74,10 @@ namespace SolrNet.Tests {
             With.Mocks(mocks).Expecting(delegate
             {
                 const string queryString = "someQuery";
-                Expect.Call(q.Query).Repeat.Once().Return(queryString);
-                Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id><id>{1}</id><query>{2}</query></delete>", ids[0], ids[1], queryString))).Repeat.Once().
+                Expect.On(q).Call(q.Query).Repeat.Once().Return(queryString);
+                Expect.On(conn).Call(conn.Post("/update", string.Format("<delete><id>{0}</id><id>{1}</id><query>{2}</query></delete>", ids[0], ids[1], queryString)))
+                    .Repeat.Once()
+                    .
                     Return("");
             }).Verify(delegate
             {
@@ -89,7 +92,9 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(conn.Post("/update", string.Format("<delete fromCommitted=\"true\"><id>{0}</id></delete>", id))).Repeat.Once().Return("");
+				Expect.On(conn).Call(conn.Post("/update", string.Format("<delete fromCommitted=\"true\"><id>{0}</id></delete>", id)))
+                    .Repeat.Once()
+                    .Return("");
 			}).Verify(delegate {
                 var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null)) { FromCommitted = true };
 				cmd.Execute(conn);
@@ -102,7 +107,9 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(conn.Post("/update", string.Format("<delete fromPending=\"false\" fromCommitted=\"false\"><id>{0}</id></delete>", id))).Repeat.Once().Return("");
+				Expect.On(conn).Call(conn.Post("/update", string.Format("<delete fromPending=\"false\" fromCommitted=\"false\"><id>{0}</id></delete>", id)))
+                    .Repeat.Once()
+                    .Return("");
 			}).Verify(delegate {
                 var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null)) { FromCommitted = false, FromPending = false };
 				cmd.Execute(conn);
@@ -115,7 +122,9 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var conn = mocks.CreateMock<ISolrConnection>();
 			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(conn.Post("/update", string.Format("<delete fromPending=\"true\"><id>{0}</id></delete>", id))).Repeat.Once().Return("");
+				Expect.On(conn).Call(conn.Post("/update", string.Format("<delete fromPending=\"true\"><id>{0}</id></delete>", id)))
+                    .Repeat.Once()
+                    .Return("");
 			}).Verify(delegate {
                 var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null)) { FromPending = true };
 				cmd.Execute(conn);

@@ -36,26 +36,30 @@ namespace SolrNet.Impl {
             this.documentSerializer = documentSerializer;
         }
 
-        public void Commit(WaitOptions options) {
-            options = options ?? new WaitOptions();
-            var cmd = new CommitCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
+        public void Commit(CommitOptions options) {
+            options = options ?? new CommitOptions();
+            var cmd = new CommitCommand {
+                WaitFlush = options.WaitFlush, 
+                WaitSearcher = options.WaitSearcher,
+                ExpungeDeletes = options.ExpungeDeletes,
+                MaxSegments = options.MaxSegments,
+            };
             Send(cmd);
         }
 
-        public void Optimize(WaitOptions options) {
-            options = options ?? new WaitOptions();
-            var cmd = new OptimizeCommand {WaitFlush = options.WaitFlush, WaitSearcher = options.WaitSearcher};
+        public void Optimize(CommitOptions options) {
+            options = options ?? new CommitOptions();
+            var cmd = new OptimizeCommand {
+                WaitFlush = options.WaitFlush, 
+                WaitSearcher = options.WaitSearcher,
+                ExpungeDeletes = options.ExpungeDeletes,
+                MaxSegments = options.MaxSegments,
+            };
             Send(cmd);
         }
 
         public void Rollback() {
             Send(new RollbackCommand());
-        }
-
-        public ISolrBasicOperations<T> Add(IEnumerable<T> docs) {
-            var cmd = new AddCommand<T>(docs, documentSerializer);
-            Send(cmd);
-            return this;
         }
 
         public ISolrBasicOperations<T> AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {

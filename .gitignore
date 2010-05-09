@@ -5,6 +5,10 @@ _ReSharper.*
 *.suo
 *.bak
 *.sln.cache
+*.user
+Help/*
+build/*
+tools/Sandcastle/Data/Reflection/*
 merged
 solr-*/solr/data
 solr-*/logs

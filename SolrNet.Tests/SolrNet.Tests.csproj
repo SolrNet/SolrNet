@@ -38,6 +38,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.MicroKernel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Castle.MicroKernel.dll</HintPath>
@@ -79,6 +83,7 @@
     <Compile Include="AddCommandTests.cs" />
     <Compile Include="AllPropertiesMappingManagerTests.cs" />
     <Compile Include="AttributesMappingManagerTests.cs" />
+    <Compile Include="CommitCommandTests.cs" />
     <Compile Include="CommonServiceLocatorTests.cs" />
     <Compile Include="DateTimeFieldParserTests.cs" />
     <Compile Include="GetSchemaCommandTests.cs" />
@@ -99,6 +104,7 @@
     <Compile Include="MockConnection.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
+    <Compile Include="OptimizeCommandTests.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidationManagerTests.cs" />
     <Compile Include="SolrSchemaParserTests.cs" />
@@ -134,7 +140,6 @@
     <Compile Include="SolrServerTests.cs" />
     <Compile Include="SortOrderTests.cs" />
     <Compile Include="ThreadHelper.cs" />
-    <Compile Include="ThreadSettings.cs" />
     <Compile Include="TypeHelperTests.cs" />
     <Compile Include="ValidationRuleTests.cs" />
   </ItemGroup>

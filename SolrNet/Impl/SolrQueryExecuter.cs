@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using SolrNet.Commands.Parameters;
 using SolrNet.Utils;
 
@@ -202,7 +203,7 @@ namespace SolrNet.Impl {
                         param["hl.simple.post"] = h.AfterTerm;
 
                     if (h.RegexSlop.HasValue)
-                        param["hl.regex.slop"] = h.RegexSlop.Value.ToString();
+                        param["hl.regex.slop"] = Convert.ToString(h.RegexSlop.Value, CultureInfo.InvariantCulture);
 
                     if (h.RegexPattern != null)
                         param["hl.regex.pattern"] = h.RegexPattern;

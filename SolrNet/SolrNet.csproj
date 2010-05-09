@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CEEB8690-3E08-4440-B647-787A58E71CFA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -114,16 +114,13 @@
     <Compile Include="Mapping\AttributesMappingManager.cs" />
     <Compile Include="Commands\Parameters\HighlightingParameters.cs" />
     <Compile Include="Commands\Parameters\QueryOptions.cs" />
-    <Compile Include="Commands\Parameters\WaitOptions.cs" />
+    <Compile Include="Commands\Parameters\CommitOptions.cs" />
     <Compile Include="Commands\PingCommand.cs" />
-    <Compile Include="Exceptions\CollectionTypeNotSupportedException.cs" />
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\CommitCommand.cs" />
     <Compile Include="Commands\DeleteCommand.cs" />
     <Compile Include="Commands\Parameters\ISolrDeleteParam.cs" />
     <Compile Include="Commands\OptimizeCommand.cs" />
-    <Compile Include="Exceptions\BadMappingException.cs" />
-    <Compile Include="Exceptions\FieldNotFoundException.cs" />
     <Compile Include="Exceptions\InvalidFieldException.cs" />
     <Compile Include="Exceptions\InvalidSortOrderException.cs" />
     <Compile Include="Exceptions\NoUniqueKeyException.cs" />

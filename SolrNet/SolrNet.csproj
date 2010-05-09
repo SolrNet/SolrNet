@@ -143,6 +143,7 @@
     <Compile Include="ISolrReadOnlyOperations.cs" />
     <Compile Include="Mapping\MappingManager.cs" />
     <Compile Include="Mapping\MemoizingMappingManager.cs" />
+    <Compile Include="Mapping\Validation\Rules\AbstractSolrFieldTypeChecker.cs" />
     <Compile Include="Mapping\Validation\Rules\IValidationRule.cs" />
     <Compile Include="Mapping\Validation\Rules\MappedPropertiesIsInSolrSchemaRule.cs" />
     <Compile Include="Mapping\Validation\Rules\MultivaluedMappedToCollectionRule.cs" />

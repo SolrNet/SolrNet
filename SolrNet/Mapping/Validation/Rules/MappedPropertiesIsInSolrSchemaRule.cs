@@ -31,14 +31,14 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// Validates that all properties in the mapping are present in the Solr schema
         /// as either a SolrField or a DynamicField
         /// </summary>
-        /// <typeparam name="T">The type which mappings will be validated.</typeparam>
+        /// <param name="documentType">Document type</param>
         /// <param name="solrSchema">The solr schema.</param>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <returns>
         /// A collection of <see cref="MappingValidationItem"/> objects with any issues found during validation.
         /// </returns>
-        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
-            foreach (var mappedField in mappingManager.GetFields(propertyType)) {
+        public IEnumerable<MappingValidationItem> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+            foreach (var mappedField in mappingManager.GetFields(documentType)) {
                 var fieldFoundInSolrSchema = false;
                 foreach (var solrField in solrSchema.SolrFields) {
                     if (solrField.Name.Equals(mappedField.FieldName)) {
@@ -59,7 +59,7 @@ namespace SolrNet.Mapping.Validation.Rules {
                 if (!fieldFoundInSolrSchema)
                     // If field couldn't be matched to any of the solrfield, dynamicfields throw an exception.
                     yield return new MappingValidationError(String.Format("No matching SolrField or DynamicField found in the Solr schema for document property '{0}' in type '{1}'.",
-                                                                          mappedField.Property.Name, propertyType.FullName));
+                                                                          mappedField.Property.Name, documentType.FullName));
             }
         }
 

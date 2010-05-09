@@ -28,17 +28,17 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// <summary>
         /// Validates that the uniqueKey mapped in the type is the same as in the Solr schema.
         /// </summary>
-        /// <typeparam name="T">The type which mappings will be validated.</typeparam>
+        /// <param name="documentType">Document type</param>
         /// <param name="solrSchema">The solr schema.</param>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <returns>
         /// A collection of <see cref="MappingValidationItem"/> objects with any issues found during validation.
         /// </returns>
-        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+        public IEnumerable<MappingValidationItem> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             if (solrSchema.UniqueKey != null)
-                if (!mappingManager.GetUniqueKey(propertyType).FieldName.Equals(solrSchema.UniqueKey))
+                if (!mappingManager.GetUniqueKey(documentType).FieldName.Equals(solrSchema.UniqueKey))
                     yield return new MappingValidationError(String.Format("Solr schema unique key '{0}' does not match document unique key '{1}'.",
-                                                 solrSchema.UniqueKey, mappingManager.GetUniqueKey(propertyType)));
+                                                 solrSchema.UniqueKey, mappingManager.GetUniqueKey(documentType)));
 
         }
     }

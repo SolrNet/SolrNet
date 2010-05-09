@@ -30,18 +30,18 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// Validates that all SolrFields in the SolrSchema which are required are
         /// either present in the mapping or as a CopyField.
         /// </summary>
-        /// <typeparam name="T">The type which mappings will be validated.</typeparam>
+        /// <param name="documentType">Document type</param>
         /// <param name="solrSchema">The solr schema.</param>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <returns>
         /// A collection of <see cref="MappingValidationItem"/> objects with any issues found during validation.
         /// </returns>
-        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+        public IEnumerable<MappingValidationItem> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
 
             foreach (SolrField solrField in solrSchema.SolrFields) {
                 if (solrField.IsRequired) {
                     bool fieldFoundInMappingOrCopyFields = false;
-                    foreach (var mappedField in mappingManager.GetFields(propertyType)) {
+                    foreach (var mappedField in mappingManager.GetFields(documentType)) {
                         if (mappedField.FieldName.Equals(solrField.Name)) {
                             fieldFoundInMappingOrCopyFields = true;
                             break;
@@ -59,7 +59,7 @@ namespace SolrNet.Mapping.Validation.Rules {
 
                     if (!fieldFoundInMappingOrCopyFields)
                         yield return new MappingValidationError(String.Format("Required field '{0}' in the Solr schema is not mapped in type '{1}'.",
-                                                     solrField.Name, propertyType.FullName));
+                                                     solrField.Name, documentType.FullName));
                 }
             }
         }

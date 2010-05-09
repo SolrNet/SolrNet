@@ -28,15 +28,15 @@ namespace SolrNet.Mapping.Validation.Rules {
             this.fieldTypeCheckers = fieldTypeCheckers;
         }
 
-        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
-            foreach (var x in mappingManager.GetFields(propertyType)) {
+        public IEnumerable<MappingValidationItem> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+            foreach (var x in mappingManager.GetFields(documentType)) {
                 var solrField = solrSchema.FindSolrFieldByName(x.FieldName);
                 if (solrField == null)
                     continue;
                 foreach (var checker in fieldTypeCheckers) {
-                    if (!checker.CanHandleType(propertyType))
+                    if (!checker.CanHandleType(x.Property.PropertyType))
                         continue;
-                    var i = checker.Validate(solrField.Type, x.Property.Name, propertyType);
+                    var i = checker.Validate(solrField.Type, x.Property.Name, x.Property.PropertyType);
                     if (i != null)
                         yield return i;
                 }

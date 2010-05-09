@@ -30,16 +30,16 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// <summary>
         /// Validates the specified the mapped document against the solr schema.
         /// </summary>
-        /// <typeparam name="T">The type which mappings will be validated.</typeparam>
+        /// <param name="documentType">Document type</param>
         /// <param name="solrSchema">The solr schema.</param>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <returns>
         /// A collection of <see cref="MappingValidationItem"/> objects with any issues found during validation.
         /// </returns>
-        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+        public IEnumerable<MappingValidationItem> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             var collectionFieldParser = new CollectionFieldParser(null); // Used to check if the type is a collection type.
 
-            foreach (var prop in mappingManager.GetFields(propertyType)) {
+            foreach (var prop in mappingManager.GetFields(documentType)) {
                 if (collectionFieldParser.CanHandleType(prop.Property.PropertyType)) { // Field is a collection so solr field should be too.
                     var solrField = solrSchema.FindSolrFieldByName(prop.FieldName);
                     if (solrField != null) {

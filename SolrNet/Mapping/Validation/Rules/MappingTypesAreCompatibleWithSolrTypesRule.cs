@@ -18,10 +18,9 @@
 
 using System;
 using System.Collections.Generic;
-using SolrNet.Mapping.Validation;
-using SolrNet.Mapping.Validation.Rules;
+using SolrNet.Schema;
 
-namespace SolrNet.Schema {
+namespace SolrNet.Mapping.Validation.Rules {
     public class MappingTypesAreCompatibleWithSolrTypesRule : IValidationRule {
         private readonly IDictionary<Type, ISolrFieldTypeChecker> fieldTypeCheckers;
 

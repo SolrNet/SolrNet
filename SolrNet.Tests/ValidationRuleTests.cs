@@ -170,6 +170,17 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void MappingTypesAreCompatibleWithSolrTypesRule_with_nonexistant_rule() {
+            var rule = new MappingTypesAreCompatibleWithSolrTypesRule(new Dictionary<Type, ISolrFieldTypeChecker> {
+                {typeof(string), new StringSolrFieldTypeChecker()},
+            });
+            var mappingManager = new MappingManager();
+            mappingManager.Add(typeof(SchemaMappingTestDocument).GetProperty("Name"));
+            var validations = rule.Validate(typeof(SchemaMappingTestDocument), new SolrSchema(), mappingManager).ToList();
+
+        }
+
+        [Test]
         public void MutivaluedSolrFieldNotMappedToCollectionShouldReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("Name"), "name");

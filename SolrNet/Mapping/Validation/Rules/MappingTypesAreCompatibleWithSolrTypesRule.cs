@@ -28,17 +28,18 @@ namespace SolrNet.Mapping.Validation.Rules {
             this.fieldTypeCheckers = fieldTypeCheckers;
         }
 
-        #region IValidationRule Members
-
         public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
-            foreach (var x in mappingManager.GetFields(propertyType))
-                if (fieldTypeCheckers.ContainsKey(x.Property.PropertyType)) {
-                    MappingValidationItem i = fieldTypeCheckers[x.Property.PropertyType].Validate(solrSchema.FindSolrFieldByName(x.FieldName).Type, x.Property.Name, propertyType);
-                    if (i != null)
-                        yield return i;
-                }
+            foreach (var x in mappingManager.GetFields(propertyType)) {
+                if (!fieldTypeCheckers.ContainsKey(x.Property.PropertyType))
+                    continue;
+                var solrField = solrSchema.FindSolrFieldByName(x.FieldName);
+                if (solrField == null)
+                    continue;
+                var checker = fieldTypeCheckers[x.Property.PropertyType];
+                var i = checker.Validate(solrField.Type, x.Property.Name, propertyType);
+                if (i != null)
+                    yield return i;
+            }
         }
-
-        #endregion
     }
 }

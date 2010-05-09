@@ -41,8 +41,8 @@ namespace SolrNet.Mapping.Validation.Rules {
                 return null;
             if (WarningTypes != null && WarningTypes.Contains(solrFieldType.Type))
                 return new MappingValidationWarning(String.Format("Property '{0}' of type '{1}' is mapped to a solr field of type '{2}'. These types are not fully compatible.", propertyName, propertyType.FullName, solrFieldType.Name));
-
-            return new MappingValidationError(String.Format("Property '{0}' of type '{1}' cannot be storred in solr field type '{2}'.", propertyName, propertyType.FullName, solrFieldType.Name));
+                       
+            return new MappingValidationError(String.Format("Property '{0}' of type '{1}' cannot be stored in solr field type '{2}'.", propertyName, propertyType.FullName, solrFieldType.Name));
         }
 
         #endregion

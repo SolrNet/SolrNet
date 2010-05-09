@@ -121,14 +121,14 @@ namespace SolrNet.Impl {
             });
         }
 
-        public void Commit(WaitOptions options) {
+        public void Commit(CommitOptions options) {
             basicServer.Commit(options);
         }
 
         /// <summary>
         /// Commits posts
         /// </summary>
-        public void Optimize(WaitOptions options) {
+        public void Optimize(CommitOptions options) {
             basicServer.Optimize(options);
         }
 
@@ -141,7 +141,7 @@ namespace SolrNet.Impl {
         }
 
         public ISolrOperations<T> Add(IEnumerable<T> docs) {
-            basicServer.Add(docs);
+            basicServer.AddWithBoost(Func.Select(docs, d => new KeyValuePair<T, double?>(d, null)));
             return this;
         }
 

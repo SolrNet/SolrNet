@@ -151,6 +151,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual(1, validationResults.Count);           
         }
 
+        [Test]
         public void StringMappedToStringShouldNotReturnError()
         {
             var mappingTypesCompatibleRule = new MappingTypesAreCompatibleWithSolrTypesRule(new Dictionary<Type, ISolrFieldTypeChecker> {

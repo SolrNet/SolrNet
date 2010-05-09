@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 
@@ -43,12 +42,12 @@ namespace SolrNet.Mapping.Validation {
         /// <summary>
         /// Validates the specified validation rules.
         /// </summary>
-        /// <typeparam name="T">The type of which the mapping needs to be validated</typeparam>
+        /// <param name="documentType">The document type which needs to be validated</param>
         /// <param name="schema">The Solr schema.</param>
         /// <returns>A collection of <see cref="MappingValidationItem"/> objects with the problems found during validation. If Any.</returns>
-        public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema schema) {
+        public IEnumerable<MappingValidationItem> Validate(Type documentType, SolrSchema schema) {
             foreach (var rule in rules) {
-                var items = rule.Validate<T>(schema, mappingManager);
+                var items = rule.Validate(documentType, schema, mappingManager);
                 foreach (var i in items)
                     yield return i;
             }

@@ -34,11 +34,11 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// <returns>
         /// A collection of <see cref="MappingValidationItem"/> objects with any issues found during validation.
         /// </returns>
-        public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             if (solrSchema.UniqueKey != null)
-                if (!mappingManager.GetUniqueKey(typeof(T)).FieldName.Equals(solrSchema.UniqueKey))
+                if (!mappingManager.GetUniqueKey(propertyType).FieldName.Equals(solrSchema.UniqueKey))
                     yield return new MappingValidationError(String.Format("Solr schema unique key '{0}' does not match document unique key '{1}'.",
-                                                 solrSchema.UniqueKey, mappingManager.GetUniqueKey(typeof (T))));
+                                                 solrSchema.UniqueKey, mappingManager.GetUniqueKey(propertyType)));
 
         }
     }

@@ -28,9 +28,9 @@ namespace SolrNet.Mapping.Validation {
         /// <summary>
         /// Validates the specified validation rules.
         /// </summary>
-        /// <typeparam name="T">The type of which the mapping needs to be validated</typeparam>
+        /// <param name="documentType">The document type which needs to be validated</param>
         /// <param name="schema">The Solr schema.</param>
         /// <returns>A collection of <see cref="MappingValidationItem"/> objects with the problems found during validation. If Any.</returns>
-	    IEnumerable<MappingValidationItem> Validate<T>(SolrSchema schema);
+	    IEnumerable<MappingValidationItem> Validate(Type documentType, SolrSchema schema);
 	}
 }

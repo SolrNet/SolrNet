@@ -36,10 +36,10 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// <returns>
         /// A collection of <see cref="MappingValidationItem"/> objects with any issues found during validation.
         /// </returns>
-        public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             var collectionFieldParser = new CollectionFieldParser(null); // Used to check if the type is a collection type.
-            
-            foreach(var prop in mappingManager.GetFields(typeof(T))) {
+
+            foreach (var prop in mappingManager.GetFields(propertyType)) {
                 if (collectionFieldParser.CanHandleType(prop.Property.PropertyType)) { // Field is a collection so solr field should be too.
                     var solrField = solrSchema.FindSolrFieldByName(prop.FieldName);
                     if (solrField != null) {

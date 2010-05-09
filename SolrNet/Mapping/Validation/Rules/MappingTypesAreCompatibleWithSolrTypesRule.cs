@@ -30,10 +30,10 @@ namespace SolrNet.Mapping.Validation.Rules {
 
         #region IValidationRule Members
 
-        public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
-            foreach (var x in mappingManager.GetFields(typeof (T)))
+        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+            foreach (var x in mappingManager.GetFields(propertyType))
                 if (fieldTypeCheckers.ContainsKey(x.Property.PropertyType)) {
-                    MappingValidationItem i = fieldTypeCheckers[x.Property.PropertyType].Validate(solrSchema.FindSolrFieldByName(x.FieldName).Type, x.Property.Name, typeof(T));
+                    MappingValidationItem i = fieldTypeCheckers[x.Property.PropertyType].Validate(solrSchema.FindSolrFieldByName(x.FieldName).Type, x.Property.Name, propertyType);
                     if (i != null)
                         yield return i;
                 }

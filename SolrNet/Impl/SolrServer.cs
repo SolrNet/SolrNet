@@ -215,7 +215,7 @@ namespace SolrNet.Impl {
 
         public IEnumerable<MappingValidationItem> Validate() {
             var schema = schemaParser.Parse(GetSchema());
-            return _schemaMappingValidator.Validate<T>(schema);
+            return _schemaMappingValidator.Validate(typeof(T), schema);
         }
 
         public string Send(ISolrCommand cmd) {

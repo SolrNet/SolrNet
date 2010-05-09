@@ -16,6 +16,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -33,7 +34,7 @@ namespace SolrNet.Tests {
             var mappingManager = new MappingManager();
             var mappingValidationManager = new MappingValidator(mappingManager, new[] {new DummyValidationRuleError()});
 
-            var validationResults = mappingValidationManager.Validate<SchemaMappingTestDocument>(new SolrSchema()).ToList();
+            var validationResults = mappingValidationManager.Validate(typeof(SchemaMappingTestDocument), new SolrSchema()).ToList();
 
             Assert.AreEqual(1, validationResults.Count);
         }
@@ -48,13 +49,13 @@ namespace SolrNet.Tests {
     }
 
     public class DummyValidationRuleError : IValidationRule {
-        public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             return new MappingValidationItem[] {new MappingValidationError("Dummy error validation rule")};
         }
     }
 
     public class DummyValidationRuleWarning : IValidationRule {
-        public IEnumerable<MappingValidationItem> Validate<T>(SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             return new MappingValidationItem[] {new MappingValidationError("Dummy warning validation rule")};
         }
     }

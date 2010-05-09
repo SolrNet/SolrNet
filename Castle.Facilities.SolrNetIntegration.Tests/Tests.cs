@@ -278,7 +278,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
             container.AddFacility("solr", solrFacility);
-            var validator = container.Resolve<IMappingValidationManager>();
+            var validator = container.Resolve<IMappingValidator>();
         }
 
         public class Document {}

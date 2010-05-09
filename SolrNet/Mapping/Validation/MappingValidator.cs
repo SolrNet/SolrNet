@@ -26,16 +26,16 @@ namespace SolrNet.Mapping.Validation {
     /// <summary>
     /// Manages the validation of a mapping against a solr schema XML document.
     /// </summary>
-    public class MappingValidationManager : IMappingValidationManager {
+    public class MappingValidator : IMappingValidator {
         private readonly IReadOnlyMappingManager mappingManager;
         private readonly IValidationRule[] rules;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MappingValidationManager"/> class.
+        /// Initializes a new instance of the <see cref="MappingValidator"/> class.
         /// </summary>
         /// <param name="mappingManager">The mapping manager that is used to map types to and from their Solr representation.</param>
         /// <param name="rules">Validation rules</param>
-        public MappingValidationManager(IReadOnlyMappingManager mappingManager, IValidationRule[] rules) {
+        public MappingValidator(IReadOnlyMappingManager mappingManager, IValidationRule[] rules) {
             this.mappingManager = mappingManager;
             this.rules = rules;
         }

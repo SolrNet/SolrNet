@@ -36,7 +36,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
             mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("Name"));
 
-            var schemaManager = new MappingValidationManager(mgr, new[] {new UniqueKeyMatchesMappingRule()});
+            var schemaManager = new MappingValidator(mgr, new[] {new UniqueKeyMatchesMappingRule()});
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             var solrSchemaParser = new SolrSchemaParser();
@@ -52,7 +52,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
             mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("ID"));
 
-            var schemaManager = new MappingValidationManager(mgr, new[] { new UniqueKeyMatchesMappingRule() });
+            var schemaManager = new MappingValidator(mgr, new[] { new UniqueKeyMatchesMappingRule() });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             var solrSchemaParser = new SolrSchemaParser();
@@ -69,7 +69,7 @@ namespace SolrNet.Tests {
             mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("ID"));
 
 
-            var schemaManager = new MappingValidationManager(mgr, new[] {new RequiredFieldsAreMappedRule()});
+            var schemaManager = new MappingValidator(mgr, new[] {new RequiredFieldsAreMappedRule()});
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             var solrSchemaParser = new SolrSchemaParser();
@@ -86,7 +86,7 @@ namespace SolrNet.Tests {
             mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("ID"));
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
 
-            var schemaManager = new MappingValidationManager(mgr, new[] { new MappedPropertiesIsInSolrSchemaRule() });
+            var schemaManager = new MappingValidator(mgr, new[] { new MappedPropertiesIsInSolrSchemaRule() });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             var solrSchemaParser = new SolrSchemaParser();
@@ -104,7 +104,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Producer"), "producer_s");
 
-            var schemaManager = new MappingValidationManager(mgr, new[] { new MappedPropertiesIsInSolrSchemaRule() });
+            var schemaManager = new MappingValidator(mgr, new[] { new MappedPropertiesIsInSolrSchemaRule() });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             var solrSchemaParser = new SolrSchemaParser();
@@ -122,7 +122,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("FieldNotSolrSchema"), "FieldNotSolrSchema");
 
-            var schemaManager = new MappingValidationManager(mgr, new[] { new MappedPropertiesIsInSolrSchemaRule() });
+            var schemaManager = new MappingValidator(mgr, new[] { new MappedPropertiesIsInSolrSchemaRule() });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             var solrSchemaParser = new SolrSchemaParser();
@@ -141,7 +141,7 @@ namespace SolrNet.Tests {
             var mgr = new MappingManager();
             mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("FieldNotSolrSchema"), "popularity");
 
-            var schemaManager = new MappingValidationManager(mgr, new[] { mappingTypesCompatibleRule });
+            var schemaManager = new MappingValidator(mgr, new[] { mappingTypesCompatibleRule });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMappingTypes.xml");
             var solrSchemaParser = new SolrSchemaParser();
@@ -158,7 +158,7 @@ namespace SolrNet.Tests {
             });
 
             var mgr = new MappingManager();
-            var schemaManager = new MappingValidationManager(mgr, new[] { mappingTypesCompatibleRule });
+            var schemaManager = new MappingValidator(mgr, new[] { mappingTypesCompatibleRule });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMappingTypes.xml");
             var solrSchemaParser = new SolrSchemaParser();
@@ -173,7 +173,7 @@ namespace SolrNet.Tests {
             var mgr = new MappingManager();
             mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("Name"), "name");
 
-            var schemaManager = new MappingValidationManager(mgr, new[] { new MultivaluedMappedToCollectionRule() });
+            var schemaManager = new MappingValidator(mgr, new[] { new MultivaluedMappedToCollectionRule() });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMultiValuedName.xml");
             var solrSchemaParser = new SolrSchemaParser();
@@ -188,7 +188,7 @@ namespace SolrNet.Tests {
             var mgr = new MappingManager();
             mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("NameCollection"), "name");
 
-            var schemaManager = new MappingValidationManager(mgr, new[] { new MultivaluedMappedToCollectionRule() });
+            var schemaManager = new MappingValidator(mgr, new[] { new MultivaluedMappedToCollectionRule() });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMultiValuedName.xml");
             var solrSchemaParser = new SolrSchemaParser();
@@ -204,7 +204,7 @@ namespace SolrNet.Tests {
             var mgr = new MappingManager();
             mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("NameCollection"), "author");
 
-            var schemaManager = new MappingValidationManager(mgr, new[] { new MultivaluedMappedToCollectionRule() });
+            var schemaManager = new MappingValidator(mgr, new[] { new MultivaluedMappedToCollectionRule() });
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMultiValuedName.xml");
             var solrSchemaParser = new SolrSchemaParser();

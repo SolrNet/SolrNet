@@ -55,7 +55,7 @@ namespace SolrNet.Tests {
         public void MappingValidationManager() {
             Startup.Container.Clear();
             Startup.InitContainer();
-            var manager = Startup.Container.GetInstance<IMappingValidationManager>();
+            var manager = Startup.Container.GetInstance<IMappingValidator>();
         }
 
         public class Document {}

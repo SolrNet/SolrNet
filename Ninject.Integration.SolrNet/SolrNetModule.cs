@@ -70,7 +70,7 @@ namespace Ninject.Integration.SolrNet {
             Bind(typeof(ISolrOperations<>)).To(typeof(SolrServer<>));
             Bind(typeof(ISolrReadOnlyOperations<>)).To(typeof(SolrServer<>));
             Bind<ISolrSchemaParser>().To<SolrSchemaParser>();
-            Bind<IMappingValidationManager>().To<MappingValidationManager>();
+            Bind<IMappingValidator>().To<MappingValidator>();
         }
     }
 }

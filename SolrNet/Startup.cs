@@ -64,8 +64,8 @@ namespace SolrNet {
             Container.Register<IValidationRule>(typeof(RequiredFieldsAreMappedRule).FullName, c => new RequiredFieldsAreMappedRule());
             Container.Register<IValidationRule>(typeof(UniqueKeyMatchesMappingRule).FullName, c => new UniqueKeyMatchesMappingRule());
 
-            var schemaMappingValidationManager = new MappingValidationManager(Container.GetInstance<IReadOnlyMappingManager>(), Func.ToArray(Container.GetAllInstances<IValidationRule>()));
-            Container.Register<IMappingValidationManager>(c => schemaMappingValidationManager);
+            var schemaMappingValidationManager = new MappingValidator(Container.GetInstance<IReadOnlyMappingManager>(), Func.ToArray(Container.GetAllInstances<IValidationRule>()));
+            Container.Register<IMappingValidator>(c => schemaMappingValidationManager);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace SolrNet {
             Container.Register<ISolrBasicOperations<T>>(c => basicServer);
             Container.Register<ISolrBasicReadOnlyOperations<T>>(c => basicServer);
 
-            var server = new SolrServer<T>(basicServer, Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidationManager>(), Container.GetInstance<ISolrSchemaParser>());
+            var server = new SolrServer<T>(basicServer, Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>(), Container.GetInstance<ISolrSchemaParser>());
             Container.Register<ISolrOperations<T>>(c => server);
             Container.Register<ISolrReadOnlyOperations<T>>(c => server);
         }

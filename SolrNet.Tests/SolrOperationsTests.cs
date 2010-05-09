@@ -178,7 +178,7 @@ namespace SolrNet.Tests {
             var connection = mocks.CreateMock<ISolrConnection>();
             var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithUniqueKey>>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
-            var validationManager = mocks.CreateMock<IMappingValidationManager>();
+            var validationManager = mocks.CreateMock<IMappingValidator>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(connection.Post("/update", "<delete><id>0</id><id>0</id></delete>"))
                                      .Repeat.Once()
@@ -199,7 +199,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocumentWithoutUniqueKey>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
-            var validationManager = mocks.CreateMock<IMappingValidationManager>();
+            var validationManager = mocks.CreateMock<IMappingValidator>();
             With.Mocks(mocks)
                 .Expecting(() => {
                     Expect.Call(mapper.GetUniqueKey(typeof (TestDocumentWithoutUniqueKey)))
@@ -215,7 +215,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocumentWithUniqueKey>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
-            var validationManager = mocks.CreateMock<IMappingValidationManager>();
+            var validationManager = mocks.CreateMock<IMappingValidator>();
             With.Mocks(mocks)
                 .Expecting(() => {
                     Expect.Call(basicServer.Send(null))
@@ -435,7 +435,7 @@ namespace SolrNet.Tests {
             var connection = new MockConnection(query);
             var resultParser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
             var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
-            var validationManager = mocks.CreateMock<IMappingValidationManager>();
+            var validationManager = mocks.CreateMock<IMappingValidator>();
             var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(resultParser.Parse(""))
@@ -478,7 +478,7 @@ namespace SolrNet.Tests {
             var queryExecuter = new SolrQueryExecuter<TestDocWithNullable>(connection, resultParser);
             var mapper = new AttributesMappingManager();
             var docSerializer = new SolrDocumentSerializer<TestDocWithNullable>(mapper, new DefaultFieldSerializer());
-            var validationManager = mocks.CreateMock<IMappingValidationManager>();
+            var validationManager = mocks.CreateMock<IMappingValidator>();
             var basicSolr = new SolrBasicServer<TestDocWithNullable>(connection, queryExecuter, docSerializer);
             var solr = new SolrServer<TestDocWithNullable>(basicSolr, mapper, validationManager, null);
             string xml = null;

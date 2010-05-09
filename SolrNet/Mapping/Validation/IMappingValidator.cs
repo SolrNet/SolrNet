@@ -24,7 +24,7 @@ namespace SolrNet.Mapping.Validation {
 	/// <summary>
 	/// Provides an interface to validation a Solr schema against a type's mapping.
 	/// </summary>
-	public interface IMappingValidationManager {
+	public interface IMappingValidator {
         /// <summary>
         /// Validates the specified validation rules.
         /// </summary>

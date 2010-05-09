@@ -153,7 +153,7 @@
     <Compile Include="RandomSortOrder.cs" />
     <Compile Include="ResponseHeader.cs" />
     <Compile Include="Impl\SolrDocumentSerializer.cs" />
-    <Compile Include="Mapping\Validation\IMappingValidationManager.cs" />
+    <Compile Include="Mapping\Validation\IMappingValidator.cs" />
     <Compile Include="Mapping\Validation\Rules\BoolSolrFieldTypeChecker.cs" />
     <Compile Include="Mapping\Validation\Rules\DateTimeSolrFieldTypeChecker.cs" />
     <Compile Include="Mapping\Validation\Rules\DecimalSolrFieldTypeChecker.cs" />
@@ -172,7 +172,7 @@
     <Compile Include="Mapping\Validation\MappingValidationError.cs" />
     <Compile Include="Mapping\Validation\MappingValidationItem.cs" />
     <Compile Include="Mapping\Validation\MappingValidationWarning.cs" />
-    <Compile Include="Mapping\Validation\MappingValidationManager.cs" />
+    <Compile Include="Mapping\Validation\MappingValidator.cs" />
     <Compile Include="Schema\SolrSchemaParser.cs" />
     <Compile Include="Mapping\Validation\Rules\StringSolrFieldTypeChecker.cs" />
     <Compile Include="SolrFacetDateQuery.cs" />

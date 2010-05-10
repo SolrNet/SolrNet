@@ -27,50 +27,6 @@ using SolrNet.Tests.Utils;
 namespace SolrNet.Tests {
     [TestFixture]
     public class ValidationRuleTests {
-
-
-        [Test]
-        public void StringMappedToIntShouldReturnError() {
-            var mappingTypesCompatibleRule = new MappingTypesAreCompatibleWithSolrTypesRule(new[] {new StringSolrFieldTypeChecker()});
-
-            var mgr = new MappingManager();
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("FieldNotSolrSchema"), "popularity");
-
-            var schemaManager = new MappingValidator(mgr, new[] { mappingTypesCompatibleRule });
-
-            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMappingTypes.xml");
-            var solrSchemaParser = new SolrSchemaParser();
-            var schema = solrSchemaParser.Parse(schemaXmlDocument);
-
-            var validationResults = schemaManager.Validate(typeof(SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(1, validationResults.Count);           
-        }
-
-        [Test]
-        public void StringMappedToStringShouldNotReturnError()
-        {
-            var mappingTypesCompatibleRule = new MappingTypesAreCompatibleWithSolrTypesRule(new[] {new StringSolrFieldTypeChecker()});
-
-            var mgr = new MappingManager();
-            var schemaManager = new MappingValidator(mgr, new[] { mappingTypesCompatibleRule });
-
-            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMappingTypes.xml");
-            var solrSchemaParser = new SolrSchemaParser();
-            var schema = solrSchemaParser.Parse(schemaXmlDocument);
-
-            var validationResults = schemaManager.Validate(typeof(SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(0, validationResults.Count);
-        }
-
-        [Test]
-        public void MappingTypesAreCompatibleWithSolrTypesRule_with_nonexistant_rule() {
-            var rule = new MappingTypesAreCompatibleWithSolrTypesRule(new[]{new StringSolrFieldTypeChecker()});
-            var mappingManager = new MappingManager();
-            mappingManager.Add(typeof(SchemaMappingTestDocument).GetProperty("Name"));
-            var validations = rule.Validate(typeof(SchemaMappingTestDocument), new SolrSchema(), mappingManager).ToList();
-
-        }
-
         [Test]
         public void MutivaluedSolrFieldNotMappedToCollectionShouldReturnError() {
             var mgr = new MappingManager();

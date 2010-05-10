@@ -35,9 +35,9 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// <param name="solrSchema">The solr schema.</param>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <returns>
-        /// A collection of <see cref="MappingValidationItem"/> objects with any issues found during validation.
+        /// A collection of <see cref="ValidationResult"/> objects with any issues found during validation.
         /// </returns>
-        public IEnumerable<MappingValidationItem> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+        public IEnumerable<ValidationResult> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             foreach (var mappedField in mappingManager.GetFields(documentType)) {
                 var fieldFoundInSolrSchema = false;
                 foreach (var solrField in solrSchema.SolrFields) {
@@ -58,7 +58,7 @@ namespace SolrNet.Mapping.Validation.Rules {
 
                 if (!fieldFoundInSolrSchema)
                     // If field couldn't be matched to any of the solrfield, dynamicfields throw an exception.
-                    yield return new MappingValidationError(String.Format("No matching SolrField or DynamicField found in the Solr schema for document property '{0}' in type '{1}'.",
+                    yield return new ValidationError(String.Format("No matching SolrField or DynamicField found in the Solr schema for document property '{0}' in type '{1}'.",
                                                                           mappedField.Property.Name, documentType.FullName));
             }
         }

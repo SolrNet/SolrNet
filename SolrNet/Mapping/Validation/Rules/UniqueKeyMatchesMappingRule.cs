@@ -32,18 +32,18 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// <param name="solrSchema">The solr schema.</param>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <returns>
-        /// A collection of <see cref="MappingValidationItem"/> objects with any issues found during validation.
+        /// A collection of <see cref="ValidationResult"/> objects with any issues found during validation.
         /// </returns>
-        public IEnumerable<MappingValidationItem> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+        public IEnumerable<ValidationResult> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             var mappedKey = mappingManager.GetUniqueKey(documentType);
             if (mappedKey == null && solrSchema.UniqueKey == null)
                 yield break;
             if (mappedKey == null && solrSchema.UniqueKey != null) {
-                yield return new MappingValidationWarning(string.Format("Solr schema has unique key field '{0}' but mapped type '{1}' doesn't have a declared unique key", solrSchema.UniqueKey, documentType));
+                yield return new ValidationWarning(string.Format("Solr schema has unique key field '{0}' but mapped type '{1}' doesn't have a declared unique key", solrSchema.UniqueKey, documentType));
             } else if (mappedKey != null && solrSchema.UniqueKey == null) {
-                yield return new MappingValidationError(string.Format("Type '{0}' has a declared unique key '{1}' but Solr schema doesn't have a unique key", documentType, mappedKey.FieldName));
+                yield return new ValidationError(string.Format("Type '{0}' has a declared unique key '{1}' but Solr schema doesn't have a unique key", documentType, mappedKey.FieldName));
             } else if (!mappedKey.FieldName.Equals(solrSchema.UniqueKey)) {
-                yield return new MappingValidationError(String.Format("Solr schema unique key '{0}' does not match document unique key '{1}' in type '{2}'.", solrSchema.UniqueKey, mappedKey, documentType));
+                yield return new ValidationError(String.Format("Solr schema unique key '{0}' does not match document unique key '{1}' in type '{2}'.", solrSchema.UniqueKey, mappedKey, documentType));
             }
         }
     }

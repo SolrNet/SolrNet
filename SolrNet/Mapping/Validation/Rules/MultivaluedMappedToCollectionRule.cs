@@ -34,9 +34,9 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// <param name="solrSchema">The solr schema.</param>
         /// <param name="mappingManager">The mapping manager.</param>
         /// <returns>
-        /// A collection of <see cref="MappingValidationItem"/> objects with any issues found during validation.
+        /// A collection of <see cref="ValidationResult"/> objects with any issues found during validation.
         /// </returns>
-        public IEnumerable<MappingValidationItem> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+        public IEnumerable<ValidationResult> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             var collectionFieldParser = new CollectionFieldParser(null); // Used to check if the type is a collection type.
 
             foreach (var prop in mappingManager.GetFields(documentType)) {
@@ -44,7 +44,7 @@ namespace SolrNet.Mapping.Validation.Rules {
                     var solrField = solrSchema.FindSolrFieldByName(prop.FieldName);
                     if (solrField != null) {
                         if(!solrField.IsMultiValued) {
-                            yield return new MappingValidationError(String.Format("SolrField '{0}' is not multivalued while mapped type '{1}' implements IEnumberable<T>.", solrField.Name, prop.Property.Name));
+                            yield return new ValidationError(String.Format("SolrField '{0}' is not multivalued while mapped type '{1}' implements IEnumberable<T>.", solrField.Name, prop.Property.Name));
                         }
                     }
                 } else { //Mapped type is not a collection so solr field shouldn't be either.
@@ -53,7 +53,7 @@ namespace SolrNet.Mapping.Validation.Rules {
                     {
                         if (solrField.IsMultiValued)
                         {
-                            yield return new MappingValidationError(String.Format("SolrField '{0}' is multivalued while mapped type '{1}' does not implement IEnumberable<T>.", solrField.Name, prop.Property.Name));
+                            yield return new ValidationError(String.Format("SolrField '{0}' is multivalued while mapped type '{1}' does not implement IEnumberable<T>.", solrField.Name, prop.Property.Name));
                         }
                     }
                 }

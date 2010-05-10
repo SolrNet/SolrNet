@@ -30,14 +30,14 @@ namespace SolrNet.Mapping.Validation.Rules {
             this.warningTypes = warningTypes;
         }
 
-        public virtual MappingValidationItem Validate(SolrFieldType solrFieldType, string propertyName, Type propertyType) {
+        public virtual ValidationResult Validate(SolrFieldType solrFieldType, string propertyName, Type propertyType) {
             // Check if the type is in the safe or warning types and otherwise return a error
             if (safeTypes != null && safeTypes.Contains(solrFieldType.Type))
                 return null;
             if (warningTypes != null && warningTypes.Contains(solrFieldType.Type))
-                return new MappingValidationWarning(String.Format("Property '{0}' of type '{1}' is mapped to a solr field of type '{2}'. These types are not fully compatible.", propertyName, propertyType.FullName, solrFieldType.Name));
+                return new ValidationWarning(String.Format("Property '{0}' of type '{1}' is mapped to a solr field of type '{2}'. These types are not fully compatible.", propertyName, propertyType.FullName, solrFieldType.Name));
 
-            return new MappingValidationError(String.Format("Property '{0}' of type '{1}' cannot be stored in solr field type '{2}'.", propertyName, propertyType.FullName, solrFieldType.Name));
+            return new ValidationError(String.Format("Property '{0}' of type '{1}' cannot be stored in solr field type '{2}'.", propertyName, propertyType.FullName, solrFieldType.Name));
         }
 
         public abstract bool CanHandleType(Type propertyType);

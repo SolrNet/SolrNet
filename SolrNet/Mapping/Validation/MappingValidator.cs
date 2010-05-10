@@ -44,8 +44,8 @@ namespace SolrNet.Mapping.Validation {
         /// </summary>
         /// <param name="documentType">The document type which needs to be validated</param>
         /// <param name="schema">The Solr schema.</param>
-        /// <returns>A collection of <see cref="MappingValidationItem"/> objects with the problems found during validation. If Any.</returns>
-        public IEnumerable<MappingValidationItem> Validate(Type documentType, SolrSchema schema) {
+        /// <returns>A collection of <see cref="ValidationResult"/> objects with the problems found during validation. If Any.</returns>
+        public IEnumerable<ValidationResult> Validate(Type documentType, SolrSchema schema) {
             foreach (var rule in rules) {
                 var items = rule.Validate(documentType, schema, mappingManager);
                 foreach (var i in items)

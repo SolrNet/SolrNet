@@ -31,7 +31,7 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// <param name="propertyName"></param>
         /// <param name="propertyType"></param>
         /// <returns></returns>
-        MappingValidationItem Validate(SolrFieldType solrFieldType, string propertyName, Type propertyType);
+        ValidationResult Validate(SolrFieldType solrFieldType, string propertyName, Type propertyType);
 
         bool CanHandleType(Type propertyType);
     }

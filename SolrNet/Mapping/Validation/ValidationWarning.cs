@@ -18,22 +18,13 @@
 
 namespace SolrNet.Mapping.Validation {
 	/// <summary>
-	/// Represents a Solr schema mapping validation issue.
+	/// Represents a Solr schema mapping validation warning.
 	/// </summary>
-	public abstract class MappingValidationItem {
-		private readonly string message;
+	public class ValidationWarning : ValidationResult {
 		/// <summary>
-		/// Gets the message.
+		/// Initializes a new instance of the <see cref="ValidationWarning"/> class.
 		/// </summary>
-		/// <value>The message.</value>
-		public string Message { get { return message; } }
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="MappingValidationItem"/> class.
-		/// </summary>
-		/// <param name="message">The message.</param>
-		protected MappingValidationItem(string message) {
-			this.message = message;
-		}
+		/// <param name="message">The warning message.</param>
+		public ValidationWarning(string message) : base(message) {}
 	}
 }

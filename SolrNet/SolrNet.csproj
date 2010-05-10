@@ -165,9 +165,9 @@
     <Compile Include="Schema\SolrField.cs" />
     <Compile Include="Schema\SolrFieldType.cs" />
     <Compile Include="Schema\SolrSchema.cs" />
-    <Compile Include="Mapping\Validation\MappingValidationError.cs" />
-    <Compile Include="Mapping\Validation\MappingValidationItem.cs" />
-    <Compile Include="Mapping\Validation\MappingValidationWarning.cs" />
+    <Compile Include="Mapping\Validation\ValidationError.cs" />
+    <Compile Include="Mapping\Validation\ValidationResult.cs" />
+    <Compile Include="Mapping\Validation\ValidationWarning.cs" />
     <Compile Include="Mapping\Validation\MappingValidator.cs" />
     <Compile Include="Schema\SolrSchemaParser.cs" />
     <Compile Include="Mapping\Validation\Rules\StringSolrFieldTypeChecker.cs" />

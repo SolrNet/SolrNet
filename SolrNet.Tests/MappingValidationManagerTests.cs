@@ -49,14 +49,14 @@ namespace SolrNet.Tests {
     }
 
     public class DummyValidationRuleError : IValidationRule {
-        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
-            return new MappingValidationItem[] {new MappingValidationError("Dummy error validation rule")};
+        public IEnumerable<ValidationResult> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+            return new ValidationResult[] {new ValidationError("Dummy error validation rule")};
         }
     }
 
     public class DummyValidationRuleWarning : IValidationRule {
-        public IEnumerable<MappingValidationItem> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
-            return new MappingValidationItem[] {new MappingValidationError("Dummy warning validation rule")};
+        public IEnumerable<ValidationResult> Validate(Type propertyType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
+            return new ValidationResult[] {new ValidationError("Dummy warning validation rule")};
         }
     }
 }

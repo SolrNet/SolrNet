@@ -79,7 +79,7 @@ namespace SolrNet.Tests {
                 .Expecting(() => {
                     Expect.Call(basicServer.GetSchema()).Repeat.Once().Return(new XmlDocument());
                     Expect.Call(parser.Parse(null)).IgnoreArguments().Return(null);
-                    Expect.Call(validationManager.Validate(typeof(TestDocument), new SolrSchema())).Repeat.Once().IgnoreArguments().Return(new List<MappingValidationItem>());
+                    Expect.Call(validationManager.Validate(typeof(TestDocument), new SolrSchema())).Repeat.Once().IgnoreArguments().Return(new List<ValidationResult>());
                 })
                 .Verify(() => {
                     var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager, parser);

@@ -20,11 +20,11 @@ namespace SolrNet.Mapping.Validation {
 	/// <summary>
 	/// Represents a Solr schema mapping validation error.
 	/// </summary>   
-	public class MappingValidationError : MappingValidationItem {
+	public class ValidationError : ValidationResult {
 		/// <summary>
-		/// Initializes a new instance of the <see cref="MappingValidationError"/> class.
+		/// Initializes a new instance of the <see cref="ValidationError"/> class.
 		/// </summary>
 		/// <param name="message">The error message.</param>
-		public MappingValidationError(string message) : base(message) {}
+		public ValidationError(string message) : base(message) {}
 	}
 }

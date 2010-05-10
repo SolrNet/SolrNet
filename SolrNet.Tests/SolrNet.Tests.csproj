@@ -99,12 +99,14 @@
     <Compile Include="Integration.Sample\Tests.cs" />
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="LocalParamsTests.cs" />
+    <Compile Include="MappedPropertiesIsInSolrSchemaRuleTests.cs" />
     <Compile Include="MappingManagerTests.cs" />
     <Compile Include="MemoizingMappingManagerTests.cs" />
     <Compile Include="MockConnection.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="OptimizeCommandTests.cs" />
+    <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
     <Compile Include="SolrSchemaParserTests.cs" />

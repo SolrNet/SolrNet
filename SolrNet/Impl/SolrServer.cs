@@ -168,11 +168,11 @@ namespace SolrNet.Impl {
         }
 
         private object GetId(T doc) {
-            var prop = mappingManager.GetUniqueKey(typeof(T)).Property;
-            var id = prop.GetValue(doc, null);
-            if (id == null)
+            var uniqueKey = mappingManager.GetUniqueKey(typeof(T));
+            if (uniqueKey == null)
                 throw new SolrNetException(string.Format("This operation requires a unique key, but type '{0}' has no declared unique key", typeof(T)));
-            return id;
+            var prop = uniqueKey.Property;
+            return prop.GetValue(doc, null);
         }
 
         ISolrOperations<T> ISolrOperations<T>.Delete(ISolrQuery q) {

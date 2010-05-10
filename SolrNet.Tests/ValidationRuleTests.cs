@@ -167,6 +167,16 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void MappedPropertiesIsInSolrSchemaRule_ignores_score() {
+            var rule = new MappedPropertiesIsInSolrSchemaRule();
+            var mapper = new MappingManager();
+            mapper.Add(typeof(SchemaMappingTestDocument).GetProperty("Score"), "score");
+            var results = rule.Validate(typeof (SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
+            Assert.IsNotNull(results);
+            Assert.AreEqual(0, results.Count);
+        }
+
+        [Test]
         public void StringMappedToIntShouldReturnError() {
             var mappingTypesCompatibleRule = new MappingTypesAreCompatibleWithSolrTypesRule(new[] {new StringSolrFieldTypeChecker()});
 

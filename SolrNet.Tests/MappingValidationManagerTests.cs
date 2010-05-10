@@ -46,6 +46,7 @@ namespace SolrNet.Tests {
         public string[] NameCollection { get; set; }
         public string Producer { get; set; }
         public string FieldNotSolrSchema { get; set; }
+        public double? Score { get; set; }
     }
 
     public class DummyValidationRuleError : IValidationRule {

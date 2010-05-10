@@ -39,6 +39,8 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// </returns>
         public IEnumerable<ValidationResult> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             foreach (var mappedField in mappingManager.GetFields(documentType)) {
+                if (mappedField.FieldName == "score")
+                    continue;
                 var fieldFoundInSolrSchema = false;
                 foreach (var solrField in solrSchema.SolrFields) {
                     if (solrField.Name.Equals(mappedField.FieldName)) {

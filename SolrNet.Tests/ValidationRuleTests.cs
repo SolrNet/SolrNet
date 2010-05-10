@@ -16,10 +16,7 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using MbUnit.Framework;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
@@ -30,71 +27,6 @@ using SolrNet.Tests.Utils;
 namespace SolrNet.Tests {
     [TestFixture]
     public class ValidationRuleTests {
-        [Test]
-        public void NonMatchingUniqueKeyMappingShouldReturnError() {
-            var mgr = new MappingManager();
-            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
-            mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("Name"));
-
-            var schemaManager = new MappingValidator(mgr, new[] {new UniqueKeyMatchesMappingRule()});
-
-            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
-            var solrSchemaParser = new SolrSchemaParser();
-            var schema = solrSchemaParser.Parse(schemaXmlDocument);
-
-            var validationResults = schemaManager.Validate(typeof(SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(1, validationResults.Count);
-        }
-
-        [Test]
-        public void MatchingUniqueKeyMappingShouldNotReturnError() {
-            var mgr = new MappingManager();
-            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
-            mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("ID"));
-
-            var schemaManager = new MappingValidator(mgr, new[] { new UniqueKeyMatchesMappingRule() });
-
-            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
-            var solrSchemaParser = new SolrSchemaParser();
-            var schema = solrSchemaParser.Parse(schemaXmlDocument);
-
-            var validationResults = schemaManager.Validate(typeof(SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(0, validationResults.Count);
-        }
-
-        [Test]
-        public void UniqueKeyMatchesMappingRule_SchemaNull_MappingNotNull() {
-            var rule = new UniqueKeyMatchesMappingRule();
-            var mapper = new MappingManager();
-            var idProperty = typeof(SchemaMappingTestDocument).GetProperty("ID");
-            mapper.Add(idProperty);
-            mapper.SetUniqueKey(idProperty);
-            var validations = rule.Validate(typeof (SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
-            Assert.IsNotNull(validations);
-            Assert.GreaterThan(validations.Count, 0);
-            foreach (var v in validations)
-                Console.WriteLine("{0}: {1}", v.GetType(), v.Message);
-        }
-
-        [Test]
-        public void UniqueKeyMatchesMappingRule_SchemaNotNull_MappingNull() {
-            var rule = new UniqueKeyMatchesMappingRule();
-            var schema = new SolrSchema {UniqueKey = "id"};
-            var validations = rule.Validate(typeof(SchemaMappingTestDocument), schema, new MappingManager()).ToList();
-            Assert.IsNotNull(validations);
-            Assert.GreaterThan(validations.Count, 0);
-            foreach (var v in validations)
-                Console.WriteLine("{0}: {1}", v.GetType(), v.Message);
-        }
-
-        [Test]
-        public void UniqueKeyMatchesMappingRule_SchemaNull_MappingNull() {
-            var rule = new UniqueKeyMatchesMappingRule();
-            var schema = new SolrSchema();
-            var validations = rule.Validate(typeof(SchemaMappingTestDocument), schema, new MappingManager()).ToList();
-            Assert.IsNotNull(validations);
-            Assert.AreEqual(0, validations.Count);
-        }
 
         [Test]
         public void RequiredSolrFieldForWhichNoCopyFieldExistsShouldReturnError() {

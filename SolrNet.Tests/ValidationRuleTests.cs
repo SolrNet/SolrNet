@@ -29,23 +29,6 @@ namespace SolrNet.Tests {
     public class ValidationRuleTests {
 
         [Test]
-        public void RequiredSolrFieldForWhichNoCopyFieldExistsShouldReturnError() {
-            var mgr = new MappingManager();
-            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
-            mgr.SetUniqueKey(typeof (SchemaMappingTestDocument).GetProperty("ID"));
-
-
-            var schemaManager = new MappingValidator(mgr, new[] {new RequiredFieldsAreMappedRule()});
-
-            var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
-            var solrSchemaParser = new SolrSchemaParser();
-            var schema = solrSchemaParser.Parse(schemaXmlDocument);
-
-            var validationResults = schemaManager.Validate(typeof(SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(1, validationResults.Count);
-        }
-
-        [Test]
         public void MappedPropertyForWhichSolrFieldExistsInSchemaShouldNotReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");

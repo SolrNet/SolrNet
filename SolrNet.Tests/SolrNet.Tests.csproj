@@ -106,7 +106,7 @@
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="OptimizeCommandTests.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
-    <Compile Include="MappingValidationManagerTests.cs" />
+    <Compile Include="MappingValidatorTests.cs" />
     <Compile Include="SolrSchemaParserTests.cs" />
     <Compile Include="Utils\EmbeddedResource.cs" />
     <Compile Include="Utils\LoggingConnection.cs" />

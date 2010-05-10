@@ -28,7 +28,7 @@ using SolrNet.Schema;
 
 namespace SolrNet.Tests {
     [TestFixture]
-    public class MappingValidationManagerTests {
+    public class MappingValidatorTests {
         [Test]
         public void ValidatingRuleSetReturnsValidationResults() {
             var mappingManager = new MappingManager();

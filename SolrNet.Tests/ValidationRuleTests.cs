@@ -72,6 +72,8 @@ namespace SolrNet.Tests {
             var validations = rule.Validate(typeof (SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
             Assert.IsNotNull(validations);
             Assert.GreaterThan(validations.Count, 0);
+            foreach (var v in validations)
+                Console.WriteLine("{0}: {1}", v.GetType(), v.Message);
         }
 
         [Test]
@@ -80,7 +82,18 @@ namespace SolrNet.Tests {
             var schema = new SolrSchema {UniqueKey = "id"};
             var validations = rule.Validate(typeof(SchemaMappingTestDocument), schema, new MappingManager()).ToList();
             Assert.IsNotNull(validations);
-            Assert.GreaterThan(validations.Count, 0);            
+            Assert.GreaterThan(validations.Count, 0);
+            foreach (var v in validations)
+                Console.WriteLine("{0}: {1}", v.GetType(), v.Message);
+        }
+
+        [Test]
+        public void UniqueKeyMatchesMappingRule_SchemaNull_MappingNull() {
+            var rule = new UniqueKeyMatchesMappingRule();
+            var schema = new SolrSchema();
+            var validations = rule.Validate(typeof(SchemaMappingTestDocument), schema, new MappingManager()).ToList();
+            Assert.IsNotNull(validations);
+            Assert.AreEqual(0, validations.Count);
         }
 
         [Test]

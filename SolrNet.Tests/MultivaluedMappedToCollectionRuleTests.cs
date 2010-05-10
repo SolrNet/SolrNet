@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
@@ -26,50 +26,49 @@ using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
-    public class ValidationRuleTests {
+    public class MultivaluedMappedToCollectionRuleTests {
         [Test]
         public void MutivaluedSolrFieldNotMappedToCollectionShouldReturnError() {
             var mgr = new MappingManager();
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("Name"), "name");
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
 
-            var schemaManager = new MappingValidator(mgr, new[] { new MultivaluedMappedToCollectionRule() });
+            var schemaManager = new MappingValidator(mgr, new[] {new MultivaluedMappedToCollectionRule()});
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMultiValuedName.xml");
             var solrSchemaParser = new SolrSchemaParser();
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
-            var validationResults = schemaManager.Validate(typeof(SchemaMappingTestDocument), schema).ToList();
+            var validationResults = schemaManager.Validate(typeof (SchemaMappingTestDocument), schema).ToList();
             Assert.AreEqual(1, validationResults.Count);
         }
 
         [Test]
         public void MultivaluedSolrFieldMappedToCollectionShouldNotReturnError() {
             var mgr = new MappingManager();
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("NameCollection"), "name");
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("NameCollection"), "name");
 
-            var schemaManager = new MappingValidator(mgr, new[] { new MultivaluedMappedToCollectionRule() });
+            var schemaManager = new MappingValidator(mgr, new[] {new MultivaluedMappedToCollectionRule()});
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMultiValuedName.xml");
             var solrSchemaParser = new SolrSchemaParser();
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
-            var validationResults = schemaManager.Validate(typeof(SchemaMappingTestDocument), schema).ToList();
+            var validationResults = schemaManager.Validate(typeof (SchemaMappingTestDocument), schema).ToList();
             Assert.AreEqual(0, validationResults.Count);
         }
 
         [Test]
-        public void CollectionMappedToNonMultiValuedFolrFieldShouldReturnError()
-        {
+        public void CollectionMappedToNonMultiValuedFolrFieldShouldReturnError() {
             var mgr = new MappingManager();
-            mgr.Add(typeof(SchemaMappingTestDocument).GetProperty("NameCollection"), "author");
+            mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("NameCollection"), "author");
 
-            var schemaManager = new MappingValidator(mgr, new[] { new MultivaluedMappedToCollectionRule() });
+            var schemaManager = new MappingValidator(mgr, new[] {new MultivaluedMappedToCollectionRule()});
 
             var schemaXmlDocument = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaMultiValuedName.xml");
             var solrSchemaParser = new SolrSchemaParser();
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
-            var validationResults = schemaManager.Validate(typeof(SchemaMappingTestDocument), schema).ToList();
+            var validationResults = schemaManager.Validate(typeof (SchemaMappingTestDocument), schema).ToList();
             Assert.AreEqual(1, validationResults.Count);
         }
     }

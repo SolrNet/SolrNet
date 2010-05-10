@@ -101,9 +101,11 @@
     <Compile Include="LocalParamsTests.cs" />
     <Compile Include="MappedPropertiesIsInSolrSchemaRuleTests.cs" />
     <Compile Include="MappingManagerTests.cs" />
+    <Compile Include="MappingTypesAreCompatibleWithSolrTypesRuleTests.cs" />
     <Compile Include="MemoizingMappingManagerTests.cs" />
     <Compile Include="MockConnection.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
+    <Compile Include="MultivaluedMappedToCollectionRuleTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="OptimizeCommandTests.cs" />
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
@@ -144,7 +146,6 @@
     <Compile Include="SortOrderTests.cs" />
     <Compile Include="ThreadHelper.cs" />
     <Compile Include="TypeHelperTests.cs" />
-    <Compile Include="ValidationRuleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">

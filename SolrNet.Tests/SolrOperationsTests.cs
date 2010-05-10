@@ -196,7 +196,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        [ExpectedException(typeof (NoUniqueKeyException))]
+        [ExpectedException(typeof (SolrNetException))]
         public void DeleteDocumentWithoutUniqueKey_ShouldThrow() {
             var mocks = new MockRepository();
             var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocumentWithoutUniqueKey>>();
@@ -205,7 +205,7 @@ namespace SolrNet.Tests {
             With.Mocks(mocks)
                 .Expecting(() => {
                     Expect.Call(mapper.GetUniqueKey(typeof (TestDocumentWithoutUniqueKey)))
-                        .Throw(new NoUniqueKeyException(typeof(TestDocumentWithoutUniqueKey)));
+                        .Return(null);
                 }).Verify(() => {
                     var ops = new SolrServer<TestDocumentWithoutUniqueKey>(basicServer, mapper, validationManager, null);
                     ops.Delete(new TestDocumentWithoutUniqueKey());

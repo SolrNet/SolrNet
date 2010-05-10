@@ -171,7 +171,7 @@ namespace SolrNet.Impl {
             var prop = mappingManager.GetUniqueKey(typeof(T)).Property;
             var id = prop.GetValue(doc, null);
             if (id == null)
-                throw new NoUniqueKeyException(typeof(T));
+                throw new SolrNetException(string.Format("This operation requires a unique key, but type '{0}' has no declared unique key", typeof(T)));
             return id;
         }
 

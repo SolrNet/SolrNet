@@ -46,7 +46,7 @@ namespace SolrNet.Mapping
             }
             catch (KeyNotFoundException)
             {
-                throw new NoUniqueKeyException(type);
+                return null;
             }
         }
 

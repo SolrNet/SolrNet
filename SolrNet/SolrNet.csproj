@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CEEB8690-3E08-4440-B647-787A58E71CFA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -123,7 +123,6 @@
     <Compile Include="Commands\OptimizeCommand.cs" />
     <Compile Include="Exceptions\InvalidFieldException.cs" />
     <Compile Include="Exceptions\InvalidSortOrderException.cs" />
-    <Compile Include="Exceptions\NoUniqueKeyException.cs" />
     <Compile Include="Exceptions\SolrConnectionException.cs" />
     <Compile Include="Mapping\IMappingManager.cs" />
     <Compile Include="IReadOnlyMappingManager.cs" />

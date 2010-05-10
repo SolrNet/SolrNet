@@ -71,7 +71,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="doc">document to delete</param>
         /// <returns></returns>
-        /// <exception cref="NoUniqueKeyException">throws if document type doesn't have a unique key or document has null unique key</exception>
+        /// <exception cref="SolrNetException">throws if document type doesn't have a unique key or document has null unique key</exception>
         ISolrOperations<T> Delete(T doc);
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="docs"></param>
         /// <returns></returns>
-        /// <exception cref="NoUniqueKeyException">throws if document type doesn't have a unique key or document has null unique key</exception>
+        /// <exception cref="SolrNetException">throws if document type doesn't have a unique key or document has null unique key</exception>
         ISolrOperations<T> Delete(IEnumerable<T> docs);
 
         /// <summary>

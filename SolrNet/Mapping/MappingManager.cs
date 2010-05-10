@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using SolrNet.Exceptions;
 using SolrNet.Utils;
 
 namespace SolrNet.Mapping {
@@ -93,9 +94,13 @@ namespace SolrNet.Mapping {
         public SolrFieldModel GetUniqueKey(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
-            var prop = uniqueKeys[type];
-            var unique = mappings[type].Find(t => t.Property == prop); //TODO: check null ? Throw NoUniqueKeyException ?
-            return unique;
+            try {
+                var prop = uniqueKeys[type];
+                var unique = mappings[type].Find(t => t.Property == prop);
+                return unique;
+            } catch (KeyNotFoundException) {
+                return null;
+            }
         }
 
         public ICollection<Type> GetRegisteredTypes() {

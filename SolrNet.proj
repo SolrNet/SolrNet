@@ -86,7 +86,7 @@
     <Error Text="Tests execution failed" Condition="'$(ExitCode)' != 0" />
   </Target>
   <Target Name="Coverage">
-    <Gallio RunnerType="NCover" IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)">
+    <Gallio RunnerType="NCover" IgnoreFailures="true" PluginDirectories="$(MSBuildProjectDirectory)\lib" Files="@(TestAssemblies)" Filter="exclude Category: Integration">
       <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
     </Gallio>
   </Target>

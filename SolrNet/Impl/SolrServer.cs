@@ -33,13 +33,11 @@ namespace SolrNet.Impl {
         private readonly ISolrBasicOperations<T> basicServer;
         private readonly IReadOnlyMappingManager mappingManager;
         private readonly IMappingValidator _schemaMappingValidator;
-        private readonly ISolrSchemaParser schemaParser;
 
-        public SolrServer(ISolrBasicOperations<T> basicServer, IReadOnlyMappingManager mappingManager, IMappingValidator _schemaMappingValidator, ISolrSchemaParser schemaParser) {
+        public SolrServer(ISolrBasicOperations<T> basicServer, IReadOnlyMappingManager mappingManager, IMappingValidator _schemaMappingValidator) {
             this.basicServer = basicServer;
             this.mappingManager = mappingManager;
             this._schemaMappingValidator = _schemaMappingValidator;
-            this.schemaParser = schemaParser;
         }
 
         /// <summary>
@@ -209,12 +207,12 @@ namespace SolrNet.Impl {
             return this;
         }
 
-        public XmlDocument GetSchema() {
+        public SolrSchema GetSchema() {
             return basicServer.GetSchema();
         }
 
         public IEnumerable<ValidationResult> Validate() {
-            var schema = schemaParser.Parse(GetSchema());
+            var schema = GetSchema();
             return _schemaMappingValidator.Validate(typeof(T), schema);
         }
 

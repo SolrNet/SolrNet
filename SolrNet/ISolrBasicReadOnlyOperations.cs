@@ -16,6 +16,7 @@
 
 using System.Xml;
 using SolrNet.Commands.Parameters;
+using SolrNet.Schema;
 
 namespace SolrNet {
     /// <summary>
@@ -42,6 +43,6 @@ namespace SolrNet {
         /// Gets the schema.
         /// </summary>
         /// <returns>A XmlDocument containing the Solr schema XML.</returns>
-        XmlDocument GetSchema();
+        SolrSchema GetSchema();
     }
 }

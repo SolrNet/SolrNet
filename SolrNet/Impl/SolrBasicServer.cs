@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Xml;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
+using SolrNet.Schema;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -29,11 +30,13 @@ namespace SolrNet.Impl {
         private readonly ISolrConnection connection;
         private readonly ISolrQueryExecuter<T> queryExecuter;
         private readonly ISolrDocumentSerializer<T> documentSerializer;
+        private readonly ISolrSchemaParser schemaParser;
 
-        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer) {
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser) {
             this.connection = connection;
             this.queryExecuter = queryExecuter;
             this.documentSerializer = documentSerializer;
+            this.schemaParser = schemaParser;
         }
 
         public void Commit(CommitOptions options) {
@@ -86,16 +89,11 @@ namespace SolrNet.Impl {
             new PingCommand().Execute(connection);
         }
 
-        public XmlDocument GetSchema() {
-            XmlDocument result = null;
-            var getSchema = new GetSchemaCommand();
-            string schemaXml = getSchema.Execute(connection);
-            if (!string.IsNullOrEmpty(schemaXml)) {
-                result = new XmlDocument();
-                result.LoadXml(schemaXml);
-            }
-
-            return result;
+        public SolrSchema GetSchema() {
+            string schemaXml = new GetSchemaCommand().Execute(connection);
+            var schema = new XmlDocument();
+            schema.LoadXml(schemaXml);
+            return schemaParser.Parse(schema);
         }
     }
 }

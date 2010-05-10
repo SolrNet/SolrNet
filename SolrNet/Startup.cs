@@ -111,11 +111,11 @@ namespace SolrNet {
             var documentSerializer = ChooseDocumentSerializer<T>();
             Container.Register(c => documentSerializer);
 
-            var basicServer = new SolrBasicServer<T>(connection, queryExecuter, documentSerializer);
+            var basicServer = new SolrBasicServer<T>(connection, queryExecuter, documentSerializer, Container.GetInstance<ISolrSchemaParser>());
             Container.Register<ISolrBasicOperations<T>>(c => basicServer);
             Container.Register<ISolrBasicReadOnlyOperations<T>>(c => basicServer);
 
-            var server = new SolrServer<T>(basicServer, Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>(), Container.GetInstance<ISolrSchemaParser>());
+            var server = new SolrServer<T>(basicServer, Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>());
             Container.Register<ISolrOperations<T>>(c => server);
             Container.Register<ISolrReadOnlyOperations<T>>(c => server);
         }

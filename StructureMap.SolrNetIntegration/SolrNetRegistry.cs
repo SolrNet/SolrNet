@@ -9,6 +9,9 @@ using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
+using SolrNet.Mapping.Validation;
+using SolrNet.Mapping.Validation.Rules;
+using SolrNet.Schema;
 
 namespace Structuremap.SolrNetIntegration
 {
@@ -47,6 +50,13 @@ namespace Structuremap.SolrNetIntegration
                 For(typeof(ISolrResponseParser<>)).Use(p);
             }
 
+            foreach (var validationRule in new[] {
+                typeof(MappedPropertiesIsInSolrSchemaRule),
+                typeof(RequiredFieldsAreMappedRule),
+                typeof(UniqueKeyMatchesMappingRule),
+            })
+                For(typeof (IValidationRule)).Use(validationRule);
+
             For(typeof(ISolrQueryResultParser<>)).Use(typeof(SolrQueryResultParser<>));
             For(typeof(ISolrQueryExecuter<>)).Use(typeof(SolrQueryExecuter<>));
 
@@ -63,6 +73,9 @@ namespace Structuremap.SolrNetIntegration
 
             For<ISolrFieldSerializer>().Use<DefaultFieldSerializer>();
             For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();
+
+            For<ISolrSchemaParser>().Use<SolrSchemaParser>();
+            For<IMappingValidator>().Use<MappingValidator>();
             
         }
 

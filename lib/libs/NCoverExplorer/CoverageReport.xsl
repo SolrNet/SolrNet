@@ -78,13 +78,11 @@
 			<xsl:with-param name="reportType" select="$reportType" />
 		</xsl:call-template>
         
-		<xsl:if test="$reportType != 'Namespace Summary'">
-			<xsl:call-template name="moduleSummary">
-				<xsl:with-param name="threshold" select="$threshold" />
-				<xsl:with-param name="unvisitedTitle" select="$unvisitedTitle" />
-				<xsl:with-param name="coverageTitle" select="$coverageTitle" />
-			</xsl:call-template>
-		</xsl:if>
+		<xsl:call-template name="moduleSummary">
+			<xsl:with-param name="threshold" select="$threshold" />
+			<xsl:with-param name="unvisitedTitle" select="$unvisitedTitle" />
+			<xsl:with-param name="coverageTitle" select="$coverageTitle" />
+		</xsl:call-template>
     
 		<xsl:if test="$reportType = 'Module Namespace Summary'">
 			<xsl:call-template name="moduleNamespaceSummary">
@@ -97,12 +95,6 @@
 				<xsl:with-param name="threshold" select="$threshold" />
 				<xsl:with-param name="unvisitedTitle" select="$unvisitedTitle" />
 				<xsl:with-param name="coverageTitle" select="$coverageTitle" />
-			</xsl:call-template>
-		</xsl:if>
-   
-		<xsl:if test="$reportType = 'Namespace Summary'">
-			<xsl:call-template name="namespaceSummary">
-				<xsl:with-param name="threshold" select="$threshold" />
 			</xsl:call-template>
 		</xsl:if>
     
@@ -195,7 +187,12 @@
 					<td class="projectTable mainTableGraphHeader" colspan="2"><xsl:value-of select="$coverageTitle" /></td>
 				</tr>
 			<xsl:call-template name="coverageDetail">
-				<xsl:with-param name="name" select="./project/@name" />
+				<xsl:with-param name="name">
+					<xsl:choose>
+						<xsl:when test="string-length(./project/@name) > 0"><xsl:value-of select="./project/@name" /></xsl:when>
+						<xsl:otherwise>&#160;</xsl:otherwise>
+					</xsl:choose>
+				</xsl:with-param>
 				<xsl:with-param name="unvisitedPoints">
 					<xsl:choose>
 						<xsl:when test="$reportType = 'Module Class Function Summary'"><xsl:value-of select="./project/@unvisitedFunctions" /></xsl:when>
@@ -326,29 +323,6 @@
 					</xsl:call-template>
 				</xsl:for-each>
 			</xsl:for-each>
-		</xsl:for-each>
-	</xsl:template>
-		
-	<!-- Namespaces Summary -->
-	<xsl:template name="namespaceSummary">
-		<xsl:param name="threshold" />
-				<tr>
-					<td colspan="5">&#160;</td>
-				</tr>
-				<tr>
-					<td class="primaryTable mainTableHeaderLeft" colspan="2">Namespaces</td>
-					<td class="primaryTable mainTableHeader">Unvisited SeqPts</td>
-					<td class="primaryTable mainTableGraphHeader" colspan="2">Coverage</td>
-				</tr>				
-		<xsl:for-each select="./namespaces/namespace">
-			<xsl:call-template name="coverageDetail">
-				<xsl:with-param name="name" select="./@name" />
-				<xsl:with-param name="unvisitedPoints" select="./@unvisitedPoints" />
-				<xsl:with-param name="sequencePoints" select="./@sequencePoints" />
-				<xsl:with-param name="coverage" select="./@coverage" />
-				<xsl:with-param name="threshold" select="$threshold" />
-				<xsl:with-param name="showThreshold">False</xsl:with-param>
-			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
 	

@@ -38,7 +38,7 @@ namespace SolrNet.Tests {
             var solrSchemaParser = new SolrSchemaParser();
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
-            var validationResults = schemaManager.Validate(typeof (SchemaMappingTestDocument), schema).ToList();
+            var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
             Assert.AreEqual(1, validationResults.Count);
         }
 
@@ -53,7 +53,7 @@ namespace SolrNet.Tests {
             var solrSchemaParser = new SolrSchemaParser();
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
-            var validationResults = schemaManager.Validate(typeof (SchemaMappingTestDocument), schema).ToList();
+            var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
             Assert.AreEqual(0, validationResults.Count);
         }
 
@@ -68,7 +68,7 @@ namespace SolrNet.Tests {
             var solrSchemaParser = new SolrSchemaParser();
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
-            var validationResults = schemaManager.Validate(typeof (SchemaMappingTestDocument), schema).ToList();
+            var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
             Assert.AreEqual(1, validationResults.Count);
         }
     }

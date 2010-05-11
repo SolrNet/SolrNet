@@ -83,14 +83,14 @@ namespace SolrNet.Tests {
                     Expect.Call(basicServer.GetSchema())
                         .Repeat.Once()
                         .Return(new SolrSchema());
-                    Expect.Call(validationManager.Validate(typeof(TestDocument), new SolrSchema()))
+                    Expect.Call(validationManager.EnumerateValidationResults(typeof(TestDocument), new SolrSchema()))
                         .Repeat.Once()
                         .IgnoreArguments()
                         .Return(new List<ValidationResult>());
                 })
                 .Verify(() => {
                     var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
-                    s.Validate().ToList();
+                    s.EnumerateValidationResults().ToList();
                 });
         }
 

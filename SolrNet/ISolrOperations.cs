@@ -124,6 +124,6 @@ namespace SolrNet {
         ///<returns>
         /// A collection of <see cref="ValidationResult"/> objects containing warnings and error found validating
         /// the type's mapping against the Solr schema if any.</returns>
-        IEnumerable<ValidationResult> Validate();
+        IEnumerable<ValidationResult> EnumerateValidationResults();
     }
 }

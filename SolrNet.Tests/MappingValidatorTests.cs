@@ -34,7 +34,7 @@ namespace SolrNet.Tests {
             var mappingManager = new MappingManager();
             var mappingValidationManager = new MappingValidator(mappingManager, new[] {new DummyValidationRuleError()});
 
-            var validationResults = mappingValidationManager.Validate(typeof(SchemaMappingTestDocument), new SolrSchema()).ToList();
+            var validationResults = mappingValidationManager.EnumerateValidationResults(typeof(SchemaMappingTestDocument), new SolrSchema()).ToList();
 
             Assert.AreEqual(1, validationResults.Count);
         }

@@ -31,6 +31,6 @@ namespace SolrNet.Mapping.Validation {
         /// <param name="documentType">The document type which needs to be validated</param>
         /// <param name="schema">The Solr schema.</param>
         /// <returns>A collection of <see cref="ValidationResult"/> objects with the problems found during validation. If Any.</returns>
-	    IEnumerable<ValidationResult> Validate(Type documentType, SolrSchema schema);
+	    IEnumerable<ValidationResult> EnumerateValidationResults(Type documentType, SolrSchema schema);
 	}
 }

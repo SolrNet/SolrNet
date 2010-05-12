@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace SolrNet {
     ///<summary>
-    /// Represents the Solr Field to be serialized into XML.
+    /// Represents a Solr field mapping.
     ///</summary>
     public class SolrFieldModel {
         /// <summary>

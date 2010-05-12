@@ -60,8 +60,8 @@ namespace SolrNet.Mapping.Validation.Rules {
 
                 if (!fieldFoundInSolrSchema)
                     // If field couldn't be matched to any of the solrfield, dynamicfields throw an exception.
-                    yield return new ValidationError(String.Format("No matching SolrField or DynamicField found in the Solr schema for document property '{0}' in type '{1}'.",
-                                                                          mappedField.Property.Name, documentType.FullName));
+                    yield return new ValidationError(String.Format("No matching SolrField or DynamicField '{0}' found in the Solr schema for document property '{1}' in type '{2}'.",
+                                                                          mappedField.FieldName, mappedField.Property.Name, documentType.FullName));
             }
         }
 

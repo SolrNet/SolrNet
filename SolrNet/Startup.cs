@@ -54,8 +54,8 @@ namespace SolrNet {
             var propertyVisitor = new DefaultDocumentVisitor(mapper, fieldParser);
             Container.Register<ISolrDocumentPropertyVisitor>(c => propertyVisitor);
 
-            var cache = new HttpRuntimeCache();
-            Container.Register<ISolrCache>(c => cache);
+            //var cache = new HttpRuntimeCache();
+            //Container.Register<ISolrCache>(c => cache);
 
             var solrSchemaParser = new SolrSchemaParser();
             Container.Register<ISolrSchemaParser>(c => solrSchemaParser);
@@ -75,7 +75,7 @@ namespace SolrNet {
         /// <param name="serverURL">Solr URL (i.e. "http://localhost:8983/solr")</param>
         public static void Init<T>(string serverURL) where T: new() {
             var connection = new SolrConnection(serverURL) {
-                Cache = Container.GetInstance<ISolrCache>(),
+                //Cache = Container.GetInstance<ISolrCache>(),
             };
 
             Init<T>(connection);

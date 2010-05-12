@@ -38,7 +38,7 @@ namespace Ninject.Integration.SolrNet {
         public override void Load() {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Bind<IReadOnlyMappingManager>().ToConstant(mapper);
-            Bind<ISolrCache>().To<HttpRuntimeCache>();
+            //Bind<ISolrCache>().To<HttpRuntimeCache>();
             Bind<ISolrDocumentPropertyVisitor>().To<DefaultDocumentVisitor>();
             Bind<ISolrFieldParser>().To<DefaultFieldParser>();
             Bind(typeof(ISolrDocumentResponseParser<>)).To(typeof(SolrDocumentResponseParser<>));

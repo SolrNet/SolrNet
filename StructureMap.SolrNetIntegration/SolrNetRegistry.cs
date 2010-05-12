@@ -23,7 +23,7 @@ namespace Structuremap.SolrNetIntegration
             ValidateUrl(solrURL);
 
             For<IReadOnlyMappingManager>().Use(mappingManager);
-            For<ISolrCache>().Use<HttpRuntimeCache>();
+            //For<ISolrCache>().Use<HttpRuntimeCache>();
             
             For<ISolrConnection>().Use(c => new SolrConnection(solrURL));           
 

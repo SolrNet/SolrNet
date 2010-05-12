@@ -133,7 +133,8 @@ namespace SolrNet.Impl {
             }
             try {
                 var response = GetResponse(request);
-                Cache.Add(new SolrCacheEntity(u.Uri.ToString(), response.ETag, response.Data));
+                if (response.ETag != null)
+                    Cache.Add(new SolrCacheEntity(u.Uri.ToString(), response.ETag, response.Data));
                 return response.Data;
             } catch (WebException e) {
                 if (e.Response != null) {
@@ -157,6 +158,9 @@ namespace SolrNet.Impl {
         private SolrResponse GetResponse(IHttpWebRequest request) {
             using (var response = request.GetResponse()) {
                 var etag = response.Headers[HttpResponseHeader.ETag];
+                var cacheControl = response.Headers[HttpResponseHeader.CacheControl];
+                if (cacheControl != null && cacheControl.Contains("no-cache"))
+                    etag = null; // avoid caching things marked as no-cache
                 using (var rStream = response.GetResponseStream())
                 using (var sr = new StreamReader(rStream, TryGetEncoding(response))) {
                     return new SolrResponse(etag, sr.ReadToEnd());

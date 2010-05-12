@@ -1,3 +1,5 @@
+- Breaking change: removed NoUniqueKeyException. Now IReadOnlyMappingManager.GetUniqueKey() returns null if there is no unique key.
+- Added mapping validation
 - Upgraded to Windsor 2.1.1
 - Added StructureMap integration
 - Fixed culture-related bug in highlighting parameters
@@ -11,12 +13,12 @@
 - Fixed issue #95 : Highlights didn't support several snippets in results
 - Fixed performance issue with SolrMultipleCriteriaQuery (issue #94)
 - Removed ISolrDocument interface
-- Added support for loose mapping
-- Improved multi-core configuration in Windsor facility
-- Added Rollback command
-- Added HTTP-level caching
+- Added support for loose mapping (issue #53)
+- Improved multi-core configuration in Windsor facility (issue #70)
+- Added Rollback command (issue #51)
+- Added HTTP-level caching (issue #75)
 - Added operator - for queries
-- Added support for LocalParams
+- Added support for LocalParams (issue #62)
 
 0.2.3 (2009-12-29)
 ===

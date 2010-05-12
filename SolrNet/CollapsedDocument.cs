@@ -14,30 +14,21 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-
 namespace SolrNet {
-    /// <summary>
-    /// Collapse results
-    /// <see cref="https://issues.apache.org/jira/browse/SOLR-236"/>
-    /// </summary>
-    public class CollapseResults {
-
-        /// <summary>
-        /// &collapse.field=
-        /// </summary>
-        public string Field { get; set; }
-
-        /// <summary>
-        /// Collapsed document.ids and their counts
-        /// </summary>
-        public ICollection<CollapsedDocument> CollapsedDocuments { get; set; }
+    public class CollapsedDocument {
+        ///<summary>
+        /// Name
+        ///</summary>
+        public string Name { get; set; }
 
         ///<summary>
-        /// Initializer
+        /// Collapsed Field Value
         ///</summary>
-        public CollapseResults() {
-            CollapsedDocuments = new List<CollapsedDocument>();
-        }
+        public string FieldValue { get; set; }
+
+        /// <summary>
+        /// Collapsed field count
+        /// </summary>
+        public int CollapseCount { get; set; }
     }
 }

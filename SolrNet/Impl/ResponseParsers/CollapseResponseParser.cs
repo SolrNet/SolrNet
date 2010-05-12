@@ -1,4 +1,5 @@
 ﻿#region license
+
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +13,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -27,10 +30,10 @@ namespace SolrNet.Impl.ResponseParsers {
         public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
             var mainCollapseNode = xml.SelectSingleNode("response/lst[@name='collapse_counts']");
             if (mainCollapseNode != null) {
-                results.Collapsing = new CollapseResults();
-                results.Collapsing.CountResults = ParseCountResults(mainCollapseNode);
-                results.Collapsing.DocResults = ParseDocResults(mainCollapseNode);
-                results.Collapsing.Field = mainCollapseNode.SelectSingleNode("str[@name='field']").InnerText;
+                results.Collapsing = new CollapseResults {
+                    CollapsedDocuments = Func.ToArray(ParseCollapsedResults(mainCollapseNode)),
+                    Field = mainCollapseNode.SelectSingleNode("str[@name='field']").InnerText
+                };
             }
         }
 
@@ -39,29 +42,15 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IDictionary<string, int> ParseDocResults(XmlNode node) {
-            var d = new Dictionary<string, int>();
-            foreach (XmlNode countNode in node.SelectSingleNode("lst[@name='doc']").ChildNodes) {
-                var key = countNode.Attributes["name"].Value;
-                var value = Convert.ToInt32(countNode.InnerText);
-                d[key] = value;
+        public IEnumerable<CollapsedDocument> ParseCollapsedResults(XmlNode node) {
+            foreach (XmlNode docNode in
+                node.SelectSingleNode("lst[@name='results']").ChildNodes) {
+                yield return new CollapsedDocument {
+                    Name = docNode.Attributes["name"].Value,
+                    FieldValue = docNode.SelectSingleNode("str[@name='fieldValue']").InnerText,
+                    CollapseCount = Convert.ToInt32(docNode.SelectSingleNode("int[@name='collapseCount']").InnerText)
+                };
             }
-            return d;
-        }
-
-        /// <summary>
-        /// Parses collapsed field values and their counts
-        /// </summary>
-        /// <param name="node"></param>
-        /// <returns></returns>
-        public IDictionary<string, int> ParseCountResults(XmlNode node) {
-            var d = new Dictionary<string, int>();
-            foreach (XmlNode countNode in node.SelectSingleNode("lst[@name='count']").ChildNodes) {
-                var key = countNode.Attributes["name"].Value;
-                var value = Convert.ToInt32(countNode.InnerText);
-                d[key] = value;
-            }
-            return d;
         }
     }
 }

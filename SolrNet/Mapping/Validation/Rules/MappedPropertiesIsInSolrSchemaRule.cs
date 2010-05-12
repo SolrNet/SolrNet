@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using SolrNet.Schema;
+using SolrNet.Utils;
 
 namespace SolrNet.Mapping.Validation.Rules {
     /// <summary>
@@ -27,6 +28,15 @@ namespace SolrNet.Mapping.Validation.Rules {
     /// as either a SolrField or a DynamicField
     /// </summary>
     public class MappedPropertiesIsInSolrSchemaRule : IValidationRule {
+        /// <summary>
+        /// Field names to be ignored. These fields are never checked.
+        /// </summary>
+        public ICollection<string> IgnoredFieldNames { get; set; }
+
+        public MappedPropertiesIsInSolrSchemaRule() {
+            IgnoredFieldNames = new[] {"score", "geo_distance"};
+        }
+
         /// <summary>
         /// Validates that all properties in the mapping are present in the Solr schema
         /// as either a SolrField or a DynamicField
@@ -39,11 +49,12 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// </returns>
         public IEnumerable<ValidationResult> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             foreach (var mappedField in mappingManager.GetFields(documentType)) {
-                if (mappedField.FieldName == "score")
+                var field = mappedField;
+                if (IgnoredFieldNames != null && Func.Any(IgnoredFieldNames, f => f == field.FieldName))
                     continue;
                 var fieldFoundInSolrSchema = false;
                 foreach (var solrField in solrSchema.SolrFields) {
-                    if (solrField.Name.Equals(mappedField.FieldName)) {
+                    if (solrField.Name.Equals(field.FieldName)) {
                         fieldFoundInSolrSchema = true;
                         break;
                     }
@@ -51,7 +62,7 @@ namespace SolrNet.Mapping.Validation.Rules {
 
                 if (!fieldFoundInSolrSchema) {
                     foreach (var dynamicField in solrSchema.SolrDynamicFields) {
-                        if (IsGlobMatch(dynamicField.Name, mappedField.FieldName)) {
+                        if (IsGlobMatch(dynamicField.Name, field.FieldName)) {
                             fieldFoundInSolrSchema = true;
                             break;
                         }
@@ -61,7 +72,7 @@ namespace SolrNet.Mapping.Validation.Rules {
                 if (!fieldFoundInSolrSchema)
                     // If field couldn't be matched to any of the solrfield, dynamicfields throw an exception.
                     yield return new ValidationError(String.Format("No matching SolrField or DynamicField '{0}' found in the Solr schema for document property '{1}' in type '{2}'.",
-                                                                          mappedField.FieldName, mappedField.Property.Name, documentType.FullName));
+                                                                          field.FieldName, field.Property.Name, documentType.FullName));
             }
         }
 

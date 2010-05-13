@@ -219,9 +219,5 @@ namespace SolrNet.Impl {
             var schema = GetSchema();
             return _schemaMappingValidator.EnumerateValidationResults(typeof(T), schema);
         }
-
-        public string Send(ISolrCommand cmd) {
-            return basicServer.Send(cmd);
-        }
     }
 }

@@ -139,7 +139,6 @@
     <Compile Include="SolrQueryInListTests.cs" />
     <Compile Include="SolrQueryResultsParserTests.cs" />
     <Compile Include="SolrQueryResultsParserTestsDocumentClasses.cs" />
-    <Compile Include="SolrQueryResultsParserTestsXmlResponses.cs" />
     <Compile Include="SolrQueryResultsTests.cs" />
     <Compile Include="SolrQueryTests.cs" />
     <Compile Include="SolrServerTests.cs" />
@@ -167,12 +166,25 @@
     <EmbeddedResource Include="Resources\solrSchemaDefault.xml" />
     <EmbeddedResource Include="Resources\solrSchemaEmptyUniqueKey.xml" />
     <EmbeddedResource Include="Resources\solrSchemaNoUniqueKey.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\solrSchemaMappingTypes.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\solrSchemaMultiValuedName.xml" />
+    <EmbeddedResource Include="Resources\responseWithHighlighting.xml" />
+    <EmbeddedResource Include="Resources\responseWithHighlighting2.xml" />
+    <EmbeddedResource Include="Resources\response.xml" />
+    <EmbeddedResource Include="Resources\responseWithArrays.xml" />
+    <EmbeddedResource Include="Resources\responseWithArraysSimple.xml" />
+    <EmbeddedResource Include="Resources\responseWithDate.xml" />
+    <EmbeddedResource Include="Resources\responseWithFacet.xml" />
+    <EmbeddedResource Include="Resources\responseWithGuid.xml" />
+    <EmbeddedResource Include="Resources\responseWithEnumAsInt.xml" />
+    <EmbeddedResource Include="Resources\responseWithEnumAsString.xml" />
+    <EmbeddedResource Include="Resources\responseWithDict.xml" />
+    <EmbeddedResource Include="Resources\responseWithDictFloat.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellChecking.xml" />
+    <EmbeddedResource Include="Resources\responseWithMoreLikeThis.xml" />
+    <EmbeddedResource Include="Resources\responseWithStats.xml" />
+    <EmbeddedResource Include="Resources\partialResponseWithDateFacet.xml" />
+    <EmbeddedResource Include="Resources\partialResponseWithDateFacetAndOther.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

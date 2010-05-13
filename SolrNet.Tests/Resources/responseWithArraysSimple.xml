@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <responseHeader>
+    <status>0</status>
+    <QTime>1</QTime>
+  </responseHeader>
+  <result numFound="1" start="0" maxScore="1.6578954">
+    <doc>
+      <arr name="features">
+        <str>7200RPM, 8MB cache, IDE Ultra ATA-133</str>
+        <str>NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor</str>
+      </arr>
+    </doc>
+  </result>
+</response>

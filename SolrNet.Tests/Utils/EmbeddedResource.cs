@@ -19,6 +19,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Xml;
 
 namespace SolrNet.Tests.Utils {
@@ -62,6 +63,18 @@ namespace SolrNet.Tests.Utils {
         public static Stream GetEmbeddedFile(Type type, string fileName) {
             string assemblyName = type.Assembly.GetName().Name;
             return GetEmbeddedFile(assemblyName, fileName);
+        }
+
+        /// <summary>
+        /// Extracts an embedded resource as a string.
+        /// </summary>
+        /// <param name="type">A type contained in the assembly containing the resource.</param>
+        /// <param name="fileName">The name of the resource.</param>
+        /// <returns>A string with the contents of the embedded resource.</returns>
+        public static string GetEmbeddedString(Type type, string fileName) {
+            using (var s = GetEmbeddedFile(type, fileName))
+            using (var sr = new StreamReader(s, Encoding.UTF8))
+                return sr.ReadToEnd();
         }
 
         /// <summary>

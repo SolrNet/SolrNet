@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <result numFound="1" start="0">
+    <doc>
+      <str name="Key">224fbdc1-12df-4520-9fbe-dd91f916eba1</str>
+    </doc>
+  </result>
+  <lst name="stats">
+    <lst name="stats_fields">
+      <lst name="price">
+        <double name="min">0.0</double>
+        <double name="max">2199.0</double>
+        <double name="sum">5251.2699999999995</double>
+        <long name="count">15</long>
+        <long name="missing">11</long>
+        <double name="sumOfSquares">6038619.160300001</double>
+        <double name="mean">350.08466666666664</double>
+        <double name="stddev">547.737557906113</double>
+        <lst name="facets">
+          <lst name="inStock">
+            <lst name="false">
+              <double name="min">11.5</double>
+              <double name="max">649.99</double>
+              <double name="sum">1161.39</double>
+              <long name="count">4</long>
+              <long name="missing">0</long>
+              <double name="sumOfSquares">653369.2551</double>
+              <double name="mean">290.3475</double>
+              <double name="stddev">324.63444676281654</double>
+            </lst>
+            <lst name="true">
+              <double name="min">0.0</double>
+              <double name="max">2199.0</double>
+              <double name="sum">4089.879999999999</double>
+              <long name="count">11</long>
+              <long name="missing">0</long>
+              <double name="sumOfSquares">5385249.905200001</double>
+              <double name="mean">371.8072727272727</double>
+              <double name="stddev">621.6592938755265</double>
+            </lst>
+          </lst>
+        </lst>
+      </lst>
+    </lst>
+  </lst>
+</response>

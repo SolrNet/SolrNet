@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <responseHeader>
+    <status>0</status>
+    <QTime>1</QTime>
+  </responseHeader>
+
+  <result numFound="1" start="0">
+    <doc>
+      <arr name="cat">
+        <str>electronics</str>
+        <str>hard drive</str>
+      </arr>
+      <arr name="features">
+        <str>7200RPM, 8MB cache, IDE Ultra ATA-133</str>
+        <str>NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor</str>
+      </arr>
+      <str name="id">SP2514N</str>
+      <bool name="inStock">true</bool>
+      <str name="manu">Samsung Electronics Co. Ltd.</str>
+      <str name="name">Samsung SpinPoint P120 SP2514N - hard drive - 250 GB - ATA-133</str>
+      <int name="popularity">6</int>
+      <float name="price">92.0</float>
+      <str name="sku">SP2514N</str>
+      <arr name="numbers">
+        <int>1</int>
+        <int>2</int>
+      </arr>
+    </doc>
+  </result>
+</response>

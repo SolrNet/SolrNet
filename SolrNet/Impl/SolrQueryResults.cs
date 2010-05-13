@@ -16,9 +16,8 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using SolrNet.Impl;
 
-namespace SolrNet {
+namespace SolrNet.Impl {
     /// <summary>
     /// Query results
     /// </summary>

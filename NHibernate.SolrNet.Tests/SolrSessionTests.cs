@@ -20,6 +20,7 @@ using Microsoft.Practices.ServiceLocation;
 using Rhino.Mocks;
 using SolrNet;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]

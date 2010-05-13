@@ -54,7 +54,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void Add() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(conn.Post("/update", "<add><doc /></add>")).Return(""))
                 .Verify(() => {
@@ -66,7 +66,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void Commit() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             Solr.Connection = conn;
             Solr.Commit();
         }
@@ -74,7 +74,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void CommitWithParams() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             Solr.Connection = conn;
             Solr.Commit(true, true);
         }
@@ -83,7 +83,7 @@ namespace SolrNet.DSL.Tests {
         public void DeleteById() {
             const string id = "123456";
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id></delete>", id)))
                                      .Return(""))
@@ -97,7 +97,7 @@ namespace SolrNet.DSL.Tests {
         public void DeleteByIds() {
             var ids = new[] {"123", "456"};
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id><id>{1}</id></delete>", ids[0], ids[1])))
                                      .Return(""))
@@ -111,7 +111,7 @@ namespace SolrNet.DSL.Tests {
         public void DeleteByQuery() {
             const string q = "id:123456";
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks).Expecting(() => {
                 if (conn != null)
                     Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", q))).Return("");
@@ -125,7 +125,7 @@ namespace SolrNet.DSL.Tests {
         public void DeleteByQueryString() {
             const string q = "id:123456";
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", q)))
                                      .Return(""))
@@ -138,7 +138,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void Optimize() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             Solr.Connection = conn;
             Solr.Optimize();
         }
@@ -146,7 +146,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void OptimizeWithParams() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             Solr.Connection = conn;
             Solr.Optimize(true, true);
         }
@@ -236,7 +236,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void Query() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(conn.Get(null, null))
                                      .IgnoreArguments()
@@ -252,7 +252,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void Query_InvalidField_ShouldNOTThrow() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(
                                      @"<?xml version=""1.0"" encoding=""UTF-8""?>
@@ -370,7 +370,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void QueryWithPagination() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(conn.Get(null, null))
                                      .IgnoreArguments()
@@ -386,7 +386,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void FacetField() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(conn.Get(null, null))
                                      .IgnoreArguments()
@@ -401,7 +401,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void FacetField_options() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(conn.Get(null, null))
                                      .IgnoreArguments()
@@ -424,7 +424,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void FacetQuery_string() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(conn.Get(null, null))
                                      .IgnoreArguments()
@@ -439,7 +439,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void FacetQuery_ISolrQuery() {
             var mocks = new MockRepository();
-            var conn = mocks.CreateMock<ISolrConnection>();
+            var conn = mocks.StrictMock<ISolrConnection>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(conn.Get(null, null))
                                      .IgnoreArguments()
@@ -456,7 +456,7 @@ namespace SolrNet.DSL.Tests {
         public void FacetQuery_Fluent() {
             throw new NotImplementedException();
             //var mocks = new MockRepository();
-            //var conn = mocks.CreateMock<ISolrConnection>();
+            //var conn = mocks.StrictMock<ISolrConnection>();
             //With.Mocks(mocks).Expecting(delegate {
             //  Expect.Call(conn.Get(null, null)).IgnoreArguments().Repeat.Once().Return(response);
             //}).Verify(delegate {

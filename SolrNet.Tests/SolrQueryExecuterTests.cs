@@ -39,7 +39,7 @@ namespace SolrNet.Tests {
             q["q"] = queryString;
             var conn = new MockConnection(q);
             var mocks = new MockRepository();
-            var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
+            var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
@@ -58,7 +58,7 @@ namespace SolrNet.Tests {
             q["sort"] = "id asc";
             var conn = new MockConnection(q);
             var mocks = new MockRepository();
-            var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
+            var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(parser.Parse(null))
@@ -82,7 +82,7 @@ namespace SolrNet.Tests {
             q["sort"] = "id asc,name desc";
             var conn = new MockConnection(q);
             var mocks = new MockRepository();
-            var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
+            var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
@@ -106,7 +106,7 @@ namespace SolrNet.Tests {
             q["fl"] = "id,name";
             var conn = new MockConnection(q);
             var mocks = new MockRepository();
-            var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
+            var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
             With.Mocks(mocks).Expecting(delegate {
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);

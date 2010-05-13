@@ -31,9 +31,9 @@ namespace SolrNet.Tests {
         [Test]
         public void Ping() {
             var mocks = new MockRepository();
-            var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
-            var validationManager = mocks.CreateMock<IMappingValidator>();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
             With.Mocks(mocks)
                 .Expecting(basicServer.Ping)
                 .Verify(() => {
@@ -45,9 +45,9 @@ namespace SolrNet.Tests {
         [Test]
         public void Commit() {
             var mocks = new MockRepository();
-            var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
-            var validationManager = mocks.CreateMock<IMappingValidator>();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
             With.Mocks(mocks)
                 .Expecting(() => basicServer.Commit(null))
                 .Verify(() => {
@@ -59,9 +59,9 @@ namespace SolrNet.Tests {
         [Test]
         public void GetSchema() {
             var mocks = new MockRepository();
-            var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
-            var validationManager = mocks.CreateMock<IMappingValidator>();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(basicServer.GetSchema())
                     .Repeat.Once()
@@ -75,9 +75,9 @@ namespace SolrNet.Tests {
         [Test]
         public void Validate() {
             var mocks = new MockRepository();
-            var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocument>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
-            var validationManager = mocks.CreateMock<IMappingValidator>();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
             With.Mocks(mocks)
                 .Expecting(() => {
                     Expect.Call(basicServer.GetSchema())

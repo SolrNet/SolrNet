@@ -50,7 +50,7 @@ namespace SolrNet.Tests {
 
         public CollectionFieldParser CreateCollectionFieldParser() {
             var mocks = new MockRepository();
-            var vp = mocks.CreateMock<ISolrFieldParser>();
+            var vp = mocks.StrictMock<ISolrFieldParser>();
             var p = new CollectionFieldParser(vp);
             return p;
         }

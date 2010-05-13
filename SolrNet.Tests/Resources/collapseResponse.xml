@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <lst name="collapse_counts">
+    <str name="field">manu_exact</str>
+    <lst name="results">
+      <lst name="F8V7067-APL-KIT">
+        <int name="collapseCount">1</int>
+        <str name="fieldValue">Belkin</str>
+      </lst>
+      <lst name="TWINX2048-3200PRO">
+        <int name="collapseCount">3</int>
+        <str name="fieldValue">Corsair Microsystems Inc.</str>
+      </lst>
+      <lst name="VDBDB1A16">
+        <int name="collapseCount">1</int>
+        <str name="fieldValue">A-DATA Technology Inc.</str>
+      </lst>
+      <lst name="0579B002">
+        <int name="collapseCount">1</int>
+        <str name="fieldValue">Canon Inc.</str>
+      </lst>
+      <lst name="SOLR1000">
+        <int name="collapseCount">1</int>
+        <str name="fieldValue">Apache Software Foundation</str>
+      </lst>
+    </lst>
+  </lst>
+</response>

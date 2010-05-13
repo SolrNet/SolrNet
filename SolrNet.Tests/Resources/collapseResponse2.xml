@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <lst name="collapse_counts">
+    <str name="field">manu_exact</str>
+    <lst name="results">
+      <lst name="F8V7067-APL-KIT">
+        <int name="collapseCount">1</int>
+        <str name="fieldValue">Belkin</str>
+      </lst>
+      <lst name="TWINX2048-3200PRO">
+        <int name="collapseCount">1</int>
+        <str name="fieldValue">Corsair Microsystems Inc.</str>
+      </lst>
+      <lst name="TWINX2048-3200PRO-payload">
+        <int name="collapseCount">1</int>
+        <str name="fieldValue">Corsair Microsystems Inc.</str>
+      </lst>
+    </lst>
+  </lst>
+</response>

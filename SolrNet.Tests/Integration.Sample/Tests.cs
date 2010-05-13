@@ -41,7 +41,8 @@ namespace SolrNet.Tests.Integration.Sample {
         [SetUp]
         public void Setup() {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-            solr.Delete(SolrQuery.All).Commit();
+            solr.Delete(SolrQuery.All);
+            solr.Commit();
         }
 
         [Test]
@@ -72,9 +73,9 @@ namespace SolrNet.Tests.Integration.Sample {
             };
 
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-            solr.Delete(SolrQuery.All)
-                .AddWithBoost(p, 2.2)
-                .Commit();
+            solr.Delete(SolrQuery.All);
+            solr.AddWithBoost(p, 2.2);
+            solr.Commit();
 
             solr.Query(new SolrQueryByField("name", @"3;Furniture"));
             var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m).Boost(2));
@@ -160,9 +161,11 @@ namespace SolrNet.Tests.Integration.Sample {
             };
             #endregion
 
-            solr.Add(products).Commit();
+            solr.Add(products);
+            solr.Commit();
             
-            solr.Delete(new[] { "DEL12345", "DEL12346" }, new SolrQueryByField("features", "feature 3")).Commit();
+            solr.Delete(new[] { "DEL12345", "DEL12346" }, new SolrQueryByField("features", "feature 3"));
+            solr.Commit();
             var productsAfterDelete = solr.Query(SolrQuery.All);
 
             Assert.AreEqual(0, productsAfterDelete.Count);

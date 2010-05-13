@@ -60,6 +60,9 @@ namespace SolrNet {
             var solrSchemaParser = new SolrSchemaParser();
             Container.Register<ISolrSchemaParser>(c => solrSchemaParser);
 
+            var headerParser = new HeaderResponseParser<string>();
+            Container.Register<ISolrHeaderResponseParser>(c => headerParser);
+
             Container.Register<IValidationRule>(typeof(MappedPropertiesIsInSolrSchemaRule).FullName, c => new MappedPropertiesIsInSolrSchemaRule());
             Container.Register<IValidationRule>(typeof(RequiredFieldsAreMappedRule).FullName, c => new RequiredFieldsAreMappedRule());
             Container.Register<IValidationRule>(typeof(UniqueKeyMatchesMappingRule).FullName, c => new UniqueKeyMatchesMappingRule());
@@ -111,7 +114,7 @@ namespace SolrNet {
             var documentSerializer = ChooseDocumentSerializer<T>();
             Container.Register(c => documentSerializer);
 
-            var basicServer = new SolrBasicServer<T>(connection, queryExecuter, documentSerializer, Container.GetInstance<ISolrSchemaParser>());
+            var basicServer = new SolrBasicServer<T>(connection, queryExecuter, documentSerializer, Container.GetInstance<ISolrSchemaParser>(), Container.GetInstance<ISolrHeaderResponseParser>());
             Container.Register<ISolrBasicOperations<T>>(c => basicServer);
             Container.Register<ISolrBasicReadOnlyOperations<T>>(c => basicServer);
 

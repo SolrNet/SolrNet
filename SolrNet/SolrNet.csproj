@@ -90,6 +90,7 @@
     <Compile Include="Impl\ISolrDocumentResponseParser.cs" />
     <Compile Include="Impl\ISolrFieldParser.cs" />
     <Compile Include="Impl\ISolrFieldSerializer.cs" />
+    <Compile Include="Impl\ISolrHeaderResponseParser.cs" />
     <Compile Include="Impl\ISolrResponseParser.cs" />
     <Compile Include="Impl\NullCache.cs" />
     <Compile Include="Impl\PropertyNode.cs" />

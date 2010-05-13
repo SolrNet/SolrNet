@@ -31,15 +31,17 @@ namespace SolrNet.Impl {
         private readonly ISolrQueryExecuter<T> queryExecuter;
         private readonly ISolrDocumentSerializer<T> documentSerializer;
         private readonly ISolrSchemaParser schemaParser;
+        private readonly ISolrHeaderResponseParser headerParser;
 
-        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser) {
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser) {
             this.connection = connection;
             this.queryExecuter = queryExecuter;
             this.documentSerializer = documentSerializer;
             this.schemaParser = schemaParser;
+            this.headerParser = headerParser;
         }
 
-        public void Commit(CommitOptions options) {
+        public ResponseHeader Commit(CommitOptions options) {
             options = options ?? new CommitOptions();
             var cmd = new CommitCommand {
                 WaitFlush = options.WaitFlush, 
@@ -47,10 +49,10 @@ namespace SolrNet.Impl {
                 ExpungeDeletes = options.ExpungeDeletes,
                 MaxSegments = options.MaxSegments,
             };
-            Send(cmd);
+            return SendAndParseHeader(cmd);
         }
 
-        public void Optimize(CommitOptions options) {
+        public ResponseHeader Optimize(CommitOptions options) {
             options = options ?? new CommitOptions();
             var cmd = new OptimizeCommand {
                 WaitFlush = options.WaitFlush, 
@@ -58,23 +60,21 @@ namespace SolrNet.Impl {
                 ExpungeDeletes = options.ExpungeDeletes,
                 MaxSegments = options.MaxSegments,
             };
-            Send(cmd);
+            return SendAndParseHeader(cmd);
         }
 
-        public void Rollback() {
-            Send(new RollbackCommand());
+        public ResponseHeader Rollback() {
+            return SendAndParseHeader(new RollbackCommand());
         }
 
-        public ISolrBasicOperations<T> AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
+        public ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
             var cmd = new AddCommand<T>(docs, documentSerializer);
-            Send(cmd);
-            return this;
+            return SendAndParseHeader(cmd);
         }
 
-         public ISolrBasicOperations<T> Delete(IEnumerable<string> ids, ISolrQuery q) {
+        public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q) {
             var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q));
-            delete.Execute(connection);
-            return this;
+            return SendAndParseHeader(delete);
         }
 
         public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
@@ -85,8 +85,15 @@ namespace SolrNet.Impl {
             return cmd.Execute(connection);
         }
 
-        public void Ping() {
-            new PingCommand().Execute(connection);
+        public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
+            var r = Send(cmd);
+            var xml = new XmlDocument();
+            xml.LoadXml(r);
+            return headerParser.Parse(xml);
+        }
+
+        public ResponseHeader Ping() {
+            return SendAndParseHeader(new PingCommand());
         }
 
         public SolrSchema GetSchema() {

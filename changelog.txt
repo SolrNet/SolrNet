@@ -1,3 +1,4 @@
+- Breaking change: all chainable methods on ISolrOperations et al now return ResponseHeader instead of 'this'.
 - Breaking change: removed NoUniqueKeyException. Now IReadOnlyMappingManager.GetUniqueKey() returns null if there is no unique key.
 - Added mapping validation
 - Upgraded to Windsor 2.1.1

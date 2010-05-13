@@ -32,12 +32,10 @@ namespace SolrNet.Tests {
         public void Ping() {
             var mocks = new MockRepository();
             var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
-            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
-            var validationManager = mocks.StrictMock<IMappingValidator>();
             With.Mocks(mocks)
-                .Expecting(basicServer.Ping)
+                .Expecting(() => Expect.Call(basicServer.Ping()).Return(new ResponseHeader()))
                 .Verify(() => {
-                    var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
+                    var s = new SolrServer<TestDocument>(basicServer, null, null);
                     s.Ping();
                 });
         }
@@ -46,14 +44,12 @@ namespace SolrNet.Tests {
         public void Commit() {
             var mocks = new MockRepository();
             var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
-            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
-            var validationManager = mocks.StrictMock<IMappingValidator>();
             With.Mocks(mocks)
-                .Expecting(() => basicServer.Commit(null))
+                .Expecting(() => Expect.Call(basicServer.Commit(null)).Return(new ResponseHeader()))
                 .Verify(() => {
-                    var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
+                    var s = new SolrServer<TestDocument>(basicServer, null, null);
                     s.Commit();
-                });            
+                });
         }
 
         [Test]

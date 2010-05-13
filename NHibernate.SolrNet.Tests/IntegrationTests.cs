@@ -95,7 +95,8 @@ namespace NHibernate.SolrNet.Tests {
 
             Startup.Init<Entity>("http://localhost:8983/solr");
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Entity>>();
-            solr.Delete(SolrQuery.All).Commit();
+            solr.Delete(SolrQuery.All);
+            solr.Commit();
         }
 
         [FixtureSetUp]

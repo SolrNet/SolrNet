@@ -55,6 +55,7 @@ namespace Ninject.Integration.SolrNet {
                 typeof(CollapseResponseParser<>),
             })
                 Bind(typeof(ISolrResponseParser<>)).To(p);
+            Bind<ISolrHeaderResponseParser>().To<HeaderResponseParser<string>>();
             foreach (var p in new[] {
                 typeof(MappedPropertiesIsInSolrSchemaRule),
                 typeof(RequiredFieldsAreMappedRule),

@@ -16,7 +16,6 @@
 
 using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
-using SolrNet.Exceptions;
 
 namespace SolrNet {
     /// <summary>
@@ -28,25 +27,25 @@ namespace SolrNet {
         /// Commits posted documents
         /// </summary>
         /// <param name="options">Commit options</param>
-        void Commit(CommitOptions options);
+        ResponseHeader Commit(CommitOptions options);
 
         /// <summary>
         /// Optimizes Solr's index
         /// </summary>
         /// <param name="options">Optimization options</param>
-        void Optimize(CommitOptions options);
+        ResponseHeader Optimize(CommitOptions options);
 
         /// <summary>
         /// Rollbacks all add/deletes made to the index since the last commit.
         /// </summary>
-        void Rollback();
+        ResponseHeader Rollback();
 
         /// <summary>
         /// Adds / updates several documents with index-time boost
         /// </summary>
         /// <param name="docs"></param>
         /// <returns></returns>
-        ISolrBasicOperations<T> AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs);
+        ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs);
 
         /// <summary>
         /// Deletes all documents that match the given id's or the query
@@ -54,7 +53,7 @@ namespace SolrNet {
         /// <param name="ids">document ids to delete</param>
         /// <param name="q">query to match</param>
         /// <returns></returns>
-        ISolrBasicOperations<T> Delete(IEnumerable<string> ids, ISolrQuery q);
+        ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q);
 
         /// <summary>
         /// Sends a custom command
@@ -62,5 +61,12 @@ namespace SolrNet {
         /// <param name="cmd">command to send</param>
         /// <returns>solr response</returns>
         string Send(ISolrCommand cmd);
+
+        /// <summary>
+        /// Sends a custom command, returns parsed header from xml response
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <returns></returns>
+        ResponseHeader SendAndParseHeader(ISolrCommand cmd);
     }
 }

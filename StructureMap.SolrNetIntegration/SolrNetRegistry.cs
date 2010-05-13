@@ -49,6 +49,7 @@ namespace Structuremap.SolrNetIntegration
             {
                 For(typeof(ISolrResponseParser<>)).Use(p);
             }
+            For<ISolrHeaderResponseParser>().Use<HeaderResponseParser<string>>();
 
             foreach (var validationRule in new[] {
                 typeof(MappedPropertiesIsInSolrSchemaRule),

@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
@@ -23,12 +24,11 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses header (status, QTime, etc) from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class HeaderResponseParser<T> : ISolrResponseParser<T> {
+    public class HeaderResponseParser<T> : ISolrResponseParser<T>, ISolrHeaderResponseParser {
         public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
-            var responseHeaderNode = xml.SelectSingleNode("response/lst[@name='responseHeader']");
-            if (responseHeaderNode != null) {
-                results.Header = ParseHeader(responseHeaderNode);
-            }
+            var header = Parse(xml);
+            if (header != null)
+                results.Header = header;
         }
 
         /// <summary>
@@ -48,6 +48,13 @@ namespace SolrNet.Impl.ResponseParsers {
                 }
             }
             return r;
+        }
+
+        public ResponseHeader Parse(XmlDocument response) {
+            var responseHeaderNode = response.SelectSingleNode("response/lst[@name='responseHeader']");
+            if (responseHeaderNode != null)
+                return ParseHeader(responseHeaderNode);
+            return null;
         }
     }
 }

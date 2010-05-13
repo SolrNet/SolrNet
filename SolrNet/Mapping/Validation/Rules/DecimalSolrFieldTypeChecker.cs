@@ -19,7 +19,13 @@
 using System;
 
 namespace SolrNet.Mapping.Validation.Rules {
+    /// <summary>
+    /// Checks schema type of properties with <see cref="decimal"/> type
+    /// </summary>
     public class DecimalSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
+        /// <summary>
+        /// Checks schema type of properties with <see cref="decimal"/> type
+        /// </summary>
         public DecimalSolrFieldTypeChecker()
             : base(new[] {"solr.TrieFloatField", "solr.TrieDoubleField", "solr.FloatField", "solr.DoubleField", "solr.SortableFloatField", "solr.SortableDoubleField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}

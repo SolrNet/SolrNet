@@ -21,7 +21,7 @@ using SolrNet.Impl.FieldSerializers;
 namespace SolrNet {
     /// <summary>
     /// Date facet query
-    /// <see cref="http://wiki.apache.org/solr/SimpleFacetParameters#Date_Faceting_Parameters"/>
+    /// <see href="http://wiki.apache.org/solr/SimpleFacetParameters#Date_Faceting_Parameters"/>
     /// </summary>
     public class SolrFacetDateQuery : ISolrFacetQuery {
         private readonly string field;
@@ -39,7 +39,7 @@ namespace SolrNet {
         /// <param name="end">The minimum upper bound for the last date range for all Date Faceting on this field</param>
         /// <param name="gap">
         /// The size of each date range expressed as an interval to be added to the lower bound using the DateMathParser syntax.
-        /// <see cref="http://lucene.apache.org/solr/api/org/apache/solr/util/DateMathParser.html"/>
+        /// <see href="http://lucene.apache.org/solr/api/org/apache/solr/util/DateMathParser.html"/>
         /// </param>
         public SolrFacetDateQuery(string field, DateTime start, DateTime end, string gap) {
             this.field = field;

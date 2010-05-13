@@ -19,7 +19,13 @@
 using System;
 
 namespace SolrNet.Mapping.Validation.Rules {
+    /// <summary>
+    /// Checks schema type of properties with <see cref="int"/> type
+    /// </summary>
     public class IntSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
+        /// <summary>
+        /// Checks schema type of properties with <see cref="int"/> type
+        /// </summary>
         public IntSolrFieldTypeChecker()
             : base(new[] {"solr.TrieIntField", "solr.IntField", "solr.SortableIntField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}

@@ -24,6 +24,9 @@ namespace SolrNet.Impl.FieldParsers {
     public class DefaultFieldParser : ISolrFieldParser {
         private readonly AggregateFieldParser parser;
 
+        /// <summary>
+        /// Default field parser
+        /// </summary>
         public DefaultFieldParser() {
             parser = new AggregateFieldParser(new ISolrFieldParser[] {
                 new NullableFieldParser(new IntFieldParser()),

@@ -15,6 +15,9 @@
 #endregion
 
 namespace SolrNet.Commands.Parameters {
+    /// <summary>
+    /// Commit/optimize options
+    /// </summary>
 	public class CommitOptions {
         /// <summary>
         /// Block until a new searcher is opened and registered as the main query searcher, making the changes visible. 
@@ -41,6 +44,9 @@ namespace SolrNet.Commands.Parameters {
         /// <remarks>Requires Solr 1.4</remarks>
         public bool? ExpungeDeletes { get; set; }
 
+        /// <summary>
+        /// Commit/optimize options
+        /// </summary>
 	    public CommitOptions() {
 	        WaitSearcher = true;
 	        WaitFlush = true;

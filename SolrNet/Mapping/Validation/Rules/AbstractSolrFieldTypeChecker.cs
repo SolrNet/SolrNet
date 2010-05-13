@@ -21,6 +21,9 @@ using System.Collections.Generic;
 using SolrNet.Schema;
 
 namespace SolrNet.Mapping.Validation.Rules {
+    /// <summary>
+    /// Abstract schema type checker. Uses a list of "safe" types and a list of "warning" types
+    /// </summary>
     public abstract class AbstractSolrFieldTypeChecker : ISolrFieldTypeChecker {
         protected readonly ICollection<string> safeTypes;
         protected readonly ICollection<string> warningTypes;
@@ -40,6 +43,11 @@ namespace SolrNet.Mapping.Validation.Rules {
             return new ValidationError(String.Format("Property '{0}' of type '{1}' cannot be stored in solr field type '{2}'.", propertyName, propertyType.FullName, solrFieldType.Name));
         }
 
+        /// <summary>
+        /// Returns true if this type checked can handle <paramref name="propertyType"/>
+        /// </summary>
+        /// <param name="propertyType">Type to check if this checker can handle</param>
+        /// <returns></returns>
         public abstract bool CanHandleType(Type propertyType);
     }
 }

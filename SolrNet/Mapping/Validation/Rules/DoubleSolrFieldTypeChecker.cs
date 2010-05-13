@@ -19,7 +19,13 @@
 using System;
 
 namespace SolrNet.Mapping.Validation.Rules {
+    /// <summary>
+    /// Checks schema type of properties with <see cref="double"/> type
+    /// </summary>
     public class DoubleSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
+        /// <summary>
+        /// Checks schema type of properties with <see cref="double"/> type
+        /// </summary>
         public DoubleSolrFieldTypeChecker()
             : base(new[] {"solr.TrieDoubleField", "solr.SortableDoubleField", "solr.DoubleField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}

@@ -19,7 +19,13 @@
 using System;
 
 namespace SolrNet.Mapping.Validation.Rules {
+    /// <summary>
+    /// Checks schema type of properties with <see cref="bool"/> type
+    /// </summary>
     public class BoolSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
+        /// <summary>
+        /// Checks schema type of properties with <see cref="bool"/> type
+        /// </summary>
         public BoolSolrFieldTypeChecker()
             : base(new[] {"solr.BoolField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}

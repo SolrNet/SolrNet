@@ -23,6 +23,11 @@ namespace SolrNet.Commands {
     /// Gets the raw Solr schema
     /// </summary>
     public class GetSchemaCommand : ISolrCommand {
+        /// <summary>
+        /// Gets the raw Solr schema
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <returns></returns>
         public string Execute(ISolrConnection connection) {
             return connection.Get("/admin/file", new[] {new KeyValuePair<string, string>("file", "schema.xml")});
         }

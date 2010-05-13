@@ -18,10 +18,13 @@ using System;
 
 namespace SolrNet.Attributes {
 	/// <summary>
-	/// Marks a property as present on solr. By default the field name is the property name
+	/// Marks a property as present on Solr. By default the field name is the property name
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property)]
 	public class SolrFieldAttribute : Attribute {
+        /// <summary>
+        /// Marks a property as present on Solr. By default the field name is the property name
+        /// </summary>
 		public SolrFieldAttribute() {}
 
 		/// <summary>

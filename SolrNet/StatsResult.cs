@@ -19,7 +19,7 @@ using System.Collections.Generic;
 namespace SolrNet {
     /// <summary>
     /// Stats results
-    /// <see cref="http://wiki.apache.org/solr/StatsComponent"/>
+    /// <see href="http://wiki.apache.org/solr/StatsComponent"/>
     /// </summary>
     public class StatsResult {
         /// <summary>

@@ -20,7 +20,7 @@ using System.Collections.Generic;
 namespace SolrNet.Commands.Parameters {
     /// <summary>
     /// Parameters to query stats
-    /// <see cref="http://wiki.apache.org/solr/StatsComponent"/>
+    /// <see href="http://wiki.apache.org/solr/StatsComponent"/>
     /// </summary>
     public class StatsParameters {
         /// <summary>

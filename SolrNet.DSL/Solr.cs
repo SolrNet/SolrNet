@@ -37,8 +37,8 @@ namespace SolrNet.DSL {
         /// <summary>
         /// thread-local or webcontext-local connection
         /// </summary>
-        /// <seealso cref="http://www.ayende.com/Blog/archive/7447.aspx"/>
-        /// <seealso cref="http://rhino-tools.svn.sourceforge.net/svnroot/rhino-tools/trunk/rhino-commons/Rhino.Commons/LocalDataImpl/"/>
+        /// <seealso href="http://www.ayende.com/Blog/archive/7447.aspx"/>
+        /// <seealso href="http://rhino-tools.svn.sourceforge.net/svnroot/rhino-tools/trunk/rhino-commons/Rhino.Commons/LocalDataImpl/"/>
         public static ISolrConnection Connection {
             private get { return (ISolrConnection) Local.Data[SolrConnectionKey]; }
             set { Local.Data[SolrConnectionKey] = value; }

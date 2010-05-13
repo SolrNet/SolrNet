@@ -17,7 +17,7 @@
 namespace SolrNet.Commands.Parameters {
     /// <summary>
     /// Parameters to query collapse
-    /// <see cref="https://issues.apache.org/jira/browse/SOLR-236"/>
+    /// <see href="https://issues.apache.org/jira/browse/SOLR-236"/>
     /// </summary>
     public enum CollapseType {
         /// <summary>

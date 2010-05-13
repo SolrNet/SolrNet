@@ -23,6 +23,11 @@ namespace SolrNet {
 	public class SolrQueryByField : AbstractSolrQuery {
 		private readonly string q;
 
+        /// <summary>
+        /// Queries a field for a value
+        /// </summary>
+        /// <param name="fieldName">Field name</param>
+        /// <param name="fieldValue">Field value</param>
 		public SolrQueryByField(string fieldName, string fieldValue) {
 			if (fieldName == null || fieldValue == null)
 				q = null;

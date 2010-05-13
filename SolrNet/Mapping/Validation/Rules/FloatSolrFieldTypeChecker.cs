@@ -19,7 +19,13 @@
 using System;
 
 namespace SolrNet.Mapping.Validation.Rules {
+    /// <summary>
+    /// Checks schema type of properties with <see cref="float"/> type
+    /// </summary>
     public class FloatSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
+        /// <summary>
+        /// Checks schema type of properties with <see cref="float"/> type
+        /// </summary>
         public FloatSolrFieldTypeChecker()
             : base(new[] {"solr.TrieFloatField", "solr.FloatField", "solr.SortableFloatField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}

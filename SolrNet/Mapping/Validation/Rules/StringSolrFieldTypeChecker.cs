@@ -19,7 +19,13 @@
 using System;
 
 namespace SolrNet.Mapping.Validation.Rules {
+    /// <summary>
+    /// Checks schema type of properties with <see cref="string"/> type
+    /// </summary>
     public class StringSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
+        /// <summary>
+        /// Checks schema type of properties with <see cref="string"/> type
+        /// </summary>
         public StringSolrFieldTypeChecker()
             : base(new[] {"solr.StrField", "solr.TextField"},
                    null) {}

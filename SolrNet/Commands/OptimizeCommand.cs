@@ -20,8 +20,8 @@ using System.Xml;
 namespace SolrNet.Commands {
     /// <summary>
     /// Optimizes Solr's index
-    /// See the <see cref="http://wiki.apache.org/jakarta-lucene/LuceneFAQ">Lucene FAQ</see> for more information.
     /// </summary>
+    /// <seealso href="http://wiki.apache.org/jakarta-lucene/LuceneFAQ">Lucene FAQ</seealso>
 	public class OptimizeCommand : ISolrCommand {
 
 		/// <summary>

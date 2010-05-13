@@ -19,7 +19,13 @@
 using System;
 
 namespace SolrNet.Mapping.Validation.Rules {
+    /// <summary>
+    /// Checks schema type of properties with <see cref="DateTime"/> type
+    /// </summary>
     public class DateTimeSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
+        /// <summary>
+        /// Checks schema type of properties with <see cref="DateTime"/> type
+        /// </summary>
         public DateTimeSolrFieldTypeChecker()
             : base(new[] {"solr.TrieDateField", "solr.DateField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}

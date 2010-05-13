@@ -17,6 +17,9 @@
 using System.Collections.Generic;
 
 namespace SolrNet.Commands.Parameters {
+    /// <summary>
+    /// Faceting parameters
+    /// </summary>
     public class FacetParameters {
         /// <summary>
         /// Collection of facet queries

@@ -19,7 +19,13 @@
 using System;
 
 namespace SolrNet.Mapping.Validation.Rules {
+    /// <summary>
+    /// Checks schema type of properties with <see cref="long"/> type
+    /// </summary>
     public class LongSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
+        /// <summary>
+        /// Checks schema type of properties with <see cref="long"/> type
+        /// </summary>
         public LongSolrFieldTypeChecker()
             : base(new[] {"solr.TrieLongField", "solr.LongField", "solr.SortableLongField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}

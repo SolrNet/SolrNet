@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using SolrNet.Exceptions;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -35,7 +36,10 @@ namespace SolrNet.Impl {
         /// <returns></returns>
         public IDictionary<string, T> IndexResultsByKey(IEnumerable<T> results) {
             var r = new Dictionary<string, T>();
-            var prop = mappingManager.GetUniqueKey(typeof (T)).Property;
+            var uniqueKey = mappingManager.GetUniqueKey(typeof (T));
+            if (uniqueKey == null)
+                throw new SolrNetException(string.Format("Can't index document type '{0}', no unique key defined", typeof(T)));
+            var prop = uniqueKey.Property;
             foreach (var d in results) {
                 var key = prop.GetValue(d, null).ToString();
                 r[key] = d;

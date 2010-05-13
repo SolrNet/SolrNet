@@ -160,8 +160,12 @@ namespace SolrNet.Impl {
         }
 
         public ISolrOperations<T> Delete(IEnumerable<T> docs) {
-            basicServer.Delete(Func.Select(docs,
-                                           d => Convert.ToString(mappingManager.GetUniqueKey(typeof (T)).Property.GetValue(d, null))), null);
+            basicServer.Delete(Func.Select(docs, d => {
+                var uniqueKey = mappingManager.GetUniqueKey(typeof (T));
+                if (uniqueKey == null)
+                    throw new SolrNetException(string.Format("This operation requires a unique key, but type '{0}' has no declared unique key", typeof(T)));
+                return Convert.ToString(uniqueKey.Property.GetValue(d, null));
+            }), null);
             return this;
         }
 

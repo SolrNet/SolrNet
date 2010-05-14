@@ -72,6 +72,7 @@
     <Compile Include="Impl\FieldParsers\FloatFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\InferringFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\IntFieldParser.cs" />
+    <Compile Include="Impl\FieldParsers\LongFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\NullableFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\TypeConvertingFieldParser.cs" />
     <Compile Include="Impl\FieldSerializers\AbstractFieldSerializer.cs" />

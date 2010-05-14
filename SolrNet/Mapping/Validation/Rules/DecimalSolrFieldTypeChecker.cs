@@ -35,7 +35,8 @@ namespace SolrNet.Mapping.Validation.Rules {
         }
 
         public bool CanHandleType(Type propertyType) {
-            return propertyType == typeof (decimal);
+            return propertyType == typeof (decimal) ||
+                propertyType == typeof(decimal?);
         }
     }
 }

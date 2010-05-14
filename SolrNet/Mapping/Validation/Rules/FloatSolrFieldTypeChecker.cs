@@ -31,7 +31,8 @@ namespace SolrNet.Mapping.Validation.Rules {
                    new[] {"solr.TextField", "solr.StrField"}) {}
 
         public override bool CanHandleType(Type propertyType) {
-            return propertyType == typeof (float);
+            return propertyType == typeof (float) ||
+                propertyType == typeof(float?);
         }
     }
 }

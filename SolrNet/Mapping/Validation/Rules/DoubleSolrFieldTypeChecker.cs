@@ -31,7 +31,8 @@ namespace SolrNet.Mapping.Validation.Rules {
                    new[] {"solr.TextField", "solr.StrField"}) {}
 
         public override bool CanHandleType(Type propertyType) {
-            return propertyType == typeof (double);
+            return propertyType == typeof (double) ||
+                propertyType == typeof(double?);
         }
     }
 }

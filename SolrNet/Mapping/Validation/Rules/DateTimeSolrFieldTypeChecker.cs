@@ -31,7 +31,8 @@ namespace SolrNet.Mapping.Validation.Rules {
                    new[] {"solr.TextField", "solr.StrField"}) {}
 
         public override bool CanHandleType(Type propertyType) {
-            return propertyType == typeof (DateTime);
+            return propertyType == typeof (DateTime) ||
+                propertyType == typeof(DateTime?);
         }
     }
 }

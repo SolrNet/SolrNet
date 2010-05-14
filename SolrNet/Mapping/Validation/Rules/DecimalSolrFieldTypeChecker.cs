@@ -17,20 +17,24 @@
 #endregion
 
 using System;
+using System.Text.RegularExpressions;
+using SolrNet.Schema;
+using SolrNet.Utils;
 
 namespace SolrNet.Mapping.Validation.Rules {
     /// <summary>
     /// Checks schema type of properties with <see cref="decimal"/> type
     /// </summary>
-    public class DecimalSolrFieldTypeChecker : AbstractSolrFieldTypeChecker {
-        /// <summary>
-        /// Checks schema type of properties with <see cref="decimal"/> type
-        /// </summary>
-        public DecimalSolrFieldTypeChecker()
-            : base(new[] {"solr.TrieFloatField", "solr.TrieDoubleField", "solr.FloatField", "solr.DoubleField", "solr.SortableFloatField", "solr.SortableDoubleField"},
-                   new[] {"solr.TextField", "solr.StrField"}) {}
+    public class DecimalSolrFieldTypeChecker : ISolrFieldTypeChecker {
+        public ValidationResult Validate(SolrFieldType solrFieldType, string propertyName, Type propertyType) {
+            if (Func.Any(new[] { "solr.TextField", "solr.StrField" }, st => st == solrFieldType.Type))
+                return new ValidationWarning(String.Format("Property '{0}' of type '{1}' is mapped to a solr field of type '{2}'. These types are not fully compatible. You won't be able to use this field for range queries.", propertyName, propertyType.FullName, solrFieldType.Name));
+            if (Func.Any(new[] {"FloatField", "DoubleField"}, st => Regex.IsMatch(solrFieldType.Type, st)))
+                return new ValidationWarning(String.Format("Property '{0}' of type '{1}' is mapped to a solr field of type '{2}'. These types are not fully compatible. You might lose precision.", propertyName, propertyType.FullName, solrFieldType.Name));
+            return new ValidationError(String.Format("Property '{0}' of type '{1}' cannot be stored in solr field type '{2}'.", propertyName, propertyType.FullName, solrFieldType.Name));
+        }
 
-        public override bool CanHandleType(Type propertyType) {
+        public bool CanHandleType(Type propertyType) {
             return propertyType == typeof (decimal);
         }
     }

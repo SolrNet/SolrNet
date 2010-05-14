@@ -42,7 +42,6 @@ namespace Ninject.Integration.SolrNet {
             Bind<ISolrDocumentPropertyVisitor>().To<DefaultDocumentVisitor>();
             Bind<ISolrFieldParser>().To<DefaultFieldParser>();
             Bind(typeof(ISolrDocumentResponseParser<>)).To(typeof(SolrDocumentResponseParser<>));
-            Bind(typeof(ISolrDocumentIndexer<>)).To(typeof(SolrDocumentIndexer<>));
             Bind<ISolrFieldSerializer>().To<DefaultFieldSerializer>();
             foreach (var p in new[] {
                 typeof(ResultsResponseParser<>),

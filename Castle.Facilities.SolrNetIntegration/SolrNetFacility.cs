@@ -76,8 +76,6 @@ namespace Castle.Facilities.SolrNetIntegration {
                 .ImplementedBy<SolrDictionaryDocumentResponseParser>()
                 .ServiceOverrides(ServiceOverride.ForKey("fieldParser").Eq(typeof(InferringFieldParser).Name)));
 
-            Kernel.Register(Component.For(typeof(ISolrDocumentIndexer<>))
-                .ImplementedBy(typeof (SolrDocumentIndexer<>)));
             foreach (var parserType in new[] {
                 typeof (ResultsResponseParser<>),
                 typeof (HeaderResponseParser<>),

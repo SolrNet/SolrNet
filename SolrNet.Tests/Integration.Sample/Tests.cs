@@ -183,7 +183,7 @@ namespace SolrNet.Tests.Integration.Sample {
             });
             Assert.IsNotNull(results.Highlights);
             Assert.AreEqual(1, results.Highlights.Count);
-            foreach (var h in results.Highlights[results[0]]) {
+            foreach (var h in results.Highlights[results[0].Id]) {
                 Console.WriteLine("{0}: {1}", h.Key, h.Value);
             }
         }
@@ -267,7 +267,7 @@ namespace SolrNet.Tests.Integration.Sample {
                 },
             });
             foreach (var r in results.SimilarResults) {
-                Console.WriteLine("Similar documents to {0}", r.Key.Id);
+                Console.WriteLine("Similar documents to {0}", r.Key);
                 foreach (var similar in r.Value)
                     Console.WriteLine(similar.Id);
                 Console.WriteLine();

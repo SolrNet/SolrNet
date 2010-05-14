@@ -87,7 +87,6 @@
     <Compile Include="Impl\FieldSerializers\ToStringFieldSerializer.cs" />
     <Compile Include="Impl\FieldSerializers\TypeConvertingFieldSerializer.cs" />
     <Compile Include="Impl\ISolrCache.cs" />
-    <Compile Include="Impl\ISolrDocumentIndexer.cs" />
     <Compile Include="Impl\ISolrDocumentPropertyVisitor.cs" />
     <Compile Include="Impl\ISolrDocumentResponseParser.cs" />
     <Compile Include="Impl\ISolrFieldParser.cs" />
@@ -108,7 +107,6 @@
     <Compile Include="Impl\SolrCacheEntity.cs" />
     <Compile Include="Impl\SolrDictionaryDocumentResponseParser.cs" />
     <Compile Include="Impl\SolrDictionarySerializer.cs" />
-    <Compile Include="Impl\SolrDocumentIndexer.cs" />
     <Compile Include="Impl\SolrDocumentResponseParser.cs" />
     <Compile Include="Impl\SpellCheckResult.cs" />
     <Compile Include="Impl\SpellCheckResults.cs" />

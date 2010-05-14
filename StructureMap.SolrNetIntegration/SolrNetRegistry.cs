@@ -34,8 +34,6 @@ namespace Structuremap.SolrNetIntegration
                 .Ctor<ISolrFieldParser>("fieldParser")
                 .Is(i => i.TheInstanceNamed(typeof(InferringFieldParser).Name));
             
-            For(typeof(ISolrDocumentIndexer<>)).Use(typeof(SolrDocumentIndexer<>));
-
             foreach (var p in new[] {
                                         typeof(ResultsResponseParser<>),
                                         typeof(HeaderResponseParser<>),

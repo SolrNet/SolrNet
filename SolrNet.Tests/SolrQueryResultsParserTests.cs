@@ -436,9 +436,9 @@ namespace SolrNet.Tests {
 			Assert.AreEqual("2.2", header.Params["version"]);
 		}
 
-        private IDictionary<Product, IDictionary<string, ICollection<string>>> ParseHighlightingResults(string rawXml) {
+        private IDictionary<string, IDictionary<string, ICollection<string>>> ParseHighlightingResults(string rawXml) {
             var mapper = new AttributesMappingManager();
-            var parser = new HighlightingResponseParser<Product>(new SolrDocumentIndexer<Product>(mapper));
+            var parser = new HighlightingResponseParser<Product>();
             var xml = new XmlDocument();
             xml.LoadXml(rawXml);
             var docNode = xml.SelectSingleNode("response/lst[@name='highlighting']");
@@ -482,7 +482,7 @@ namespace SolrNet.Tests {
         [Test]
         public void ParseMoreLikeThis() {
             var mapper = new AttributesMappingManager();
-            var parser = new MoreLikeThisResponseParser<Product>(new SolrDocumentResponseParser<Product>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser())), new SolrDocumentIndexer<Product>(mapper));
+            var parser = new MoreLikeThisResponseParser<Product>(new SolrDocumentResponseParser<Product>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser())));
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithMoreLikeThis.xml");
             var docNode = xml.SelectSingleNode("response/lst[@name='moreLikeThis']");
             var product1 = new Product { Id = "UTF8TEST" };
@@ -493,11 +493,11 @@ namespace SolrNet.Tests {
             }, docNode);
             Assert.IsNotNull(mlt);
             Assert.AreEqual(2, mlt.Count);
-            Assert.IsTrue(mlt.ContainsKey(product1));
-            Assert.IsTrue(mlt.ContainsKey(product2));
-            Assert.AreEqual(1, mlt[product1].Count);
-            Assert.AreEqual(1, mlt[product2].Count);
-            Console.WriteLine(mlt[product1][0].Id);
+            Assert.IsTrue(mlt.ContainsKey(product1.Id));
+            Assert.IsTrue(mlt.ContainsKey(product2.Id));
+            Assert.AreEqual(1, mlt[product1.Id].Count);
+            Assert.AreEqual(1, mlt[product2.Id].Count);
+            Console.WriteLine(mlt[product1.Id][0].Id);
         }
 
         [Test]

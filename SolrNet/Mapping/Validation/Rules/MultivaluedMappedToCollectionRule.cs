@@ -44,7 +44,7 @@ namespace SolrNet.Mapping.Validation.Rules {
                     var solrField = solrSchema.FindSolrFieldByName(prop.FieldName);
                     if (solrField != null) {
                         if(!solrField.IsMultiValued) {
-                            yield return new ValidationError(String.Format("SolrField '{0}' is not multivalued while mapped type '{1}' implements IEnumberable<T>.", solrField.Name, prop.Property.Name));
+                            yield return new ValidationError(String.Format("SolrField '{0}' is not multivalued while property '{1}.{2}' is mapped as a collection.", solrField.Name, prop.Property.DeclaringType, prop.Property.Name));
                         }
                     }
                 } else { //Mapped type is not a collection so solr field shouldn't be either.
@@ -53,7 +53,7 @@ namespace SolrNet.Mapping.Validation.Rules {
                     {
                         if (solrField.IsMultiValued)
                         {
-                            yield return new ValidationError(String.Format("SolrField '{0}' is multivalued while mapped type '{1}' does not implement IEnumberable<T>.", solrField.Name, prop.Property.Name));
+                            yield return new ValidationError(String.Format("SolrField '{0}' is multivalued while property '{1}.{2}' is not mapped as a collection.", solrField.Name, prop.Property.DeclaringType, prop.Property.Name));
                         }
                     }
                 }

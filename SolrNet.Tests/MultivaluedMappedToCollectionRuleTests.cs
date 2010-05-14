@@ -16,6 +16,7 @@
 
 #endregion
 
+using System;
 using System.Linq;
 using MbUnit.Framework;
 using SolrNet.Mapping;
@@ -40,6 +41,7 @@ namespace SolrNet.Tests {
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
             Assert.AreEqual(1, validationResults.Count);
+            Console.WriteLine(validationResults[0].Message);
         }
 
         [Test]
@@ -70,6 +72,7 @@ namespace SolrNet.Tests {
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
             Assert.AreEqual(1, validationResults.Count);
+            Console.WriteLine(validationResults[0].Message);
         }
     }
 }

@@ -15,40 +15,24 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Xml;
 
 namespace SolrNet.Impl.FieldParsers {
     /// <summary>
-    /// Default field parser
+    /// Parses <see cref="decimal"/> fields
     /// </summary>
-    public class DefaultFieldParser : ISolrFieldParser {
-        private readonly AggregateFieldParser parser;
-
-        /// <summary>
-        /// Default field parser
-        /// </summary>
-        public DefaultFieldParser() {
-            parser = new AggregateFieldParser(new ISolrFieldParser[] {
-                new NullableFieldParser(new IntFieldParser()),
-                new NullableFieldParser(new FloatFieldParser()),
-                new NullableFieldParser(new DoubleFieldParser()),
-                new NullableFieldParser(new DateTimeFieldParser()),
-                new NullableFieldParser(new DecimalFieldParser()),
-                new CollectionFieldParser(this),
-                new TypeConvertingFieldParser(),
-            });
-        }
-
+    public class DecimalFieldParser : ISolrFieldParser {
         public bool CanHandleSolrType(string solrType) {
-            return parser.CanHandleSolrType(solrType);
+            return true;
         }
 
         public bool CanHandleType(Type t) {
-            return parser.CanHandleType(t);
+            return t == typeof (decimal);
         }
 
         public object Parse(XmlNode field, Type t) {
-            return parser.Parse(field, t);
+            return decimal.Parse(field.InnerText, CultureInfo.InvariantCulture.NumberFormat);
         }
     }
 }

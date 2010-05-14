@@ -18,6 +18,7 @@
 
 using System;
 using System.Xml;
+using SolrNet.Exceptions;
 
 namespace SolrNet.Schema {
     /// <summary>
@@ -34,36 +35,28 @@ namespace SolrNet.Schema {
             var result = new SolrSchema();
 
             foreach (XmlNode fieldNode in solrSchemaXml.SelectNodes("/schema/types/fieldType")) {
-                var field = new SolrFieldType();
-                field.Name = fieldNode.Attributes["name"].Value;
-                field.Type = fieldNode.Attributes["class"] != null ? fieldNode.Attributes["class"].Value : null;
+                var field = new SolrFieldType(fieldNode.Attributes["name"].Value, fieldNode.Attributes["class"].Value);
                 result.SolrFieldTypes.Add(field);
             }
 
             foreach (XmlNode fieldNode in solrSchemaXml.SelectNodes("/schema/fields/field")) {
-                var field = new SolrField();
-                field.Name = fieldNode.Attributes["name"].Value;
+                var fieldTypeName = fieldNode.Attributes["type"].Value;
+                var fieldType = result.FindSolrFieldTypeByName(fieldTypeName);
+                if (fieldType == null)
+                    throw new SolrNetException(string.Format("Field type '{0}' not found", fieldTypeName));
+                var field = new SolrField(fieldNode.Attributes["name"].Value, fieldType);
                 field.IsRequired = fieldNode.Attributes["required"] != null ? fieldNode.Attributes["required"].Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
                 field.IsMultiValued = fieldNode.Attributes["multiValued"] != null ? fieldNode.Attributes["multiValued"].Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
-                foreach(var type in result.SolrFieldTypes) {
-                    if (type.Name.Equals(fieldNode.Attributes["type"].Value)) {
-                        field.Type = type;
-                        break;
-                    }
-                }
                 result.SolrFields.Add(field);
             }
 
             foreach (XmlNode dynamicFieldNode in solrSchemaXml.SelectNodes("/schema/fields/dynamicField")) {
-                var dynamicField = new SolrDynamicField();
-                dynamicField.Name = dynamicFieldNode.Attributes["name"].Value;
+                var dynamicField = new SolrDynamicField(dynamicFieldNode.Attributes["name"].Value);
                 result.SolrDynamicFields.Add(dynamicField);
             }
 
             foreach (XmlNode copyFieldNode in solrSchemaXml.SelectNodes("/schema/copyField")) {
-                var copyField = new SolrCopyField();
-                copyField.Source = copyFieldNode.Attributes["source"].Value;
-                copyField.Destination = copyFieldNode.Attributes["dest"].Value;
+                var copyField = new SolrCopyField(copyFieldNode.Attributes["source"].Value, copyFieldNode.Attributes["dest"].Value);
                 result.SolrCopyFields.Add(copyField);
             }
 

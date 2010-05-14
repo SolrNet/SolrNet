@@ -34,7 +34,7 @@ namespace SolrNet.Schema {
         public SolrSchema Parse(XmlDocument solrSchemaXml) {
             var result = new SolrSchema();
 
-            foreach (XmlNode fieldNode in solrSchemaXml.SelectNodes("/schema/types/fieldType")) {
+            foreach (XmlNode fieldNode in solrSchemaXml.SelectNodes("/schema/types/fieldType|/schema/types/fieldtype")) {
                 var field = new SolrFieldType(fieldNode.Attributes["name"].Value, fieldNode.Attributes["class"].Value);
                 result.SolrFieldTypes.Add(field);
             }

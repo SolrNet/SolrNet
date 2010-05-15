@@ -16,7 +16,7 @@
 
 
 namespace SolrNet.DSL.Impl {
-    public class DSLQueryBy<T> : IDSLQueryBy<T> where T : new() {
+    public class DSLQueryBy<T> : IDSLQueryBy<T> {
         private readonly string fieldName;
         private readonly ISolrConnection connection;
         private readonly ISolrQuery query;

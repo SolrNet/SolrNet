@@ -76,7 +76,7 @@ namespace SolrNet {
         /// </summary>
         /// <typeparam name="T">Document type</typeparam>
         /// <param name="serverURL">Solr URL (i.e. "http://localhost:8983/solr")</param>
-        public static void Init<T>(string serverURL) where T: new() {
+        public static void Init<T>(string serverURL) {
             var connection = new SolrConnection(serverURL) {
                 //Cache = Container.GetInstance<ISolrCache>(),
             };
@@ -89,9 +89,12 @@ namespace SolrNet {
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="connection"></param>
-        public static void Init<T>(ISolrConnection connection) where T: new() {
+        public static void Init<T>(ISolrConnection connection) {
             var connectionKey = string.Format("{0}.{1}.{2}", typeof(SolrConnection), typeof(T), connection.GetType());
             Container.Register(connectionKey, c => connection);
+
+            var activator = new SolrDocumentActivator<T>();
+            Container.Register<ISolrDocumentActivator<T>>(c => activator);
 
             Container.Register(c => ChooseDocumentResponseParser<T>());
 
@@ -128,10 +131,10 @@ namespace SolrNet {
             return new SolrDocumentSerializer<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrFieldSerializer>());
         }
 
-        private static ISolrDocumentResponseParser<T> ChooseDocumentResponseParser<T>() where T: new() {
+        private static ISolrDocumentResponseParser<T> ChooseDocumentResponseParser<T>() {
             if (typeof(T) == typeof(Dictionary<string, object>))
                 return (ISolrDocumentResponseParser<T>) new SolrDictionaryDocumentResponseParser(new InferringFieldParser(new DefaultFieldParser()));
-            return new SolrDocumentResponseParser<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrDocumentPropertyVisitor>());
+            return new SolrDocumentResponseParser<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrDocumentPropertyVisitor>(), Container.GetInstance<ISolrDocumentActivator<T>>());
         }
     }
 }

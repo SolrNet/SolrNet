@@ -25,8 +25,9 @@ namespace Structuremap.SolrNetIntegration
             For<IReadOnlyMappingManager>().Use(mappingManager);
             //For<ISolrCache>().Use<HttpRuntimeCache>();
             
-            For<ISolrConnection>().Use(c => new SolrConnection(solrURL));           
+            For<ISolrConnection>().Use(c => new SolrConnection(solrURL));
 
+            For(typeof (ISolrDocumentActivator<>)).Use(typeof (SolrDocumentActivator<>));
             For(typeof(ISolrDocumentResponseParser<>)).Use(typeof(SolrDocumentResponseParser<>));
 
             For<ISolrDocumentResponseParser<Dictionary<string, object>>>()

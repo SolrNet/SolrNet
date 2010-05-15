@@ -15,7 +15,7 @@
 #endregion
 
 namespace SolrNet.DSL.Impl {
-    public class DSLQuery<T> : DSLRun<T>, IDSLQuery<T> where T : new() {
+    public class DSLQuery<T> : DSLRun<T>, IDSLQuery<T> {
         public DSLQuery(ISolrConnection connection) : base(connection) {}
 
         public DSLQuery(ISolrConnection connection, ISolrQuery query) : base(connection, query) {}

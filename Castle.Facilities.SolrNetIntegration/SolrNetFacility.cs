@@ -70,6 +70,8 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
                                 .Parameters(Parameter.ForKey("serverURL").Eq(GetSolrUrl())));
 
+            Kernel.Register(Component.For(typeof (ISolrDocumentActivator<>)).ImplementedBy(typeof(SolrDocumentActivator<>)));
+
             Kernel.Register(Component.For(typeof (ISolrDocumentResponseParser<>))
                 .ImplementedBy(typeof (SolrDocumentResponseParser<>)));
             Kernel.Register(Component.For<ISolrDocumentResponseParser<Dictionary<string, object>>>()

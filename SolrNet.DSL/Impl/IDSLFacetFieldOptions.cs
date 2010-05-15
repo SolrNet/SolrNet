@@ -15,7 +15,7 @@
 #endregion
 
 namespace SolrNet.DSL.Impl {
-    public interface IDSLFacetFieldOptions<T> : IDSLRun<T> where T : new() {
+    public interface IDSLFacetFieldOptions<T> : IDSLRun<T> {
         /// <summary>
         /// Maximum number of constraint counts that should be returned for the facet fields. 
         /// A negative value means unlimited. 

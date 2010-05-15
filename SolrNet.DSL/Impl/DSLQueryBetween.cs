@@ -14,10 +14,8 @@
 // limitations under the License.
 #endregion
 
-using SolrNet.DSL.Impl;
-
 namespace SolrNet.DSL.Impl {
-    public class DSLQueryBetween<T, RT> : IDSLQueryBetween<T, RT> where T : new() {
+    public class DSLQueryBetween<T, RT> : IDSLQueryBetween<T, RT> {
         private readonly string fieldName;
         private readonly ISolrConnection connection;
         private readonly ISolrQuery query;

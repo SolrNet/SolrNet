@@ -41,6 +41,7 @@ namespace Ninject.Integration.SolrNet {
             //Bind<ISolrCache>().To<HttpRuntimeCache>();
             Bind<ISolrDocumentPropertyVisitor>().To<DefaultDocumentVisitor>();
             Bind<ISolrFieldParser>().To<DefaultFieldParser>();
+            Bind(typeof (ISolrDocumentActivator<>)).To(typeof (SolrDocumentActivator<>));
             Bind(typeof(ISolrDocumentResponseParser<>)).To(typeof(SolrDocumentResponseParser<>));
             Bind<ISolrFieldSerializer>().To<DefaultFieldSerializer>();
             foreach (var p in new[] {

@@ -14,18 +14,16 @@
 // limitations under the License.
 #endregion
 
-using SolrNet.Commands.Parameters;
-
-namespace SolrNet.DSL.Impl {
-    public interface IDSLRun<T> {
-        ISolrQueryResults<T> Run();
-        ISolrQueryResults<T> Run(int start, int rows);
-        IDSLRun<T> OrderBy(string fieldName);
-        IDSLRun<T> OrderBy(string fieldName, Order o);
-        IDSLFacetFieldOptions<T> WithFacetField(string fieldName);
-        IDSLRun<T> WithFacetQuery(string query);
-        IDSLRun<T> WithFacetQuery(ISolrQuery query);
-        IDSLRun<T> WithHighlighting(HighlightingParameters parameters);
-        IDSLRun<T> WithHighlightingFields(params string[] fields);
+namespace SolrNet.Impl {
+    /// <summary>
+    /// Instantiates a new document instance of type <typeparamref name="T"/>
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
+    public interface ISolrDocumentActivator<T> {
+        /// <summary>
+        /// Instantiates a new document instance of type <typeparamref name="T"/>
+        /// </summary>
+        /// <returns></returns>
+        T Create();
     }
 }

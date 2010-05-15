@@ -29,7 +29,7 @@ namespace SolrNet.Impl {
     /// Main component to interact with Solr
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class SolrServer<T> : ISolrOperations<T> where T : new() {
+    public class SolrServer<T> : ISolrOperations<T> {
         private readonly ISolrBasicOperations<T> basicServer;
         private readonly IReadOnlyMappingManager mappingManager;
         private readonly IMappingValidator _schemaMappingValidator;

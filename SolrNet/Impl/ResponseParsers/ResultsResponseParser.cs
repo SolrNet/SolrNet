@@ -23,7 +23,7 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses documents from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class ResultsResponseParser<T> : ISolrResponseParser<T> where T : new() {
+    public class ResultsResponseParser<T> : ISolrResponseParser<T> {
         private readonly ISolrDocumentResponseParser<T> docParser;
 
         public ResultsResponseParser(ISolrDocumentResponseParser<T> docParser) {

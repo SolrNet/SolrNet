@@ -21,7 +21,7 @@ using SolrNet.Impl;
 using SolrNet.Utils;
 
 namespace SolrNet.DSL.Impl {
-    public class DSLRun<T> : IDSLRun<T> where T : new() {
+    public class DSLRun<T> : IDSLRun<T> {
         protected readonly ICollection<SortOrder> order = new List<SortOrder>();
         protected readonly ICollection<ISolrFacetQuery> facets = new List<ISolrFacetQuery>();
         protected readonly HighlightingParameters highlight;

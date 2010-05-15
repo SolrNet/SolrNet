@@ -25,7 +25,7 @@ namespace SolrNet.Impl {
     /// Executes queries
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> where T : new() {
+    public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> {
 
         private readonly ISolrQueryResultParser<T> resultParser;
         private readonly ISolrConnection connection;

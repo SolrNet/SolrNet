@@ -51,8 +51,7 @@ namespace SolrNet {
             var fieldSerializer = new DefaultFieldSerializer();
             Container.Register<ISolrFieldSerializer>(c => fieldSerializer);
 
-            var propertyVisitor = new DefaultDocumentVisitor(mapper, fieldParser);
-            Container.Register<ISolrDocumentPropertyVisitor>(c => propertyVisitor);
+            Container.Register<ISolrDocumentPropertyVisitor>(c => new DefaultDocumentVisitor(c.GetInstance<IReadOnlyMappingManager>(), c.GetInstance<ISolrFieldParser>()));
 
             //var cache = new HttpRuntimeCache();
             //Container.Register<ISolrCache>(c => cache);
@@ -66,9 +65,7 @@ namespace SolrNet {
             Container.Register<IValidationRule>(typeof(MappedPropertiesIsInSolrSchemaRule).FullName, c => new MappedPropertiesIsInSolrSchemaRule());
             Container.Register<IValidationRule>(typeof(RequiredFieldsAreMappedRule).FullName, c => new RequiredFieldsAreMappedRule());
             Container.Register<IValidationRule>(typeof(UniqueKeyMatchesMappingRule).FullName, c => new UniqueKeyMatchesMappingRule());
-
-            var schemaMappingValidationManager = new MappingValidator(Container.GetInstance<IReadOnlyMappingManager>(), Func.ToArray(Container.GetAllInstances<IValidationRule>()));
-            Container.Register<IMappingValidator>(c => schemaMappingValidationManager);
+            Container.Register<IMappingValidator>(c => new MappingValidator(c.GetInstance<IReadOnlyMappingManager>(), Func.ToArray(c.GetAllInstances<IValidationRule>())));
         }
 
         /// <summary>

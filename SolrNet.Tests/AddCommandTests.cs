@@ -80,7 +80,6 @@ namespace SolrNet.Tests {
 			        Console.WriteLine(s);
 			        return null;
 			    }));
-                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
 			}).Verify(() => {
 			    var docs = new[] {
                     new KeyValuePair<SampleDoc, double?>(new SampleDoc(), null), 
@@ -102,7 +101,6 @@ namespace SolrNet.Tests {
                     Console.WriteLine(s);
                     return null;
                 }));
-                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
             }).Verify(() => {
                 var docs = new[] { new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), 2.1) };
                 var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
@@ -125,7 +123,6 @@ namespace SolrNet.Tests {
                     Console.WriteLine(s);
                     return null;
                 }));
-                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
             }).Verify(() =>
             {
                 var docs = new[] {
@@ -159,7 +156,6 @@ namespace SolrNet.Tests {
 			        Console.WriteLine(s);
 			        return null;
 			    }));
-                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
 			}).Verify(() => {
 			    var docs = new[] {
                     new KeyValuePair<TestDocWithCollections, double?>(new TestDocWithCollections(), null), 

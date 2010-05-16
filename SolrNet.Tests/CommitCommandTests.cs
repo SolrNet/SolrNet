@@ -24,7 +24,6 @@ namespace SolrNet.Tests
                     Console.WriteLine(s);
                     return null;
                 }));
-                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
             }).Verify(() =>
             {
                 var cmd = new CommitCommand();
@@ -46,7 +45,6 @@ namespace SolrNet.Tests
                     Console.WriteLine(s);
                     return null;
                 }));
-                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
             }).Verify(() =>
             {
                 var cmd = new CommitCommand { WaitFlush = true, WaitSearcher = true };
@@ -68,7 +66,6 @@ namespace SolrNet.Tests
                     Console.WriteLine(s);
                     return null;
                 }));
-                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
             }).Verify(() =>
             {
                 var cmd = new CommitCommand

@@ -25,16 +25,6 @@ namespace SolrNet.Tests.Utils {
             this.conn = conn;
         }
 
-        public string ServerURL {
-            get { return conn.ServerURL; }
-            set { conn.ServerURL = value; }
-        }
-
-        public string Version {
-            get { return conn.Version; }
-            set { conn.Version = value; }
-        }
-
         public string Post(string relativeUrl, string s) {
             Console.WriteLine("Posting {0}", s);
             return conn.Post(relativeUrl, s);

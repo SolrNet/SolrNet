@@ -23,16 +23,6 @@ namespace SolrNet {
     /// </summary>
 	public interface ISolrConnection {
         /// <summary>
-        /// Solr url (e.g. http://localhost:8983/solr)
-        /// </summary>
-		string ServerURL { get; set; }
-
-        /// <summary>
-        /// Solr's response format. 2.2 by default. Do not modify this unless you really know what you're doing.
-        /// </summary>
-		string Version { get; set; }
-
-        /// <summary>
         /// POSTs to Solr
         /// </summary>
         /// <param name="relativeUrl">Path to post to</param>

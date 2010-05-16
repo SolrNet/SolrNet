@@ -154,9 +154,9 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Kernel.DependencyResolving += (client, model, dep) => {
                 if (model.TargetType == typeof(ISolrConnection)) {
                     if (client.Service == typeof(ISolrBasicOperations<Core1Entity>) || client.Service == typeof(ISolrQueryExecuter<Core1Entity>))
-                        Assert.AreEqual(core1url, ((ISolrConnection) dep).ServerURL);
+                        Assert.AreEqual(core1url, ((SolrConnection) dep).ServerURL);
                     if (client.Service == typeof(ISolrBasicOperations<Document>) || client.Service == typeof(ISolrQueryExecuter<Document>))
-                        Assert.AreEqual(core0url, ((ISolrConnection) dep).ServerURL);
+                        Assert.AreEqual(core0url, ((SolrConnection) dep).ServerURL);
                 }
             };
 
@@ -211,11 +211,11 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Kernel.DependencyResolving += (client, model, dep) => {
                 if (model.TargetType == typeof(ISolrConnection)) {
                     if (client.Name.StartsWith("core0-id"))
-                        Assert.AreEqual("http://localhost:8983/solr/core0", ((ISolrConnection)dep).ServerURL);
+                        Assert.AreEqual("http://localhost:8983/solr/core0", ((SolrConnection)dep).ServerURL);
                     if (client.Name.StartsWith("core1-id"))
-                        Assert.AreEqual("http://localhost:8983/solr/core1", ((ISolrConnection)dep).ServerURL);
+                        Assert.AreEqual("http://localhost:8983/solr/core1", ((SolrConnection)dep).ServerURL);
                     if (client.Name.StartsWith("core2-id"))
-                        Assert.AreEqual("http://localhost:8983/solr/core1", ((ISolrConnection)dep).ServerURL);
+                        Assert.AreEqual("http://localhost:8983/solr/core1", ((SolrConnection)dep).ServerURL);
                 }
             };
 

@@ -1,6 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="3.5">
   <PropertyGroup>
-    <Version>0.2.3</Version>
+    <Version>0.3.0</Version>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.Community.Tasks</MSBuildCommunityTasksPath>
     <ExtensionTasksPath>$(MSBuildProjectDirectory)\tools\MSBuild.ExtensionPack\</ExtensionTasksPath>
     <EndforwardMSBuildPath>$(MSBuildProjectDirectory)\tools\Endforward.MSBuild-0.1.0</EndforwardMSBuildPath>

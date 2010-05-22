@@ -48,7 +48,7 @@ namespace SolrNet {
         }
 
         public static AbstractSolrQuery operator + (LocalParams p, ISolrQuery q) {
-            return new SolrQuery(p + q.Query);
+            return new SolrMultipleCriteriaQuery(new[] {new SolrQuery(p.ToString()), q});
         }
     }
 }

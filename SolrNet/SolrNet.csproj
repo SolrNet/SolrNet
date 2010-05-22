@@ -93,9 +93,12 @@
     <Compile Include="Impl\ISolrFieldParser.cs" />
     <Compile Include="Impl\ISolrFieldSerializer.cs" />
     <Compile Include="Impl\ISolrHeaderResponseParser.cs" />
+    <Compile Include="Impl\ISolrQuerySerializer.cs" />
     <Compile Include="Impl\ISolrResponseParser.cs" />
     <Compile Include="Impl\NullCache.cs" />
     <Compile Include="Impl\PropertyNode.cs" />
+    <Compile Include="Impl\QuerySerializers\AggregateQuerySerializer.cs" />
+    <Compile Include="Impl\QuerySerializers\SolrQuerySerializer.cs" />
     <Compile Include="Impl\ResponseParsers\CollapseResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\FacetsResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\HeaderResponseParser.cs" />

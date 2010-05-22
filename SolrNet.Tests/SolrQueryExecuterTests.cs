@@ -44,7 +44,7 @@ namespace SolrNet.Tests {
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), null);
             });
         }
@@ -66,7 +66,7 @@ namespace SolrNet.Tests {
                     .Repeat.Once()
                     .Return(mockR);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);                
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
                     OrderBy = new[] {new SortOrder("id")}
                 });
@@ -87,7 +87,7 @@ namespace SolrNet.Tests {
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
                     OrderBy = new[] {
                         new SortOrder("id", Order.ASC),
@@ -111,7 +111,7 @@ namespace SolrNet.Tests {
             With.Mocks(mocks).Expecting(delegate {
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
                     Fields = new[] {"id", "name"},
                 });
@@ -129,7 +129,7 @@ namespace SolrNet.Tests {
             var conn = new MockConnection(q);
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
             queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
                 Facet = new FacetParameters {
                     Queries = new ISolrFacetQuery[] {
@@ -156,7 +156,7 @@ namespace SolrNet.Tests {
             var conn = new MockConnection(q);
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
             queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
                 Facet = new FacetParameters {
                     Queries = new ISolrFacetQuery[] {
@@ -192,7 +192,7 @@ namespace SolrNet.Tests {
             q["hl.regex.pattern"] = "\\.";
             q["hl.regex.maxAnalyzedChars"] = "8000";
             var conn = new MockConnection(q);
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
             queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
                 Highlight = new HighlightingParameters {
                     Fields = new[] { highlightedField },
@@ -219,7 +219,7 @@ namespace SolrNet.Tests {
                 KVP("fq", "id:0"),
                 KVP("fq", "id:2"),
             });
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser) {
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null) {
                 DefaultRows = 10,
             };
             queryExecuter.Execute(SolrQuery.All, new QueryOptions {
@@ -235,7 +235,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
             var p = queryExecuter.GetSpellCheckingParameters(new QueryOptions {
                 SpellCheck = new SpellCheckingParameters {
                     Query = "hell",
@@ -262,7 +262,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
             var p = queryExecuter.GetAllParameters(SolrQuery.All, new QueryOptions {
                 SpellCheck = new SpellCheckingParameters {
                     Query = "hell",
@@ -289,7 +289,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
             var p = queryExecuter.GetAllParameters(new SolrQuery("apache"), new QueryOptions {
                 MoreLikeThis = new MoreLikeThisParameters(new[] { "manu", "cat" }) {
                     MinDocFreq = 1,
@@ -308,7 +308,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
             var p = queryExecuter.GetMoreLikeThisParameters(new QueryOptions {
                 MoreLikeThis = new MoreLikeThisParameters(new[] {"field1", "field2"}) {
                     Boost = true,
@@ -340,7 +340,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
             var facetOptions = queryExecuter.GetFacetFieldOptions(new QueryOptions {
                 Facet = new FacetParameters {
                     Queries = new List<ISolrFacetQuery> {
@@ -369,7 +369,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
             var statsOptions = queryExecuter.GetStatsQueryOptions(new QueryOptions {
                 Stats = new StatsParameters()
                 .AddField("popularity")
@@ -401,7 +401,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(conn, parser);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null);
             var p = queryExecuter.GetAllParameters(new SolrQuery("123123"), new QueryOptions {
                 ExtraParams = new Dictionary<string, string> {
                     {"qt", "geo"},

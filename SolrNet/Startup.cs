@@ -21,6 +21,7 @@ using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
@@ -106,7 +107,9 @@ namespace SolrNet {
 
             Container.Register<ISolrQueryResultParser<T>>(c => new SolrQueryResultParser<T>(Func.ToArray(Container.GetAllInstances<ISolrResponseParser<T>>())));
 
-            Container.Register<ISolrQueryExecuter<T>>(c => new SolrQueryExecuter<T>(connection, c.GetInstance<ISolrQueryResultParser<T>>()));
+            Container.Register<ISolrQuerySerializer>(c => new SolrQuerySerializer());
+
+            Container.Register<ISolrQueryExecuter<T>>(c => new SolrQueryExecuter<T>(c.GetInstance<ISolrQueryResultParser<T>>(), connection, c.GetInstance<ISolrQuerySerializer>()));
 
             Container.Register(c => ChooseDocumentSerializer<T>());
 

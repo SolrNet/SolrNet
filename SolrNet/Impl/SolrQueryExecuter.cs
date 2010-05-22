@@ -29,6 +29,7 @@ namespace SolrNet.Impl {
 
         private readonly ISolrQueryResultParser<T> resultParser;
         private readonly ISolrConnection connection;
+        private readonly ISolrQuerySerializer querySerializer;
 
         /// <summary>
         /// When the row count is not defined, use this row count by default
@@ -37,9 +38,10 @@ namespace SolrNet.Impl {
 
         public static readonly int ConstDefaultRows = 100000000;
 
-        public SolrQueryExecuter(ISolrConnection connection, ISolrQueryResultParser<T> resultParser) {
-            this.connection = connection;
+        public SolrQueryExecuter(ISolrQueryResultParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer) {
             this.resultParser = resultParser;
+            this.connection = connection;
+            this.querySerializer = querySerializer;
             DefaultRows = ConstDefaultRows;
         }
 
@@ -54,7 +56,7 @@ namespace SolrNet.Impl {
         /// <param name="Options"></param>
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery Query, QueryOptions Options) {
-            yield return KVP("q", Query.Query);
+            yield return KVP("q", querySerializer.Serialize(Query));
             if (Options != null) {
                 if (Options.Start.HasValue)
                     yield return KVP("start", Options.Start.ToString());
@@ -167,7 +169,7 @@ namespace SolrNet.Impl {
             if (options.FilterQueries == null || options.FilterQueries.Count == 0)
                 yield break;
             foreach (var fq in options.FilterQueries) {
-                yield return new KeyValuePair<string, string>("fq", fq.Query);
+                yield return new KeyValuePair<string, string>("fq", querySerializer.Serialize(fq));
             }
         }
 

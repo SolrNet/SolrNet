@@ -20,11 +20,6 @@ namespace SolrNet {
     /// </summary>
     public abstract class AbstractSolrQuery : ISolrQuery {
         /// <summary>
-        /// String representation of this query
-        /// </summary>
-        public abstract string Query { get; }
-
-        /// <summary>
         /// Negates this query
         /// </summary>
         /// <returns></returns>

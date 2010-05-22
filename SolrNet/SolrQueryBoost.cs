@@ -41,10 +41,8 @@ namespace SolrNet {
             get { return factor; }
         }
 
-        public override string Query {
-            get {
-                return string.Format("({0})^{1}", query.Query, factor.ToString(CultureInfo.InvariantCulture.NumberFormat));
-            }
+        public ISolrQuery Query {
+            get { return query; }
         }
     }
 }

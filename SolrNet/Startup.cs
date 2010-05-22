@@ -107,7 +107,7 @@ namespace SolrNet {
 
             Container.Register<ISolrQueryResultParser<T>>(c => new SolrQueryResultParser<T>(Func.ToArray(Container.GetAllInstances<ISolrResponseParser<T>>())));
 
-            Container.Register<ISolrQuerySerializer>(c => new SolrQuerySerializer());
+            Container.Register<ISolrQuerySerializer>(c => new SelfSerializingQuerySerializer());
 
             Container.Register<ISolrQueryExecuter<T>>(c => new SolrQueryExecuter<T>(c.GetInstance<ISolrQueryResultParser<T>>(), connection, c.GetInstance<ISolrQuerySerializer>()));
 

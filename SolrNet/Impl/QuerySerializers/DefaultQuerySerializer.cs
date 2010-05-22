@@ -17,14 +17,21 @@
 using System;
 
 namespace SolrNet.Impl.QuerySerializers {
-    public class SolrQuerySerializer : ISolrQuerySerializer {
+    public class DefaultQuerySerializer : ISolrQuerySerializer {
+        private readonly AggregateQuerySerializer serializer;
+
+        public DefaultQuerySerializer() {
+            serializer = new AggregateQuerySerializer(new[] {
+                new SelfSerializingQuerySerializer(),
+            });
+        }
+
         public bool CanHandleType(Type t) {
-            return typeof (ISolrQuery).IsAssignableFrom(t);
+            return serializer.CanHandleType(t);
         }
 
         public string Serialize(object q) {
-            var sq = (ISolrQuery) q;
-            return sq.Query;
+            return serializer.Serialize(q);
         }
     }
 }

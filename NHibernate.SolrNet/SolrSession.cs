@@ -18,6 +18,7 @@ using System;
 using Microsoft.Practices.ServiceLocation;
 using NHibernate.SolrNet.Impl;
 using SolrNet;
+using SolrNet.Impl;
 
 namespace NHibernate.SolrNet {
     /// <summary>
@@ -64,7 +65,8 @@ namespace NHibernate.SolrNet {
         /// <param name="query">Solr query</param>
         /// <returns>query object</returns>
         public INHSolrQuery CreateSolrQuery(ISolrQuery query) {
-            return CreateSolrQuery(query.Query);
+            var serializer = (ISolrQuerySerializer) provider.GetService(typeof (ISolrQuerySerializer));
+            return CreateSolrQuery(serializer.Serialize(query));
         }
     }
 }

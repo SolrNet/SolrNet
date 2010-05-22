@@ -16,49 +16,56 @@
 
 using System;
 using MbUnit.Framework;
+using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
     [TestFixture]
     public class SolrNotQueryTests {
+
+        public string Serialize(object q) {
+            var serializer = new DefaultQuerySerializer();
+            return serializer.Serialize(q);
+        }
+
         [Test]
         public void SimpleQuery() {
             var q = new SolrQuery("desc:samsung");
             var notq = new SolrNotQuery(q);
-            Assert.AreEqual("-desc:samsung", notq.Query);
+            Assert.AreEqual("-desc:samsung", Serialize(q));
         }
 
         [Test]
         public void QueryByField() {
             var q = new SolrQueryByField("desc", "samsung");
             var notq = new SolrNotQuery(q);
-            Assert.AreEqual("-desc:samsung", notq.Query);
+            Assert.AreEqual("-desc:samsung", Serialize(q));
         }
 
         [Test]
         public void RangeQuery() {
             var q = new SolrQueryByRange<decimal>("price", 100, 200);
             var notq = new SolrNotQuery(q);
-            Assert.AreEqual("-price:[100 TO 200]", notq.Query);
+            Assert.AreEqual("-price:[100 TO 200]", Serialize(q));
         }
 
         [Test]
         public void QueryInList() {
             var q = new SolrQueryInList("desc", "samsung", "hitachi", "fujitsu");
             var notq = new SolrNotQuery(q);
-            Assert.AreEqual("-(desc:samsung OR desc:hitachi OR desc:fujitsu)", notq.Query);
+            Assert.AreEqual("-(desc:samsung OR desc:hitachi OR desc:fujitsu)", Serialize(q));
         }
 
         [Test]
         public void MultipleCriteria() {
             var q = SolrMultipleCriteriaQuery.Create(new SolrQueryByField("desc", "samsung"), new SolrQueryByRange<decimal>("price", 100, 200));
             var notq = new SolrNotQuery(q);
-            Assert.AreEqual("-(desc:samsung  price:[100 TO 200])", notq.Query);
+            Assert.AreEqual("-(desc:samsung  price:[100 TO 200])", Serialize(q));
         }
 
         [Test]
         public void MultipleCriteria_not() {
             var q = SolrMultipleCriteriaQuery.Create(new SolrQueryByField("desc", "samsung"), new SolrQueryByRange<decimal>("price", 100, 200));
-            Assert.AreEqual("-(desc:samsung  price:[100 TO 200])", q.Not().Query);
+            Assert.AreEqual("-(desc:samsung  price:[100 TO 200])", Serialize(q.Not()));
         }
 
         [Test]

@@ -16,10 +16,18 @@
 
 using System;
 using MbUnit.Framework;
+using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.DSL.Tests {
     [TestFixture]
     public class QueryBuildingTests {
+
+        public string Serialize(object q) {
+            var serializer = new DefaultQuerySerializer();
+            return serializer.Serialize(q);
+        }
+
+
         [Test]
         public void Simple() {
             var q = Query.Simple("name:solr");
@@ -29,44 +37,45 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void FieldValue() {
             var q = Query.Field("name").Is("solr");
-            Assert.AreEqual("name:solr", q.Query);
+            Assert.AreEqual("name:solr", Serialize(q));
         }
 
         [Test]
         public void FieldValueDecimal() {
             var q = Query.Field("price").Is(400);
-            Assert.AreEqual("price:400", q.Query);
+            Assert.AreEqual("price:400", Serialize(q));
         }
 
         [Test]
         public void FieldValueNot() {
             var q = Query.Field("name").Is("solr").Not();
-            Assert.AreEqual("-name:solr", q.Query);
+            Assert.AreEqual("-name:solr", Serialize(q));
         }
 
         [Test]
         public void Range() {
             var q = Query.Field("price").From(10).To(20);
-            Assert.AreEqual("price:[10 TO 20]", q.Query);
+            Assert.AreEqual("price:[10 TO 20]", Serialize(q));
         }
 
         [Test]
         public void InList() {
             var q = Query.Field("price").In(10, 20, 30);
-            Assert.AreEqual("(price:10 OR price:20 OR price:30)", q.Query);
+            Assert.AreEqual("(price:10 OR price:20 OR price:30)", Serialize(q));
         }
 
         [Test]
         public void InList_empty_is_ignored() {
             var q = Query.Field("price").In(new string[0]) && Query.Field("id").Is(123);
-            Console.WriteLine(q.Query);
-            Assert.AreEqual("(id:123)", q.Query);
+            var query = Serialize(q);
+            Console.WriteLine(query);
+            Assert.AreEqual("(id:123)", query);
         }
 
         [Test]
         public void HasValue() {
             var q = Query.Field("name").HasAnyValue();
-            Assert.AreEqual("name:[* TO *]", q.Query);
+            Assert.AreEqual("name:[* TO *]", Serialize(q));
         }
     }
 }

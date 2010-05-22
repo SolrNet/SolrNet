@@ -24,31 +24,34 @@ namespace SolrNet {
     /// </summary>
     /// <typeparam name="RT"></typeparam>
 	public class SolrQueryByRange<RT> : AbstractSolrQuery {
-        private readonly DateTimeFieldSerializer dateSerializer = new DateTimeFieldSerializer();
+        private readonly string fieldName;
+        private readonly RT from;
+        private readonly RT to;
+        private readonly bool inclusive;
 
-		private readonly string q;
 		public SolrQueryByRange(string fieldName, RT from, RT to) : this(fieldName, from, to, true) {}
 
-		public SolrQueryByRange(string fieldName, RT from, RT to, bool inclusive) {
-			q = "$field:$ii$from TO $to$if"
-				.Replace("$field", fieldName)
-				.Replace("$ii", inclusive ? "[" : "{")
-				.Replace("$if", inclusive ? "]" : "}")
-				.Replace("$from", Serialize(from))
-				.Replace("$to", Serialize(to));
-		}
-
-        private string Serialize(RT o) {
-            if (typeof(RT) == typeof(DateTime))
-                return dateSerializer.SerializeDate((DateTime)(object)o);
-            return Convert.ToString(o, CultureInfo.InvariantCulture);
+        public SolrQueryByRange(string fieldName, RT @from, RT to, bool inclusive) {
+            this.fieldName = fieldName;
+            this.from = from;
+            this.to = to;
+            this.inclusive = inclusive;
         }
 
-		/// <summary>
-		/// query string
-		/// </summary>
-		public override string Query {
-			get { return q; }
-		}
+        public string FieldName {
+            get { return fieldName; }
+        }
+
+        public RT From {
+            get { return from; }
+        }
+
+        public RT To {
+            get { return to; }
+        }
+
+        public bool Inclusive {
+            get { return inclusive; }
+        }
 	}
 }

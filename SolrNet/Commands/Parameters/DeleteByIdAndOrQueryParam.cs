@@ -48,7 +48,8 @@ namespace SolrNet.Commands.Parameters
             if (query != null)
             {
                 var queryNode = xml.CreateElement("query");
-                queryNode.InnerText = query.Query;
+                //queryNode.InnerText = query.Query; TODO
+                throw new NotImplementedException();
                 yield return queryNode;
             }
         }

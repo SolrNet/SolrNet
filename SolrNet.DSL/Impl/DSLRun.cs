@@ -112,8 +112,9 @@ namespace SolrNet.DSL.Impl {
 
         public override string ToString() {
             var l = new List<string>();
+            var serializer = ServiceLocator.Current.GetInstance<ISolrQuerySerializer>();
             if (query != null)
-                l.Add(query.Query);
+                l.Add(serializer.Serialize(query));
             if (highlight != null)
                 l.Add("highlight=" + highlight);
             if (facets != null)

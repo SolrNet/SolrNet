@@ -15,46 +15,53 @@
 #endregion
 
 using MbUnit.Framework;
+using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class SolrQueryByFieldTests {
 		public class TestDocument {}
 
+        public string Serialize(object q) {
+            var serializer = new DefaultQuerySerializer();
+            return serializer.Serialize(q);
+        }
+
+
         [Test]
         public void NullField_yields_null_query() {
             var q = new SolrQueryByField(null, "123456");
-            Assert.IsNull(q.Query);
+            Assert.IsNull(Serialize(q));
         }
 
         [Test]
         public void NullValue_yields_null_query() {
             var q = new SolrQueryByField("id", null);
-            Assert.IsNull(q.Query);
+            Assert.IsNull(Serialize(q));
         }
 
 		[Test]
 		public void Basic() {
 			var q = new SolrQueryByField("id", "123456");
-			Assert.AreEqual("id:123456", q.Query);
+			Assert.AreEqual("id:123456", Serialize(q));
 		}
 
 		[Test]
 		public void ShouldQuoteSpaces() {
 			var q = new SolrQueryByField("id", "hello world");
-			Assert.AreEqual("id:\"hello world\"", q.Query);
+			Assert.AreEqual("id:\"hello world\"", Serialize(q));
 		}
 
 		[Test]
 		public void ShouldQuoteSpecialChar() {
 			var q = new SolrQueryByField("id", "hello+world-bye&&q||w!e(r)t{y}[u]^i\"o~p:a\\s+d;;");
-			Assert.AreEqual(@"id:hello\+world\-bye\&&q\||w\!e\(r\)t\{y\}\[u\]\^i\""o\~p\:a\\s\+d\;\;", q.Query);
+			Assert.AreEqual(@"id:hello\+world\-bye\&&q\||w\!e\(r\)t\{y\}\[u\]\^i\""o\~p\:a\\s\+d\;\;", Serialize(q));
 		}
 
 		[Test]
 		public void ShouldNotQuoteWildcard() {
 			var q = new SolrQueryByField("id", "h?llo*");
-			Assert.AreEqual("id:h?llo*", q.Query);
+			Assert.AreEqual("id:h?llo*", Serialize(q));
 		}
 	}
 }

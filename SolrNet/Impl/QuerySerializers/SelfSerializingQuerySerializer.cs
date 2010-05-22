@@ -14,21 +14,17 @@
 // limitations under the License.
 #endregion
 
-using SolrNet.Impl;
+using System;
 
-namespace SolrNet {
-    /// <summary>
-    /// Queries documents that have any value in the specified field
-    /// </summary>
-    public class SolrHasValueQuery : AbstractSolrQuery {
-        private readonly string field;
-
-        public SolrHasValueQuery(string field) {
-            this.field = field;
+namespace SolrNet.Impl.QuerySerializers {
+    public class SelfSerializingQuerySerializer : ISolrQuerySerializer {
+        public bool CanHandleType(Type t) {
+            return typeof (ISelfSerializingQuery).IsAssignableFrom(t);
         }
 
-        public string Field {
-            get { return field; }
+        public string Serialize(object q) {
+            var sq = (ISelfSerializingQuery)q;
+            return sq.Query;
         }
     }
 }

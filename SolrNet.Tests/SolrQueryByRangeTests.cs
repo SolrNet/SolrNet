@@ -16,40 +16,47 @@
 
 using System;
 using MbUnit.Framework;
+using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class SolrQueryByRangeTests {
 		public class TestDocument {}
 
+        public string Serialize(object q) {
+            var serializer = new DefaultQuerySerializer();
+            return serializer.Serialize(q);
+        }
+
+
 		[Test]
 		public void IntInclusive() {
 			var q = new SolrQueryByRange<int>("id", 123, 456);
-			Assert.AreEqual("id:[123 TO 456]", q.Query);
+			Assert.AreEqual("id:[123 TO 456]", Serialize(q));
 		}
 
 		[Test]
 		public void StringInclusive() {
 			var q = new SolrQueryByRange<string>("id", "Arroz", "Zimbabwe");
-			Assert.AreEqual("id:[Arroz TO Zimbabwe]", q.Query);
+			Assert.AreEqual("id:[Arroz TO Zimbabwe]", Serialize(q));
 		}
 
 		[Test]
 		public void StringExclusive() {
 			var q = new SolrQueryByRange<string>("id", "Arroz", "Zimbabwe", false);
-			Assert.AreEqual("id:{Arroz TO Zimbabwe}", q.Query);
+			Assert.AreEqual("id:{Arroz TO Zimbabwe}", Serialize(q));
 		}
 
         [Test]
         public void FloatInclusive() {
             var q = new SolrQueryByRange<float>("price", 123.45f, 234.56f);
-            Assert.AreEqual("price:[123.45 TO 234.56]", q.Query);
+            Assert.AreEqual("price:[123.45 TO 234.56]", Serialize(q));
         }
 
         [Test]
         public void DateTimeInclusive() {
             var q = new SolrQueryByRange<DateTime>("ts", new DateTime(2001, 1, 5), new DateTime(2002, 3, 4, 5, 6, 7));
-            Assert.AreEqual("ts:[2001-01-05T00:00:00Z TO 2002-03-04T05:06:07Z]", q.Query);
+            Assert.AreEqual("ts:[2001-01-05T00:00:00Z TO 2002-03-04T05:06:07Z]", Serialize(q));
         }
 	}
 }

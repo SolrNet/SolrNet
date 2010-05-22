@@ -108,9 +108,11 @@ namespace SolrNet.Impl {
 
             yield return KVP("facet", "true");
 
-            foreach (var fq in options.Facet.Queries)
-                foreach (var fqv in fq.Query)
-                    yield return fqv;
+            //foreach (var fq in options.Facet.Queries)
+            //    foreach (var fqv in fq.Query)
+            //        yield return fqv;
+            // TODO
+            throw new NotImplementedException();
 
             if (options.Facet.Prefix != null)
                 yield return KVP("facet.prefix", options.Facet.Prefix);

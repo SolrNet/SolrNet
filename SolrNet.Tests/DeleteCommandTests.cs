@@ -55,7 +55,7 @@ namespace SolrNet.Tests {
 			var q = mocks.StrictMock<ISolrQuery>();
 			With.Mocks(mocks).Expecting(delegate {
 				const string queryString = "someQuery";
-				Expect.On(q).Call(q.Query).Repeat.Once().Return(queryString);
+				//Expect.On(q).Call(q.Query).Repeat.Once().Return(queryString);
 				Expect.On(conn).Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", queryString)))
                     .Repeat.Once()
                     .Return("");
@@ -71,16 +71,14 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var conn = mocks.StrictMock<ISolrConnection>();
             var q = mocks.StrictMock<ISolrQuery>();
-            With.Mocks(mocks).Expecting(delegate
-            {
+            With.Mocks(mocks).Expecting(delegate {
                 const string queryString = "someQuery";
-                Expect.On(q).Call(q.Query).Repeat.Once().Return(queryString);
+                //Expect.On(q).Call(q.Query).Repeat.Once().Return(queryString);
                 Expect.On(conn).Call(conn.Post("/update", string.Format("<delete><id>{0}</id><id>{1}</id><query>{2}</query></delete>", ids[0], ids[1], queryString)))
                     .Repeat.Once()
                     .
                     Return("");
-            }).Verify(delegate
-            {
+            }).Verify(delegate {
                 var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q));
                 cmd.Execute(conn);
             });

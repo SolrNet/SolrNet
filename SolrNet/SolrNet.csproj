@@ -86,6 +86,7 @@
     <Compile Include="Impl\FieldSerializers\NullableFieldSerializer.cs" />
     <Compile Include="Impl\FieldSerializers\ToStringFieldSerializer.cs" />
     <Compile Include="Impl\FieldSerializers\TypeConvertingFieldSerializer.cs" />
+    <Compile Include="Impl\ISelfSerializingQuery.cs" />
     <Compile Include="Impl\ISolrCache.cs" />
     <Compile Include="Impl\ISolrDocumentActivator.cs" />
     <Compile Include="Impl\ISolrDocumentPropertyVisitor.cs" />
@@ -98,7 +99,8 @@
     <Compile Include="Impl\NullCache.cs" />
     <Compile Include="Impl\PropertyNode.cs" />
     <Compile Include="Impl\QuerySerializers\AggregateQuerySerializer.cs" />
-    <Compile Include="Impl\QuerySerializers\SolrQuerySerializer.cs" />
+    <Compile Include="Impl\QuerySerializers\DefaultQuerySerializer.cs" />
+    <Compile Include="Impl\QuerySerializers\SelfSerializingQuerySerializer.cs" />
     <Compile Include="Impl\ResponseParsers\CollapseResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\FacetsResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\HeaderResponseParser.cs" />

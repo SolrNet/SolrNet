@@ -15,19 +15,17 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
-namespace SolrNet.Impl.QuerySerializers {
-    public class DefaultQuerySerializer : ISolrQuerySerializer {
-        private readonly AggregateQuerySerializer serializer;
+namespace SolrNet.Impl.FacetQuerySerializers {
+    public class DefaultFacetQuerySerializer : ISolrFacetQuerySerializer {
+        private readonly AggregateFacetQuerySerializer serializer;
 
-        public DefaultQuerySerializer() {
-            serializer = new AggregateQuerySerializer(new ISolrQuerySerializer[] {
-                new QueryByFieldSerializer(),
-                new NotQuerySerializer(this),
-                new QueryInListSerializer(this),
-                new RangeQuerySerializer(),
-                new MultipleCriteriaQuerySerializer(this),
-                new SelfSerializingQuerySerializer(),
+        public DefaultFacetQuerySerializer(ISolrQuerySerializer querySerializer, ISolrFieldSerializer fieldSerializer) {
+            serializer = new AggregateFacetQuerySerializer(new ISolrFacetQuerySerializer[] {
+                new SolrFacetQuerySerializer(querySerializer),
+                new SolrFacetDateQuerySerializer(fieldSerializer),
+                new SolrFacetFieldQuerySerializer(),
             });
         }
 
@@ -35,7 +33,7 @@ namespace SolrNet.Impl.QuerySerializers {
             return serializer.CanHandleType(t);
         }
 
-        public string Serialize(object q) {
+        public IEnumerable<KeyValuePair<string, string>> Serialize(object q) {
             return serializer.Serialize(q);
         }
     }

@@ -68,7 +68,8 @@ namespace SolrNet.DSL {
             return new SolrQueryExecuter<T>(
                 ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(),
                 Connection,
-                ServiceLocator.Current.GetInstance<ISolrQuerySerializer>());
+                ServiceLocator.Current.GetInstance<ISolrQuerySerializer>(),
+                ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>());
         }
 
         /// <summary>

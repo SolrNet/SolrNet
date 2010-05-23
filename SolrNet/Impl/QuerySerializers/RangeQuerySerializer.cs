@@ -15,28 +15,22 @@
 #endregion
 
 using System;
+using System.Globalization;
 
 namespace SolrNet.Impl.QuerySerializers {
-    public class DefaultQuerySerializer : ISolrQuerySerializer {
-        private readonly AggregateQuerySerializer serializer;
-
-        public DefaultQuerySerializer() {
-            serializer = new AggregateQuerySerializer(new ISolrQuerySerializer[] {
-                new QueryByFieldSerializer(),
-                new NotQuerySerializer(this),
-                new QueryInListSerializer(this),
-                new RangeQuerySerializer(),
-                new MultipleCriteriaQuerySerializer(this),
-                new SelfSerializingQuerySerializer(),
-            });
-        }
-
+    public class RangeQuerySerializer : ISolrQuerySerializer {
         public bool CanHandleType(Type t) {
-            return serializer.CanHandleType(t);
+            return typeof (ISolrQueryByRange).IsAssignableFrom(t);
         }
 
         public string Serialize(object q) {
-            return serializer.Serialize(q);
+            var query = (ISolrQueryByRange) q;
+            return "$field:$ii$from TO $to$if"
+                            .Replace("$field", query.FieldName)
+                            .Replace("$ii", query.Inclusive ? "[" : "{")
+                            .Replace("$if", query.Inclusive ? "]" : "}")
+                            .Replace("$from", Convert.ToString(query.From, CultureInfo.InvariantCulture))
+                            .Replace("$to", Convert.ToString(query.To, CultureInfo.InvariantCulture));
         }
     }
 }

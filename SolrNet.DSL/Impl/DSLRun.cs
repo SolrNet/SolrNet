@@ -45,11 +45,16 @@ namespace SolrNet.DSL.Impl {
             this.highlight = highlight;
         }
 
-        public ISolrQueryResults<T> Run() {
-            var exe = new SolrQueryExecuter<T>(
+        private ISolrQueryExecuter<T> NewQueryExecuter() {
+            return new SolrQueryExecuter<T>(
                 ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(),
-                connection, 
-                ServiceLocator.Current.GetInstance<ISolrQuerySerializer>());
+                connection,
+                ServiceLocator.Current.GetInstance<ISolrQuerySerializer>(),
+                ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>());
+        }
+
+        public ISolrQueryResults<T> Run() {
+            var exe = NewQueryExecuter();
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
                 Facet = new FacetParameters {
@@ -60,10 +65,7 @@ namespace SolrNet.DSL.Impl {
         }
 
         public ISolrQueryResults<T> Run(int start, int rows) {
-            var exe = new SolrQueryExecuter<T>(
-                ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(),
-                connection,
-                ServiceLocator.Current.GetInstance<ISolrQuerySerializer>());
+            var exe = NewQueryExecuter(); 
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
                 Facet = new FacetParameters {

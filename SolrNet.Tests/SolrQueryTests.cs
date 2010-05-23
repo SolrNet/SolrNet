@@ -39,7 +39,7 @@ namespace SolrNet.Tests {
                     .Repeat.Once()
                     .Return(new SolrQueryResults<TestDocument>());
 			}).Verify(delegate {
-			    var q = new SolrQueryExecuter<TestDocument>(parser, connection, null);
+			    var q = new SolrQueryExecuter<TestDocument>(parser, connection, null, null);
 				var r = q.Execute(new SolrQuery("id:123456"), null);
 			});
 		}

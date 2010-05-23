@@ -1,4 +1,5 @@
 ﻿#region license
+
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,24 +13,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
 
-using System;
-using System.Globalization;
-using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl;
 
 namespace SolrNet {
     /// <summary>
     /// Queries a field for a range
     /// </summary>
     /// <typeparam name="RT"></typeparam>
-	public class SolrQueryByRange<RT> : AbstractSolrQuery {
+    public class SolrQueryByRange<RT> : AbstractSolrQuery, ISolrQueryByRange {
         private readonly string fieldName;
         private readonly RT from;
         private readonly RT to;
         private readonly bool inclusive;
 
-		public SolrQueryByRange(string fieldName, RT from, RT to) : this(fieldName, from, to, true) {}
+        public SolrQueryByRange(string fieldName, RT from, RT to) : this(fieldName, from, to, true) {}
 
         public SolrQueryByRange(string fieldName, RT @from, RT to, bool inclusive) {
             this.fieldName = fieldName;
@@ -46,12 +46,20 @@ namespace SolrNet {
             get { return from; }
         }
 
+        object ISolrQueryByRange.From {
+            get { return from; }
+        }
+
         public RT To {
+            get { return to; }
+        }
+
+        object ISolrQueryByRange.To {
             get { return to; }
         }
 
         public bool Inclusive {
             get { return inclusive; }
         }
-	}
+    }
 }

@@ -17,26 +17,15 @@
 using System;
 
 namespace SolrNet.Impl.QuerySerializers {
-    public class DefaultQuerySerializer : ISolrQuerySerializer {
-        private readonly AggregateQuerySerializer serializer;
-
-        public DefaultQuerySerializer() {
-            serializer = new AggregateQuerySerializer(new ISolrQuerySerializer[] {
-                new QueryByFieldSerializer(),
-                new NotQuerySerializer(this),
-                new QueryInListSerializer(this),
-                new RangeQuerySerializer(),
-                new MultipleCriteriaQuerySerializer(this),
-                new SelfSerializingQuerySerializer(),
-            });
-        }
-
+    public abstract class SingleTypeQuerySerializer<T> : ISolrQuerySerializer {
         public bool CanHandleType(Type t) {
-            return serializer.CanHandleType(t);
+            return t == typeof (T);
         }
 
         public string Serialize(object q) {
-            return serializer.Serialize(q);
+            return Serialize((T)q);
         }
+
+        public abstract string Serialize(T q);
     }
 }

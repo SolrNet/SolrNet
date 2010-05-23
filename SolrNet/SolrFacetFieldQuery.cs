@@ -81,28 +81,5 @@ namespace SolrNet {
 		/// </summary>
 		public int? EnumCacheMinDf { get; set; }
 
-        private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
-            return new KeyValuePair<K, V>(key, value);
-        }
-
- 		public IEnumerable<KeyValuePair<string, string>> Query {
-			get {
-			    yield return KV("facet.field", field);
-                if (Prefix != null)
-                    yield return KV(string.Format("f.{0}.facet.prefix", field), Prefix);
-                if (Sort.HasValue)
-                    yield return KV(string.Format("f.{0}.facet.sort", field), Sort.ToString().ToLowerInvariant());
-				if (Limit.HasValue)
-                    yield return KV(string.Format("f.{0}.facet.limit", field), Limit.ToString());
-				if (Offset.HasValue)
-					yield return KV(string.Format("f.{0}.facet.offset", field), Offset.ToString());
-				if (MinCount.HasValue)
-					yield return KV(string.Format("f.{0}.facet.mincount", field), MinCount.ToString());
-				if (Missing.HasValue)
-					yield return KV(string.Format("f.{0}.facet.missing", field), Missing.ToString().ToLowerInvariant());
-				if (EnumCacheMinDf.HasValue)
-					yield return KV(string.Format("f.{0}.facet.enum.cache.minDf", field), EnumCacheMinDf.ToString());
-			}
-		}
 	}
 }

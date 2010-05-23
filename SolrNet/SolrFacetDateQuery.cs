@@ -66,6 +66,22 @@ namespace SolrNet {
             return new KeyValuePair<K, V>(key, value);
         }
 
+        public string Field {
+            get { return field; }
+        }
+
+        public DateTime Start {
+            get { return start; }
+        }
+
+        public DateTime End {
+            get { return end; }
+        }
+
+        public string Gap {
+            get { return gap; }
+        }
+
         public IEnumerable<KeyValuePair<string, string>> Query {
             get {
                 yield return KV("facet.date", field);

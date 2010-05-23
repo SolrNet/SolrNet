@@ -30,6 +30,7 @@ namespace SolrNet.Impl {
         private readonly ISolrQueryResultParser<T> resultParser;
         private readonly ISolrConnection connection;
         private readonly ISolrQuerySerializer querySerializer;
+        private readonly ISolrFacetQuerySerializer facetQuerySerializer;
 
         /// <summary>
         /// When the row count is not defined, use this row count by default
@@ -38,10 +39,11 @@ namespace SolrNet.Impl {
 
         public static readonly int ConstDefaultRows = 100000000;
 
-        public SolrQueryExecuter(ISolrQueryResultParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer) {
+        public SolrQueryExecuter(ISolrQueryResultParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer, ISolrFacetQuerySerializer facetQuerySerializer) {
             this.resultParser = resultParser;
             this.connection = connection;
             this.querySerializer = querySerializer;
+            this.facetQuerySerializer = facetQuerySerializer;
             DefaultRows = ConstDefaultRows;
         }
 
@@ -108,11 +110,9 @@ namespace SolrNet.Impl {
 
             yield return KVP("facet", "true");
 
-            //foreach (var fq in options.Facet.Queries)
-            //    foreach (var fqv in fq.Query)
-            //        yield return fqv;
-            // TODO
-            throw new NotImplementedException();
+            foreach (var fq in options.Facet.Queries)
+                foreach (var fqv in facetQuerySerializer.Serialize(fq))
+                    yield return fqv;
 
             if (options.Facet.Prefix != null)
                 yield return KVP("facet.prefix", options.Facet.Prefix);

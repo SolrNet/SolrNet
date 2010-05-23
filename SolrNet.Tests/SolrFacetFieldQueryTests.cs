@@ -26,7 +26,8 @@ namespace SolrNet.Tests {
     [TestFixture]
     public class SolrFacetFieldQueryTests {
         public IList<KeyValuePair<string, string>> Serialize(object o) {
-            var serializer = new DefaultFacetQuerySerializer(new DefaultQuerySerializer(), new DefaultFieldSerializer());
+            var fieldSerializer = new DefaultFieldSerializer();
+            var serializer = new DefaultFacetQuerySerializer(new DefaultQuerySerializer(fieldSerializer), fieldSerializer);
             return serializer.Serialize(o).ToList();
         }
             

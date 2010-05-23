@@ -16,6 +16,7 @@
 
 using System;
 using MbUnit.Framework;
+using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
@@ -24,7 +25,7 @@ namespace SolrNet.Tests {
         [Test]
         public void Boost() {
             var q = new SolrQueryBoost(new SolrQuery("solr"), 34.2);
-            var serializer = new DefaultQuerySerializer();
+            var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             var query = serializer.Serialize(q);
             Assert.AreEqual("(solr)^34.2", query);
         }
@@ -32,7 +33,7 @@ namespace SolrNet.Tests {
         [Test]
         public void Boost_with_high_value() {
             var q = new SolrQueryBoost(new SolrQuery("solr"), 34.2E10);
-            var serializer = new DefaultQuerySerializer();
+            var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             var query = serializer.Serialize(q);
             Assert.AreEqual("(solr)^342000000000", query);
         }
@@ -40,7 +41,7 @@ namespace SolrNet.Tests {
         [Test]
         public void SolrQuery_Boost() {
             var q = new SolrQuery("solr").Boost(12.2);
-            var serializer = new DefaultQuerySerializer();
+            var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             var query = serializer.Serialize(q);
             Assert.AreEqual("(solr)^12.2", query);
         }

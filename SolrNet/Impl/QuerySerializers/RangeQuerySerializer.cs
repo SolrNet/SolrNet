@@ -23,14 +23,21 @@ namespace SolrNet.Impl.QuerySerializers {
             return typeof (ISolrQueryByRange).IsAssignableFrom(t);
         }
 
+        public static string BuildRange(string fieldName, string @from, string @to, bool inclusive) {
+            return "$field:$ii$from TO $to$if"
+                            .Replace("$field", fieldName)
+                            .Replace("$ii", inclusive ? "[" : "{")
+                            .Replace("$if", inclusive ? "]" : "}")
+                            .Replace("$from", @from)
+                            .Replace("$to", to);
+        }
+
         public string Serialize(object q) {
             var query = (ISolrQueryByRange) q;
-            return "$field:$ii$from TO $to$if"
-                            .Replace("$field", query.FieldName)
-                            .Replace("$ii", query.Inclusive ? "[" : "{")
-                            .Replace("$if", query.Inclusive ? "]" : "}")
-                            .Replace("$from", Convert.ToString(query.From, CultureInfo.InvariantCulture))
-                            .Replace("$to", Convert.ToString(query.To, CultureInfo.InvariantCulture));
+            return BuildRange(query.FieldName, 
+                Convert.ToString(query.From, CultureInfo.InvariantCulture),
+                Convert.ToString(query.To, CultureInfo.InvariantCulture), 
+                query.Inclusive);
         }
     }
 }

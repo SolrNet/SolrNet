@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using MbUnit.Framework;
+using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
@@ -25,7 +26,7 @@ namespace SolrNet.Tests {
         public class TestDocument  {}
 
         public string Serialize(object q) {
-            var serializer = new DefaultQuerySerializer();
+            var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             return serializer.Serialize(q);
         }
 

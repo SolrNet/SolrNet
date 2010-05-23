@@ -32,13 +32,15 @@ namespace SolrNet.Impl {
         private readonly ISolrDocumentSerializer<T> documentSerializer;
         private readonly ISolrSchemaParser schemaParser;
         private readonly ISolrHeaderResponseParser headerParser;
+        private readonly ISolrQuerySerializer querySerializer;
 
-        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser) {
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer) {
             this.connection = connection;
             this.queryExecuter = queryExecuter;
             this.documentSerializer = documentSerializer;
             this.schemaParser = schemaParser;
             this.headerParser = headerParser;
+            this.querySerializer = querySerializer;
         }
 
         public ResponseHeader Commit(CommitOptions options) {
@@ -73,7 +75,7 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q) {
-            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q));
+            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer));
             return SendAndParseHeader(delete);
         }
 

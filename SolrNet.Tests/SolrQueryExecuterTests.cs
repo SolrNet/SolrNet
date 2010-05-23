@@ -21,6 +21,9 @@ using Rhino.Mocks;
 using SolrNet.Attributes;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
+using SolrNet.Impl.FacetQuerySerializers;
+using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -70,13 +73,14 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
+            var querySerializer = new SolrQuerySerializerStub(queryString);
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(parser.Parse(null))
                     .IgnoreArguments()
                     .Repeat.Once()
                     .Return(mockR);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);                
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null);                
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
                     OrderBy = new[] {new SortOrder("id")}
                 });
@@ -94,10 +98,11 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
+            var querySerializer = new SolrQuerySerializerStub(queryString);
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
                     OrderBy = new[] {
                         new SortOrder("id", Order.ASC),
@@ -118,10 +123,11 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
             var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
+            var querySerializer = new SolrQuerySerializerStub(queryString);
             With.Mocks(mocks).Expecting(delegate {
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
                     Fields = new[] {"id", "name"},
                 });
@@ -139,7 +145,9 @@ namespace SolrNet.Tests {
             var conn = new MockConnection(q);
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
+            var querySerializer = new DefaultQuerySerializer();
+            var facetQuerySerializer = new DefaultFacetQuerySerializer(querySerializer, new DefaultFieldSerializer());
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, facetQuerySerializer);
             queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
                 Facet = new FacetParameters {
                     Queries = new ISolrFacetQuery[] {
@@ -156,18 +164,18 @@ namespace SolrNet.Tests {
 
         [Test]
         public void MultipleFacetFields() {
-            var q = new List<KeyValuePair<string, string>> {
+            var conn = new MockConnection(new[] {
                 KVP("q", ""),
                 KVP("rows", SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString()),
                 KVP("facet", "true"),
                 KVP("facet.field", "Id"),
                 KVP("facet.field", "OtherField"),
-            };
-            var conn = new MockConnection(q);
+            });
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
-            var serializer = mocks.DynamicMock<ISolrQuerySerializer>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, serializer, null);
+            var serializer = new DefaultQuerySerializer();
+            var facetQuerySerializer = new DefaultFacetQuerySerializer(serializer, new DefaultFieldSerializer());
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, serializer, facetQuerySerializer);
             queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
                 Facet = new FacetParameters {
                     Queries = new ISolrFacetQuery[] {
@@ -203,7 +211,8 @@ namespace SolrNet.Tests {
             q["hl.regex.pattern"] = "\\.";
             q["hl.regex.maxAnalyzedChars"] = "8000";
             var conn = new MockConnection(q);
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
+            var querySerializer = new SolrQuerySerializerStub("");
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null);
             queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
                 Highlight = new HighlightingParameters {
                     Fields = new[] { highlightedField },
@@ -224,14 +233,14 @@ namespace SolrNet.Tests {
         public void FilterQuery() {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var querySerializer = new DefaultQuerySerializer();
             var conn = new MockConnection(new[] {
                 KVP("q", "*:*"),
                 KVP("rows", "10"),
                 KVP("fq", "id:0"),
                 KVP("fq", "id:2"),
             });
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null)
-            {
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null) {
                 DefaultRows = 10,
             };
             queryExecuter.Execute(SolrQuery.All, new QueryOptions {
@@ -274,7 +283,8 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
+            var querySerializer = new SolrQuerySerializerStub("*:*");
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null);
             var p = queryExecuter.GetAllParameters(SolrQuery.All, new QueryOptions {
                 SpellCheck = new SpellCheckingParameters {
                     Query = "hell",
@@ -301,7 +311,8 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
+            var querySerializer = new SolrQuerySerializerStub("apache");
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null);
             var p = queryExecuter.GetAllParameters(new SolrQuery("apache"), new QueryOptions {
                 MoreLikeThis = new MoreLikeThisParameters(new[] { "manu", "cat" }) {
                     MinDocFreq = 1,
@@ -352,7 +363,9 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
+            var querySerializer = new SolrQuerySerializerStub("q");
+            var facetQuerySerializer = new DefaultFacetQuerySerializer(querySerializer, null);
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, facetQuerySerializer);
             var facetOptions = queryExecuter.GetFacetFieldOptions(new QueryOptions {
                 Facet = new FacetParameters {
                     Queries = new List<ISolrFacetQuery> {

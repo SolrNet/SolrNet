@@ -163,8 +163,7 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader Delete(string id) {
-            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null));
-            return basicServer.SendAndParseHeader(delete);
+            return basicServer.Delete(new[] {id}, null);
         }
 
         ResponseHeader ISolrOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q) {

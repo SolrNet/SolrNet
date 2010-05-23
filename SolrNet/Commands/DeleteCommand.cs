@@ -44,10 +44,18 @@ namespace SolrNet.Commands {
 			get { return deleteParam; }
 		}
 
+        private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
+            return new KeyValuePair<K, V>(key, value);
+        }
+
 		public string Execute(ISolrConnection connection) {
 			var xml = new XmlDocument();
 			var deleteNode = xml.CreateElement("delete");
-			foreach (var p in new[] {new KeyValuePair<bool?, string>(FromPending, "fromPending"), new KeyValuePair<bool?, string>(FromCommitted, "fromCommitted")}) {
+		    var param = new[] {
+		        KV(FromPending, "fromPending"), 
+                KV(FromCommitted, "fromCommitted")
+		    };
+		    foreach (var p in param) {
 				if (p.Key.HasValue) {
 					var att = xml.CreateAttribute(p.Value);
 					att.InnerText = p.Key.Value.ToString().ToLower();

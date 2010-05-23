@@ -18,6 +18,7 @@ using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -27,10 +28,12 @@ namespace SolrNet.Tests {
 			const string id = "123123";
 			var mocks = new MockRepository();
 			var conn = mocks.StrictMock<ISolrConnection>();
-			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id></delete>", id))).Repeat.Once().Return("");
-			}).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] {id}, null));
+			With.Mocks(mocks).Expecting(() => {
+				Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id></delete>", id)))
+                    .Repeat.Once()
+                    .Return("");
+            }).Verify(() => {
+                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] {id}, null, null));
 				cmd.Execute(conn);
 			});
 		}
@@ -43,7 +46,7 @@ namespace SolrNet.Tests {
             With.Mocks(mocks).Expecting(delegate {
                 Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id><id>{1}</id></delete>", ids[0], ids[1]))).Repeat.Once().Return("");
             }).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null));
+                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null, null));
                 cmd.Execute(conn);
             });            
         }
@@ -53,14 +56,19 @@ namespace SolrNet.Tests {
 			var mocks = new MockRepository();
 			var conn = mocks.StrictMock<ISolrConnection>();
 			var q = mocks.StrictMock<ISolrQuery>();
+		    var querySerializer = mocks.StrictMock<ISolrQuerySerializer>();
 			With.Mocks(mocks).Expecting(delegate {
 				const string queryString = "someQuery";
-				//Expect.On(q).Call(q.Query).Repeat.Once().Return(queryString);
-				Expect.On(conn).Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", queryString)))
+				Expect.On(conn)
+                    .Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", queryString)))
                     .Repeat.Once()
                     .Return("");
+			    Expect.On(querySerializer)
+			        .Call(querySerializer.Serialize(null))
+			        .IgnoreArguments()
+                    .Return(queryString);
 			}).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q));
+                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q, querySerializer));
 				cmd.Execute(conn);
 			});
 		}
@@ -71,15 +79,19 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var conn = mocks.StrictMock<ISolrConnection>();
             var q = mocks.StrictMock<ISolrQuery>();
+            var querySerializer = mocks.StrictMock<ISolrQuerySerializer>();
             With.Mocks(mocks).Expecting(delegate {
                 const string queryString = "someQuery";
-                //Expect.On(q).Call(q.Query).Repeat.Once().Return(queryString);
-                Expect.On(conn).Call(conn.Post("/update", string.Format("<delete><id>{0}</id><id>{1}</id><query>{2}</query></delete>", ids[0], ids[1], queryString)))
+                Expect.On(querySerializer)
+                    .Call(querySerializer.Serialize(null))
+                    .IgnoreArguments()
+                    .Return(queryString);
+                Expect.On(conn)
+                    .Call(conn.Post("/update", string.Format("<delete><id>{0}</id><id>{1}</id><query>{2}</query></delete>", ids[0], ids[1], queryString)))
                     .Repeat.Once()
-                    .
-                    Return("");
+                    .Return("");
             }).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q));
+                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer));
                 cmd.Execute(conn);
             });
         }
@@ -94,7 +106,9 @@ namespace SolrNet.Tests {
                     .Repeat.Once()
                     .Return("");
 			}).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null)) { FromCommitted = true };
+                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null)) {
+                    FromCommitted = true
+                };
 				cmd.Execute(conn);
 			});
 		}
@@ -109,7 +123,10 @@ namespace SolrNet.Tests {
                     .Repeat.Once()
                     .Return("");
 			}).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null)) { FromCommitted = false, FromPending = false };
+                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null)) {
+                    FromCommitted = false, 
+                    FromPending = false
+                };
 				cmd.Execute(conn);
 			});
 		}
@@ -124,7 +141,9 @@ namespace SolrNet.Tests {
                     .Repeat.Once()
                     .Return("");
 			}).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null)) { FromPending = true };
+                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null)) {
+                    FromPending = true
+                };
 				cmd.Execute(conn);
 			});
 		}

@@ -111,6 +111,7 @@
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
+    <Compile Include="SolrQuerySerializerStub.cs" />
     <Compile Include="SolrSchemaParserTests.cs" />
     <Compile Include="UniqueKeyMatchesMappingRuleTests.cs" />
     <Compile Include="Utils\EmbeddedResource.cs" />

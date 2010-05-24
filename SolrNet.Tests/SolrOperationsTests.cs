@@ -285,12 +285,16 @@ namespace SolrNet.Tests {
             var validationManager = mocks.StrictMock<IMappingValidator>();
             With.Mocks(mocks)
                 .Expecting(() => {
-                    Expect.Call(basicServer.SendAndParseHeader(null))
+                    Expect.On(basicServer)
+                        .Call(basicServer.Delete(new[] {"0"}, null))
                         .IgnoreArguments()
-                        .Repeat.Once()
                         .Return(new ResponseHeader());
-                    Expect.Call(mapper.GetUniqueKey(typeof (TestDocumentWithUniqueKey)))
-                        .Return(new SolrFieldModel { Property = typeof(TestDocumentWithUniqueKey).GetProperty("id"), FieldName = "id" });
+                    Expect.On(mapper)
+                        .Call(mapper.GetUniqueKey(typeof (TestDocumentWithUniqueKey)))
+                        .Return(new SolrFieldModel {
+                            Property = typeof(TestDocumentWithUniqueKey).GetProperty("id"), 
+                            FieldName = "id"
+                        });
                 })
                 .Verify(delegate {
                     var ops = new SolrServer<TestDocumentWithUniqueKey>(basicServer, mapper, validationManager);

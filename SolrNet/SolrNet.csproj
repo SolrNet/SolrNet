@@ -107,8 +107,10 @@
     <Compile Include="Impl\NullCache.cs" />
     <Compile Include="Impl\PropertyNode.cs" />
     <Compile Include="Impl\QuerySerializers\AggregateQuerySerializer.cs" />
+    <Compile Include="Impl\QuerySerializers\BoostQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\DateTimeRangeQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\DefaultQuerySerializer.cs" />
+    <Compile Include="Impl\QuerySerializers\HasValueQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\MultipleCriteriaQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\NotQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\QueryByFieldSerializer.cs" />

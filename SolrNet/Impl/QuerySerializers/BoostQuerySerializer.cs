@@ -14,19 +14,19 @@
 // limitations under the License.
 #endregion
 
-namespace SolrNet {
-    /// <summary>
-    /// Queries documents that have any value in the specified field
-    /// </summary>
-    public class SolrHasValueQuery : AbstractSolrQuery {
-        private readonly string field;
+using System;
+using System.Globalization;
 
-        public SolrHasValueQuery(string field) {
-            this.field = field;
+namespace SolrNet.Impl.QuerySerializers {
+    public class BoostQuerySerializer : SingleTypeQuerySerializer<SolrQueryBoost> {
+        private readonly ISolrQuerySerializer serializer;
+
+        public BoostQuerySerializer(ISolrQuerySerializer serializer) {
+            this.serializer = serializer;
         }
 
-        public string Field {
-            get { return field; }
+        public override string Serialize(SolrQueryBoost q) {
+            return string.Format("({0})^{1}", serializer.Serialize(q.Query), q.Factor.ToString(CultureInfo.InvariantCulture.NumberFormat));
         }
     }
 }

@@ -47,6 +47,7 @@ namespace SolrNet.Tests {
         public string Producer { get; set; }
         public string FieldNotSolrSchema { get; set; }
         public double? Score { get; set; }
+        public IDictionary<string, object> DynamicMapped { get; set; }
     }
 
     public class DummyValidationRuleError : IValidationRule {

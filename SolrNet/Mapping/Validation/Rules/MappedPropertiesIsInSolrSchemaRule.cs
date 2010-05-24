@@ -52,6 +52,8 @@ namespace SolrNet.Mapping.Validation.Rules {
                 var field = mappedField;
                 if (IgnoredFieldNames != null && Func.Any(IgnoredFieldNames, f => f == field.FieldName))
                     continue;
+                if (field.FieldName.Contains("*")) // ignore multi-mapped fields (wildcards or dictionary mappings)
+                    continue;
                 var fieldFoundInSolrSchema = false;
                 foreach (var solrField in solrSchema.SolrFields) {
                     if (solrField.Name.Equals(field.FieldName)) {

@@ -16,6 +16,7 @@
 
 #endregion
 
+using System;
 using System.Linq;
 using MbUnit.Framework;
 using SolrNet.Mapping;
@@ -87,6 +88,18 @@ namespace SolrNet.Tests {
             mapper.Add(typeof (SchemaMappingTestDocument).GetProperty("Score"), "score");
             var results = rule.Validate(typeof (SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
             Assert.IsNotNull(results);
+            Assert.AreEqual(0, results.Count);
+        }
+
+        [Test]
+        public void DictionaryFields_are_ignored() {
+            var rule = new MappedPropertiesIsInSolrSchemaRule();
+            var mapper = new MappingManager();
+            mapper.Add(typeof(SchemaMappingTestDocument).GetProperty("DynamicMapped"), "ma_*");
+            var schema = new SolrSchema();
+            var fieldType = new SolrFieldType("string", "solr.StrField");
+            schema.SolrFields.Add(new SolrField("ma_uaua", fieldType));
+            var results = rule.Validate(typeof(SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
             Assert.AreEqual(0, results.Count);
         }
     }

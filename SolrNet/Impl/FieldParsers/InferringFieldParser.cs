@@ -46,6 +46,7 @@ namespace SolrNet.Impl.FieldParsers {
                 {"str", typeof (string)},
                 {"int", typeof (int)},
                 {"float", typeof (float)},
+                {"double", typeof(double)},
                 {"long", typeof (long)},
                 {"arr", typeof (ICollection)},
                 {"date", typeof (DateTime)},

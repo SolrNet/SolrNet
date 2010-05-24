@@ -40,23 +40,14 @@ namespace SolrNet.Mapping.Validation.Rules {
             var collectionFieldParser = new CollectionFieldParser(null); // Used to check if the type is a collection type.
 
             foreach (var prop in mappingManager.GetFields(documentType)) {
-                if (collectionFieldParser.CanHandleType(prop.Property.PropertyType)) { // Field is a collection so solr field should be too.
-                    var solrField = solrSchema.FindSolrFieldByName(prop.FieldName);
-                    if (solrField != null) {
-                        if(!solrField.IsMultiValued) {
-                            yield return new ValidationError(String.Format("SolrField '{0}' is not multivalued while property '{1}.{2}' is mapped as a collection.", solrField.Name, prop.Property.DeclaringType, prop.Property.Name));
-                        }
-                    }
-                } else { //Mapped type is not a collection so solr field shouldn't be either.
-                    var solrField = solrSchema.FindSolrFieldByName(prop.FieldName);
-                    if (solrField != null)
-                    {
-                        if (solrField.IsMultiValued)
-                        {
-                            yield return new ValidationError(String.Format("SolrField '{0}' is multivalued while property '{1}.{2}' is not mapped as a collection.", solrField.Name, prop.Property.DeclaringType, prop.Property.Name));
-                        }
-                    }
-                }
+                var solrField = solrSchema.FindSolrFieldByName(prop.FieldName);
+                if (solrField == null)
+                    continue;
+                var isCollection = collectionFieldParser.CanHandleType(prop.Property.PropertyType);
+                if (solrField.IsMultiValued && !isCollection)
+                    yield return new ValidationError(String.Format("SolrField '{0}' is multivalued while property '{1}.{2}' is not mapped as a collection.", solrField.Name, prop.Property.DeclaringType, prop.Property.Name));
+                else if (!solrField.IsMultiValued && isCollection)
+                    yield return new ValidationError(String.Format("SolrField '{0}' is not multivalued while property '{1}.{2}' is mapped as a collection.", solrField.Name, prop.Property.DeclaringType, prop.Property.Name));
             }
         }
     }

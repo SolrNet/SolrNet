@@ -111,6 +111,7 @@
     <Compile Include="Impl\QuerySerializers\DateTimeRangeQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\DefaultQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\HasValueQuerySerializer.cs" />
+    <Compile Include="Impl\QuerySerializers\LocalParamsSerializer.cs" />
     <Compile Include="Impl\QuerySerializers\MultipleCriteriaQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\NotQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\QueryByFieldSerializer.cs" />

@@ -94,15 +94,6 @@ namespace StructureMap.SolrNetIntegration.Tests
         }
 
         [Test]
-        public void Resolve_ISolrOperations()
-        {
-            SetupContainer();
-            var operations = ObjectFactory.GetInstance<ISolrOperations<Entity>>();
-            Assert.IsNotNull(operations);
-
-        }
-
-        [Test]
         public void ResponseParsers()
         {
             SetupContainer();

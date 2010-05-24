@@ -22,8 +22,10 @@ using Castle.MicroKernel.Registration;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
+using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
@@ -120,6 +122,10 @@ namespace Castle.Facilities.SolrNetIntegration {
                 .Named(typeof(InferringFieldParser).Name));
 
             Kernel.Register(Component.For<ISolrFieldSerializer>().ImplementedBy<DefaultFieldSerializer>());
+
+            Kernel.Register(Component.For<ISolrQuerySerializer>().ImplementedBy<DefaultQuerySerializer>());
+            Kernel.Register(Component.For<ISolrFacetQuerySerializer>().ImplementedBy<DefaultFacetQuerySerializer>());
+
             Kernel.Register(Component.For<ISolrDocumentPropertyVisitor>().ImplementedBy<DefaultDocumentVisitor>());
 
             Kernel.Register(Component.For<ISolrSchemaParser>().ImplementedBy<SolrSchemaParser>());

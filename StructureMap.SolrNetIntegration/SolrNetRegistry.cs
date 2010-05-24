@@ -5,8 +5,10 @@ using SolrNet;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
+using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
@@ -73,6 +75,9 @@ namespace Structuremap.SolrNetIntegration
 
             For<ISolrFieldSerializer>().Use<DefaultFieldSerializer>();
             For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();
+
+            For<ISolrQuerySerializer>().Use<DefaultQuerySerializer>();
+            For<ISolrFacetQuerySerializer>().Use<DefaultFacetQuerySerializer>();
 
             For<ISolrSchemaParser>().Use<SolrSchemaParser>();
             For<IMappingValidator>().Use<MappingValidator>();

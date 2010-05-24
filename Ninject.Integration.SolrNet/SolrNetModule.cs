@@ -18,8 +18,10 @@ using Ninject.Modules;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
+using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
@@ -44,6 +46,8 @@ namespace Ninject.Integration.SolrNet {
             Bind(typeof (ISolrDocumentActivator<>)).To(typeof (SolrDocumentActivator<>));
             Bind(typeof(ISolrDocumentResponseParser<>)).To(typeof(SolrDocumentResponseParser<>));
             Bind<ISolrFieldSerializer>().To<DefaultFieldSerializer>();
+            Bind<ISolrQuerySerializer>().To<DefaultQuerySerializer>();
+            Bind<ISolrFacetQuerySerializer>().To<DefaultFacetQuerySerializer>();
             foreach (var p in new[] {
                 typeof(ResultsResponseParser<>),
                 typeof(HeaderResponseParser<>),

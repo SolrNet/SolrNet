@@ -41,7 +41,7 @@ namespace SolrNet.Tests.Integration.Sample {
         [SetUp]
         public void Setup() {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-            solr.Delete(SolrQuery.All).Commit();
+            //solr.Delete(SolrQuery.All).Commit();
         }
 
         [Test]
@@ -356,6 +356,19 @@ namespace SolrNet.Tests.Integration.Sample {
             if (o == null)
                 return null;
             return o.GetType();
+        }
+
+        [Test]
+        public void FieldCollapsing() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var results = solr.Query(SolrQuery.All, new QueryOptions {
+                Collapse = new CollapseParameters { 
+                    Type = CollapseType.Adjacent,
+                    Field = "manu_exact",
+                    MaxDocs = 1,
+                }
+            });
+            Console.WriteLine("CollapsedDocuments.Count {0}", results.Collapsing.CollapsedDocuments.Count);
         }
     }
 }

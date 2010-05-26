@@ -288,7 +288,7 @@ namespace SolrNet.Impl {
                 yield break;
 
             yield return KVP("collapse.field", options.Collapse.Field);
-            yield return KVP("collapse.threshold", options.Collapse.Max.ToString());
+            yield return KVP("collapse.threshold", options.Collapse.Threshold.ToString());
             yield return KVP("collapse.type", options.Collapse.Type.ToString());
             if (options.Collapse.FacetMode == CollapseFacetMode.Before)
                 yield return KVP("collapse.facet", "before");

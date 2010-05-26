@@ -57,7 +57,7 @@ namespace SolrNet.Commands.Parameters {
         /// <summary>
         /// Number of continuous results allowed before collapsing
         /// </summary>
-        public int Max { get; set; }
+        public int Threshold { get; set; }
 
         /// <summary>
         /// limits the number of documents that CollapseFilter will process to create the filter DocSet. 
@@ -79,7 +79,7 @@ namespace SolrNet.Commands.Parameters {
         public CollapseParameters() {
             Type = CollapseType.Normal;
             FacetMode = CollapseFacetMode.Before;
-            Max = 1;
+            Threshold = 1;
         }
     }
 }

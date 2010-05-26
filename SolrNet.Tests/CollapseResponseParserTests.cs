@@ -18,6 +18,7 @@
 
 using System.Linq;
 using MbUnit.Framework;
+using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Tests.Utils;
 

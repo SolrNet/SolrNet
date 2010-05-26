@@ -577,7 +577,8 @@
       <str>myLastComponentName</str>
     </arr>
   -->
-
+	<searchComponent name="query" class="org.apache.solr.handler.component.CollapseComponent" />
+  
    <!-- The spell check component can return a list of alternative spelling
   suggestions.  -->
   <searchComponent name="spellcheck" class="solr.SpellCheckComponent">

@@ -22,7 +22,7 @@ namespace SolrNet {
     /// <see href="https://issues.apache.org/jira/browse/SOLR-236"/>
     /// </summary>
     public class CollapseResults {
-        
+
         /// <summary>
         /// &amp;collapse.field=
         /// </summary>
@@ -31,16 +31,13 @@ namespace SolrNet {
         /// <summary>
         /// Collapsed document.ids and their counts
         /// </summary>
-        public IDictionary<string, int> DocResults { get; set; }
+        public ICollection<CollapsedDocument> CollapsedDocuments { get; set; }
 
-        /// <summary>
-        /// Collapsed field values and their counts
-        /// </summary>
-        public IDictionary<string, int> CountResults { get; set; }
-
+        ///<summary>
+        /// Initializer
+        ///</summary>
         public CollapseResults() {
-            DocResults = new Dictionary<string, int>();
-            CountResults = new Dictionary<string, int>();
+            CollapsedDocuments = new List<CollapsedDocument>();
         }
     }
 }

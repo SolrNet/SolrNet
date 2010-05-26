@@ -286,21 +286,17 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetCollapseQueryOptions(QueryOptions options)
-        {
+        public IEnumerable<KeyValuePair<string, string>> GetCollapseQueryOptions(QueryOptions options) {
             if (options.Collapse == null || string.IsNullOrEmpty(options.Collapse.Field))
                 yield break;
 
             yield return KVP("collapse.field", options.Collapse.Field);
-            yield return KVP("collapse.threshold", options.Collapse.Max.ToString());
+            if (options.Collapse.Threshold.HasValue)
+                yield return KVP("collapse.threshold", options.Collapse.Threshold.ToString());
             yield return KVP("collapse.type", options.Collapse.Type.ToString());
-            if (options.Collapse.FacetMode == CollapseFacetMode.Before)
-                yield return KVP("collapse.facet", "before");
-            else
-                yield return KVP("collapse.facet", "after");
-            if (options.Collapse.MaxDocs > 0)
+            yield return KVP("collapse.facet", options.Collapse.FacetMode.ToString().ToLowerInvariant());
+            if (options.Collapse.MaxDocs.HasValue)
                 yield return KVP("collapse.maxdocs", options.Collapse.MaxDocs.ToString());
-
         }
 
         /// <summary>

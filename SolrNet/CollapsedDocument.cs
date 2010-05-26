@@ -15,9 +15,12 @@
 #endregion
 
 namespace SolrNet {
+    /// <summary>
+    /// Field collapsing result
+    /// </summary>
     public class CollapsedDocument {
         ///<summary>
-        /// Name
+        /// Document ID
         ///</summary>
         public string Id { get; set; }
 

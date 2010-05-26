@@ -19,7 +19,7 @@ using System.Collections.Generic;
 namespace SolrNet {
     /// <summary>
     /// Collapse results
-    /// <see cref="https://issues.apache.org/jira/browse/SOLR-236"/>
+    /// <see href="https://issues.apache.org/jira/browse/SOLR-236"/>
     /// </summary>
     public class CollapseResults {
 

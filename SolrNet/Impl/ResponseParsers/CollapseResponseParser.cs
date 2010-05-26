@@ -45,7 +45,7 @@ namespace SolrNet.Impl.ResponseParsers {
         public IEnumerable<CollapsedDocument> ParseCollapsedResults(XmlNode node) {
             foreach (XmlNode docNode in node.SelectSingleNode("lst[@name='results']").ChildNodes) {
                 yield return new CollapsedDocument {
-                    Name = docNode.Attributes["name"].Value,
+                    Id = docNode.Attributes["name"].Value,
                     FieldValue = docNode.SelectSingleNode("str[@name='fieldValue']").InnerText,
                     CollapseCount = Convert.ToInt32(docNode.SelectSingleNode("int[@name='collapseCount']").InnerText)
                 };

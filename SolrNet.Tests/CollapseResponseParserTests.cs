@@ -34,7 +34,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual("manu_exact", results.Collapsing.Field);
             Assert.AreEqual(5, results.Collapsing.CollapsedDocuments.Count);
             var firstCollapse = results.Collapsing.CollapsedDocuments.ElementAt(0);
-            Assert.AreEqual("F8V7067-APL-KIT", firstCollapse.Name);
+            Assert.AreEqual("F8V7067-APL-KIT", firstCollapse.Id);
             Assert.AreEqual(1, firstCollapse.CollapseCount);
             Assert.AreEqual("Belkin", firstCollapse.FieldValue);
         }
@@ -49,7 +49,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual("manu_exact", results.Collapsing.Field);
             Assert.AreEqual(3, results.Collapsing.CollapsedDocuments.Count);
             var firstCollapse = results.Collapsing.CollapsedDocuments.ElementAt(0);
-            Assert.AreEqual("F8V7067-APL-KIT", firstCollapse.Name);
+            Assert.AreEqual("F8V7067-APL-KIT", firstCollapse.Id);
             Assert.AreEqual(1, firstCollapse.CollapseCount);
             Assert.AreEqual("Belkin", firstCollapse.FieldValue);
         }

@@ -19,7 +19,7 @@ namespace SolrNet {
         ///<summary>
         /// Name
         ///</summary>
-        public string Name { get; set; }
+        public string Id { get; set; }
 
         ///<summary>
         /// Collapsed Field Value

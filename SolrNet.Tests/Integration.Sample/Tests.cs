@@ -360,5 +360,17 @@ namespace SolrNet.Tests.Integration.Sample {
                 return null;
             return o.GetType();
         }
+
+        [Test]
+        public void FieldCollapsing() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var results = solr.Query(SolrQuery.All, new QueryOptions {
+                Collapse = new CollapseParameters("manu_exact") { 
+                    Type = CollapseType.Adjacent,
+                    MaxDocs = 1,
+                }
+            });
+            Console.WriteLine("CollapsedDocuments.Count {0}", results.Collapsing.CollapsedDocuments.Count);
+        }
     }
 }

@@ -36,10 +36,12 @@ namespace SolrNet.Impl.FieldParsers {
 
         static TypeConvertingFieldParser() {
             solrTypes = new Dictionary<string, Type> {
-                {"bool", typeof(bool)},
-                {"str", typeof(string)},
-                {"int", typeof(int)},
-                {"float", typeof(float)},
+                {"bool", typeof (bool)},
+                {"str", typeof (string)},
+                {"int", typeof (int)},
+                {"float", typeof (float)},
+                {"double", typeof(double)},
+                {"long", typeof (long)},
             };
         }
 

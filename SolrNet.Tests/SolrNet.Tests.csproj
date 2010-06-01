@@ -97,6 +97,7 @@
     <Compile Include="FuncTests.cs" />
     <Compile Include="HttpTests.cs" />
     <Compile Include="Integration.Sample\Product.cs" />
+    <Compile Include="Integration.Sample\ProductLoose.cs" />
     <Compile Include="Integration.Sample\Tests.cs" />
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="LocalParamsTests.cs" />

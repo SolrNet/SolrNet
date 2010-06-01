@@ -372,5 +372,24 @@ namespace SolrNet.Tests.Integration.Sample {
             });
             Console.WriteLine("CollapsedDocuments.Count {0}", results.Collapsing.CollapsedDocuments.Count);
         }
+
+        [Test]
+        public void SemiLooseMapping() {
+            Add_then_query();
+            Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL)));
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<ProductLoose>>();
+            var products = solr.Query(SolrQuery.All);
+            Assert.AreEqual(1, products.Count);
+            var product = products[0];
+            Assert.AreEqual("SP2514N", product.Id);
+            Assert.IsNull(product.SKU);
+            Assert.IsNotNull(product.Name);
+            Assert.IsNotNull(product.OtherFields);
+            Console.WriteLine(product.OtherFields.Count);
+            foreach (var field in product.OtherFields)
+                Console.WriteLine("{0}: {1} ({2})", field.Key, field.Value, TypeOrNull(field.Value));
+            Assert.IsInstanceOfType(typeof(DateTime), product.OtherFields["timestamp"]);
+            Assert.IsAssignableFrom(typeof(ICollection), product.OtherFields["features"].GetType());
+        }
     }
 }

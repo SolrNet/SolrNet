@@ -311,8 +311,11 @@ namespace SolrNet.Tests {
             var results = parser.Parse(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithDictFloat.xml"));
             Assert.AreEqual("1.45", results[0].DictOne);
             Assert.IsNotNull(results[0].Dict);
-            Assert.AreEqual(1, results[0].Dict.Count);
+            Assert.AreEqual(4, results[0].Dict.Count);
             Assert.AreEqual("2.234", results[0].Dict["DictTwo"]);
+            Assert.AreEqual(new DateTime(1, 1, 1), results[0].Dict["timestamp"]);
+            Assert.AreEqual(92.0f, results[0].Dict["price"]);
+            Assert.IsInstanceOfType(typeof(ICollection), results[0].Dict["features"]);
         }
 
 		[Test]

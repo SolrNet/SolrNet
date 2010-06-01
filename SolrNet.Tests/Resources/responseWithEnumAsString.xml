@@ -2,7 +2,7 @@
 <response>
   <result numFound="1" start="0">
     <doc>
-      <int name="En">Two</int>
+      <str name="En">Two</str>
     </doc>
   </result>
 </response>

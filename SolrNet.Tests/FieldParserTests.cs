@@ -108,5 +108,14 @@ namespace SolrNet.Tests {
         private enum Numbers {
             One, Two
         }
+
+        [Test]
+        public void SupportGuid() {
+            var p = new DefaultFieldParser();
+            var g = Guid.NewGuid();
+            var r = p.Parse(CreateNode("str", g.ToString()), typeof(Guid));
+            var pg = (Guid)r;
+            Assert.AreEqual(g, pg);
+        }
     }
 }

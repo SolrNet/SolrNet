@@ -129,7 +129,7 @@ namespace SolrNet {
 
         private static ISolrDocumentResponseParser<T> ChooseDocumentResponseParser<T>(IServiceLocator c) {
             if (typeof(T) == typeof(Dictionary<string, object>))
-                return (ISolrDocumentResponseParser<T>) new SolrDictionaryDocumentResponseParser(new InferringFieldParser(new DefaultFieldParser()));
+                return (ISolrDocumentResponseParser<T>) new SolrDictionaryDocumentResponseParser(c.GetInstance<ISolrFieldParser>());
             return new SolrDocumentResponseParser<T>(c.GetInstance<IReadOnlyMappingManager>(), c.GetInstance<ISolrDocumentPropertyVisitor>(), c.GetInstance<ISolrDocumentActivator<T>>());
         }
     }

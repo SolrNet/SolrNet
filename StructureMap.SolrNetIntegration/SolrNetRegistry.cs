@@ -33,10 +33,8 @@ namespace Structuremap.SolrNetIntegration
             For(typeof(ISolrDocumentResponseParser<>)).Use(typeof(SolrDocumentResponseParser<>));
 
             For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
-                .Use<SolrDictionaryDocumentResponseParser>()
-                .Ctor<ISolrFieldParser>("fieldParser")
-                .Is(i => i.TheInstanceNamed(typeof(InferringFieldParser).Name));
-            
+                .Use<SolrDictionaryDocumentResponseParser>();
+           
             foreach (var p in new[] {
                                         typeof(ResultsResponseParser<>),
                                         typeof(HeaderResponseParser<>),
@@ -71,7 +69,6 @@ namespace Structuremap.SolrNetIntegration
             For(typeof(ISolrOperations<>)).Use(typeof(SolrServer<>));
 
             For<ISolrFieldParser>().Use<DefaultFieldParser>();
-            For<ISolrFieldParser>().Add<InferringFieldParser>().Named(typeof(InferringFieldParser).Name);
 
             For<ISolrFieldSerializer>().Use<DefaultFieldSerializer>();
             For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();

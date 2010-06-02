@@ -37,6 +37,7 @@ namespace SolrNet.Impl.FieldParsers {
                 new NullableFieldParser(new LongFieldParser()),
                 new CollectionFieldParser(this),
                 new TypeConvertingFieldParser(),
+                new InferringFieldParser(this),
             });
         }
 

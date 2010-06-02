@@ -77,8 +77,7 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For(typeof (ISolrDocumentResponseParser<>))
                 .ImplementedBy(typeof (SolrDocumentResponseParser<>)));
             Kernel.Register(Component.For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
-                .ImplementedBy<SolrDictionaryDocumentResponseParser>()
-                .ServiceOverrides(ServiceOverride.ForKey("fieldParser").Eq(typeof(InferringFieldParser).Name)));
+                .ImplementedBy<SolrDictionaryDocumentResponseParser>());
 
             foreach (var parserType in new[] {
                 typeof (ResultsResponseParser<>),
@@ -116,10 +115,6 @@ namespace Castle.Facilities.SolrNetIntegration {
 
             Kernel.Register(Component.For<ISolrFieldParser>()
                 .ImplementedBy<DefaultFieldParser>());
-
-            Kernel.Register(Component.For<ISolrFieldParser>()
-                .ImplementedBy<InferringFieldParser>()
-                .Named(typeof(InferringFieldParser).Name));
 
             Kernel.Register(Component.For<ISolrFieldSerializer>().ImplementedBy<DefaultFieldSerializer>());
 

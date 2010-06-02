@@ -76,6 +76,7 @@
     <Compile Include="Impl\FieldParsers\DecimalFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\DefaultFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\DoubleFieldParser.cs" />
+    <Compile Include="Impl\FieldParsers\EnumFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\FloatFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\InferringFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\IntFieldParser.cs" />

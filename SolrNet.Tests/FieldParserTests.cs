@@ -90,5 +90,23 @@ namespace SolrNet.Tests {
             var p = new DoubleFieldParser();
             p.Parse(CreateNode("item", "123.99"), typeof(float));
         }
+
+        [Test]
+        public void DefaultFieldParser_EnumAsString() {
+            var p = new DefaultFieldParser();
+            var r = p.Parse(CreateNode("str", "One"), typeof(Numbers));
+            Assert.IsInstanceOfType(typeof(Numbers), r);
+        }
+
+        [Test]
+        public void EnumAsString() {
+            var p = new EnumFieldParser();
+            var r = p.Parse(CreateNode("str", "One"), typeof(Numbers));
+            Assert.IsInstanceOfType(typeof(Numbers), r);
+        }
+
+        private enum Numbers {
+            One, Two
+        }
     }
 }

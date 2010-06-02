@@ -389,7 +389,11 @@ namespace SolrNet.Tests.Integration.Sample {
             foreach (var field in product.OtherFields)
                 Console.WriteLine("{0}: {1} ({2})", field.Key, field.Value, TypeOrNull(field.Value));
             Assert.IsInstanceOfType(typeof(DateTime), product.OtherFields["timestamp"]);
-            Assert.IsAssignableFrom(typeof(ICollection), product.OtherFields["features"].GetType());
+            Assert.AreEqual(new DateTime(1,1,1), product.OtherFields["timestamp"]);
+            Assert.IsInstanceOfType(typeof(ICollection), product.OtherFields["features"]);
+            product.OtherFields["timestamp"] = new DateTime(2010, 1, 1);
+            product.OtherFields["features"] = new[] {"a", "b", "c"};
+            solr.Add(product);
         }
     }
 }

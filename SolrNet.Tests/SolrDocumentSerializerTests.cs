@@ -178,6 +178,8 @@ namespace SolrNet.Tests {
                 Dict = new Dictionary<string, object> {
                     {"one", 1},
                     {"two", 2},
+                    {"fecha", new DateTime(2010, 1, 1)},
+                    {"SomeCollection", new[] {"a", "b", "c"}},
                 },
             };
             string fs = ser.Serialize(doc, null).OuterXml;

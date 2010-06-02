@@ -186,7 +186,7 @@ namespace SolrNet.Tests {
             var xml = new XmlDocument();
             xml.LoadXml(fs);
             Console.WriteLine(fs);
-            Assert.AreEqual("<doc><field name=\"Id\">" + doc.Id + "</field><field name=\"one\">1</field><field name=\"two\">2</field></doc>", fs);            
+            Assert.AreEqual("<doc><field name=\"Id\">5</field><field name=\"one\">1</field><field name=\"two\">2</field><field name=\"fecha\">2010-01-01T00:00:00Z</field><field name=\"SomeCollection\">a</field><field name=\"SomeCollection\">b</field><field name=\"SomeCollection\">c</field></doc>", fs);
         }
 
         [Test]

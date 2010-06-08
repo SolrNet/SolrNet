@@ -203,7 +203,7 @@
     <RemoveDir Directories="$(BuildOutputPath)" ContinueOnError="true"/>
     <MakeDir Directories="$(BuildOutputPath)" ContinueOnError="true"/>
     <MakeDir Directories="$(BuildOutputPath)\tools" ContinueOnError="true"/>
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\tools\curl.exe" DestinationFolder="$(BuildOutputPath)\tools" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\pingsolr.js" DestinationFolder="$(BuildOutputPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\license.txt" DestinationFolder="$(BuildOutputPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\runsample.bat" DestinationFolder="$(BuildOutputPath)" />
     <ItemGroup>

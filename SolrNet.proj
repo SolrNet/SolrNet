@@ -90,13 +90,6 @@
       <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
     </Gallio>
   </Target>
-  <Target Name="Doc">
-    <PropertyGroup>
-      <SHFBROOT>$(MSBuildProjectDirectory)\tools\SHFB</SHFBROOT>
-      <HHCPath>$(MSBuildProjectDirectory)\tools\HTMLHelpWorkshop</HHCPath>
-    </PropertyGroup>
-    <MSBuild Projects="sandcastle.shfbproj" StopOnFirstFailure="true" Properties="SHFBROOT=$(SHFBROOT);HtmlHelp1xCompilerPath=$(HHCPath)"/>
-  </Target>
   <Target Name="Version">
     <Message Text="Version: $(Version)"/>
     <ItemGroup>
@@ -132,7 +125,7 @@
       AssemblyVersion="$(Version)"
       AssemblyFileVersion="$(Version)"/>
   </Target>
-  <Target Name="ReleasePackage" DependsOnTargets="SetRelease;Clean;Version;Build;Merge;Doc">
+  <Target Name="ReleasePackage" DependsOnTargets="SetRelease;Clean;Version;Build;Merge">
     <PropertyGroup>
       <BuildOutputPath>build</BuildOutputPath>
     </PropertyGroup>
@@ -145,7 +138,6 @@
       <SourceFiles Include="lib\Microsoft.Practices.ServiceLocation.*"/>
     </ItemGroup>
     <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(BuildOutputPath)"/>
-    <Copy SourceFiles="help\Documentation.chm" DestinationFiles="$(BuildOutputPath)\SolrNet.chm"/>
     <CreateItem Include="$(BuildOutputPath)\**\*.*">
       <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
     </CreateItem>

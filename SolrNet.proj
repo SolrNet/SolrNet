@@ -125,11 +125,10 @@
       AssemblyVersion="$(Version)"
       AssemblyFileVersion="$(Version)"/>
   </Target>
-  <Target Name="ReleasePackage" DependsOnTargets="SetRelease;Clean;Version;Build;Merge">
+  <Target Name="ReleasePackage" DependsOnTargets="SetRelease;Clean;Version;Build;Merge;SamplePackage">
     <PropertyGroup>
       <BuildOutputPath>build</BuildOutputPath>
     </PropertyGroup>
-    <RemoveDir Directories="$(BuildOutputPath)"/>
     <MakeDir Directories="$(BuildOutputPath)" ContinueOnError="true"/>
     <ItemGroup>
       <SourceFiles Include="$(MergedOutputPath)\SolrNet.dll"/>
@@ -142,11 +141,10 @@
       <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
     </CreateItem>
     <MSBuild.Community.Tasks.Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-net-2.0.zip" ZipLevel="9"/>
-    <Delete Files="@(AllOutputExceptZip)" />
   </Target>
   <Target Name="SamplePackage" DependsOnTargets="SetRelease;Clean;BuildSample">
     <PropertyGroup>
-      <BuildOutputPath>sample</BuildOutputPath>
+      <BuildOutputPath>build</BuildOutputPath>
       <Xsl>
         <![CDATA[<?xml version="1.0"?>
         <xsl:stylesheet version="1.0" 
@@ -209,16 +207,15 @@
     <ItemGroup>
     	<SolrFiles Include="$(MSBuildProjectDirectory)\solr-1.4.0\**\*"/>
     </ItemGroup>
-    <Copy SourceFiles="@(SolrFiles)" DestinationFiles="@(SolrFiles->'$(BuildOutputPath)\solr-1.4.0%(Identity)')"/>
     <ItemGroup>
     	<CassiniFiles Include="$(MSBuildProjectDirectory)\tools\Cassini\**\*"/>
     </ItemGroup>
     <ItemGroup>
     	<SampleAppFiles Include="$(MSBuildProjectDirectory)\SampleSolrApp\**\*"/>
     </ItemGroup>
-    <Copy SourceFiles="@(SolrFiles)" DestinationFiles="@(SolrFiles->'$(BuildOutputPath)\solr-1.4.0%(Identity)')"/>
-    <Copy SourceFiles="@(CassiniFiles)" DestinationFiles="@(CassiniFiles->'$(BuildOutputPath)\tools\Cassini%(Identity)')"/>
-    <Copy SourceFiles="@(SampleAppFiles)" DestinationFiles="@(SampleAppFiles->'$(BuildOutputPath)\SampleSolrApp%(Identity)')"/>
+    <Copy SourceFiles="@(SolrFiles)" DestinationFiles="@(SolrFiles->'$(BuildOutputPath)\solr-1.4.0\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(CassiniFiles)" DestinationFiles="@(CassiniFiles->'$(BuildOutputPath)\tools\Cassini\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(SampleAppFiles)" DestinationFiles="@(SampleAppFiles->'$(BuildOutputPath)\SampleSolrApp\%(RecursiveDir)%(Filename)%(Extension)')"/>
     <MakeDir Directories="$(BuildOutputPath)\SampleSolrApp\lib" ContinueOnError="true"/>
     <ItemGroup>
       <SampleSolrAppBin Include="$(MSBuildProjectDirectory)\SampleSolrApp\bin\*.dll"/>
@@ -244,7 +241,5 @@
       <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
     </CreateItem>
     <MSBuild.Community.Tasks.Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-sample.zip" ZipLevel="9"/>
-    <Delete Files="@(AllOutputExceptZip)" />
-    <RemoveDir Directories="@(AllOutputExceptZip)"/>
   </Target>
 </Project>

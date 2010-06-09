@@ -90,13 +90,6 @@
       <Output TaskParameter="ExitCode" PropertyName="ExitCode"/>
     </Gallio>
   </Target>
-  <Target Name="Doc">
-    <PropertyGroup>
-      <SHFBROOT>$(MSBuildProjectDirectory)\tools\SHFB</SHFBROOT>
-      <HHCPath>$(MSBuildProjectDirectory)\tools\HTMLHelpWorkshop</HHCPath>
-    </PropertyGroup>
-    <MSBuild Projects="sandcastle.shfbproj" StopOnFirstFailure="true" Properties="SHFBROOT=$(SHFBROOT);HtmlHelp1xCompilerPath=$(HHCPath)"/>
-  </Target>
   <Target Name="Version">
     <Message Text="Version: $(Version)"/>
     <ItemGroup>
@@ -132,11 +125,10 @@
       AssemblyVersion="$(Version)"
       AssemblyFileVersion="$(Version)"/>
   </Target>
-  <Target Name="ReleasePackage" DependsOnTargets="SetRelease;Clean;Version;Build;Merge;Doc">
+  <Target Name="ReleasePackage" DependsOnTargets="SetRelease;Clean;Version;Build;Merge;SamplePackage">
     <PropertyGroup>
       <BuildOutputPath>build</BuildOutputPath>
     </PropertyGroup>
-    <RemoveDir Directories="$(BuildOutputPath)"/>
     <MakeDir Directories="$(BuildOutputPath)" ContinueOnError="true"/>
     <ItemGroup>
       <SourceFiles Include="$(MergedOutputPath)\SolrNet.dll"/>
@@ -145,16 +137,14 @@
       <SourceFiles Include="lib\Microsoft.Practices.ServiceLocation.*"/>
     </ItemGroup>
     <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(BuildOutputPath)"/>
-    <Copy SourceFiles="help\Documentation.chm" DestinationFiles="$(BuildOutputPath)\SolrNet.chm"/>
     <CreateItem Include="$(BuildOutputPath)\**\*.*">
       <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
     </CreateItem>
     <MSBuild.Community.Tasks.Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-net-2.0.zip" ZipLevel="9"/>
-    <Delete Files="@(AllOutputExceptZip)" />
   </Target>
   <Target Name="SamplePackage" DependsOnTargets="SetRelease;Clean;BuildSample">
     <PropertyGroup>
-      <BuildOutputPath>sample</BuildOutputPath>
+      <BuildOutputPath>build</BuildOutputPath>
       <Xsl>
         <![CDATA[<?xml version="1.0"?>
         <xsl:stylesheet version="1.0" 
@@ -211,22 +201,21 @@
     <RemoveDir Directories="$(BuildOutputPath)" ContinueOnError="true"/>
     <MakeDir Directories="$(BuildOutputPath)" ContinueOnError="true"/>
     <MakeDir Directories="$(BuildOutputPath)\tools" ContinueOnError="true"/>
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\tools\curl.exe" DestinationFolder="$(BuildOutputPath)\tools" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\pingsolr.js" DestinationFolder="$(BuildOutputPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\license.txt" DestinationFolder="$(BuildOutputPath)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\runsample.bat" DestinationFolder="$(BuildOutputPath)" />
     <ItemGroup>
     	<SolrFiles Include="$(MSBuildProjectDirectory)\solr-1.4.0\**\*"/>
     </ItemGroup>
-    <Copy SourceFiles="@(SolrFiles)" DestinationFiles="@(SolrFiles->'$(BuildOutputPath)\solr-1.4.0%(Identity)')"/>
     <ItemGroup>
     	<CassiniFiles Include="$(MSBuildProjectDirectory)\tools\Cassini\**\*"/>
     </ItemGroup>
     <ItemGroup>
     	<SampleAppFiles Include="$(MSBuildProjectDirectory)\SampleSolrApp\**\*"/>
     </ItemGroup>
-    <Copy SourceFiles="@(SolrFiles)" DestinationFiles="@(SolrFiles->'$(BuildOutputPath)\solr-1.4.0%(Identity)')"/>
-    <Copy SourceFiles="@(CassiniFiles)" DestinationFiles="@(CassiniFiles->'$(BuildOutputPath)\tools\Cassini%(Identity)')"/>
-    <Copy SourceFiles="@(SampleAppFiles)" DestinationFiles="@(SampleAppFiles->'$(BuildOutputPath)\SampleSolrApp%(Identity)')"/>
+    <Copy SourceFiles="@(SolrFiles)" DestinationFiles="@(SolrFiles->'$(BuildOutputPath)\solr-1.4.0\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(CassiniFiles)" DestinationFiles="@(CassiniFiles->'$(BuildOutputPath)\tools\Cassini\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    <Copy SourceFiles="@(SampleAppFiles)" DestinationFiles="@(SampleAppFiles->'$(BuildOutputPath)\SampleSolrApp\%(RecursiveDir)%(Filename)%(Extension)')"/>
     <MakeDir Directories="$(BuildOutputPath)\SampleSolrApp\lib" ContinueOnError="true"/>
     <ItemGroup>
       <SampleSolrAppBin Include="$(MSBuildProjectDirectory)\SampleSolrApp\bin\*.dll"/>
@@ -252,7 +241,5 @@
       <Output ItemName="AllOutputExceptZip" TaskParameter="Include"/>
     </CreateItem>
     <MSBuild.Community.Tasks.Zip Files="@(AllOutputExceptZip)" WorkingDirectory="$(BuildOutputPath)" ZipFileName="$(BuildOutputPath)\SolrNet-$(Version)-sample.zip" ZipLevel="9"/>
-    <Delete Files="@(AllOutputExceptZip)" />
-    <RemoveDir Directories="@(AllOutputExceptZip)"/>
   </Target>
 </Project>

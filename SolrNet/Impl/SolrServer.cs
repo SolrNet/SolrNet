@@ -23,6 +23,7 @@ using SolrNet.Exceptions;
 using SolrNet.Mapping.Validation;
 using SolrNet.Schema;
 using SolrNet.Utils;
+using System.IO;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -122,6 +123,10 @@ namespace SolrNet.Impl {
 
         public ResponseHeader AddWithBoost(T doc, double boost) {
             return ((ISolrOperations<T>)this).AddWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) });
+        }
+
+        public ResponseHeader AddFile(Stream content, IDictionary<string, string> parameters) {
+            return basicServer.AddFile(content, parameters);
         }
 
         public ResponseHeader Add(IEnumerable<T> docs) {

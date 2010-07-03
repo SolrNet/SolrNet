@@ -20,6 +20,7 @@ using System.Xml;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Schema;
+using System.IO;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -67,6 +68,11 @@ namespace SolrNet.Impl {
 
         public ResponseHeader Rollback() {
             return SendAndParseHeader(new RollbackCommand());
+        }
+
+        public ResponseHeader AddFile(Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+            var cmd = new AddBinaryCommand(content, parameters);
+            return SendAndParseHeader(cmd);
         }
 
         public ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {

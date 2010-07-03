@@ -78,6 +78,61 @@ namespace SolrNet.Impl {
         /// </summary>
         public int Timeout { get; set; }
 
+        public string PostBinary(string relativeUrl, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
+            var u = new UriBuilder(serverURL);
+            u.Path += relativeUrl;
+
+            u.Query = Func.Reduce(
+                Func.Select(parameters,
+                            input => string.Format("{0}={1}", HttpUtility.UrlEncode(input.Key), HttpUtility.UrlEncode(input.Value))), "",
+                (x, y) => string.Format("{0}&{1}", x, y));
+
+            var request = httpWebRequestFactory.Create(u.Uri);
+            request.Method = HttpWebRequestMethod.POST;
+            request.KeepAlive = false;
+            if (Timeout > 0)
+            {
+                request.ReadWriteTimeout = Timeout;
+                request.Timeout = Timeout;
+            }
+
+            request.ContentLength = content.Length;
+            request.ProtocolVersion = HttpVersion.Version10;
+            request.AllowWriteStreamBuffering = true;
+
+            string mimetype = "application/unknown";
+            string filename = (content as FileStream).Name;
+            string extension = System.IO.Path.GetExtension(filename).ToLower();
+
+            Microsoft.Win32.RegistryKey regkey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(extension);
+            if (regkey != null && regkey.GetValue("Content Type") != null)
+                mimetype = regkey.GetValue("Content Type").ToString();
+
+            request.ContentType = mimetype;
+
+            byte[] buffer = new byte[(int)content.Length];
+
+            try
+            {
+                using (var postStream = request.GetRequestStream())
+                {
+                    int numbytes_read = 0;
+                    numbytes_read = content.Read(buffer, 0, buffer.Length);
+                    postStream.Write(buffer, 0, numbytes_read);
+                }
+                return GetResponse(request).Data;
+            }
+            catch (WebException e)
+            {
+                throw new SolrConnectionException(e);
+            }
+            catch (IOException e)
+            {
+                throw new SolrConnectionException(e);
+            }
+        }
+
         public string Post(string relativeUrl, string s) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;

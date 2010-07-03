@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
+using System.IO;
 
 namespace SolrNet {
     /// <summary>
@@ -46,6 +47,14 @@ namespace SolrNet {
         /// <param name="docs"></param>
         /// <returns></returns>
         ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs);
+
+        /// <summary>
+        /// Adds / updates single richdocument
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        ResponseHeader AddFile(Stream content, IEnumerable<KeyValuePair<string, string>> parameters);
 
         /// <summary>
         /// Deletes all documents that match the given id's or the query

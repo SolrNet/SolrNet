@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace SolrNet {
     /// <summary>
@@ -29,6 +30,15 @@ namespace SolrNet {
         /// <param name="s">POST content</param>
         /// <returns></returns>
 		string Post(string relativeUrl, string s);
+
+        /// <summary>
+        /// POSTs binary to Solr
+        /// </summary>
+        /// <param name="relativeUrl">Path to post to</param>
+        /// <param name="content">Binary content</param>
+        /// <param name="getParameters">extra GET-parameters</param>
+        /// <returns></returns>
+        string PostBinary(string relativeUrl, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters);
 
         /// <summary>
         /// GETs from Solr

@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SolrNet.Tests.Utils {
     public class LoggingConnection : ISolrConnection {
@@ -28,6 +29,11 @@ namespace SolrNet.Tests.Utils {
         public string Post(string relativeUrl, string s) {
             Console.WriteLine("Posting {0}", s);
             return conn.Post(relativeUrl, s);
+        }
+
+        public string PostBinary(string relativeUrl, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
+            return null;
         }
 
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {

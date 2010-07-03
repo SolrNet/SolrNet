@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using SolrNet.Exceptions;
 using SolrNet.Mapping.Validation;
 
@@ -43,6 +44,13 @@ namespace SolrNet {
         /// <param name="doc">document to add/update</param>
         /// <returns></returns>
         ResponseHeader Add(T doc);
+
+        /// <summary>
+        /// Adds / updates a file using the ExtractingRequestHandler
+        /// </summary>
+        /// <param name="file">file to add/update</param>
+        /// <returns></returns>
+        ResponseHeader AddFile(Stream content, IDictionary<string, string> parameters);
 
         /// <summary>
         /// Adds / updates a document with index-time boost

@@ -16,9 +16,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
+using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -45,6 +47,18 @@ namespace SolrNet.Tests {
             Console.WriteLine(s);
             var value = parser.ParseDate(s);
             Console.WriteLine(value.ToString("r"));
+            Assert.AreEqual(dt, value);
+        }
+
+        [Test]
+        [Factory("DateTimes")]
+        public void NullableRoundTrips(DateTime? dt) {
+            var parser = new NullableFieldParser(new DateTimeFieldParser());
+            var serializer = new NullableFieldSerializer(new DateTimeFieldSerializer());
+            var s = serializer.Serialize(dt).First().FieldValue;
+            Console.WriteLine(s);
+            var value = (DateTime?) parser.Parse(XmlUtils.CreateNode("date", s), typeof(DateTime?));
+            Console.WriteLine(value.Value.ToString("r"));
             Assert.AreEqual(dt, value);
         }
 

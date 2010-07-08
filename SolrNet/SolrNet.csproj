@@ -107,6 +107,7 @@
     <Compile Include="Impl\ISolrQueryByRange.cs" />
     <Compile Include="Impl\ISolrQuerySerializer.cs" />
     <Compile Include="Impl\ISolrResponseParser.cs" />
+    <Compile Include="Impl\JavaBinCodec.cs" />
     <Compile Include="Impl\NullCache.cs" />
     <Compile Include="Impl\PropertyNode.cs" />
     <Compile Include="Impl\QuerySerializers\AggregateQuerySerializer.cs" />

@@ -100,6 +100,7 @@
     <Compile Include="Integration.Sample\ProductLoose.cs" />
     <Compile Include="Integration.Sample\Tests.cs" />
     <Compile Include="IntegrationTests.cs" />
+    <Compile Include="JavaBinCodecTests.cs" />
     <Compile Include="LocalParamsTests.cs" />
     <Compile Include="MappedPropertiesIsInSolrSchemaRuleTests.cs" />
     <Compile Include="MappingManagerTests.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="MappingValidatorTests.cs" />
     <Compile Include="SolrQuerySerializerStub.cs" />
     <Compile Include="SolrSchemaParserTests.cs" />
+    <Compile Include="JavaBinIntegrationTests.cs" />
     <Compile Include="UniqueKeyMatchesMappingRuleTests.cs" />
     <Compile Include="Utils\EmbeddedResource.cs" />
     <Compile Include="Utils\LoggingConnection.cs" />

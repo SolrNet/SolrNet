@@ -23,12 +23,6 @@ namespace SolrNet.Impl.ResponseParsers {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class HighlightingResponseParser<T> : ISolrResponseParser<T> {
-        private readonly ISolrDocumentIndexer<T> docIndexer;
-
-        public HighlightingResponseParser(ISolrDocumentIndexer<T> docIndexer) {
-            this.docIndexer = docIndexer;
-        }
-
         public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
             var highlightingNode = xml.SelectSingleNode("response/lst[@name='highlighting']");
             if (highlightingNode != null)
@@ -41,16 +35,14 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <param name="results"></param>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IDictionary<T, IDictionary<string, ICollection<string>>> ParseHighlighting(IEnumerable<T> results, XmlNode node) {
-            var r = new Dictionary<T, IDictionary<string, ICollection<string>>>();
+        public IDictionary<string, IDictionary<string, ICollection<string>>> ParseHighlighting(IEnumerable<T> results, XmlNode node) {
+            var r = new Dictionary<string, IDictionary<string, ICollection<string>>>();
             var docRefs = node.SelectNodes("lst");
             if (docRefs == null)
                 return r;
-            var resultsByKey = docIndexer.IndexResultsByKey(results);
             foreach (XmlNode docRef in docRefs) {
                 var docRefKey = docRef.Attributes["name"].InnerText;
-                var doc = resultsByKey[docRefKey];
-                r[doc] = ParseHighlightingFields(docRef.ChildNodes);
+                r[docRefKey] = ParseHighlightingFields(docRef.ChildNodes);
             }
             return r;
         }

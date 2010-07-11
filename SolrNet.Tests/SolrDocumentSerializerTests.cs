@@ -178,13 +178,15 @@ namespace SolrNet.Tests {
                 Dict = new Dictionary<string, object> {
                     {"one", 1},
                     {"two", 2},
+                    {"fecha", new DateTime(2010, 1, 1)},
+                    {"SomeCollection", new[] {"a", "b", "c"}},
                 },
             };
             string fs = ser.Serialize(doc, null).OuterXml;
             var xml = new XmlDocument();
             xml.LoadXml(fs);
             Console.WriteLine(fs);
-            Assert.AreEqual("<doc><field name=\"Id\">" + doc.Id + "</field><field name=\"one\">1</field><field name=\"two\">2</field></doc>", fs);            
+            Assert.AreEqual("<doc><field name=\"Id\">5</field><field name=\"one\">1</field><field name=\"two\">2</field><field name=\"fecha\">2010-01-01T00:00:00Z</field><field name=\"SomeCollection\">a</field><field name=\"SomeCollection\">b</field><field name=\"SomeCollection\">c</field></doc>", fs);
         }
 
         [Test]

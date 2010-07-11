@@ -20,6 +20,7 @@ using Microsoft.Practices.ServiceLocation;
 using Rhino.Mocks;
 using SolrNet;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]
@@ -48,6 +49,11 @@ namespace NHibernate.SolrNet.Tests {
         public void QueryAll_with_pagination() {
             var serviceLocator = MockRepository.GenerateMock<IServiceLocator>();
             serviceLocator.Expect(x => x.GetService(typeof (ISolrReadOnlyOperations<Entity>))).Return(mockSolr);
+            var querySerializer = MockRepository.GenerateMock<ISolrQuerySerializer>();
+            querySerializer.Expect(x => x.Serialize(null))
+                .IgnoreArguments()
+                .Return("id:123456");
+            serviceLocator.Expect(x => x.GetService(typeof(ISolrQuerySerializer))).Return(querySerializer);
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
             mockSolr.Expect(x => x.Query("", new QueryOptions()))
                 .IgnoreArguments()

@@ -22,17 +22,22 @@ namespace SolrNet {
     /// Queries a field for a list of possible values
     /// </summary>
     public class SolrQueryInList : AbstractSolrQuery {
-        private readonly string q;
+        private readonly string fieldName;
+        private readonly IEnumerable<string> list;
 
         public SolrQueryInList(string fieldName, IEnumerable<string> list) {
-            if (list != null && !Func.IsEmpty(list))
-                q = "(" + Func.Join(" OR ", Func.Select(list, l => new SolrQueryByField(fieldName, l).Query)) + ")";
+            this.fieldName = fieldName;
+            this.list = list;
         }
 
         public SolrQueryInList(string fieldName, params string[] values) : this(fieldName, (IEnumerable<string>) values) {}
 
-        public override string Query {
-            get { return q; }
+        public string FieldName {
+            get { return fieldName; }
+        }
+
+        public IEnumerable<string> List {
+            get { return list; }
         }
     }
 }

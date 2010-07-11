@@ -20,7 +20,6 @@ using System;
 namespace SolrNet {
     /// <summary>
     /// Date faceting result
-    /// <see cref="http://wiki.apache.org/solr/SimpleFacetParameters#head-068dc96b0dac1cfc7264fe85528d7df5bf391acd"/>
     /// </summary>
     public class DateFacetingResult {
 
@@ -44,6 +43,9 @@ namespace SolrNet {
         /// </summary>
         public IDictionary<FacetDateOther, int> OtherResults { get; set; }
 
+        /// <summary>
+        /// Date faceting result
+        /// </summary>
 		public DateFacetingResult() {
 			DateResults = new List<KeyValuePair<DateTime, int>>();
             OtherResults = new Dictionary<FacetDateOther, int>();

@@ -16,6 +16,8 @@
 
 using System;
 using MbUnit.Framework;
+using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -23,7 +25,9 @@ namespace SolrNet.Tests {
         [Test]
         public void Query() {
             var q = new SolrHasValueQuery("name");
-            Assert.AreEqual("name:[* TO *]", q.Query);
+            var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
+            var query = serializer.Serialize(q);
+            Assert.AreEqual("name:[* TO *]", query);
         }
     }
 }

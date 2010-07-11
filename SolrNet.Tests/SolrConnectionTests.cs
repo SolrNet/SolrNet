@@ -58,7 +58,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void Get() {
 			var mocks = new MockRepository();
-			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			var response = mocks.DynamicMock<IHttpWebResponse>();
 			With.Mocks(mocks).Expecting(delegate {
@@ -84,7 +84,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void GetWithNullParameters_ShouldAcceptNull() {
 			var mocks = new MockRepository();
-			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			var response = mocks.DynamicMock<IHttpWebResponse>();
 			With.Mocks(mocks).Expecting(delegate {
@@ -111,7 +111,7 @@ namespace SolrNet.Tests {
 		[ExpectedException(typeof (SolrConnectionException))]
 		public void InvalidHostGet_ShouldThrowException() {
 			var mocks = new MockRepository();
-			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(reqFactory.Create(new UriBuilder().Uri))
@@ -131,7 +131,7 @@ namespace SolrNet.Tests {
 		[ExpectedException(typeof (SolrConnectionException))]
 		public void InvalidHostPost_ShouldThrowException() {
 			var mocks = new MockRepository();
-			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(request.GetRequestStream())
@@ -151,14 +151,14 @@ namespace SolrNet.Tests {
 		[ExpectedException(typeof (InvalidURLException))]
 		public void InvalidUrl_ShouldThrowException() {
 			var mocks = new MockRepository();
-			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
 			new SolrConnection("http:/locl", reqFactory);
 		}
 
 		[Test]
 		public void Post() {
 			var mocks = new MockRepository();
-			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			var response = mocks.DynamicMock<IHttpWebResponse>();
 			With.Mocks(mocks).Expecting(delegate {
@@ -189,7 +189,7 @@ namespace SolrNet.Tests {
 		[ExpectedException(typeof (InvalidFieldException))]
 		public void UndefinedFieldQueryError_ShouldThrow() {
 			var mocks = new MockRepository();
-			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(reqFactory.Create(new UriBuilder().Uri))
@@ -209,14 +209,14 @@ namespace SolrNet.Tests {
 		[Test]
 		public void UrlHttp_ShouldntThrowException() {
 			var mocks = new MockRepository();
-			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
 			new SolrConnection("http://pepe", reqFactory);
 		}
 
 		[Test]
 		public void UrlHttps_ShouldntThrowException() {
 			var mocks = new MockRepository();
-			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
 			new SolrConnection("https://pepe", reqFactory);
 		}
 
@@ -224,7 +224,7 @@ namespace SolrNet.Tests {
 		[ExpectedException(typeof (InvalidURLException))]
 		public void UrlNotHttp_ShouldThrowException() {
 			var mocks = new MockRepository();
-			var reqFactory = mocks.CreateMock<IHttpWebRequestFactory>();
+			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
 			new SolrConnection("ftp://pepe", reqFactory);
 		}
 

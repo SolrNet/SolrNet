@@ -73,28 +73,5 @@ namespace SolrNet {
         public static SolrMultipleCriteriaQuery Create<T>(IEnumerable<T> queries) where T: ISolrQuery {            
             return new SolrMultipleCriteriaQuery(Func.Cast<ISolrQuery>(queries));
         }
-
-		/// <summary>
-		/// query string
-		/// </summary>
-		public override string Query {
-			get {
-                var queryBuilder = new StringBuilder();
-                foreach (var query in Queries) {
-                    if (query == null) 
-                        continue;
-                    var q = query.Query;
-                    if (string.IsNullOrEmpty(q)) 
-                        continue;
-                    if (queryBuilder.Length > 0)
-                        queryBuilder.AppendFormat(" {0} ", oper);
-                    queryBuilder.Append(q);
-                }
-                var queryString = queryBuilder.ToString();
-                if (!string.IsNullOrEmpty(queryString)) 
-                    queryString = "(" + queryString + ")";
-                return queryString;
-            }
-		}
 	}
 }

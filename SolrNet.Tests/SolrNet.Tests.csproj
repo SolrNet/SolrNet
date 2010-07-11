@@ -38,6 +38,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.MicroKernel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Castle.MicroKernel.dll</HintPath>
@@ -46,7 +50,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Gallio">
+    <Reference Include="Gallio, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Gallio.dll</HintPath>
     </Reference>
@@ -55,7 +59,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="MbUnit, Version=3.0.6.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
+    <Reference Include="MbUnit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MbUnit.dll</HintPath>
     </Reference>
@@ -79,9 +83,11 @@
     <Compile Include="AddCommandTests.cs" />
     <Compile Include="AllPropertiesMappingManagerTests.cs" />
     <Compile Include="AttributesMappingManagerTests.cs" />
+    <Compile Include="CollapseResponseParserTests.cs" />
     <Compile Include="CommitCommandTests.cs" />
     <Compile Include="CommonServiceLocatorTests.cs" />
     <Compile Include="DateTimeFieldParserTests.cs" />
+    <Compile Include="GetSchemaCommandTests.cs" />
     <Compile Include="InferringFieldParserTests.cs" />
     <Compile Include="DefaultFieldParserTests.cs" />
     <Compile Include="DeleteCommandTests.cs" />
@@ -91,16 +97,26 @@
     <Compile Include="FuncTests.cs" />
     <Compile Include="HttpTests.cs" />
     <Compile Include="Integration.Sample\Product.cs" />
+    <Compile Include="Integration.Sample\ProductLoose.cs" />
     <Compile Include="Integration.Sample\Tests.cs" />
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="LocalParamsTests.cs" />
+    <Compile Include="MappedPropertiesIsInSolrSchemaRuleTests.cs" />
     <Compile Include="MappingManagerTests.cs" />
+    <Compile Include="MappingTypesAreCompatibleWithSolrTypesRuleTests.cs" />
     <Compile Include="MemoizingMappingManagerTests.cs" />
     <Compile Include="MockConnection.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
+    <Compile Include="MultivaluedMappedToCollectionRuleTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="OptimizeCommandTests.cs" />
+    <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
+    <Compile Include="MappingValidatorTests.cs" />
+    <Compile Include="SolrQuerySerializerStub.cs" />
+    <Compile Include="SolrSchemaParserTests.cs" />
+    <Compile Include="UniqueKeyMatchesMappingRuleTests.cs" />
+    <Compile Include="Utils\EmbeddedResource.cs" />
     <Compile Include="Utils\LoggingConnection.cs" />
     <Compile Include="Utils\Node.cs" />
     <Compile Include="Utils\ProfilerFacility.cs" />
@@ -126,14 +142,13 @@
     <Compile Include="SolrQueryInListTests.cs" />
     <Compile Include="SolrQueryResultsParserTests.cs" />
     <Compile Include="SolrQueryResultsParserTestsDocumentClasses.cs" />
-    <Compile Include="SolrQueryResultsParserTestsXmlResponses.cs" />
     <Compile Include="SolrQueryResultsTests.cs" />
     <Compile Include="SolrQueryTests.cs" />
     <Compile Include="SolrServerTests.cs" />
     <Compile Include="SortOrderTests.cs" />
     <Compile Include="ThreadHelper.cs" />
-    <Compile Include="ThreadSettings.cs" />
     <Compile Include="TypeHelperTests.cs" />
+    <Compile Include="Utils\XmlUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">
@@ -149,6 +164,37 @@
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\solrSchemaBasic.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaDefault.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaEmptyUniqueKey.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaNoUniqueKey.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaMappingTypes.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaMultiValuedName.xml" />
+    <EmbeddedResource Include="Resources\responseWithHighlighting.xml" />
+    <EmbeddedResource Include="Resources\responseWithHighlighting2.xml" />
+    <EmbeddedResource Include="Resources\response.xml" />
+    <EmbeddedResource Include="Resources\responseWithArrays.xml" />
+    <EmbeddedResource Include="Resources\responseWithArraysSimple.xml" />
+    <EmbeddedResource Include="Resources\responseWithDate.xml" />
+    <EmbeddedResource Include="Resources\responseWithFacet.xml" />
+    <EmbeddedResource Include="Resources\responseWithGuid.xml" />
+    <EmbeddedResource Include="Resources\responseWithEnumAsInt.xml" />
+    <EmbeddedResource Include="Resources\responseWithEnumAsString.xml" />
+    <EmbeddedResource Include="Resources\responseWithDict.xml" />
+    <EmbeddedResource Include="Resources\responseWithDictFloat.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellChecking.xml" />
+    <EmbeddedResource Include="Resources\responseWithMoreLikeThis.xml" />
+    <EmbeddedResource Include="Resources\responseWithStats.xml" />
+    <EmbeddedResource Include="Resources\partialResponseWithDateFacet.xml" />
+    <EmbeddedResource Include="Resources\partialResponseWithDateFacetAndOther.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\collapseResponse.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\collapseResponse2.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

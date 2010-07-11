@@ -16,9 +16,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
+using SolrNet.Mapping.Validation;
+using SolrNet.Schema;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl {
@@ -26,13 +29,15 @@ namespace SolrNet.Impl {
     /// Main component to interact with Solr
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class SolrServer<T> : ISolrOperations<T> where T : new() {
+    public class SolrServer<T> : ISolrOperations<T> {
         private readonly ISolrBasicOperations<T> basicServer;
         private readonly IReadOnlyMappingManager mappingManager;
+        private readonly IMappingValidator _schemaMappingValidator;
 
-        public SolrServer(ISolrBasicOperations<T> basicServer, IReadOnlyMappingManager mappingManager) {
+        public SolrServer(ISolrBasicOperations<T> basicServer, IReadOnlyMappingManager mappingManager, IMappingValidator _schemaMappingValidator) {
             this.basicServer = basicServer;
             this.mappingManager = mappingManager;
+            this._schemaMappingValidator = _schemaMappingValidator;
         }
 
         /// <summary>
@@ -45,8 +50,8 @@ namespace SolrNet.Impl {
             return basicServer.Query(query, options);
         }
 
-        public void Ping() {
-            basicServer.Ping();
+        public ResponseHeader Ping() {
+            return basicServer.Ping();
         }
 
         public ISolrQueryResults<T> Query(string q) {
@@ -107,94 +112,66 @@ namespace SolrNet.Impl {
             return r.FacetFields[facet.Field];
         }
 
-        public void BuildSpellCheckDictionary() {
-            basicServer.Query(SolrQuery.All, new QueryOptions {
+        public ResponseHeader BuildSpellCheckDictionary() {
+            var r = basicServer.Query(SolrQuery.All, new QueryOptions {
                 Rows = 0,
                 SpellCheck = new SpellCheckingParameters { Build = true },
             });
+            return r.Header;
         }
 
-        public void Commit(CommitOptions options) {
-            basicServer.Commit(options);
-        }
-
-        /// <summary>
-        /// Commits posts
-        /// </summary>
-        public void Optimize(CommitOptions options) {
-            basicServer.Optimize(options);
-        }
-
-        public void Rollback() {
-            basicServer.Rollback();
-        }
-
-        public ISolrOperations<T> AddWithBoost(T doc, double boost) {
+        public ResponseHeader AddWithBoost(T doc, double boost) {
             return ((ISolrOperations<T>)this).AddWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) });
         }
 
-        public ISolrOperations<T> Add(IEnumerable<T> docs) {
-            basicServer.AddWithBoost(Func.Select(docs, d => new KeyValuePair<T, double?>(d, null)));
-            return this;
+        public ResponseHeader Add(IEnumerable<T> docs) {
+            return basicServer.AddWithBoost(Func.Select(docs, d => new KeyValuePair<T, double?>(d, null)));
         }
 
-        ISolrOperations<T> ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
-            basicServer.AddWithBoost(docs);
-            return this;
-        }
-
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
+        ResponseHeader ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
             return basicServer.AddWithBoost(docs);
         }
 
-        public ISolrOperations<T> Delete(IEnumerable<string> ids) {
-            basicServer.Delete(ids, null);
-            return this;
+        public ResponseHeader Delete(IEnumerable<string> ids) {
+            return basicServer.Delete(ids, null);
         }
 
-        public ISolrOperations<T> Delete(T doc) {
+        public ResponseHeader Delete(T doc) {
             var id = GetId(doc);
-            Delete(id.ToString());
-            return this;
+            return Delete(id.ToString());
         }
 
-        public ISolrOperations<T> Delete(IEnumerable<T> docs) {
-            basicServer.Delete(Func.Select(docs,
-                                           d => Convert.ToString(mappingManager.GetUniqueKey(typeof (T)).Property.GetValue(d, null))), null);
-            return this;
+        public ResponseHeader Delete(IEnumerable<T> docs) {
+            return basicServer.Delete(Func.Select(docs, d => {
+                var uniqueKey = mappingManager.GetUniqueKey(typeof (T));
+                if (uniqueKey == null)
+                    throw new SolrNetException(string.Format("This operation requires a unique key, but type '{0}' has no declared unique key", typeof(T)));
+                return Convert.ToString(uniqueKey.Property.GetValue(d, null));
+            }), null);
         }
 
         private object GetId(T doc) {
-            var prop = mappingManager.GetUniqueKey(typeof(T)).Property;
-            var id = prop.GetValue(doc, null);
-            if (id == null)
-                throw new NoUniqueKeyException(typeof(T));
-            return id;
+            var uniqueKey = mappingManager.GetUniqueKey(typeof(T));
+            if (uniqueKey == null)
+                throw new SolrNetException(string.Format("This operation requires a unique key, but type '{0}' has no declared unique key", typeof(T)));
+            var prop = uniqueKey.Property;
+            return prop.GetValue(doc, null);
         }
 
-        ISolrOperations<T> ISolrOperations<T>.Delete(ISolrQuery q) {
-            basicServer.Delete(null, q);
-            return this;
+        ResponseHeader ISolrOperations<T>.Delete(ISolrQuery q) {
+            return basicServer.Delete(null, q);
         }
 
-        public ISolrOperations<T> Delete(string id) {
-            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null));
-            basicServer.Send(delete);
-            return this;
+        public ResponseHeader Delete(string id) {
+            return basicServer.Delete(new[] {id}, null);
         }
 
-        ISolrBasicOperations<T> ISolrBasicOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q){
-            basicServer.Delete(ids, q);
-            return this;
+        ResponseHeader ISolrOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q) {
+            return basicServer.Delete(ids, q);
         }
 
-        ISolrOperations<T> ISolrOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q) {
-            basicServer.Delete(ids, q);
-            return this;
-        }
-
-        public void Commit() {
-            basicServer.Commit(null);
+        public ResponseHeader Commit() {
+            return basicServer.Commit(null);
         }
 
         /// <summary>
@@ -202,17 +179,21 @@ namespace SolrNet.Impl {
         /// blocking until index changes are flushed to disk and
         /// blocking until a new searcher is opened and registered as the main query searcher, making the changes visible.
         /// </summary>
-        public void Optimize() {
-            basicServer.Optimize(null);
+        public ResponseHeader Optimize() {
+            return basicServer.Optimize(null);
         }
 
-        public ISolrOperations<T> Add(T doc) {
-            Add(new[] { doc });
-            return this;
+        public ResponseHeader Add(T doc) {
+            return Add(new[] { doc });
         }
 
-        public string Send(ISolrCommand cmd) {
-            return basicServer.Send(cmd);
+        public SolrSchema GetSchema() {
+            return basicServer.GetSchema();
+        }
+
+        public IEnumerable<ValidationResult> EnumerateValidationResults() {
+            var schema = GetSchema();
+            return _schemaMappingValidator.EnumerateValidationResults(typeof(T), schema);
         }
     }
 }

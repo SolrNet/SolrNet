@@ -14,6 +14,8 @@
 // limitations under the License.
 #endregion
 
+using SolrNet.Impl;
+
 namespace SolrNet {
     /// <summary>
     /// Negates a query
@@ -29,10 +31,8 @@ namespace SolrNet {
             query = q;
         }
 
-        public override string Query {
-            get {
-                return "-" + query.Query;
-            }
+        public ISolrQuery Query {
+            get { return query; }
         }
     }
 }

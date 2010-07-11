@@ -18,11 +18,15 @@ using Ninject.Modules;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
+using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
-using SolrNet.Utils;
+using SolrNet.Mapping.Validation;
+using SolrNet.Mapping.Validation.Rules;
+using SolrNet.Schema;
 
 namespace Ninject.Integration.SolrNet {
     public class SolrNetModule : NinjectModule {
@@ -36,12 +40,14 @@ namespace Ninject.Integration.SolrNet {
         public override void Load() {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Bind<IReadOnlyMappingManager>().ToConstant(mapper);
-            Bind<ISolrCache>().To<HttpRuntimeCache>();
+            //Bind<ISolrCache>().To<HttpRuntimeCache>();
             Bind<ISolrDocumentPropertyVisitor>().To<DefaultDocumentVisitor>();
             Bind<ISolrFieldParser>().To<DefaultFieldParser>();
+            Bind(typeof (ISolrDocumentActivator<>)).To(typeof (SolrDocumentActivator<>));
             Bind(typeof(ISolrDocumentResponseParser<>)).To(typeof(SolrDocumentResponseParser<>));
-            Bind(typeof(ISolrDocumentIndexer<>)).To(typeof(SolrDocumentIndexer<>));
             Bind<ISolrFieldSerializer>().To<DefaultFieldSerializer>();
+            Bind<ISolrQuerySerializer>().To<DefaultQuerySerializer>();
+            Bind<ISolrFacetQuerySerializer>().To<DefaultFacetQuerySerializer>();
             foreach (var p in new[] {
                 typeof(ResultsResponseParser<>),
                 typeof(HeaderResponseParser<>),
@@ -53,6 +59,13 @@ namespace Ninject.Integration.SolrNet {
                 typeof(CollapseResponseParser<>),
             })
                 Bind(typeof(ISolrResponseParser<>)).To(p);
+            Bind<ISolrHeaderResponseParser>().To<HeaderResponseParser<string>>();
+            foreach (var p in new[] {
+                typeof(MappedPropertiesIsInSolrSchemaRule),
+                typeof(RequiredFieldsAreMappedRule),
+                typeof(UniqueKeyMatchesMappingRule),
+            })
+                Bind<IValidationRule>().To(p);
             Bind<ISolrConnection>().ToConstant(new SolrConnection(serverURL));
             Bind(typeof (ISolrQueryResultParser<>)).To(typeof (SolrQueryResultParser<>));
             Bind(typeof(ISolrQueryExecuter<>)).To(typeof(SolrQueryExecuter<>));
@@ -61,6 +74,8 @@ namespace Ninject.Integration.SolrNet {
             Bind(typeof(ISolrBasicReadOnlyOperations<>)).To(typeof(SolrBasicServer<>));
             Bind(typeof(ISolrOperations<>)).To(typeof(SolrServer<>));
             Bind(typeof(ISolrReadOnlyOperations<>)).To(typeof(SolrServer<>));
+            Bind<ISolrSchemaParser>().To<SolrSchemaParser>();
+            Bind<IMappingValidator>().To<MappingValidator>();
         }
     }
 }

@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using SolrNet.Commands.Parameters;
 using SolrNet.Utils;
 
@@ -24,10 +25,12 @@ namespace SolrNet.Impl {
     /// Executes queries
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> where T : new() {
+    public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> {
 
         private readonly ISolrQueryResultParser<T> resultParser;
         private readonly ISolrConnection connection;
+        private readonly ISolrQuerySerializer querySerializer;
+        private readonly ISolrFacetQuerySerializer facetQuerySerializer;
 
         /// <summary>
         /// When the row count is not defined, use this row count by default
@@ -36,9 +39,11 @@ namespace SolrNet.Impl {
 
         public static readonly int ConstDefaultRows = 100000000;
 
-        public SolrQueryExecuter(ISolrConnection connection, ISolrQueryResultParser<T> resultParser) {
-            this.connection = connection;
+        public SolrQueryExecuter(ISolrQueryResultParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer, ISolrFacetQuerySerializer facetQuerySerializer) {
             this.resultParser = resultParser;
+            this.connection = connection;
+            this.querySerializer = querySerializer;
+            this.facetQuerySerializer = facetQuerySerializer;
             DefaultRows = ConstDefaultRows;
         }
 
@@ -53,7 +58,7 @@ namespace SolrNet.Impl {
         /// <param name="Options"></param>
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery Query, QueryOptions Options) {
-            yield return KVP("q", Query.Query);
+            yield return KVP("q", querySerializer.Serialize(Query));
             if (Options != null) {
                 if (Options.Start.HasValue)
                     yield return KVP("start", Options.Start.ToString());
@@ -106,7 +111,7 @@ namespace SolrNet.Impl {
             yield return KVP("facet", "true");
 
             foreach (var fq in options.Facet.Queries)
-                foreach (var fqv in fq.Query)
+                foreach (var fqv in facetQuerySerializer.Serialize(fq))
                     yield return fqv;
 
             if (options.Facet.Prefix != null)
@@ -166,7 +171,7 @@ namespace SolrNet.Impl {
             if (options.FilterQueries == null || options.FilterQueries.Count == 0)
                 yield break;
             foreach (var fq in options.FilterQueries) {
-                yield return new KeyValuePair<string, string>("fq", fq.Query);
+                yield return new KeyValuePair<string, string>("fq", querySerializer.Serialize(fq));
             }
         }
 
@@ -202,7 +207,7 @@ namespace SolrNet.Impl {
                         param["hl.simple.post"] = h.AfterTerm;
 
                     if (h.RegexSlop.HasValue)
-                        param["hl.regex.slop"] = h.RegexSlop.Value.ToString();
+                        param["hl.regex.slop"] = Convert.ToString(h.RegexSlop.Value, CultureInfo.InvariantCulture);
 
                     if (h.RegexPattern != null)
                         param["hl.regex.pattern"] = h.RegexPattern;
@@ -281,21 +286,17 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetCollapseQueryOptions(QueryOptions options)
-        {
+        public IEnumerable<KeyValuePair<string, string>> GetCollapseQueryOptions(QueryOptions options) {
             if (options.Collapse == null || string.IsNullOrEmpty(options.Collapse.Field))
                 yield break;
 
             yield return KVP("collapse.field", options.Collapse.Field);
-            yield return KVP("collapse.threshold", options.Collapse.Max.ToString());
+            if (options.Collapse.Threshold.HasValue)
+                yield return KVP("collapse.threshold", options.Collapse.Threshold.ToString());
             yield return KVP("collapse.type", options.Collapse.Type.ToString());
-            if (options.Collapse.FacetMode == CollapseFacetMode.Before)
-                yield return KVP("collapse.facet", "before");
-            else
-                yield return KVP("collapse.facet", "after");
-            if (options.Collapse.MaxDocs > 0)
+            yield return KVP("collapse.facet", options.Collapse.FacetMode.ToString().ToLowerInvariant());
+            if (options.Collapse.MaxDocs.HasValue)
                 yield return KVP("collapse.maxdocs", options.Collapse.MaxDocs.ToString());
-
         }
 
         /// <summary>

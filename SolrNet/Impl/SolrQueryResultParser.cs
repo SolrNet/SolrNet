@@ -26,7 +26,7 @@ namespace SolrNet.Impl {
     /// Parses xml query results
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> where T : new() {
+    public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> {
         private readonly ISolrResponseParser<T>[] parsers;
 
         public SolrQueryResultParser(ISolrResponseParser<T>[] parsers) {

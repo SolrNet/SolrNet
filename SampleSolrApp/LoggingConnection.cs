@@ -27,16 +27,6 @@ namespace SampleSolrApp {
             this.connection = connection;
         }
 
-        public string ServerURL {
-            get { return connection.ServerURL; }
-            set { connection.ServerURL = value; }
-        }
-
-        public string Version {
-            get { return connection.Version; }
-            set { connection.Version = value; }
-        }
-
         public string Post(string relativeUrl, string s) {
             logger.DebugFormat("POSTing '{0}' to '{1}'", s, relativeUrl);
             return connection.Post(relativeUrl, s);

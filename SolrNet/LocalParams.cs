@@ -14,9 +14,11 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using SolrNet.Exceptions;
+using SolrNet.Impl;
 using SolrNet.Utils;
 
 namespace SolrNet {
@@ -24,6 +26,7 @@ namespace SolrNet {
     /// Provides a way to "localize" information about a specific argument that is being sent to Solr. 
     /// In other words, it provides a way to add meta-data to certain argument types such as query strings.
     /// </summary>
+    /// <see href="http://wiki.apache.org/solr/LocalParams"/>
     public class LocalParams : Dictionary<string, string> {
         public LocalParams() {}
 
@@ -47,8 +50,26 @@ namespace SolrNet {
             return string.Format("'{0}'", v.Replace("'", "\\'"));
         }
 
-        public static AbstractSolrQuery operator + (LocalParams p, ISolrQuery q) {
-            return new SolrQuery(p + q.Query);
+        public class LocalParamsQuery: ISolrQuery {
+            private readonly ISolrQuery query;
+            private readonly LocalParams local;
+
+            public LocalParamsQuery(ISolrQuery query, LocalParams local) {
+                this.query = query;
+                this.local = local;
+            }
+
+            public ISolrQuery Query {
+                get { return query; }
+            }
+
+            public LocalParams Local {
+                get { return local; }
+            }
+        }
+
+        public static ISolrQuery operator + (LocalParams p, ISolrQuery q) {
+            return new LocalParamsQuery(q, p);
         }
     }
 }

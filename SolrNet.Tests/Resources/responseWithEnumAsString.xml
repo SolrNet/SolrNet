@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <result numFound="1" start="0">
+    <doc>
+      <str name="En">Two</str>
+    </doc>
+  </result>
+</response>

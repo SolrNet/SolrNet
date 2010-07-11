@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <lst name="responseHeader=">
+    <int name="status">0</int>
+    <int name="QTime">15</int>
+    <lst name="params">
+      <str name="hl.fl">features,spell</str>
+      <str name="q">features:noise</str>
+      <str name="hl">true</str>
+    </lst>
+  </lst>
+  <result name="response" numFound="1" start="0">
+    <doc>
+      <arr name="cat">
+        <str>electronics</str>
+        <str>hard drive</str>
+      </arr>
+      <arr name="features">
+        <str>7200RPM, 8MB cache, IDE Ultra ATA-133</str>
+        <str>NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor</str>
+      </arr>
+      <str name="id">SP2514N</str>
+      <bool name="inStock">true</bool>
+      <str name="manu">Samsung Electronics Co. Ltd.</str>
+      <str name="name">Samsung SpinPoint P120 SP2514N - hard drive - 250 GB - ATA-133</str>
+      <int name="popularity">6</int>
+      <float name="price">92.0</float>
+      <str name="sku">SP2514N</str>
+      <arr name="spell">
+        <str>Samsung SpinPoint P120 SP2514N - hard drive - 250 GB - ATA-133</str>
+      </arr>
+      <date name="timestamp">0001-01-01T00:00:00Z</date>
+      <float name="weight">0.0</float>
+    </doc>
+  </result>
+  <lst name="highlighting">
+    <lst name="SP2514N">
+      <arr name="features">
+        <str>&lt;em&gt;Noise&lt;/em&gt;Guard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor</str>
+      </arr>
+    </lst>
+  </lst>
+</response>

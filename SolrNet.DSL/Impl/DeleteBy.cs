@@ -15,8 +15,10 @@
 #endregion
 
 using System.Collections.Generic;
+using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 
 namespace SolrNet.DSL.Impl {
     public class DeleteBy {
@@ -26,18 +28,22 @@ namespace SolrNet.DSL.Impl {
             this.connection = connection;
         }
 
+        private ISolrQuerySerializer GetQuerySerializer() {
+            return ServiceLocator.Current.GetInstance<ISolrQuerySerializer>();
+        }
+
         public void ById(string id) {
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, GetQuerySerializer()));
             cmd.Execute(connection);
         }
 
         public void ByIds(IEnumerable<string> ids) {
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null, GetQuerySerializer()));
             cmd.Execute(connection);
         }
        
         public void ByQuery(ISolrQuery q) {
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q, GetQuerySerializer()));
             cmd.Execute(connection);
         }
 

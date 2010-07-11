@@ -14,7 +14,9 @@
 // limitations under the License.
 #endregion
 
+using System.Xml;
 using SolrNet.Commands.Parameters;
+using SolrNet.Schema;
 
 namespace SolrNet {
     /// <summary>
@@ -35,6 +37,12 @@ namespace SolrNet {
         /// It can be used by a load balancer in front of a set of Solr servers to check response time of all the Solr servers in order to do response time based load balancing.
         /// See http://wiki.apache.org/solr/SolrConfigXml for more information.
         /// </summary>
-        void Ping();
+        ResponseHeader Ping();
+
+        /// <summary>
+        /// Gets the schema.
+        /// </summary>
+        /// <returns>A XmlDocument containing the Solr schema XML.</returns>
+        SolrSchema GetSchema();
     }
 }

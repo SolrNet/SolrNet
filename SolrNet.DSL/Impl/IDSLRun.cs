@@ -17,7 +17,7 @@
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet.DSL.Impl {
-    public interface IDSLRun<T> where T : new() {
+    public interface IDSLRun<T> {
         ISolrQueryResults<T> Run();
         ISolrQueryResults<T> Run(int start, int rows);
         IDSLRun<T> OrderBy(string fieldName);

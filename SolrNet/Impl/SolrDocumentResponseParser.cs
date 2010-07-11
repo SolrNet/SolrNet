@@ -22,13 +22,15 @@ namespace SolrNet.Impl {
     /// Parses documents from query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class SolrDocumentResponseParser<T> : ISolrDocumentResponseParser<T> where T : new() {
+    public class SolrDocumentResponseParser<T> : ISolrDocumentResponseParser<T> {
         private readonly IReadOnlyMappingManager mappingManager;
         private readonly ISolrDocumentPropertyVisitor propVisitor;
+        private readonly ISolrDocumentActivator<T> activator;
 
-        public SolrDocumentResponseParser(IReadOnlyMappingManager mappingManager, ISolrDocumentPropertyVisitor propVisitor) {
+        public SolrDocumentResponseParser(IReadOnlyMappingManager mappingManager, ISolrDocumentPropertyVisitor propVisitor, ISolrDocumentActivator<T> activator) {
             this.mappingManager = mappingManager;
             this.propVisitor = propVisitor;
+            this.activator = activator;
         }
 
         /// <summary>
@@ -57,7 +59,7 @@ namespace SolrNet.Impl {
         /// <param name="fields">document fields</param>
         /// <returns>populated document</returns>
         public T ParseDocument(XmlNode node, ICollection<SolrFieldModel> fields) {
-            var doc = new T();
+            var doc = activator.Create();
             foreach (XmlNode field in node.ChildNodes) {
                 string fieldName = field.Attributes["name"].InnerText;
                 propVisitor.Visit(doc, fieldName, field);

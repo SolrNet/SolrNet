@@ -16,9 +16,8 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using SolrNet.Impl;
 
-namespace SolrNet {
+namespace SolrNet.Impl {
     /// <summary>
     /// Query results
     /// </summary>
@@ -182,10 +181,10 @@ namespace SolrNet {
 
 		public ResponseHeader Header { get; set;}
 
-		public IDictionary<T, IDictionary<string, ICollection<string>>> Highlights { get; set; }
+		public IDictionary<string, IDictionary<string, ICollection<string>>> Highlights { get; set; }
 
         public SpellCheckResults SpellChecking { get; set; }
-        public IDictionary<T, IList<T>> SimilarResults { get; set; }
+        public IDictionary<string, IList<T>> SimilarResults { get; set; }
         public IDictionary<string, StatsResult> Stats { get; set; }
         public CollapseResults Collapsing { get; set; }
 
@@ -205,7 +204,7 @@ namespace SolrNet {
 	        FacetQueries = new Dictionary<string, int>();
             FacetFields = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
             SpellChecking = new SpellCheckResults();
-            SimilarResults = new Dictionary<T, IList<T>>();
+            SimilarResults = new Dictionary<string, IList<T>>();
             Stats = new Dictionary<string, StatsResult>();
             Collapsing = new CollapseResults();
         }

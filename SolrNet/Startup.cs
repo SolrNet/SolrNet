@@ -19,10 +19,15 @@ using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
+using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
+using SolrNet.Mapping.Validation;
+using SolrNet.Mapping.Validation.Rules;
+using SolrNet.Schema;
 using SolrNet.Utils;
 
 namespace SolrNet {
@@ -48,11 +53,24 @@ namespace SolrNet {
             var fieldSerializer = new DefaultFieldSerializer();
             Container.Register<ISolrFieldSerializer>(c => fieldSerializer);
 
-            var propertyVisitor = new DefaultDocumentVisitor(mapper, fieldParser);
-            Container.Register<ISolrDocumentPropertyVisitor>(c => propertyVisitor);
+            Container.Register<ISolrQuerySerializer>(c => new DefaultQuerySerializer(c.GetInstance<ISolrFieldSerializer>()));
+            Container.Register<ISolrFacetQuerySerializer>(c => new DefaultFacetQuerySerializer(c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrFieldSerializer>()));
 
-            var cache = new HttpRuntimeCache();
-            Container.Register<ISolrCache>(c => cache);
+            Container.Register<ISolrDocumentPropertyVisitor>(c => new DefaultDocumentVisitor(c.GetInstance<IReadOnlyMappingManager>(), c.GetInstance<ISolrFieldParser>()));
+
+            //var cache = new HttpRuntimeCache();
+            //Container.Register<ISolrCache>(c => cache);
+
+            var solrSchemaParser = new SolrSchemaParser();
+            Container.Register<ISolrSchemaParser>(c => solrSchemaParser);
+
+            var headerParser = new HeaderResponseParser<string>();
+            Container.Register<ISolrHeaderResponseParser>(c => headerParser);
+
+            Container.Register<IValidationRule>(typeof(MappedPropertiesIsInSolrSchemaRule).FullName, c => new MappedPropertiesIsInSolrSchemaRule());
+            Container.Register<IValidationRule>(typeof(RequiredFieldsAreMappedRule).FullName, c => new RequiredFieldsAreMappedRule());
+            Container.Register<IValidationRule>(typeof(UniqueKeyMatchesMappingRule).FullName, c => new UniqueKeyMatchesMappingRule());
+            Container.Register<IMappingValidator>(c => new MappingValidator(c.GetInstance<IReadOnlyMappingManager>(), Func.ToArray(c.GetAllInstances<IValidationRule>())));
         }
 
         /// <summary>
@@ -60,9 +78,9 @@ namespace SolrNet {
         /// </summary>
         /// <typeparam name="T">Document type</typeparam>
         /// <param name="serverURL">Solr URL (i.e. "http://localhost:8983/solr")</param>
-        public static void Init<T>(string serverURL) where T: new() {
+        public static void Init<T>(string serverURL) {
             var connection = new SolrConnection(serverURL) {
-                Cache = Container.GetInstance<ISolrCache>(),
+                //Cache = Container.GetInstance<ISolrCache>(),
             };
 
             Init<T>(connection);
@@ -73,50 +91,46 @@ namespace SolrNet {
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="connection"></param>
-        public static void Init<T>(ISolrConnection connection) where T: new() {
+        public static void Init<T>(ISolrConnection connection) {
             var connectionKey = string.Format("{0}.{1}.{2}", typeof(SolrConnection), typeof(T), connection.GetType());
             Container.Register(connectionKey, c => connection);
 
-            Container.Register(c => ChooseDocumentResponseParser<T>());
-            Container.Register<ISolrDocumentIndexer<T>>(c => new SolrDocumentIndexer<T>(Container.GetInstance<IReadOnlyMappingManager>()));
+            var activator = new SolrDocumentActivator<T>();
+            Container.Register<ISolrDocumentActivator<T>>(c => activator);
+
+            Container.Register(c => ChooseDocumentResponseParser<T>(c));
 
             Container.Register<ISolrResponseParser<T>>(typeof(ResultsResponseParser<T>).FullName, c => new ResultsResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
             Container.Register<ISolrResponseParser<T>>(typeof (HeaderResponseParser<T>).FullName, c => new HeaderResponseParser<T>());
             Container.Register<ISolrResponseParser<T>>(typeof(FacetsResponseParser<T>).FullName, c => new FacetsResponseParser<T>());
-            Container.Register<ISolrResponseParser<T>>(typeof(HighlightingResponseParser<T>).FullName, c => new HighlightingResponseParser<T>(c.GetInstance<ISolrDocumentIndexer<T>>()));
-            Container.Register<ISolrResponseParser<T>>(typeof(MoreLikeThisResponseParser<T>).FullName, c => new MoreLikeThisResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>(), c.GetInstance<ISolrDocumentIndexer<T>>()));
+            Container.Register<ISolrResponseParser<T>>(typeof(HighlightingResponseParser<T>).FullName, c => new HighlightingResponseParser<T>());
+            Container.Register<ISolrResponseParser<T>>(typeof(MoreLikeThisResponseParser<T>).FullName, c => new MoreLikeThisResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
             Container.Register<ISolrResponseParser<T>>(typeof(SpellCheckResponseParser<T>).FullName, c => new SpellCheckResponseParser<T>());
             Container.Register<ISolrResponseParser<T>>(typeof(StatsResponseParser<T>).FullName, c => new StatsResponseParser<T>());
             Container.Register<ISolrResponseParser<T>>(typeof(CollapseResponseParser<T>).FullName, c => new CollapseResponseParser<T>());
 
-            var resultParser = new SolrQueryResultParser<T>(Func.ToArray(Container.GetAllInstances<ISolrResponseParser<T>>()));
-            Container.Register<ISolrQueryResultParser<T>>(c => resultParser);
+            Container.Register<ISolrQueryResultParser<T>>(c => new SolrQueryResultParser<T>(Func.ToArray(Container.GetAllInstances<ISolrResponseParser<T>>())));
+            Container.Register<ISolrQueryExecuter<T>>(c => new SolrQueryExecuter<T>(c.GetInstance<ISolrQueryResultParser<T>>(), connection, c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrFacetQuerySerializer>()));
 
-            var queryExecuter = new SolrQueryExecuter<T>(connection, resultParser);
-            Container.Register<ISolrQueryExecuter<T>>(c => queryExecuter);
+            Container.Register(c => ChooseDocumentSerializer<T>(c));
 
-            var documentSerializer = ChooseDocumentSerializer<T>();
-            Container.Register(c => documentSerializer);
+            Container.Register<ISolrBasicOperations<T>>(c => new SolrBasicServer<T>(connection, c.GetInstance<ISolrQueryExecuter<T>>(), c.GetInstance<ISolrDocumentSerializer<T>>(), c.GetInstance<ISolrSchemaParser>(), c.GetInstance<ISolrHeaderResponseParser>(), c.GetInstance<ISolrQuerySerializer>()));
+            Container.Register<ISolrBasicReadOnlyOperations<T>>(c => new SolrBasicServer<T>(connection, c.GetInstance<ISolrQueryExecuter<T>>(), c.GetInstance<ISolrDocumentSerializer<T>>(), c.GetInstance<ISolrSchemaParser>(), c.GetInstance<ISolrHeaderResponseParser>(), c.GetInstance<ISolrQuerySerializer>()));
 
-            var basicServer = new SolrBasicServer<T>(connection, queryExecuter, documentSerializer);
-            Container.Register<ISolrBasicOperations<T>>(c => basicServer);
-            Container.Register<ISolrBasicReadOnlyOperations<T>>(c => basicServer);
-
-            var server = new SolrServer<T>(basicServer, Container.GetInstance<IReadOnlyMappingManager>());
-            Container.Register<ISolrOperations<T>>(c => server);
-            Container.Register<ISolrReadOnlyOperations<T>>(c => server);
+            Container.Register<ISolrOperations<T>>(c => new SolrServer<T>(c.GetInstance<ISolrBasicOperations<T>>(), Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>()));
+            Container.Register<ISolrReadOnlyOperations<T>>(c => new SolrServer<T>(c.GetInstance<ISolrBasicOperations<T>>(), Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>()));
         }
 
-        private static ISolrDocumentSerializer<T> ChooseDocumentSerializer<T>() {
+        private static ISolrDocumentSerializer<T> ChooseDocumentSerializer<T>(IServiceLocator c) {
             if (typeof(T) == typeof(Dictionary<string, object>))
-                return (ISolrDocumentSerializer<T>) new SolrDictionarySerializer(Container.GetInstance<ISolrFieldSerializer>());
-            return new SolrDocumentSerializer<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrFieldSerializer>());
+                return (ISolrDocumentSerializer<T>) new SolrDictionarySerializer(c.GetInstance<ISolrFieldSerializer>());
+            return new SolrDocumentSerializer<T>(c.GetInstance<IReadOnlyMappingManager>(), c.GetInstance<ISolrFieldSerializer>());
         }
 
-        private static ISolrDocumentResponseParser<T> ChooseDocumentResponseParser<T>() where T: new() {
+        private static ISolrDocumentResponseParser<T> ChooseDocumentResponseParser<T>(IServiceLocator c) {
             if (typeof(T) == typeof(Dictionary<string, object>))
-                return (ISolrDocumentResponseParser<T>) new SolrDictionaryDocumentResponseParser(new InferringFieldParser(new DefaultFieldParser()));
-            return new SolrDocumentResponseParser<T>(Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<ISolrDocumentPropertyVisitor>());
+                return (ISolrDocumentResponseParser<T>) new SolrDictionaryDocumentResponseParser(c.GetInstance<ISolrFieldParser>());
+            return new SolrDocumentResponseParser<T>(c.GetInstance<IReadOnlyMappingManager>(), c.GetInstance<ISolrDocumentPropertyVisitor>(), c.GetInstance<ISolrDocumentActivator<T>>());
         }
     }
 }

@@ -15,7 +15,7 @@
 #endregion
 
 namespace SolrNet.DSL.Impl {
-    public interface IDSLQueryBetween<T, RT> where T : new() {
+    public interface IDSLQueryBetween<T, RT> {
         IDSLQuery<T> And(RT i);
     }
 }

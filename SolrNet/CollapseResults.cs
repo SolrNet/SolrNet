@@ -19,28 +19,25 @@ using System.Collections.Generic;
 namespace SolrNet {
     /// <summary>
     /// Collapse results
-    /// <see cref="https://issues.apache.org/jira/browse/SOLR-236"/>
+    /// <see href="https://issues.apache.org/jira/browse/SOLR-236"/>
     /// </summary>
     public class CollapseResults {
-        
+
         /// <summary>
-        /// &collapse.field=
+        /// &amp;collapse.field=
         /// </summary>
         public string Field { get; set; }
 
         /// <summary>
         /// Collapsed document.ids and their counts
         /// </summary>
-        public IDictionary<string, int> DocResults { get; set; }
+        public ICollection<CollapsedDocument> CollapsedDocuments { get; set; }
 
-        /// <summary>
-        /// Collapsed field values and their counts
-        /// </summary>
-        public IDictionary<string, int> CountResults { get; set; }
-
+        ///<summary>
+        /// Initializer
+        ///</summary>
         public CollapseResults() {
-            DocResults = new Dictionary<string, int>();
-            CountResults = new Dictionary<string, int>();
+            CollapsedDocuments = new List<CollapsedDocument>();
         }
     }
 }

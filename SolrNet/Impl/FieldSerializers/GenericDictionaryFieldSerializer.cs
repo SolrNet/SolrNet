@@ -48,9 +48,8 @@ namespace SolrNet.Impl.FieldSerializers {
         /// </summary>
         /// <param name="kv"></param>
         /// <returns></returns>
-        public string KVValue(object kv) {
-            var value = kv.GetType().GetProperty("Value").GetValue(kv, null);
-            return value == null ? null : value.ToString();
+        public object KVValue(object kv) {
+            return kv.GetType().GetProperty("Value").GetValue(kv, null);
         }
 
         public IEnumerable<PropertyNode> Serialize(object obj) {

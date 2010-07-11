@@ -15,7 +15,7 @@
 #endregion
 
 namespace SolrNet.DSL.Impl {
-    public interface IDSLQueryRange<T> : IDSLQuery<T> where T : new() {
+    public interface IDSLQueryRange<T> : IDSLQuery<T> {
         IDSLQuery<T> Exclusive();
         IDSLQuery<T> Inclusive();
     }

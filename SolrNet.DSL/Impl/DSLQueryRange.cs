@@ -15,7 +15,7 @@
 #endregion
 
 namespace SolrNet.DSL.Impl {
-    public class DSLQueryRange<T, RT> : DSLQuery<T>, IDSLQueryRange<T> where T : new() {
+    public class DSLQueryRange<T, RT> : DSLQuery<T>, IDSLQueryRange<T> {
         private readonly string fieldName;
         private readonly RT from;
         private readonly RT to;

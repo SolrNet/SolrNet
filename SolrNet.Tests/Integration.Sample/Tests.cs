@@ -28,13 +28,21 @@ namespace SolrNet.Tests.Integration.Sample {
     /// These tests run against the sample schema that comes with solr
     /// </summary>
     [TestFixture]
-    [Ignore("This test requires an actual solr instance running")]
+    [Category("Integration")]
     public class Tests {
         private const string serverURL = "http://localhost:8983/solr";
+
 
         [FixtureSetUp]
         public void FixtureSetup() {
             Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL)));
+        }
+
+        [SetUp]
+        public void Setup() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Delete(SolrQuery.All);
+            solr.Commit();
         }
 
         [Test]
@@ -65,9 +73,10 @@ namespace SolrNet.Tests.Integration.Sample {
             };
 
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-            solr.Delete(SolrQuery.All)
-                .AddWithBoost(p, 2.2)
-                .Commit();
+            solr.Delete(SolrQuery.All);
+            solr.AddWithBoost(p, 2.2);
+            solr.Commit();
+
             solr.Query(new SolrQueryByField("name", @"3;Furniture"));
             var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m).Boost(2));
             Assert.AreEqual(1, products.Count);
@@ -78,10 +87,9 @@ namespace SolrNet.Tests.Integration.Sample {
             Assert.AreEqual(150m, products[0].Prices["regular"]);
             Assert.AreEqual(100m, products[0].Prices["afterrebate"]);
         }
-        
+
         [Test]
         public void DeleteByIdAndOrQuery() {
-            Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
 
             #region Delete test data
@@ -153,18 +161,17 @@ namespace SolrNet.Tests.Integration.Sample {
             };
             #endregion
 
-            var productsBeforeAddition = solr.Query(SolrQuery.All);
-            solr.Add(products).Commit();
-            var productsAfterAddition = solr.Query(SolrQuery.All);
+            solr.Add(products);
+            solr.Commit();
             
-            Assert.AreEqual(productsBeforeAddition.Count + products.Count, productsAfterAddition.Count);
-
-            solr.Delete(new string[] { "DEL12345", "DEL12346" }, new SolrQueryByField("features", "feature 3")).Commit();
+            solr.Delete(new[] { "DEL12345", "DEL12346" }, new SolrQueryByField("features", "feature 3"));
+            solr.Commit();
             var productsAfterDelete = solr.Query(SolrQuery.All);
 
-            Assert.AreEqual(productsAfterAddition.Count - products.Count, productsAfterDelete.Count);
+            Assert.AreEqual(0, productsAfterDelete.Count);
         }
-
+        
+         
         [Test]
         public void Highlighting() {
             Add_then_query();
@@ -176,7 +183,7 @@ namespace SolrNet.Tests.Integration.Sample {
             });
             Assert.IsNotNull(results.Highlights);
             Assert.AreEqual(1, results.Highlights.Count);
-            foreach (var h in results.Highlights[results[0]]) {
+            foreach (var h in results.Highlights[results[0].Id]) {
                 Console.WriteLine("{0}: {1}", h.Key, h.Value);
             }
         }
@@ -250,6 +257,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void MoreLikeThis() {
+            Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(new SolrQuery("apache"), new QueryOptions {
                 MoreLikeThis = new MoreLikeThisParameters(new[] {"cat", "manu"}) {
@@ -259,7 +267,7 @@ namespace SolrNet.Tests.Integration.Sample {
                 },
             });
             foreach (var r in results.SimilarResults) {
-                Console.WriteLine("Similar documents to {0}", r.Key.Id);
+                Console.WriteLine("Similar documents to {0}", r.Key);
                 foreach (var similar in r.Value)
                     Console.WriteLine(similar.Id);
                 Console.WriteLine();
@@ -268,6 +276,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void Stats() {
+            Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(SolrQuery.All, new QueryOptions {
                 Rows = 0,
@@ -305,6 +314,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void LocalParams() {
+            Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             var results = solr.Query(new LocalParams {{"q.op", "AND"}} + "solr ipod");
             Assert.AreEqual(0, results.Count);
@@ -312,6 +322,7 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void LooseMapping() {
+            Add_then_query();
             Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
             var results = solr.Query(SolrQuery.All);
@@ -331,8 +342,9 @@ namespace SolrNet.Tests.Integration.Sample {
                     }
                 }
         }
-
+        
         [Test]
+        [Ignore("Registering the connection in the container causes a side effect.")]
         public void LooseMappingAdd() {
             Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
@@ -341,13 +353,47 @@ namespace SolrNet.Tests.Integration.Sample {
                 {"manu", "pepe"},
                 {"popularity", 6},
             });
-            
         }
-
+        
         public Type TypeOrNull(object o) {
             if (o == null)
                 return null;
             return o.GetType();
+        }
+
+        [Test]
+        public void FieldCollapsing() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var results = solr.Query(SolrQuery.All, new QueryOptions {
+                Collapse = new CollapseParameters("manu_exact") { 
+                    Type = CollapseType.Adjacent,
+                    MaxDocs = 1,
+                }
+            });
+            Console.WriteLine("CollapsedDocuments.Count {0}", results.Collapsing.CollapsedDocuments.Count);
+        }
+
+        [Test]
+        public void SemiLooseMapping() {
+            Add_then_query();
+            Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL)));
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<ProductLoose>>();
+            var products = solr.Query(SolrQuery.All);
+            Assert.AreEqual(1, products.Count);
+            var product = products[0];
+            Assert.AreEqual("SP2514N", product.Id);
+            Assert.IsNull(product.SKU);
+            Assert.IsNotNull(product.Name);
+            Assert.IsNotNull(product.OtherFields);
+            Console.WriteLine(product.OtherFields.Count);
+            foreach (var field in product.OtherFields)
+                Console.WriteLine("{0}: {1} ({2})", field.Key, field.Value, TypeOrNull(field.Value));
+            Assert.IsInstanceOfType(typeof(DateTime), product.OtherFields["timestamp"]);
+            Assert.AreEqual(new DateTime(1,1,1), product.OtherFields["timestamp"]);
+            Assert.IsInstanceOfType(typeof(ICollection), product.OtherFields["features"]);
+            product.OtherFields["timestamp"] = new DateTime(2010, 1, 1);
+            product.OtherFields["features"] = new[] {"a", "b", "c"};
+            solr.Add(product);
         }
     }
 }

@@ -97,7 +97,7 @@ namespace SolrNet.Impl {
                 using (var sw = new StreamWriter(postParams)) {
                     sw.Write(s);
                 }
-                return GetResponse(request).Value;
+                return GetResponse(request).Data;
             }
             catch (WebException e) {
                 throw new SolrConnectionException(e);
@@ -133,8 +133,9 @@ namespace SolrNet.Impl {
             }
             try {
                 var response = GetResponse(request);
-                Cache.Add(new SolrCacheEntity(u.Uri.ToString(), response.Key, response.Value));
-                return response.Value;
+                if (response.ETag != null)
+                    Cache.Add(new SolrCacheEntity(u.Uri.ToString(), response.ETag, response.Data));
+                return response.Data;
             } catch (WebException e) {
                 if (e.Response != null) {
                     var r = new HttpWebResponseAdapter(e.Response);
@@ -154,13 +155,25 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        private KeyValuePair<string, string> GetResponse(IHttpWebRequest request) {
+        private SolrResponse GetResponse(IHttpWebRequest request) {
             using (var response = request.GetResponse()) {
                 var etag = response.Headers[HttpResponseHeader.ETag];
+                var cacheControl = response.Headers[HttpResponseHeader.CacheControl];
+                if (cacheControl != null && cacheControl.Contains("no-cache"))
+                    etag = null; // avoid caching things marked as no-cache
                 using (var rStream = response.GetResponseStream())
                 using (var sr = new StreamReader(rStream, TryGetEncoding(response))) {
-                    return KVP(etag, sr.ReadToEnd());
+                    return new SolrResponse(etag, sr.ReadToEnd());
                 }
+            }
+        }
+
+        private struct SolrResponse {
+            public string ETag { get; private set; }
+            public string Data { get; private set; }
+            public SolrResponse(string eTag, string data) : this() {
+                ETag = eTag;
+                Data = data;
             }
         }
 

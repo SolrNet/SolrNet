@@ -16,69 +16,76 @@
 
 using System;
 using MbUnit.Framework;
+using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
     [TestFixture]
     public class OperatorOverloadingTests {
+        public string Serialize(object q) {
+            var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
+            return serializer.Serialize(q);
+        }
+
         [Test]
         public void OneAnd() {
             var q = new SolrQuery("solr") && new SolrQuery("name:desc");
-            Assert.AreEqual("(solr AND name:desc)", q.Query);
+            Assert.AreEqual("(solr AND name:desc)", Serialize(q));
         }
 
         [Test]
         public void OneOr() {
             var q = new SolrQuery("solr") || new SolrQuery("name:desc");
-            Assert.AreEqual("(solr OR name:desc)", q.Query);
+            Assert.AreEqual("(solr OR name:desc)", Serialize(q));
         }
 
         [Test]
         public void MultipleAnd() {
             var q = new SolrQuery("solr") && new SolrQuery("name:desc") && new SolrQueryByField("id", "123456");
-            Assert.AreEqual("((solr AND name:desc) AND id:123456)", q.Query);
+            Assert.AreEqual("((solr AND name:desc) AND id:123456)", Serialize(q));
         }
 
         [Test]
         public void MultipleOr() {
             var q = new SolrQuery("solr") || new SolrQuery("name:desc") || new SolrQueryByField("id", "123456");
-            Assert.AreEqual("((solr OR name:desc) OR id:123456)", q.Query);
+            Assert.AreEqual("((solr OR name:desc) OR id:123456)", Serialize(q));
         }
 
         [Test]
         public void MixedAndOrs_obeys_operator_precedence() {
             var q = new SolrQuery("solr") || new SolrQuery("name:desc") && new SolrQueryByField("id", "123456");
-            Assert.AreEqual("(solr OR (name:desc AND id:123456))", q.Query);
+            Assert.AreEqual("(solr OR (name:desc AND id:123456))", Serialize(q));
         }
 
         [Test]
         public void MixedAndOrs_with_parentheses_obeys_precedence() {
             var q = (new SolrQuery("solr") || new SolrQuery("name:desc")) && new SolrQueryByField("id", "123456");
-            Assert.AreEqual("((solr OR name:desc) AND id:123456)", q.Query);
+            Assert.AreEqual("((solr OR name:desc) AND id:123456)", Serialize(q));
         }
 
         [Test]
         public void Add() {
             var q = new SolrQuery("solr") + new SolrQuery("name:desc");
-            Assert.AreEqual("(solr  name:desc)", q.Query);
+            Assert.AreEqual("(solr  name:desc)", Serialize(q));
         }
 
         [Test]
         public void Not() {
             var q = !new SolrQuery("solr");
-            Assert.AreEqual("-solr", q.Query);
+            Assert.AreEqual("-solr", Serialize(q));
         }
 
         [Test]
         public void AndNot() {
             var q = new SolrQuery("a") && !new SolrQuery("b");
-            Console.WriteLine(q.Query);
-            Assert.AreEqual("(a AND -b)", q.Query);
+            Console.WriteLine(Serialize(q));
+            Assert.AreEqual("(a AND -b)", Serialize(q));
         }
 
         [Test]
         public void Minus() {
             var q = new SolrQuery("solr") - new SolrQuery("name:desc");
-            Assert.AreEqual("(solr  -name:desc)", q.Query);
+            Assert.AreEqual("(solr  -name:desc)", Serialize(q));
         }
     }
 }

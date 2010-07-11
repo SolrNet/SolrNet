@@ -2,3 +2,4 @@ SolrNet.DSL.*
 Castle.Facilities.SolrNetIntegration.*
 Ninject.Integration.SolrNet.*
 NHibernate.SolrNet.*
+StructureMap.SolrNetIntegration.*

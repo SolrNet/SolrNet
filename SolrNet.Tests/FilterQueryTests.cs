@@ -31,9 +31,9 @@ namespace SolrNet.Tests {
                 {"rows", "100000000"},
             });
             var mocks = new MockRepository();
-            var queryExec = mocks.CreateMock<ISolrQueryExecuter<Document>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<Document>>();
-            ISolrBasicReadOnlyOperations<Document> solr = new SolrBasicServer<Document>(conn, queryExec, docSerializer);
+            var queryExec = mocks.StrictMock<ISolrQueryExecuter<Document>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<Document>>();
+            ISolrBasicReadOnlyOperations<Document> solr = new SolrBasicServer<Document>(conn, queryExec, docSerializer, null, null, null);
             solr.Query(SolrQuery.All, new QueryOptions {
                 FilterQueries = new[] {new SolrQuery("id:0")},
             });

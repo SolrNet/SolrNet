@@ -27,7 +27,7 @@ namespace SolrNet.Tests {
         [Test]
         public void CallsInnerJustOnce() {
             var mocks = new MockRepository();
-            var innerMapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            var innerMapper = mocks.StrictMock<IReadOnlyMappingManager>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(innerMapper.GetFields(typeof (TestDocument)))
                                      .Repeat.Once()
@@ -45,7 +45,7 @@ namespace SolrNet.Tests {
         [Test]
         public void GetUniqueKeyIsMemoized() {
             var mocks = new MockRepository();
-            var innerMapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            var innerMapper = mocks.StrictMock<IReadOnlyMappingManager>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(innerMapper.GetUniqueKey(typeof (TestDocument)))
                                      .Repeat.Once()

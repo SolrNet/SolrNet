@@ -27,8 +27,8 @@ namespace SolrNet.Tests {
 		[Test]
 		public void tt() {
 			var mocks = new MockRepository();
-			var connection = mocks.CreateMock<ISolrConnection>();
-			var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocument>>();
+			var connection = mocks.StrictMock<ISolrConnection>();
+			var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
 			With.Mocks(mocks).Expecting(delegate {
 				Expect.Call(connection.Get(null, null))
                     .IgnoreArguments()
@@ -39,7 +39,7 @@ namespace SolrNet.Tests {
                     .Repeat.Once()
                     .Return(new SolrQueryResults<TestDocument>());
 			}).Verify(delegate {
-			    var q = new SolrQueryExecuter<TestDocument>(connection, parser);
+			    var q = new SolrQueryExecuter<TestDocument>(parser, connection, null, null);
 				var r = q.Execute(new SolrQuery("id:123456"), null);
 			});
 		}

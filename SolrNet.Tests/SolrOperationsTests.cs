@@ -23,8 +23,12 @@ using SolrNet.Attributes;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
+using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 using SolrNet.Mapping;
+using SolrNet.Mapping.Validation;
+using SolrNet.Tests.Utils;
 using SolrNet.Utils;
 
 namespace SolrNet.Tests {
@@ -47,15 +51,23 @@ namespace SolrNet.Tests {
         [Test]
         public void Add() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var headerParser = mocks.StrictMock<ISolrHeaderResponseParser>();
             var docSerializer = new SolrDocumentSerializer<TestDocumentWithoutUniqueKey>(new AttributesMappingManager(), new DefaultFieldSerializer());
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<add><doc /></add>"))
-                                     .Repeat.Once()
-                                     .Return(null))
+                .Expecting(() => {
+                    Expect.On(connection)
+                        .Call(connection.Post("/update", "<add><doc /></add>"))
+                        .Repeat.Once()
+                        .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"));
+                    Expect.On(headerParser)
+                        .Call(headerParser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new ResponseHeader());
+                })
                 .Verify(() => {
-                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
                     ops.AddWithBoost(new[] {
                         new KeyValuePair<TestDocumentWithoutUniqueKey, double?>(new TestDocumentWithoutUniqueKey(), null),
                     });
@@ -65,31 +77,47 @@ namespace SolrNet.Tests {
         [Test]
         public void AddWithBoost() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var headerParser = mocks.StrictMock<ISolrHeaderResponseParser>();
             var docSerializer = new SolrDocumentSerializer<TestDocumentWithoutUniqueKey>(new AttributesMappingManager(), new DefaultFieldSerializer());
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<add><doc boost=\"2.1\" /></add>"))
-                                     .Repeat.Once()
-                                     .Return(null))
+                .Expecting(() => {
+                    Expect.On(connection)
+                        .Call(connection.Post("/update", "<add><doc boost=\"2.1\" /></add>"))
+                        .Repeat.Once()
+                        .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"));
+                    Expect.On(headerParser)
+                        .Call(headerParser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new ResponseHeader());
+                })
                 .Verify(() => {
-                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
-                    ops.AddWithBoost(new[] {new KeyValuePair<TestDocumentWithoutUniqueKey, double?>(new TestDocumentWithoutUniqueKey(), 2.1),});
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
+                    ops.AddWithBoost(new[] { new KeyValuePair<TestDocumentWithoutUniqueKey, double?>(new TestDocumentWithoutUniqueKey(), 2.1), });
                 });            
         }
 
         [Test]
         public void Commit() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var headerParser = mocks.StrictMock<ISolrHeaderResponseParser>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />"))
-                                     .Repeat.Once()
-                                     .Return(null))
+                .Expecting(() => {
+                    Expect.On(connection)
+                        .Call(connection.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />"))
+                        .Repeat.Once()
+                        .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"));
+                    Expect.On(headerParser)
+                        .Call(headerParser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new ResponseHeader());
+                })
                 .Verify(() => {
-                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
                     ops.Commit(null);
                 });
         }
@@ -97,15 +125,23 @@ namespace SolrNet.Tests {
         [Test]
         public void CommitWithOptions() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var headerParser = mocks.StrictMock<ISolrHeaderResponseParser>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />"))
-                                     .Repeat.Once()
-                                     .Return(null))
+                .Expecting(() => {
+                    Expect.On(connection)
+                        .Call(connection.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />"))
+                        .Repeat.Once()
+                        .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"));
+                    Expect.On(headerParser)
+                        .Call(headerParser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new ResponseHeader());
+                })
                 .Verify(() => {
-                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
                     ops.Commit(new CommitOptions());
                 });
         }
@@ -113,62 +149,100 @@ namespace SolrNet.Tests {
         [Test]
         public void CommitWithOptions2_WaitSearcher_WaitFlush() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var headerParser = mocks.StrictMock<ISolrHeaderResponseParser>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />"))
-                                     .Repeat.Once()
-                                     .Return(null))
+                .Expecting(() => {
+                    Expect.On(connection)
+                        .Call(connection.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />"))
+                        .Repeat.Once()
+                        .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"));
+                    Expect.On(headerParser)
+                        .Call(headerParser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new ResponseHeader());
+                })
                 .Verify(() => {
-                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
-                    ops.Commit(new CommitOptions {WaitSearcher = true, WaitFlush = true});
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
+                    ops.Commit(new CommitOptions { WaitSearcher = true, WaitFlush = true });
                 });
         }
 
         [Test]
         public void CommitWithOptions2_WaitSearcher() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
-            With.Mocks(mocks).Expecting(() => Expect.Call(connection.Post("/update", "<commit waitSearcher=\"false\" waitFlush=\"true\" />"))
-                                                  .Repeat.Once()
-                                                  .Return(null))
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var headerParser = mocks.StrictMock<ISolrHeaderResponseParser>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
+            With.Mocks(mocks)
+                .Expecting(() => {
+                    Expect.On(connection)
+                        .Call(connection.Post("/update", "<commit waitSearcher=\"false\" waitFlush=\"true\" />"))
+                        .Repeat.Once()
+                        .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"));
+                    Expect.On(headerParser)
+                        .Call(headerParser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new ResponseHeader());
+                })
                 .Verify(() => {
-                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
-                    ops.Commit(new CommitOptions {WaitSearcher = false});
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
+                    ops.Commit(new CommitOptions { WaitSearcher = false });
                 });
         }
 
         [Test]
         public void CommitWithOptions2_WaitFlush() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var headerParser = mocks.StrictMock<ISolrHeaderResponseParser>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />"))
-                                     .Repeat.Once()
-                                     .Return(null))
+                .Expecting(() => {
+                    Expect.On(connection)
+                        .Call(connection.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />"))
+                        .Repeat.Once()
+                        .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"));
+                    Expect.On(headerParser)
+                        .Call(headerParser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new ResponseHeader());
+                })
                 .Verify(() => {
-                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
-                    ops.Commit(new CommitOptions {WaitFlush = true});
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
+                    ops.Commit(new CommitOptions { WaitFlush = true });
                 });
         }
 
         [Test]
         public void DeleteByQuery() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var headerParser = mocks.StrictMock<ISolrHeaderResponseParser>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var querySerializer = mocks.StrictMock<ISolrQuerySerializer>();
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<delete><query>id:123</query></delete>"))
-                                     .Repeat.Once()
-                                     .Return(null))
-                .Verify(delegate {
-                    var ops = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
+                .Expecting(() => {
+                    Expect.On(querySerializer)
+                        .Call(querySerializer.Serialize(null))
+                        .IgnoreArguments()
+                        .Return("id:123");
+                    Expect.On(connection)
+                        .Call(connection.Post("/update", "<delete><query>id:123</query></delete>"))
+                        .Repeat.Once()
+                        .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"));
+                    Expect.On(headerParser)
+                        .Call(headerParser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new ResponseHeader());
+                })
+                .Verify(() => {
+                    var ops = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer, null, headerParser, querySerializer);
                     ops.Delete(null, new SolrQuery("id:123"));
                 });
         }
@@ -176,35 +250,46 @@ namespace SolrNet.Tests {
         [Test]
         public void DeleteByMultipleId() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var headerParser = mocks.StrictMock<ISolrHeaderResponseParser>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<delete><id>0</id><id>0</id></delete>"))
-                                     .Repeat.Once()
-                                     .Return(null))
-                .Verify(delegate {
-                    var basic = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
-                    var ops = new SolrServer<TestDocumentWithUniqueKey>(basic, new AttributesMappingManager());
+                .Expecting(() => {
+                    Expect.On(connection)
+                        .Call(connection.Post("/update", "<delete><id>0</id><id>0</id></delete>"))
+                        .Repeat.Once()
+                        .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"));
+                    Expect.On(headerParser)
+                        .Call(headerParser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new ResponseHeader());
+                })
+                .Verify(() => {
+                    var basic = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
+                    var ops = new SolrServer<TestDocumentWithUniqueKey>(basic, new AttributesMappingManager(), validationManager);
                     ops.Delete(new[] {
-                        new TestDocumentWithUniqueKey(),
-                        new TestDocumentWithUniqueKey(),
-                    });
+                            new TestDocumentWithUniqueKey(),
+                            new TestDocumentWithUniqueKey(),
+                        });
                 });
         }
 
         [Test]
-        [ExpectedException(typeof (NoUniqueKeyException))]
+        [ExpectedException(typeof (SolrNetException))]
         public void DeleteDocumentWithoutUniqueKey_ShouldThrow() {
             var mocks = new MockRepository();
-            var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocumentWithoutUniqueKey>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocumentWithoutUniqueKey>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
             With.Mocks(mocks)
                 .Expecting(() => {
-                    Expect.Call(mapper.GetUniqueKey(typeof (TestDocumentWithoutUniqueKey)))
-                        .Throw(new NoUniqueKeyException(typeof(TestDocumentWithoutUniqueKey)));
+                    Expect.On(mapper)
+                        .Call(mapper.GetUniqueKey(typeof (TestDocumentWithoutUniqueKey)))
+                        .Return(null);
                 }).Verify(() => {
-                    var ops = new SolrServer<TestDocumentWithoutUniqueKey>(basicServer, mapper);
+                    var ops = new SolrServer<TestDocumentWithoutUniqueKey>(basicServer, mapper, validationManager);
                     ops.Delete(new TestDocumentWithoutUniqueKey());
                 });
         }
@@ -212,19 +297,24 @@ namespace SolrNet.Tests {
         [Test]
         public void DeleteDocumentWithUniqueKey() {
             var mocks = new MockRepository();
-            var basicServer = mocks.CreateMock<ISolrBasicOperations<TestDocumentWithUniqueKey>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocumentWithUniqueKey>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
             With.Mocks(mocks)
                 .Expecting(() => {
-                    Expect.Call(basicServer.Send(null))
+                    Expect.On(basicServer)
+                        .Call(basicServer.Delete(new[] {"0"}, null))
                         .IgnoreArguments()
-                        .Repeat.Once()
-                        .Return("");
-                    Expect.Call(mapper.GetUniqueKey(typeof (TestDocumentWithUniqueKey)))
-                        .Return(new SolrFieldModel { Property = typeof(TestDocumentWithUniqueKey).GetProperty("id"), FieldName = "id" });
+                        .Return(new ResponseHeader());
+                    Expect.On(mapper)
+                        .Call(mapper.GetUniqueKey(typeof (TestDocumentWithUniqueKey)))
+                        .Return(new SolrFieldModel {
+                            Property = typeof(TestDocumentWithUniqueKey).GetProperty("id"), 
+                            FieldName = "id"
+                        });
                 })
                 .Verify(delegate {
-                    var ops = new SolrServer<TestDocumentWithUniqueKey>(basicServer, mapper);
+                    var ops = new SolrServer<TestDocumentWithUniqueKey>(basicServer, mapper, validationManager);
                     ops.Delete(new TestDocumentWithUniqueKey());
                 });
         }
@@ -232,15 +322,17 @@ namespace SolrNet.Tests {
         [Test]
         public void Optimize() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var headerParser = mocks.DynamicMock<ISolrHeaderResponseParser>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />"))
-                                     .Repeat.Once()
-                                     .Return(null))
+                .Expecting(() => Expect.On(connection)
+                    .Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />"))
+                    .Repeat.Once()
+                    .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml")))
                 .Verify(() => {
-                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
                     ops.Optimize(null);
                 });
         }
@@ -248,15 +340,17 @@ namespace SolrNet.Tests {
         [Test]
         public void OptimizeWithOptions() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var headerParser = mocks.DynamicMock<ISolrHeaderResponseParser>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />"))
-                                     .Repeat.Once()
-                                     .Return(null))
+                .Expecting(() => Expect.On(connection)
+                    .Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />"))
+                    .Repeat.Once()
+                    .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml")))
                 .Verify(() => {
-                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
                     ops.Optimize(new CommitOptions {WaitFlush = true, WaitSearcher = true});
                 });
         }
@@ -264,15 +358,17 @@ namespace SolrNet.Tests {
         [Test]
         public void OptimizeWithWaitOptions() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var executer = mocks.CreateMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var headerParser = mocks.DynamicMock<ISolrHeaderResponseParser>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithoutUniqueKey>>();
             With.Mocks(mocks)
-                .Expecting(() => Expect.Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />"))
-                                     .Repeat.Once()
-                                     .Return(null))
+                .Expecting(() => Expect.On(connection)
+                    .Call(connection.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />"))
+                    .Repeat.Once()
+                    .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml")))
                 .Verify(() => {
-                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer);
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
                     ops.Optimize(new CommitOptions {WaitFlush = true, WaitSearcher = true});
                 });
         }
@@ -284,23 +380,31 @@ namespace SolrNet.Tests {
             const int rows = 20;
 
             var mocks = new MockRepository();
-            //var connection = mocks.CreateMock<ISolrConnection>();
+            //var connection = mocks.StrictMock<ISolrConnection>();
             var query = new Dictionary<string, string>();
             query["q"] = qstring;
             query["start"] = start.ToString();
             query["rows"] = rows.ToString();
             var connection = new MockConnection(query);
-            var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
-            With.Mocks(mocks).Expecting(() => {
-                Expect.On(parser).Call(parser.Parse(null))
-                    .IgnoreArguments()
-                    .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
-            }).Verify(() => {
-                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
-                var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
-                var r = solr.Query(new SolrQuery(qstring), new QueryOptions {Start = start, Rows = rows});
-            });
+            var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var querySerializer = mocks.StrictMock<ISolrQuerySerializer>();
+            With.Mocks(mocks)
+                .Expecting(() => {
+                    Expect.On(querySerializer)
+                        .Call(querySerializer.Serialize(null))
+                        .IgnoreArguments()
+                        .Return(qstring);
+                    Expect.On(parser)
+                        .Call(parser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
+                })
+                .Verify(() => {
+                    var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(parser, connection, querySerializer, null);
+                    var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer, null, null, null);
+                    var r = solr.Query(new SolrQuery(qstring), new QueryOptions {Start = start, Rows = rows});
+                });
         }
 
         [Test]
@@ -313,23 +417,31 @@ namespace SolrNet.Tests {
             query["rows"] = SolrQueryExecuter<TestDocumentWithUniqueKey>.ConstDefaultRows.ToString();
             query["sort"] = "id asc,name desc";
             var connection = new MockConnection(query);
-            var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
-            With.Mocks(mocks).Expecting(() => {
-                Expect.On(parser).Call(parser.Parse(null))
-                    .IgnoreArguments()
-                    .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
-            }).Verify(() => {
-                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
-                var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
-                var r = solr.Query(new SolrQuery(qstring),
-                                   new QueryOptions {
-                                       OrderBy = new[] {
-                                           new SortOrder("id", Order.ASC),
-                                           new SortOrder("name", Order.DESC)
-                                       }
-                                   });
-            });
+            var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var querySerializer = mocks.StrictMock<ISolrQuerySerializer>();
+            With.Mocks(mocks)
+                .Expecting(() => {
+                    Expect.On(querySerializer)
+                        .Call(querySerializer.Serialize(null))
+                        .IgnoreArguments()
+                        .Return(qstring);
+                    Expect.On(parser)
+                        .Call(parser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
+                })
+                .Verify(() => {
+                    var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(parser, connection, querySerializer, null);
+                    var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer, null, null, null);
+                    var r = solr.Query(new SolrQuery(qstring),
+                                       new QueryOptions {
+                                           OrderBy = new[] {
+                                               new SortOrder("id", Order.ASC),
+                                               new SortOrder("name", Order.DESC)
+                                           }
+                                       });
+                });
         }
 
         [Test]
@@ -345,15 +457,21 @@ namespace SolrNet.Tests {
             query["rows"] = rows.ToString();
             query["sort"] = "id asc,name desc";
             var connection = new MockConnection(query);
-            var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var querySerializer = mocks.StrictMock<ISolrQuerySerializer>();
             With.Mocks(mocks).Expecting(() => {
-                Expect.On(parser).Call(parser.Parse(null))
+                Expect.On(querySerializer)
+                    .Call(querySerializer.Serialize(null))
+                    .IgnoreArguments()
+                    .Return(qstring);
+                Expect.On(parser)
+                    .Call(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
-                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
-                var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
+                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(parser, connection, querySerializer, null);
+                var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer, null, null, null);
                 var r = solr.Query(new SolrQuery(qstring), new QueryOptions {
                     Start = start,
                     Rows = rows,
@@ -374,15 +492,18 @@ namespace SolrNet.Tests {
             query["facet"] = "true";
             query["facet.query"] = "id:1";
             var connection = new MockConnection(query);
-            var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var querySerializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
+            var facetQuerySerializer = new DefaultFacetQuerySerializer(querySerializer, new DefaultFieldSerializer());
             With.Mocks(mocks).Expecting(() => {
-                Expect.On(parser).Call(parser.Parse(null))
+                Expect.On(parser)
+                    .Call(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
-                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
-                var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
+                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(parser, connection, querySerializer, facetQuerySerializer);
+                var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer, null, null, null);
                 var r = solr.Query(new SolrQuery(""), new QueryOptions {
                     Facet = new FacetParameters {
                         Queries = new ISolrFacetQuery[] {
@@ -403,15 +524,22 @@ namespace SolrNet.Tests {
             query["facet.field"] = "id";
             query["f.id.facet.limit"] = "3";
             var connection = new MockConnection(query);
-            var parser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var querySerializer = mocks.DynamicMock<ISolrQuerySerializer>();
+            var facetQuerySerializer = new DefaultFacetQuerySerializer(querySerializer, new DefaultFieldSerializer());
             With.Mocks(mocks).Expecting(() => {
-                Expect.On(parser).Call(parser.Parse(null))
+                Expect.On(querySerializer)
+                    .Call(querySerializer.Serialize(null))
+                    .IgnoreArguments()
+                    .Return("");
+                Expect.On(parser)
+                    .Call(parser.Parse(null))
                     .IgnoreArguments()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey>());
             }).Verify(() => {
-                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, parser);
-                var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer);
+                var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(parser, connection, querySerializer, facetQuerySerializer);
+                var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer, null, null, null);
                 var r = solr.Query(new SolrQuery(""), new QueryOptions {
                     Facet = new FacetParameters {
                         Queries = new ISolrFacetQuery[] {
@@ -431,11 +559,13 @@ namespace SolrNet.Tests {
             query["facet.field"] = "cat";
             query["rows"] = "0";
             var connection = new MockConnection(query);
-            var resultParser = mocks.CreateMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
-            var mapper = mocks.CreateMock<IReadOnlyMappingManager>();
-            var docSerializer = mocks.CreateMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var resultParser = mocks.StrictMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
             With.Mocks(mocks).Expecting(() => {
-                Expect.Call(resultParser.Parse(""))
+                Expect.On(resultParser)
+                    .Call(resultParser.Parse(""))
                     .IgnoreArguments()
                     .Repeat.Once()
                     .Return(new SolrQueryResults<TestDocumentWithUniqueKey> {
@@ -449,9 +579,11 @@ namespace SolrNet.Tests {
                         }
                     });
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocumentWithUniqueKey>(connection, resultParser);
-                var basicSolr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, queryExecuter, docSerializer);
-                var solr = new SolrServer<TestDocumentWithUniqueKey>(basicSolr, mapper);
+                var querySerializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
+                var facetQuerySerializer = new DefaultFacetQuerySerializer(querySerializer, new DefaultFieldSerializer());
+                var queryExecuter = new SolrQueryExecuter<TestDocumentWithUniqueKey>(resultParser, connection, querySerializer, facetQuerySerializer);
+                var basicSolr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, queryExecuter, docSerializer, null, null, null);
+                var solr = new SolrServer<TestDocumentWithUniqueKey>(basicSolr, mapper, validationManager);
                 var r = solr.FacetFieldQuery(new SolrFacetFieldQuery("cat"));
                 Assert.AreEqual(2, r.Count);
                 Assert.AreEqual("electronics", Func.First(r).Key);
@@ -461,7 +593,7 @@ namespace SolrNet.Tests {
         [Test]
         public void SearchResults_ShouldBeIterable() {
             var mocks = new MockRepository();
-            var results = mocks.CreateMock<ISolrQueryResults<string>>();
+            var results = mocks.StrictMock<ISolrQueryResults<string>>();
             Assert.IsInstanceOfType(typeof(IEnumerable<string>), results);
         }
 
@@ -470,22 +602,25 @@ namespace SolrNet.Tests {
         [Test]
         public void NullableDateTime() {
             var mocks = new MockRepository();
-            var connection = mocks.CreateMock<ISolrConnection>();
-            var resultParser = mocks.CreateMock<ISolrQueryResultParser<TestDocWithNullable>>();
-            var queryExecuter = new SolrQueryExecuter<TestDocWithNullable>(connection, resultParser);
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var responseParser = mocks.DynamicMock<ISolrHeaderResponseParser>();
+            var resultParser = mocks.StrictMock<ISolrQueryResultParser<TestDocWithNullable>>();
+            var queryExecuter = new SolrQueryExecuter<TestDocWithNullable>(resultParser, connection, null, null);
             var mapper = new AttributesMappingManager();
             var docSerializer = new SolrDocumentSerializer<TestDocWithNullable>(mapper, new DefaultFieldSerializer());
-            var basicSolr = new SolrBasicServer<TestDocWithNullable>(connection, queryExecuter, docSerializer);
-            var solr = new SolrServer<TestDocWithNullable>(basicSolr, mapper);
+            var validationManager = mocks.StrictMock<IMappingValidator>();
+            var basicSolr = new SolrBasicServer<TestDocWithNullable>(connection, queryExecuter, docSerializer, null, responseParser, null);
+            var solr = new SolrServer<TestDocWithNullable>(basicSolr, mapper, validationManager);
             string xml = null;
             With.Mocks(mocks)
                 .Expecting(() => {
-                    Expect.Call(connection.Post(null, null))
+                    Expect.On(connection)
+                        .Call(connection.Post(null, null))
                         .IgnoreArguments()
                         .Do(new Writer(delegate(string u, string s) {
                             Console.WriteLine(s);
                             xml = s;
-                            return null;
+                            return EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml");
                         }));
                 })
                 .Verify(() => {

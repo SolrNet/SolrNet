@@ -1,13 +1,28 @@
+- Breaking change: field collapsing changed completely.
+- Breaking change: removed ServerURL and Version properties from ISolrConnection.
+- Breaking change: changed Highlighting and MoreLikeThis result classes. Indices are now string instead of T.
+- Breaking change: all chainable methods on ISolrOperations et al now return ResponseHeader instead of 'this'.
+- Breaking change: removed NoUniqueKeyException. Now IReadOnlyMappingManager.GetUniqueKey() returns null if there is no unique key.
+- Added mapping validation
+- Upgraded to Windsor 2.1.1
+- Added StructureMap integration
+- Fixed culture-related bug in highlighting parameters
+- Fixed culture-related bug in range query
+- Added MaxSegments and ExpungeDeletes parameters to commit/optimize
+- Breaking change: renamed WaitOptions to CommitOptions
+- Breaking change: fixed field boosting, was of type int, now is float
+- Added field index-time boosting (issue #98)
+- Breaking change: removed obsolete exceptions: BadMappingException, CollectionTypeNotSupportedException, FieldNotFoundException
 - Added support for delete by id+query in the same request (issue #50)
 - Fixed issue #95 : Highlights didn't support several snippets in results
 - Fixed performance issue with SolrMultipleCriteriaQuery (issue #94)
-- Removed ISolrDocument interface
-- Added support for loose mapping
-- Improved multi-core configuration in Windsor facility
-- Added Rollback command
-- Added HTTP-level caching
+- Breaking change: removed ISolrDocument interface
+- Added support for loose mapping (issue #53)
+- Improved multi-core configuration in Windsor facility (issue #70)
+- Added Rollback command (issue #51)
+- Added HTTP-level caching (issue #75)
 - Added operator - for queries
-- Added support for LocalParams
+- Added support for LocalParams (issue #62)
 
 0.2.3 (2009-12-29)
 ===

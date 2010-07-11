@@ -56,11 +56,7 @@ namespace SolrNet.Mapping {
                                          Property = kv.Key, 
                                          FieldName = kv.Value[0].FieldName ?? kv.Key.Name
                                      });
-            try {
-                return Func.First(fields);
-            } catch (InvalidOperationException) {
-                throw new NoUniqueKeyException(type);
-            }
+            return Func.FirstOrDefault(fields);
         }
 
         public ICollection<Type> GetRegisteredTypes() {

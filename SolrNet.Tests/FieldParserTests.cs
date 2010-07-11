@@ -17,27 +17,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Xml;
 using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Impl;
 using SolrNet.Impl.FieldParsers;
+using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
     public class FieldParserTests {
-        public XmlNode CreateNode(string name, string innerText) {
-            var doc = new XmlDocument();
-            var node = doc.CreateElement(name);
-            node.InnerText = innerText;
-            return node;
-        }
-
         [Test]
         public void FloatFieldParser_Parse() {
             var p = new FloatFieldParser();
-            var v = p.Parse(CreateNode("int", "31"), null);
+            var v = p.Parse(XmlUtils.CreateNode("int", "31"), null);
             Assert.IsInstanceOfType(typeof(float), v);
             Assert.AreEqual(31f, v);
         }
@@ -45,12 +37,12 @@ namespace SolrNet.Tests {
         [Test]
         public void FloatFieldParser_cant_handle_string() {
             var p = new FloatFieldParser();
-            Assert.Throws<FormatException>(() => p.Parse(CreateNode("str", "pepe"), null));
+            Assert.Throws<FormatException>(() => p.Parse(XmlUtils.CreateNode("str", "pepe"), null));
         }
 
         public CollectionFieldParser CreateCollectionFieldParser() {
             var mocks = new MockRepository();
-            var vp = mocks.CreateMock<ISolrFieldParser>();
+            var vp = mocks.StrictMock<ISolrFieldParser>();
             var p = new CollectionFieldParser(vp);
             return p;
         }
@@ -86,11 +78,36 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void DoubleFieldParser_with_culture() {
-            using (ThreadSettings.Culture("fr-FR")) {
-                var p = new DoubleFieldParser();
-                p.Parse(CreateNode("item", "123.99"), typeof(float));
-            }
+        public void DoubleFieldParser() {
+            var p = new DoubleFieldParser();
+            p.Parse(XmlUtils.CreateNode("item", "123.99"), typeof(float));
+        }
+
+        [Test]
+        public void DefaultFieldParser_EnumAsString() {
+            var p = new DefaultFieldParser();
+            var r = p.Parse(XmlUtils.CreateNode("str", "One"), typeof(Numbers));
+            Assert.IsInstanceOfType(typeof(Numbers), r);
+        }
+
+        [Test]
+        public void EnumAsString() {
+            var p = new EnumFieldParser();
+            var r = p.Parse(XmlUtils.CreateNode("str", "One"), typeof(Numbers));
+            Assert.IsInstanceOfType(typeof(Numbers), r);
+        }
+
+        private enum Numbers {
+            One, Two
+        }
+
+        [Test]
+        public void SupportGuid() {
+            var p = new DefaultFieldParser();
+            var g = Guid.NewGuid();
+            var r = p.Parse(XmlUtils.CreateNode("str", g.ToString()), typeof(Guid));
+            var pg = (Guid)r;
+            Assert.AreEqual(g, pg);
         }
     }
 }

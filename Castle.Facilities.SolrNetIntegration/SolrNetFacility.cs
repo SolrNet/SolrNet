@@ -22,10 +22,15 @@ using Castle.MicroKernel.Registration;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
+using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
+using SolrNet.Mapping.Validation;
+using SolrNet.Mapping.Validation.Rules;
+using SolrNet.Schema;
 using SolrNet.Utils;
 
 namespace Castle.Facilities.SolrNetIntegration {
@@ -63,18 +68,17 @@ namespace Castle.Facilities.SolrNetIntegration {
         protected override void Init() {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Kernel.AddComponentInstance<IReadOnlyMappingManager>(mapper);
-            Kernel.Register(Component.For<ISolrCache>().ImplementedBy<HttpRuntimeCache>());
+            //Kernel.Register(Component.For<ISolrCache>().ImplementedBy<HttpRuntimeCache>());
             Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
                                 .Parameters(Parameter.ForKey("serverURL").Eq(GetSolrUrl())));
+
+            Kernel.Register(Component.For(typeof (ISolrDocumentActivator<>)).ImplementedBy(typeof(SolrDocumentActivator<>)));
 
             Kernel.Register(Component.For(typeof (ISolrDocumentResponseParser<>))
                 .ImplementedBy(typeof (SolrDocumentResponseParser<>)));
             Kernel.Register(Component.For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
-                .ImplementedBy<SolrDictionaryDocumentResponseParser>()
-                .ServiceOverrides(ServiceOverride.ForKey("fieldParser").Eq(typeof(InferringFieldParser).Name)));
+                .ImplementedBy<SolrDictionaryDocumentResponseParser>());
 
-            Kernel.Register(Component.For(typeof(ISolrDocumentIndexer<>))
-                .ImplementedBy(typeof (SolrDocumentIndexer<>)));
             foreach (var parserType in new[] {
                 typeof (ResultsResponseParser<>),
                 typeof (HeaderResponseParser<>),
@@ -87,6 +91,13 @@ namespace Castle.Facilities.SolrNetIntegration {
             }) {
                 Kernel.Register(Component.For(typeof (ISolrResponseParser<>)).ImplementedBy(parserType));
             }
+            Kernel.Register(Component.For<ISolrHeaderResponseParser>().ImplementedBy<HeaderResponseParser<string>>());
+            foreach (var validationRule in new[] {
+                typeof(MappedPropertiesIsInSolrSchemaRule),
+                typeof(RequiredFieldsAreMappedRule),
+                typeof(UniqueKeyMatchesMappingRule),
+            })
+                Kernel.Register(Component.For<IValidationRule>().ImplementedBy(validationRule));
             Kernel.Resolver.AddSubResolver(new StrictArrayResolver(Kernel));
             Kernel.Register(Component.For(typeof (ISolrQueryResultParser<>))
                                 .ImplementedBy(typeof (SolrQueryResultParser<>)));
@@ -105,12 +116,15 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For<ISolrFieldParser>()
                 .ImplementedBy<DefaultFieldParser>());
 
-            Kernel.Register(Component.For<ISolrFieldParser>()
-                .ImplementedBy<InferringFieldParser>()
-                .Named(typeof(InferringFieldParser).Name));
-
             Kernel.Register(Component.For<ISolrFieldSerializer>().ImplementedBy<DefaultFieldSerializer>());
+
+            Kernel.Register(Component.For<ISolrQuerySerializer>().ImplementedBy<DefaultQuerySerializer>());
+            Kernel.Register(Component.For<ISolrFacetQuerySerializer>().ImplementedBy<DefaultFacetQuerySerializer>());
+
             Kernel.Register(Component.For<ISolrDocumentPropertyVisitor>().ImplementedBy<DefaultDocumentVisitor>());
+
+            Kernel.Register(Component.For<ISolrSchemaParser>().ImplementedBy<SolrSchemaParser>());
+            Kernel.Register(Component.For<IMappingValidator>().ImplementedBy<MappingValidator>());
 
             AddCoresFromConfig();
             foreach (var core in cores) {

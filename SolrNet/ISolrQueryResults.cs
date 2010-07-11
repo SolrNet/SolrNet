@@ -51,7 +51,7 @@ namespace SolrNet {
         /// <summary>
         /// Highlight results
         /// </summary>
-		IDictionary<T, IDictionary<string, ICollection<string>>> Highlights { get; set; }
+		IDictionary<string, IDictionary<string, ICollection<string>>> Highlights { get; set; }
 
         /// <summary>
         /// Spell checking results
@@ -61,7 +61,7 @@ namespace SolrNet {
         /// <summary>
         /// More-like-this results
         /// </summary>
-        IDictionary<T, IList<T>> SimilarResults { get; set; }
+        IDictionary<string, IList<T>> SimilarResults { get; set; }
 
         /// <summary>
         /// Stats results

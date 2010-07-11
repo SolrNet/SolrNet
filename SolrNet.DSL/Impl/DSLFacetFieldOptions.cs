@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 
 namespace SolrNet.DSL.Impl {
-    public class DSLFacetFieldOptions<T> : DSLRun<T>, IDSLFacetFieldOptions<T> where T : new() {
+    public class DSLFacetFieldOptions<T> : DSLRun<T>, IDSLFacetFieldOptions<T> {
         private readonly SolrFacetFieldQuery facetQuery;
 
         public DSLFacetFieldOptions(ISolrConnection connection, ISolrQuery query, ICollection<SortOrder> order, ICollection<ISolrFacetQuery> facets, SolrFacetFieldQuery facetQuery) 

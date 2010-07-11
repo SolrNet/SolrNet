@@ -4,7 +4,7 @@
         xmlns="http://www.gallio.org/">
   <traits>
     <name>TeamCity Integration Plugin</name>
-    <version>3.1.0.0</version>
+    <version>3.2.0.0</version>
     <description>Provides a test runner extension capable of formatting test results to be presented within TeamCity.</description>
   </traits>
 
@@ -19,13 +19,9 @@
   </files>
 
   <assemblies>
-    <assembly fullName="Gallio.TeamCityIntegration, Version=3.1.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
-              codeBase="Gallio.TeamCityIntegration.dll">
-      <qualifyPartialName>true</qualifyPartialName>
-      <bindingRedirects>
-        <bindingRedirect oldVersion="3.1.0.0-65535.65535.65535.65535" />
-      </bindingRedirects>
-    </assembly>
+    <assembly fullName="Gallio.TeamCityIntegration, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
+              codeBase="Gallio.TeamCityIntegration.dll"
+              qualifyPartialName="true" />
   </assemblies>
 
   <components>

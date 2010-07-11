@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <result numFound="1" start="0">
+    <doc>
+      <str name="DictOne">1.45</str>
+      <str name="DictTwo">2.234</str>
+      <date name="timestamp">1-01-01T00:00:00Z</date>
+      <float name="price">92.0</float>
+      <arr name="features">
+        <str>7200RPM, 8MB cache, IDE Ultra ATA-133</str>
+        <str>NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor</str>
+        <str>control</str>
+      </arr>
+    </doc>
+  </result>
+</response>

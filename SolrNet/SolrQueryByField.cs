@@ -21,27 +21,25 @@ namespace SolrNet {
     /// Queries a field for a value
     /// </summary>
 	public class SolrQueryByField : AbstractSolrQuery {
-		private readonly string q;
+		private readonly string fieldName;
+        private readonly string fieldValue;
 
-		public SolrQueryByField(string fieldName, string fieldValue) {
-			if (fieldName == null || fieldValue == null)
-				q = null;
-			else
-				q = string.Format("{0}:{1}", fieldName, quote(fieldValue));
-		}
+        /// <summary>
+        /// Queries a field for a value
+        /// </summary>
+        /// <param name="fieldName">Field name</param>
+        /// <param name="fieldValue">Field value</param>
+        public SolrQueryByField(string fieldName, string fieldValue) {
+            this.fieldName = fieldName;
+            this.fieldValue = fieldValue;
+        }
 
-		public string quote(string value) {
-            string r = Regex.Replace(value, "(\\+|\\-|\\&\\&|\\|\\||\\!|\\{|\\}|\\[|\\]|\\^|\\(|\\)|\\\"|\\~|\\:|\\;|\\\\)", "\\$1");
-			if (r.IndexOf(' ') != -1)
-				r = string.Format("\"{0}\"", r);
-			return r;
-		}
+        public string FieldName {
+            get { return fieldName; }
+        }
 
-		/// <summary>
-		/// query string
-		/// </summary>
-		public override string Query {
-			get { return q; }
-		}
+        public string FieldValue {
+            get { return fieldValue; }
+        }
 	}
 }

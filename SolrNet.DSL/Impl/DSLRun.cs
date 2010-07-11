@@ -21,7 +21,7 @@ using SolrNet.Impl;
 using SolrNet.Utils;
 
 namespace SolrNet.DSL.Impl {
-    public class DSLRun<T> : IDSLRun<T> where T : new() {
+    public class DSLRun<T> : IDSLRun<T> {
         protected readonly ICollection<SortOrder> order = new List<SortOrder>();
         protected readonly ICollection<ISolrFacetQuery> facets = new List<ISolrFacetQuery>();
         protected readonly HighlightingParameters highlight;
@@ -45,8 +45,16 @@ namespace SolrNet.DSL.Impl {
             this.highlight = highlight;
         }
 
+        private ISolrQueryExecuter<T> NewQueryExecuter() {
+            return new SolrQueryExecuter<T>(
+                ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(),
+                connection,
+                ServiceLocator.Current.GetInstance<ISolrQuerySerializer>(),
+                ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>());
+        }
+
         public ISolrQueryResults<T> Run() {
-            var exe = new SolrQueryExecuter<T>(connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>());
+            var exe = NewQueryExecuter();
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
                 Facet = new FacetParameters {
@@ -57,7 +65,7 @@ namespace SolrNet.DSL.Impl {
         }
 
         public ISolrQueryResults<T> Run(int start, int rows) {
-            var exe = new SolrQueryExecuter<T>(connection, ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>());
+            var exe = NewQueryExecuter(); 
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
                 Facet = new FacetParameters {
@@ -106,8 +114,9 @@ namespace SolrNet.DSL.Impl {
 
         public override string ToString() {
             var l = new List<string>();
+            var serializer = ServiceLocator.Current.GetInstance<ISolrQuerySerializer>();
             if (query != null)
-                l.Add(query.Query);
+                l.Add(serializer.Serialize(query));
             if (highlight != null)
                 l.Add("highlight=" + highlight);
             if (facets != null)

@@ -33,7 +33,6 @@ namespace SolrNet {
         /// <summary>
         /// Gets unique key for the type
         /// </summary>
-        /// <exception cref="NoUniqueKeyException">Thrown when <paramref name="type"/> has no unique key defined</exception>
         /// <param name="type"></param>
         /// <returns></returns>
         SolrFieldModel GetUniqueKey(Type type);

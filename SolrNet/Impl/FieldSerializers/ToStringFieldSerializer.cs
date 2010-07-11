@@ -22,6 +22,11 @@ namespace SolrNet.Impl.FieldSerializers {
     /// Serializes using .ToString()
     /// </summary>
     public class ToStringFieldSerializer: ISolrFieldSerializer {
+        /// <summary>
+        /// True if this serializer can handle the type
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public bool CanHandleType(Type t) {
             return true;
         }

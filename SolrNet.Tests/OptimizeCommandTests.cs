@@ -24,7 +24,6 @@ namespace SolrNet.Tests
                     Console.WriteLine(s);
                     return null;
                 }));
-                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
             }).Verify(() =>
             {
                 var cmd = new OptimizeCommand();
@@ -46,7 +45,6 @@ namespace SolrNet.Tests
                     Console.WriteLine(s);
                     return null;
                 }));
-                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
             }).Verify(() =>
             {
                 var cmd = new OptimizeCommand();
@@ -70,7 +68,6 @@ namespace SolrNet.Tests
                     Console.WriteLine(s);
                     return null;
                 }));
-                Expect.On(conn).Call(conn.ServerURL).Repeat.Any().Return("");
             }).Verify(() =>
             {
                 var cmd = new OptimizeCommand();

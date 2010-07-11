@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <lst name="responseHeader">
+    <int name="status">0</int>
+    <int name="QTime">26</int>
+    <lst name="params">
+      <str name="mlt.mindf">1</str>
+      <str name="mlt.fl">manu,cat</str>
+      <str name="fl">id,score</str>
+      <str name="q">apache</str>
+      <str name="mlt.mintf">1</str>
+      <str name="mlt">true</str>
+    </lst>
+  </lst>
+  <result name="response" numFound="2" start="0" maxScore="0.41780883">
+    <doc>
+      <float name="score">0.41780883</float>
+      <str name="id">UTF8TEST</str>
+    </doc>
+    <doc>
+      <float name="score">0.33424705</float>
+      <str name="id">SOLR1000</str>
+    </doc>
+  </result>
+  <lst name="moreLikeThis">
+    <result name="UTF8TEST" numFound="1" start="0" maxScore="5.9791937">
+      <doc>
+        <float name="score">5.9791937</float>
+        <str name="id">SOLR1000</str>
+      </doc>
+    </result>
+    <result name="SOLR1000" numFound="1" start="0" maxScore="5.9791937">
+      <doc>
+        <float name="score">5.9791937</float>
+        <str name="id">UTF8TEST</str>
+      </doc>
+    </result>
+  </lst>
+</response>

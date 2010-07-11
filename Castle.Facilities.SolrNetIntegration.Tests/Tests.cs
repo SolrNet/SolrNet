@@ -28,6 +28,7 @@ using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet;
 using SolrNet.Impl;
+using SolrNet.Mapping.Validation;
 
 namespace Castle.Facilities.SolrNetIntegration.Tests {
     [TestFixture]
@@ -62,7 +63,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         }
 
         [Test]
-        [Ignore("Requires a running solr instance")]
+        [Category("Integration")]
         public void Ping_Query() {
             var configStore = new DefaultConfigurationStore();
             var configuration = new MutableConfiguration("facility");
@@ -153,9 +154,9 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Kernel.DependencyResolving += (client, model, dep) => {
                 if (model.TargetType == typeof(ISolrConnection)) {
                     if (client.Service == typeof(ISolrBasicOperations<Core1Entity>) || client.Service == typeof(ISolrQueryExecuter<Core1Entity>))
-                        Assert.AreEqual(core1url, ((ISolrConnection) dep).ServerURL);
+                        Assert.AreEqual(core1url, ((SolrConnection) dep).ServerURL);
                     if (client.Service == typeof(ISolrBasicOperations<Document>) || client.Service == typeof(ISolrQueryExecuter<Document>))
-                        Assert.AreEqual(core0url, ((ISolrConnection) dep).ServerURL);
+                        Assert.AreEqual(core0url, ((SolrConnection) dep).ServerURL);
                 }
             };
 
@@ -210,11 +211,11 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Kernel.DependencyResolving += (client, model, dep) => {
                 if (model.TargetType == typeof(ISolrConnection)) {
                     if (client.Name.StartsWith("core0-id"))
-                        Assert.AreEqual("http://localhost:8983/solr/core0", ((ISolrConnection)dep).ServerURL);
+                        Assert.AreEqual("http://localhost:8983/solr/core0", ((SolrConnection)dep).ServerURL);
                     if (client.Name.StartsWith("core1-id"))
-                        Assert.AreEqual("http://localhost:8983/solr/core1", ((ISolrConnection)dep).ServerURL);
+                        Assert.AreEqual("http://localhost:8983/solr/core1", ((SolrConnection)dep).ServerURL);
                     if (client.Name.StartsWith("core2-id"))
-                        Assert.AreEqual("http://localhost:8983/solr/core1", ((ISolrConnection)dep).ServerURL);
+                        Assert.AreEqual("http://localhost:8983/solr/core1", ((SolrConnection)dep).ServerURL);
                 }
             };
 
@@ -224,7 +225,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         }
 
         [Test]
-        [Ignore("Requires a running solr instance")]
+        [Category("Integration")]
         public void DictionaryDocument() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
@@ -240,7 +241,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         }
 
         [Test]
-        [Ignore("Requires a running solr instance")]
+        [Category("Integration")]
         public void DictionaryDocument_add() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
@@ -270,6 +271,14 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.AddFacility("solr", solrFacility);
             var serializer = container.Resolve<ISolrDocumentSerializer<Dictionary<string, object>>>();
             Assert.IsInstanceOfType<SolrDictionarySerializer>(serializer);
+        }
+
+        [Test]
+        public void MappingValidationManager() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            var validator = container.Resolve<IMappingValidator>();
         }
 
         public class Document {}

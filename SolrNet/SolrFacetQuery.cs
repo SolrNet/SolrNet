@@ -21,14 +21,14 @@ namespace SolrNet {
     /// Arbitrary facet query
     /// </summary>
 	public class SolrFacetQuery : ISolrFacetQuery {
-		private readonly string query;
+        private readonly ISolrQuery query;
 
 		public SolrFacetQuery(ISolrQuery q) {
-			query = q.Query;
+			query = q;
 		}
 
-		public IEnumerable<KeyValuePair<string, string>> Query {
-			get { yield return new KeyValuePair<string, string>("facet.query", query); }
-		}
+        public ISolrQuery Query {
+            get { return query; }
+        }
 	}
 }

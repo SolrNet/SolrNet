@@ -20,6 +20,7 @@ using SampleSolrApp.Controllers;
 using SampleSolrApp.Models;
 using SolrNet;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 
 namespace SampleSolrApp.Tests.Controllers {
     [TestFixture]

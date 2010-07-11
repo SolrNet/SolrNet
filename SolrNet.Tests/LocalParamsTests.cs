@@ -17,6 +17,8 @@
 using System.Collections.Generic;
 using MbUnit.Framework;
 using SolrNet.Exceptions;
+using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -26,6 +28,12 @@ namespace SolrNet.Tests {
         public void Serialize(Dictionary<string, string> s, string result) {
             Assert.AreEqual(result, new LocalParams(s).ToString());
         }
+
+        public string SerializeQuery(object q) {
+            var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
+            return serializer.Serialize(q);
+        }
+
 
         public IEnumerable<object[]> ParamsFactory() {
             yield return new object[] {new Dictionary<string, string>(), ""};
@@ -74,7 +82,7 @@ namespace SolrNet.Tests {
             };
             var q = new SolrQueryByField("field", "value");
             var qq = p + q;
-            Assert.AreEqual("{!type=spatial}field:value", qq.Query);
+            Assert.AreEqual("{!type=spatial}field:value", SerializeQuery(qq));
         }
 
         [Test]
@@ -85,7 +93,7 @@ namespace SolrNet.Tests {
             var q = new SolrQueryByField("field", "value");
             var q2 = new SolrQueryByRange<decimal>("price", 100m, 200m);
             var qq = p + (q + q2);
-            Assert.AreEqual("{!type=spatial}(field:value  price:[100 TO 200])", qq.Query);
+            Assert.AreEqual("{!type=spatial}(field:value  price:[100 TO 200])", SerializeQuery(qq));
         }
     }
 }

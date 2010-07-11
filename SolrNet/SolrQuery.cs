@@ -14,11 +14,13 @@
 // limitations under the License.
 #endregion
 
+using SolrNet.Impl;
+
 namespace SolrNet {
 	/// <summary>
 	/// Basic solr query
 	/// </summary>	
-    public class SolrQuery : AbstractSolrQuery {
+    public class SolrQuery : AbstractSolrQuery, ISelfSerializingQuery {
 		private readonly string query;
 
 		/// <summary>
@@ -32,7 +34,7 @@ namespace SolrNet {
 		/// <summary>
 		/// query to execute
 		/// </summary>
-		public override string Query {
+		public string Query {
 			get { return query; }
 		}
 

@@ -428,6 +428,9 @@
        <str name="version">2.1</str>
         -->
      </lst>
+     <arr name="last-components">
+       <str>spellcheck</str>
+     </arr>
   </requestHandler>
 
 <!-- Please refer to http://wiki.apache.org/solr/SolrReplication for details on configuring replication -->
@@ -577,7 +580,8 @@
       <str>myLastComponentName</str>
     </arr>
   -->
-
+	<searchComponent name="query" class="org.apache.solr.handler.component.CollapseComponent" />
+  
    <!-- The spell check component can return a list of alternative spelling
   suggestions.  -->
   <searchComponent name="spellcheck" class="solr.SpellCheckComponent">

@@ -25,12 +25,8 @@ namespace SolrNet {
             this.field = field;
         }
 
-
-        public override string Query {
-            get {
-                var range = new SolrQueryByRange<string>(field, "*", "*");
-                return range.Query;
-            }
+        public string Field {
+            get { return field; }
         }
     }
 }

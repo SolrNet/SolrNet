@@ -16,26 +16,34 @@
 
 using MbUnit.Framework;
 using System.Linq;
+using SolrNet.Impl.FieldSerializers;
+using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
 	[TestFixture]
 	public class SolrQueryInListTests {
+
+        public string Serialize(object q) {
+            var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
+            return serializer.Serialize(q);
+        }
+
 		[Test]
 		public void ListOfInt() {
 			var q = new SolrQueryInList("id", new[] {1, 2, 3, 4}.Select(i => i.ToString()));
-			Assert.AreEqual("(id:1 OR id:2 OR id:3 OR id:4)", q.Query);
+			Assert.AreEqual("(id:1 OR id:2 OR id:3 OR id:4)", Serialize(q));
 		}
 
         [Test]
         public void ShouldQuoteValues() {
             var q = new SolrQueryInList("id", new[] {"one", "two thousand"});
-            Assert.AreEqual("(id:one OR id:\"two thousand\")", q.Query);
+            Assert.AreEqual("(id:one OR id:\"two thousand\")", Serialize(q));
         }
 
         [Test]
         public void EmptyList_should_be_null_query() {
             var q = new SolrQueryInList("id", new string[0]);
-            Assert.IsNull(q.Query);
+            Assert.IsNull(Serialize(q));
         }
 	}
 }

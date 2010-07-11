@@ -23,9 +23,28 @@ namespace SolrNet.Exceptions {
     /// </summary>
     [Serializable]
 	public class SolrConnectionException : SolrNetException {
+        /// <summary>
+        /// Error connecting to Solr.
+        /// </summary>
+        /// <param name="message"></param>
 		public SolrConnectionException(string message) : base(message) {}
+
+        /// <summary>
+        /// Error connecting to Solr.
+        /// </summary>
+        /// <param name="innerException"></param>
 		public SolrConnectionException(Exception innerException) : base(innerException) {}
+
+        /// <summary>
+        /// Error connecting to Solr.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="innerException"></param>
 		public SolrConnectionException(string message, Exception innerException) : base(message, innerException) {}
+
+        /// <summary>
+        /// Error connecting to Solr.
+        /// </summary>
 		public SolrConnectionException() {}
         protected SolrConnectionException(SerializationInfo info, StreamingContext context) : base(info, context) {}
 	}

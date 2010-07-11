@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <lst name="responseHeader">
+    <int name="status">1</int>
+    <int name="QTime">15</int>
+    <lst name="params">
+      <str name="q">id:123456</str>
+      <str name="version">2.2</str>
+    </lst>
+  </lst>
+  <result name="response" numFound="1" start="0">
+    <doc>
+      <str name="advancedview"/>
+      <str name="basicview"/>
+      <int name="id">123456</int>
+    </doc>
+  </result>
+</response>

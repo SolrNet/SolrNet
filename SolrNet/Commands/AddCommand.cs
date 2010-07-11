@@ -38,7 +38,7 @@ namespace SolrNet.Commands {
         /// </summary>
         /// <param name="xml"></param>
         /// <returns></returns>
-        /// <see cref="http://cse-mjmcl.cse.bris.ac.uk/blog/2007/02/14/1171465494443.html#comment1221120563572"/>
+        /// <seealso href="http://cse-mjmcl.cse.bris.ac.uk/blog/2007/02/14/1171465494443.html#comment1221120563572"/>
         public string RemoveControlCharacters(string xml) {
             return Regex.Replace(xml, "&\\#x(0?[0-8BCEF]|1[0-9A-F]|FFF[E-F]);", "");
         }

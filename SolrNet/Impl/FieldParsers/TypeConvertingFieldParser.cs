@@ -25,21 +25,23 @@ namespace SolrNet.Impl.FieldParsers {
     /// </summary>
     public class TypeConvertingFieldParser: ISolrFieldParser {
         public bool CanHandleSolrType(string solrType) {
-            return true;
+            return solrTypes.ContainsKey(solrType);
         }
 
         public bool CanHandleType(Type t) {
-            return true;
+            return solrTypes.Values.Contains(t);
         }
 
         private static readonly IDictionary<string, Type> solrTypes;
 
         static TypeConvertingFieldParser() {
             solrTypes = new Dictionary<string, Type> {
-                {"bool", typeof(bool)},
-                {"str", typeof(string)},
-                {"int", typeof(int)},
-                {"float", typeof(float)},
+                {"bool", typeof (bool)},
+                {"str", typeof (string)},
+                {"int", typeof (int)},
+                {"float", typeof (float)},
+                {"double", typeof(double)},
+                {"long", typeof (long)},
             };
         }
 
@@ -53,9 +55,7 @@ namespace SolrNet.Impl.FieldParsers {
             if (t != typeof(object))
                 return t;
             var solrType = field.Name;
-            if (solrTypes.ContainsKey(solrType))
-                return solrTypes[solrType];
-            return t;
+            return solrTypes[solrType];
         }
 
         public object Parse(XmlNode field, Type t) {

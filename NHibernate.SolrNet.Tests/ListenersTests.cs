@@ -26,7 +26,7 @@ namespace NHibernate.SolrNet.Tests {
             var entity = new Entity {Description = "pepe"};
             mockSolr.Expect(x => x.Add(entity))
                 .Repeat.Once()
-                .Return(mockSolr);
+                .Return(null);
             mockSolr.Replay();
             using (var session = sessionFactory.OpenSession()) {
                 session.FlushMode = FlushMode.Never;
@@ -41,7 +41,7 @@ namespace NHibernate.SolrNet.Tests {
             var entity = new Entity {Description = "pepe"};
             mockSolr.Expect(x => x.Add(entity))
                 .Repeat.Never()
-                .Return(mockSolr);
+                .Return(null);
             mockSolr.Replay();
             using (var session = sessionFactory.OpenSession()) {
                 session.FlushMode = FlushMode.Never;
@@ -55,7 +55,7 @@ namespace NHibernate.SolrNet.Tests {
             var entity = new Entity {Description = "pepe"};
             mockSolr.Expect(x => x.Add(entity))
                 .Repeat.Once()
-                .Return(mockSolr);
+                .Return(null);
             mockSolr.Replay();
             using (var session = sessionFactory.OpenSession()) {
                 session.Save(entity);
@@ -68,7 +68,7 @@ namespace NHibernate.SolrNet.Tests {
             var entity = new Entity();
             mockSolr.Expect(x => x.Add(entity))
                 .Repeat.Never()
-                .Return(mockSolr);
+                .Return(null);
             mockSolr.Replay();
             using (var session = sessionFactory.OpenSession()) {
                 using (var tx = session.BeginTransaction()) {
@@ -85,7 +85,7 @@ namespace NHibernate.SolrNet.Tests {
             var entity = new Entity();
             mockSolr.Expect(x => x.Add(entity))
                 .Repeat.Once()
-                .Return(mockSolr);
+                .Return(null);
             mockSolr.Replay();
             using (var session = sessionFactory.OpenSession()) {
                 session.FlushMode = FlushMode.Commit;
@@ -106,7 +106,7 @@ namespace NHibernate.SolrNet.Tests {
             var entity = new Entity();
             mockSolr.Expect(x => x.Add(entity))
                 .Repeat.Once()
-                .Return(mockSolr);
+                .Return(null);
             mockSolr.Replay();
             using (var session = sessionFactory.OpenSession()) {
                 session.FlushMode = FlushMode.Commit;

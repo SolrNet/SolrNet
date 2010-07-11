@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <lst name="responseHeader">
+    <int name="status">0</int>
+    <int name="QTime">16</int>
+    <lst name="params">
+      <str name="hl">true</str>
+    </lst>
+  </lst>
+  <result name="response" numFound="1" start="0">
+    <doc>
+      <str name="guid">SP2514N</str>
+      <str name="id">SP2514N</str>
+    </doc>
+  </result>
+  <lst name="highlighting">
+    <lst name="SP2514N">
+      <arr name="source_en">
+        <str>
+          :&lt;/div&gt;
+          &lt;div class="body repealed"&gt; &lt;FONT
+          style="BACKGROUND-COLOR: yellow"&gt;Repealed&lt;/FONT&gt;: 80-160, s. 8
+        </str>
+        <str>
+          .&lt;/span&gt;
+          &lt;span&gt; &lt;FONT
+          style="BACKGROUND-COLOR: yellow"&gt;Repealed&lt;/FONT&gt;: 80-160, s. 8
+        </str>
+        <str>
+          .&lt;/span&gt;
+          &lt;span&gt; &lt;FONT
+          style="BACKGROUND-COLOR: yellow"&gt;Repealed&lt;/FONT&gt;: 80-160, s. 8
+        </str>
+      </arr>
+    </lst>
+  </lst>
+</response>

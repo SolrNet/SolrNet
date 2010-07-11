@@ -69,10 +69,10 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        [ExpectedException(typeof(NoUniqueKeyException))]
         public void GetUniqueKey_without_unique_key_throws() {
             var m = new AttributesMappingManager();
-            m.GetUniqueKey(typeof (AnotherEntity));
+            var pk = m.GetUniqueKey(typeof (AnotherEntity));
+            Assert.IsNull(pk);
         }
 
         [Test]

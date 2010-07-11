@@ -50,10 +50,10 @@ namespace SolrNet.Tests {
 		}
 
         [Test]
-        [ExpectedException(typeof(NoUniqueKeyException))]
-        public void NoUniqueKey_ShouldThrow() {
+        public void NoUniqueKey_IsNull() {
             var m = new AllPropertiesMappingManager();
             var pk = m.GetUniqueKey(typeof(Entity));
+            Assert.IsNull(pk);
         }
 
         [Test]

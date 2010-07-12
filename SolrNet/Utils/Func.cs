@@ -28,6 +28,7 @@ namespace SolrNet.Utils {
 		public delegate TResult Accumulator<TSource, TResult>(TSource x, TResult y);
 
 	    public delegate T Function<T>();
+        public delegate TResult Func2<TArg1, TArg2, TResult>(TArg1 a, TArg2 b);
 
 		public static TResult Reduce<TSource, TResult>(IEnumerable<TSource> source, TResult startValue,
 		                                               Accumulator<TSource, TResult> accumulator) {

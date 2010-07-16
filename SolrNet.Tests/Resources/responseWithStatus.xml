@@ -6,8 +6,8 @@
   <lst name="status">
     <lst name="core1">
       <str name="name">core1</str>
-      <str name="instanceDir">C:\Projects\FDO\Main\Common\solr\core1\</str>
-      <str name="dataDir">C:\Projects\FDO\Main\Common\solr\core1\data\</str>
+      <str name="instanceDir">C:\Projects\MYPROJECT\Main\Common\solr\core1\</str>
+      <str name="dataDir">C:\Projects\MYPROJECT\Main\Common\solr\core1\data\</str>
       <date name="startTime">2010-07-16T10:01:05.854Z</date>
       <long name="uptime">25133036</long>
       <lst name="index">
@@ -23,8 +23,8 @@
     </lst>
     <lst name="core0">
       <str name="name">core0</str>
-      <str name="instanceDir">C:\Projects\FDO\Main\Common\solr\core0\</str>
-      <str name="dataDir">C:\Projects\FDO\Main\Common\solr\core0\data\</str>
+      <str name="instanceDir">C:\Projects\MYPROJECT\Main\Common\solr\core0\</str>
+      <str name="dataDir">C:\Projects\MYPROJECT\Main\Common\solr\core0\data\</str>
       <date name="startTime">2010-07-16T16:48:15.674Z</date>
       <long name="uptime">703217</long>
       <lst name="index">

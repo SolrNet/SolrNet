@@ -47,6 +47,11 @@
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
     <Compile Include="CollapsedDocument.cs" />
+    <Compile Include="Commands\AliasCommand.cs" />
+    <Compile Include="Commands\UnloadCommand.cs" />
+    <Compile Include="Commands\RenameCommand.cs" />
+    <Compile Include="Commands\CreateCommand.cs" />
+    <Compile Include="Commands\CoreCommand.cs" />
     <Compile Include="Commands\GetSchemaCommand.cs" />
     <Compile Include="Commands\Parameters\CollapseParameters.cs" />
     <Compile Include="Commands\Parameters\DeleteByIdAndOrQueryParam.cs" />
@@ -56,7 +61,10 @@
     <Compile Include="Commands\Parameters\SpellCheckingParameters.cs" />
     <Compile Include="Commands\Parameters\StatsParameters.cs" />
     <Compile Include="CollapseResults.cs" />
+    <Compile Include="Commands\ReloadCommand.cs" />
     <Compile Include="Commands\RollbackCommand.cs" />
+    <Compile Include="Commands\StatusCommand.cs" />
+    <Compile Include="Commands\SwapCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
     <Compile Include="Exceptions\TypeNotSupportedException.cs" />
     <Compile Include="FacetDateOther.cs" />
@@ -132,6 +140,7 @@
     <Compile Include="Impl\ResponseParsers\SpellCheckResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\StatsResponseParser.cs" />
     <Compile Include="Impl\HttpRuntimeCache.cs" />
+    <Compile Include="Impl\ResponseParsers\StatusResponseParser.cs" />
     <Compile Include="Impl\SolrCacheEntity.cs" />
     <Compile Include="Impl\SolrDictionaryDocumentResponseParser.cs" />
     <Compile Include="Impl\SolrDictionarySerializer.cs" />
@@ -139,6 +148,7 @@
     <Compile Include="Impl\SolrDocumentResponseParser.cs" />
     <Compile Include="Impl\SpellCheckResult.cs" />
     <Compile Include="Impl\SpellCheckResults.cs" />
+    <Compile Include="ISolrCoreAdmin.cs" />
     <Compile Include="LocalParams.cs" />
     <Compile Include="Mapping\AllPropertiesMappingManager.cs" />
     <Compile Include="Mapping\AttributesMappingManager.cs" />
@@ -201,6 +211,7 @@
     <Compile Include="Mapping\Validation\MappingValidator.cs" />
     <Compile Include="Schema\SolrSchemaParser.cs" />
     <Compile Include="Mapping\Validation\Rules\StringSolrFieldTypeChecker.cs" />
+    <Compile Include="Impl\SolrCoreAdmin.cs" />
     <Compile Include="SolrFacetDateQuery.cs" />
     <Compile Include="SolrFacetFieldQuery.cs" />
     <Compile Include="SolrFacetQuery.cs" />

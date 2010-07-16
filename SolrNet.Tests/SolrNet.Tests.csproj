@@ -111,6 +111,7 @@
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="OptimizeCommandTests.cs" />
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
+    <Compile Include="SolrCoreAdminTests.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
     <Compile Include="SolrQuerySerializerStub.cs" />
@@ -195,6 +196,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\collapseResponse2.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithStatus.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -108,6 +108,7 @@ namespace SolrNet {
             Container.Register<ISolrResponseParser<T>>(typeof(SpellCheckResponseParser<T>).FullName, c => new SpellCheckResponseParser<T>());
             Container.Register<ISolrResponseParser<T>>(typeof(StatsResponseParser<T>).FullName, c => new StatsResponseParser<T>());
             Container.Register<ISolrResponseParser<T>>(typeof(CollapseResponseParser<T>).FullName, c => new CollapseResponseParser<T>());
+            Container.Register<ISolrResponseParser<T>>(typeof(StatusResponseParser<T>).FullName, c => new StatusResponseParser<T>());
 
             Container.Register<ISolrQueryResultParser<T>>(c => new SolrQueryResultParser<T>(Func.ToArray(Container.GetAllInstances<ISolrResponseParser<T>>())));
             Container.Register<ISolrQueryExecuter<T>>(c => new SolrQueryExecuter<T>(c.GetInstance<ISolrQueryResultParser<T>>(), connection, c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrFacetQuerySerializer>()));

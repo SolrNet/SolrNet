@@ -16,8 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
-using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 using SolrNet.Mapping.Validation;

@@ -81,6 +81,8 @@ namespace NHibernate.SolrNet.Impl {
         public void UpdateInternal(AbstractEvent e, T entity) {
             if (entity == null)
                 return;
+            if (entity.GetType() != typeof(T)) // strict check for type, e.g. no subtypes
+                return;
             if (DeferAction(e.Session))
                 Add(e.Session.Transaction, entity);
             else {

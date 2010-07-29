@@ -32,7 +32,7 @@
     </ItemGroup>
     <RemoveDir Directories="$(MergedOutputPath)"/>
     <MakeDir Directories="$(MergedOutputPath)" ContinueOnError="true"/>
-    <ILMerge InputAssemblies="@(MergeAsm)" OutputFile="$(MergedOutputPath)\SolrNet.dll" Internalize="true" XmlDocs="true" ExcludeFile="$(MSBuildProjectDirectory)\ilmerge.exclude"/>
+    <ILMerge.MSBuild.Tasks.ILMerge InputAssemblies="@(MergeAsm)" OutputFile="$(MergedOutputPath)\SolrNet.dll" Internalize="true" XmlDocs="true" ExcludeFile="$(MSBuildProjectDirectory)\ilmerge.exclude"/>
     <ItemGroup>
       <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Castle.*.dll"/>
       <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Microsoft.Practices.ServiceLocation.dll"/>

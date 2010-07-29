@@ -116,8 +116,6 @@ namespace NHibernate.SolrNet.Impl {
 
         public void OnFlush(FlushEvent e) {
             OnFlushInternal(e);
-            var l = new DefaultFlushEventListener();
-            l.OnFlush(e); // NHibernate seems to allow only one flush listener, and it overrides the default listener? TODO CHECK
         }
 
         public void OnFlushInternal(AbstractEvent e) {
@@ -129,8 +127,6 @@ namespace NHibernate.SolrNet.Impl {
 
         public void OnAutoFlush(AutoFlushEvent e) {
             OnFlushInternal(e);
-            var l = new DefaultAutoFlushEventListener();
-            l.OnAutoFlush(e);
         }
     }
 }

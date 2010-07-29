@@ -22,5 +22,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("6688f9b4-5f2d-4fd6-aafc-3a81c84a69f1")]
 [assembly: AssemblyVersion("0.3.0")]
 [assembly: AssemblyFileVersion("0.3.0")]
-
-
+[assembly: InternalsVisibleTo("NHibernate.SolrNet.Tests")]

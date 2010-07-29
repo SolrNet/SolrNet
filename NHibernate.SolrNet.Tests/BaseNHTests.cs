@@ -14,6 +14,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.ComponentModel.Design;
 using MbUnit.Framework;
 using NHibernate.SolrNet.Impl;
 using NHibernate.Tool.hbm2ddl;
@@ -30,7 +32,11 @@ namespace NHibernate.SolrNet.Tests {
         public void FixtureSetup() {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
             mockSolr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
-            nhConfig.SetListener(new SolrNetListener<Entity>(mockSolr));
+            var provider = MockRepository.GenerateMock<IServiceProvider>();
+            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
+            provider.Expect(x => x.GetService(typeof (IReadOnlyMappingManager))).Return(mapper);
+            var cfg = new CfgHelper(provider);
+            cfg.SetListener(nhConfig, new SolrNetListener<Entity>(mockSolr));
             new SchemaExport(nhConfig).Execute(false, true, false);
             sessionFactory = nhConfig.BuildSessionFactory();
         }

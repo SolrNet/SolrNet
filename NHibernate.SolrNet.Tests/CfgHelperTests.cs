@@ -17,6 +17,7 @@
 using System;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
+using NHibernate.Event;
 using NHibernate.SolrNet.Impl;
 using Rhino.Mocks;
 using SolrNet;
@@ -59,6 +60,24 @@ namespace NHibernate.SolrNet.Tests {
             Assert.GreaterThan(nhConfig.EventListeners.PostDeleteEventListeners.Length, 0);
             var listener = nhConfig.EventListeners.PostInsertEventListeners[0];
             Assert.IsInstanceOfType<SolrNetListener<Entity>>(listener);
+        }
+
+        [Test]
+        public void Does_not_override_existing_listeners() {
+            var nhConfig = ConfigurationExtensions.GetNhConfig();
+            var mockListener = MockRepository.GenerateMock<IPostInsertEventListener>();
+            nhConfig.SetListener(ListenerType.PostInsert, mockListener);
+
+            var provider = MockRepository.GenerateMock<IServiceProvider>();
+            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
+            mapper.Expect(x => x.GetRegisteredTypes()).Return(new[] { typeof(Entity) });
+            provider.Expect(x => x.GetService(typeof(IReadOnlyMappingManager))).Return(mapper);
+            var solr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
+            provider.Expect(x => x.GetService(typeof(ISolrOperations<Entity>))).Return(solr);
+
+            var helper = new CfgHelper(provider);
+            helper.Configure(nhConfig, true);
+            Assert.AreEqual(2, nhConfig.EventListeners.PostInsertEventListeners.Length);
         }
 
     }

@@ -20,6 +20,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Integration.SolrNet", "Ninject.Integration.SolrNet\Ninject.Integration.SolrNet.csproj", "{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{26EBA068-9BBB-4FEC-B425-787D4AE99848}"
+	ProjectSection(SolutionItems) = preProject
+		SolrNet.vsmdi = SolrNet.vsmdi
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.SolrNet.Tests", "NHibernate.SolrNet.Tests\NHibernate.SolrNet.Tests.csproj", "{10FEA661-BAD8-44F6-98CF-4D06516448D6}"
 EndProject
@@ -30,6 +33,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructureMap.SolrNetIntegration.Tests", "StructureMap.SolrNetIntegration.Tests\StructureMap.SolrNetIntegration.Tests.csproj", "{9D497D73-1E2F-4CA2-B518-93919BCC5A6D}"
 EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = SolrNet.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

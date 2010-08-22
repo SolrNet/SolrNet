@@ -83,5 +83,10 @@ namespace SolrNet.Tests {
             [SolrField]
             public string Desc { get; set; }
         }
+
+        public class InheritedDoc : TestDocWithString{
+            [SolrField]
+            public string Desc1 { get; set; }
+        }
     }
 }

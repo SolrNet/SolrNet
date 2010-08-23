@@ -64,6 +64,18 @@ namespace NHibernate.SolrNet.Tests {
         }
 
         [Test]
+        public void PostInsert_with_commit_adds_to_solr() {
+            var entity = new Entity();
+            using (var session = sessionFactory.OpenSession()) {
+                using (var tx = session.BeginTransaction()) {
+                    session.Save(entity);
+                    tx.Commit();
+                }
+            }
+            mockSolr.AssertWasCalled(x => x.Add(entity), o => o.Repeat.Once().Return(null));
+        } 
+
+        [Test]
         [Ignore("Session dispose should follow transaction rollback. See http://www.nhforge.org/doc/nh/en/index.html#manipulatingdata-endingsession-commit")]
         public void Insert_with_multiple_transactions() {
             var entity = new Entity();

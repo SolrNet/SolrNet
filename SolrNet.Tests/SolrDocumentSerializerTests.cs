@@ -230,12 +230,10 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void Inheritance()
-        {
+        public void Inheritance() {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithString>(mapper, new DefaultFieldSerializer());
-            var doc = new InheritedDoc
-            {
+            var doc = new InheritedDoc {
                 Desc = "Description",
                 Desc1 = "Description1"
             };
@@ -244,6 +242,16 @@ namespace SolrNet.Tests {
             xml.LoadXml(fs);
             Console.WriteLine(fs);
             Assert.AreEqual(@"<doc><field name=""Desc1"">Description1</field><field name=""Desc"">Description</field></doc>", fs);
+        }
+
+        [Test]
+        public void PropertyWithoutGetter() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithoutGetter>(mapper, new DefaultFieldSerializer());
+            string fs = ser.Serialize(new TestDocWithoutGetter(), null).OuterXml;
+            var xml = new XmlDocument();
+            xml.LoadXml(fs);
+            Console.WriteLine(fs);
         }
 
 	}

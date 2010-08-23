@@ -43,6 +43,8 @@ namespace SolrNet.Impl {
             var fields = mappingManager.GetFields(doc.GetType());
             foreach (var field in fields) {
                 var p = field.Property;
+                if (!p.CanRead)
+                    continue;
                 var value = p.GetValue(doc, null);
                 if (value == null)
                     continue;

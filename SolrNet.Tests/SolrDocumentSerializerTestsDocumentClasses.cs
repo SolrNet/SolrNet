@@ -88,5 +88,14 @@ namespace SolrNet.Tests {
             [SolrField]
             public string Desc1 { get; set; }
         }
+
+        public class TestDocWithoutGetter {
+            private int id;
+
+            [SolrField]
+            public int Id {
+                set { id = value; }
+            }
+        }
     }
 }

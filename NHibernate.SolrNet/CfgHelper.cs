@@ -47,29 +47,14 @@ namespace NHibernate.SolrNet {
                 ListenerCollection = l => l.PostInsertEventListeners,
             },
             new NHListenerInfo {
-                Intf = typeof(IPostInsertEventListener),
-                ListenerType = ListenerType.PostCommitInsert,
-                ListenerCollection = l => l.PostCommitInsertEventListeners,
-            },
-            new NHListenerInfo {
                 Intf = typeof(IPostDeleteEventListener),
                 ListenerType = ListenerType.PostDelete,
                 ListenerCollection = l => l.PostDeleteEventListeners,
             },
             new NHListenerInfo {
-                Intf = typeof(IPostDeleteEventListener),
-                ListenerType = ListenerType.PostCommitDelete,
-                ListenerCollection = l => l.PostCommitDeleteEventListeners,
-            },
-            new NHListenerInfo {
                 Intf = typeof(IPostUpdateEventListener),
                 ListenerType = ListenerType.PostUpdate,
                 ListenerCollection = l => l.PostUpdateEventListeners,
-            },
-            new NHListenerInfo {
-                Intf = typeof(IPostUpdateEventListener),
-                ListenerType = ListenerType.PostCommitUpdate,
-                ListenerCollection = l => l.PostCommitUpdateEventListeners,
             },
             new NHListenerInfo {
                 Intf = typeof(IPreInsertEventListener),

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using NHibernate.Event;
-using NHibernate.Event.Default;
 using NHibernate.Util;
 using SolrNet;
 
@@ -46,7 +45,9 @@ namespace NHibernate.SolrNet.Impl {
             lock (entitiesToAdd.SyncRoot) {
                 if (!entitiesToAdd.Contains(s))
                     entitiesToAdd[s] = new List<T>();
-                ((IList<T>)entitiesToAdd[s]).Add(entity);
+                var l = ((IList<T>)entitiesToAdd[s]);
+                if (!l.Contains(entity))
+                    l.Add(entity);
             }
         }
 
@@ -54,7 +55,9 @@ namespace NHibernate.SolrNet.Impl {
             lock (entitiesToDelete.SyncRoot) {
                 if (!entitiesToDelete.Contains(s))
                     entitiesToDelete[s] = new List<T>();
-                ((IList<T>)entitiesToAdd[s]).Add(entity);
+                var l = ((IList<T>)entitiesToAdd[s]);
+                if (!l.Contains(entity))
+                    l.Add(entity);
             }
         }
 

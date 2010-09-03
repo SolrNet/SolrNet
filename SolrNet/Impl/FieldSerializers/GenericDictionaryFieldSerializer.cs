@@ -53,14 +53,19 @@ namespace SolrNet.Impl.FieldSerializers {
         }
 
         public IEnumerable<PropertyNode> Serialize(object obj) {
+            if (obj == null)
+                yield break;
             foreach (var de in (IEnumerable)obj) {
                 var name = KVKey(de); 
                 var value = serializer.Serialize(KVValue(de));
-                foreach (var v in value)
-                    yield return new PropertyNode {
-                        FieldValue = v.FieldValue,
-                        FieldNameSuffix = name,
-                    };
+                if (value == null)
+                    yield return new PropertyNode {FieldNameSuffix = name};
+                else
+                    foreach (var v in value)
+                        yield return new PropertyNode {
+                            FieldValue = v.FieldValue,
+                            FieldNameSuffix = name,
+                        };
             }
         }
     }

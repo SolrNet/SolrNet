@@ -84,6 +84,7 @@
     <Compile Include="AllPropertiesMappingManagerTests.cs" />
     <Compile Include="AttributesMappingManagerTests.cs" />
     <Compile Include="CollapseResponseParserTests.cs" />
+    <Compile Include="CollectionFieldSerializerTests.cs" />
     <Compile Include="CommitCommandTests.cs" />
     <Compile Include="CommonServiceLocatorTests.cs" />
     <Compile Include="DateTimeFieldParserTests.cs" />

@@ -215,6 +215,17 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
+        public void Dismax() {
+            Add_then_query();
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var products = solr.Query(new SolrQuery("samsung"), new QueryOptions { ExtraParams = new Dictionary<string, string> {
+                {"qt", "dismax"},
+                {"qf", "sku name^1.2 manu^1.1"},
+            }});
+            Assert.GreaterThan(products.Count, 0);
+        }
+
+        [Test]
         public void FilterQuery() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var r = solr.Query(SolrQuery.All, new QueryOptions {

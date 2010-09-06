@@ -584,6 +584,17 @@ namespace SolrNet.Tests {
             Assert.AreEqual(0, results["timestamp"].OtherResults[FacetDateOther.Between]);
         }
 
+        [Test]
+        public void PropertyWithoutSetter() {
+            var mapper = new AttributesMappingManager();
+            var parser = new SolrDocumentResponseParser<TestDocWithoutSetter>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<TestDocWithoutSetter>());
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
+            var docNode = xml.SelectSingleNode("response/result/doc");
+            var doc = parser.ParseDocument(docNode, mapper.GetFields(typeof(TestDocument)));
+            Assert.IsNotNull(doc);
+            Assert.AreEqual(0, doc.Id);
+        }
+
         public enum AEnum {
             One,
             Two,

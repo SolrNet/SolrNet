@@ -40,9 +40,11 @@ namespace SolrNet.Impl {
                 boostAttr.Value = boost.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
                 docNode.Attributes.Append(boostAttr);
             }
-            var fields = mappingManager.GetFields(typeof(T));
+            var fields = mappingManager.GetFields(doc.GetType());
             foreach (var field in fields) {
                 var p = field.Property;
+                if (!p.CanRead)
+                    continue;
                 var value = p.GetValue(doc, null);
                 if (value == null)
                     continue;

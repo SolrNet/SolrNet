@@ -83,7 +83,7 @@ namespace SolrNet.Impl {
             u.Path += relativeUrl;
             var request = httpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.POST;
-            request.KeepAlive = false;
+            request.KeepAlive = true;
             if (Timeout > 0) {
                 request.ReadWriteTimeout = Timeout;
                 request.Timeout = Timeout;                
@@ -91,7 +91,7 @@ namespace SolrNet.Impl {
             request.ContentType = "text/xml; charset=utf-8";
             var bytes = Encoding.UTF8.GetBytes(s);
             request.ContentLength = bytes.Length;
-            request.ProtocolVersion = HttpVersion.Version10;
+            request.ProtocolVersion = HttpVersion.Version11;
             try {
                 using (var postParams = request.GetRequestStream())
                 using (var sw = new StreamWriter(postParams)) {

@@ -389,10 +389,12 @@ namespace SolrNet.Tests.Integration.Sample {
             Add_then_query();
             Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL)));
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<ProductLoose>>();
-            var products = solr.Query(SolrQuery.All);
+            var products = solr.Query(SolrQuery.All, new QueryOptions {Fields = new[] {"*", "score"}});
             Assert.AreEqual(1, products.Count);
             var product = products[0];
             Assert.AreEqual("SP2514N", product.Id);
+            Assert.IsTrue(product.Score.HasValue);
+            Assert.IsFalse(product.OtherFields.ContainsKey("score"));
             Assert.IsNull(product.SKU);
             Assert.IsNotNull(product.Name);
             Assert.IsNotNull(product.OtherFields);
@@ -404,6 +406,7 @@ namespace SolrNet.Tests.Integration.Sample {
             Assert.IsInstanceOfType(typeof(ICollection), product.OtherFields["features"]);
             product.OtherFields["timestamp"] = new DateTime(2010, 1, 1);
             product.OtherFields["features"] = new[] {"a", "b", "c"};
+            product.Score = null;
             solr.Add(product);
         }
     }

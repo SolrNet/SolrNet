@@ -269,7 +269,20 @@ namespace SolrNet.Tests.Integration.Sample {
         [Test]
         public void MoreLikeThis() {
             Add_then_query();
-            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Add(new Product {
+                Id = "apache-cocoon",
+                Categories = new[] {"framework", "java"},
+                Name = "Apache Cocoon",
+                Manufacturer = "Apache",
+            });
+            solr.Add(new Product {
+                Id = "apache-hadoop",
+                Categories = new[] { "framework", "java", "mapreduce" },
+                Name = "Apache Hadoop",
+                Manufacturer = "Apache",
+            });
+            solr.Commit();
             var results = solr.Query(new SolrQuery("apache"), new QueryOptions {
                 MoreLikeThis = new MoreLikeThisParameters(new[] {"cat", "manu"}) {
                     MinDocFreq = 1,
@@ -277,6 +290,7 @@ namespace SolrNet.Tests.Integration.Sample {
                     //Count = 1,
                 },
             });
+            Assert.GreaterThan(results.SimilarResults.Count, 0);
             foreach (var r in results.SimilarResults) {
                 Console.WriteLine("Similar documents to {0}", r.Key);
                 foreach (var similar in r.Value)

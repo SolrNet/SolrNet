@@ -43,7 +43,7 @@ namespace StructureMap.SolrNetIntegration.Tests
         [Test, ExpectedException(typeof(InvalidURLException))]
         public void Should_throw_exception_for_invalid_protocol_on_url()
         {
-            var solrServers = new TestSolrServers();
+            var solrServers = new SolrServers();
             var solrServerElement = new SolrServerElement 
             {
                 Id = "test",
@@ -58,7 +58,7 @@ namespace StructureMap.SolrNetIntegration.Tests
         [Test, ExpectedException(typeof(InvalidURLException))]
         public void Should_throw_exception_for_invalid_url()
         {
-            var solrServers = new TestSolrServers();
+            var solrServers = new SolrServers();
             var solrServerElement = new SolrServerElement 
             {
                 Id = "test",
@@ -159,14 +159,6 @@ namespace StructureMap.SolrNetIntegration.Tests
         {
             var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
             ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
-        }
-
-        private class TestSolrServers : SolrServers
-        {
-            public void Add(ConfigurationElement configurationElement) 
-            {
-                base.BaseAdd(configurationElement);
-            }
         }
     }
 }

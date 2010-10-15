@@ -11,7 +11,6 @@
 0.3.0 beta1 (2010-06-08)
 ===
 
-- Added dictionary as document
 - Breaking change: field collapsing changed completely.
 - Breaking change: removed ServerURL and Version properties from ISolrConnection.
 - Breaking change: changed Highlighting and MoreLikeThis result classes. Indices are now string instead of T.

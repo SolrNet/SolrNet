@@ -104,6 +104,31 @@ namespace StructureMap.SolrNetIntegration.Tests
                 Console.WriteLine(t);
         }
 
+        [Test]
+        public void DictionaryDocument_and_multi_core() {
+            var cores = new SolrServers {
+                new SolrServerElement {
+                    Id = "default",
+                    DocumentType = typeof(Entity).AssemblyQualifiedName,
+                    Url = "http://localhost:8983/solr/entity1",
+                },
+                new SolrServerElement {
+                    Id = "entity1dict",
+                    DocumentType = typeof(Dictionary<string, object>).AssemblyQualifiedName,
+                    Url = "http://localhost:8983/solr/entity1",
+                },
+                new SolrServerElement {
+                    Id = "another",
+                    DocumentType = typeof(Entity2).AssemblyQualifiedName,
+                    Url = "http://localhost:8983/solr/entity2",
+                },
+            };
+            ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(cores)));
+            var solr1 = ObjectFactory.GetInstance<ISolrOperations<Entity>>();
+            var solr2 = ObjectFactory.GetInstance<ISolrOperations<Entity2>>();
+            var solrDict = ObjectFactory.GetInstance<ISolrOperations<Dictionary<string, object>>>();
+        }
+
         [Test, Category("Integration")]
         public void DictionaryDocument()
         {

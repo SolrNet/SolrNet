@@ -43,14 +43,13 @@ namespace StructureMap.SolrNetIntegration.Tests
         [Test, ExpectedException(typeof(InvalidURLException))]
         public void Should_throw_exception_for_invalid_protocol_on_url()
         {
-            var solrServers = new SolrServers();
-            var solrServerElement = new SolrServerElement 
-            {
-                Id = "test",
-                Url = "htp://localhost:8893",
-                DocumentType = typeof(Entity2).AssemblyQualifiedName,
+            var solrServers = new SolrServers {
+                new SolrServerElement {
+                    Id = "test",
+                    Url = "htp://localhost:8893",
+                    DocumentType = typeof(Entity2).AssemblyQualifiedName,
+                }                
             };
-            solrServers.Add(solrServerElement);
             ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers)));
             ObjectFactory.GetInstance<SolrConnection>();
         }
@@ -58,14 +57,13 @@ namespace StructureMap.SolrNetIntegration.Tests
         [Test, ExpectedException(typeof(InvalidURLException))]
         public void Should_throw_exception_for_invalid_url()
         {
-            var solrServers = new SolrServers();
-            var solrServerElement = new SolrServerElement 
-            {
-                Id = "test",
-                Url = "http:/localhost:8893",
-                DocumentType = typeof(Entity2).AssemblyQualifiedName,
+            var solrServers = new SolrServers {
+                new SolrServerElement {
+                    Id = "test",
+                    Url = "http:/localhost:8893",
+                    DocumentType = typeof(Entity2).AssemblyQualifiedName,
+                }
             };
-            solrServers.Add(solrServerElement);
             ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers)));
             ObjectFactory.GetInstance<SolrConnection>();
         }

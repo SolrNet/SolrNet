@@ -256,6 +256,14 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         }
 
         [Test]
+        public void DictionaryDocument_Operations() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            container.Resolve<ISolrOperations<Dictionary<string, object>>>();
+        }
+
+        [Test]
         public void DictionaryDocument_ResponseParser() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();

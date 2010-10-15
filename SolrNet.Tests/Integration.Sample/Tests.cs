@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands.Parameters;
@@ -184,7 +185,7 @@ namespace SolrNet.Tests.Integration.Sample {
             Assert.IsNotNull(results.Highlights);
             Assert.AreEqual(1, results.Highlights.Count);
             foreach (var h in results.Highlights[results[0].Id]) {
-                Console.WriteLine("{0}: {1}", h.Key, h.Value);
+                Console.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.ToArray()));
             }
         }
 

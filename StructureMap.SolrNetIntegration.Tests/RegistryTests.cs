@@ -48,7 +48,7 @@ namespace StructureMap.SolrNetIntegration.Tests
             {
                 Id = "test",
                 Url = "htp://localhost:8893",
-                DocumentType = "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"
+                DocumentType = typeof(Entity2).AssemblyQualifiedName,
             };
             solrServers.Add(solrServerElement);
             ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers)));
@@ -63,7 +63,7 @@ namespace StructureMap.SolrNetIntegration.Tests
             {
                 Id = "test",
                 Url = "http:/localhost:8893",
-                DocumentType = "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"
+                DocumentType = typeof(Entity2).AssemblyQualifiedName,
             };
             solrServers.Add(solrServerElement);
             ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers)));

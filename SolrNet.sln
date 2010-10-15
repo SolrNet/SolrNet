@@ -91,7 +91,4 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NDepend) = preSolution
-		Project = ".\SolrNet.ndproj"
-	EndGlobalSection
 EndGlobal

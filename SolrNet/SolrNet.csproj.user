@@ -1,8 +1,19 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <StartProgram>C:\Program Files\JetBrains\ReSharper\VS2005\bin\JetBrains.ReSharper.UnitTestRunner.exe</StartProgram>
     <StartWorkingDirectory>C:\Program Files\JetBrains\ReSharper\VS2005\bin</StartWorkingDirectory>
     <StartArguments> RUNNERARGS "C:\Documents and Settings\m\Local Settings\Temp\tmpD77.tmp"</StartArguments>
     <StartAction>Program</StartAction>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PublishUrlHistory />
+    <InstallUrlHistory />
+    <SupportUrlHistory />
+    <UpdateUrlHistory />
+    <BootstrapperUrlHistory />
+    <ErrorReportUrlHistory />
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
 </Project>

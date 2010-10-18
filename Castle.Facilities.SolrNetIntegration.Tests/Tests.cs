@@ -219,9 +219,9 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
                 }
             };
 
-            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve("core0-id"));
-            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve("core1-id"));
-            Assert.IsInstanceOfType<ISolrOperations<Core1Entity>>(container.Resolve("core2-id"));
+            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core0-id"));
+            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core1-id"));
+            Assert.IsInstanceOfType<ISolrOperations<Core1Entity>>(container.Resolve<ISolrOperations<Core1Entity>>("core2-id"));
         }
 
         [Test]

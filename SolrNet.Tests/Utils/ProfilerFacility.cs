@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using Castle.Core;
 using Castle.Core.Interceptor;
+using Castle.DynamicProxy;
 using Castle.MicroKernel.Facilities;
 
 namespace SolrNet.Tests.Utils {

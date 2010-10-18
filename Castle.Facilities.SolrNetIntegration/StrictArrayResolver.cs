@@ -17,6 +17,7 @@
 using System;
 using Castle.Core;
 using Castle.MicroKernel;
+using Castle.MicroKernel.Context;
 
 namespace Castle.Facilities.SolrNetIntegration {
     public class StrictArrayResolver: ISubDependencyResolver {

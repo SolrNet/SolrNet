@@ -357,6 +357,10 @@
                serviceId="Gallio.ConversionRule"
                componentType="Gallio.Runtime.Conversions.XPathNavigatorToXmlSerializableTypeConversionRule, Gallio" />
 
+    <component componentId="Gallio.StringToEnumConversionRule"
+               serviceId="Gallio.ConversionRule"
+               componentType="Gallio.Runtime.Conversions.StringToEnumConversionRule, Gallio" />
+
     <!-- Formatters -->
     <component componentId="Gallio.Formatter"
                serviceId="Gallio.Formatter"

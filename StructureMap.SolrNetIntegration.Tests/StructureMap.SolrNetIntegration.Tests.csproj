@@ -61,14 +61,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MbUnit.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Rhino.Mocks.dll</HintPath>
-    </Reference>
     <Reference Include="StructureMap, Version=2.5.4.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\StructureMap.dll</HintPath>
@@ -79,9 +71,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
@@ -95,10 +84,6 @@
     <Compile Include="RegistryTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NHibernate.SolrNet.Tests\NHibernate.SolrNet.Tests.csproj">
-      <Project>{10FEA661-BAD8-44F6-98CF-4D06516448D6}</Project>
-      <Name>NHibernate.SolrNet.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">
       <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>
       <Name>SolrNet</Name>

@@ -1,3 +1,3 @@
-msbuild solrnet.proj /m /t:integrationtests
+msbuild solrnet.proj /m /t:test
 
 pause

@@ -33,9 +33,7 @@ slnTarget "Rebuild"
 Target "Test" (fun _ ->
     let testAssemblies = !+ "**/bin/**/*Tests.dll" |> ScanImmediately
     //testAssemblies |> Seq.iter (printfn "%s")
-    Gallio.Run (fun p -> { p with 
-                              Assemblies = testAssemblies
-                              Filters = "exclude Category: Integration" })
+    testAssemblies |> Gallio.Run (fun p -> { p with Filters = "exclude Category: Integration" })
 )
 
 For "Test" <| Dependency "Rebuild"

@@ -26,6 +26,7 @@ using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
+using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -116,7 +117,7 @@ namespace SolrNet.Tests {
                     .Return(response);
                 Expect.Call(response.GetResponseStream())
                     .Repeat.Once()
-                    .Return(GzipCompressStream("Testing compression"));
+                    .Return(CompressionUtils.GzipCompressStream("Testing compression"));
             }).Verify(delegate
             {
                 var conn = new SolrConnection("http://localhost", reqFactory);
@@ -151,40 +152,12 @@ namespace SolrNet.Tests {
                     .Return(response);
                 Expect.Call(response.GetResponseStream())
                     .Repeat.Once()
-                    .Return(DeflateCompressStream("Testing compression"));
+                    .Return(CompressionUtils.DeflateCompressStream("Testing compression"));
             }).Verify(delegate
             {
                 var conn = new SolrConnection("http://localhost", reqFactory);
                 Assert.AreEqual("Testing compression", conn.Get("", new Dictionary<string, string>()));
             });
-        }
-
-        private static Stream GzipCompressStream(string textToCompress)
-        {
-            var data = Encoding.GetEncoding("iso-8859-1").GetBytes(textToCompress);
-
-            var ms = new MemoryStream();
-
-            using (var zip = new GZipStream(ms, CompressionMode.Compress))
-            {
-                zip.Write(data, 0, data.Length);
-            }
-
-            return new MemoryStream(ms.ToArray());
-        }
-
-        private static Stream DeflateCompressStream(string textToCompress)
-        {
-            var data = Encoding.GetEncoding("iso-8859-1").GetBytes(textToCompress);
-
-            var ms = new MemoryStream();
-
-            using (var zip = new DeflateStream(ms, CompressionMode.Compress))
-            {
-                zip.Write(data, 0, data.Length);
-            }
-
-            return new MemoryStream(ms.ToArray());
         }
 
 		[Test]

@@ -49,13 +49,6 @@ namespace SolrNet.Tests {
 		}
 
         [Test]
-<<<<<<< HEAD
-        public void IsCultureInvariant() {
-            using (ThreadSettings.Culture("nl-NL")) {
-                var q = new SolrQueryByRange<float>("price", 123.45f, 234.56f);
-                Assert.AreEqual("price:[123.45 TO 234.56]", q.Query);
-            }
-=======
         public void FloatInclusive() {
             var q = new SolrQueryByRange<float>("price", 123.45f, 234.56f);
             Assert.AreEqual("price:[123.45 TO 234.56]", Serialize(q));
@@ -71,7 +64,6 @@ namespace SolrNet.Tests {
         public void NullableDateTime() {
             var q = new SolrQueryByRange<DateTime?>("ts", new DateTime(2001, 1, 5), new DateTime(2002, 3, 4, 5, 6, 7));
             Assert.AreEqual("ts:[2001-01-05T00:00:00Z TO 2002-03-04T05:06:07Z]", Serialize(q));
->>>>>>> 92e142f4b04ba0a2a3db7b39dfc16b3e0f190002
         }
 	}
 }

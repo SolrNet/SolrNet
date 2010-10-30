@@ -16,40 +16,13 @@
 
 #endregion
 
-<<<<<<< HEAD
-using System;
-using System.Globalization;
-using SolrNet.Impl.FieldSerializers;
-=======
 using SolrNet.Impl;
->>>>>>> 92e142f4b04ba0a2a3db7b39dfc16b3e0f190002
 
 namespace SolrNet {
     /// <summary>
     /// Queries a field for a range
     /// </summary>
     /// <typeparam name="RT"></typeparam>
-<<<<<<< HEAD
-	public class SolrQueryByRange<RT> : AbstractSolrQuery {
-        private readonly DateTimeFieldSerializer dateSerializer = new DateTimeFieldSerializer();
-
-		private readonly string q;
-		public SolrQueryByRange(string fieldName, RT from, RT to) : this(fieldName, from, to, true) {}
-
-		public SolrQueryByRange(string fieldName, RT from, RT to, bool inclusive) {
-			q = "$field:$ii$from TO $to$if"
-				.Replace("$field", fieldName)
-				.Replace("$ii", inclusive ? "[" : "{")
-				.Replace("$if", inclusive ? "]" : "}")
-				.Replace("$from", Serialize(from))
-				.Replace("$to", Serialize(to));
-		}
-
-        private string Serialize(RT o) {
-            if (typeof(RT) == typeof(DateTime))
-                return dateSerializer.SerializeDate((DateTime)(object)o);
-            return Convert.ToString(o, CultureInfo.InvariantCulture);
-=======
     public class SolrQueryByRange<RT> : AbstractSolrQuery, ISolrQueryByRange {
         private readonly string fieldName;
         private readonly RT from;
@@ -71,7 +44,6 @@ namespace SolrNet {
 
         public RT From {
             get { return from; }
->>>>>>> 92e142f4b04ba0a2a3db7b39dfc16b3e0f190002
         }
 
         object ISolrQueryByRange.From {

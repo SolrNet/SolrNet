@@ -219,9 +219,9 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
                 }
             };
 
-            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve("core0-id"));
-            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve("core1-id"));
-            Assert.IsInstanceOfType<ISolrOperations<Core1Entity>>(container.Resolve("core2-id"));
+            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core0-id"));
+            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core1-id"));
+            Assert.IsInstanceOfType<ISolrOperations<Core1Entity>>(container.Resolve<ISolrOperations<Core1Entity>>("core2-id"));
         }
 
         [Test]
@@ -253,6 +253,14 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
                 {"popularity", 55},
                 {"timestamp", DateTime.UtcNow},
             });
+        }
+
+        [Test]
+        public void DictionaryDocument_Operations() {
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var container = new WindsorContainer();
+            container.AddFacility("solr", solrFacility);
+            container.Resolve<ISolrOperations<Dictionary<string, object>>>();
         }
 
         [Test]

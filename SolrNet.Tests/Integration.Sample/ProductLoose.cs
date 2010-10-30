@@ -12,6 +12,9 @@ namespace SolrNet.Tests.Integration.Sample {
         [SolrField("name")]
         public string Name { get; set; }
 
+        [SolrField("score")]
+        public double? Score { get; set; }
+
         [SolrField("*")]
         public IDictionary<string, object> OtherFields { get; set; }
         

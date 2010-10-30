@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using NHibernate.ByteCode.Castle;
+using NHibernate.ByteCode.LinFu;
 using NHibernate.Connection;
 using NHibernate.Dialect;
 using NHibernate.Driver;

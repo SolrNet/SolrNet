@@ -28,7 +28,7 @@ namespace StructureMap.SolrNetIntegration.Tests
 
             var solrConnection = (SolrConnection)ObjectFactory.Container.GetInstance<ISolrConnection>(instanceKey);
 
-            Assert.AreEqual("http://localhost:8080/solr/entity", solrConnection.ServerURL);
+            Assert.AreEqual("http://localhost:8983/solr/entity", solrConnection.ServerURL);
         }
 
         [Test, Category("Integration")]
@@ -43,14 +43,13 @@ namespace StructureMap.SolrNetIntegration.Tests
         [Test, ExpectedException(typeof(InvalidURLException))]
         public void Should_throw_exception_for_invalid_protocol_on_url()
         {
-            var solrServers = new TestSolrServers();
-            var solrServerElement = new SolrServerElement 
-            {
-                Id = "test",
-                Url = "htp://localhost:8893",
-                DocumentType = "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"
+            var solrServers = new SolrServers {
+                new SolrServerElement {
+                    Id = "test",
+                    Url = "htp://localhost:8893",
+                    DocumentType = typeof(Entity2).AssemblyQualifiedName,
+                }                
             };
-            solrServers.Add(solrServerElement);
             ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers)));
             ObjectFactory.GetInstance<SolrConnection>();
         }
@@ -58,14 +57,13 @@ namespace StructureMap.SolrNetIntegration.Tests
         [Test, ExpectedException(typeof(InvalidURLException))]
         public void Should_throw_exception_for_invalid_url()
         {
-            var solrServers = new TestSolrServers();
-            var solrServerElement = new SolrServerElement 
-            {
-                Id = "test",
-                Url = "http:/localhost:8893",
-                DocumentType = "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"
+            var solrServers = new SolrServers {
+                new SolrServerElement {
+                    Id = "test",
+                    Url = "http:/localhost:8893",
+                    DocumentType = typeof(Entity2).AssemblyQualifiedName,
+                }
             };
-            solrServers.Add(solrServerElement);
             ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers)));
             ObjectFactory.GetInstance<SolrConnection>();
         }
@@ -104,6 +102,31 @@ namespace StructureMap.SolrNetIntegration.Tests
             Assert.AreEqual(8, parsers.Length);
             foreach (var t in parsers)
                 Console.WriteLine(t);
+        }
+
+        [Test]
+        public void DictionaryDocument_and_multi_core() {
+            var cores = new SolrServers {
+                new SolrServerElement {
+                    Id = "default",
+                    DocumentType = typeof(Entity).AssemblyQualifiedName,
+                    Url = "http://localhost:8983/solr/entity1",
+                },
+                new SolrServerElement {
+                    Id = "entity1dict",
+                    DocumentType = typeof(Dictionary<string, object>).AssemblyQualifiedName,
+                    Url = "http://localhost:8983/solr/entity1",
+                },
+                new SolrServerElement {
+                    Id = "another",
+                    DocumentType = typeof(Entity2).AssemblyQualifiedName,
+                    Url = "http://localhost:8983/solr/entity2",
+                },
+            };
+            ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(cores)));
+            var solr1 = ObjectFactory.GetInstance<ISolrOperations<Entity>>();
+            var solr2 = ObjectFactory.GetInstance<ISolrOperations<Entity2>>();
+            var solrDict = ObjectFactory.GetInstance<ISolrOperations<Dictionary<string, object>>>();
         }
 
         [Test, Category("Integration")]
@@ -159,14 +182,6 @@ namespace StructureMap.SolrNetIntegration.Tests
         {
             var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
             ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
-        }
-
-        private class TestSolrServers : SolrServers
-        {
-            public void Add(ConfigurationElement configurationElement) 
-            {
-                base.BaseAdd(configurationElement);
-            }
         }
     }
 }

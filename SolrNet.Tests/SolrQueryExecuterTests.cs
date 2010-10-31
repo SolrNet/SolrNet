@@ -210,6 +210,14 @@ namespace SolrNet.Tests {
             q["hl.regex.slop"] = "4.12";
             q["hl.regex.pattern"] = "\\.";
             q["hl.regex.maxAnalyzedChars"] = "8000";
+            q["hl.usePhraseHighlighter"] = "true";
+            q["hl.useFastVectorHighlighter"] = "true";
+            q["hl.highlightMultiTerm"] = "true";
+            q["hl.mergeContiguous"] = "true";
+            q["hl.maxAnalyzedChars"] = "12";
+            q["hl.maxAlternateFieldLength"] = "22";
+            q["hl.fragmenter"] = "regex";
+
             var conn = new MockConnection(q);
             var querySerializer = new SolrQuerySerializerStub("");
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null);
@@ -225,6 +233,13 @@ namespace SolrNet.Tests {
                     RegexSlop = 4.12,
                     RegexPattern = "\\.",
                     RegexMaxAnalyzedChars = 8000,
+                    UsePhraseHighlighter = true,
+                    UseFastVectorHighlighter = true,
+                    MergeContiguous = true,
+                    MaxAnalyzedChars = 12,
+                    HighlightMultiTerm = true,
+                    MaxAlternateFieldLength = 22,
+                    Fragmenter = SolrHighlightFragmenter.Regex
                 }
             });
         }

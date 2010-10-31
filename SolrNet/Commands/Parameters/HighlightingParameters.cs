@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace SolrNet.Commands.Parameters {
@@ -86,5 +87,64 @@ namespace SolrNet.Commands.Parameters {
 		/// The default value is "10000". 
 		/// </summary>
 		public int? RegexMaxAnalyzedChars { get; set; }
+
+        /// <summary>
+        /// Collapse contiguous fragments into a single fragment. "true" indicates contiguous fragments will be collapsed into single fragment. This parameter makes sense for Highlighter only.
+        /// The default value is "false", which is also the backward-compatible setting.
+        /// </summary>
+        public bool? MergeContiguous { get; set; }
+
+        /// <summary>
+        /// Use SpanScorer to highlight phrase terms only when they appear within the query phrase in the document. Default value is "false".
+        /// </summary>
+        public bool? UsePhraseHighlighter { get; set; }
+        
+        /// <summary>
+        /// Uses FastVectorHighlighter (Solr 1.5). FastVectorHighlighter requires the field is termVectors=on, termPositions=on and termOffsets=on.
+        /// The default value is "false"
+        /// </summary>
+        public bool? UseFastVectorHighlighter { get; set; }
+
+        /// <summary>
+        /// If the SpanScorer is also being used, enables highlighting for range/wildcard/fuzzy/prefix queries. This parameter makes sense for Highlighter only.
+        /// The default is "false"
+        /// </summary>
+        public bool? HighlightMultiTerm { get; set; }
+
+        /// <summary>
+        /// How many characters into a document to look for suitable snippets. This parameter makes sense for Highlighter only.
+        /// The default value is "51200".
+        /// </summary>
+        public int? MaxAnalyzedChars { get; set; }
+
+        /// <summary>
+        /// If hl.alternateField is specified, this parameter specifies the maximum number of characters of the field to return. Any value less than or equal to 0 means unlimited.
+        /// The default value is unlimited.
+        /// </summary>
+        public int? MaxAlternateFieldLength { get; set; }
+
+        /// <summary>
+        /// Specify a text snippet generator for highlighted text.
+        /// This parameter makes sense for Highlighter only.
+        /// The default value is "gap".
+        /// </summary>
+        public SolrHighlightFragmenter? Fragmenter { get; set; }
+
+
 	}
+
+    ///<summary>
+    /// Different types of fragmenter used when highlighting.
+    ///</summary>
+    public enum SolrHighlightFragmenter
+    {
+        ///<summary>
+        ///Creates fixed-sized fragments with gaps for multi-valued fields.
+        ///</summary>
+        Gap,
+        ///<summary>
+        ///Create fragments that "look like" a certain regular expression. 
+        ///</summary>
+        Regex
+    }
 }

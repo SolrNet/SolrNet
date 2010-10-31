@@ -214,6 +214,27 @@ namespace SolrNet.Impl {
 
                     if (h.RegexMaxAnalyzedChars.HasValue)
                         param["hl.regex.maxAnalyzedChars"] = h.RegexMaxAnalyzedChars.Value.ToString();
+
+                    if (h.UsePhraseHighlighter.HasValue)
+                        param["hl.usePhraseHighlighter"] = h.UsePhraseHighlighter.Value.ToString().ToLowerInvariant();
+
+                    if (h.UseFastVectorHighlighter.HasValue)
+                        param["hl.useFastVectorHighlighter"] = h.UseFastVectorHighlighter.Value.ToString().ToLowerInvariant();
+
+                    if (h.HighlightMultiTerm.HasValue)
+                        param["hl.highlightMultiTerm"] = h.HighlightMultiTerm.Value.ToString().ToLowerInvariant();
+
+                    if (h.MergeContiguous.HasValue)
+                        param["hl.mergeContiguous"] = h.MergeContiguous.Value.ToString().ToLowerInvariant();
+
+                    if (h.MaxAnalyzedChars.HasValue)
+                        param["hl.maxAnalyzedChars"] = h.MaxAnalyzedChars.Value.ToString();
+
+                    if (h.MaxAlternateFieldLength.HasValue)
+                        param["hl.maxAlternateFieldLength"] = h.MaxAlternateFieldLength.Value.ToString();
+
+                    if (h.Fragmenter.HasValue)
+                        param["hl.fragmenter"] = h.Fragmenter.Value == SolrHighlightFragmenter.Regex ? "regex" : "gap";
                 }
             }
             return param;

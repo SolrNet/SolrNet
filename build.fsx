@@ -35,8 +35,18 @@ Target "Test" (fun _ ->
     //testAssemblies |> Seq.iter (printfn "%s")
     testAssemblies |> Gallio.Run (fun p -> { p with Filters = "exclude Category: Integration" })
 )
+Target "Merge" (fun _ ->
+    ILMerge (fun p -> { p with 
+                            ToolPath = "lib\\ilmerge.exe"
+                            Libraries = ["SolrNet.DSL.dll"; "HttpWebAdapters.dll"]
+                            SearchDirectories = ["merged"]
+                            Internalize = InternalizeExcept "ilmerge.exclude"
+                            XmlDocs = true
+                       })
+        "SolrNet.dll" "SolrNet.dll"
+)
 
 For "Test" <| Dependency "Rebuild"
 
 // start build
-Run "Test"
+Run "Merge"

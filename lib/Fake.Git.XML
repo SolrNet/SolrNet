@@ -311,6 +311,9 @@
  </summary>
  <returns>If the process used merge instead of rebase.</returns>
 </member>
+<member name="">
+
+</member>
 <member name="M:Fake.Git.Rebase.skip(System.String)">
 <summary>
  Restart the rebasing process by skipping the current patch. 

@@ -3,50 +3,69 @@
 #r "Fake.Gallio.dll"
 
 open System
+open System.Linq
 open Fake
 
-type BuildConfig = Debug | Release
+let (=.) a b = StringComparer.InvariantCultureIgnoreCase.Compare(a,b) = 0
+let flip f x y = f y x
+let def = flip defaultArg
+let anyOf l e = l |> Seq.exists (fun i -> i =. e)
 
-let join sep (s: string seq) = String.Join(sep, s)
+let config =
+    fsi.CommandLineArgs
+    |> Seq.tryFind (anyOf ["/debug"; "/release"])
+    |> def "/debug"
+    |> fun e -> e.Substring(1)
 
-/// Runs a msbuild project
-let msbuild targets properties project =
-    let msBuildExe = "msbuild.exe"
-    traceStartTask "MSBuild" project
-    let targets = sprintf "/target:%s" (targets |> join ";") |> toParam
-    let props = 
-        properties
-          |> Seq.map (fun (key,value) -> sprintf " /p:%s=%s " key value)
-          |> separated ""
- 
-    let args = toParam project + targets + props + " /m"
-    logfn "Building project: %s\n  %s %s" project msBuildExe args
-    if not (execProcess3 (fun info ->  
-        info.FileName <- msBuildExe
-        info.Arguments <- args) TimeSpan.MaxValue)
-    then failwithf "Building %s project failed." project
-    traceEndTask "MSBuild" project
+let target = 
+    fsi.CommandLineArgs
+    |> Seq.skip 1
+    |> Seq.tryFind (fun c -> not(c.StartsWith "/"))
+    |> def "BuildAll"
 
-let slnTarget x = Target x (fun _ -> msbuild [x] [] "solrnet.sln")
-slnTarget "Clean"
-slnTarget "Rebuild"
+let slnBuild sln x = 
+    sln |> build (fun p -> { p with 
+                                Targets = [x] 
+                                Properties = ["Configuration", config] })
+let mainSln = slnBuild "solrnet.sln"
+let sampleSln = slnBuild "SampleSolrApp.sln"
+
+Target "Clean" (fun _ -> 
+    mainSln "Clean"
+    sampleSln "Clean"
+    DeleteDir "merged"
+)
+
+Target "Build" (fun _ -> mainSln "Rebuild")
+Target "BuildSample" (fun _ -> sampleSln "Rebuild")
+
+Target "BuildAll" DoNothing
+
 Target "Test" (fun _ ->
     let testAssemblies = !+ "**/bin/**/*Tests.dll" |> ScanImmediately
-    //testAssemblies |> Seq.iter (printfn "%s")
     testAssemblies |> Gallio.Run (fun p -> { p with Filters = "exclude Category: Integration" })
 )
+
 Target "Merge" (fun _ ->
+    DeleteDir "merged"
+    CreateDir "merged"
+    let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "Structuremap.SolrNetIntegration"]
+    let dlls = libs |> List.map (fun l -> l + ".dll")
+    let dirs = libs |> List.map (fun l -> l @@ "bin" @@ config)
+    let main = "SolrNet\\bin" @@ config @@ "SolrNet.dll"
+    let output = "merged" @@ dlls.[0]
     ILMerge (fun p -> { p with 
                             ToolPath = "lib\\ilmerge.exe"
-                            Libraries = ["SolrNet.DSL.dll"; "HttpWebAdapters.dll"]
-                            SearchDirectories = ["merged"]
+                            Libraries = dlls |> Seq.skip 1 |> Seq.toList
+                            SearchDirectories = dirs
                             Internalize = InternalizeExcept "ilmerge.exclude"
                             XmlDocs = true
-                       })
-        "SolrNet.dll" "SolrNet.dll"
+                       }) output main
 )
 
-For "Test" <| Dependency "Rebuild"
+"Test" <== ["BuildAll"]
+"BuildAll" <== ["Build";"Merge";"BuildSample"]
+
 
 // start build
-Run "Merge"
+Run target

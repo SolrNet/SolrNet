@@ -172,5 +172,14 @@ namespace SolrNet.Tests {
             public IDictionary<string, object> Dict { get; set; }
         }
 
+        public class TestDocWithoutSetter {
+            private readonly int id;
+
+            [SolrField]
+            public int Id {
+                get { return id; }
+            }
+        }
+
     }
 }

@@ -28,6 +28,8 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
     public class GenericDictionaryDocumentVisitor : ISolrDocumentPropertyVisitor {
         private readonly IReadOnlyMappingManager mapper;
         private readonly ISolrFieldParser parser;
+        private readonly Converter<Type, bool> memoCanHandleType;
+        private readonly Func.Func2<Type, string, SolrFieldModel> memoGetThisField;
 
         /// <summary>
         /// Document visitor that handles generic dictionary properties
@@ -37,6 +39,8 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
         public GenericDictionaryDocumentVisitor(IReadOnlyMappingManager mapper, ISolrFieldParser parser) {
             this.mapper = mapper;
             this.parser = parser;
+            memoCanHandleType = Memoizer.Memoize<Type, bool>(CanHandleType);
+            memoGetThisField = Memoizer.Memoize2<Type, string, SolrFieldModel>(GetThisField);
         }
 
         /// <summary>
@@ -75,7 +79,7 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
 
         public SolrFieldModel GetThisField(Type t, string fieldName) {
             var allFields = mapper.GetFields(t);
-            var fieldsICanHandle = Func.Filter(allFields, f => CanHandleType(f.Property.PropertyType));
+            var fieldsICanHandle = Func.Filter(allFields, f => memoCanHandleType(f.Property.PropertyType));
             var matchingFields = Func.Filter(fieldsICanHandle, f => f.FieldName == "*" || fieldName.StartsWith(f.FieldName));
             return Func.FirstOrDefault(matchingFields, f => !Func.Any(allFields, x => x.FieldName == fieldName && !Equals(x, f)));
         }
@@ -87,7 +91,7 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
         }
 
         public void Visit(object doc, string fieldName, XmlNode field) {
-            var thisField = GetThisField(doc.GetType(), fieldName);
+            var thisField = memoGetThisField(doc.GetType(), fieldName);
             if (thisField == null)
                 return;
             var thisFieldName = thisField.FieldName;

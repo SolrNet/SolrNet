@@ -1,3 +1,16 @@
+- Fixed support for readonly and writeonly properties in document type
+- Fixed issue #113: duplicate add in NHibernate integration
+- Fixed bug with attributes not being picked up by a class higher in the class hierarchy
+- Improved HTTP performance by setting KeepAlive and HTTP/1.1 for POSTS
+- Fixed NHibernate integration overriding existing event listeners
+- Improved response parsing performance
+- Fixed issue #93: nullable DateTime range queries
+- Added support for multi-core in StructureMap registry
+- Upgraded to StructureMap 2.6
+
+0.3.0 beta1 (2010-06-08)
+===
+
 - Breaking change: field collapsing changed completely.
 - Breaking change: removed ServerURL and Version properties from ISolrConnection.
 - Breaking change: changed Highlighting and MoreLikeThis result classes. Indices are now string instead of T.

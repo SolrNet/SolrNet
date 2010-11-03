@@ -6,6 +6,7 @@
     <name>NCover Integration Plugin</name>
     <version>3.2.0.0</version>
     <description>Provides support for running tests with NCover code coverage.</description>
+	<icon>plugin://Gallio.NCoverIntegration/Resources/ncover.ico</icon>
   </traits>
 
   <dependencies>
@@ -16,15 +17,35 @@
     <file path="Gallio.NCoverIntegration.plugin" />
     <file path="Gallio.NCoverIntegration.dll" />
 
-    <file path="NCover\Coverage.xsl" />
-    <file path="NCover\CoverLib.dll" />
-    <file path="NCover\Microsoft.VC80.CRT.manifest" />
-    <file path="NCover\MSVCP80.dll" />
-    <file path="NCover\MSVCR80.dll" />
-    <file path="NCover\NCover.Console.exe" />
-    <file path="NCover\NCover.Console.exe.config" />
-    <file path="NCover\NCover.Framework.dll" />
-    <file path="NCover\NCoverFAQ.html" />
+    <file path="libs\NCover Readme.txt"/>
+
+    <file path="libs\NCover\Coverage.xsl" />
+    <file path="libs\NCover\CoverLib.dll" />
+    <file path="libs\NCover\Microsoft.VC80.CRT.manifest" />
+    <file path="libs\NCover\MSVCP80.dll" />
+    <file path="libs\NCover\MSVCR80.dll" />
+    <file path="libs\NCover\NCover.Console.exe" />
+    <file path="libs\NCover\NCover.Console.exe.config" />
+    <file path="libs\NCover\NCover.Framework.dll" />
+    <file path="libs\NCover\NCoverFAQ.html" />
+
+    <file path="libs\NCoverExplorer Readme.txt"/>
+
+    <file path="libs\NCoverExplorer\CommandBars.dll"/>
+    <file path="libs\NCoverExplorer\ConsoleConfig.xsd"/>
+    <file path="libs\NCoverExplorer\ConsoleExample.config"/>
+    <file path="libs\NCoverExplorer\CoverageReport.xsl"/>
+    <file path="libs\NCoverExplorer\ICSharpCode.TextEditor.dll"/>
+    <file path="libs\NCoverExplorer\license.txt"/>
+    <file path="libs\NCoverExplorer\NCoverExplorer.Console.exe"/>
+    <file path="libs\NCoverExplorer\NCoverExplorer.Core.dll"/>
+    <file path="libs\NCoverExplorer\NCoverExplorer.exe"/>
+    <file path="libs\NCoverExplorer\NCoverExplorer.exe.config"/>
+    <file path="libs\NCoverExplorer\NCoverExplorer.NCoverRunner.dll"/>
+    <file path="libs\NCoverExplorer\NCoverExplorerFAQ.html"/>
+    <file path="libs\NCoverExplorer\NCoverExplorerReleaseNotes.html"/>
+	
+	<file path="Resources\ncover.ico" />
   </files>
 
   <assemblies>

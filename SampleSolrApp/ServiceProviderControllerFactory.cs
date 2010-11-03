@@ -17,6 +17,7 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace SampleSolrApp {
     public class ServiceProviderControllerFactory : DefaultControllerFactory {
@@ -26,9 +27,9 @@ namespace SampleSolrApp {
             this.container = container;
         }
 
-        protected override IController GetControllerInstance(Type controllerType) {
+        protected override IController GetControllerInstance(RequestContext context, Type controllerType) {
             if (controllerType == null) {
-                throw new HttpException(404, string.Format("The controller for path '{0}' could not be found or it does not implement IController.", RequestContext.HttpContext.Request.Path));
+                throw new HttpException(404, string.Format("The controller for path '{0}' could not be found or it does not implement IController.", context.HttpContext.Request.Path));
             }
 
             return (IController) container.GetService(controllerType);

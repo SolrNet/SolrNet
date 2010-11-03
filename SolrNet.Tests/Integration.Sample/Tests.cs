@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands.Parameters;
@@ -184,7 +185,7 @@ namespace SolrNet.Tests.Integration.Sample {
             Assert.IsNotNull(results.Highlights);
             Assert.AreEqual(1, results.Highlights.Count);
             foreach (var h in results.Highlights[results[0].Id]) {
-                Console.WriteLine("{0}: {1}", h.Key, h.Value);
+                Console.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.ToArray()));
             }
         }
 
@@ -212,6 +213,17 @@ namespace SolrNet.Tests.Integration.Sample {
         public void Ping() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             solr.Ping();
+        }
+
+        [Test]
+        public void Dismax() {
+            Add_then_query();
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var products = solr.Query(new SolrQuery("samsung"), new QueryOptions { ExtraParams = new Dictionary<string, string> {
+                {"qt", "dismax"},
+                {"qf", "sku name^1.2 manu^1.1"},
+            }});
+            Assert.GreaterThan(products.Count, 0);
         }
 
         [Test]
@@ -258,7 +270,20 @@ namespace SolrNet.Tests.Integration.Sample {
         [Test]
         public void MoreLikeThis() {
             Add_then_query();
-            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Add(new Product {
+                Id = "apache-cocoon",
+                Categories = new[] {"framework", "java"},
+                Name = "Apache Cocoon",
+                Manufacturer = "Apache",
+            });
+            solr.Add(new Product {
+                Id = "apache-hadoop",
+                Categories = new[] { "framework", "java", "mapreduce" },
+                Name = "Apache Hadoop",
+                Manufacturer = "Apache",
+            });
+            solr.Commit();
             var results = solr.Query(new SolrQuery("apache"), new QueryOptions {
                 MoreLikeThis = new MoreLikeThisParameters(new[] {"cat", "manu"}) {
                     MinDocFreq = 1,
@@ -266,6 +291,7 @@ namespace SolrNet.Tests.Integration.Sample {
                     //Count = 1,
                 },
             });
+            Assert.GreaterThan(results.SimilarResults.Count, 0);
             foreach (var r in results.SimilarResults) {
                 Console.WriteLine("Similar documents to {0}", r.Key);
                 foreach (var similar in r.Value)
@@ -378,10 +404,12 @@ namespace SolrNet.Tests.Integration.Sample {
             Add_then_query();
             Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL)));
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<ProductLoose>>();
-            var products = solr.Query(SolrQuery.All);
+            var products = solr.Query(SolrQuery.All, new QueryOptions {Fields = new[] {"*", "score"}});
             Assert.AreEqual(1, products.Count);
             var product = products[0];
             Assert.AreEqual("SP2514N", product.Id);
+            Assert.IsTrue(product.Score.HasValue);
+            Assert.IsFalse(product.OtherFields.ContainsKey("score"));
             Assert.IsNull(product.SKU);
             Assert.IsNotNull(product.Name);
             Assert.IsNotNull(product.OtherFields);
@@ -393,6 +421,7 @@ namespace SolrNet.Tests.Integration.Sample {
             Assert.IsInstanceOfType(typeof(ICollection), product.OtherFields["features"]);
             product.OtherFields["timestamp"] = new DateTime(2010, 1, 1);
             product.OtherFields["features"] = new[] {"a", "b", "c"};
+            product.Score = null;
             solr.Add(product);
         }
     }

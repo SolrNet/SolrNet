@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using NHibernate.Event;
-using NHibernate.Event.Default;
 using NHibernate.Util;
 using SolrNet;
 
@@ -46,7 +45,9 @@ namespace NHibernate.SolrNet.Impl {
             lock (entitiesToAdd.SyncRoot) {
                 if (!entitiesToAdd.Contains(s))
                     entitiesToAdd[s] = new List<T>();
-                ((IList<T>)entitiesToAdd[s]).Add(entity);
+                var l = ((IList<T>)entitiesToAdd[s]);
+                if (!l.Contains(entity))
+                    l.Add(entity);
             }
         }
 
@@ -54,7 +55,9 @@ namespace NHibernate.SolrNet.Impl {
             lock (entitiesToDelete.SyncRoot) {
                 if (!entitiesToDelete.Contains(s))
                     entitiesToDelete[s] = new List<T>();
-                ((IList<T>)entitiesToAdd[s]).Add(entity);
+                var l = ((IList<T>)entitiesToAdd[s]);
+                if (!l.Contains(entity))
+                    l.Add(entity);
             }
         }
 
@@ -80,6 +83,8 @@ namespace NHibernate.SolrNet.Impl {
 
         public void UpdateInternal(AbstractEvent e, T entity) {
             if (entity == null)
+                return;
+            if (entity.GetType() != typeof(T)) // strict check for type, e.g. no subtypes
                 return;
             if (DeferAction(e.Session))
                 Add(e.Session.Transaction, entity);
@@ -116,8 +121,6 @@ namespace NHibernate.SolrNet.Impl {
 
         public void OnFlush(FlushEvent e) {
             OnFlushInternal(e);
-            var l = new DefaultFlushEventListener();
-            l.OnFlush(e); // NHibernate seems to allow only one flush listener, and it overrides the default listener? TODO CHECK
         }
 
         public void OnFlushInternal(AbstractEvent e) {
@@ -129,8 +132,6 @@ namespace NHibernate.SolrNet.Impl {
 
         public void OnAutoFlush(AutoFlushEvent e) {
             OnFlushInternal(e);
-            var l = new DefaultAutoFlushEventListener();
-            l.OnAutoFlush(e);
         }
     }
 }

@@ -40,6 +40,8 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
             var thisField = Func.FirstOrDefault(allFields, p => p.FieldName == fieldName);
             if (thisField == null)
                 return;
+            if (!thisField.Property.CanWrite)
+                return;
             if (parser.CanHandleSolrType(field.Name) &&
                 parser.CanHandleType(thisField.Property.PropertyType)) {
                 var v = parser.Parse(field, thisField.Property.PropertyType);

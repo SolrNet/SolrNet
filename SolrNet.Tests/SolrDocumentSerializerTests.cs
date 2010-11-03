@@ -229,5 +229,30 @@ namespace SolrNet.Tests {
             Assert.AreEqual(@"<doc boost=""2.1""><field name=""Desc"">hello</field></doc>", fs);            
         }
 
+        [Test]
+        public void Inheritance() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithString>(mapper, new DefaultFieldSerializer());
+            var doc = new InheritedDoc {
+                Desc = "Description",
+                Desc1 = "Description1"
+            };
+            string fs = ser.Serialize(doc, null).OuterXml;
+            var xml = new XmlDocument();
+            xml.LoadXml(fs);
+            Console.WriteLine(fs);
+            Assert.AreEqual(@"<doc><field name=""Desc1"">Description1</field><field name=""Desc"">Description</field></doc>", fs);
+        }
+
+        [Test]
+        public void PropertyWithoutGetter() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithoutGetter>(mapper, new DefaultFieldSerializer());
+            string fs = ser.Serialize(new TestDocWithoutGetter(), null).OuterXml;
+            var xml = new XmlDocument();
+            xml.LoadXml(fs);
+            Console.WriteLine(fs);
+        }
+
 	}
 }

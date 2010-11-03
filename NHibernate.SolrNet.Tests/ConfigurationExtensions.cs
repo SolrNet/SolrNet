@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using NHibernate.ByteCode.Castle;
+using NHibernate.ByteCode.LinFu;
 using NHibernate.Connection;
 using NHibernate.Dialect;
 using NHibernate.Driver;
@@ -24,15 +24,6 @@ using Environment=NHibernate.Cfg.Environment;
 
 namespace NHibernate.SolrNet.Tests {
     public static class ConfigurationExtensions {
-
-        public static void SetListener(this Cfg.Configuration config, object listener) {
-            if (listener == null)
-                throw new ArgumentNullException("listener");
-            foreach (var intf in listener.GetType().GetInterfaces())
-                if (CfgHelper.ListenerDict.ContainsKey(intf))
-                    foreach (var t in CfgHelper.ListenerDict[intf])
-                        config.SetListener(t, listener);
-        }
 
         public static Configuration GetEmptyNHConfig() {
             var nhConfig = new Configuration {

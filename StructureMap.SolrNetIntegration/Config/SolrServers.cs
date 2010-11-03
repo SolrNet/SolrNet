@@ -4,6 +4,11 @@ namespace StructureMap.SolrNetIntegration.Config
 {
     public class SolrServers : ConfigurationElementCollection 
     {
+        public void Add(SolrServerElement configurationElement)
+        {
+            base.BaseAdd(configurationElement);
+        }
+
         protected override ConfigurationElement CreateNewElement() 
         {
             return new SolrServerElement();

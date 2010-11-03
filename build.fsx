@@ -49,9 +49,18 @@ Target "BuildSample" (fun _ -> sampleSln "Rebuild")
 
 Target "BuildAll" DoNothing
 
+let testAssemblies = !+ "**/bin/**/*Tests.dll" |> Scan
+let gallioFilters = "exclude Category: Integration"
+
 Target "Test" (fun _ ->
-    let testAssemblies = !+ "**/bin/**/*Tests.dll" |> ScanImmediately
-    testAssemblies |> Gallio.Run (fun p -> { p with Filters = "exclude Category: Integration" })
+    testAssemblies |> Gallio.Run (fun p -> { p with Filters = gallioFilters })
+)
+
+Target "Coverage" (fun _ ->
+    testAssemblies |> Gallio.Run (fun p -> { p with 
+                                                Filters = gallioFilters
+                                                RunnerType = "NCover"
+                                                PluginDirectories = ["lib"] })
 )
 
 let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "Structuremap.SolrNetIntegration"]

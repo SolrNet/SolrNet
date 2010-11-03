@@ -73,5 +73,39 @@ namespace SolrNet.Tests {
 		public void InvalidParse_ShouldThrow() {
 			var o = SortOrder.Parse("pepe bla");
 		}
-	}
+
+	    [Test]
+	    public void FieldName_accessor() {
+            var o = SortOrder.Parse("pepe asc");
+            Assert.AreEqual("pepe", o.FieldName);
+	    }
+
+        [Test]
+        public void Order_accessor()
+        {
+            var o = SortOrder.Parse("pepe asc");
+            Assert.AreEqual(Order.ASC, o.Order);
+        }
+
+	    [Test]
+	    public void SortOrders_are_equal_if_field_name_and_order_are_equal() {
+	        var sortOrder1 = new SortOrder("fieldName", Order.ASC);
+	        var sortOrder2 = new SortOrder("fieldName", Order.ASC);
+            Assert.AreEqual(sortOrder1, sortOrder2);
+	    }
+
+        [Test]
+        public void SortOrders_are_not_equal_if_field_name_is_different() {
+            var sortOrder1 = new SortOrder("fieldName", Order.ASC);
+            var sortOrder2 = new SortOrder("otherField", Order.ASC);
+            Assert.AreNotEqual(sortOrder1, sortOrder2);
+        }
+
+        [Test]
+        public void SortOrders_are_not_equal_if_order_is_different() {
+            var sortOrder1 = new SortOrder("fieldName", Order.ASC);
+            var sortOrder2 = new SortOrder("fieldName", Order.DESC);
+            Assert.AreNotEqual(sortOrder1, sortOrder2);
+        }
+    }
 }

@@ -1,13 +1,20 @@
 #I @"lib"
 #r "FakeLib.dll"
 #r "Fake.Gallio.dll"
+#r "System.Xml.Linq"
 
 open System
+open System.Xml.Linq
 open Fake
 
 let version = "0.3.0"
 let buildDir = "merged"
 let (=.) a b = StringComparer.InvariantCultureIgnoreCase.Compare(a,b) = 0
+let (.>) (a: #seq<XElement>) (b: string) = Extensions.Descendants(a, xname b)
+let startsWith s (n: XElement) = n.Value.StartsWith s
+let contains s (n: XElement) = n.Value.Contains s
+let setValue s (n: XElement) = n.Value <- s
+let replaceValue orig repl (n: XElement) = n.Value <- n.Value.Replace((orig:string), (repl:string))
 let flip f x y = f y x
 let def = flip defaultArg
 let anyOf l e = l |> Seq.exists (fun i -> i =. e)
@@ -89,14 +96,34 @@ Target "PackageSampleApp" (fun _ ->
     DeleteDir logs
     CreateDir logs
 
+    CopyDir (buildDir @@ "tools\\Cassini") "tools\\Cassini" allFiles
+
     let sampleApp = "SampleSolrApp"
     let outputSampleApp = buildDir @@ sampleApp
     CopyDir outputSampleApp sampleApp allFiles
     DeleteDir (outputSampleApp @@ "obj")
     DeleteFile (outputSampleApp @@ "log.txt")
     DeleteFile (outputSampleApp @@ "SampleSolrApp.sln.cache")
-    // TODO fix csproj reference
-    // zip
+    CreateDir (outputSampleApp @@ "lib")
+    !+ (outputSampleApp @@ "bin\\*") -- "**\\SampleSolrApp.*" -- "**\\SolrNet.*" 
+    -- "**\\.*" -- (outputSampleApp @@ "bin") // bug in FAKE?
+    |> Scan 
+    //|> Seq.iter (logf "scanned %s\n")
+    |> Copy (outputSampleApp @@ "lib")
+    ["pingsolr.js"; "license.txt"; "runsample.bat"] |> Copy buildDir
+
+    let csproj = outputSampleApp @@ "SampleSolrApp.csproj"
+    let xml = XDocument.Load csproj
+    let refs = xml.Elements() .> "ItemGroup" .> "Reference" .> "HintPath"
+    refs
+    |> Seq.filter (startsWith @"..\lib")
+    |> Seq.iter (replaceValue @"..\" "")
+    refs
+    |> Seq.filter (contains "SolrNet.dll")
+    |> Seq.iter (setValue @"..\SolrNet.dll")
+    xml.Save csproj
+    
+    !+ (buildDir @@ "**\\*") |> Scan |> Zip buildDir (sprintf "SolrNet-%s-sample.zip" version)
 )
 
 "Test" <== ["BuildAll"]

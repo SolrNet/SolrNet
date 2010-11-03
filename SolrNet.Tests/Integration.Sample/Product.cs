@@ -61,5 +61,8 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [SolrField("price_")]
         public IDictionary<string, decimal> Prices { get; set; }
+
+        [SolrField("ca")]
+        public IDictionary<string, ICollection<string>> DynCategories { get; set; }
 	}
 }

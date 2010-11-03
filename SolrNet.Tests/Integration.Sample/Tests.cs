@@ -71,6 +71,9 @@ namespace SolrNet.Tests.Integration.Sample {
                 Price = 92,
                 Popularity = 6,
                 InStock = true,
+                DynCategories = new Dictionary<string, ICollection<string>> {
+                    {"t", new[] {"something"}},
+                }
             };
 
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();

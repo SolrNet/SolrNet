@@ -97,11 +97,12 @@ Target "Version" (fun _ ->
 )
 
 Target "PackageSampleApp" (fun _ ->
+    //System.Diagnostics.Debugger.Break()
     let solr = "solr-1.4.0"
     let outputSolr = buildDir @@ solr
     CopyDir outputSolr solr allFiles
     DeleteDir (outputSolr @@ "solr\\data")
-    let logs = outputSolr @@ "solr\\logs"
+    let logs = outputSolr @@ "logs"
     DeleteDir logs
     CreateDir logs
 
@@ -113,12 +114,13 @@ Target "PackageSampleApp" (fun _ ->
     DeleteDir (outputSampleApp @@ "obj")
     DeleteFile (outputSampleApp @@ "log.txt")
     DeleteFile (outputSampleApp @@ "SampleSolrApp.sln.cache")
-    CreateDir (outputSampleApp @@ "lib")
+    CreateDir (outputSampleApp @@ "lib")    
     !+ (outputSampleApp @@ "bin\\*") -- "**\\SampleSolrApp.*" -- "**\\SolrNet.*" 
-    -- "**\\.*" -- (outputSampleApp @@ "bin") // bug in FAKE?
-    |> Scan 
+    -- (outputSampleApp @@ "bin")
+    |> Scan
     //|> Seq.iter (logf "scanned %s\n")
     |> Copy (outputSampleApp @@ "lib")
+    
     ["pingsolr.js"; "license.txt"; "runsample.bat"] |> Copy buildDir
 
     let csproj = outputSampleApp @@ "SampleSolrApp.csproj"
@@ -133,6 +135,7 @@ Target "PackageSampleApp" (fun _ ->
     xml.Save csproj
     
     !+ (buildDir @@ "**\\*") |> Scan |> Zip buildDir (sprintf "SolrNet-%s-sample.zip" version)
+    
 )
 
 "Test" <== ["BuildAll"]

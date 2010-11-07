@@ -8,6 +8,7 @@ open System.Xml.Linq
 open Fake
 
 let version = "0.3.0"
+let solr = "solr-1.4.0"
 let buildDir = "merged"
 let config = getBuildParamOrDefault "config" "debug"
 let target = getBuildParamOrDefault "target" "BuildAll"
@@ -18,6 +19,7 @@ let startsWith s (n: XElement) = n.Value.StartsWith s
 let contains s (n: XElement) = n.Value.Contains s
 let setValue s (n: XElement) = n.Value <- s
 let replaceValue orig repl (n: XElement) = n.Value <- n.Value.Replace((orig:string), (repl:string))
+let httpGet = Fake.REST.ExecuteGetCommand null null
 
 let slnBuild sln x = 
     sln |> build (fun p -> { p with 
@@ -38,17 +40,42 @@ Target "BuildSample" (fun _ -> sampleSln "Rebuild")
 Target "BuildAll" DoNothing
 
 let testAssemblies = !+ "**/bin/**/*Tests.dll" |> Scan
-let gallioFilters = "exclude Category: Integration"
+let noIntegrationTests = "exclude Category: Integration"
+let onlyIntegrationTests = "Category: Integration"
 
 Target "Test" (fun _ ->
-    testAssemblies |> Gallio.Run (fun p -> { p with Filters = gallioFilters })
+    testAssemblies |> Gallio.Run (fun p -> { p with Filters = noIntegrationTests })
 )
 
 Target "Coverage" (fun _ ->
     testAssemblies |> Gallio.Run (fun p -> { p with 
-                                                Filters = gallioFilters
+                                                Filters = noIntegrationTests
                                                 RunnerType = "NCover"
                                                 PluginDirectories = ["lib"] })
+)
+
+Target "IntegrationTest" (fun _ ->
+    asyncShellExec {
+        WorkingDirectory = solr
+        Program = "java"
+        CommandLine = "-DSTOP.PORT=8079 -DSTOP.KEY=secret -jar start.jar"
+        Args = []
+    } |> Async.StartAsTask |> ignore
+    waitFor 
+        (fun () -> httpGet "http://localhost:8983/solr/admin/ping" <> null)
+        (TimeSpan.FromSeconds 10.)
+        500 // half a sec
+        (fun () -> failwith "Solr test instance didn't work")
+        |> ignore
+    try
+        testAssemblies |> Gallio.Run (fun p -> { p with Filters = onlyIntegrationTests })
+    finally
+        shellExec {
+            WorkingDirectory = solr
+            Program = "java"
+            CommandLine = "-DSTOP.PORT=8079 -DSTOP.KEY=secret -jar start.jar --stop"
+            Args = []
+        } |> ignore
 )
 
 let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "Structuremap.SolrNetIntegration"]
@@ -100,7 +127,6 @@ Target "ReleasePackage" (fun _ ->
 
 Target "PackageSampleApp" (fun _ ->
     //System.Diagnostics.Debugger.Break()
-    let solr = "solr-1.4.0"
     let outputSolr = buildDir @@ solr
     CopyDir outputSolr solr allFiles
     DeleteDir (outputSolr @@ "solr\\data")

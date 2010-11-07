@@ -21,10 +21,29 @@ let setValue s (n: XElement) = n.Value <- s
 let replaceValue orig repl (n: XElement) = n.Value <- n.Value.Replace((orig:string), (repl:string))
 let httpGet = Fake.REST.ExecuteGetCommand null null
 
+module Solr =
+    let private cmdline = "-DSTOP.PORT=8079 -DSTOP.KEY=secret -jar start.jar"
+    let private execParam cmd = 
+        { WorkingDirectory = solr
+          Program = "java"
+          CommandLine = cmdline + " " + cmd
+          Args = [] }
+    let start() = 
+        asyncShellExec (execParam "") |> Async.StartAsTask |> ignore
+        waitFor 
+            (fun () -> httpGet "http://localhost:8983/solr/admin/ping" <> null)
+            (TimeSpan.FromSeconds 10.)
+            500 // half a sec retry
+            (fun () -> failwith "Solr test instance didn't work")
+            |> ignore
+    let stop() =
+        shellExec (execParam "--stop") |> ignore
+
 let slnBuild sln x = 
     sln |> build (fun p -> { p with 
                                 Targets = [x] 
                                 Properties = ["Configuration", config] })
+
 let mainSln = slnBuild "solrnet.sln"
 let sampleSln = slnBuild "SampleSolrApp.sln"
 
@@ -55,27 +74,11 @@ Target "Coverage" (fun _ ->
 )
 
 Target "IntegrationTest" (fun _ ->
-    asyncShellExec {
-        WorkingDirectory = solr
-        Program = "java"
-        CommandLine = "-DSTOP.PORT=8079 -DSTOP.KEY=secret -jar start.jar"
-        Args = []
-    } |> Async.StartAsTask |> ignore
-    waitFor 
-        (fun () -> httpGet "http://localhost:8983/solr/admin/ping" <> null)
-        (TimeSpan.FromSeconds 10.)
-        500 // half a sec
-        (fun () -> failwith "Solr test instance didn't work")
-        |> ignore
+    Solr.start()
     try
         testAssemblies |> Gallio.Run (fun p -> { p with Filters = onlyIntegrationTests })
     finally
-        shellExec {
-            WorkingDirectory = solr
-            Program = "java"
-            CommandLine = "-DSTOP.PORT=8079 -DSTOP.KEY=secret -jar start.jar --stop"
-            Args = []
-        } |> ignore
+        Solr.stop()
 )
 
 let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "Structuremap.SolrNetIntegration"]

@@ -1,1 +1,1 @@
-lib\fake target=Test
+lib\fake build.fsx target=Test

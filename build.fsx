@@ -30,12 +30,11 @@ module Solr =
           Args = [] }
     let start() = 
         asyncShellExec (execParam "") |> Async.StartAsTask |> ignore
-        waitFor 
-            (fun () -> httpGet "http://localhost:8983/solr/admin/ping" <> null)
-            (TimeSpan.FromSeconds 10.)
-            500 // half a sec retry
-            (fun () -> failwith "Solr test instance didn't work")
-            |> ignore
+        let watch = System.Diagnostics.Stopwatch.StartNew()
+        while httpGet "http://localhost:8983/solr/admin/ping" = null do
+            if watch.Elapsed > (TimeSpan.FromSeconds 10.)
+                then failwith "Solr test instance didn't work"
+            System.Threading.Thread.Sleep 500
     let stop() =
         shellExec (execParam "--stop") |> ignore
 

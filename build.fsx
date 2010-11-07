@@ -9,14 +9,15 @@ open Fake
 
 let version = "0.3.0"
 let buildDir = "merged"
+let config = getBuildParamOrDefault "config" "debug"
+let target = getBuildParamOrDefault "target" "BuildAll"
+
+// helper functions
 let (.>) (a: #seq<XElement>) (b: string) = Extensions.Descendants(a, xname b)
 let startsWith s (n: XElement) = n.Value.StartsWith s
 let contains s (n: XElement) = n.Value.Contains s
 let setValue s (n: XElement) = n.Value <- s
 let replaceValue orig repl (n: XElement) = n.Value <- n.Value.Replace((orig:string), (repl:string))
-
-let config = getBuildParamOrDefault "config" "debug"
-let target = getBuildParamOrDefault "target" "BuildAll"
 
 let slnBuild sln x = 
     sln |> build (fun p -> { p with 
@@ -89,9 +90,11 @@ Target "ReleasePackage" (fun _ ->
     CreateDir outputPath
     !+ (buildDir @@ "SolrNet.*")
         ++ "license.txt" ++ "lib\\Microsoft.Practices.*"
-        |> Scan |> Copy outputPath
+        |> Scan 
+        |> Copy outputPath
     !+ (outputPath @@ "*") 
-        |> Scan |> Zip outputPath (sprintf "SolrNet-%s.zip" version)
+        |> Scan 
+        |> Zip outputPath (sprintf "SolrNet-%s.zip" version)
     DeleteDir outputPath
 )
 
@@ -115,9 +118,10 @@ Target "PackageSampleApp" (fun _ ->
     DeleteFile (outputSampleApp @@ "SampleSolrApp.sln.cache")
     CreateDir (outputSampleApp @@ "lib")    
 
-    !+ (outputSampleApp @@ "bin\\*") -- "**\\SampleSolrApp.*" -- "**\\SolrNet.*" 
-    |> Scan
-    |> Copy (outputSampleApp @@ "lib")
+    !+ (outputSampleApp @@ "bin\\*") 
+        -- "**\\SampleSolrApp.*" -- "**\\SolrNet.*"
+        |> Scan
+        |> Copy (outputSampleApp @@ "lib")
    
     ["pingsolr.js"; "license.txt"; "runsample.bat"] |> Copy buildDir
 
@@ -133,8 +137,8 @@ Target "PackageSampleApp" (fun _ ->
     xml.Save csproj
     
     !+ (buildDir @@ "**\\*") 
-    |> Scan 
-    |> Zip buildDir (sprintf "SolrNet-%s-sample.zip" version)
+        |> Scan 
+        |> Zip buildDir (sprintf "SolrNet-%s-sample.zip" version)
 )
 
 "Test" <== ["BuildAll"]

@@ -108,7 +108,7 @@ Target "Version" (fun _ ->
                                     AssemblyTitle = l
                                     AssemblyDescription = l
                                     AssemblyProduct = l
-                                    AssemblyCopyright = sprintf "Copyright Mauricio Scheffer 2007-%d" DateTime.Now.Year
+                                    AssemblyCopyright = "Copyright Mauricio Scheffer 2007-" + DateTime.Now.Year.ToString()
                                     Guid = "6688f9b4-5f2d-4fd6-aafc-3a81c84a69f1"
                                     AssemblyVersion = version
                                     AssemblyFileVersion = version }))
@@ -124,7 +124,7 @@ Target "ReleasePackage" (fun _ ->
         |> Copy outputPath
     !+ (outputPath @@ "*") 
         |> Scan 
-        |> Zip outputPath (sprintf "SolrNet-%s.zip" version)
+        |> Zip outputPath ("SolrNet-"+version+".zip")
     DeleteDir outputPath
 )
 
@@ -167,7 +167,7 @@ Target "PackageSampleApp" (fun _ ->
     
     !+ (buildDir @@ "**\\*") 
         |> Scan 
-        |> Zip buildDir (sprintf "SolrNet-%s-sample.zip" version)
+        |> Zip buildDir ("SolrNet-"+version+"-sample.zip")
 )
 
 "Test" <== ["BuildAll"]

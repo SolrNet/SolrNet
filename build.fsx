@@ -83,6 +83,18 @@ Target "Version" (fun _ ->
                                     AssemblyFileVersion = version }))
 )
 
+Target "ReleasePackage" (fun _ -> 
+    let outputPath = "build"
+    DeleteDir outputPath
+    CreateDir outputPath
+    !+ (buildDir @@ "SolrNet.*")
+        ++ "license.txt" ++ "lib\\Microsoft.Practices.*"
+        |> Scan |> Copy outputPath
+    !+ (outputPath @@ "*") 
+        |> Scan |> Zip outputPath (sprintf "SolrNet-%s.zip" version)
+    DeleteDir outputPath
+)
+
 Target "PackageSampleApp" (fun _ ->
     //System.Diagnostics.Debugger.Break()
     let solr = "solr-1.4.0"
@@ -123,10 +135,10 @@ Target "PackageSampleApp" (fun _ ->
     !+ (buildDir @@ "**\\*") 
     |> Scan 
     |> Zip buildDir (sprintf "SolrNet-%s-sample.zip" version)
-    
 )
 
 "Test" <== ["BuildAll"]
 "BuildAll" <== ["Build";"Merge";"BuildSample"]
+"ReleasePackage" <== ["Clean";"Version";"BuildAll"]
 
 Run target

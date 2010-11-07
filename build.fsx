@@ -99,8 +99,7 @@ Target "Merge" (fun _ ->
 )
 
 Target "Version" (fun _ ->
-    libs 
-    |> Seq.iter (fun l ->
+    for l in libs do
         AssemblyInfo (fun p -> { p with
                                     OutputFileName = l @@ "Properties\\AssemblyInfo.cs"
                                     CLSCompliant = true
@@ -110,7 +109,7 @@ Target "Version" (fun _ ->
                                     AssemblyCopyright = "Copyright Mauricio Scheffer 2007-" + DateTime.Now.Year.ToString()
                                     Guid = "6688f9b4-5f2d-4fd6-aafc-3a81c84a69f1"
                                     AssemblyVersion = version
-                                    AssemblyFileVersion = version }))
+                                    AssemblyFileVersion = version })
 )
 
 Target "ReleasePackage" (fun _ -> 
@@ -128,7 +127,6 @@ Target "ReleasePackage" (fun _ ->
 )
 
 Target "PackageSampleApp" (fun _ ->
-    //System.Diagnostics.Debugger.Break()
     let outputSolr = buildDir @@ solr
     CopyDir outputSolr solr allFiles
     DeleteDir (outputSolr @@ "solr\\data")

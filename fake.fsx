@@ -12,6 +12,8 @@ let solr = "solr-1.4.0"
 // helper functions
 let httpGet = Fake.REST.ExecuteGetCommand null null
 
+let liftAsync f ma = async.Bind(ma, fun a -> async.Return(f a))
+
 [<AutoOpen>]
 module Xml =
     let (.>) (a: #seq<XElement>) (b: string) = Extensions.Descendants(a, xname b)
@@ -23,7 +25,7 @@ module Xml =
 module Solr =
     let private cmdline = "-DSTOP.PORT=8079 -DSTOP.KEY=secret -jar start.jar"
     let start() = 
-        Shell.AsyncExec("java", cmdline, dir = solr) |> Async.StartAsTask |> ignore
+        Shell.AsyncExec("java", cmdline, dir = solr) |> liftAsync ignore |> Async.Start
         let watch = System.Diagnostics.Stopwatch.StartNew()
         while httpGet "http://localhost:8983/solr/admin/ping" = null do
             if watch.Elapsed > (TimeSpan.FromSeconds 10.)

@@ -686,6 +686,11 @@
  Converts a file to it&apos;s full file system name
 </summary>
 </member>
+<member name="M:Fake.FileSystemHelper.fileSystemInfo(System.String)">
+<summary>
+ Creates a FileInfo or a DirectoryInfo for the given path
+</summary>
+</member>
 <member name="M:Fake.FileSystemHelper.fileInfo(System.String)">
 <summary>
  Creates a FileInfo for the given path
@@ -697,6 +702,36 @@
 </summary>
 </member>
 <member name="T:Fake.FileSystemHelper">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:Fake.FileUtils">
 
 </member>
 <member name="">
@@ -1308,6 +1343,21 @@
 <member name="T:Fake.NuGetHelper">
 
 </member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
 <member name="F:Fake.ProcessHelper.ExecParams.Args">
 <summary>
  Command-line argument pairs. The value will be quoted if it contains
@@ -1656,6 +1706,9 @@
 <summary>
  Removes linebreaks from the given string
 </summary>
+</member>
+<member name="">
+
 </member>
 <member name="M:Fake.StringHelper.replace(System.String,System.String,System.String)">
 <summary>

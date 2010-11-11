@@ -20,38 +20,6 @@ module Xml =
     let setValue s (n: XElement) = n.Value <- s
     let replaceValue orig repl (n: XElement) = n.Value <- n.Value.Replace((orig:string), (repl:string))
 
-[<AutoOpen>]
-module FileUtils =
-    let flip f x y = f y x
-    let rm_rf f = 
-        if Directory.Exists f
-            then DeleteDir f
-            else DeleteFile f
-    let mkdir = CreateDir
-    let cp_r src dest = 
-        if Directory.Exists src
-            then CopyDir dest src allFiles
-            else CopyFile dest src
-    let cp = flip CopyFile
-    let chdir = Directory.SetCurrentDirectory
-    let cd = chdir
-    let pwd = Directory.GetCurrentDirectory
-
-type Shell() =
-    static member private GetParams (cmd, ?args, ?dir) =
-        let args = defaultArg args ""
-        let dir = defaultArg dir (Directory.GetCurrentDirectory())
-        { WorkingDirectory = dir
-          Program = cmd
-          CommandLine = args 
-          Args = [] }
-        
-    static member Exec (cmd, ?args, ?dir) = 
-        shellExec (Shell.GetParams(cmd, ?args = args, ?dir = dir))
-
-    static member AsyncExec (cmd, ?args, ?dir) =
-        asyncShellExec (Shell.GetParams(cmd, ?args = args, ?dir = dir))
-
 module Solr =
     let private cmdline = "-DSTOP.PORT=8079 -DSTOP.KEY=secret -jar start.jar"
     let start() = 

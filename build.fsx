@@ -7,6 +7,7 @@
 open System
 open System.Xml.Linq
 open Fake
+open Fake.FileUtils
 
 let version = "0.3.0"
 let buildDir = "merged"

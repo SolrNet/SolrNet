@@ -24,7 +24,7 @@ let sampleSln = slnBuild "SampleSolrApp.sln"
 Target "Clean" (fun _ -> 
     mainSln "Clean"
     sampleSln "Clean"
-    DeleteDir buildDir
+    rm_rf buildDir
 )
 
 Target "Build" (fun _ -> mainSln "Rebuild")
@@ -60,8 +60,8 @@ let dlls = libs |> List.map (fun l -> l + ".dll")
 let dirs = libs |> List.map (fun l -> l @@ "bin" @@ config)
 
 Target "Merge" (fun _ ->
-    DeleteDir buildDir
-    CreateDir buildDir
+    rm_rf buildDir
+    mkdir buildDir
     let main = "SolrNet\\bin" @@ config @@ "SolrNet.dll"
     let output = buildDir @@ dlls.[0]
     ILMerge (fun p -> { p with 
@@ -89,8 +89,8 @@ Target "Version" (fun _ ->
 
 Target "ReleasePackage" (fun _ -> 
     let outputPath = "build"
-    DeleteDir outputPath
-    CreateDir outputPath
+    rm_rf outputPath
+    mkdir outputPath
     !+ (buildDir @@ "SolrNet.*")
         ++ "license.txt" ++ "lib\\Microsoft.Practices.*"
         |> Scan 
@@ -98,26 +98,26 @@ Target "ReleasePackage" (fun _ ->
     !+ (outputPath @@ "*") 
         |> Scan 
         |> Zip outputPath ("SolrNet-"+version+".zip")
-    DeleteDir outputPath
+    rm_rf outputPath
 )
 
 Target "PackageSampleApp" (fun _ ->
     let outputSolr = buildDir @@ solr
-    CopyDir outputSolr solr allFiles
-    DeleteDir (outputSolr @@ "solr\\data")
+    cp_r solr outputSolr
+    rm_rf (outputSolr @@ "solr\\data")
     let logs = outputSolr @@ "logs"
-    DeleteDir logs
-    CreateDir logs
+    rm_rf logs
+    mkdir logs
 
-    CopyDir (buildDir @@ "tools\\Cassini") "tools\\Cassini" allFiles
+    cp_r "tools\\Cassini" (buildDir @@ "tools\\Cassini")
 
     let sampleApp = "SampleSolrApp"
     let outputSampleApp = buildDir @@ sampleApp
-    CopyDir outputSampleApp sampleApp allFiles
-    DeleteDir (outputSampleApp @@ "obj")
-    DeleteFile (outputSampleApp @@ "log.txt")
-    DeleteFile (outputSampleApp @@ "SampleSolrApp.sln.cache")
-    CreateDir (outputSampleApp @@ "lib")    
+    cp_r sampleApp outputSampleApp
+    rm_rf (outputSampleApp @@ "obj")
+    rm_rf (outputSampleApp @@ "log.txt")
+    rm_rf (outputSampleApp @@ "SampleSolrApp.sln.cache")
+    mkdir (outputSampleApp @@ "lib")
 
     !+ (outputSampleApp @@ "bin\\*") 
         -- "**\\SampleSolrApp.*" -- "**\\SolrNet.*"

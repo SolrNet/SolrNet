@@ -33,7 +33,7 @@ Target "BuildSample" (fun _ -> sampleSln "Rebuild")
 
 Target "BuildAll" DoNothing
 
-let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "Structuremap.SolrNetIntegration"]
+let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "StructureMap.SolrNetIntegration"]
 let dlls = libs |> List.map (fun l -> l + ".dll")
 let dirs = libs |> List.map (fun l -> l @@ "bin" @@ config)
 

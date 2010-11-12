@@ -462,6 +462,64 @@
             logical "scan" operation
             </summary>
         </member>
+        <member name="M:StructureMap.Graph.IAssemblyScanner.WithDefaultConventions">
+            <summary>
+            Adds the DefaultConventionScanner to the scanning operations.  I.e., a concrete
+            class named "Something" that implements "ISomething" will be automatically 
+            added to PluginType "ISomething"
+            </summary>
+        </member>
+        <member name="M:StructureMap.Graph.IAssemblyScanner.ConnectImplementationsToTypesClosing(System.Type)">
+            <summary>
+            Scans for PluginType's and Concrete Types that close the given open generic type
+            </summary>
+            <example>
+            
+            </example>
+            <param name="openGenericType"></param>
+        </member>
+        <member name="M:StructureMap.Graph.IAssemblyScanner.RegisterConcreteTypesAgainstTheFirstInterface">
+            <summary>
+            Automatically registers all concrete types without primitive arguments
+            against its first interface, if any
+            </summary>
+        </member>
+        <member name="M:StructureMap.Graph.IAssemblyScanner.SingleImplementationsOfInterface">
+            <summary>
+            Directs the scanning to automatically register any type that is the single
+            implementation of an interface against that interface.
+            The filters apply
+            </summary>
+        </member>
+        <member name="M:StructureMap.Graph.AssemblyScanner.WithDefaultConventions">
+            <summary>
+            Adds the DefaultConventionScanner to the scanning operations.  I.e., a concrete
+            class named "Something" that implements "ISomething" will be automatically 
+            added to PluginType "ISomething"
+            </summary>
+        </member>
+        <member name="M:StructureMap.Graph.AssemblyScanner.ConnectImplementationsToTypesClosing(System.Type)">
+            <summary>
+            Scans for PluginType's and Concrete Types that close the given open generic type
+            </summary>
+            <example>
+            
+            </example>
+            <param name="openGenericType"></param>
+        </member>
+        <member name="M:StructureMap.Graph.AssemblyScanner.RegisterConcreteTypesAgainstTheFirstInterface">
+            <summary>
+            Automatically registers all concrete types without primitive arguments
+            against its first interface, if any
+            </summary>
+        </member>
+        <member name="M:StructureMap.Graph.AssemblyScanner.SingleImplementationsOfInterface">
+            <summary>
+            Directs the scanning to automatically register any type that is the single
+            implementation of an interface against that interface.
+            The filters apply
+            </summary>
+        </member>
         <member name="T:StructureMap.Interceptors.TypeInterceptor">
             <summary>
             A TypeInterceptor that is only applied if the MatchesType()
@@ -2831,40 +2889,6 @@
             <summary>
             If true, directs StructureMap to look for configuration in the App.config.
             The default value is false.
-            </summary>
-        </member>
-        <member name="T:StructureMap.Configuration.DSL.AssemblyScannerExtensions">
-            <summary>
-            Extend the assembly scanning DSL to support the built-in registration conventions
-            </summary>
-        </member>
-        <member name="M:StructureMap.Configuration.DSL.AssemblyScannerExtensions.WithDefaultConventions(StructureMap.Graph.IAssemblyScanner)">
-            <summary>
-            Adds the DefaultConventionScanner to the scanning operations.  I.e., a concrete
-            class named "Something" that implements "ISomething" will be automatically 
-            added to PluginType "ISomething"
-            </summary>
-        </member>
-        <member name="M:StructureMap.Configuration.DSL.AssemblyScannerExtensions.ConnectImplementationsToTypesClosing(StructureMap.Graph.IAssemblyScanner,System.Type)">
-            <summary>
-            Scans for PluginType's and Concrete Types that close the given open generic type
-            </summary>
-            <example>
-            
-            </example>
-            <param name="openGenericType"></param>
-        </member>
-        <member name="M:StructureMap.Configuration.DSL.AssemblyScannerExtensions.RegisterConcreteTypesAgainstTheFirstInterface(StructureMap.Graph.IAssemblyScanner)">
-            <summary>
-            Automatically registers all concrete types without primitive arguments
-            against its first interface, if any
-            </summary>
-        </member>
-        <member name="M:StructureMap.Configuration.DSL.AssemblyScannerExtensions.SingleImplementationsOfInterface(StructureMap.Graph.IAssemblyScanner)">
-            <summary>
-            Directs the scanning to automatically register any type that is the single
-            implementation of an interface against that interface.
-            The filters apply
             </summary>
         </member>
         <member name="T:StructureMap.Configuration.DSL.Expressions.IsExpression`1">

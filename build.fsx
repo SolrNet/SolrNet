@@ -33,13 +33,24 @@ Target "BuildSample" (fun _ -> sampleSln "Rebuild")
 
 Target "BuildAll" DoNothing
 
-let testAssemblies = !+ "**/bin/**/*Tests.dll" |> Scan
+let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "Structuremap.SolrNetIntegration"]
+let dlls = libs |> List.map (fun l -> l + ".dll")
+let dirs = libs |> List.map (fun l -> l @@ "bin" @@ config)
+
+let testAssemblies = !+ ("**/bin/"+config+"/*Tests.dll") |> Scan
 let noIntegrationTests = "exclude Category: Integration"
 let onlyIntegrationTests = "Category: Integration"
 
 Target "Test" (fun _ ->
     testAssemblies |> Gallio.Run (fun p -> { p with Filters = noIntegrationTests })
 )
+
+for lib in libs do
+    Target ("Test." + lib) (fun _ ->
+        !+ ("**/bin/"+config+"/"+lib+".Tests.dll")
+            |> Scan
+            |> Gallio.Run (fun p -> { p with Filters = noIntegrationTests })
+    )
 
 Target "Coverage" (fun _ ->
     testAssemblies |> Gallio.Run (fun p -> { p with 
@@ -55,10 +66,6 @@ Target "IntegrationTest" (fun _ ->
     finally
         Solr.stop()
 )
-
-let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "Structuremap.SolrNetIntegration"]
-let dlls = libs |> List.map (fun l -> l + ".dll")
-let dirs = libs |> List.map (fun l -> l @@ "bin" @@ config)
 
 Target "Merge" (fun _ ->
     rm_rf buildDir

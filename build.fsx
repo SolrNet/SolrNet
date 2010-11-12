@@ -99,13 +99,23 @@ Target "ReleasePackage" (fun _ ->
     let outputPath = "build"
     rm_rf outputPath
     mkdir outputPath
+
     !+ (buildDir @@ "SolrNet.*")
         ++ "license.txt" ++ "lib\\Microsoft.Practices.*"
-        |> Scan 
+        |> Scan
         |> Copy outputPath
-    !+ (outputPath @@ "*") 
-        |> Scan 
+
+    mkdir (outputPath @@ "unmerged")
+
+    for l in libs do
+        !+ (l @@ "bin" @@ config @@ (l + ".*"))
+            |> Scan
+            |> Copy (outputPath @@ "unmerged")
+
+    !+ (outputPath @@ "**\\*")
+        |> Scan
         |> Zip outputPath ("SolrNet-"+version+".zip")
+
     rm_rf outputPath
 )
 

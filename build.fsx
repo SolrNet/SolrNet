@@ -67,18 +67,25 @@ Target "IntegrationTest" (fun _ ->
         Solr.stop()
 )
 
-Target "Merge" (fun _ ->
+let merge libraries = 
     rm_rf buildDir
     mkdir buildDir
     let main = "SolrNet\\bin" @@ config @@ "SolrNet.dll"
     let output = buildDir @@ dlls.[0]
     ILMerge (fun p -> { p with 
                             ToolPath = "lib\\ilmerge.exe"
-                            Libraries = dlls |> Seq.skip 1
+                            Libraries = libraries
                             SearchDirectories = dirs
                             Internalize = InternalizeExcept "ilmerge.exclude"
                             XmlDocs = true
                        }) output main
+
+Target "Merge" (fun _ ->
+    dlls |> Seq.skip 1 |> merge
+)
+
+Target "BasicMerge" (fun _ ->
+    dlls |> Seq.skip 1 |> Seq.take 2 |> merge
 )
 
 Target "Version" (fun _ ->

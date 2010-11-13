@@ -112,12 +112,18 @@ Target "ReleasePackage" (fun _ ->
         |> Scan
         |> Copy outputPath
 
-    mkdir (outputPath @@ "unmerged")
+    let unmerged = outputPath @@ "unmerged"
+    mkdir unmerged
 
     for l in libs do
         !+ (l @@ "bin" @@ config @@ (l + ".*"))
             |> Scan
-            |> Copy (outputPath @@ "unmerged")
+            |> Copy unmerged
+
+    run "BasicMerge"
+    cp (buildDir @@ "SolrNet.dll") unmerged
+    !+ (unmerged @@ "SolrNet.DSL.*") |> Scan |> Seq.iter DeleteFile
+    !+ (unmerged @@ "HttpWebAdapters.*") |> Scan |> Seq.iter DeleteFile
 
     !+ (outputPath @@ "**\\*")
         |> Scan

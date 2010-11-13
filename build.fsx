@@ -37,7 +37,7 @@ let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.Solr
 let dlls = libs |> List.map (fun l -> l + ".dll")
 let dirs = libs |> List.map (fun l -> l @@ "bin" @@ config)
 
-let testAssemblies = !+ ("**/bin/"+config+"/*Tests.dll") |> Scan
+let testAssemblies = !. ("**/bin/"+config+"/*Tests.dll")
 let noIntegrationTests = "exclude Category: Integration"
 let onlyIntegrationTests = "Category: Integration"
 
@@ -47,8 +47,7 @@ Target "Test" (fun _ ->
 
 for lib in libs do
     Target ("Test." + lib) (fun _ ->
-        !+ ("**/bin/"+config+"/"+lib+".Tests.dll")
-            |> Scan
+        !. ("**/bin/"+config+"/"+lib+".Tests.dll")
             |> Gallio.Run (fun p -> { p with Filters = noIntegrationTests })
     )
 
@@ -116,17 +115,15 @@ Target "ReleasePackage" (fun _ ->
     mkdir unmerged
 
     for l in libs do
-        !+ (l @@ "bin" @@ config @@ (l + ".*"))
-            |> Scan
+        !. (l @@ "bin" @@ config @@ (l + ".*"))
             |> Copy unmerged
 
     run "BasicMerge"
     cp (buildDir @@ "SolrNet.dll") unmerged
-    !+ (unmerged @@ "SolrNet.DSL.*") |> Scan |> Seq.iter DeleteFile
-    !+ (unmerged @@ "HttpWebAdapters.*") |> Scan |> Seq.iter DeleteFile
+    !. (unmerged @@ "SolrNet.DSL.*") |> Seq.iter DeleteFile
+    !. (unmerged @@ "HttpWebAdapters.*") |> Seq.iter DeleteFile
 
-    !+ (outputPath @@ "**\\*")
-        |> Scan
+    !. (outputPath @@ "**\\*")
         |> Zip outputPath ("SolrNet-"+version+".zip")
 
     rm_rf outputPath
@@ -168,8 +165,7 @@ Target "PackageSampleApp" (fun _ ->
     |> Seq.iter (setValue @"..\SolrNet.dll")
     xml.Save csproj
     
-    !+ (buildDir @@ "**\\*") 
-        |> Scan 
+    !. (buildDir @@ "**\\*")
         |> Zip buildDir ("SolrNet-"+version+"-sample.zip")
 )
 

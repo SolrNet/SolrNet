@@ -10,6 +10,9 @@ open Fake
 let solr = "solr-1.4.0"
 
 // helper functions
+
+let (!.) a = !+ a |> Scan
+
 let httpGet = Fake.REST.ExecuteGetCommand null null
 
 let liftAsync f ma = async.Bind(ma, fun a -> async.Return(f a))

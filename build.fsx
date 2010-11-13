@@ -120,8 +120,8 @@ Target "ReleasePackage" (fun _ ->
 
     run "BasicMerge"
     cp (buildDir @@ "SolrNet.dll") unmerged
-    !. (unmerged @@ "SolrNet.DSL.*") |> Seq.iter DeleteFile
-    !. (unmerged @@ "HttpWebAdapters.*") |> Seq.iter DeleteFile
+    !. (unmerged @@ "SolrNet.DSL.*") |> DeleteFiles
+    !. (unmerged @@ "HttpWebAdapters.*") |> DeleteFiles
 
     !. (outputPath @@ "**\\*")
         |> Zip outputPath ("SolrNet-"+version+".zip")

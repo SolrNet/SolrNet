@@ -443,6 +443,11 @@
 <member name="">
 
 </member>
+<member name="M:Fake.FileHelper.DeleteFiles(System.Collections.Generic.IEnumerable{System.String})">
+<summary>
+ Deletes files
+</summary>
+</member>
 <member name="M:Fake.FileHelper.DeleteFile(System.String)">
 <summary>
  Deletes a file if it exist

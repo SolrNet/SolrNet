@@ -6,6 +6,7 @@ _ReSharper.*
 *.bak
 *.sln.cache
 *.user
+*.zip
 Help/*
 build/*
 tools/Sandcastle/Data/Reflection/*

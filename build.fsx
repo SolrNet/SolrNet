@@ -105,6 +105,7 @@ Target "ReleasePackage" (fun _ ->
     let outputPath = "build"
     rm_rf outputPath
     mkdir outputPath
+    cp "readme.txt" outputPath
 
     !+ (buildDir @@ "SolrNet.*")
         ++ "license.txt" ++ "lib\\Microsoft.Practices.*"

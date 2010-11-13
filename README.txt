@@ -13,6 +13,4 @@ If you use SolrNet with the Windsor integration, you'll need Windsor 2.5.1 binar
 and so on.
 
 The "unmerged" directory in the release package contains the unmerged assemblies in case you want more control.
-The unmerged SolrNet.dll only requires HttpWebAdapters.dll.
-SolrNet.DSL.dll requires SolrNet.dll.
-These three assemblies run on .NET 2.0 (or higher, of course)
+The unmerged SolrNet.dll can run on .NET 2.0 (or higher, of course)

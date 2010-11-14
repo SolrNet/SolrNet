@@ -35,8 +35,8 @@ Target "Build" (fun _ -> mainSln "Rebuild")
 Target "BuildSample" (fun _ -> sampleSln "Rebuild")
 
 let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "StructureMap.SolrNetIntegration"]
-let dlls = libs |> List.map (fun l -> l + ".dll")
-let dirs = libs |> List.map (fun l -> l @@ "bin" @@ config)
+let dlls = [for l in libs -> l + ".dll"]
+let dirs = [for l in libs -> l @@ "bin" @@ config]
 
 let testAssemblies = !. ("**/bin/"+config+"/*Tests.dll")
 let noIntegrationTests = "exclude Category: Integration"

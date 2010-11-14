@@ -14,13 +14,18 @@ let version = "0.3.0"
 let buildDir = "merged"
 let docsDir = "docs"
 let docsFile = "SolrNet.chm"
+let keyFile = pwd() @@ "mausch.snk"
 let config = getBuildParamOrDefault "config" "debug"
 let target = getBuildParamOrDefault "target" "BuildAll"
 
 let slnBuild sln x = 
+    let strongName = 
+        if File.Exists keyFile
+            then ["SignAssembly","true"; "AssemblyOriginatorKeyFile",keyFile]
+            else []
     sln |> build (fun p -> { p with 
-                                Targets = [x] 
-                                Properties = ["Configuration", config] })
+                                Targets = [x]
+                                Properties = ["Configuration",config] @ strongName })
 
 let mainSln = slnBuild "solrnet.sln"
 let sampleSln = slnBuild "SampleSolrApp.sln"
@@ -72,11 +77,13 @@ let merge libraries =
     mkdir buildDir
     let main = "SolrNet\\bin" @@ config @@ "SolrNet.dll"
     let output = buildDir @@ dlls.[0]
+    let snk = if File.Exists keyFile then keyFile else null
     ILMerge (fun p -> { p with 
                             ToolPath = "lib\\ilmerge.exe"
                             Libraries = libraries
                             SearchDirectories = dirs
                             Internalize = InternalizeExcept "ilmerge.exclude"
+                            KeyFile = snk
                             XmlDocs = true
                        }) output main
 

@@ -869,6 +869,9 @@
 <member name="">
 
 </member>
+<member name="">
+
+</member>
 <member name="F:Fake.ILMergeHelper.ILMergeParams.DebugInfo">
 <summary>
  True (default) -&gt; creates a .pdb file for the output assembly and merges into it any .pdb files found for input assemblies.

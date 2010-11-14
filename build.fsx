@@ -5,6 +5,7 @@
 #load "fake.fsx"
 
 open System
+open System.IO
 open System.Xml.Linq
 open Fake
 open Fake.FileUtils
@@ -115,7 +116,8 @@ Target "ReleasePackage" (fun _ ->
     rm_rf outputPath
     mkdir outputPath
     cp "readme.txt" outputPath
-    cp docsFile outputPath
+    if File.Exists docsFile then
+        cp docsFile outputPath
 
     !+ (buildDir @@ "SolrNet.*")
         ++ "license.txt" ++ "lib\\Microsoft.Practices.*"
@@ -184,10 +186,11 @@ Target "PackageSampleApp" (fun _ ->
 
 Target "BuildAll" DoNothing
 Target "TestAndRelease" DoNothing
+Target "BuildAndRelease" DoNothing
 
 "Test" <== ["BuildAll"]
 "BuildAll" <== ["Build";"Merge";"BuildSample"]
-"ReleasePackage" <== ["Clean";"Version";"BuildAll";"Docs"]
+"BuildAndRelease" <== ["Clean";"Version";"BuildAll";"Docs";"ReleasePackage"]
 "TestAndRelease" <== ["Clean";"Version";"Test";"ReleasePackage"]
 
 Run target

@@ -1,1 +1,1 @@
-lib\fake.exe build.fsx target=ReleasePackage config=Release
+lib\fake.exe build.fsx target=BuildAndRelease config=Release

@@ -33,8 +33,6 @@ Target "Clean" (fun _ ->
 Target "Build" (fun _ -> mainSln "Rebuild")
 Target "BuildSample" (fun _ -> sampleSln "Rebuild")
 
-Target "BuildAll" DoNothing
-
 let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "StructureMap.SolrNetIntegration"]
 let dlls = libs |> List.map (fun l -> l + ".dll")
 let dirs = libs |> List.map (fun l -> l @@ "bin" @@ config)
@@ -183,8 +181,13 @@ Target "PackageSampleApp" (fun _ ->
         |> Zip buildDir ("SolrNet-"+version+"-sample.zip")
 )
 
+
+Target "BuildAll" DoNothing
+Target "TestAndRelease" DoNothing
+
 "Test" <== ["BuildAll"]
 "BuildAll" <== ["Build";"Merge";"BuildSample"]
 "ReleasePackage" <== ["Clean";"Version";"BuildAll";"Docs"]
+"TestAndRelease" <== ["Clean";"Version";"Test";"ReleasePackage"]
 
 Run target

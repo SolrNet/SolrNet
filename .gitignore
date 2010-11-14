@@ -7,6 +7,7 @@ _ReSharper.*
 *.sln.cache
 *.user
 *.zip
+*.chm
 Help/*
 build/*
 tools/Sandcastle/Data/Reflection/*
@@ -15,4 +16,4 @@ solr-*/solr/data
 solr-*/logs
 log.txt
 NDependOut
-output
+docs

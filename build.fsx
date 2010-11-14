@@ -11,6 +11,8 @@ open Fake.FileUtils
 
 let version = "0.3.0"
 let buildDir = "merged"
+let docsDir = "docs"
+let docsFile = "SolrNet.chm"
 let config = getBuildParamOrDefault "config" "debug"
 let target = getBuildParamOrDefault "target" "BuildAll"
 
@@ -101,11 +103,21 @@ Target "Version" (fun _ ->
                                     AssemblyFileVersion = version })
 )
 
+Target "Docs" (fun _ ->
+    rm_rf docsDir
+    let r = Shell.Exec(@"tools\doxygen\doxygen.exe")
+    if r <> 0 then failwith "Doxygen failed"
+    rm docsFile
+    Rename docsFile (docsDir @@ "html\\index.chm")
+    rm_rf docsDir
+)
+
 Target "ReleasePackage" (fun _ -> 
     let outputPath = "build"
     rm_rf outputPath
     mkdir outputPath
     cp "readme.txt" outputPath
+    cp docsFile outputPath
 
     !+ (buildDir @@ "SolrNet.*")
         ++ "license.txt" ++ "lib\\Microsoft.Practices.*"
@@ -124,8 +136,9 @@ Target "ReleasePackage" (fun _ ->
     !. (unmerged @@ "SolrNet.DSL.*") |> DeleteFiles
     !. (unmerged @@ "HttpWebAdapters.*") |> DeleteFiles
 
-    !. (outputPath @@ "**\\*")
-        |> Zip outputPath ("SolrNet-"+version+".zip")
+    let zipFile = "SolrNet-"+version+".zip"
+    rm zipFile
+    !. (outputPath @@ "**\\*") |> Zip outputPath zipFile
 
     rm_rf outputPath
 )
@@ -172,6 +185,6 @@ Target "PackageSampleApp" (fun _ ->
 
 "Test" <== ["BuildAll"]
 "BuildAll" <== ["Build";"Merge";"BuildSample"]
-"ReleasePackage" <== ["Clean";"Version";"BuildAll"]
+"ReleasePackage" <== ["Clean";"Version";"BuildAll";"Docs"]
 
 Run target

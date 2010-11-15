@@ -15,6 +15,8 @@ let httpGet = Fake.REST.ExecuteGetCommand null null
 
 let liftAsync f ma = async.Bind(ma, fun a -> async.Return(f a))
 
+let ignoreEx (f: 'a -> 'b) a = try f a with e -> Unchecked.defaultof<'b>
+
 [<AutoOpen>]
 module Xml =
     open System.Xml.Linq

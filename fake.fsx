@@ -3,8 +3,6 @@
 #r "System.Xml.Linq"
 
 open System
-open System.IO
-open System.Xml.Linq
 open Fake
 
 let solr = "solr-1.4.0"
@@ -19,6 +17,8 @@ let liftAsync f ma = async.Bind(ma, fun a -> async.Return(f a))
 
 [<AutoOpen>]
 module Xml =
+    open System.Xml.Linq
+
     let (.>) (a: #seq<XElement>) (b: string) = Extensions.Descendants(a, xname b)
     let startsWith s (n: XElement) = n.Value.StartsWith s
     let contains s (n: XElement) = n.Value.Contains s
@@ -36,3 +36,24 @@ module Solr =
             System.Threading.Thread.Sleep 500
     let stop() =
         Shell.Exec("java", cmdline + " --stop", dir = solr) |> ignore
+
+module Git =
+    let private gitTimeOut = TimeSpan.FromSeconds 10.
+
+    /// Runs the git command and returns the first line of the result
+    let run command =
+        try
+            let ok,msg,errors = 
+                ExecProcessAndReturnMessages (fun info ->  
+                  info.FileName <- @"lib\tgit.exe"
+                  info.WorkingDirectory <- "."
+                  info.Arguments <- command) gitTimeOut
+            try
+                msg.[0]
+            with 
+            | exn -> failwithf "Git didn't return a msg.\r\n%s" (errors |> separated "\n")
+        with 
+        | exn -> failwithf "Could not run \"git %s\".\r\nError: %s" command exn.Message
+ 
+    let describe() = run "describe --tags"
+    let sha1() = run "rev-parse HEAD"

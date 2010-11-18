@@ -13,8 +13,6 @@ let (!.) a = !+ a |> Scan
 
 let httpGet = Fake.REST.ExecuteGetCommand null null
 
-let liftAsync f ma = async.Bind(ma, fun a -> async.Return(f a))
-
 let ignoreEx (f: 'a -> 'b) a = try f a with e -> Unchecked.defaultof<'b>
 
 [<AutoOpen>]
@@ -30,7 +28,7 @@ module Xml =
 module Solr =
     let private cmdline = "-DSTOP.PORT=8079 -DSTOP.KEY=secret -jar start.jar"
     let start() = 
-        Shell.AsyncExec("java", cmdline, dir = solr) |> liftAsync ignore |> Async.Start
+        Shell.AsyncExec("java", cmdline, dir = solr) |> Async.Ignore |> Async.Start
         let watch = System.Diagnostics.Stopwatch.StartNew()
         while httpGet "http://localhost:8983/solr/admin/ping" = null do
             if watch.Elapsed > (TimeSpan.FromSeconds 10.)

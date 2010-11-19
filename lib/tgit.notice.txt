@@ -1,2 +1,0 @@
-tgit.exe is part of the TortoiseGit project: http://code.google.com/p/tortoisegit/
-Source code: http://repo.or.cz/w/TortoiseGit.git

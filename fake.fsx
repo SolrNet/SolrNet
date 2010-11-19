@@ -38,22 +38,11 @@ module Solr =
         Shell.Exec("java", cmdline + " --stop", dir = solr) |> ignore
 
 module Git =
-    let private gitTimeOut = TimeSpan.FromSeconds 10.
+    open System.IO
 
-    /// Runs the git command and returns the first line of the result
-    let run command =
+    let sha1() = 
         try
-            let ok,msg,errors = 
-                ExecProcessAndReturnMessages (fun info ->  
-                  info.FileName <- @"lib\tgit.exe"
-                  info.WorkingDirectory <- "."
-                  info.Arguments <- command) gitTimeOut
-            try
-                msg.[0]
-            with 
-            | exn -> failwithf "Git didn't return a msg.\r\n%s" (errors |> separated "\n")
-        with 
-        | exn -> failwithf "Could not run \"git %s\".\r\nError: %s" command exn.Message
- 
-    let describe() = run "describe --tags"
-    let sha1() = run "rev-parse HEAD"
+            let headref = (File.ReadAllLines ".git\\HEAD").[0]
+            let headref = headref.Substring(5) // assume ref
+            (File.ReadAllLines (".git" @@ headref)).[0]
+        with :? FileNotFoundException as e -> null

@@ -45,4 +45,4 @@ module Git =
             let headref = (File.ReadAllLines ".git\\HEAD").[0]
             let headref = headref.Substring(5) // assume ref
             (File.ReadAllLines (".git" @@ headref)).[0]
-        with :? FileNotFoundException as e -> null
+        with :? DirectoryNotFoundException as e -> null

@@ -9,8 +9,6 @@ let solr = "solr-1.4.0"
 
 // helper functions
 
-let (!.) a = !+ a |> Scan
-
 let httpGet = Fake.REST.ExecuteGetCommand null null
 
 let ignoreEx (f: 'a -> 'b) a = try f a with e -> Unchecked.defaultof<'b>

@@ -28,6 +28,7 @@
       <MergeAsm Include="$(MSBuildProjectDirectory)\SolrNet.DSL\bin\$(BuildConfig)\HttpWebAdapters.dll" />
       <MergeAsm Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration\bin\$(BuildConfig)\Castle.Facilities.SolrNetIntegration.dll" />
       <MergeAsm Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet\bin\$(BuildConfig)\Ninject.Integration.SolrNet.dll"/>
+      <MergeAsm Include="$(MSBuildProjectDirectory)\AutofacContrib.SolrNet\bin\$(BuildConfig)\AutofacContrib.SolrNet.dll"/>
       <MergeAsm Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet\bin\$(BuildConfig)\NHibernate.SolrNet.dll"/>
 	  <MergeAsm Include="$(MSBuildProjectDirectory)\Structuremap.SolrNetIntegration\bin\$(BuildConfig)\Structuremap.SolrNetIntegration.dll"/>
     </ItemGroup>
@@ -38,6 +39,7 @@
       <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Castle.*.dll"/>
       <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Microsoft.Practices.ServiceLocation.dll"/>
       <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Ninject.dll"/>
+      <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\Autofac.dll"/>
       <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\NHibernate.dll"/>
       <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\log4net.dll"/>
 	  <CopyToMerged Include="$(MSBuildProjectDirectory)\lib\StructureMap.dll"/>
@@ -61,6 +63,7 @@
     <TestAssemblies Include="$(MSBuildProjectDirectory)\SolrNet.DSL.Tests\bin\Debug\SolrNet.DSL.Tests.dll"/>
     <TestAssemblies Include="$(MSBuildProjectDirectory)\Castle.Facilities.SolrNetIntegration.Tests\bin\Debug\Castle.Facilities.SolrNetIntegration.Tests.dll"/>
     <TestAssemblies Include="$(MSBuildProjectDirectory)\Ninject.Integration.SolrNet.Tests\bin\Debug\Ninject.Integration.SolrNet.Tests.dll"/>
+    <TestAssemblies Include="$(MSBuildProjectDirectory)\AutofacContrib.SolrNet.Tests\bin\Debug\AutofacContrib.SolrNet.Tests.dll"/>
     <TestAssemblies Include="$(MSBuildProjectDirectory)\NHibernate.SolrNet.Tests\bin\Debug\NHibernate.SolrNet.Tests.dll"/>
     <TestAssemblies Include="$(MSBuildProjectDirectory)\SampleSolrApp.Tests\bin\Debug\SampleSolrApp.Tests.dll"/>
 	<TestAssemblies Include="$(MSBuildProjectDirectory)\StructureMap.SolrNetIntegration.Tests\bin\Debug\StructureMap.SolrNetIntegration.Tests.dll"/>
@@ -105,6 +108,9 @@
       </InfoFile>
       <InfoFile Include="Ninject.Integration.SolrNet\Properties\AssemblyInfo.cs">
         <AssemblyTitle>Ninject.Integration.SolrNet</AssemblyTitle>
+      </InfoFile>
+      <InfoFile Include="AutofacContrib.SolrNet\Properties\AssemblyInfo.cs">
+        <AssemblyTitle>AutofacContrib.SolrNet</AssemblyTitle>
       </InfoFile>
       <InfoFile Include="NHibernate.SolrNet\Properties\AssemblyInfo.cs">
         <AssemblyTitle>NHibernate.SolrNet</AssemblyTitle>
@@ -231,10 +237,12 @@
     <RemoveDir Directories="$(BuildOutputPath)\SampleSolrApp\obj"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\SampleSolrApp.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Ninject.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Autofac.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Castle.MicroKernel.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\Castle.Core.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\bin\NHibernate.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Ninject.dll"/>
+    <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Autofac.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Castle.MicroKernel.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\Castle.Core.dll"/>
     <Delete Files="$(BuildOutputPath)\SampleSolrApp\lib\NHibernate.dll"/>

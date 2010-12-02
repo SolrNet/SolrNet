@@ -5,11 +5,14 @@
     <version>@build.number@</version>
     <description>@description@</description>
     <projectUrl>http://code.google.com/p/solrnet/</projectUrl>
-    <authors>Mauricio Scheffer</authors>
+    <authors>
+      <author>Mauricio Scheffer</author>
+    </authors>
     <language>en-US</language>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
   </metadata>
   <files>
-	<file src="lib\*.*" target="lib" />
-	<file src="content\*.*" target="content" />
+    <file src="lib\*.*" target="lib" />
+    <file src="content\*.*" target="content" />
   </files>
 </package>

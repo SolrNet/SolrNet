@@ -10,6 +10,7 @@ _ReSharper.*
 *.chm
 Help/*
 build/*
+nuget/*
 tools/Sandcastle/Data/Reflection/*
 merged
 solr-*/solr/data

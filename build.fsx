@@ -10,8 +10,11 @@ open System.Xml.Linq
 open Fake
 open Fake.FileUtils
 
+let projectName = "SolrNet"
+let projectDescription = "Apache Solr client"
 let version = "0.3.0"
 let buildDir = "merged"
+let nugetDir = "nuget"
 let docsDir = "docs"
 let docsFile = "SolrNet.chm"
 let keyFile = pwd() @@ "mausch.snk"
@@ -34,6 +37,7 @@ Target "Clean" (fun _ ->
     mainSln "Clean"
     sampleSln "Clean"
     rm_rf buildDir
+    rm_rf nugetDir
 )
 
 Target "Build" (fun _ -> mainSln "Rebuild")
@@ -119,6 +123,23 @@ Target "Docs" (fun _ ->
     rm_rf docsDir
 )
 
+Target "NuGet" (fun _ ->
+    let nugetDocs = nugetDir @@ "content"
+    let nugetLib = nugetDir @@ "lib"
+    mkdir nugetDocs
+    mkdir nugetLib
+    cp docsFile nugetDocs
+    cp (buildDir @@ "SolrNet.dll") nugetLib
+    cp "SolrNet.nuspec" nugetDir
+    NuGet (fun p ->
+        { p with
+            ToolPath = "lib\\nuget.exe"
+            Project = projectName
+            Description = projectDescription
+            Version = version
+            OutputPath = nugetDir }) "solrnet.nuspec"
+)
+
 Target "ReleasePackage" (fun _ -> 
     let outputPath = "build"
     rm_rf outputPath
@@ -200,5 +221,6 @@ Target "BuildAndRelease" DoNothing
 "BuildAll" <== ["Build";"Merge";"BuildSample"]
 "BuildAndRelease" <== ["Clean";"Version";"BuildAll";"Docs";"ReleasePackage"]
 "TestAndRelease" <== ["Clean";"Version";"Test";"ReleasePackage"]
+"NuGet" <== ["Clean";"Build";"BasicMerge";"Docs"]
 
 Run target

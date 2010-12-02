@@ -1,4 +1,4 @@
-- Upgraded to Ninject 2.0
+- Upgraded to Ninject 2.1.0.76
 - Upgraded to Windsor 2.5.2
 - Signed assemblies
 - Fixed support for readonly and writeonly properties in document type

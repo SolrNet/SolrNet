@@ -4,7 +4,7 @@ http://code.google.com/p/solrnet/
 
 This release is built against:
 Castle Windsor 2.5.1
-Ninject 2.0
+Ninject 2.1.0.76
 StructureMap 2.6.1
 NHibernate 2.1.2
 

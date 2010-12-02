@@ -10,11 +10,11 @@ open System.Xml.Linq
 open Fake
 open Fake.FileUtils
 
-let projectName = "SolrNet"
-let projectDescription = "Apache Solr client"
 let version = "0.3.0"
 let buildDir = "merged"
 let nugetDir = "nuget"
+let nugetDocs = nugetDir @@ "content"
+let nugetLib = nugetDir @@ "lib"
 let docsDir = "docs"
 let docsFile = "SolrNet.chm"
 let keyFile = pwd() @@ "mausch.snk"
@@ -123,21 +123,49 @@ Target "Docs" (fun _ ->
     rm_rf docsDir
 )
 
+let nuGet name desc =
+    NuGet (fun p ->
+        { p with
+            ToolPath = "lib\\nuget.exe"
+            Project = name
+            Description = desc
+            Version = version
+            OutputPath = nugetDir }) "solrnet.nuspec"
+
 Target "NuGet" (fun _ ->
-    let nugetDocs = nugetDir @@ "content"
-    let nugetLib = nugetDir @@ "lib"
+    rm_rf nugetDir
     mkdir nugetDocs
     mkdir nugetLib
     cp docsFile nugetDocs
     cp (buildDir @@ "SolrNet.dll") nugetLib
     cp "SolrNet.nuspec" nugetDir
-    NuGet (fun p ->
-        { p with
-            ToolPath = "lib\\nuget.exe"
-            Project = projectName
-            Description = projectDescription
-            Version = version
-            OutputPath = nugetDir }) "solrnet.nuspec"
+    nuGet "SolrNet" "Apache Solr client"
+)
+
+let nuGetSingle dir name desc =
+    rm_rf nugetDir
+    mkdir nugetDocs
+    mkdir nugetLib
+    let src = dir @@ "bin" @@ config @@ (dir + ".*")
+    log src
+    !!src |> Copy nugetLib
+    cp "SolrNet.nuspec" nugetDir
+    nuGet "SolrNet-Windsor" "Windsor facility for SolrNet"
+
+Target "NuGet.Windsor" (fun _ ->
+    nuGetSingle "Castle.Facilities.SolrNetIntegration" "SolrNet-Windsor" "Windsor facility for SolrNet"
+)
+
+Target "NuGet.Ninject" (fun _ ->
+    nuGetSingle "Ninject.Integration.SolrNet" "SolrNet-Ninject" "Ninject module for SolrNet"
+)
+
+Target "NuGet.NHibernate" (fun _ ->
+    nuGetSingle "NHibernate.SolrNet" "SolrNet-NHibernate" "NHibernate integration for SolrNet"
+)
+
+Target "NuGet.StructureMap" (fun _ ->
+    nuGetSingle "StructureMap.SolrNetIntegration" "SolrNet-StructureMap" "StructureMap registry for SolrNet"
 )
 
 Target "ReleasePackage" (fun _ -> 

@@ -52,6 +52,21 @@ namespace AutofacContrib.SolrNet.Tests {
             var m = container.Resolve<ISolrOperations<Entity>>();
         }
 
+        /// <summary>
+        /// Tests that resolving <see cref="ISolrBasicOperations{T}"/> and <see cref="ISolrBasicReadOnlyOperations{T}"/>
+        /// resolve to the same instance.
+        /// </summary>
+        [Test]
+        public void ResolveSolrBasicOperationsAndSolrBasicReadOnlyOperationsUseSameEntity()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
+            var container = builder.Build();
+            var basic = container.Resolve<ISolrBasicOperations<Entity>>();
+            var basicReadonly = container.Resolve<ISolrBasicReadOnlyOperations<Entity>>();
+            Assert.AreSame(basic, basicReadonly);
+        }
+
         public class Entity {}
     }
 }

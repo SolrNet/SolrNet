@@ -72,8 +72,9 @@ namespace AutofacContrib.SolrNet {
             builder.RegisterGeneric(typeof(SolrQueryResultParser<>)).As(typeof(ISolrQueryResultParser<>));
             builder.RegisterGeneric(typeof(SolrQueryExecuter<>)).As(typeof(ISolrQueryExecuter<>));
             builder.RegisterGeneric(typeof(SolrDocumentSerializer<>)).As(typeof(ISolrDocumentSerializer<>));
-            builder.RegisterGeneric(typeof(SolrBasicServer<>)).As(typeof(ISolrBasicOperations<>));
-            builder.RegisterGeneric(typeof(SolrBasicServer<>)).As(typeof(ISolrBasicReadOnlyOperations<>));
+            builder.RegisterGeneric(typeof (SolrBasicServer<>))
+                .As(typeof (ISolrBasicOperations<>), typeof (ISolrBasicReadOnlyOperations<>))
+                .SingleInstance();
             builder.RegisterGeneric(typeof(SolrServer<>)).As(typeof(ISolrOperations<>));
             builder.RegisterGeneric(typeof(SolrServer<>)).As(typeof(ISolrReadOnlyOperations<>));
             builder.RegisterType<SolrSchemaParser>().As<ISolrSchemaParser>();

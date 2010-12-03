@@ -1,9 +1,10 @@
 ﻿#I @"lib"
 #r "FakeLib.dll"
-#r "NuGet.exe"
+#r "NuGet.Core.dll"
 #r "System.Xml.Linq"
 
 open System
+open System.IO
 open Fake
 open Fake.FileUtils
 
@@ -26,32 +27,30 @@ module Xml =
     let replaceValue orig repl (n: XElement) = n.Value <- n.Value.Replace((orig:string), (repl:string))
 
 module Nu =
-    open System.IO
-    open NuPack
+    open NuGet
 
     let build version name desc dependencies =
         let builder = 
             PackageBuilder(
                 Id = name,
+                Title = name,
                 Version = Version version,
                 Description = desc,
                 LicenseUrl = Uri("http://www.apache.org/licenses/LICENSE-2.0"),
                 Language = "en-US",
-                ProjectUrl = Uri("http://code.google.com/p/solrnet/")
+                ProjectUrl = Uri("http://code.google.com/p/solrnet")
             )
-        builder.Authors.Add "Mauricio Scheffer and contributors"
+        builder.Authors.Add "Mauricio Scheffer and contributors" |> ignore
+        builder.Owners.Add "Mauricio Scheffer" |> ignore
         let buildFiles d =
             !+ ("nuget" @@ d @@ "*") -- ("nuget" @@ d)
             |> Scan
             |> Seq.map (fun f -> PhysicalPackageFile(SourcePath = f, TargetPath = d @@ Path.GetFileName(f)))
-            |> Seq.toList
-        let libs = buildFiles "lib"
-        let docs = buildFiles "content"
-        let files = libs @ docs
+        let files = ["lib";"content"] |> Seq.collect buildFiles
         builder.Files.AddRange (files |> Seq.map (fun i -> upcast i))
         let deps = 
             dependencies
-            |> Seq.map (fun (id,v) -> PackageDependency(id = id, version = Version v))
+            |> Seq.map (fun (id,v) -> PackageDependency(id = id, versionSpec = VersionUtility.ParseVersionSpec v))
         builder.Dependencies.AddRange deps
         use fs = File.Create (sprintf "%s.%s%s" name version Constants.PackageExtension)
         builder.Save fs
@@ -69,8 +68,6 @@ module Solr =
         Shell.Exec("java", cmdline + " --stop", dir = solr) |> ignore
 
 module Git =
-    open System.IO
-
     let sha1() = 
         try
             let headref = (File.ReadAllLines ".git\\HEAD").[0]

@@ -36,9 +36,10 @@ module Nu =
                 Version = Version version,
                 Description = desc,
                 LicenseUrl = Uri("http://www.apache.org/licenses/LICENSE-2.0"),
-                Language = "en-US"
+                Language = "en-US",
+                ProjectUrl = Uri("http://code.google.com/p/solrnet/")
             )
-        builder.Authors.Add "Mauricio Scheffer"
+        builder.Authors.Add "Mauricio Scheffer and contributors"
         let buildFiles d =
             !+ ("nuget" @@ d @@ "*") -- ("nuget" @@ d)
             |> Scan

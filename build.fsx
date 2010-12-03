@@ -143,33 +143,33 @@ let nuGetSingle dir =
 Target "NuGet.Windsor" (fun _ ->
     nuGetSingle 
         "Castle.Facilities.SolrNetIntegration" 
-        "SolrNet-Windsor" 
+        "SolrNet.Windsor"
         "Windsor facility for SolrNet"
-        ["Castle.Windsor", "2.5.1"]
+        ["Castle.Windsor", "2.5.1"; "SolrNet", "0.3.0"]
 )
 
 Target "NuGet.Ninject" (fun _ ->
     nuGetSingle 
         "Ninject.Integration.SolrNet" 
-        "SolrNet-Ninject" 
+        "SolrNet.Ninject"
         "Ninject module for SolrNet"
-        ["Ninject", "2.1.0.76"]
+        ["Ninject", "2.1.0.76"; "SolrNet", "0.3.0"]
 )
 
 Target "NuGet.NHibernate" (fun _ ->
     nuGetSingle 
         "NHibernate.SolrNet" 
-        "SolrNet-NHibernate" 
+        "SolrNet.NHibernate"
         "NHibernate integration for SolrNet"
-        ["NHibernate.Core", "2.1.2.4000"]
+        ["NHibernate.Core", "2.1.2.4000"; "CommonServiceLocator", "1.0"; "SolrNet", "0.3.0"]
 )
 
 Target "NuGet.StructureMap" (fun _ ->
     nuGetSingle 
         "StructureMap.SolrNetIntegration" 
-        "SolrNet-StructureMap" 
+        "SolrNet.StructureMap"
         "StructureMap registry for SolrNet"
-        ["structuremap", "2.6.1.0"]
+        ["structuremap", "2.6.1.0"; "SolrNet", "0.3.0"]
 )
 
 Target "ReleasePackage" (fun _ -> 

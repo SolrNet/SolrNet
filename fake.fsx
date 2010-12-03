@@ -29,7 +29,7 @@ module Nu =
     open System.IO
     open NuPack
 
-    let build version name desc =
+    let build version name desc dependencies =
         let builder = 
             PackageBuilder(
                 Id = name,
@@ -48,6 +48,10 @@ module Nu =
         let docs = buildFiles "content"
         let files = libs @ docs
         builder.Files.AddRange (files |> Seq.map (fun i -> upcast i))
+        let deps = 
+            dependencies
+            |> Seq.map (fun (id,v) -> PackageDependency(id = id, version = Version v))
+        builder.Dependencies.AddRange deps
         use fs = File.Create (sprintf "%s.%s%s" name version Constants.PackageExtension)
         builder.Save fs
 

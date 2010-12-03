@@ -131,29 +131,45 @@ Target "NuGet" (fun _ ->
     mkdir nugetLib
     cp docsFile nugetDocs
     cp (buildDir @@ "SolrNet.dll") nugetLib
-    nuGetBuild "SolrNet" "Apache Solr client"
+    nuGetBuild "SolrNet" "Apache Solr client" ["CommonServiceLocator", "1.0"]
 )
 
-let nuGetSingle dir name desc =
+let nuGetSingle dir =
     rm_rf nugetDir
     mkdir nugetLib
     !!(dir @@ "bin" @@ config @@ (dir + ".*")) |> Copy nugetLib
-    nuGetBuild name desc
+    nuGetBuild 
 
 Target "NuGet.Windsor" (fun _ ->
-    nuGetSingle "Castle.Facilities.SolrNetIntegration" "SolrNet-Windsor" "Windsor facility for SolrNet"
+    nuGetSingle 
+        "Castle.Facilities.SolrNetIntegration" 
+        "SolrNet-Windsor" 
+        "Windsor facility for SolrNet"
+        ["Castle.Windsor", "2.5.1"]
 )
 
 Target "NuGet.Ninject" (fun _ ->
-    nuGetSingle "Ninject.Integration.SolrNet" "SolrNet-Ninject" "Ninject module for SolrNet"
+    nuGetSingle 
+        "Ninject.Integration.SolrNet" 
+        "SolrNet-Ninject" 
+        "Ninject module for SolrNet"
+        ["Ninject", "2.1.0.76"]
 )
 
 Target "NuGet.NHibernate" (fun _ ->
-    nuGetSingle "NHibernate.SolrNet" "SolrNet-NHibernate" "NHibernate integration for SolrNet"
+    nuGetSingle 
+        "NHibernate.SolrNet" 
+        "SolrNet-NHibernate" 
+        "NHibernate integration for SolrNet"
+        ["NHibernate.Core", "2.1.2.4000"]
 )
 
 Target "NuGet.StructureMap" (fun _ ->
-    nuGetSingle "StructureMap.SolrNetIntegration" "SolrNet-StructureMap" "StructureMap registry for SolrNet"
+    nuGetSingle 
+        "StructureMap.SolrNetIntegration" 
+        "SolrNet-StructureMap" 
+        "StructureMap registry for SolrNet"
+        ["structuremap", "2.6.1.0"]
 )
 
 Target "ReleasePackage" (fun _ -> 

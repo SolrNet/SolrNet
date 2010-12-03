@@ -8,6 +8,7 @@ _ReSharper.*
 *.user
 *.zip
 *.chm
+*.nupkg
 Help/*
 build/*
 nuget/*

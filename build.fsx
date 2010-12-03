@@ -248,11 +248,13 @@ Target "PackageSampleApp" (fun _ ->
 Target "BuildAll" DoNothing
 Target "TestAndRelease" DoNothing
 Target "BuildAndRelease" DoNothing
+Target "NuGet.All" DoNothing
 
 "Test" <== ["BuildAll"]
 "BuildAll" <== ["Build";"Merge";"BuildSample"]
 "BuildAndRelease" <== ["Clean";"Version";"BuildAll";"Docs";"ReleasePackage"]
 "TestAndRelease" <== ["Clean";"Version";"Test";"ReleasePackage"]
 "NuGet" <== ["Clean";"Build";"BasicMerge";"Docs"]
+"NuGet.All" <== (getAllTargetsNames() |> List.filter ((<*) "NuGet") |> List.filter ((<>) "NuGet.All") |> List.sort)
 
 Run target

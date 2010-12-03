@@ -1,9 +1,11 @@
 ﻿#I @"lib"
 #r "FakeLib.dll"
+#r "NuGet.exe"
 #r "System.Xml.Linq"
 
 open System
 open Fake
+open Fake.FileUtils
 
 let solr = "solr-1.4.0"
 
@@ -22,6 +24,32 @@ module Xml =
     let contains s (n: XElement) = n.Value.Contains s
     let setValue s (n: XElement) = n.Value <- s
     let replaceValue orig repl (n: XElement) = n.Value <- n.Value.Replace((orig:string), (repl:string))
+
+module Nu =
+    open System.IO
+    open NuPack
+
+    let build version name desc =
+        let builder = 
+            PackageBuilder(
+                Id = name,
+                Version = Version version,
+                Description = desc,
+                LicenseUrl = Uri("http://www.apache.org/licenses/LICENSE-2.0"),
+                Language = "en-US"
+            )
+        builder.Authors.Add "Mauricio Scheffer"
+        let buildFiles d =
+            !+ ("nuget" @@ d @@ "*") -- ("nuget" @@ d)
+            |> Scan
+            |> Seq.map (fun f -> PhysicalPackageFile(SourcePath = f, TargetPath = d @@ Path.GetFileName(f)))
+            |> Seq.toList
+        let libs = buildFiles "lib"
+        let docs = buildFiles "content"
+        let files = libs @ docs
+        builder.Files.AddRange (files |> Seq.map (fun i -> upcast i))
+        use fs = File.Create (sprintf "%s.%s%s" name version Constants.PackageExtension)
+        builder.Save fs
 
 module Solr =
     let private cmdline = "-DSTOP.PORT=8079 -DSTOP.KEY=secret -jar start.jar"

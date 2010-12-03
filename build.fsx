@@ -33,6 +33,8 @@ let slnBuild sln x =
 let mainSln = slnBuild "solrnet.sln"
 let sampleSln = slnBuild "SampleSolrApp.sln"
 
+let nuGetBuild = Nu.build version
+
 Target "Clean" (fun _ -> 
     mainSln "Clean"
     sampleSln "Clean"
@@ -123,34 +125,20 @@ Target "Docs" (fun _ ->
     rm_rf docsDir
 )
 
-let nuGet name desc =
-    NuGet (fun p ->
-        { p with
-            ToolPath = "lib\\nuget.exe"
-            Project = name
-            Description = desc
-            Version = version
-            OutputPath = nugetDir }) "solrnet.nuspec"
-
 Target "NuGet" (fun _ ->
     rm_rf nugetDir
     mkdir nugetDocs
     mkdir nugetLib
     cp docsFile nugetDocs
     cp (buildDir @@ "SolrNet.dll") nugetLib
-    cp "SolrNet.nuspec" nugetDir
-    nuGet "SolrNet" "Apache Solr client"
+    nuGetBuild "SolrNet" "Apache Solr client"
 )
 
 let nuGetSingle dir name desc =
     rm_rf nugetDir
-    mkdir nugetDocs
     mkdir nugetLib
-    let src = dir @@ "bin" @@ config @@ (dir + ".*")
-    log src
-    !!src |> Copy nugetLib
-    cp "SolrNet.nuspec" nugetDir
-    nuGet "SolrNet-Windsor" "Windsor facility for SolrNet"
+    !!(dir @@ "bin" @@ config @@ (dir + ".*")) |> Copy nugetLib
+    nuGetBuild name desc
 
 Target "NuGet.Windsor" (fun _ ->
     nuGetSingle "Castle.Facilities.SolrNetIntegration" "SolrNet-Windsor" "Windsor facility for SolrNet"

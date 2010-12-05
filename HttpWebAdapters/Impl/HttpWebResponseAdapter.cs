@@ -26,16 +26,16 @@ namespace HttpWebAdapters.Adapters {
 			this.response = response; // TODO use DuckTyping!
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets the contents of a header that was returned with the response.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///The contents of the specified header.
-		///</returns>
+		/// </returns>
 		///
-		///<param name="headerName">The header value to return. </param>
-		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+		/// <param name="headerName">The header value to return. </param>
+		/// <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public string GetResponseHeader(string headerName) {
 			try {
 				return ((HttpWebResponse) response).GetResponseHeader(headerName);
@@ -44,15 +44,15 @@ namespace HttpWebAdapters.Adapters {
 			}
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets or sets the cookies that are associated with this response.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///A <see cref="T:System.Net.CookieCollection"></see> that contains the cookies that are associated with this response.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+		/// <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public CookieCollection Cookies {
 			get {
 				try {
@@ -70,15 +70,15 @@ namespace HttpWebAdapters.Adapters {
 			}
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets the method that is used to encode the body of the response.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///A string that describes the method that is used to encode the body of the response.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+		/// <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public string ContentEncoding {
 			get {
 				try {
@@ -89,15 +89,15 @@ namespace HttpWebAdapters.Adapters {
 			}
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets the character set of the response.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///A string that contains the character set of the response.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" /></PermissionSet>
+		/// <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode" /></PermissionSet>
 		public string CharacterSet {
 			get {
 				try {
@@ -108,15 +108,15 @@ namespace HttpWebAdapters.Adapters {
 			}
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets the name of the server that sent the response.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///A string that contains the name of the server that sent the response.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+		/// <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public string Server {
 			get {
 				try {
@@ -127,15 +127,15 @@ namespace HttpWebAdapters.Adapters {
 			}
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets the last date and time that the contents of the response were modified.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///A <see cref="T:System.DateTime"></see> that contains the date and time that the contents of the response were modified.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+		/// <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
 		public DateTime LastModified {
 			get {
 				try {
@@ -146,15 +146,15 @@ namespace HttpWebAdapters.Adapters {
 			}
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets the status of the response.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///One of the <see cref="T:System.Net.HttpStatusCode"></see> values.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+		/// <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public HttpStatusCode StatusCode {
 			get {
 				try {
@@ -165,15 +165,15 @@ namespace HttpWebAdapters.Adapters {
 			}
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets the status description returned with the response.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///A string that describes the status of the response.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+		/// <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public string StatusDescription {
 			get {
 				try {
@@ -184,15 +184,15 @@ namespace HttpWebAdapters.Adapters {
 			}
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets the version of the HTTP protocol that is used in the response.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///A <see cref="T:System.Version"></see> that contains the HTTP protocol version of the response.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+		/// <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public Version ProtocolVersion {
 			get {
 				try {
@@ -203,15 +203,15 @@ namespace HttpWebAdapters.Adapters {
 			}
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets the method that is used to return the response.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///A string that contains the HTTP method that is used to return the response.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
+		/// <exception cref="T:System.ObjectDisposedException">The current instance has been disposed. </exception>
 		public string Method {
 			get {
 				try {
@@ -222,110 +222,110 @@ namespace HttpWebAdapters.Adapters {
 			}
 		}
 
-		///<summary>
+		/// <summary>
 		///When overridden by a descendant class, closes the response stream.
-		///</summary>
+		/// </summary>
 		///
-		///<exception cref="T:System.NotSupportedException">Any attempt is made to access the method, when the method is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+		/// <exception cref="T:System.NotSupportedException">Any attempt is made to access the method, when the method is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
 		public void Close() {
 			response.Close();
 		}
 
-		///<summary>
+		/// <summary>
 		///When overridden in a descendant class, returns the data stream from the Internet resource.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///An instance of the <see cref="T:System.IO.Stream"></see> class for reading data from the Internet resource.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.NotSupportedException">Any attempt is made to access the method, when the method is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+		/// <exception cref="T:System.NotSupportedException">Any attempt is made to access the method, when the method is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
 		public Stream GetResponseStream() {
 			return response.GetResponseStream();
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets a <see cref="T:System.Boolean"></see> value that indicates whether this response was obtained from the cache.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///true if the response was taken from the cache; otherwise, false.
-		///</returns>
+		/// </returns>
 		///
 		public bool IsFromCache {
 			get { return response.IsFromCache; }
 		}
 
-		///<summary>
+		/// <summary>
 		///Gets a <see cref="T:System.Boolean"></see> value that indicates whether mutual authentication occurred.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///true if both client and server were authenticated; otherwise, false.
-		///</returns>
+		/// </returns>
 		///
 		public bool IsMutuallyAuthenticated {
 			get { return response.IsMutuallyAuthenticated; }
 		}
 
-		///<summary>
+		/// <summary>
 		///When overridden in a descendant class, gets or sets the content length of data being received.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///The number of bytes returned from the Internet resource.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+		/// <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
 		public long ContentLength {
 			get { return response.ContentLength; }
 			set { response.ContentLength = value; }
 		}
 
-		///<summary>
+		/// <summary>
 		///When overridden in a derived class, gets or sets the content type of the data being received.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///A string that contains the content type of the response.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+		/// <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
 		public string ContentType {
 			get { return response.ContentType; }
 			set { response.ContentType = value; }
 		}
 
-		///<summary>
+		/// <summary>
 		///When overridden in a derived class, gets the URI of the Internet resource that actually responded to the request.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///An instance of the <see cref="T:System.Uri"></see> class that contains the URI of the Internet resource that actually responded to the request.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+		/// <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
 		public Uri ResponseUri {
 			get { return response.ResponseUri; }
 		}
 
-		///<summary>
+		/// <summary>
 		///When overridden in a derived class, gets a collection of header name-value pairs associated with this request.
-		///</summary>
+		/// </summary>
 		///
-		///<returns>
+		/// <returns>
 		///An instance of the <see cref="T:System.Net.WebHeaderCollection"></see> class that contains header values associated with this response.
-		///</returns>
+		/// </returns>
 		///
-		///<exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
+		/// <exception cref="T:System.NotSupportedException">Any attempt is made to get or set the property, when the property is not overridden in a descendant class. </exception><PermissionSet><IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" /></PermissionSet>
 		public WebHeaderCollection Headers {
 			get { return response.Headers; }
 		}
 
-		///<summary>
+		/// <summary>
 		///Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		///</summary>
-		///<filterpriority>2</filterpriority>
+		/// </summary>
+		/// <filterpriority>2</filterpriority>
 		public void Dispose() {
             response.Close();
 			//response.GetType().GetMethod("Dispose", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(response, null);

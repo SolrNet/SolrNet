@@ -6,11 +6,17 @@ _ReSharper.*
 *.bak
 *.sln.cache
 *.user
+*.zip
+*.chm
+*.nupkg
 Help/*
 build/*
+nuget/*
 tools/Sandcastle/Data/Reflection/*
 merged
 solr-*/solr/data
 solr-*/logs
 log.txt
 NDependOut
+docs
+mausch.snk

@@ -1,1 +1,1 @@
-msbuild solrnet.proj /m /t:ReleasePackage
+lib\fake.exe build.fsx target=BuildAndRelease config=Release

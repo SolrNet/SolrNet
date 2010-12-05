@@ -45,7 +45,7 @@ Target "Clean" (fun _ ->
 Target "Build" (fun _ -> mainSln "Rebuild")
 Target "BuildSample" (fun _ -> sampleSln "Rebuild")
 
-let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "StructureMap.SolrNetIntegration"]
+let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "StructureMap.SolrNetIntegration"; "AutofacContrib.SolrNet"]
 let dlls = [for l in libs -> l + ".dll"]
 let dirs = [for l in libs -> l @@ "bin" @@ config]
 
@@ -170,6 +170,14 @@ Target "NuGet.StructureMap" (fun _ ->
         "SolrNet.StructureMap"
         "StructureMap registry for SolrNet"
         ["structuremap", "2.6.1.0"; "SolrNet", "0.3.0"]
+)
+
+Target "NuGet.Autofac" (fun _ ->
+    nuGetSingle 
+        "AutofacContrib.SolrNet" 
+        "SolrNet.Autofac"
+        "Autofac module for SolrNet"
+        ["Autofac", "2.2.4.900"; "SolrNet", "0.3.0"]
 )
 
 Target "ReleasePackage" (fun _ -> 

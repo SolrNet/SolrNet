@@ -24,8 +24,10 @@ namespace SolrNet.Tests {
     [TestFixture]
     public class IntegrationTests {
 
+        public class Document { }
+
         [Test]
-        public void SwappingMappingManager() {
+        public void SwappingMappingManagerWithNewContainer() {
             var mapper = new MappingManager();
             Startup.Container.Clear();
             Startup.InitContainer();
@@ -39,7 +41,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void SwappingMappingManager2() {
+        public void SwappingMappingManagerWithStaticContainer() {
             var mapper = new MappingManager();
             Startup.Container.Clear();
             Startup.InitContainer();
@@ -52,12 +54,25 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void SwappingMappingManagerWithReplace()
+        {
+          var mapper = new MappingManager();
+          Startup.Container.Clear();
+          Startup.InitContainer();
+          Startup.Container.Replace<IReadOnlyMappingManager>(c => mapper);
+          ServiceLocator.SetLocatorProvider(() => Startup.Container);
+          Startup.Init<Document>("http://localhost");
+          var mapperFromFactory = ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>();
+          Assert.AreSame(mapper, mapperFromFactory);
+        }
+
+        [Test]
         public void MappingValidationManager() {
             Startup.Container.Clear();
             Startup.InitContainer();
             var manager = Startup.Container.GetInstance<IMappingValidator>();
         }
 
-        public class Document {}
+        
     }
 }

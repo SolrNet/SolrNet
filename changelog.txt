@@ -1,3 +1,6 @@
+- Upgraded to Ninject 2.1.0.76
+- Upgraded to Windsor 2.5.2
+- Signed assemblies
 - Fixed support for readonly and writeonly properties in document type
 - Fixed issue #113: duplicate add in NHibernate integration
 - Fixed bug with attributes not being picked up by a class higher in the class hierarchy
@@ -6,7 +9,7 @@
 - Improved response parsing performance
 - Fixed issue #93: nullable DateTime range queries
 - Added support for multi-core in StructureMap registry
-- Upgraded to StructureMap 2.6
+- Upgraded to StructureMap 2.6.1
 
 0.3.0 beta1 (2010-06-08)
 ===

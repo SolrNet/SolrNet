@@ -1,3 +1,1 @@
-msbuild solrnet.proj /m /t:test
-
-pause
+lib\fake build.fsx target=Test

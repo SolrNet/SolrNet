@@ -1,1 +1,1 @@
-msbuild solrnet.proj /m /t:SetRelease;Clean;Version;Build;Merge
+lib\fake.exe build.fsx %*

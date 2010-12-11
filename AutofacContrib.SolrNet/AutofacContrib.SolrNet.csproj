@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AutofacContrib.SolrNet</RootNamespace>
     <AssemblyName>AutofacContrib.SolrNet</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,10 +31,17 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
+  <ItemGroup Condition="$(TargetFrameworkVersion)=='v4.0'">
+    <Reference Include="Autofac">
+      <HintPath>..\lib\NET-4.0\Autofac.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFrameworkVersion)!='v4.0'">
     <Reference Include="Autofac">
       <HintPath>..\lib\Autofac.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>

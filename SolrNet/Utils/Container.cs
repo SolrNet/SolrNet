@@ -162,7 +162,7 @@ namespace SolrNet.Utils {
             }
             deregisterList.ForEach(key => DeregisterComponentKey(key, typeof(T)));
 
-            RegisterAll<T>(factories);
+            RegisterAll(factories);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace SolrNet.Utils {
         public void Replace<T>(Converter<IContainer, T> factory)
         {
             Remove<T>();
-            Register<T>(factory);
+            Register(factory);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace SolrNet.Utils {
         public void Replace<T>(string key, Converter<IContainer, T> factory)
         {
           Remove<T>(key);
-          Register<T>(key, factory);
+          Register(key, factory);
         }
 
         /// <summary>

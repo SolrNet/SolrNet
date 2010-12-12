@@ -37,7 +37,7 @@ namespace SolrNet {
     public static class Startup {
         public static readonly Container Container = new Container();
         private static readonly object myLockContext = new object();
-        private static IDictionary<string, bool> types = new Dictionary<string, bool>();
+        private static readonly IDictionary<string, bool> types = new Dictionary<string, bool>();
 
         static Startup() {
             InitContainer();
@@ -59,18 +59,12 @@ namespace SolrNet {
 
             Container.Register<ISolrSchemaParser>(c => new SolrSchemaParser());
             Container.Register<ISolrHeaderResponseParser>(c => new HeaderResponseParser<string>());
-            Container.RegisterAll<IValidationRule>(new List<Converter<IContainer, IValidationRule>> {
+            Container.RegisterAll(new List<Converter<IContainer, IValidationRule>> {
                 c => new MappedPropertiesIsInSolrSchemaRule(), 
                 c => new RequiredFieldsAreMappedRule(), 
                 c => new UniqueKeyMatchesMappingRule()
             });
             Container.Register<IMappingValidator>(c => new MappingValidator(c.GetInstance<IReadOnlyMappingManager>(), Func.ToArray(c.GetAllInstances<IValidationRule>())));
-        }
-
-        private static IEnumerable<IValidationRule> ChooseValidationRules() {
-            yield return new MappedPropertiesIsInSolrSchemaRule();
-            yield return new RequiredFieldsAreMappedRule();
-            yield return new UniqueKeyMatchesMappingRule();
         }
 
         /// <summary>
@@ -110,14 +104,15 @@ namespace SolrNet {
         /// </summary>
         /// <typeparam name="T">Document type.</typeparam>
         /// <param name="connection">Solr connection.</param>
+        /// <param name="coreName">Core name</param>
         public static void InitCore<T>(string coreName, ISolrConnection connection) {
             lock (myLockContext) {
                 if (!types.ContainsKey(typeof(T).FullName)) {
                     Container.Register<ISolrDocumentActivator<T>>(c => new SolrDocumentActivator<T>());
-                    Container.Register(c => ChooseDocumentResponseParser<T>(c));
-                    Container.Register(c => ChooseDocumentSerializer<T>(c));
+                    Container.Register(ChooseDocumentResponseParser<T>);
+                    Container.Register(ChooseDocumentSerializer<T>);
 
-                    Container.RegisterAll<ISolrResponseParser<T>>(new List<Converter<IContainer, ISolrResponseParser<T>>> {
+                    Container.RegisterAll(new List<Converter<IContainer, ISolrResponseParser<T>>> {
                         c => new ResultsResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()),
                         c => new HeaderResponseParser<T>(),
                         c => new FacetsResponseParser<T>(),

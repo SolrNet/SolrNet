@@ -41,8 +41,6 @@ namespace SolrNet.Utils {
             keyRegistry = new Dictionary<string, bool>(c.keyRegistry);
         }
 
-        #region ServiceLocator callbacks
-
         protected override object DoGetInstance(Type serviceType, string key) {
             var componentKey = BuildComponentKey(key, serviceType);
 
@@ -57,10 +55,6 @@ namespace SolrNet.Utils {
                 yield return component(this);
             }
         }
-
-        #endregion ServiceLocator callbacks
-
-        #region Component management
 
         /// <summary>
         /// Adds a collection of components for service type <typeparamref name="T"/>.
@@ -217,10 +211,6 @@ namespace SolrNet.Utils {
             typeRegistry.Clear();
         }
 
-        #endregion Component management
-
-        #region Helpers
-
         /// <summary>
         /// Builds the component key from the provided key <paramref name="key"/> and type <paramref name="type"/>.
         /// </summary>
@@ -284,7 +274,5 @@ namespace SolrNet.Utils {
                 typeRegistry.Remove(typeKey);
             }
         }
-
-        #endregion Helpers
     }
 }

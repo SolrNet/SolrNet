@@ -1,3 +1,11 @@
+- Minor breaking change: removed SolrConnection constructor with IHttpWebRequestFactory parameter. Made IHttpWebRequestFactory a property.
+- Added support for multi core using ServiceLocator
+- Added Autofac integration module
+
+0.3.0 (2010-12-05)
+===
+
+- NuGet packages
 - Upgraded to Ninject 2.1.0.76
 - Upgraded to Windsor 2.5.2
 - Signed assemblies

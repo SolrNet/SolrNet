@@ -48,8 +48,10 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void Add_then_query() {
+            Guid guid = new Guid("{78D734ED-12F8-44E0-8AA3-8CA3F353998D}");
             var p = new Product {
                 Id = "SP2514N",
+                Guid = guid,
                 Name = "Samsuñg SpinPoint P120 SP2514N - hárd drívè - 250 GB - ÁTÀ-133",
                 // testing UTF
                 Manufacturer = "Samsung Electronics Co. Ltd.",
@@ -85,6 +87,7 @@ namespace SolrNet.Tests.Integration.Sample {
             var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m).Boost(2));
             Assert.AreEqual(1, products.Count);
             Assert.AreEqual("SP2514N", products[0].Id);
+            Assert.AreEqual(guid, products[0].Guid);
             Assert.AreEqual(92m, products[0].Price);
             Assert.IsNotNull(products[0].Prices);
             Assert.AreEqual(2, products[0].Prices.Count);

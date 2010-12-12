@@ -75,6 +75,8 @@
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
    <!--Binary data type. The data should be sent/retrieved in as Base64 encoded Strings -->
     <fieldtype name="binary" class="solr.BinaryField"/>
+    <!-- UUID type -->
+    <fieldType name="uuid" class="solr.UUIDField" indexed="true" />
 
     <!-- The optional sortMissingLast and sortMissingFirst attributes are
          currently supported on types that are sorted internally as strings.
@@ -426,6 +428,7 @@
    -->
 
    <field name="id" type="string" indexed="true" stored="true" required="true" /> 
+   <field name="guid" type="uuid" indexed="true" stored="true" required="true" /> 
    <field name="sku" type="textTight" indexed="true" stored="true" omitNorms="true"/>
    <field name="name" type="textgen" indexed="true" stored="true"/>
    <field name="alphaNameSort" type="alphaOnlySort" indexed="true" stored="false"/>

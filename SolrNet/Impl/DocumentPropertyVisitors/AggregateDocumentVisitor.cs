@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.DocumentPropertyVisitors {
     /// <summary>
@@ -32,7 +33,7 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
             this.visitors = visitors;
         }
 
-        public void Visit(object doc, string fieldName, XmlNode field) {
+        public void Visit(object doc, string fieldName, XElement field) {
             foreach (var v in visitors) {
                 v.Visit(doc, fieldName, field);
             }

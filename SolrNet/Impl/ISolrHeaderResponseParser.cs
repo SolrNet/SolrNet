@@ -1,7 +1,8 @@
 ﻿using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl {
     public interface ISolrHeaderResponseParser {
-        ResponseHeader Parse(XmlDocument response);
+        ResponseHeader Parse(XDocument response);
     }
 }

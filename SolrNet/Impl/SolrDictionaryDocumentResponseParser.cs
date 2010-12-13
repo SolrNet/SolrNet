@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -29,23 +30,21 @@ namespace SolrNet.Impl {
             this.fieldParser = fieldParser;
         }
 
-        public IList<Dictionary<string, object>> ParseResults(XmlNode parentNode) {
+        public IList<Dictionary<string, object>> ParseResults(XElement parentNode) {
             var results = new List<Dictionary<string, object>>();
             if (parentNode == null)
                 return results;
-            var nodes = parentNode.SelectNodes("doc");
-            if (nodes == null)
-                return results;
-            foreach (XmlNode docNode in nodes) {
+            var nodes = parentNode.Elements("doc");
+            foreach (var docNode in nodes) {
                 results.Add(ParseDocument(docNode));
             }
             return results;
         }
 
-        public Dictionary<string, object> ParseDocument(XmlNode node) {
+        public Dictionary<string, object> ParseDocument(XElement node) {
             var doc = new Dictionary<string, object>();
-            foreach (XmlNode field in node.ChildNodes) {
-                string fieldName = field.Attributes["name"].InnerText;
+            foreach (var field in node.Elements()) {
+                string fieldName = field.Attribute("name").Value;
                 doc[fieldName] = fieldParser.Parse(field, typeof(object));
             }
             return doc;

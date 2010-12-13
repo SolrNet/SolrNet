@@ -18,6 +18,8 @@
 
 using System;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using SolrNet.Exceptions;
 
 namespace SolrNet.Schema {
@@ -31,38 +33,38 @@ namespace SolrNet.Schema {
         /// </summary>
         /// <param name="solrSchemaXml">The Solr schema xml to parse.</param>
         /// <returns>A strongly styped representation of the Solr schema xml.</returns>
-        public SolrSchema Parse(XmlDocument solrSchemaXml) {
+        public SolrSchema Parse(XDocument solrSchemaXml) {
             var result = new SolrSchema();
 
-            foreach (XmlNode fieldNode in solrSchemaXml.SelectNodes("/schema/types/fieldType|/schema/types/fieldtype")) {
-                var field = new SolrFieldType(fieldNode.Attributes["name"].Value, fieldNode.Attributes["class"].Value);
+            foreach (var fieldNode in solrSchemaXml.XPathSelectElements("/schema/types/fieldType|/schema/types/fieldtype")) {
+                var field = new SolrFieldType(fieldNode.Attribute("name").Value, fieldNode.Attribute("class").Value);
                 result.SolrFieldTypes.Add(field);
             }
 
-            foreach (XmlNode fieldNode in solrSchemaXml.SelectNodes("/schema/fields/field")) {
-                var fieldTypeName = fieldNode.Attributes["type"].Value;
+            foreach (var fieldNode in solrSchemaXml.XPathSelectElements("/schema/fields/field")) {
+                var fieldTypeName = fieldNode.Attribute("type").Value;
                 var fieldType = result.FindSolrFieldTypeByName(fieldTypeName);
                 if (fieldType == null)
                     throw new SolrNetException(string.Format("Field type '{0}' not found", fieldTypeName));
-                var field = new SolrField(fieldNode.Attributes["name"].Value, fieldType);
-                field.IsRequired = fieldNode.Attributes["required"] != null ? fieldNode.Attributes["required"].Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
-                field.IsMultiValued = fieldNode.Attributes["multiValued"] != null ? fieldNode.Attributes["multiValued"].Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
+                var field = new SolrField(fieldNode.Attribute("name").Value, fieldType);
+                field.IsRequired = fieldNode.Attribute("required") != null ? fieldNode.Attribute("required").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
+                field.IsMultiValued = fieldNode.Attribute("multiValued") != null ? fieldNode.Attribute("multiValued").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
                 result.SolrFields.Add(field);
             }
 
-            foreach (XmlNode dynamicFieldNode in solrSchemaXml.SelectNodes("/schema/fields/dynamicField")) {
-                var dynamicField = new SolrDynamicField(dynamicFieldNode.Attributes["name"].Value);
+            foreach (var dynamicFieldNode in solrSchemaXml.XPathSelectElements("/schema/fields/dynamicField")) {
+                var dynamicField = new SolrDynamicField(dynamicFieldNode.Attribute("name").Value);
                 result.SolrDynamicFields.Add(dynamicField);
             }
 
-            foreach (XmlNode copyFieldNode in solrSchemaXml.SelectNodes("/schema/copyField")) {
-                var copyField = new SolrCopyField(copyFieldNode.Attributes["source"].Value, copyFieldNode.Attributes["dest"].Value);
+            foreach (var copyFieldNode in solrSchemaXml.XPathSelectElements("/schema/copyField")) {
+                var copyField = new SolrCopyField(copyFieldNode.Attribute("source").Value, copyFieldNode.Attribute("dest").Value);
                 result.SolrCopyFields.Add(copyField);
             }
 
-            var uniqueKeyNode = solrSchemaXml.SelectSingleNode("/schema/uniqueKey");
-            if (uniqueKeyNode != null && !string.IsNullOrEmpty(uniqueKeyNode.InnerText)) {
-                result.UniqueKey = uniqueKeyNode.InnerText;
+            var uniqueKeyNode = solrSchemaXml.XPathSelectElement("/schema/uniqueKey");
+            if (uniqueKeyNode != null && !string.IsNullOrEmpty(uniqueKeyNode.Value)) {
+                result.UniqueKey = uniqueKeyNode.Value;
             }
 
             return result;

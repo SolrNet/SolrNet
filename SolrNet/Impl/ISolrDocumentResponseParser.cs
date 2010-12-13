@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -28,6 +29,6 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="parentNode"></param>
         /// <returns></returns>
-        IList<T> ParseResults(XmlNode parentNode);
+        IList<T> ParseResults(XElement parentNode);
     }
 }

@@ -17,10 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
-using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -57,7 +57,9 @@ namespace SolrNet.Tests {
             var serializer = new NullableFieldSerializer(new DateTimeFieldSerializer());
             var s = serializer.Serialize(dt).First().FieldValue;
             Console.WriteLine(s);
-            var value = (DateTime?) parser.Parse(XmlUtils.CreateNode("date", s), typeof(DateTime?));
+            var xml = new XDocument();
+            xml.Add(new XElement("date", s));
+            var value = (DateTime?) parser.Parse(xml.Root, typeof(DateTime?));
             Console.WriteLine(value.Value.ToString("r"));
             Assert.AreEqual(dt, value);
         }
@@ -68,6 +70,5 @@ namespace SolrNet.Tests {
             yield return new DateTime(2004, 11, 1, 15, 41, 23);
             yield return new DateTime(2008, 5, 6, 14, 21, 23, 0, DateTimeKind.Local);
         }
-
     }
 }

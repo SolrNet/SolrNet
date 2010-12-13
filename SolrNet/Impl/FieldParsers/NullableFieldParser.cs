@@ -16,6 +16,7 @@
 
 using System;
 using System.Xml;
+using System.Xml.Linq;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldParsers {
@@ -37,8 +38,8 @@ namespace SolrNet.Impl.FieldParsers {
             return parser.CanHandleType(t) || parser.CanHandleType(TypeHelper.GetUnderlyingNullableType(t));
         }
 
-        public object Parse(XmlNode field, Type t) {
-            if (string.IsNullOrEmpty(field.InnerText))
+        public object Parse(XElement field, Type t) {
+            if (string.IsNullOrEmpty(field.Value))
                 return null;
             return parser.Parse(field, t);
         }

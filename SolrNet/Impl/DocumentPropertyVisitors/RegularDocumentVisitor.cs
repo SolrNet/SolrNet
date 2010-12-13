@@ -16,6 +16,7 @@
 
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.DocumentPropertyVisitors {
     /// <summary>
@@ -35,14 +36,14 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
             this.mapper = mapper;
         }
 
-        public void Visit(object doc, string fieldName, XmlNode field) {
+        public void Visit(object doc, string fieldName, XElement field) {
             var allFields = mapper.GetFields(doc.GetType());
             var thisField = allFields.FirstOrDefault(p => p.FieldName == fieldName);
             if (thisField == null)
                 return;
             if (!thisField.Property.CanWrite)
                 return;
-            if (parser.CanHandleSolrType(field.Name) &&
+            if (parser.CanHandleSolrType(field.Name.LocalName) &&
                 parser.CanHandleType(thisField.Property.PropertyType)) {
                 var v = parser.Parse(field, thisField.Property.PropertyType);
                 thisField.Property.SetValue(doc, v, null);

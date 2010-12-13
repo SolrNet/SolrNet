@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using System.Xml.Linq;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldParsers {
@@ -43,9 +44,9 @@ namespace SolrNet.Impl.FieldParsers {
             return parsers.Any(p => p.CanHandleType(t));
         }
 
-        public object Parse(XmlNode field, Type t) {
+        public object Parse(XElement field, Type t) {
             return parsers
-                .Where(p => p.CanHandleType(t) && p.CanHandleSolrType(field.Name))
+                .Where(p => p.CanHandleType(t) && p.CanHandleSolrType(field.Name.LocalName))
                 .Select(p => p.Parse(field, t))
                 .FirstOrDefault();
         }

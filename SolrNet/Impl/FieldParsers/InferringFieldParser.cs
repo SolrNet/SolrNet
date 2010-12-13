@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.FieldParsers {
     /// <summary>
@@ -53,8 +54,8 @@ namespace SolrNet.Impl.FieldParsers {
             };
         }
 
-        public object Parse(XmlNode field, Type t) {
-            var type = solrTypes[field.Name];
+        public object Parse(XElement field, Type t) {
+            var type = solrTypes[field.Name.LocalName];
             return parser.Parse(field, type);
         }
     }

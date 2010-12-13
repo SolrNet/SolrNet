@@ -17,7 +17,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
+using System.Linq;
+using System.Xml.Linq;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldParsers {
@@ -42,7 +43,7 @@ namespace SolrNet.Impl.FieldParsers {
                    !TypeHelper.IsGenericAssignableFrom(typeof (IDictionary<,>), t);
         }
 
-        public object Parse(XmlNode field, Type t) {
+        public object Parse(XElement field, Type t) {
             var genericTypes = t.GetGenericArguments();
             if (genericTypes.Length == 1) {
                 // ICollection<int>, etc
@@ -59,21 +60,21 @@ namespace SolrNet.Impl.FieldParsers {
             return null;
         }
 
-        public IList GetNonGenericCollectionProperty(XmlNode field) {
+        public IList GetNonGenericCollectionProperty(XElement field) {
             var l = new ArrayList();
-            foreach (XmlNode arrayValueNode in field.ChildNodes) {
+            foreach (var arrayValueNode in field.Elements()) {
                 l.Add(valueParser.Parse(arrayValueNode, typeof(object)));
             }
             return l;
         }
 
 
-        public Array GetArrayProperty(XmlNode field, Type t) {
+        public Array GetArrayProperty(XElement field, Type t) {
             // int[], string[], etc
-            var arr = (Array) Activator.CreateInstance(t, new object[] {field.ChildNodes.Count});
+            var arr = (Array)Activator.CreateInstance(t, new object[] { field.Elements().Count() });
             var arrType = Type.GetType(t.ToString().Replace("[]", ""));
             int i = 0;
-            foreach (XmlNode arrayValueNode in field.ChildNodes) {
+            foreach (var arrayValueNode in field.Elements()) {
                 arr.SetValue(valueParser.Parse(arrayValueNode, arrType), i);
                 i++;
             }
@@ -81,11 +82,11 @@ namespace SolrNet.Impl.FieldParsers {
         }
 
 
-        public IList GetGenericCollectionProperty(XmlNode field, Type[] genericTypes) {
+        public IList GetGenericCollectionProperty(XElement field, Type[] genericTypes) {
             // ICollection<int>, etc
             var gt = genericTypes[0];
             var l = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(gt));
-            foreach (XmlNode arrayValueNode in field.ChildNodes) {
+            foreach (var arrayValueNode in field.Elements()) {
                 l.Add(valueParser.Parse(arrayValueNode, gt));
             }
             return l;

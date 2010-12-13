@@ -17,6 +17,7 @@
 #endregion
 
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Schema
 {
@@ -30,6 +31,6 @@ namespace SolrNet.Schema
         /// </summary>
         /// <param name="solrSchemaXml">The solr schema XML.</param>
         /// <returns>a object model of the solr schema.</returns>
-        SolrSchema Parse(XmlDocument solrSchemaXml);
+        SolrSchema Parse(XDocument solrSchemaXml);
     }
 }

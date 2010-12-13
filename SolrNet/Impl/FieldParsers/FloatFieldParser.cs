@@ -17,6 +17,7 @@
 using System;
 using System.Globalization;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.FieldParsers {
     /// <summary>
@@ -31,8 +32,8 @@ namespace SolrNet.Impl.FieldParsers {
             return t == typeof (float);
         }
 
-        public object Parse(XmlNode field, Type t) {
-            return float.Parse(field.InnerText, CultureInfo.InvariantCulture.NumberFormat);
+        public object Parse(XElement field, Type t) {
+            return float.Parse(field.Value, CultureInfo.InvariantCulture.NumberFormat);
         }
     }
 }

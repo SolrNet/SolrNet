@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
 <lst name="facet_dates">
   <lst name="timestamp">
     <int name="2009-08-09T22:46:29Z">0</int>
@@ -9,3 +10,4 @@
     <int name="between">0</int>
   </lst>
 </lst>
+</root>

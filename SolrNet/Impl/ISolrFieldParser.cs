@@ -15,7 +15,7 @@
 #endregion
 
 using System;
-using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -42,6 +42,6 @@ namespace SolrNet.Impl {
         /// <param name="field">Solr XML result node</param>
         /// <param name="t">Type the node value should be converted to</param>
         /// <returns>Parsed value</returns>
-        object Parse(XmlNode field, Type t);
+        object Parse(XElement field, Type t);
     }
 }

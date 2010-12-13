@@ -16,6 +16,7 @@
 
 using System;
 using System.Xml;
+using System.Xml.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl.FieldParsers;
 
@@ -49,11 +50,10 @@ namespace SolrNet.Tests {
 
         [Test]
         public void ParseNullableInt() {
-            var doc = new XmlDocument();
-            var node = doc.CreateElement("int");
-            node.InnerText = "31";
+            var doc = new XDocument();
+            doc.Add(new XElement("int", "31"));
             var p = new DefaultFieldParser();
-            var i = p.Parse(node, typeof (int?));
+            var i = p.Parse(doc.Root, typeof (int?));
             Assert.IsInstanceOfType(typeof(int?), i);
             var ii = (int?) i;
             Assert.IsTrue(ii.HasValue);

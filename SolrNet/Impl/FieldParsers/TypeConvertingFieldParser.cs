@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.FieldParsers {
     /// <summary>
@@ -51,18 +52,17 @@ namespace SolrNet.Impl.FieldParsers {
         /// <param name="field"></param>
         /// <param name="t"></param>
         /// <returns></returns>
-        public Type GetUnderlyingType(XmlNode field, Type t) {
+        public Type GetUnderlyingType(XElement field, Type t) {
             if (t != typeof(object))
                 return t;
-            var solrType = field.Name;
-            return solrTypes[solrType];
+            return solrTypes[field.Name.LocalName];
         }
 
-        public object Parse(XmlNode field, Type t) {
+        public object Parse(XElement field, Type t) {
             var converter = TypeDescriptor.GetConverter(GetUnderlyingType(field, t));
             if (converter != null && converter.CanConvertFrom(typeof(string)))
-                return converter.ConvertFromInvariantString(field.InnerText);
-            return Convert.ChangeType(field.InnerText, t);
+                return converter.ConvertFromInvariantString(field.Value);
+            return Convert.ChangeType(field.Value, t);
         }
     }
 }

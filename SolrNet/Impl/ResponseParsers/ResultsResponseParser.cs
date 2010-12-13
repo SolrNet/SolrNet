@@ -17,6 +17,8 @@
 using System;
 using System.Globalization;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -30,12 +32,12 @@ namespace SolrNet.Impl.ResponseParsers {
             this.docParser = docParser;
         }
 
-        public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
-            var resultNode = xml.SelectSingleNode("response/result");
-            results.NumFound = Convert.ToInt32(resultNode.Attributes["numFound"].InnerText);
-            var maxScore = resultNode.Attributes["maxScore"];
+        public void Parse(XDocument xml, SolrQueryResults<T> results) {
+            var resultNode = xml.XPathSelectElement("response/result");
+            results.NumFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
+            var maxScore = resultNode.Attribute("maxScore");
             if (maxScore != null) {
-                results.MaxScore = double.Parse(maxScore.InnerText, CultureInfo.InvariantCulture.NumberFormat);
+                results.MaxScore = double.Parse(maxScore.Value, CultureInfo.InvariantCulture.NumberFormat);
             }
 
             foreach (var result in docParser.ParseResults(resultNode))

@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -25,7 +27,7 @@ namespace SolrNet.Impl.ResponseParsers {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class HeaderResponseParser<T> : ISolrResponseParser<T>, ISolrHeaderResponseParser {
-        public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
+        public void Parse(XDocument xml, SolrQueryResults<T> results) {
             var header = Parse(xml);
             if (header != null)
                 results.Header = header;
@@ -36,22 +38,20 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public ResponseHeader ParseHeader(XmlNode node) {
+        public ResponseHeader ParseHeader(XElement node) {
             var r = new ResponseHeader();
-            r.Status = int.Parse(node.SelectSingleNode("int[@name='status']").InnerText, CultureInfo.InvariantCulture.NumberFormat);
-            r.QTime = int.Parse(node.SelectSingleNode("int[@name='QTime']").InnerText, CultureInfo.InvariantCulture.NumberFormat);
+            r.Status = int.Parse(node.XPathSelectElement("int[@name='status']").Value, CultureInfo.InvariantCulture.NumberFormat);
+            r.QTime = int.Parse(node.XPathSelectElement("int[@name='QTime']").Value, CultureInfo.InvariantCulture.NumberFormat);
             r.Params = new Dictionary<string, string>();
-            var paramNodes = node.SelectNodes("lst[@name='params']/str");
-            if (paramNodes != null) {
-                foreach (XmlNode n in paramNodes) {
-                    r.Params[n.Attributes["name"].InnerText] = n.InnerText;
-                }
+            var paramNodes = node.XPathSelectElements("lst[@name='params']/str");
+            foreach (var n in paramNodes) {
+                r.Params[n.Attribute("name").Value] = n.Value;
             }
             return r;
         }
 
-        public ResponseHeader Parse(XmlDocument response) {
-            var responseHeaderNode = response.SelectSingleNode("response/lst[@name='responseHeader']");
+        public ResponseHeader Parse(XDocument response) {
+            var responseHeaderNode = response.XPathSelectElement("response/lst[@name='responseHeader']");
             if (responseHeaderNode != null)
                 return ParseHeader(responseHeaderNode);
             return null;

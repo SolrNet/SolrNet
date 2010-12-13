@@ -15,6 +15,7 @@
 #endregion
 
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.DocumentPropertyVisitors {
     /// <summary>
@@ -35,7 +36,7 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
             });
         }
 
-        public void Visit(object doc, string fieldName, XmlNode field) {
+        public void Visit(object doc, string fieldName, XElement field) {
             visitor.Visit(doc, fieldName, field);
         }
     }

@@ -20,6 +20,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using MbUnit.Framework;
@@ -40,7 +42,7 @@ namespace SolrNet.Tests {
 		    var mapper = new AttributesMappingManager();
             var parser = new SolrDocumentResponseParser<TestDocument>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<TestDocument>());
 		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
-			var docNode = xml.SelectSingleNode("response/result/doc");
+            var docNode = xml.XPathSelectElement("response/result/doc");
 			var doc = parser.ParseDocument(docNode, mapper.GetFields(typeof(TestDocument)));
 			Assert.IsNotNull(doc);
 			Assert.AreEqual(123456, doc.Id);
@@ -52,7 +54,7 @@ namespace SolrNet.Tests {
             mapper.Add(typeof(TestDocumentWithoutAttributes).GetProperty("Id"), "id");
             var parser = new SolrDocumentResponseParser<TestDocumentWithoutAttributes>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<TestDocumentWithoutAttributes>());
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
-			var docNode = xml.SelectSingleNode("response/result/doc");
+            var docNode = xml.XPathSelectElement("response/result/doc");
             var doc = parser.ParseDocument(docNode, mapper.GetFields(typeof(TestDocumentWithoutAttributes)));
 			Assert.IsNotNull(doc);
 			Assert.AreEqual(123456, doc.Id);
@@ -81,7 +83,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void SetPropertyWithArrayOfStrings() {
 		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithArrays.xml");
-			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='cat']");
+            var fieldNode = xml.XPathSelectElement("response/result/doc/arr[@name='cat']");
             var mapper = new AttributesMappingManager();
 		    var visitor = new DefaultDocumentVisitor(mapper, new DefaultFieldParser());
             var doc = new TestDocumentWithArrays();
@@ -95,7 +97,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void SetPropertyDouble() {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithArrays.xml");
-			var fieldNode = xml.SelectSingleNode("response/result/doc/float[@name='price']");
+            var fieldNode = xml.XPathSelectElement("response/result/doc/float[@name='price']");
             var mapper = new AttributesMappingManager();
             var visitor = new DefaultDocumentVisitor(mapper, new DefaultFieldParser());
             var doc = new TestDocumentWithArrays();
@@ -106,7 +108,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void SetPropertyNullableDouble() {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithArrays.xml");
-			var fieldNode = xml.SelectSingleNode("response/result/doc/float[@name='price']");
+            var fieldNode = xml.XPathSelectElement("response/result/doc/float[@name='price']");
             var mapper = new AttributesMappingManager();
             var visitor = new DefaultDocumentVisitor(mapper, new DefaultFieldParser());
             var doc = new TestDocumentWithNullableDouble();
@@ -117,7 +119,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void SetPropertyWithIntCollection() {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithArrays.xml");
-			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
+            var fieldNode = xml.XPathSelectElement("response/result/doc/arr[@name='numbers']");
             var mapper = new AttributesMappingManager();
             var visitor = new DefaultDocumentVisitor(mapper, new DefaultFieldParser());
             var doc = new TestDocumentWithArrays();
@@ -131,7 +133,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void SetPropertyWithNonGenericCollection() {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithArrays.xml");
-			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
+            var fieldNode = xml.XPathSelectElement("response/result/doc/arr[@name='numbers']");
             var mapper = new AttributesMappingManager();
             var visitor = new DefaultDocumentVisitor(mapper, new DefaultFieldParser());
             var doc = new TestDocumentWithArrays3();
@@ -145,7 +147,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void SetPropertyWithArrayOfIntsToIntArray() {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithArrays.xml");
-			var fieldNode = xml.SelectSingleNode("response/result/doc/arr[@name='numbers']");
+            var fieldNode = xml.XPathSelectElement("response/result/doc/arr[@name='numbers']");
             var mapper = new AttributesMappingManager();
             var visitor = new DefaultDocumentVisitor(mapper, new DefaultFieldParser());
             var doc = new TestDocumentWithArrays2();
@@ -430,7 +432,7 @@ namespace SolrNet.Tests {
 		public void ParseResponseHeader() {
 		    var parser = new HeaderResponseParser<TestDocument>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
-			var docNode = xml.SelectSingleNode("response/lst[@name='responseHeader']");
+            var docNode = xml.XPathSelectElement("response/lst[@name='responseHeader']");
 			var header = parser.ParseHeader(docNode);
 			Assert.AreEqual(1, header.Status);
 			Assert.AreEqual(15, header.QTime);
@@ -442,9 +444,8 @@ namespace SolrNet.Tests {
         private IDictionary<string, IDictionary<string, ICollection<string>>> ParseHighlightingResults(string rawXml) {
             var mapper = new AttributesMappingManager();
             var parser = new HighlightingResponseParser<Product>();
-            var xml = new XmlDocument();
-            xml.LoadXml(rawXml);
-            var docNode = xml.SelectSingleNode("response/lst[@name='highlighting']");
+            var xml = XDocument.Parse(rawXml);
+            var docNode = xml.XPathSelectElement("response/lst[@name='highlighting']");
             var item = new Product { Id = "SP2514N" };
             return parser.ParseHighlighting(new SolrQueryResults<Product> { item }, docNode);
         }
@@ -473,9 +474,8 @@ namespace SolrNet.Tests {
         [Test]
         public void ParseSpellChecking() {
             var parser = new SpellCheckResponseParser<Product>();
-            var xml = new XmlDocument();
-            xml.LoadXml(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithSpellChecking.xml"));
-            var docNode = xml.SelectSingleNode("response/lst[@name='spellcheck']");
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellChecking.xml");
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             var spellChecking = parser.ParseSpellChecking(docNode);
             Assert.IsNotNull(spellChecking);
             Assert.AreEqual("dell ultrasharp", spellChecking.Collation);
@@ -487,7 +487,7 @@ namespace SolrNet.Tests {
             var mapper = new AttributesMappingManager();
             var parser = new MoreLikeThisResponseParser<Product>(new SolrDocumentResponseParser<Product>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<Product>()));
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithMoreLikeThis.xml");
-            var docNode = xml.SelectSingleNode("response/lst[@name='moreLikeThis']");
+            var docNode = xml.XPathSelectElement("response/lst[@name='moreLikeThis']");
             var product1 = new Product { Id = "UTF8TEST" };
             var product2 = new Product { Id = "SOLR1000" };
             var mlt = parser.ParseMoreLikeThis(new[] {
@@ -507,7 +507,7 @@ namespace SolrNet.Tests {
         public void ParseStatsResults() {
             var parser = new StatsResponseParser<Product>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithStats.xml");
-            var docNode = xml.SelectSingleNode("response/lst[@name='stats']");
+            var docNode = xml.XPathSelectElement("response/lst[@name='stats']");
             var stats = parser.ParseStats(docNode, "stats_fields");
             Assert.AreEqual(1, stats.Count);
             Assert.IsTrue(stats.ContainsKey("price"));
@@ -550,7 +550,7 @@ namespace SolrNet.Tests {
         public void ParseFacetDateResults() {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithDateFacet.xml");
             var p = new FacetsResponseParser<Product>();
-            var results = p.ParseFacetDates(xml);
+            var results = p.ParseFacetDates(xml.Root);
             Assert.AreEqual(1, results.Count);
             foreach (var kv in results) {
                 Console.WriteLine("date facets for field '{0}'", kv.Key);
@@ -566,7 +566,7 @@ namespace SolrNet.Tests {
         public void ParseFacetDateResultsWithOther() {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithDateFacetAndOther.xml");
             var p = new FacetsResponseParser<Product>();
-            var results = p.ParseFacetDates(xml);
+            var results = p.ParseFacetDates(xml.Root);
             Assert.AreEqual(1, results.Count);
             foreach (var kv in results) {
                 Console.WriteLine("date facets for field '{0}'", kv.Key);
@@ -589,7 +589,7 @@ namespace SolrNet.Tests {
             var mapper = new AttributesMappingManager();
             var parser = new SolrDocumentResponseParser<TestDocWithoutSetter>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<TestDocWithoutSetter>());
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
-            var docNode = xml.SelectSingleNode("response/result/doc");
+            var docNode = xml.XPathSelectElement("response/result/doc");
             var doc = parser.ParseDocument(docNode, mapper.GetFields(typeof(TestDocument)));
             Assert.IsNotNull(doc);
             Assert.AreEqual(0, doc.Id);

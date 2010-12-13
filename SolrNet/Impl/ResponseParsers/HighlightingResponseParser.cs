@@ -16,6 +16,8 @@
 
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -23,8 +25,8 @@ namespace SolrNet.Impl.ResponseParsers {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class HighlightingResponseParser<T> : ISolrResponseParser<T> {
-        public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
-            var highlightingNode = xml.SelectSingleNode("response/lst[@name='highlighting']");
+        public void Parse(XDocument xml, SolrQueryResults<T> results) {
+            var highlightingNode = xml.XPathSelectElement("response/lst[@name='highlighting']");
             if (highlightingNode != null)
                 results.Highlights = ParseHighlighting(results, highlightingNode);
         }
@@ -35,14 +37,12 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <param name="results"></param>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IDictionary<string, IDictionary<string, ICollection<string>>> ParseHighlighting(IEnumerable<T> results, XmlNode node) {
+        public IDictionary<string, IDictionary<string, ICollection<string>>> ParseHighlighting(IEnumerable<T> results, XElement node) {
             var r = new Dictionary<string, IDictionary<string, ICollection<string>>>();
-            var docRefs = node.SelectNodes("lst");
-            if (docRefs == null)
-                return r;
-            foreach (XmlNode docRef in docRefs) {
-                var docRefKey = docRef.Attributes["name"].InnerText;
-                r[docRefKey] = ParseHighlightingFields(docRef.ChildNodes);
+            var docRefs = node.Elements("lst");
+            foreach (var docRef in docRefs) {
+                var docRefKey = docRef.Attribute("name").Value;
+                r[docRefKey] = ParseHighlightingFields(docRef.Elements());
             }
             return r;
         }
@@ -52,13 +52,13 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="nodes"></param>
         /// <returns></returns>
-        public IDictionary<string, ICollection<string>> ParseHighlightingFields(XmlNodeList nodes) {
+        public IDictionary<string, ICollection<string>> ParseHighlightingFields(IEnumerable<XElement> nodes) {
             var fields = new Dictionary<string, ICollection<string>>();
-            foreach (XmlNode field in nodes) {
-                var fieldName = field.Attributes["name"].InnerText;
+            foreach (var field in nodes) {
+                var fieldName = field.Attribute("name").Value;
                 var snippets = new List<string>();
-                foreach (XmlNode str in field.SelectNodes("str")) {
-                    snippets.Add(str.InnerText);
+                foreach (var str in field.Elements("str")) {
+                    snippets.Add(str.Value);
                 }
                 fields[fieldName] = snippets;
             }

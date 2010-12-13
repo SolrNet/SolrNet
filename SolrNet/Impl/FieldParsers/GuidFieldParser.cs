@@ -16,6 +16,7 @@
 
 using System;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.FieldParsers {
     public class GuidFieldParser : ISolrFieldParser {
@@ -27,8 +28,8 @@ namespace SolrNet.Impl.FieldParsers {
             return t == typeof(Guid);
         }
 
-        public object Parse(XmlNode field, Type t) {
-            return new Guid(field.InnerText);
+        public object Parse(XElement field, Type t) {
+            return new Guid(field.Value);
         }
     }
 }

@@ -16,6 +16,7 @@
 
 using System.Collections;
 using System.Xml;
+using System.Xml.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl.FieldParsers;
 
@@ -24,15 +25,11 @@ namespace SolrNet.Tests {
     public class InferringFieldParserTests {
         [Test]
         public void Collection() {
-            var doc = new XmlDocument();
-            var node = doc.CreateElement("arr");
-            var name = doc.CreateAttribute("name");
-            name.InnerText = "features";
-            node.Attributes.Append(name);
-            var e = doc.CreateElement("str");
-            e.InnerText = "hard drive";
-            node.AppendChild(e);
-
+            var doc = new XDocument();
+            var node = new XElement("arr");
+            node.Add(new XAttribute("name", "features"));
+            node.Add(new XElement("str", "hard drive"));
+            doc.Add(node);
             var parser = new InferringFieldParser(new DefaultFieldParser());
             var value = parser.Parse(node, typeof (object));
             Assert.IsInstanceOfType<ArrayList>(value);

@@ -30,7 +30,7 @@ namespace SolrNet.Tests
         public void SolrFieldTypeParsing()
         {
             var schemaParser = new SolrSchemaParser();
-            XmlDocument xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             SolrSchema schemaDoc = schemaParser.Parse(xml);
 
             Assert.AreEqual(2, schemaDoc.SolrFieldTypes.Count);
@@ -42,7 +42,7 @@ namespace SolrNet.Tests
         public void SolrFieldParsing()
         {
             var schemaParser = new SolrSchemaParser();
-            XmlDocument xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             SolrSchema schemaDoc = schemaParser.Parse(xml);
 
             Assert.AreEqual(4, schemaDoc.SolrFields.Count);
@@ -58,7 +58,7 @@ namespace SolrNet.Tests
         public void SolrDynamicFieldParsing()
         {
             var schemaParser = new SolrSchemaParser();
-            XmlDocument xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             SolrSchema schemaDoc = schemaParser.Parse(xml);
 
             Assert.AreEqual(1, schemaDoc.SolrDynamicFields.Count);
@@ -69,7 +69,7 @@ namespace SolrNet.Tests
         public void SolrCopyFieldParsing()
         {
             var schemaParser = new SolrSchemaParser();
-            XmlDocument xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             SolrSchema schemaDoc = schemaParser.Parse(xml);
 
             Assert.AreEqual(1, schemaDoc.SolrCopyFields.Count);
@@ -81,7 +81,7 @@ namespace SolrNet.Tests
         public void UniqueKeyPresent()
         {
             var schemaParser = new SolrSchemaParser();
-            XmlDocument xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             SolrSchema schemaDoc = schemaParser.Parse(xml);
             Assert.AreEqual("id", schemaDoc.UniqueKey);
         }
@@ -90,7 +90,7 @@ namespace SolrNet.Tests
         public void UniqueKeyNotPresent()
         {
             var schemaParser = new SolrSchemaParser();
-            XmlDocument xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaNoUniqueKey.xml");
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaNoUniqueKey.xml");
             SolrSchema schemaDoc = schemaParser.Parse(xml);
             Assert.IsNull(schemaDoc.UniqueKey);
         }
@@ -99,7 +99,7 @@ namespace SolrNet.Tests
         public void UniqueKeyEmpty()
         {
             var schemaParser = new SolrSchemaParser();
-            XmlDocument xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaEmptyUniqueKey.xml");
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaEmptyUniqueKey.xml");
             SolrSchema schemaDoc = schemaParser.Parse(xml);
             Assert.IsNull(schemaDoc.UniqueKey);
         }

@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -24,8 +26,8 @@ namespace SolrNet.Impl.ResponseParsers {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class SpellCheckResponseParser<T> : ISolrResponseParser<T> {
-        public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
-            var spellCheckingNode = xml.SelectSingleNode("response/lst[@name='spellcheck']");
+        public void Parse(XDocument xml, SolrQueryResults<T> results) {
+            var spellCheckingNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             if (spellCheckingNode != null)
                 results.SpellChecking = ParseSpellChecking(spellCheckingNode);
         }
@@ -35,30 +37,26 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public SpellCheckResults ParseSpellChecking(XmlNode node) {
+        public SpellCheckResults ParseSpellChecking(XElement node) {
             var r = new SpellCheckResults();
-            var suggestionsNode = node.SelectSingleNode("lst[@name='suggestions']");
-            var collationNode = suggestionsNode.SelectSingleNode("str[@name='collation']");
+            var suggestionsNode = node.XPathSelectElement("lst[@name='suggestions']");
+            var collationNode = suggestionsNode.XPathSelectElement("str[@name='collation']");
             if (collationNode != null)
-                r.Collation = collationNode.InnerText;
-            var spellChecks = suggestionsNode.SelectNodes("lst");
-            if (spellChecks != null) {
-                foreach (XmlNode c in spellChecks) {
-                    var result = new SpellCheckResult();
-                    result.Query = c.Attributes["name"].InnerText;
-                    result.NumFound = Convert.ToInt32(c.SelectSingleNode("int[@name='numFound']").InnerText);
-                    result.EndOffset = Convert.ToInt32(c.SelectSingleNode("int[@name='endOffset']").InnerText);
-                    result.StartOffset = Convert.ToInt32(c.SelectSingleNode("int[@name='startOffset']").InnerText);
-                    var suggestions = new List<string>();
-                    var suggestionNodes = c.SelectNodes("arr[@name='suggestion']/str");
-                    if (suggestionNodes != null) {
-                        foreach (XmlNode suggestionNode in suggestionNodes) {
-                            suggestions.Add(suggestionNode.InnerText);
-                        }
-                    }
-                    result.Suggestions = suggestions;
-                    r.Add(result);
+                r.Collation = collationNode.Value;
+            var spellChecks = suggestionsNode.Elements("lst");
+            foreach (var c in spellChecks) {
+                var result = new SpellCheckResult();
+                result.Query = c.Attribute("name").Value;
+                result.NumFound = Convert.ToInt32(c.XPathSelectElement("int[@name='numFound']").Value);
+                result.EndOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='endOffset']").Value);
+                result.StartOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='startOffset']").Value);
+                var suggestions = new List<string>();
+                var suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/str");
+                foreach (var suggestionNode in suggestionNodes) {
+                    suggestions.Add(suggestionNode.Value);
                 }
+                result.Suggestions = suggestions;
+                r.Add(result);
             }
             return r;
         }

@@ -15,6 +15,7 @@
 #endregion
 
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -27,6 +28,6 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="xml">query response</param>
         /// <param name="results">results object</param>
-        void Parse(XmlDocument xml, SolrQueryResults<T> results);
+        void Parse(XDocument xml, SolrQueryResults<T> results);
     }
 }

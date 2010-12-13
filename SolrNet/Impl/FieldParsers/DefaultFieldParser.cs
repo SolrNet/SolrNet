@@ -16,6 +16,7 @@
 
 using System;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.FieldParsers {
     /// <summary>
@@ -51,7 +52,7 @@ namespace SolrNet.Impl.FieldParsers {
             return parser.CanHandleType(t);
         }
 
-        public object Parse(XmlNode field, Type t) {
+        public object Parse(XElement field, Type t) {
             return parser.Parse(field, t);
         }
     }

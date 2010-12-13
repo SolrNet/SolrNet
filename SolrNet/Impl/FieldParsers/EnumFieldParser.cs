@@ -16,6 +16,7 @@
 
 using System;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.FieldParsers {
     public class EnumFieldParser : ISolrFieldParser {
@@ -27,8 +28,8 @@ namespace SolrNet.Impl.FieldParsers {
             return t.IsEnum;
         }
 
-        public object Parse(XmlNode field, Type t) {
-            return Enum.Parse(t, field.InnerText);
+        public object Parse(XElement field, Type t) {
+            return Enum.Parse(t, field.Value);
         }
     }
 }

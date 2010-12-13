@@ -15,10 +15,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Reflection;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -40,8 +38,7 @@ namespace SolrNet.Impl {
         /// <returns>query results</returns>
         public ISolrQueryResults<T> Parse(string r) {
             var results = new SolrQueryResults<T>();
-            var xml = new XmlDocument();
-            xml.LoadXml(r);
+            var xml = XDocument.Parse(r);
             foreach (var p in parsers)
                 p.Parse(xml, results);
 

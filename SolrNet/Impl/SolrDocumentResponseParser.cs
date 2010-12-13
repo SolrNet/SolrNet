@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -38,15 +39,13 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="parentNode"></param>
         /// <returns></returns>
-        public IList<T> ParseResults(XmlNode parentNode) {
+        public IList<T> ParseResults(XElement parentNode) {
             var results = new List<T>();
             if (parentNode == null)
                 return results;
             var allFields = mappingManager.GetFields(typeof (T));
-            var nodes = parentNode.SelectNodes("doc");
-            if (nodes == null)
-                return results;
-            foreach (XmlNode docNode in nodes) {
+            var nodes = parentNode.Elements("doc");
+            foreach (var docNode in nodes) {
                 results.Add(ParseDocument(docNode, allFields));
             }
             return results;
@@ -58,10 +57,10 @@ namespace SolrNet.Impl {
         /// <param name="node">response xml node</param>
         /// <param name="fields">document fields</param>
         /// <returns>populated document</returns>
-        public T ParseDocument(XmlNode node, ICollection<SolrFieldModel> fields) {
+        public T ParseDocument(XElement node, ICollection<SolrFieldModel> fields) {
             var doc = activator.Create();
-            foreach (XmlNode field in node.ChildNodes) {
-                string fieldName = field.Attributes["name"].InnerText;
+            foreach (var field in node.Elements()) {
+                string fieldName = field.Attribute("name").Value;
                 propVisitor.Visit(doc, fieldName, field);
             }
             return doc;

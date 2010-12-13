@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Schema;
@@ -89,8 +90,7 @@ namespace SolrNet.Impl {
 
         public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
             var r = Send(cmd);
-            var xml = new XmlDocument();
-            xml.LoadXml(r);
+            var xml = XDocument.Parse(r);
             return headerParser.Parse(xml);
         }
 
@@ -100,8 +100,7 @@ namespace SolrNet.Impl {
 
         public SolrSchema GetSchema() {
             string schemaXml = new GetSchemaCommand().Execute(connection);
-            var schema = new XmlDocument();
-            schema.LoadXml(schemaXml);
+            var schema = XDocument.Parse(schemaXml);
             return schemaParser.Parse(schema);
         }
     }

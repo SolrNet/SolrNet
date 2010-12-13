@@ -17,11 +17,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Impl;
 using SolrNet.Impl.FieldParsers;
-using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -29,7 +29,9 @@ namespace SolrNet.Tests {
         [Test]
         public void FloatFieldParser_Parse() {
             var p = new FloatFieldParser();
-            var v = p.Parse(XmlUtils.CreateNode("int", "31"), null);
+            var xml = new XDocument();
+            xml.Add(new XElement("int", "31"));
+            var v = p.Parse(xml.Root, null);
             Assert.IsInstanceOfType(typeof(float), v);
             Assert.AreEqual(31f, v);
         }
@@ -37,7 +39,9 @@ namespace SolrNet.Tests {
         [Test]
         public void FloatFieldParser_cant_handle_string() {
             var p = new FloatFieldParser();
-            Assert.Throws<FormatException>(() => p.Parse(XmlUtils.CreateNode("str", "pepe"), null));
+            var xml = new XDocument();
+            xml.Add(new XElement("str", "pepe"));
+            Assert.Throws<FormatException>(() => p.Parse(xml.Root, null));
         }
 
         public CollectionFieldParser CreateCollectionFieldParser() {
@@ -80,20 +84,26 @@ namespace SolrNet.Tests {
         [Test]
         public void DoubleFieldParser() {
             var p = new DoubleFieldParser();
-            p.Parse(XmlUtils.CreateNode("item", "123.99"), typeof(float));
+            var xml = new XDocument();
+            xml.Add(new XElement("item", "123.99"));
+            p.Parse(xml.Root, typeof(float));
         }
 
         [Test]
         public void DefaultFieldParser_EnumAsString() {
             var p = new DefaultFieldParser();
-            var r = p.Parse(XmlUtils.CreateNode("str", "One"), typeof(Numbers));
+            var xml = new XDocument();
+            xml.Add(new XElement("str", "One"));
+            var r = p.Parse(xml.Root, typeof(Numbers));
             Assert.IsInstanceOfType(typeof(Numbers), r);
         }
 
         [Test]
         public void EnumAsString() {
             var p = new EnumFieldParser();
-            var r = p.Parse(XmlUtils.CreateNode("str", "One"), typeof(Numbers));
+            var xml = new XDocument();
+            xml.Add(new XElement("str", "One"));
+            var r = p.Parse(xml.Root, typeof(Numbers));
             Assert.IsInstanceOfType(typeof(Numbers), r);
         }
 
@@ -105,7 +115,9 @@ namespace SolrNet.Tests {
         public void SupportGuid() {
             var p = new DefaultFieldParser();
             var g = Guid.NewGuid();
-            var r = p.Parse(XmlUtils.CreateNode("str", g.ToString()), typeof(Guid));
+            var xml = new XDocument();
+            xml.Add(new XElement("str", g.ToString()));
+            var r = p.Parse(xml.Root, typeof(Guid));
             var pg = (Guid)r;
             Assert.AreEqual(g, pg);
         }

@@ -16,6 +16,7 @@
 
 using System;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -28,6 +29,6 @@ namespace SolrNet.Impl {
         /// <param name="doc">Document object</param>
         /// <param name="fieldName">Solr field name</param>
         /// <param name="field">Raw XML Solr field</param>
-        void Visit(object doc, string fieldName, XmlNode field);
+        void Visit(object doc, string fieldName, XElement field);
     }
 }

@@ -16,6 +16,8 @@
 
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -29,8 +31,8 @@ namespace SolrNet.Impl.ResponseParsers {
             this.docParser = docParser;
         }
 
-        public void Parse(XmlDocument xml, SolrQueryResults<T> results) {
-            var moreLikeThis = xml.SelectSingleNode("response/lst[@name='moreLikeThis']");
+        public void Parse(XDocument xml, SolrQueryResults<T> results) {
+            var moreLikeThis = xml.XPathSelectElement("response/lst[@name='moreLikeThis']");
             if (moreLikeThis != null)
                 results.SimilarResults = ParseMoreLikeThis(results, moreLikeThis);
         }
@@ -41,13 +43,11 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <param name="results"></param>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IDictionary<string, IList<T>> ParseMoreLikeThis(IEnumerable<T> results, XmlNode node) {
+        public IDictionary<string, IList<T>> ParseMoreLikeThis(IEnumerable<T> results, XElement node) {
             var r = new Dictionary<string, IList<T>>();
-            var docRefs = node.SelectNodes("result");
-            if (docRefs == null)
-                return r;
-            foreach (XmlNode docRef in docRefs) {
-                var docRefKey = docRef.Attributes["name"].InnerText;
+            var docRefs = node.Elements("result");
+            foreach (var docRef in docRefs) {
+                var docRefKey = docRef.Attribute("name").Value;
                 r[docRefKey] = docParser.ParseResults(docRef);
             }
             return r;

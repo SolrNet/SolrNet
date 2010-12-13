@@ -33,6 +33,7 @@ using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
 using SolrNet.Tests.Utils;
+using Castle.Facilities.SolrNetIntegration;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -380,36 +381,12 @@ namespace SolrNet.Tests {
         }
 
 
-        [Test]
-        [Ignore("Performance test, potentially slow")]
-        public void Performance_MemoizeMapping() {
-            var container = new ProfilingContainer();
-            container.AddComponent<ISolrDocumentResponseParser<TestDocumentWithArrays>, SolrDocumentResponseParser<TestDocumentWithArrays>>();
-            container.AddComponent<ISolrResponseParser<TestDocumentWithArrays>, ResultsResponseParser<TestDocumentWithArrays>>("resultsParser");
-            container.Register(Component.For<IReadOnlyMappingManager>().ImplementedBy<MemoizingMappingManager>()
-                .ServiceOverrides(ServiceOverride.ForKey("mapper").Eq("att")));
-            container.AddComponent<IReadOnlyMappingManager, AttributesMappingManager>("att");
-            container.Register(Component.For<ISolrQueryResultParser<TestDocumentWithArrays>>().ImplementedBy<SolrQueryResultParser<TestDocumentWithArrays>>()
-                .ServiceOverrides(ServiceOverride.ForKey("parsers").Eq(new[] { "resultsParser" })));
-            container.AddComponent<ISolrFieldParser, DefaultFieldParser>();
-            container.AddComponent<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>();
-            ProfileTest(container);
-            
-        }
-
 		[Test]
 		[Ignore("Performance test, potentially slow")]
 		public void Performance() {
 		    var container = new ProfilingContainer();
-            container.AddComponent<ISolrDocumentResponseParser<TestDocumentWithArrays>, SolrDocumentResponseParser<TestDocumentWithArrays>>();
-            container.AddComponent<ISolrResponseParser<TestDocumentWithArrays>, ResultsResponseParser<TestDocumentWithArrays>>("resultsParser");
-            container.AddComponent<IReadOnlyMappingManager, AttributesMappingManager>();
-            container.Register(Component.For<ISolrQueryResultParser<TestDocumentWithArrays>>().ImplementedBy<SolrQueryResultParser<TestDocumentWithArrays>>()
-                .ServiceOverrides(ServiceOverride.ForKey("parsers").Eq(new[] { "resultsParser" })));
-            container.AddComponent<ISolrFieldParser, DefaultFieldParser>();
-            container.AddComponent<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>();
+            container.AddFacility("solr", new SolrNetFacility("http://localhost"));
             ProfileTest(container);
-
 		}
 
 		[Test]

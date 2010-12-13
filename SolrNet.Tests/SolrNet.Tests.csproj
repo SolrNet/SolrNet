@@ -164,6 +164,10 @@
     <Compile Include="TypeHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj">
+      <Project>{0F21F5B6-5986-4301-B0F7-FD9800DB8091}</Project>
+      <Name>Castle.Facilities.SolrNetIntegration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">
       <Project>{AE7D2A46-3F67-4986-B04B-7DCE79A549A5}</Project>
       <Name>HttpWebAdapters</Name>

@@ -117,7 +117,7 @@ namespace SolrNet.Impl {
             if (parameters != null)
                 param.AddRange(parameters);
             param.Add(KVP("version", version));
-            u.Query = "?" + string.Join("", parameters
+            u.Query = "?" + string.Join("", param
                 .Select(kv => KVP(HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
                 .Select(kv => string.Format("{0}&{1}", kv.Key, kv.Value))
                 .ToArray());

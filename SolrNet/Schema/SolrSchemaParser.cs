@@ -17,7 +17,6 @@
 #endregion
 
 using System;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using SolrNet.Exceptions;
@@ -36,12 +35,16 @@ namespace SolrNet.Schema {
         public SolrSchema Parse(XDocument solrSchemaXml) {
             var result = new SolrSchema();
 
-            foreach (var fieldNode in solrSchemaXml.XPathSelectElements("/schema/types/fieldType|/schema/types/fieldtype")) {
+            var schemaElem = solrSchemaXml.Element("schema");
+
+            foreach (var fieldNode in schemaElem.XPathSelectElements("types/fieldType|types/fieldtype")) {
                 var field = new SolrFieldType(fieldNode.Attribute("name").Value, fieldNode.Attribute("class").Value);
                 result.SolrFieldTypes.Add(field);
             }
 
-            foreach (var fieldNode in solrSchemaXml.XPathSelectElements("/schema/fields/field")) {
+            var fieldsElem = schemaElem.Element("fields");
+
+            foreach (var fieldNode in fieldsElem.Elements("field")) {
                 var fieldTypeName = fieldNode.Attribute("type").Value;
                 var fieldType = result.FindSolrFieldTypeByName(fieldTypeName);
                 if (fieldType == null)
@@ -52,17 +55,17 @@ namespace SolrNet.Schema {
                 result.SolrFields.Add(field);
             }
 
-            foreach (var dynamicFieldNode in solrSchemaXml.XPathSelectElements("/schema/fields/dynamicField")) {
+            foreach (var dynamicFieldNode in fieldsElem.Elements("dynamicField")) {
                 var dynamicField = new SolrDynamicField(dynamicFieldNode.Attribute("name").Value);
                 result.SolrDynamicFields.Add(dynamicField);
             }
 
-            foreach (var copyFieldNode in solrSchemaXml.XPathSelectElements("/schema/copyField")) {
+            foreach (var copyFieldNode in schemaElem.Elements("copyField")) {
                 var copyField = new SolrCopyField(copyFieldNode.Attribute("source").Value, copyFieldNode.Attribute("dest").Value);
                 result.SolrCopyFields.Add(copyField);
             }
 
-            var uniqueKeyNode = solrSchemaXml.XPathSelectElement("/schema/uniqueKey");
+            var uniqueKeyNode = schemaElem.Element("uniqueKey");
             if (uniqueKeyNode != null && !string.IsNullOrEmpty(uniqueKeyNode.Value)) {
                 result.UniqueKey = uniqueKeyNode.Value;
             }

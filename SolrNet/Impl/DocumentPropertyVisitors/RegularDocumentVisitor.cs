@@ -14,8 +14,8 @@
 // limitations under the License.
 #endregion
 
+using System.Linq;
 using System.Xml;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.DocumentPropertyVisitors {
     /// <summary>
@@ -37,7 +37,7 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
 
         public void Visit(object doc, string fieldName, XmlNode field) {
             var allFields = mapper.GetFields(doc.GetType());
-            var thisField = Func.FirstOrDefault(allFields, p => p.FieldName == fieldName);
+            var thisField = allFields.FirstOrDefault(p => p.FieldName == fieldName);
             if (thisField == null)
                 return;
             if (!thisField.Property.CanWrite)

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NHibernate.Cfg;
 using NHibernate.Event;
-using SolrNet.Utils;
 
 namespace NHibernate.SolrNet.Impl {
     public class NHHelper {
@@ -91,7 +91,7 @@ namespace NHibernate.SolrNet.Impl {
                 throw new ArgumentNullException("listener");
             foreach (var intf in listener.GetType().GetInterfaces()) {
                 var intf1 = intf;
-                var listenerInfo = Func.Filter(ListenerInfo, i => i.Intf == intf1);
+                var listenerInfo = ListenerInfo.Where(i => i.Intf == intf1);
                 foreach (var i in listenerInfo) {
                     var currentListeners = i.ListenerCollection(config.EventListeners);
                     config.SetListeners(i.ListenerType, AppendToArray(currentListeners, listener));

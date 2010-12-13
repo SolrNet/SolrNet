@@ -15,10 +15,10 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
-using SolrNet.Utils;
 
 namespace SolrNet.DSL.Impl {
     public class DSLRun<T> : IDSLRun<T> {
@@ -120,7 +120,7 @@ namespace SolrNet.DSL.Impl {
             if (highlight != null)
                 l.Add("highlight=" + highlight);
             if (facets != null)
-                l.Add("facets=" + string.Join("\n", Func.ToArray(Func.Select(facets, f => f.ToString()))));
+                l.Add("facets=" + string.Join("\n", facets.Select(f => f.ToString()).ToArray()));
 
             return string.Join("\n", l.ToArray());
         }

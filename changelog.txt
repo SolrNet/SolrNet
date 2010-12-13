@@ -1,3 +1,4 @@
+- Upgraded to .NET 3.5
 - Minor breaking change: removed SolrConnection constructor with IHttpWebRequestFactory parameter. Made IHttpWebRequestFactory a property.
 - Added support for multi core using ServiceLocator
 - Added Autofac integration module

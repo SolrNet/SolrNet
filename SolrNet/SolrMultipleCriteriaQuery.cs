@@ -15,8 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Text;
-using SolrNet.Utils;
+using System.Linq;
 
 namespace SolrNet {
     /// <summary>
@@ -70,8 +69,8 @@ namespace SolrNet {
         /// <typeparam name="T"></typeparam>
         /// <param name="queries"></param>
         /// <returns></returns>
-        public static SolrMultipleCriteriaQuery Create<T>(IEnumerable<T> queries) where T: ISolrQuery {            
-            return new SolrMultipleCriteriaQuery(Func.Cast<ISolrQuery>(queries));
+        public static SolrMultipleCriteriaQuery Create<T>(IEnumerable<T> queries) where T: ISolrQuery {
+            return new SolrMultipleCriteriaQuery(queries.Cast<ISolrQuery>());
         }
 	}
 }

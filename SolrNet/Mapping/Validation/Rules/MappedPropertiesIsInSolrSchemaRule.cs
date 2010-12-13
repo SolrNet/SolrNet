@@ -18,9 +18,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using SolrNet.Schema;
-using SolrNet.Utils;
 
 namespace SolrNet.Mapping.Validation.Rules {
     /// <summary>
@@ -50,7 +50,7 @@ namespace SolrNet.Mapping.Validation.Rules {
         public IEnumerable<ValidationResult> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             foreach (var mappedField in mappingManager.GetFields(documentType)) {
                 var field = mappedField;
-                if (IgnoredFieldNames != null && Func.Any(IgnoredFieldNames, f => f == field.FieldName))
+                if (IgnoredFieldNames != null && IgnoredFieldNames.Any(f => f == field.FieldName))
                     continue;
                 if (field.FieldName.Contains("*")) // ignore multi-mapped fields (wildcards or dictionary mappings)
                     continue;

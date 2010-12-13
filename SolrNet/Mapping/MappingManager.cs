@@ -16,9 +16,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using SolrNet.Exceptions;
-using SolrNet.Utils;
 
 namespace SolrNet.Mapping {
     /// <summary>
@@ -104,7 +103,7 @@ namespace SolrNet.Mapping {
         }
 
         public ICollection<Type> GetRegisteredTypes() {
-            return new List<Type>(Func.Distinct(Func.Select(mappings, k => k.Key)));
+            return mappings.Select(k => k.Key).Distinct().ToList();
         }
     }
 }

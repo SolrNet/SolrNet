@@ -17,6 +17,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.QuerySerializers {
@@ -28,7 +29,7 @@ namespace SolrNet.Impl.QuerySerializers {
         }
 
         public string SerializeSingle(object o) {
-            return Func.First(fieldSerializer.Serialize(o)).FieldValue;
+            return fieldSerializer.Serialize(o).First().FieldValue;
         }
 
         public override string Serialize(SolrQueryByRange<DateTime> q) {

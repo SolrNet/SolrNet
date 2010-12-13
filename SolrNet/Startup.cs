@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
@@ -64,7 +65,7 @@ namespace SolrNet {
                 c => new RequiredFieldsAreMappedRule(), 
                 c => new UniqueKeyMatchesMappingRule()
             });
-            Container.Register<IMappingValidator>(c => new MappingValidator(c.GetInstance<IReadOnlyMappingManager>(), Func.ToArray(c.GetAllInstances<IValidationRule>())));
+            Container.Register<IMappingValidator>(c => new MappingValidator(c.GetInstance<IReadOnlyMappingManager>(), c.GetAllInstances<IValidationRule>().ToArray()));
         }
 
         /// <summary>
@@ -122,7 +123,7 @@ namespace SolrNet {
                         c => new StatsResponseParser<T>(),
                         c => new CollapseResponseParser<T>()
                     });
-                    Container.Register<ISolrQueryResultParser<T>>(c => new SolrQueryResultParser<T>(Func.ToArray(Container.GetAllInstances<ISolrResponseParser<T>>())));
+                    Container.Register<ISolrQueryResultParser<T>>(c => new SolrQueryResultParser<T>(Container.GetAllInstances<ISolrResponseParser<T>>().ToArray()));
 
                     types.Add(typeof(T).FullName, true);
                 }

@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using SolrNet.Utils;
 
@@ -35,19 +36,18 @@ namespace SolrNet.Impl.FieldParsers {
         }
 
         public bool CanHandleSolrType(string solrType) {
-            return Func.Any(parsers, p => p.CanHandleSolrType(solrType));
+            return parsers.Any(p => p.CanHandleSolrType(solrType));
         }
 
         public bool CanHandleType(Type t) {
-            return Func.Any(parsers, p => p.CanHandleType(t));
+            return parsers.Any(p => p.CanHandleType(t));
         }
 
         public object Parse(XmlNode field, Type t) {
-            foreach (var p in parsers) {
-                if (p.CanHandleType(t) && p.CanHandleSolrType(field.Name))
-                    return p.Parse(field, t);
-            }
-            return null;
+            return parsers
+                .Where(p => p.CanHandleType(t) && p.CanHandleSolrType(field.Name))
+                .Select(p => p.Parse(field, t))
+                .FirstOrDefault();
         }
     }
 }

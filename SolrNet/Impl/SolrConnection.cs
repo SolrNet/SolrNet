@@ -18,13 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
 using HttpWebAdapters;
 using HttpWebAdapters.Adapters;
 using SolrNet.Exceptions;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -117,11 +117,10 @@ namespace SolrNet.Impl {
             if (parameters != null)
                 param.AddRange(parameters);
             param.Add(KVP("version", version));
-            // TODO clean up, too messy
-            u.Query = Func.Reduce(
-                Func.Select(parameters, input => string.Format("{0}={1}", HttpUtility.UrlEncode(input.Key),
-                                                            HttpUtility.UrlEncode(input.Value))), "?",
-                (x, y) => string.Format("{0}&{1}", x, y));
+            u.Query = "?" + string.Join("", parameters
+                .Select(kv => KVP(HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
+                .Select(kv => string.Format("{0}&{1}", kv.Key, kv.Value))
+                .ToArray());
             var request = HttpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.GET;
             request.KeepAlive = true;

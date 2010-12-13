@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 
 namespace SolrNet.Utils {
@@ -64,7 +65,7 @@ namespace SolrNet.Utils {
         /// <param name="factories">Component factory method collection.</param>
         public void RegisterAll<T>(IEnumerable<Converter<IContainer, T>> factories) {
             var componentKey = RegisterComponentKey(null, typeof(T));
-            componentCollections.Add(componentKey, Func.Cast<Converter<IContainer, object>>(factories));
+            componentCollections.Add(componentKey, factories.Cast<Converter<IContainer, object>>());
         }
 
         /// <summary>

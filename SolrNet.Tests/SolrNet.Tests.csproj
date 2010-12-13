@@ -106,7 +106,6 @@
     <Compile Include="ExceptionTests.cs" />
     <Compile Include="FieldParserTests.cs" />
     <Compile Include="FilterQueryTests.cs" />
-    <Compile Include="FuncTests.cs" />
     <Compile Include="HttpTests.cs" />
     <Compile Include="Integration.Sample\Product.cs" />
     <Compile Include="Integration.Sample\ProductLoose.cs" />

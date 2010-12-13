@@ -16,10 +16,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using SolrNet.Exceptions;
-using SolrNet.Impl;
-using SolrNet.Utils;
 
 namespace SolrNet {
     /// <summary>
@@ -37,7 +36,7 @@ namespace SolrNet {
                 return string.Empty;
             var sb = new StringBuilder();
             sb.Append("{!");
-            sb.Append(string.Join(" ", Func.ToArray(Func.Select(this, kv => string.Format("{0}={1}", kv.Key, Quote(kv.Value))))));
+            sb.Append(string.Join(" ", this.Select(kv => string.Format("{0}={1}", kv.Key, Quote(kv.Value))).ToArray()));
             sb.Append("}");
             return sb.ToString();
         }

@@ -15,8 +15,8 @@
 #endregion
 
 using System;
+using System.Linq;
 using SolrNet.Exceptions;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.QuerySerializers {
     public class AggregateQuerySerializer : ISolrQuerySerializer {
@@ -27,7 +27,7 @@ namespace SolrNet.Impl.QuerySerializers {
         }
 
         public bool CanHandleType(Type t) {
-            return Func.Any(serializers, s => s.CanHandleType(t));
+            return serializers.Any(s => s.CanHandleType(t));
         }
 
         public string Serialize(object q) {

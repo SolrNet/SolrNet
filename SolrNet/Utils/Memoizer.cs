@@ -69,7 +69,7 @@ namespace SolrNet.Utils {
             }
         }
 
-        public static Func.Func2<TArg1, TArg2, TResult> Memoize2<TArg1, TArg2, TResult>(Func.Func2<TArg1, TArg2, TResult> function) {
+        public static Func<TArg1, TArg2, TResult> Memoize2<TArg1, TArg2, TResult>(Func<TArg1, TArg2, TResult> function) {
             var results = new Dictionary<Tuple2<TArg1, TArg2>, TResult>();
 
             return (k1, k2) => {

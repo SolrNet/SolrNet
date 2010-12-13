@@ -14,10 +14,11 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using SolrNet.Commands.Parameters;
-using SolrNet.Utils;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -62,7 +63,7 @@ namespace SolrNet.Commands {
 					deleteNode.Attributes.Append(att);
 				}
 			}
-			deleteNode.InnerXml = Func.Join(Func.Select(deleteParam.ToXmlNode(), n => n.OuterXml));
+			deleteNode.InnerXml = string.Join("", deleteParam.ToXmlNode().Select(n => n.OuterXml).ToArray());
 			return connection.Post("/update", deleteNode.OuterXml);
 		}
 	}

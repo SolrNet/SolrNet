@@ -17,7 +17,7 @@
 #endregion
 
 using System;
-using SolrNet.Utils;
+using System.Linq;
 
 namespace SolrNet.Impl.QuerySerializers {
     public class QueryInListSerializer : SingleTypeQuerySerializer<SolrQueryInList> {
@@ -28,9 +28,9 @@ namespace SolrNet.Impl.QuerySerializers {
         }
 
         public override string Serialize(SolrQueryInList q) {
-            if (string.IsNullOrEmpty(q.FieldName) || q.List == null || Func.IsEmpty(q.List))
+            if (string.IsNullOrEmpty(q.FieldName) || q.List == null || !q.List.Any())
                 return null;
-            return "(" + Func.Join(" OR ", Func.Select(q.List, l => serializer.Serialize(new SolrQueryByField(q.FieldName, l)))) + ")";
+            return "(" + string.Join(" OR ", q.List.Select(l => serializer.Serialize(new SolrQueryByField(q.FieldName, l))).ToArray()) + ")";
         }
     }
 }

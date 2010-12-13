@@ -16,9 +16,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using SolrNet.Exceptions;
-using SolrNet.Utils;
 
 namespace SolrNet.Mapping
 {
@@ -33,7 +32,7 @@ namespace SolrNet.Mapping
         public ICollection<SolrFieldModel> GetFields(Type type)
         {
             var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            var fldProps = Func.Select(props, prop => new SolrFieldModel { Property = prop, FieldName = prop.Name });
+            var fldProps = props.Select(prop => new SolrFieldModel { Property = prop, FieldName = prop.Name });
             return new List<SolrFieldModel>(fldProps);
         }
 

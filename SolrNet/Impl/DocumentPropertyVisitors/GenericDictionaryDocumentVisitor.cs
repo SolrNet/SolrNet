@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reflection;
+using System.Linq;
 using System.Xml;
 using SolrNet.Utils;
 
@@ -29,7 +29,7 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
         private readonly IReadOnlyMappingManager mapper;
         private readonly ISolrFieldParser parser;
         private readonly Converter<Type, bool> memoCanHandleType;
-        private readonly Func.Func2<Type, string, SolrFieldModel> memoGetThisField;
+        private readonly Func<Type, string, SolrFieldModel> memoGetThisField;
 
         /// <summary>
         /// Document visitor that handles generic dictionary properties
@@ -79,9 +79,9 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
 
         public SolrFieldModel GetThisField(Type t, string fieldName) {
             var allFields = mapper.GetFields(t);
-            var fieldsICanHandle = Func.Filter(allFields, f => memoCanHandleType(f.Property.PropertyType));
-            var matchingFields = Func.Filter(fieldsICanHandle, f => f.FieldName == "*" || fieldName.StartsWith(f.FieldName));
-            return Func.FirstOrDefault(matchingFields, f => !Func.Any(allFields, x => x.FieldName == fieldName && !Equals(x, f)));
+            var fieldsICanHandle = allFields.Where(f => memoCanHandleType(f.Property.PropertyType));
+            var matchingFields = fieldsICanHandle.Where(f => f.FieldName == "*" || fieldName.StartsWith(f.FieldName));
+            return matchingFields.FirstOrDefault(f => !allFields.Any(x => x.FieldName == fieldName && !Equals(x, f)));
         }
 
         public string GetKeyToUse(string k, string fieldName) {

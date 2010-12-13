@@ -17,9 +17,9 @@
 #endregion
 
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using SolrNet.Schema;
-using SolrNet.Utils;
 
 namespace SolrNet.Mapping.Validation.Rules {
     /// <summary>
@@ -27,9 +27,9 @@ namespace SolrNet.Mapping.Validation.Rules {
     /// </summary>
     public class DecimalSolrFieldTypeChecker : ISolrFieldTypeChecker {
         public ValidationResult Validate(SolrFieldType solrFieldType, string propertyName, Type propertyType) {
-            if (Func.Any(new[] { "solr.TextField", "solr.StrField" }, st => st == solrFieldType.Type))
+            if (new[] { "solr.TextField", "solr.StrField" }.Any(st => st == solrFieldType.Type))
                 return new ValidationWarning(String.Format("Property '{0}' of type '{1}' is mapped to a solr field of type '{2}'. These types are not fully compatible. You won't be able to use this field for range queries.", propertyName, propertyType.FullName, solrFieldType.Name));
-            if (Func.Any(new[] {"FloatField", "DoubleField"}, st => Regex.IsMatch(solrFieldType.Type, st)))
+            if (new[] {"FloatField", "DoubleField"}.Any(st => Regex.IsMatch(solrFieldType.Type, st)))
                 return new ValidationWarning(String.Format("Property '{0}' of type '{1}' is mapped to a solr field of type '{2}'. These types are not fully compatible. You might lose precision.", propertyName, propertyType.FullName, solrFieldType.Name));
             return new ValidationError(String.Format("Property '{0}' of type '{1}' cannot be stored in solr field type '{2}'.", propertyName, propertyType.FullName, solrFieldType.Name));
         }

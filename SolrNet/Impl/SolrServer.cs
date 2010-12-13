@@ -16,13 +16,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
-using SolrNet.Commands;
+using System.Linq;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 using SolrNet.Mapping.Validation;
 using SolrNet.Schema;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -125,7 +123,7 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader Add(IEnumerable<T> docs) {
-            return basicServer.AddWithBoost(Func.Select(docs, d => new KeyValuePair<T, double?>(d, null)));
+            return basicServer.AddWithBoost(docs.Select(d => new KeyValuePair<T, double?>(d, null)));
         }
 
         ResponseHeader ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
@@ -142,7 +140,7 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader Delete(IEnumerable<T> docs) {
-            return basicServer.Delete(Func.Select(docs, d => {
+            return basicServer.Delete(docs.Select(d => {
                 var uniqueKey = mappingManager.GetUniqueKey(typeof (T));
                 if (uniqueKey == null)
                     throw new SolrNetException(string.Format("This operation requires a unique key, but type '{0}' has no declared unique key", typeof(T)));

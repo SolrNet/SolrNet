@@ -16,8 +16,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SolrNet.Exceptions;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.FacetQuerySerializers {
     public class AggregateFacetQuerySerializer : ISolrFacetQuerySerializer {
@@ -28,7 +28,7 @@ namespace SolrNet.Impl.FacetQuerySerializers {
         }
 
         public bool CanHandleType(Type t) {
-            return Func.Any(serializers, s => s.CanHandleType(t));
+            return serializers.Any(s => s.CanHandleType(t));
         }
 
         public IEnumerable<KeyValuePair<string, string>> Serialize(object q) {

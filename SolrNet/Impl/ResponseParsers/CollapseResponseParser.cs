@@ -18,8 +18,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -31,7 +31,7 @@ namespace SolrNet.Impl.ResponseParsers {
             var mainCollapseNode = xml.SelectSingleNode("response/lst[@name='collapse_counts']");
             if (mainCollapseNode != null) {
                 results.Collapsing = new CollapseResults {
-                    CollapsedDocuments = Func.ToArray(ParseCollapsedResults(mainCollapseNode)),
+                    CollapsedDocuments = ParseCollapsedResults(mainCollapseNode).ToArray(),
                     Field = mainCollapseNode.SelectSingleNode("str[@name='field']").InnerText
                 };
             }

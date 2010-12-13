@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
 using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Attributes;
@@ -29,7 +29,6 @@ using SolrNet.Impl.QuerySerializers;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Tests.Utils;
-using SolrNet.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -586,7 +585,7 @@ namespace SolrNet.Tests {
                 var solr = new SolrServer<TestDocumentWithUniqueKey>(basicSolr, mapper, validationManager);
                 var r = solr.FacetFieldQuery(new SolrFacetFieldQuery("cat"));
                 Assert.AreEqual(2, r.Count);
-                Assert.AreEqual("electronics", Func.First(r).Key);
+                Assert.AreEqual("electronics", r.First().Key);
             });
         }
 

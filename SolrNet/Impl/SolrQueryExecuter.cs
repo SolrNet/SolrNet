@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using SolrNet.Commands.Parameters;
 using SolrNet.Utils;
 
@@ -65,10 +66,10 @@ namespace SolrNet.Impl {
                 var rows = Options.Rows.HasValue ? Options.Rows.Value : DefaultRows;
                 yield return KVP("rows", rows.ToString());
                 if (Options.OrderBy != null && Options.OrderBy.Count > 0)
-                    yield return KVP("sort", Func.Join(",", Options.OrderBy));
+                    yield return KVP("sort", string.Join(",", Options.OrderBy.Select(x => x.ToString()).ToArray()));
 
                 if (Options.Fields != null && Options.Fields.Count > 0)
-                    yield return KVP("fl", Func.Join(",", Options.Fields));
+                    yield return KVP("fl", string.Join(",", Options.Fields.ToArray()));
 
                 foreach (var p in GetHighlightingParameters(Options))
                     yield return p;
@@ -141,7 +142,7 @@ namespace SolrNet.Impl {
             var mlt = options.MoreLikeThis;
             yield return KVP("mlt", "true");
             if (mlt.Fields != null)
-                yield return KVP("mlt.fl", Func.Join(",", mlt.Fields));
+                yield return KVP("mlt.fl", string.Join(",", mlt.Fields.ToArray()));
             if (mlt.Boost.HasValue)
                 yield return KVP("mlt.boost", mlt.Boost.ToString().ToLowerInvariant());
             if (mlt.Count.HasValue)
@@ -159,7 +160,7 @@ namespace SolrNet.Impl {
             if (mlt.MinWordLength.HasValue)
                 yield return KVP("mlt.minwl", mlt.MinWordLength.ToString());
             if (mlt.QueryFields != null && mlt.QueryFields.Count > 0)
-                yield return KVP("mlt.qf", Func.Join(",", mlt.QueryFields));
+                yield return KVP("mlt.qf", string.Join(",", mlt.QueryFields.ToArray()));
         }
 
         /// <summary>
@@ -186,7 +187,7 @@ namespace SolrNet.Impl {
                 var h = Options.Highlight;
                 param["hl"] = "true";
                 if (h.Fields != null) {
-                    param["hl.fl"] = Func.Join(",", h.Fields);
+                    param["hl.fl"] = string.Join(",", h.Fields.ToArray());
 
                     if (h.Snippets.HasValue)
                         param["hl.snippets"] = h.Snippets.Value.ToString();

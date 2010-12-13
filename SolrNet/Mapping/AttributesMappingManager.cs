@@ -16,10 +16,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using SolrNet.Attributes;
-using SolrNet.Exceptions;
-using SolrNet.Utils;
 
 namespace SolrNet.Mapping {
     /// <summary>
@@ -28,15 +27,15 @@ namespace SolrNet.Mapping {
     public class AttributesMappingManager : IReadOnlyMappingManager {
         public virtual IEnumerable<KeyValuePair<PropertyInfo, T[]>> GetPropertiesWithAttribute<T>(Type type) where T : Attribute {
             var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            var kvAttrs = Func.Select(props, prop => new KeyValuePair<PropertyInfo, T[]>(prop, GetCustomAttributes<T>(prop)));
-            var propsAttrs = Func.Filter(kvAttrs, kv => kv.Value.Length > 0);
+            var kvAttrs = props.Select(prop => new KeyValuePair<PropertyInfo, T[]>(prop, GetCustomAttributes<T>(prop)));
+            var propsAttrs = kvAttrs.Where(kv => kv.Value.Length > 0);
             return propsAttrs;
         }
 
         public ICollection<SolrFieldModel> GetFields(Type type) {
             var propsAttrs = GetPropertiesWithAttribute<SolrFieldAttribute>(type);
 
-            var fields = Func.Select(propsAttrs, kv => new SolrFieldModel {
+            var fields = propsAttrs.Select(kv => new SolrFieldModel {
                 Property = kv.Key, 
                 FieldName = kv.Value[0].FieldName ?? kv.Key.Name, 
                 Boost = kv.Value[0].Boost
@@ -50,12 +49,12 @@ namespace SolrNet.Mapping {
 
         public SolrFieldModel GetUniqueKey(Type type) {
             var propsAttrs = GetPropertiesWithAttribute<SolrUniqueKeyAttribute>(type);
-            var fields = Func.Select(propsAttrs,
+            var fields = propsAttrs.Select(
                                      kv => new SolrFieldModel {
                                          Property = kv.Key, 
                                          FieldName = kv.Value[0].FieldName ?? kv.Key.Name
                                      });
-            return Func.FirstOrDefault(fields);
+            return fields.FirstOrDefault();
         }
 
         public ICollection<Type> GetRegisteredTypes() {

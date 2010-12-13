@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FacetQuerySerializers {
@@ -32,7 +33,7 @@ namespace SolrNet.Impl.FacetQuerySerializers {
         }
 
         public string SerializeSingle(object o) {
-            return Func.First(fieldSerializer.Serialize(o)).FieldValue;
+            return fieldSerializer.Serialize(o).First().FieldValue;
         }
 
         public override IEnumerable<KeyValuePair<string, string>> Serialize(SolrFacetDateQuery q) {

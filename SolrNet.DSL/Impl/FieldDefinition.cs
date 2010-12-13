@@ -15,7 +15,7 @@
 #endregion
 
 using System;
-using SolrNet.Utils;
+using System.Linq;
 
 namespace SolrNet.DSL.Impl {
     public class FieldDefinition {
@@ -30,7 +30,7 @@ namespace SolrNet.DSL.Impl {
         }
 
         public SolrQueryInList In<T>(params T[] values) {
-            return new SolrQueryInList(fieldName, Func.Select(values, v => Convert.ToString(v)));
+            return new SolrQueryInList(fieldName, values.Select(v => Convert.ToString(v)));
         }
 
         public SolrQueryByField Is<T>(T value) {

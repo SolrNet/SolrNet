@@ -17,6 +17,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using SolrNet.Utils;
 
 namespace SolrNet.Schema {
@@ -79,7 +80,7 @@ namespace SolrNet.Schema {
         }
 
         public SolrFieldType FindSolrFieldTypeByName(string name) {
-            return Func.FirstOrDefault(SolrFieldTypes, t => t.Name == name);
+            return SolrFieldTypes.FirstOrDefault(t => t.Name == name);
         }
     }
 }

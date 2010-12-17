@@ -260,6 +260,12 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void RemoveAllByType_with_no_registered_service() {
+            var container = new Container();
+            container.RemoveAll<IService>();
+        }
+
+        [Test]
         [ExpectedException(typeof(ActivationException))]
         public void RemoveByType() {
             var container = new Container();

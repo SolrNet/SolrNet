@@ -107,12 +107,13 @@ namespace SolrNet.Utils {
             var typeKey = BuildTypeKey(typeof(T));
             var deregisterList = new List<string>();
 
-            foreach (var key in typeRegistry[typeKey]) {
-                var componentKey = BuildComponentKey(key, typeof(T));
-                componentCollections.Remove(componentKey);
-                components.Remove(componentKey);
-                deregisterList.Add(key);
-            }
+            if (typeRegistry.ContainsKey(typeKey))
+                foreach (var key in typeRegistry[typeKey]) {
+                    var componentKey = BuildComponentKey(key, typeof(T));
+                    componentCollections.Remove(componentKey);
+                    components.Remove(componentKey);
+                    deregisterList.Add(key);
+                }
             deregisterList.ForEach(key => DeregisterComponentKey(key, typeof(T)));
         }
 

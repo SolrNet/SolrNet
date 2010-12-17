@@ -65,7 +65,7 @@ namespace SolrNet.Utils {
         /// <param name="factories">Component factory method collection.</param>
         public void RegisterAll<T>(IEnumerable<Converter<IContainer, T>> factories) {
             var componentKey = RegisterComponentKey(null, typeof(T));
-            componentCollections.Add(componentKey, factories.Cast<Converter<IContainer, object>>());
+            componentCollections.Add(componentKey, factories.Select<Converter<IContainer, T>, Converter<IContainer, object>>(d => c => d(c)));
         }
 
         /// <summary>

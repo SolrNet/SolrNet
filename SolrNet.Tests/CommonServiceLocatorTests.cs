@@ -337,18 +337,17 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void ReplaceAllInstances()
-        {
+        public void ReplaceAllInstances() {
             var container = new Container();
             var inst = new ServiceImpl();
             var inst2 = new ServiceImpl();
             var inst3 = new ServiceImpl();
             var inst4 = new ServiceImpl();
-            container.RegisterAll<IService>(new List<Converter<IContainer, IService>> {
+            container.RegisterAll(new List<Converter<IContainer, IService>> {
                 c => inst, 
                 c => inst2
             });
-            container.ReplaceAll<IService>(new List<Converter<IContainer, IService>> {
+            container.ReplaceAll(new List<Converter<IContainer, IService>> {
                 c => inst3, 
                 c => inst4
             });

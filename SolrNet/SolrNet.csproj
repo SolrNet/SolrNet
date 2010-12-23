@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
     <Compile Include="CollapsedDocument.cs" />
+    <Compile Include="Commands\GetDHIStatusCommand.cs" />
     <Compile Include="Commands\GetSchemaCommand.cs" />
     <Compile Include="Commands\Parameters\CollapseParameters.cs" />
     <Compile Include="Commands\Parameters\DeleteByIdAndOrQueryParam.cs" />
@@ -78,6 +79,9 @@
     <Compile Include="CollapseResults.cs" />
     <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
+    <Compile Include="DIH\ISolrDHIStatusParser.cs" />
+    <Compile Include="DIH\SolrDHIStatus.cs" />
+    <Compile Include="DIH\SolrDHIStatusParser.cs" />
     <Compile Include="Exceptions\TypeNotSupportedException.cs" />
     <Compile Include="FacetDateOther.cs" />
     <Compile Include="Impl\DocumentPropertyVisitors\AggregateDocumentVisitor.cs" />

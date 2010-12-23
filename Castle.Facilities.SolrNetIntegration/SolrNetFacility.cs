@@ -20,6 +20,7 @@ using Castle.Core.Configuration;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.Registration;
 using SolrNet;
+using SolrNet.DHI;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -124,6 +125,7 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For<ISolrDocumentPropertyVisitor>().ImplementedBy<DefaultDocumentVisitor>());
 
             Kernel.Register(Component.For<ISolrSchemaParser>().ImplementedBy<SolrSchemaParser>());
+            Kernel.Register(Component.For<ISolrDHIStatusParser>().ImplementedBy<SolrDHIStatusParser>());
             Kernel.Register(Component.For<IMappingValidator>().ImplementedBy<MappingValidator>());
 
             AddCoresFromConfig();

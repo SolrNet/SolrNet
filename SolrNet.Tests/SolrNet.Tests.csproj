@@ -78,6 +78,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Rhino.Mocks">
       <HintPath>..\lib\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -123,6 +124,7 @@
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="OptimizeCommandTests.cs" />
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
+    <Compile Include="SolrDHIStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
     <Compile Include="SolrQuerySerializerStub.cs" />

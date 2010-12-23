@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Xml;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
+using SolrNet.DHI;
 using SolrNet.Schema;
 
 namespace SolrNet.Impl {
@@ -33,14 +34,17 @@ namespace SolrNet.Impl {
         private readonly ISolrSchemaParser schemaParser;
         private readonly ISolrHeaderResponseParser headerParser;
         private readonly ISolrQuerySerializer querySerializer;
+        private readonly ISolrDHIStatusParser dhiStatusParser;
 
-        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer) {
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDHIStatusParser dhiStatusParser)
+        {
             this.connection = connection;
             this.queryExecuter = queryExecuter;
             this.documentSerializer = documentSerializer;
             this.schemaParser = schemaParser;
             this.headerParser = headerParser;
             this.querySerializer = querySerializer;
+            this.dhiStatusParser = dhiStatusParser;
         }
 
         public ResponseHeader Commit(CommitOptions options) {
@@ -103,6 +107,14 @@ namespace SolrNet.Impl {
             var schema = new XmlDocument();
             schema.LoadXml(schemaXml);
             return schemaParser.Parse(schema);
+        }
+
+        public SolrDHIStatus GetDHIStatus(KeyValuePair<string, string> options)
+        {
+            string dhiXml = new GetDHIStatusCommand(options).Execute(connection);
+            var dhistatus = new XmlDocument();
+            dhistatus.LoadXml(dhiXml);
+            return dhiStatusParser.Parse(dhistatus);
         }
     }
 }

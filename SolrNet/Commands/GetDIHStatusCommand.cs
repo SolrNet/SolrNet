@@ -8,15 +8,15 @@ namespace SolrNet.Commands
     /// <summary>
     /// Gets the raw Solr schema
     /// </summary>
-    public class GetDHIStatusCommand : ISolrCommand
+    public class GetDIHStatusCommand : ISolrCommand
     {
         private KeyValuePair<string, string> options;
 
         /// <summary>
-        /// Get DHI Status Command
+        /// Get DIH Status Command
         /// </summary>
         /// <param name="options"></param>
-        public GetDHIStatusCommand(KeyValuePair<string, string> options)
+        public GetDIHStatusCommand(KeyValuePair<string, string> options)
         {
             this.options = options;
         }

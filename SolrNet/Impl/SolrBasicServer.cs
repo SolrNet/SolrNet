@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Xml;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
-using SolrNet.DHI;
+using SolrNet.DIH;
 using SolrNet.Schema;
 
 namespace SolrNet.Impl {
@@ -34,9 +34,9 @@ namespace SolrNet.Impl {
         private readonly ISolrSchemaParser schemaParser;
         private readonly ISolrHeaderResponseParser headerParser;
         private readonly ISolrQuerySerializer querySerializer;
-        private readonly ISolrDHIStatusParser dhiStatusParser;
+        private readonly ISolrDIHStatusParser dihStatusParser;
 
-        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDHIStatusParser dhiStatusParser)
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDIHStatusParser dihStatusParser)
         {
             this.connection = connection;
             this.queryExecuter = queryExecuter;
@@ -44,7 +44,7 @@ namespace SolrNet.Impl {
             this.schemaParser = schemaParser;
             this.headerParser = headerParser;
             this.querySerializer = querySerializer;
-            this.dhiStatusParser = dhiStatusParser;
+            this.dihStatusParser = dihStatusParser;
         }
 
         public ResponseHeader Commit(CommitOptions options) {
@@ -109,12 +109,12 @@ namespace SolrNet.Impl {
             return schemaParser.Parse(schema);
         }
 
-        public SolrDHIStatus GetDHIStatus(KeyValuePair<string, string> options)
+        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options)
         {
-            string dhiXml = new GetDHIStatusCommand(options).Execute(connection);
-            var dhistatus = new XmlDocument();
-            dhistatus.LoadXml(dhiXml);
-            return dhiStatusParser.Parse(dhistatus);
+            string dihXml = new GetDIHStatusCommand(options).Execute(connection);
+            var dihstatus = new XmlDocument();
+            dihstatus.LoadXml(dihXml);
+            return dihStatusParser.Parse(dihstatus);
         }
     }
 }

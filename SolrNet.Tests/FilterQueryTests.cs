@@ -33,7 +33,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var queryExec = mocks.StrictMock<ISolrQueryExecuter<Document>>();
             var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<Document>>();
-            ISolrBasicReadOnlyOperations<Document> solr = new SolrBasicServer<Document>(conn, queryExec, docSerializer, null, null, null);
+            ISolrBasicReadOnlyOperations<Document> solr = new SolrBasicServer<Document>(conn, queryExec, docSerializer, null, null, null, null);
             solr.Query(SolrQuery.All, new QueryOptions {
                 FilterQueries = new[] {new SolrQuery("id:0")},
             });

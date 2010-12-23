@@ -5,26 +5,26 @@ using System.Xml;
 using SolrNet.Exceptions;
 using SolrNet.Schema;
 
-namespace SolrNet.DHI
+namespace SolrNet.DIH
 {
     /// <summary>
-    /// Parses a Solr DHI Status xml document into a strongly typed
-    /// <see cref="SolrDHIStatus"/> object.
+    /// Parses a Solr DIH Status xml document into a strongly typed
+    /// <see cref="SolrDIHStatus"/> object.
     /// </summary>
-    public class SolrDHIStatusParser : ISolrDHIStatusParser
+    public class SolrDIHStatusParser : ISolrDIHStatusParser
     {
         /// <summary>
-        /// Parses the specified Solr DHI Status xml.
+        /// Parses the specified Solr DIH Status xml.
         /// </summary>
-        /// <param name="solrDHIStatusXml">The Solr DHI Status xml to parse.</param>
+        /// <param name="solrDIHStatusXml">The Solr DIH Status xml to parse.</param>
         /// <returns>A strongly styped representation of the Solr HDI Status xml.</returns>
-        public SolrDHIStatus Parse(System.Xml.XmlDocument solrDHIStatusXml)
+        public SolrDIHStatus Parse(System.Xml.XmlDocument solrDIHStatusXml)
         {
-            var result = new SolrDHIStatus();
+            var result = new SolrDIHStatus();
 
-            if (solrDHIStatusXml == null) return result;
+            if (solrDIHStatusXml == null) return result;
 
-            foreach (XmlNode fieldNode in solrDHIStatusXml.SelectNodes("/response/str"))
+            foreach (XmlNode fieldNode in solrDIHStatusXml.SelectNodes("/response/str"))
             {
                 switch (fieldNode.Attributes["name"].Value)
                 {
@@ -32,10 +32,10 @@ namespace SolrNet.DHI
                         switch (fieldNode.InnerText)
                         {
                             case "idle":
-                                result.Status = DHIStatus.IDLE;
+                                result.Status = DIHStatus.IDLE;
                                 break;
                             case "busy":
-                                result.Status = DHIStatus.BUSY;
+                                result.Status = DIHStatus.BUSY;
                                 break;
                         }
                         break;
@@ -45,7 +45,7 @@ namespace SolrNet.DHI
                 }
             }
 
-            foreach (XmlNode fieldNode in solrDHIStatusXml.SelectSingleNode("//response/lst[@name='statusMessages']"))
+            foreach (XmlNode fieldNode in solrDIHStatusXml.SelectSingleNode("//response/lst[@name='statusMessages']"))
             {
                 DateTime tempDate;
                 string[] tempTimeSpanSplit;

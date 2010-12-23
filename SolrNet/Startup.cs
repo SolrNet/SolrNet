@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
-using SolrNet.DHI;
+using SolrNet.DIH;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -66,8 +66,8 @@ namespace SolrNet {
             var solrSchemaParser = new SolrSchemaParser();
             Container.Register<ISolrSchemaParser>(c => solrSchemaParser);
 
-            var solrDHIStatusParser = new SolrDHIStatusParser();
-            Container.Register<ISolrDHIStatusParser>(c => solrDHIStatusParser);
+            var solrDIHStatusParser = new SolrDIHStatusParser();
+            Container.Register<ISolrDIHStatusParser>(c => solrDIHStatusParser);
 
             var headerParser = new HeaderResponseParser<string>();
             Container.Register<ISolrHeaderResponseParser>(c => headerParser);
@@ -119,8 +119,8 @@ namespace SolrNet {
 
             Container.Register(c => ChooseDocumentSerializer<T>(c));
 
-            Container.Register<ISolrBasicOperations<T>>(c => new SolrBasicServer<T>(connection, c.GetInstance<ISolrQueryExecuter<T>>(), c.GetInstance<ISolrDocumentSerializer<T>>(), c.GetInstance<ISolrSchemaParser>(), c.GetInstance<ISolrHeaderResponseParser>(), c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrDHIStatusParser>()));
-            Container.Register<ISolrBasicReadOnlyOperations<T>>(c => new SolrBasicServer<T>(connection, c.GetInstance<ISolrQueryExecuter<T>>(), c.GetInstance<ISolrDocumentSerializer<T>>(), c.GetInstance<ISolrSchemaParser>(), c.GetInstance<ISolrHeaderResponseParser>(), c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrDHIStatusParser>()));
+            Container.Register<ISolrBasicOperations<T>>(c => new SolrBasicServer<T>(connection, c.GetInstance<ISolrQueryExecuter<T>>(), c.GetInstance<ISolrDocumentSerializer<T>>(), c.GetInstance<ISolrSchemaParser>(), c.GetInstance<ISolrHeaderResponseParser>(), c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrDIHStatusParser>()));
+            Container.Register<ISolrBasicReadOnlyOperations<T>>(c => new SolrBasicServer<T>(connection, c.GetInstance<ISolrQueryExecuter<T>>(), c.GetInstance<ISolrDocumentSerializer<T>>(), c.GetInstance<ISolrSchemaParser>(), c.GetInstance<ISolrHeaderResponseParser>(), c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrDIHStatusParser>()));
 
             Container.Register<ISolrOperations<T>>(c => new SolrServer<T>(c.GetInstance<ISolrBasicOperations<T>>(), Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>()));
             Container.Register<ISolrReadOnlyOperations<T>>(c => new SolrServer<T>(c.GetInstance<ISolrBasicOperations<T>>(), Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>()));

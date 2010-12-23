@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Xml;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
-using SolrNet.DHI;
+using SolrNet.DIH;
 using SolrNet.Exceptions;
 using SolrNet.Mapping.Validation;
 using SolrNet.Schema;
@@ -198,13 +198,13 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
-        /// Gets the DHI Status.
+        /// Gets the DIH Status.
         /// </summary>
         /// <param name="options">command options</param>
-        /// <returns>A XmlDocument containing the DHI Status XML.</returns>
-        public SolrDHIStatus GetDHIStatus(KeyValuePair<string, string> options)
+        /// <returns>A XmlDocument containing the DIH Status XML.</returns>
+        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options)
         {
-            return basicServer.GetDHIStatus(options);
+            return basicServer.GetDIHStatus(options);
         }
     }
 }

@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using SolrNet.Commands.Parameters;
-using SolrNet.DHI;
+using SolrNet.DIH;
 using SolrNet.Schema;
 
 namespace SolrNet {
@@ -50,7 +50,7 @@ namespace SolrNet {
         /// <summary>
         /// Gets the schema.
         /// </summary>
-        /// <returns>A XmlDocument containing the DHI Status XML.</returns>
-        SolrDHIStatus GetDHIStatus(KeyValuePair<string, string> options);
+        /// <returns>A XmlDocument containing the DIH Status XML.</returns>
+        SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options);
     }
 }

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SolrNet.DHI
+namespace SolrNet.DIH
 {
     ///<Summary>
     /// DIHStatus
     ///</Summary>
-    public enum DHIStatus
+    public enum DIHStatus
     {
         ///<Summary>
         /// Idle Status
@@ -22,11 +22,11 @@ namespace SolrNet.DHI
 
 
     /// <summary>
-    /// Represents a Solr DHI Status.
+    /// Represents a Solr DIH Status.
     /// </summary>
-    public class SolrDHIStatus
+    public class SolrDIHStatus
     {
-        public DHIStatus Status { get; set; }
+        public DIHStatus Status { get; set; }
         public string ImportResponse { get; set;}
         public TimeSpan TimeElapsed { get; set; }
         public int TotalRequestToDataSource { get; set; }

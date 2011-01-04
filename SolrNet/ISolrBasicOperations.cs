@@ -44,8 +44,9 @@ namespace SolrNet {
         /// Adds / updates several documents with index-time boost
         /// </summary>
         /// <param name="docs"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs);
+        ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters);
 
         /// <summary>
         /// Deletes all documents that match the given id's or the query

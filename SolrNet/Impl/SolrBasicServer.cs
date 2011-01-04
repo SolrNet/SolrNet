@@ -70,8 +70,8 @@ namespace SolrNet.Impl {
             return SendAndParseHeader(new RollbackCommand());
         }
 
-        public ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
-            var cmd = new AddCommand<T>(docs, documentSerializer);
+        public ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters) {
+            var cmd = new AddCommand<T>(docs, documentSerializer, parameters);
             return SendAndParseHeader(cmd);
         }
 

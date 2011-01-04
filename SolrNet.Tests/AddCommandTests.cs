@@ -84,7 +84,7 @@ namespace SolrNet.Tests {
 			    var docs = new[] {
                     new KeyValuePair<SampleDoc, double?>(new SampleDoc(), null), 
 			    };
-			    var cmd = new AddCommand<SampleDoc>(docs, docSerializer);
+			    var cmd = new AddCommand<SampleDoc>(docs, docSerializer, null);
 			    cmd.Execute(conn);
 			});
 		}
@@ -103,7 +103,68 @@ namespace SolrNet.Tests {
                 }));
             }).Verify(() => {
                 var docs = new[] { new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), 2.1) };
-                var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
+                var cmd = new AddCommand<TestDocWithString>(docs, docSerializer, null);
+                cmd.Execute(conn);
+            });
+        }
+
+        [Test]
+        public void DocumentAddParametersCommitWithinSpecified()
+        {
+            var mocks = new MockRepository();
+            var conn = mocks.StrictMock<ISolrConnection>();
+            var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
+            With.Mocks(mocks).Expecting(() => {
+                conn.Post("/update",
+                          "<add commitWithin=\"1000\"><doc boost=\"2.1\" /></add>");
+                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
+                    Console.WriteLine(s);
+                    return null;
+                }));
+            }).Verify(() => {
+                var docs = new[] { new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), 2.1) };
+                var parameters = new AddParameters {CommitWithin = 1000};
+                var cmd = new AddCommand<TestDocWithString>(docs, docSerializer, parameters);
+                cmd.Execute(conn);
+            });
+        }
+
+        [Test]
+        public void DocumentAddParametersOverwriteSpecifiedTrue() {
+            var mocks = new MockRepository();
+            var conn = mocks.StrictMock<ISolrConnection>();
+            var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
+            With.Mocks(mocks).Expecting(() => {
+                conn.Post("/update",
+                          "<add overwrite=\"true\"><doc boost=\"2.1\" /></add>");
+                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
+                    Console.WriteLine(s);
+                    return null;
+                }));
+            }).Verify(() => {
+                var docs = new[] { new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), 2.1) };
+                var parameters = new AddParameters {Overwrite = true};
+                var cmd = new AddCommand<TestDocWithString>(docs, docSerializer, parameters);
+                cmd.Execute(conn);
+            });
+        }
+
+        [Test]
+        public void DocumentAddParametersOverwriteSpecifiedFalse() {
+            var mocks = new MockRepository();
+            var conn = mocks.StrictMock<ISolrConnection>();
+            var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
+            With.Mocks(mocks).Expecting(() => {
+                conn.Post("/update",
+                          "<add overwrite=\"false\"><doc boost=\"2.1\" /></add>");
+                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s) {
+                    Console.WriteLine(s);
+                    return null;
+                }));
+            }).Verify(() => {
+                var docs = new[] { new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), 2.1) };
+                var parameters = new AddParameters {Overwrite = false};
+                var cmd = new AddCommand<TestDocWithString>(docs, docSerializer, parameters);
                 cmd.Execute(conn);
             });
         }
@@ -128,7 +189,7 @@ namespace SolrNet.Tests {
                 var docs = new[] {
                     new KeyValuePair<TestDocWithFieldBoost, double?>(new TestDocWithFieldBoost(), null),
                 };
-                var cmd = new AddCommand<TestDocWithFieldBoost>(docs, docSerializer);
+                var cmd = new AddCommand<TestDocWithFieldBoost>(docs, docSerializer, null);
                 cmd.Execute(conn);
             });
         }
@@ -139,8 +200,8 @@ namespace SolrNet.Tests {
             var conn = mocks.StrictMock<ISolrConnection>();
             var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager(), new DefaultFieldSerializer());
 			var cmd = new AddCommand<SampleDoc>(new[] {
-                new KeyValuePair<SampleDoc, double?>(new SampleDoc(), null), 
-			}, docSerializer);
+			    new KeyValuePair<SampleDoc, double?>(new SampleDoc(), null), 
+			}, docSerializer, null);
 			cmd.Execute(conn);
 		}
 
@@ -160,7 +221,7 @@ namespace SolrNet.Tests {
 			    var docs = new[] {
                     new KeyValuePair<TestDocWithCollections, double?>(new TestDocWithCollections(), null), 
 			    };
-			    var cmd = new AddCommand<TestDocWithCollections>(docs, docSerializer);
+			    var cmd = new AddCommand<TestDocWithCollections>(docs, docSerializer, null);
 			    cmd.Execute(conn);
 			});
 		}
@@ -170,7 +231,7 @@ namespace SolrNet.Tests {
             var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
             var doc = new TestDocWithString { Desc = "control" + (char)0x7 + (char)0x1F + (char)0xFFFE + (char)0xFFFF + (char)0xFFF4  };
             var docs = new[] {new KeyValuePair<TestDocWithString, double?>(doc, null),  };
-		    var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
+		    var cmd = new AddCommand<TestDocWithString>(docs, docSerializer, null);
             var xml = cmd.ConvertToXml();
             xml = cmd.RemoveControlCharacters(xml);
             Console.WriteLine(xml);
@@ -187,7 +248,7 @@ namespace SolrNet.Tests {
             var docs = new[] {
                 new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), null), 
             };
-            var cmd = new AddCommand<TestDocWithString>(docs, docSerializer);
+            var cmd = new AddCommand<TestDocWithString>(docs, docSerializer, null);
             var xml = cmd.RemoveControlCharacters("control &#x7; &#x1; &#x9; &#x1F; &#xFFFE;");
             Assert.DoesNotContain(xml, "&#x7;");
             Assert.DoesNotContain(xml, "&#x1;");

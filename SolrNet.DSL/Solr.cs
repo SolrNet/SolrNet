@@ -60,7 +60,7 @@ namespace SolrNet.DSL {
         /// <param name="documents"></param>
         public static void Add<T>(IEnumerable<T> documents) {
             var docs = documents.Select(d => new KeyValuePair<T, double?>(d, null));
-            var cmd = new AddCommand<T>(docs, ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<T>>());
+            var cmd = new AddCommand<T>(docs, ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<T>>(), null);
             cmd.Execute(Connection);
         }
 

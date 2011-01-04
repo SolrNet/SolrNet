@@ -119,15 +119,28 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader AddWithBoost(T doc, double boost) {
+            return AddWithBoost(doc, boost, null);
+        }
+
+        public ResponseHeader AddWithBoost(T doc, double boost, AddParameters parameters) {
             return ((ISolrOperations<T>)this).AddWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) });
         }
 
         public ResponseHeader Add(IEnumerable<T> docs) {
-            return basicServer.AddWithBoost(docs.Select(d => new KeyValuePair<T, double?>(d, null)));
+            return Add(docs, null);
+        }
+
+        public ResponseHeader Add(IEnumerable<T> docs, AddParameters parameters) {
+            return basicServer.AddWithBoost(docs.Select(d => new KeyValuePair<T, double?>(d, null)), parameters);
         }
 
         ResponseHeader ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
-            return basicServer.AddWithBoost(docs);
+            return ((ISolrOperations<T>)this).AddWithBoost(docs, null);
+        }
+
+        ResponseHeader ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
+        {
+            return basicServer.AddWithBoost(docs, parameters);
         }
 
         public ResponseHeader Delete(IEnumerable<string> ids) {
@@ -182,6 +195,10 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader Add(T doc) {
+            return Add(doc, null);
+        }
+
+        public ResponseHeader Add(T doc, AddParameters parameters) {
             return Add(new[] { doc });
         }
 

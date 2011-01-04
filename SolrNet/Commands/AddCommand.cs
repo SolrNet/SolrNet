@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml;
 using SolrNet.Utils;
@@ -27,10 +28,12 @@ namespace SolrNet.Commands {
 	public class AddCommand<T> : ISolrCommand {
 	    private readonly IEnumerable<KeyValuePair<T, double?>> documents = new List<KeyValuePair<T, double?>>();
 	    private readonly ISolrDocumentSerializer<T> documentSerializer;
+	    private readonly AddParameters parameters;
 
-        public AddCommand(IEnumerable<KeyValuePair<T, double?>> documents, ISolrDocumentSerializer<T> serializer) {
+	    public AddCommand(IEnumerable<KeyValuePair<T, double?>> documents, ISolrDocumentSerializer<T> serializer, AddParameters parameters) {
             this.documents = documents;
-            documentSerializer = serializer;            
+            documentSerializer = serializer;
+            this.parameters = parameters;
         }
 
         /// <summary>
@@ -46,6 +49,18 @@ namespace SolrNet.Commands {
         public string ConvertToXml() {
             var xml = new XmlDocument();
             var addElement = xml.CreateElement("add");
+            if (parameters != null) {
+                if (parameters.CommitWithin.HasValue) {
+                    var attr = xml.CreateAttribute("commitWithin");
+                    attr.Value = parameters.CommitWithin.Value.ToString(CultureInfo.InvariantCulture);
+                    addElement.Attributes.Append(attr);
+                }
+                if (parameters.Overwrite.HasValue) {
+                    var attr = xml.CreateAttribute("overwrite");
+                    attr.Value = parameters.Overwrite.Value.ToString().ToLowerInvariant();
+                    addElement.Attributes.Append(attr);
+                }
+            }
             foreach (var docWithBoost in documents) {
                 var xmlDoc = documentSerializer.Serialize(docWithBoost.Key, docWithBoost.Value);
                 addElement.AppendChild(xml.ImportNode(xmlDoc.DocumentElement, true));

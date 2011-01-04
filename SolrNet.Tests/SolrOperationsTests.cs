@@ -69,8 +69,33 @@ namespace SolrNet.Tests {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
                     ops.AddWithBoost(new[] {
                         new KeyValuePair<TestDocumentWithoutUniqueKey, double?>(new TestDocumentWithoutUniqueKey(), null),
-                    });
+                    }, null);
                 });
+        }
+
+        [Test]
+        public void AddWithParameters() {
+            var mocks = new MockRepository();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var headerParser = mocks.StrictMock<ISolrHeaderResponseParser>();
+            var docSerializer = new SolrDocumentSerializer<TestDocumentWithoutUniqueKey>(new AttributesMappingManager(), new DefaultFieldSerializer());
+            With.Mocks(mocks)
+                .Expecting(() => {
+                    Expect.On(connection)
+                        .Call(connection.Post("/update", "<add commitWithin=\"4343\" overwrite=\"false\"><doc /></add>"))
+                        .Repeat.Once()
+                        .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"));
+                    Expect.On(headerParser)
+                        .Call(headerParser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new ResponseHeader());
+                })
+                .Verify(() => {
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
+                    var parameters = new AddParameters {CommitWithin = 4343, Overwrite = false};
+                    ops.AddWithBoost(new[] { new KeyValuePair<TestDocumentWithoutUniqueKey, double?>(new TestDocumentWithoutUniqueKey(), null), }, parameters);
+                });            
         }
 
         [Test]
@@ -93,7 +118,7 @@ namespace SolrNet.Tests {
                 })
                 .Verify(() => {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
-                    ops.AddWithBoost(new[] { new KeyValuePair<TestDocumentWithoutUniqueKey, double?>(new TestDocumentWithoutUniqueKey(), 2.1), });
+                    ops.AddWithBoost(new[] { new KeyValuePair<TestDocumentWithoutUniqueKey, double?>(new TestDocumentWithoutUniqueKey(), 2.1), }, null);
                 });            
         }
 

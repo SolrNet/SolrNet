@@ -25,7 +25,7 @@ namespace NHibernate.SolrNet.Impl {
     /// NHibernate event listener for updating Solr index
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class SolrNetListener<T> : ICommitSetting, IAutoFlushEventListener, IFlushEventListener, IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener where T : class {
+    public class SolrNetListener<T> : IListenerSettings, IAutoFlushEventListener, IFlushEventListener, IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener where T : class {
         private readonly ISolrOperations<T> solr;
         private readonly WeakHashtable entitiesToAdd = new WeakHashtable();
         private readonly WeakHashtable entitiesToDelete = new WeakHashtable();

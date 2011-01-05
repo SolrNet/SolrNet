@@ -63,6 +63,23 @@ namespace NHibernate.SolrNet.Tests {
         }
 
         [Test]
+        public void Configure_with_addparameters() {
+            var nhConfig = ConfigurationExtensions.GetNhConfig();
+            var provider = MockRepository.GenerateMock<IServiceProvider>();
+            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
+            mapper.Expect(x => x.GetRegisteredTypes()).Return(new[] {typeof (Entity)});
+            var solr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
+            provider.Expect(x => x.GetService(typeof (IReadOnlyMappingManager))).Return(mapper);
+            provider.Expect(x => x.GetService(typeof (ISolrOperations<Entity>))).Return(solr);
+            var addParameters = new AddParameters {CommitWithin = 4343};
+            var helper = new CfgHelper(provider);
+            helper.Configure(nhConfig, true, addParameters);
+            var listener = nhConfig.EventListeners.PostInsertEventListeners[0];
+            Assert.IsInstanceOfType<SolrNetListener<Entity>>(listener);
+            Assert.AreEqual(addParameters, ((IListenerSettings)listener).AddParameters);
+        }
+
+        [Test]
         public void Does_not_override_existing_listeners() {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
             var mockListener = MockRepository.GenerateMock<IPostInsertEventListener>();

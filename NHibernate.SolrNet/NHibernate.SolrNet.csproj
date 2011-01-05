@@ -70,7 +70,7 @@
   <ItemGroup>
     <Compile Include="CfgHelper.cs" />
     <Compile Include="Impl\DelegatingSession.cs" />
-    <Compile Include="Impl\ICommitSetting.cs" />
+    <Compile Include="Impl\IListenerSettings.cs" />
     <Compile Include="Impl\NHHelper.cs" />
     <Compile Include="INHSolrQuery.cs" />
     <Compile Include="ISolrSession.cs" />

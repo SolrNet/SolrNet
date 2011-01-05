@@ -14,11 +14,19 @@
 // limitations under the License.
 #endregion
 
+using SolrNet;
+
 namespace NHibernate.SolrNet.Impl {
-    public interface ICommitSetting {
+    public interface IListenerSettings {
         /// <summary>
         /// Automatically commit Solr after each update
         /// </summary>
         bool Commit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the parameters to use when adding a document to the index.
+        /// </summary>
+        /// <value>The parameters to use when adding a document to the index.</value>
+        AddParameters AddParameters { get; set; }
     }
 }

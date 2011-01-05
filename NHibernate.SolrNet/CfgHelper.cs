@@ -62,15 +62,7 @@ namespace NHibernate.SolrNet {
         /// <param name="autoCommit"></param>
         /// <returns></returns>
         public Configuration Configure(Configuration config, bool autoCommit) {
-            foreach (var t in mapper.GetRegisteredTypes()) {
-                var listenerType = typeof (SolrNetListener<>).MakeGenericType(t);
-                var solrType = typeof (ISolrOperations<>).MakeGenericType(t);
-                var solr = provider.GetService(solrType);
-                var listener = (ICommitSetting) Activator.CreateInstance(listenerType, solr);
-                listener.Commit = autoCommit;
-                NHHelper.SetListener(config, listener);
-            }
-            return config;
+            return Configure(config, autoCommit, null);
         }
 
         /// <summary>
@@ -85,8 +77,9 @@ namespace NHibernate.SolrNet {
                 var listenerType = typeof (SolrNetListener<>).MakeGenericType(t);
                 var solrType = typeof (ISolrOperations<>).MakeGenericType(t);
                 var solr = provider.GetService(solrType);
-                var listener = (ICommitSetting) Activator.CreateInstance(listenerType, solr);
+                var listener = (IListenerSettings) Activator.CreateInstance(listenerType, solr);
                 listener.Commit = autoCommit;
+                listener.AddParameters = parameters;
                 NHHelper.SetListener(config, listener);
             }
             return config;

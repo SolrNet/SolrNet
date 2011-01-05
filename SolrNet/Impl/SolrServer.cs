@@ -123,7 +123,7 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader AddWithBoost(T doc, double boost, AddParameters parameters) {
-            return ((ISolrOperations<T>)this).AddWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) });
+            return ((ISolrOperations<T>)this).AddWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) }, parameters);
         }
 
         public ResponseHeader Add(IEnumerable<T> docs) {
@@ -199,7 +199,7 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader Add(T doc, AddParameters parameters) {
-            return Add(new[] { doc });
+            return Add(new[] { doc }, parameters);
         }
 
         public SolrSchema GetSchema() {

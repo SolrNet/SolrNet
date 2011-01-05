@@ -28,6 +28,130 @@ using SolrNet.Schema;
 namespace SolrNet.Tests {
     [TestFixture]
     public class SolrServerTests {
+
+        [Test]
+        public void Add_single_doc_calls_operations_with_null_add_parameters()
+        {
+            var mocks = new MockRepository();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
+            With.Mocks(mocks)
+                .Expecting(() =>
+                    Expect.Call(
+                        basicServer.AddWithBoost(Arg<IEnumerable<KeyValuePair<TestDocument, double?>>>.Is.Anything, Arg<AddParameters>.Is.Null))
+                    .Repeat.Once())
+                .Verify(() =>
+                {
+                    var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
+                    var t = new TestDocument();
+                    s.Add(t);
+                });
+        }
+
+        [Test]
+        public void Add_single_doc_with_add_parameters_calls_operations_with_same_add_parameters()
+        {
+            var mocks = new MockRepository();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
+            var parameters = new AddParameters { CommitWithin = 4343 };
+            With.Mocks(mocks)
+                .Expecting(() =>
+                    Expect.Call(
+                        basicServer.AddWithBoost(Arg<IEnumerable<KeyValuePair<TestDocument, double?>>>.Is.Anything, Arg<AddParameters>.Is.Equal(parameters)))
+                    .Repeat.Once())
+                .Verify(() =>
+                {
+                    var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
+                    var t = new TestDocument();
+                    s.Add(t, parameters);
+                });
+        }
+
+        [Test]
+        public void AddWithBoost_single_doc_calls_operations_with_null_add_parameters()
+        {
+            var mocks = new MockRepository();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
+            With.Mocks(mocks)
+                .Expecting(() =>
+                    Expect.Call(
+                        basicServer.AddWithBoost(Arg<IEnumerable<KeyValuePair<TestDocument, double?>>>.Is.Anything, Arg<AddParameters>.Is.Null))
+                    .Repeat.Once())
+                .Verify(() =>
+                {
+                    var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
+                    var t = new TestDocument();
+                    s.AddWithBoost(t, 2.1);
+                });
+        }
+
+        [Test]
+        public void AddWithBoost_single_doc_with_add_parameters_calls_operations_with_same_add_parameters()
+        {
+            var mocks = new MockRepository();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
+            var parameters = new AddParameters { CommitWithin = 4343 };
+            With.Mocks(mocks)
+                .Expecting(() =>
+                    Expect.Call(
+                        basicServer.AddWithBoost(Arg<IEnumerable<KeyValuePair<TestDocument, double?>>>.Is.Anything, Arg<AddParameters>.Is.Equal(parameters)))
+                    .Repeat.Once())
+                .Verify(() =>
+                {
+                    var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
+                    var t = new TestDocument();
+                    s.AddWithBoost(t, 2.1, parameters);
+                });
+        }
+
+        [Test]
+        public void Add_enumerable_calls_operations_with_null_add_parameters()
+        {
+            var mocks = new MockRepository();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
+            With.Mocks(mocks)
+                .Expecting(() =>
+                    Expect.Call(
+                        basicServer.AddWithBoost(Arg<IEnumerable<KeyValuePair<TestDocument, double?>>>.Is.Anything, Arg<AddParameters>.Is.Null))
+                    .Repeat.Once())
+                .Verify(() =>
+                {
+                    var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
+                    var t = new[] { new TestDocument(), new TestDocument() };
+                    s.Add(t);
+                });
+        }
+
+        [Test]
+        public void Add_enumerable_with_add_parameters_calls_operations_with_same_add_parameters()
+        {
+            var mocks = new MockRepository();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
+            var mapper = mocks.StrictMock<IReadOnlyMappingManager>();
+            var validationManager = mocks.StrictMock<IMappingValidator>();
+            var parameters = new AddParameters { CommitWithin = 4343 };
+            With.Mocks(mocks)
+                .Expecting(() =>
+                           Expect.Call(
+                               basicServer.AddWithBoost(Arg<IEnumerable<KeyValuePair<TestDocument, double?>>>.Is.Anything, Arg<AddParameters>.Is.Equal(parameters)))
+                               .Repeat.Once())
+                .Verify(() =>
+                {
+                    var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
+                    var t = new[] { new TestDocument(), new TestDocument() };
+                    s.Add(t, parameters);
+                });
+        }
+
         [Test]
         public void Ping() {
             var mocks = new MockRepository();
@@ -62,7 +186,8 @@ namespace SolrNet.Tests {
                 .Expecting(() => Expect.Call(basicServer.GetSchema())
                     .Repeat.Once()
                     .Return(new SolrSchema()))
-                .Verify(() => {
+                .Verify(() =>
+                {
                     var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
                     s.GetSchema();
                 });

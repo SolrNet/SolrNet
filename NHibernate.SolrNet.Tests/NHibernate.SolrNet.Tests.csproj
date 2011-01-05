@@ -94,7 +94,8 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite">
+    <Reference Include="System.Data.SQLite, Version=1.0.66.1, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\System.Data.SQLite.DLL</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
@@ -106,6 +107,7 @@
     <Compile Include="Entity.cs" />
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="ListenersTests.cs" />
+    <Compile Include="ListenersWithAddParametersTests.cs" />
     <Compile Include="NHibernateMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolrSessionTests.cs" />

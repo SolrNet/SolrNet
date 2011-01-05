@@ -35,6 +35,12 @@ namespace NHibernate.SolrNet.Impl {
         /// </summary>
         public bool Commit { get; set; }
 
+        /// <summary>
+        /// Gets or sets the parameters to use when adding a document to the index.
+        /// </summary>
+        /// <value>The parameters to use when adding a document to the index.</value>
+        public AddParameters AddParameters { get; set; }
+
         public SolrNetListener(ISolrOperations<T> solr) {
             if (solr == null)
                 throw new ArgumentNullException("solr");
@@ -89,7 +95,7 @@ namespace NHibernate.SolrNet.Impl {
             if (DeferAction(e.Session))
                 Add(e.Session.Transaction, entity);
             else {
-                solr.Add(entity);
+                solr.Add(entity, AddParameters);
                 if (Commit)
                     solr.Commit();
             }
@@ -124,7 +130,7 @@ namespace NHibernate.SolrNet.Impl {
         }
 
         public void OnFlushInternal(AbstractEvent e) {
-            var added = DoWithEntities(entitiesToAdd, e.Session.Transaction, d => solr.Add(d));
+            var added = DoWithEntities(entitiesToAdd, e.Session.Transaction, d => solr.Add(d, AddParameters));
             var deleted = DoWithEntities(entitiesToDelete, e.Session.Transaction, d => solr.Delete(d));
             if (Commit && (added || deleted))
                 solr.Commit();

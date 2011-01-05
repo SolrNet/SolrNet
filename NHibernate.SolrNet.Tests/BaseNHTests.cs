@@ -35,9 +35,13 @@ namespace NHibernate.SolrNet.Tests {
             var provider = MockRepository.GenerateMock<IServiceProvider>();
             var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
             provider.Expect(x => x.GetService(typeof (IReadOnlyMappingManager))).Return(mapper);
-            NHHelper.SetListener(nhConfig, new SolrNetListener<Entity>(mockSolr));
+            NHHelper.SetListener(nhConfig, GetSolrNetListener(mockSolr));
             new SchemaExport(nhConfig).Execute(false, true, false);
             sessionFactory = nhConfig.BuildSessionFactory();
+        }
+
+        protected virtual SolrNetListener<Entity> GetSolrNetListener(ISolrOperations<Entity> solr) {
+            return new SolrNetListener<Entity>(solr);
         }
 
         [TearDown]

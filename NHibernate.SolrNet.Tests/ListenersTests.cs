@@ -29,7 +29,7 @@ namespace NHibernate.SolrNet.Tests {
                 session.Save(entity);
                 session.Flush();
             }
-            mockSolr.AssertWasCalled(x => x.Add(entity), o => o.Repeat.Once().Return(null));
+            mockSolr.AssertWasCalled(x => x.Add(entity, null), o => o.Repeat.Once().Return(null));
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace NHibernate.SolrNet.Tests {
                 session.FlushMode = FlushMode.Never;
                 session.Save(entity);
             }
-            mockSolr.AssertWasNotCalled(x => x.Add(entity));
+            mockSolr.AssertWasNotCalled(x => x.Add(entity, null));
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace NHibernate.SolrNet.Tests {
             using (var session = sessionFactory.OpenSession()) {
                 session.Save(entity);
             }
-            mockSolr.AssertWasCalled(x => x.Add(entity), o => o.Repeat.Once().Return(null));
+            mockSolr.AssertWasCalled(x => x.Add(entity, null), o => o.Repeat.Once().Return(null));
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace NHibernate.SolrNet.Tests {
                     tx.Rollback();
                 }
             }
-            mockSolr.AssertWasNotCalled(x => x.Add(entity));
+            mockSolr.AssertWasNotCalled(x => x.Add(entity, null));
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace NHibernate.SolrNet.Tests {
                     tx.Commit();
                 }
             }
-            mockSolr.AssertWasCalled(x => x.Add(entity), o => o.Repeat.Once().Return(null));
+            mockSolr.AssertWasCalled(x => x.Add(entity, null), o => o.Repeat.Once().Return(null));
         } 
 
         [Test]
@@ -90,7 +90,7 @@ namespace NHibernate.SolrNet.Tests {
                     tx.Commit();
                 }
             }
-            mockSolr.AssertWasCalled(x => x.Add(entity), o => o.Repeat.Once().Return(null));
+            mockSolr.AssertWasCalled(x => x.Add(entity, null), o => o.Repeat.Once().Return(null));
         }
 
         [Test]
@@ -107,7 +107,7 @@ namespace NHibernate.SolrNet.Tests {
                     tx.Rollback();
                 }
             }
-            mockSolr.AssertWasCalled(x => x.Add(entity), o => o.Repeat.Once().Return(null));
+            mockSolr.AssertWasCalled(x => x.Add(entity, null), o => o.Repeat.Once().Return(null));
         }
 
     }

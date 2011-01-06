@@ -33,6 +33,12 @@ namespace SolrNet {
         ResponseHeader Commit();
 
         /// <summary>
+        /// Rollbacks all add/deletes made to the index since the last commit.
+        /// </summary>
+        /// <returns></returns>
+        ResponseHeader Rollback();
+
+        /// <summary>
         /// Optimizes Solr's index
         /// </summary>
         ResponseHeader Optimize();

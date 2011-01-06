@@ -177,6 +177,18 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void Rollback() {
+            var mocks = new MockRepository();
+            var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();
+            With.Mocks(mocks)
+                .Expecting(() => Expect.Call(basicServer.Rollback()).Return(new ResponseHeader()))
+                .Verify(() => {
+                    var s = new SolrServer<TestDocument>(basicServer, null, null);
+                    s.Rollback();
+                });
+        }
+
+        [Test]
         public void GetSchema() {
             var mocks = new MockRepository();
             var basicServer = mocks.StrictMock<ISolrBasicOperations<TestDocument>>();

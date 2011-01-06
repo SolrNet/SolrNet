@@ -186,6 +186,14 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
+        /// Rollbacks all add/deletes made to the index since the last commit.
+        /// </summary>
+        /// <returns></returns>
+        public ResponseHeader Rollback() {
+            return basicServer.Rollback();
+        }
+
+        /// <summary>
         /// Commits posts, 
         /// blocking until index changes are flushed to disk and
         /// blocking until a new searcher is opened and registered as the main query searcher, making the changes visible.

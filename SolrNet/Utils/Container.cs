@@ -45,7 +45,11 @@ namespace SolrNet.Utils {
         protected override object DoGetInstance(Type serviceType, string key) {
             var componentKey = BuildComponentKey(key, serviceType);
 
-            return components[componentKey](this);
+            try {
+                return components[componentKey](this);                
+            } catch (KeyNotFoundException e) {
+                throw new KeyNotFoundException(string.Format("Component '{0}' of service type '{1}' not found", componentKey, serviceType));
+            }
         }
 
         protected override IEnumerable<object> DoGetAllInstances(Type serviceType) {

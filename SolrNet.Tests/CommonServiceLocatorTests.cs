@@ -15,7 +15,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -206,17 +205,14 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void MultipleInstancesOfSameService_with_key_resolves_by_key() {
+        public void MultipleInstancesOfSameService_with_key_resolves_first_by_type() {
             var container = new Container();
             var inst = new ServiceImpl();
+            container.Register<IService>("inst1", c => inst);
             var inst2 = new ServiceImpl();
-            container.Register<IService>("inst1", c => inst);            
-            container.Register<IService>("inst2", c => inst2);
-            var svc = container.GetInstance<IService>("inst1");
-            var svc2 = container.GetInstance<IService>("inst2");
-
+            container.Register<IService>(c => inst2);
+            var svc = container.GetInstance<IService>();
             Assert.AreSame(inst, svc);
-            Assert.AreSame(inst2, svc2);
         }
 
         [Test]
@@ -260,20 +256,14 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void RemoveAllByType_with_no_registered_service() {
-            var container = new Container();
-            container.RemoveAll<IService>();
-        }
-
-        [Test]
-        [ExpectedException(typeof(ActivationException))]
         public void RemoveByType() {
             var container = new Container();
             var inst = new ServiceImpl();
-            container.Register<IService>(c => inst);
+            container.Register<IService>("inst1", c => inst);
+            var inst2 = new ServiceImpl();
+            container.Register<IService>(c => inst2);
             container.Remove<IService>();
-            var iservice = container.GetInstance<IService>();
-            Assert.Fail("Should throw Microsoft.Practices.ServiceLocation.ActivationException.");
+            Assert.AreSame(inst, container.GetInstance<IService>());
         }
 
         [Test]
@@ -291,15 +281,10 @@ namespace SolrNet.Tests {
         public void Clear() {
             var container = new Container();
             var inst = new ServiceImpl();
+            container.Register<IService>("inst1", c => inst);
             var inst2 = new ServiceImpl();
-            var inst3 = new ServiceImpl();
-            container.RegisterAll<IService>(new List<Converter<IContainer, IService>> {
-                  c => inst, 
-                  c => inst2
-              });
-            container.Register<IService>("inst3", c => inst3);
+            container.Register<IService>(c => inst2);
             container.Clear();
-
             Assert.AreEqual(0, container.GetAllInstances<IService>().ToArray().Length);
         }
 
@@ -314,61 +299,10 @@ namespace SolrNet.Tests {
         public void GetAllInstances() {
             var container = new Container();
             var inst = new ServiceImpl();
+            container.Register<IService>("inst1", c => inst);
             var inst2 = new ServiceImpl();
-            container.RegisterAll<IService>(new List<Converter<IContainer, IService>> {
-                c => inst, 
-                c => inst2
-            });
-
+            container.Register<IService>(c => inst2);
             Assert.AreEqual(2, container.GetAllInstances<IService>().ToArray().Length);
-        }
-
-        [Test]
-        public void ReplaceByType() {
-            var container = new Container();
-            var inst = new ServiceImpl();
-            var inst2 = new ServiceImpl();
-            container.Register<IService>(c => inst);
-            container.Replace<IService>(c => inst2);
-            var svc = container.GetInstance<IService>();
-
-            Assert.AreEqual(inst2, svc);
-        }
-
-        [Test]
-        public void ReplaceByTypeAndKey() {
-            var container = new Container();
-            var inst = new ServiceImpl();
-            var inst2 = new ServiceImpl();
-            var inst3 = new ServiceImpl();
-            container.Register<IService>(c => inst);            
-            container.Register<IService>("inst2", c => inst2);            
-            container.Replace<IService>("inst2", c => inst3);
-            var svc = container.GetInstance<IService>("inst2");
-
-            Assert.AreEqual(inst3, svc);
-        }
-
-        [Test]
-        public void ReplaceAllInstances() {
-            var container = new Container();
-            var inst = new ServiceImpl();
-            var inst2 = new ServiceImpl();
-            var inst3 = new ServiceImpl();
-            var inst4 = new ServiceImpl();
-            container.RegisterAll(new List<Converter<IContainer, IService>> {
-                c => inst, 
-                c => inst2
-            });
-            container.ReplaceAll(new List<Converter<IContainer, IService>> {
-                c => inst3, 
-                c => inst4
-            });
-
-            var services = container.GetAllInstances<IService>();
-            Assert.AreEqual(2, services.ToArray().Length);
-            Assert.AreEqual(inst3, services.ToArray()[0]);
-            Assert.AreEqual(inst4, services.ToArray()[1]);
         }
 
         public interface IService {}

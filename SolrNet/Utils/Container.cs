@@ -21,116 +21,101 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace SolrNet.Utils {
     /// <summary>
-    /// Basic built-in dependency-injection container.
+    /// Basic built-in dependency-injection container
     /// </summary>
     public class Container : ServiceLocatorImplBase, IContainer {
-        private readonly Dictionary<string, IEnumerable<Converter<IContainer, object>>> componentCollections = new Dictionary<string, IEnumerable<Converter<IContainer, object>>>();
-        private readonly Dictionary<string, Converter<IContainer, object>> components = new Dictionary<string, Converter<IContainer, object>>();
-        private readonly Dictionary<string, IList<string>> typeRegistry = new Dictionary<string, IList<string>>();
-        private readonly Dictionary<string, bool> keyRegistry = new Dictionary<string, bool>();
+        private readonly Dictionary<string, Converter<IContainer, object>> componentsByName = new Dictionary<string, Converter<IContainer, object>>();
+        private readonly Dictionary<Type, List<Converter<IContainer, object>>> componentsByType = new Dictionary<Type, List<Converter<IContainer, object>>>();
 
         public Container() {}
 
         /// <summary>
-        /// Creates a new container copying all components from another container.
+        /// Creates a new container copying all components from another container
         /// </summary>
         /// <param name="c"></param>
         public Container(Container c) {
-            componentCollections = new Dictionary<string, IEnumerable<Converter<IContainer, object>>>(c.componentCollections);
-            components = new Dictionary<string, Converter<IContainer, object>>(c.components);
-            typeRegistry = new Dictionary<string, IList<string>>(c.typeRegistry);
-            keyRegistry = new Dictionary<string, bool>(c.keyRegistry);
+            componentsByName = new Dictionary<string, Converter<IContainer, object>>(c.componentsByName);
+            foreach (var t in c.componentsByType)
+                componentsByType[t.Key] = new List<Converter<IContainer, object>>(t.Value);
         }
 
         protected override object DoGetInstance(Type serviceType, string key) {
-            var componentKey = BuildComponentKey(key, serviceType);
-
-            try {
-                return components[componentKey](this);                
-            } catch (KeyNotFoundException e) {
-                throw new KeyNotFoundException(string.Format("Component '{0}' of service type '{1}' not found", componentKey, serviceType));
-            }
+            if (key == null)
+                return componentsByType[serviceType][0](this);
+            return componentsByName[key](this);
         }
 
         protected override IEnumerable<object> DoGetAllInstances(Type serviceType) {
-            var componentKey = BuildComponentKey(null, serviceType);
-
-            if (!componentCollections.ContainsKey(componentKey)) yield break;
-            foreach (var component in componentCollections[componentKey]) {
-                yield return component(this);
-            }
+            if (!componentsByType.ContainsKey(serviceType))
+                yield break;
+            foreach (var c in componentsByType[serviceType])
+                yield return c(this);
         }
 
         /// <summary>
-        /// Adds a collection of components for service type <typeparamref name="T"/>.
-        /// Component key is <typeparamref name="T"/>'s <see cref="Type.FullName"/>.
+        /// Adds a component implementing <typeparamref name="T"/>
+        /// Component key is <typeparamref name="T"/>'s <see cref="Type.FullName"/>
         /// </summary>
-        /// <typeparam name="T">Service type.</typeparam>
-        /// <param name="factories">Component factory method collection.</param>
-        public void RegisterAll<T>(IEnumerable<Converter<IContainer, T>> factories) {
-            var componentKey = RegisterComponentKey(null, typeof(T));
-            componentCollections.Add(componentKey, factories.Select<Converter<IContainer, T>, Converter<IContainer, object>>(d => c => d(c)));
-        }
-
-        /// <summary>
-        /// Adds a default component for service type <typeparamref name="T"/>.
-        /// Component key is <typeparamref name="T"/>'s <see cref="Type.FullName"/>.
-        /// </summary>
-        /// <typeparam name="T">Service type.</typeparam>
-        /// <param name="factory">Component factory method.</param>
+        /// <typeparam name="T">Service type</typeparam>
+        /// <param name="factory">Component factory method</param>
         public void Register<T>(Converter<IContainer,T> factory) {
-            Register(null, typeof(T), c => factory(c));
+            Register(typeof(T).FullName, typeof(T), c => factory(c));
         }
 
         /// <summary>
-        /// Adds a component with key <paramref name="key"/> for service type <typeparamref name="T"/>.
+        /// Adds a component implementing <typeparamref name="T"/> with the specified key
         /// </summary>
-        /// <typeparam name="T">Service type.</typeparam>
-        /// <param name="factory">Component factory method.</param>
-        /// <param name="key">Component key.</param>
+        /// <typeparam name="T">Service type</typeparam>
+        /// <param name="factory">Component factory method</param>
+        /// <param name="key">Component key</param>
         public void Register<T>(string key, Converter<IContainer,T> factory) {
             Register(key, typeof(T), c => factory(c));
         }
 
         /// <summary>
-        /// Adds a component.
+        /// Adds a component
         /// </summary>
-        /// <param name="key">Component key.</param>
-        /// <param name="serviceType">Component service type.</param>
+        /// <param name="key">Component key</param>
+        /// <param name="serviceType">Component service type</param>
         /// <param name="factory">Component factory method. Must return <paramref name="serviceType"/> or a descendant</param>
         public void Register(string key, Type serviceType, Converter<IContainer, object> factory) {
-            var componentKey = RegisterComponentKey(key, serviceType);
-            components[componentKey] = factory;
+            if (componentsByName.ContainsKey(key))
+                throw new ApplicationException(string.Format("Key '{0}' already registered in container", key));
+            componentsByName[key] = factory;
+
+            if (!componentsByType.ContainsKey(serviceType))
+                componentsByType[serviceType] = new List<Converter<IContainer, object>>();
+            componentsByType[serviceType].Add(factory);
         }
 
         /// <summary>
-        /// Removes all collections of components for service type <typeparamref name="T"/>.
+        /// Removes all components with service type <typeparamref name="T"/>
         /// </summary>
-        /// <typeparam name="T">Service type.</typeparam>
+        /// <typeparam name="T">Service type</typeparam>
         public void RemoveAll<T>() {
-            var typeKey = BuildTypeKey(typeof(T));
-            var deregisterList = new List<string>();
-
-            if (typeRegistry.ContainsKey(typeKey))
-                foreach (var key in typeRegistry[typeKey]) {
-                    var componentKey = BuildComponentKey(key, typeof(T));
-                    componentCollections.Remove(componentKey);
-                    components.Remove(componentKey);
-                    deregisterList.Add(key);
+            if (!componentsByType.ContainsKey(typeof(T)))
+                return;
+            foreach (var c in componentsByType[typeof(T)]) {
+                var removeList = new List<string>();
+                foreach (var cn in componentsByName) {
+                    if (cn.Value == c)
+                        removeList.Add(cn.Key);
                 }
-            deregisterList.ForEach(key => DeregisterComponentKey(key, typeof(T)));
+                removeList.ForEach(k => componentsByName.Remove(k));
+            }
+            componentsByType[typeof(T)].Clear();
         }
 
         /// <summary>
-        /// Removes the default component for service type <typeparamref name="T"/>.
+        /// Removes the default component for service type <typeparamref name="T"/>
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
         public void Remove<T>() {
-            Remove(null, typeof(T));
+            Remove(typeof(T).FullName, typeof(T));
         }
 
         /// <summary>
-        /// Removes the component with key <paramref name="key"/> for service type <typeparamref name="T"/>.
+        /// Removes the component with key <paramref name="key"/> implementing service type <typeparamref name="T"/>
         /// </summary>
         /// <typeparam name="T">Service type</typeparam>
         /// <param name="key">Component key</param>
@@ -139,146 +124,22 @@ namespace SolrNet.Utils {
         }
 
         /// <summary>
-        /// Removes the component with key <paramref name="key"/> for service type <paramref name="serviceType"/>.
+        /// Removes the component with key <paramref name="key"/> implementing service type <paramref name="serviceType"/>
         /// </summary>
         /// <param name="key">Component key</param>
         /// <param name="serviceType">Service type</param>
         public void Remove(string key, Type serviceType) {
-            var componentKey = BuildComponentKey(key, serviceType);
-            components.Remove(componentKey);
-            DeregisterComponentKey(key, serviceType);
+            var factory = componentsByName[key];
+            componentsByName.Remove(key);
+            componentsByType[serviceType].Remove(factory);
         }
 
         /// <summary>
-        /// Replaces a collection of components for service type <typeparamref name="T"/>.
-        /// Component key is <typeparamref name="T"/>'s <see cref="Type.FullName"/>.
-        /// </summary>
-        /// <typeparam name="T">Service type.</typeparam>
-        /// <param name="factories">Component factory method collection.</param>
-        public void ReplaceAll<T>(IEnumerable<Converter<IContainer, T>> factories)
-        {
-            var typeKey = BuildTypeKey(typeof(T));
-            var deregisterList = new List<string>();
-
-            foreach (var key in typeRegistry[typeKey])
-            {
-                var componentKey = BuildComponentKey(key, typeof(T));
-                componentCollections.Remove(componentKey);
-                deregisterList.Add(key);
-            }
-            deregisterList.ForEach(key => DeregisterComponentKey(key, typeof(T)));
-
-            RegisterAll(factories);
-        }
-
-        /// <summary>
-        /// Replaces a default component for service type <typeparamref name="T"/>.
-        /// Component key is <typeparamref name="T"/>'s <see cref="Type.FullName"/>.
-        /// </summary>
-        /// <typeparam name="T">Service type.</typeparam>
-        /// <param name="factory">Component factory method.</param>
-        public void Replace<T>(Converter<IContainer, T> factory)
-        {
-            Remove<T>();
-            Register(factory);
-        }
-
-        /// <summary>
-        /// Replaces a component with key <paramref name="key"/> for service type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">Service type.</typeparam>
-        /// <param name="factory">Component factory method.</param>
-        /// <param name="key">Component key.</param>
-        public void Replace<T>(string key, Converter<IContainer, T> factory)
-        {
-          Remove<T>(key);
-          Register(key, factory);
-        }
-
-        /// <summary>
-        /// Replaces a component.
-        /// </summary>
-        /// <param name="key">Component key.</param>
-        /// <param name="serviceType">Component service type.</param>
-        /// <param name="factory">Component factory method. Must return <paramref name="serviceType"/> or a descendant</param>
-        public void Replace(string key, Type serviceType, Converter<IContainer, object> factory)
-        {
-          Remove(key, serviceType);
-          Register(key, serviceType, factory);
-        }
-
-        /// <summary>
-        /// Removes all component registrations from this container.
+        /// Removes all component registrations from this container
         /// </summary>
         public void Clear() {
-            componentCollections.Clear();
-            components.Clear();
-            keyRegistry.Clear();
-            typeRegistry.Clear();
-        }
-
-        /// <summary>
-        /// Builds the component key from the provided key <paramref name="key"/> and type <paramref name="type"/>.
-        /// </summary>
-        /// <param name="key">Component key.</param>
-        /// <param name="type">Component type.</param>
-        /// <returns>The key to access components within the container.</returns>
-        private string BuildComponentKey(string key, Type type) {
-            return (string.IsNullOrEmpty(key))
-                ? type.FullName
-                : key + "|" + type.FullName;
-        }
-
-        /// <summary>
-        /// Builds the type key from the provided type <paramref name="type"/>.
-        /// </summary>
-        /// <param name="type">Component type.</param>
-        /// <returns>The type key for the type registry.</returns>
-        private string BuildTypeKey(Type type) {
-          return type.FullName;
-        }
-
-        /// <summary>
-        /// Builds the component key from the provided key <paramref name="key"/> and type <paramref name="type"/>. Then
-        /// registers the key and type in their respective registries. Checks that this key has not already been added.
-        /// </summary>
-        /// <param name="key">Component key.</param>
-        /// <param name="type">Component type.</param>
-        /// <returns>The key to access components within the container.</returns>
-        private string RegisterComponentKey(string key, Type type) {
-            var typeKey = BuildTypeKey(type);
-            var componentKey = BuildComponentKey(key, type);
-
-            if (keyRegistry.ContainsKey(componentKey)) {
-                throw new ApplicationException(string.Format("Key '{0}' already registered in container.", componentKey));
-            }
-            keyRegistry[componentKey] = true;
-
-            if (!typeRegistry.ContainsKey(typeKey)) {
-                typeRegistry[typeKey] = new List<string>();
-            }
-            typeRegistry[typeKey].Add(key);
-
-            return componentKey;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="type"></param>
-        private void DeregisterComponentKey(string key, Type type) {
-            var typeKey = BuildTypeKey(type);
-            var componentKey = BuildComponentKey(key, type);
-
-            keyRegistry.Remove(componentKey);
-
-            if (!typeRegistry.ContainsKey(typeKey)) return;
-            typeRegistry[typeKey].Remove(key);
-
-            if (typeRegistry[typeKey].Count == 0) {
-                typeRegistry.Remove(typeKey);
-            }
+            componentsByType.Clear();
+            componentsByName.Clear();
         }
     }
 }

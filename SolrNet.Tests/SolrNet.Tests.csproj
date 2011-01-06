@@ -119,7 +119,6 @@
     <Compile Include="MemoizingMappingManagerTests.cs" />
     <Compile Include="MockConnection.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
-    <Compile Include="MultiCoreTests.cs" />
     <Compile Include="MultivaluedMappedToCollectionRuleTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="OptimizeCommandTests.cs" />

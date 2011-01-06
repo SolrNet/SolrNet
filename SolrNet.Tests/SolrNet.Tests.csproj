@@ -124,6 +124,7 @@
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="OptimizeCommandTests.cs" />
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
+    <Compile Include="ServiceLocatorTestCase.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
     <Compile Include="SolrQuerySerializerStub.cs" />

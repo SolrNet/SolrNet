@@ -30,7 +30,13 @@ namespace SampleSolrApp.Tests {
 
         [Test]
         public void Empty() {
-            var r = HtmlHelperRepeatExtensions.RepeatF(null, Enumerable.Range(0, 0), i => i.ToString(), () => " | ");
+            var r = HtmlHelperRepeatExtensions.RepeatF(null, Enumerable.Empty<int>(), i => i.ToString(), () => " | ");
+            Assert.AreEqual("", r);
+        }
+
+        [Test]
+        public void Null() {
+            var r = HtmlHelperRepeatExtensions.RepeatF<int>(null, null, i => i.ToString(), () => " | ");
             Assert.AreEqual("", r);
         }
 

@@ -191,7 +191,7 @@ namespace SolrNet.Tests {
         public void InjectionWithoutDependency_throws() {
             var container = new Container();
             container.Register(c => new AnotherService(c.GetInstance<IService>()));
-            var svc = container.GetInstance<AnotherService>();
+            container.GetInstance<AnotherService>();
         }
 
         [Test]
@@ -296,7 +296,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void GetAllInstances() {
+        public void GetAllInstances2() {
             var container = new Container();
             var inst = new ServiceImpl();
             container.Register<IService>("inst1", c => inst);

@@ -97,6 +97,17 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void MincountWithLocalParams_IgnoresLocalParams() {
+            var fq = new SolrFacetFieldQuery(new LocalParams { { "ex", "cat" } } + "pepe") { MinCount = 5 };
+            var q = Serialize(fq);
+            Assert.AreEqual(2, q.Count);
+            Assert.AreEqual("facet.field", q[0].Key);
+            Assert.AreEqual("{!ex=cat}pepe", q[0].Value);
+            Assert.AreEqual("f.pepe.facet.mincount", q[1].Key);
+            Assert.AreEqual("5", q[1].Value);
+        }
+
+        [Test]
         public void Missing() {
             var fq = new SolrFacetFieldQuery("pepe") {Missing = true};
             var q = Serialize(fq);

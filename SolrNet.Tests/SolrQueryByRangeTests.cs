@@ -55,6 +55,12 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void NullableFloat() {
+            var q = new SolrQueryByRange<float?>("price", null, 234.56f);
+            Assert.AreEqual("price:[* TO 234.56]", Serialize(q));
+        }
+
+        [Test]
         public void DateTimeInclusive() {
             var q = new SolrQueryByRange<DateTime>("ts", new DateTime(2001, 1, 5), new DateTime(2002, 3, 4, 5, 6, 7));
             Assert.AreEqual("ts:[2001-01-05T00:00:00Z TO 2002-03-04T05:06:07Z]", Serialize(q));
@@ -64,6 +70,12 @@ namespace SolrNet.Tests {
         public void NullableDateTime() {
             var q = new SolrQueryByRange<DateTime?>("ts", new DateTime(2001, 1, 5), new DateTime(2002, 3, 4, 5, 6, 7));
             Assert.AreEqual("ts:[2001-01-05T00:00:00Z TO 2002-03-04T05:06:07Z]", Serialize(q));
+        }
+
+        [Test]
+        public void NullableDateTimeWithNull() {
+            var q = new SolrQueryByRange<DateTime?>("ts", null, new DateTime(2002, 3, 4, 5, 6, 7));
+            Assert.AreEqual("ts:[* TO 2002-03-04T05:06:07Z]", Serialize(q));
         }
 	}
 }

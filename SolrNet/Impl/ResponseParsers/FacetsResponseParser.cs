@@ -62,7 +62,8 @@ namespace SolrNet.Impl.ResponseParsers {
                 var field = fieldNode.Attribute("name").Value;
                 var c = new List<KeyValuePair<string, int>>();
                 foreach (var facetNode in fieldNode.Elements()) {
-                    var key = facetNode.Attribute("name").Value;
+                    var nameAttr = facetNode.Attribute("name");
+                    var key = nameAttr == null ? "" : nameAttr.Value;
                     var value = Convert.ToInt32(facetNode.Value);
                     c.Add(new KeyValuePair<string, int>(key, value));
                 }

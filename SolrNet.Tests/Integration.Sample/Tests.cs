@@ -102,7 +102,6 @@ namespace SolrNet.Tests.Integration.Sample {
         public void DeleteByIdAndOrQuery() {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
 
-            #region Delete test data
             var products = new List<Product> 
             {
                     new Product
@@ -169,7 +168,6 @@ namespace SolrNet.Tests.Integration.Sample {
                         InStock = false,
                     }
             };
-            #endregion
 
             solr.Add(products);
             solr.Commit();

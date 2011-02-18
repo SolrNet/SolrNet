@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using SolrNet.Exceptions;
 using SolrNet.Mapping.Validation;
 
@@ -74,6 +75,13 @@ namespace SolrNet {
         /// <param name="parameters">The add parameters.</param>
         /// <returns></returns>
         ResponseHeader AddWithBoost(T doc, double boost, AddParameters parameters);
+
+        /// <summary>
+        /// Adds / updates single richdocument
+        /// </summary>
+        /// <param name="parameters">The add binary parameters</param>
+        /// <returns></returns>
+        ResponseHeader AddFile(AddBinaryParameters parameters);
 
         /// <summary>
         /// Adds / updates several documents at once

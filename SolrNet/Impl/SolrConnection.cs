@@ -25,6 +25,7 @@ using System.Web;
 using HttpWebAdapters;
 using HttpWebAdapters.Adapters;
 using SolrNet.Exceptions;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -106,6 +107,40 @@ namespace SolrNet.Impl {
             }
         }
 
+        public string PostBinary(string relativeUrl, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+            var u = new UriBuilder(serverURL);
+            u.Path += relativeUrl;
+            u.Query = GetQuery(parameters);
+
+            var request = HttpWebRequestFactory.Create(u.Uri);
+            request.Method = HttpWebRequestMethod.POST;
+            request.KeepAlive = false;
+
+            if (Timeout > 0) {
+                request.ReadWriteTimeout = Timeout;
+                request.Timeout = Timeout;
+            }
+
+            request.ContentLength = content.Length;
+            request.ProtocolVersion = HttpVersion.Version11;
+            request.AllowWriteStreamBuffering = true;
+
+            var buffer = new byte[32768];
+            try {
+                using (var postStream = request.GetRequestStream()) {
+                    int read;
+                    while ((read = content.Read(buffer, 0, buffer.Length)) > 0) {
+                        postStream.Write(buffer, 0, read);
+                    }
+                }
+                return GetResponse(request).Data;
+            } catch (WebException e) {
+                throw new SolrConnectionException(e);
+            } catch (IOException e) {
+                throw new SolrConnectionException(e);
+            }
+        }
+
         public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {
             return new KeyValuePair<T1, T2>(a, b);
         }
@@ -113,14 +148,8 @@ namespace SolrNet.Impl {
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
-            var param = new List<KeyValuePair<string, string>>();
-            if (parameters != null)
-                param.AddRange(parameters);
-            param.Add(KVP("version", version));
-            u.Query = string.Join("&", param
-                .Select(kv => KVP(HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
-                .Select(kv => string.Format("{0}={1}", kv.Key, kv.Value))
-                .ToArray());
+            u.Query = GetQuery(parameters);
+
             var request = HttpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.GET;
             request.KeepAlive = true;
@@ -153,6 +182,23 @@ namespace SolrNet.Impl {
                 }
                 throw new SolrConnectionException(e);
             }
+        }
+
+        /// <summary>
+        /// Gets the Query 
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        private string GetQuery(IEnumerable<KeyValuePair<string, string>> parameters) {
+            var param = new List<KeyValuePair<string, string>>();
+            if (parameters != null)
+                param.AddRange(parameters);
+
+            param.Add(KVP("version", version));
+            return string.Join("&", param
+                .Select(kv => KVP(HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
+                .Select(kv => string.Format("{0}={1}", kv.Key, kv.Value))
+                .ToArray());
         }
 
         /// <summary>

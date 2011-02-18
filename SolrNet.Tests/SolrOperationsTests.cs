@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using MbUnit.Framework;
 using Rhino.Mocks;
@@ -120,6 +121,33 @@ namespace SolrNet.Tests {
                     var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
                     ops.AddWithBoost(new[] { new KeyValuePair<TestDocumentWithoutUniqueKey, double?>(new TestDocumentWithoutUniqueKey(), 2.1), }, null);
                 });            
+        }
+
+        [Test]
+        public void AddFile() {
+            var mocks = new MockRepository();
+            var connection = mocks.StrictMock<ISolrConnection>();
+            var executer = mocks.StrictMock<ISolrQueryExecuter<TestDocumentWithoutUniqueKey>>();
+            var headerParser = mocks.StrictMock<ISolrHeaderResponseParser>();
+            var docSerializer = new SolrDocumentSerializer<TestDocumentWithoutUniqueKey>(new AttributesMappingManager(), new DefaultFieldSerializer());
+            With.Mocks(mocks)
+                .Expecting(() => {
+                    Expect.On(connection)
+                        .Call(connection.PostBinary("/update/extract", null, new List<KeyValuePair<string, string>> {
+                            new KeyValuePair<string, string>("literal.id", "1"),
+                            new KeyValuePair<string, string>("resource.name", null)
+                        }))
+                        .Repeat.Once()
+                        .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"));
+                    Expect.On(headerParser)
+                        .Call(headerParser.Parse(null))
+                        .IgnoreArguments()
+                        .Return(new ResponseHeader());
+                })
+                .Verify(() => {
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
+                    ops.AddFile(new AddBinaryParameters(null, "1", "test.doc"));
+                });
         }
 
         [Test]

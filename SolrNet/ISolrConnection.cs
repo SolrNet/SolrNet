@@ -15,20 +15,30 @@
 #endregion
 
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace SolrNet {
     /// <summary>
     /// Manages HTTP connection with Solr
     /// </summary>
-	public interface ISolrConnection {
+    public interface ISolrConnection {
         /// <summary>
         /// POSTs to Solr
         /// </summary>
         /// <param name="relativeUrl">Path to post to</param>
         /// <param name="s">POST content</param>
         /// <returns></returns>
-		string Post(string relativeUrl, string s);
+        string Post(string relativeUrl, string s);
+
+        /// <summary>
+        /// POSTs binary to Solr
+        /// </summary>
+        /// <param name="relativeUrl">Path to post to</param>
+        /// <param name="content">Binary content</param>
+        /// <param name="getParameters">extra GET-parameters</param>
+        /// <returns></returns>
+        string PostBinary(string relativeUrl, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters);
 
         /// <summary>
         /// GETs from Solr
@@ -36,6 +46,6 @@ namespace SolrNet {
         /// <param name="relativeUrl">Path to get from</param>
         /// <param name="parameters">Query string parameters</param>
         /// <returns></returns>
-		string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters);
-	}
+        string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters);
+    }
 }

@@ -91,6 +91,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddBinaryCommandTests.cs" />
     <Compile Include="AddCommandTests.cs" />
     <Compile Include="AllPropertiesMappingManagerTests.cs" />
     <Compile Include="AttributesMappingManagerTests.cs" />

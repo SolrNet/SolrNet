@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.IO;
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet {
@@ -22,11 +23,11 @@ namespace SolrNet {
     /// Solr operations without convenience overloads
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public interface ISolrBasicOperations<T>: ISolrBasicReadOnlyOperations<T> {
+    public interface ISolrBasicOperations<T> : ISolrBasicReadOnlyOperations<T> {
         /// <summary>
         /// Commits posted documents
         /// </summary>
-        /// <param name="options">Commit options</param>
+        /// <param name="options">AutoCommit options</param>
         ResponseHeader Commit(CommitOptions options);
 
         /// <summary>
@@ -47,6 +48,13 @@ namespace SolrNet {
         /// <param name="parameters"></param>
         /// <returns></returns>
         ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters);
+
+        /// <summary>
+        /// Adds / updates single richdocument
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        ResponseHeader AddFile(AddBinaryParameters parameters);
 
         /// <summary>
         /// Deletes all documents that match the given id's or the query

@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
@@ -126,6 +127,10 @@ namespace SolrNet.Impl {
             return ((ISolrOperations<T>)this).AddWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) }, parameters);
         }
 
+        public ResponseHeader AddFile(AddBinaryParameters parameters) {
+            return AddFile(parameters);
+        }
+
         public ResponseHeader Add(IEnumerable<T> docs) {
             return Add(docs, null);
         }
@@ -138,8 +143,7 @@ namespace SolrNet.Impl {
             return ((ISolrOperations<T>)this).AddWithBoost(docs, null);
         }
 
-        ResponseHeader ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
-        {
+        ResponseHeader ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters) {
             return basicServer.AddWithBoost(docs, parameters);
         }
 

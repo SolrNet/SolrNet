@@ -67,8 +67,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
+    <Compile Include="AddBinaryParameters.cs" />
     <Compile Include="AddParameters.cs" />
     <Compile Include="CollapsedDocument.cs" />
+    <Compile Include="Commands\AddBinaryCommand.cs" />
     <Compile Include="Commands\GetSchemaCommand.cs" />
     <Compile Include="Commands\Parameters\CollapseParameters.cs" />
     <Compile Include="Commands\Parameters\DeleteByIdAndOrQueryParam.cs" />

@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using MbUnit.Framework;
 
@@ -42,6 +43,10 @@ namespace SolrNet.Tests {
         public virtual Encoding XmlEncoding { get; set; }
 
         public virtual string Post(string relativeUrl, string s) {
+            return string.Empty;
+        }
+
+        public virtual string PostBinary(string relativeUrl, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
             return string.Empty;
         }
 

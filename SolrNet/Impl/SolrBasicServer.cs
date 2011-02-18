@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 using SolrNet.Commands;
@@ -72,6 +73,11 @@ namespace SolrNet.Impl {
 
         public ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters) {
             var cmd = new AddCommand<T>(docs, documentSerializer, parameters);
+            return SendAndParseHeader(cmd);
+        }
+
+        public ResponseHeader AddFile(AddBinaryParameters parameters) {
+            var cmd = new AddBinaryCommand(parameters);
             return SendAndParseHeader(cmd);
         }
 

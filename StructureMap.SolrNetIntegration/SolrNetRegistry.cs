@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using SolrNet;
+using SolrNet.DIH;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
@@ -88,6 +89,7 @@ namespace StructureMap.SolrNetIntegration
             For(typeof(ISolrQueryResultParser<>)).Use(typeof(SolrQueryResultParser<>));
             For<ISolrFieldParser>().Use<DefaultFieldParser>();
             For<ISolrSchemaParser>().Use<SolrSchemaParser>();
+            For<ISolrDIHStatusParser>().Use<SolrDIHStatusParser>();
         }
 
         /// <summary>

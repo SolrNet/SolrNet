@@ -16,6 +16,7 @@
 
 using Autofac;
 using SolrNet;
+using SolrNet.DIH;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -79,6 +80,7 @@ namespace AutofacContrib.SolrNet {
                 .As(typeof(ISolrOperations<>), typeof(ISolrReadOnlyOperations<>))
                 .SingleInstance();
             builder.RegisterType<SolrSchemaParser>().As<ISolrSchemaParser>();
+            builder.RegisterType<SolrDIHStatusParser>().As<ISolrDIHStatusParser>();
             builder.RegisterType<MappingValidator>().As<IMappingValidator>();
         }
     }

@@ -62,12 +62,12 @@
     <Web>
       <Naming2 />
     </Web>
-    <Xaml>
-      <Naming2 />
-    </Xaml>
     <XML>
       <FormatSettings />
     </XML>
+    <Xaml>
+      <Naming2 />
+    </Xaml>
     <FileHeader><![CDATA[
 ]]></FileHeader>
     <GenerateMemberBody />

@@ -1,36 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Xml;
-using SolrNet.Exceptions;
-using SolrNet.Schema;
 
-namespace SolrNet.DIH
-{
+namespace SolrNet.DIH {
     /// <summary>
     /// Parses a Solr DIH Status xml document into a strongly typed
     /// <see cref="SolrDIHStatus"/> object.
     /// </summary>
-    public class SolrDIHStatusParser : ISolrDIHStatusParser
-    {
+    public class SolrDIHStatusParser : ISolrDIHStatusParser {
         /// <summary>
         /// Parses the specified Solr DIH Status xml.
         /// </summary>
         /// <param name="solrDIHStatusXml">The Solr DIH Status xml to parse.</param>
         /// <returns>A strongly styped representation of the Solr HDI Status xml.</returns>
-        public SolrDIHStatus Parse(System.Xml.XmlDocument solrDIHStatusXml)
-        {
+        public SolrDIHStatus Parse(XmlDocument solrDIHStatusXml) {
             var result = new SolrDIHStatus();
 
-            if (solrDIHStatusXml == null) return result;
+            if (solrDIHStatusXml == null) 
+                return result;
 
-            foreach (XmlNode fieldNode in solrDIHStatusXml.SelectNodes("/response/str"))
-            {
-                switch (fieldNode.Attributes["name"].Value)
-                {
+            foreach (XmlNode fieldNode in solrDIHStatusXml.SelectNodes("/response/str")) {
+                switch (fieldNode.Attributes["name"].Value) {
                     case "status":
-                        switch (fieldNode.InnerText)
-                        {
+                        switch (fieldNode.InnerText) {
                             case "idle":
                                 result.Status = DIHStatus.IDLE;
                                 break;
@@ -45,13 +36,11 @@ namespace SolrNet.DIH
                 }
             }
 
-            foreach (XmlNode fieldNode in solrDIHStatusXml.SelectSingleNode("//response/lst[@name='statusMessages']"))
-            {
+            foreach (XmlNode fieldNode in solrDIHStatusXml.SelectSingleNode("//response/lst[@name='statusMessages']")) {
                 DateTime tempDate;
                 string[] tempTimeSpanSplit;
 
-                switch (fieldNode.Attributes["name"].Value)
-                {
+                switch (fieldNode.Attributes["name"].Value) {
                     case "Time Elapsed":
                         tempTimeSpanSplit = fieldNode.InnerText.Split(':');
                         if (tempTimeSpanSplit.Length == 3)
@@ -101,7 +90,6 @@ namespace SolrNet.DIH
                         break;
                 }
             }
-
 
             return result;
         }

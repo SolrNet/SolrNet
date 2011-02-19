@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml;
 using SolrNet.DIH;
 using SolrNet.Tests.Utils;
 using MbUnit.Framework;
@@ -7,13 +6,11 @@ using MbUnit.Framework;
 namespace SolrNet.Tests
 {
     [TestFixture]
-    public class SolrDIHStatusParserTest
-    {
+    public class SolrDIHStatusParserTest {
         [Test]
-        public void SolrDIHStatusParsing()
-        {
+        public void SolrDIHStatusParsing() {
             var DIHStatusParser = new SolrDIHStatusParser();
-            XmlDocument xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrDIHStatusBasic.xml");
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrDIHStatusBasic.xml");
             SolrDIHStatus dihStatusDoc = DIHStatusParser.Parse(xml);
 
             Assert.AreEqual(1, dihStatusDoc.TotalRequestToDataSource);

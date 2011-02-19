@@ -108,8 +108,8 @@ namespace SolrNet.Impl {
         }
 
         public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options) {
-            string dihXml = new GetDIHStatusCommand(options).Execute(connection);
-            var dihstatus = XDocument.Parse(dihXml);
+            var response = connection.Get("/dataimport", null);
+            var dihstatus = XDocument.Parse(response);
             return dihStatusParser.Parse(dihstatus);
         }
     }

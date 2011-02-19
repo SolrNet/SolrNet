@@ -1,31 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SolrNet.DIH
-{
+namespace SolrNet.DIH {
     ///<Summary>
-    /// DIHStatus
+    /// Data import handler status
     ///</Summary>
-    public enum DIHStatus
-    {
+    public enum DIHStatus {
         ///<Summary>
-        /// Idle Status
+        /// Idle 
         ///</Summary>
         IDLE,
 
         ///<Summary>
-        /// Busy Status
+        /// Busy
         ///</Summary>
         BUSY
     }
 
 
     /// <summary>
-    /// Represents a Solr DIH Status.
+    /// Represents a Solr data import handler status.
     /// </summary>
-    public class SolrDIHStatus
-    {
+    public class SolrDIHStatus {
+        /// <summary>
+        /// Busy or idle
+        /// </summary>
         public DIHStatus Status { get; set; }
         public string ImportResponse { get; set;}
         public TimeSpan TimeElapsed { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SolrNet.DIH {
     /// <summary>
@@ -12,16 +13,16 @@ namespace SolrNet.DIH {
         /// </summary>
         /// <param name="solrDIHStatusXml">The Solr DIH Status xml to parse.</param>
         /// <returns>A strongly styped representation of the Solr HDI Status xml.</returns>
-        public SolrDIHStatus Parse(XmlDocument solrDIHStatusXml) {
+        public SolrDIHStatus Parse(XDocument solrDIHStatusXml) {
             var result = new SolrDIHStatus();
 
             if (solrDIHStatusXml == null) 
                 return result;
 
-            foreach (XmlNode fieldNode in solrDIHStatusXml.SelectNodes("/response/str")) {
-                switch (fieldNode.Attributes["name"].Value) {
+            foreach (var fieldNode in solrDIHStatusXml.Element("response").Elements("str")) {
+                switch (fieldNode.Attribute("name").Value) {
                     case "status":
-                        switch (fieldNode.InnerText) {
+                        switch (fieldNode.Value) {
                             case "idle":
                                 result.Status = DIHStatus.IDLE;
                                 break;
@@ -31,62 +32,65 @@ namespace SolrNet.DIH {
                         }
                         break;
                     case "importResponse":
-                        result.ImportResponse = fieldNode.InnerText;
+                        result.ImportResponse = fieldNode.Value;
                         break;
                 }
             }
 
-            foreach (XmlNode fieldNode in solrDIHStatusXml.SelectSingleNode("//response/lst[@name='statusMessages']")) {
+            foreach (var fieldNode in solrDIHStatusXml.XPathSelectElement("//lst[@name='statusMessages']").Elements()) {
                 DateTime tempDate;
                 string[] tempTimeSpanSplit;
 
-                switch (fieldNode.Attributes["name"].Value) {
+                switch (fieldNode.Attribute("name").Value) {
                     case "Time Elapsed":
-                        tempTimeSpanSplit = fieldNode.InnerText.Split(':');
+                        tempTimeSpanSplit = fieldNode.Value.Split(':');
                         if (tempTimeSpanSplit.Length == 3)
                             result.TimeElapsed = new TimeSpan(0, Convert.ToInt32(tempTimeSpanSplit[0]), Convert.ToInt32(tempTimeSpanSplit[1]), Convert.ToInt32(tempTimeSpanSplit[2].Split('.')[0]), Convert.ToInt32(tempTimeSpanSplit[2].Split('.')[1]));
                         
                         break;
                     case "Total Requests made to DataSource":
-                        result.TotalRequestToDataSource = Convert.ToInt32(fieldNode.InnerText);
+                        result.TotalRequestToDataSource = Convert.ToInt32(fieldNode.Value);
 
                         break;
                     case "Total Rows Fetched":
-                        result.TotalRowsFetched = Convert.ToInt32(fieldNode.InnerText);
+                        result.TotalRowsFetched = Convert.ToInt32(fieldNode.Value);
 
                         break;
                     case "Total Documents Processed":
-                        result.TotalDocumentsProcessed = Convert.ToInt32(fieldNode.InnerText);
+                        result.TotalDocumentsProcessed = Convert.ToInt32(fieldNode.Value);
 
                         break;
                     case "Total Documents Skipped":
-                        result.TotalDocumentsSkipped = Convert.ToInt32(fieldNode.InnerText);
+                        result.TotalDocumentsSkipped = Convert.ToInt32(fieldNode.Value);
 
                         break;
                     case "Full Dump Started":
-                        if (DateTime.TryParse(fieldNode.InnerText, out tempDate)) result.FullDumpStarted = tempDate;
+                        if (DateTime.TryParse(fieldNode.Value, out tempDate)) 
+                            result.FullDumpStarted = tempDate;
                         
                         break;
                     case "Committed":
-                        if (DateTime.TryParse(fieldNode.InnerText, out tempDate)) result.Committed = tempDate;
+                        if (DateTime.TryParse(fieldNode.Value, out tempDate)) 
+                            result.Committed = tempDate;
 
                         break;
                     case "Optimized":
-                        if (DateTime.TryParse(fieldNode.InnerText, out tempDate)) result.Optimized = tempDate;
+                        if (DateTime.TryParse(fieldNode.Value, out tempDate))
+                            result.Optimized = tempDate;
 
                         break;
                     case "Total Documents Failed":
-                        result.TotalDocumentsFailed = Convert.ToInt32(fieldNode.InnerText);
+                        result.TotalDocumentsFailed = Convert.ToInt32(fieldNode.Value);
 
                         break;
                     case "Time taken ":
-                        tempTimeSpanSplit = fieldNode.InnerText.Split(':');
+                        tempTimeSpanSplit = fieldNode.Value.Split(':');
                         if (tempTimeSpanSplit.Length == 3)
                             result.TimeTaken = new TimeSpan(0, Convert.ToInt32(tempTimeSpanSplit[0]), Convert.ToInt32(tempTimeSpanSplit[1]), Convert.ToInt32(tempTimeSpanSplit[2].Split('.')[0]), Convert.ToInt32(tempTimeSpanSplit[2].Split('.')[1]));
 
                         break;
                     case "":
-                        result.Summary = fieldNode.InnerText;
+                        result.Summary = fieldNode.Value;
                         break;
                 }
             }

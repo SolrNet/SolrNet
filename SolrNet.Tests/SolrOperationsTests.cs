@@ -92,7 +92,7 @@ namespace SolrNet.Tests {
                         .Return(new ResponseHeader());
                 })
                 .Verify(() => {
-                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null);
+                    var ops = new SolrBasicServer<TestDocumentWithoutUniqueKey>(connection, executer, docSerializer, null, headerParser, null, null);
                     var parameters = new AddParameters {CommitWithin = 4343, Overwrite = false};
                     ops.AddWithBoost(new[] { new KeyValuePair<TestDocumentWithoutUniqueKey, double?>(new TestDocumentWithoutUniqueKey(), null), }, parameters);
                 });            

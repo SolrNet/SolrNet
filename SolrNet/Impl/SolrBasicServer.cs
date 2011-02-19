@@ -37,8 +37,7 @@ namespace SolrNet.Impl {
         private readonly ISolrQuerySerializer querySerializer;
         private readonly ISolrDIHStatusParser dihStatusParser;
 
-        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDIHStatusParser dihStatusParser)
-        {
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDIHStatusParser dihStatusParser) {
             this.connection = connection;
             this.queryExecuter = queryExecuter;
             this.documentSerializer = documentSerializer;
@@ -108,11 +107,9 @@ namespace SolrNet.Impl {
             return schemaParser.Parse(schema);
         }
 
-        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options)
-        {
+        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options) {
             string dihXml = new GetDIHStatusCommand(options).Execute(connection);
-            var dihstatus = new XmlDocument();
-            dihstatus.LoadXml(dihXml);
+            var dihstatus = XDocument.Parse(dihXml);
             return dihStatusParser.Parse(dihstatus);
         }
     }

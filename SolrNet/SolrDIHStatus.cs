@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SolrNet.DIH {
+namespace SolrNet {
     ///<Summary>
     /// Data import handler status
     ///</Summary>

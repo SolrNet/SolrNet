@@ -1,6 +1,6 @@
 ﻿using System.Xml.Linq;
 
-namespace SolrNet.DIH {
+namespace SolrNet.Impl {
     /// <summary>
     /// Provides an interface to parsing a solr schema xml document into a <see cref="SolrDIHStatus"/> object.
     /// </summary>

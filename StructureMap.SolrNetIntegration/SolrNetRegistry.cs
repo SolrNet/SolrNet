@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using SolrNet;
-using SolrNet.DIH;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;

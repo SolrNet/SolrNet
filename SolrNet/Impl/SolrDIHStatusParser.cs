@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace SolrNet.DIH {
+namespace SolrNet.Impl {
     /// <summary>
     /// Parses a Solr DIH Status xml document into a strongly typed
     /// <see cref="SolrDIHStatus"/> object.

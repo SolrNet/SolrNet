@@ -16,11 +16,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
 using System.Xml.Linq;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
-using SolrNet.DIH;
 using SolrNet.Schema;
 
 namespace SolrNet.Impl {

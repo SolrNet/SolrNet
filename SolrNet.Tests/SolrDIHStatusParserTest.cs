@@ -1,5 +1,5 @@
 ﻿using System;
-using SolrNet.DIH;
+using SolrNet.Impl;
 using SolrNet.Tests.Utils;
 using MbUnit.Framework;
 

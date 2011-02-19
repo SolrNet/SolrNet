@@ -20,7 +20,6 @@ using Castle.Core.Configuration;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.Registration;
 using SolrNet;
-using SolrNet.DIH;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -32,7 +31,6 @@ using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
-using SolrNet.Utils;
 
 namespace Castle.Facilities.SolrNetIntegration {
     /// <summary>

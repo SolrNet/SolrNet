@@ -27,7 +27,6 @@ using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
-using SolrNet.DIH;
 
 namespace Ninject.Integration.SolrNet {
     public class SolrNetModule : NinjectModule {

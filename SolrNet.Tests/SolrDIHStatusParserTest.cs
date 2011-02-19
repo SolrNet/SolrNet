@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SolrNet.DIH;
 using SolrNet.Tests.Utils;
-using Assert = MbUnit.Framework.Assert;
+using MbUnit.Framework;
 
 namespace SolrNet.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class SolrDIHStatusParserTest
     {
-        [TestMethod]
+        [Test]
         public void SolrDIHStatusParsing()
         {
             var DIHStatusParser = new SolrDIHStatusParser();

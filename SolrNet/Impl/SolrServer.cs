@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SolrNet.Commands.Parameters;
+using SolrNet.DIH;
 using SolrNet.Exceptions;
 using SolrNet.Mapping.Validation;
 using SolrNet.Schema;
@@ -217,6 +218,16 @@ namespace SolrNet.Impl {
         public IEnumerable<ValidationResult> EnumerateValidationResults() {
             var schema = GetSchema();
             return _schemaMappingValidator.EnumerateValidationResults(typeof(T), schema);
+        }
+
+        /// <summary>
+        /// Gets the DIH Status.
+        /// </summary>
+        /// <param name="options">command options</param>
+        /// <returns>A XmlDocument containing the DIH Status XML.</returns>
+        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options)
+        {
+            return basicServer.GetDIHStatus(options);
         }
     }
 }

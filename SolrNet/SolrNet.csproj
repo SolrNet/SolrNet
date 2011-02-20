@@ -83,6 +83,8 @@
     <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
     <Compile Include="Impl\ISolrDIHStatusParser.cs" />
+    <Compile Include="Impl\QuerySerializers\QueryByDistanceSerializer.cs" />
+    <Compile Include="SolrQueryByDistance.cs" />
     <Compile Include="SolrDIHStatus.cs" />
     <Compile Include="Impl\SolrDIHStatusParser.cs" />
     <Compile Include="Exceptions\TypeNotSupportedException.cs" />

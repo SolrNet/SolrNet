@@ -33,6 +33,7 @@ namespace SolrNet.Impl.QuerySerializers {
                 new RangeQuerySerializer(fieldSerializer),
                 new MultipleCriteriaQuerySerializer(this),
                 new SelfSerializingQuerySerializer(),
+                new QueryByDistanceSerializer(),
             });
         }
 

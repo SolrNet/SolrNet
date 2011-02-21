@@ -83,6 +83,7 @@
     <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
     <Compile Include="Exceptions\TypeNotSupportedException.cs" />
+    <Compile Include="ExtractResponse.cs" />
     <Compile Include="FacetDateOther.cs" />
     <Compile Include="Impl\DocumentPropertyVisitors\AggregateDocumentVisitor.cs" />
     <Compile Include="Impl\DocumentPropertyVisitors\DefaultDocumentVisitor.cs" />
@@ -203,7 +204,6 @@
     <Compile Include="Mapping\Validation\Rules\UniqueKeyMatchesMappingRule.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="RandomSortOrder.cs" />
-    <Compile Include="Response.cs" />
     <Compile Include="ResponseHeader.cs" />
     <Compile Include="Impl\SolrDocumentSerializer.cs" />
     <Compile Include="Mapping\Validation\IMappingValidator.cs" />

@@ -14,6 +14,10 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Globalization;
+using SolrNet.Impl;
+
 namespace SolrNet {
 
     ///<summary>
@@ -33,7 +37,7 @@ namespace SolrNet {
     ///<summary>
     /// [SOLR 4.0 ONLY] Retreives entries from the index based on distance from a point
     ///</summary>
-    public class SolrQueryByDistance : ISolrQuery
+    public class SolrQueryByDistance : ISelfSerializingQuery
     {
         #region Properties
         
@@ -53,7 +57,11 @@ namespace SolrNet {
 
         public SolrQueryByDistance(string fieldName, double pointLatitude, double pointLongitude, int distance) : this(fieldName, pointLatitude, pointLongitude, distance, CalculationAccuracy.Radius ) {}
 
-        public SolrQueryByDistance(string fieldName, double pointLatitude, double pointLongitude, int distance, CalculationAccuracy accurancy) {
+        public SolrQueryByDistance(string fieldName, double pointLatitude, double pointLongitude, int distance, CalculationAccuracy accurancy) 
+        {
+            if (string.IsNullOrEmpty(fieldName)) { throw new ArgumentNullException(); }
+            if(distance <= 0) { throw new ArgumentOutOfRangeException("Distance must be greater than zero."); }
+
             FieldName = fieldName;
             PointLatitude = pointLatitude;
             PointLongitude = pointLongitude;
@@ -62,5 +70,12 @@ namespace SolrNet {
         }
 
         #endregion
+
+        public string Query {
+            get {
+                var prefix = Accuracy == CalculationAccuracy.Radius ? "{!geofilt" : "{!bbox";
+                return (prefix + " pt=" + PointLatitude.ToString(CultureInfo.InvariantCulture) + "," + PointLongitude.ToString(CultureInfo.InvariantCulture) + " sfield=" + FieldName + " d=" + DistanceFromPoint + "}");        
+            }
+        }
     }
 }

@@ -18,12 +18,12 @@ using System.Collections.Generic;
 
 namespace SolrNet.Commands {
     /// <summary>
-    /// Adds / updates rich documents to solr 
+    /// Sends documents to solr for extraction
     /// </summary>
-    public class AddBinaryCommand : ISolrCommand {
-        private readonly AddBinaryParameters parameters;
+    public class ExtractCommand : ISolrCommand {
+        private readonly ExtractParameters parameters;
 
-        public AddBinaryCommand(AddBinaryParameters parameters) {
+        public ExtractCommand(ExtractParameters parameters) {
             this.parameters = parameters;
         }
 
@@ -54,9 +54,6 @@ namespace SolrNet.Commands {
                 if (parameters.ExtractFormat == ExtractFormat.Text)
                     parms.Add(KV("extractFormat", "text"));
             }
-
-            if (!string.IsNullOrEmpty(parameters.ResourceName))
-                parms.Add(KV("resource.name", parameters.ResourceName));
 
             if (!string.IsNullOrEmpty(parameters.Capture))
                 parms.Add(KV("capture", parameters.Capture));

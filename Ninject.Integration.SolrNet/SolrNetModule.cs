@@ -60,6 +60,7 @@ namespace Ninject.Integration.SolrNet {
             })
                 Bind(typeof(ISolrResponseParser<>)).To(p);
             Bind<ISolrHeaderResponseParser>().To<HeaderResponseParser<string>>();
+            Bind<ISolrExtractResponseParser>().To<ExtractResponseParser>();
             foreach (var p in new[] {
                 typeof(MappedPropertiesIsInSolrSchemaRule),
                 typeof(RequiredFieldsAreMappedRule),

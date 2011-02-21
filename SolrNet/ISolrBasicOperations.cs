@@ -27,7 +27,7 @@ namespace SolrNet {
         /// <summary>
         /// Commits posted documents
         /// </summary>
-        /// <param name="options">AutoCommit options</param>
+        /// <param name="options">Commit options</param>
         ResponseHeader Commit(CommitOptions options);
 
         /// <summary>
@@ -50,11 +50,11 @@ namespace SolrNet {
         ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters);
 
         /// <summary>
-        /// Adds / updates single richdocument
+        /// Adds / updates the extracted contents of a richdocument
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        ResponseHeader AddFile(AddBinaryParameters parameters);
+        ExtractResponse Extract(ExtractParameters parameters);
 
         /// <summary>
         /// Deletes all documents that match the given id's or the query
@@ -77,5 +77,12 @@ namespace SolrNet {
         /// <param name="cmd"></param>
         /// <returns></returns>
         ResponseHeader SendAndParseHeader(ISolrCommand cmd);
+
+        /// <summary>
+        /// Sends a custom command, returns parsed extract response from xml response
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <returns></returns>
+        ExtractResponse SendAndParseExtract(ISolrCommand cmd);
     }
 }

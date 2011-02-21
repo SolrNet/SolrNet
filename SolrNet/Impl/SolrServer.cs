@@ -127,8 +127,8 @@ namespace SolrNet.Impl {
             return ((ISolrOperations<T>)this).AddWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) }, parameters);
         }
 
-        public ResponseHeader AddFile(AddBinaryParameters parameters) {
-            return AddFile(parameters);
+        public ExtractResponse Extract(ExtractParameters parameters) {
+            return basicServer.Extract(parameters);
         }
 
         public ResponseHeader Add(IEnumerable<T> docs) {

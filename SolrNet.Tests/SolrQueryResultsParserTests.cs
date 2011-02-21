@@ -418,6 +418,14 @@ namespace SolrNet.Tests {
 			Assert.AreEqual("2.2", header.Params["version"]);
 		}
 
+        [Test]
+        public void ExtractResponse() {
+            var parser = new ExtractResponseParser(new HeaderResponseParser<TestDocument>());
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithExtractContent.xml");
+            var extractResponse = parser.Parse(xml);
+            Assert.AreEqual("Hello world!", extractResponse.Content);
+        }
+
         private IDictionary<string, IDictionary<string, ICollection<string>>> ParseHighlightingResults(string rawXml) {
             var mapper = new AttributesMappingManager();
             var parser = new HighlightingResponseParser<Product>();

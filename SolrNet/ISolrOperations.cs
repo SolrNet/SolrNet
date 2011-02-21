@@ -77,11 +77,11 @@ namespace SolrNet {
         ResponseHeader AddWithBoost(T doc, double boost, AddParameters parameters);
 
         /// <summary>
-        /// Adds / updates single richdocument
+        /// Adds / updates the extracted content of a richdocument
         /// </summary>
-        /// <param name="parameters">The add binary parameters</param>
+        /// <param name="parameters">The extracttion parameters</param>
         /// <returns></returns>
-        ResponseHeader AddFile(AddBinaryParameters parameters);
+        ExtractResponse Extract(ExtractParameters parameters);
 
         /// <summary>
         /// Adds / updates several documents at once

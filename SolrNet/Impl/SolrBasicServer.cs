@@ -35,9 +35,11 @@ namespace SolrNet.Impl {
         private readonly ISolrSchemaParser schemaParser;
         private readonly ISolrHeaderResponseParser headerParser;
         private readonly ISolrQuerySerializer querySerializer;
+        private readonly ISolrExtractResponseParser extractResponseParser;
 
-        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer) {
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrExtractResponseParser extractResponseParser) {
             this.connection = connection;
+            this.extractResponseParser = extractResponseParser;
             this.queryExecuter = queryExecuter;
             this.documentSerializer = documentSerializer;
             this.schemaParser = schemaParser;
@@ -76,9 +78,9 @@ namespace SolrNet.Impl {
             return SendAndParseHeader(cmd);
         }
 
-        public ResponseHeader AddFile(AddBinaryParameters parameters) {
-            var cmd = new AddBinaryCommand(parameters);
-            return SendAndParseHeader(cmd);
+        public ExtractResponse Extract(ExtractParameters parameters) {
+            var cmd = new ExtractCommand(parameters);
+            return SendAndParseExtract(cmd);
         }
 
         public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q) {
@@ -92,6 +94,12 @@ namespace SolrNet.Impl {
 
         public string Send(ISolrCommand cmd) {
             return cmd.Execute(connection);
+        }
+
+        public ExtractResponse SendAndParseExtract(ISolrCommand cmd) {
+            var r = Send(cmd);
+            var xml = XDocument.Parse(r);
+            return extractResponseParser.Parse(xml);
         }
 
         public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {

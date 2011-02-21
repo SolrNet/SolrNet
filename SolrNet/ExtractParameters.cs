@@ -7,12 +7,12 @@ using System.Text;
 namespace SolrNet
 {
     /// <summary>
-    /// Contains parameters that can be specified when adding a rich document to the index.
+    /// Contains parameters that can be specified when extracting a rich document to the index.
     /// </summary>
     /// <remarks>
     /// See http://wiki.apache.org/solr/ExtractingRequestHandler#Input_Parameters
     /// </remarks>
-    public class AddBinaryParameters
+    public class ExtractParameters
     {
         ///<summary>
         /// Provides the necessary unique id for the document being indexed 
@@ -77,7 +77,7 @@ namespace SolrNet
         /// <summary>
         /// Collection of fields and thier specified value.
         /// </summary>
-        public IEnumerable<AddFileField> Fields { get; set; }
+        public IEnumerable<ExtractField> Fields { get; set; }
 
         /// <summary>
         /// When extracting, only return Tika XHTML content that satisfies the XPath expression. 
@@ -93,26 +93,26 @@ namespace SolrNet
         /// <summary>
         /// The rich document to index
         /// </summary>
-        public Stream Content { get; set; }
+        public Stream Content { get; private set; }
 
         /// <summary>
-        /// Constructs a new AddBinaryParameters with required values
+        /// Constructs a new ExtractParameters with required values
         /// </summary>
         /// <param name="content"></param>
         /// <param name="id"></param>
         /// <param name="resourceName"></param>
-        public AddBinaryParameters(Stream content, string id, string resourceName) {
+        public ExtractParameters(Stream content, string id, string resourceName) {
             Id = id;
             ResourceName = resourceName;
             Content = content;
         }
 
         /// <summary>
-        /// Constructs a new AddBinaryParameters with required values
+        /// Constructs a new ExtractParameters with required values
         /// </summary>
         /// <param name="content"></param>
         /// <param name="id"></param>
-        public AddBinaryParameters(FileStream content, string id) {
+        public ExtractParameters(FileStream content, string id) {
             Id = id;
             ResourceName = content.Name;
             Content = content;
@@ -122,7 +122,7 @@ namespace SolrNet
     /// <summary>
     /// Contains the Fields to index along with the rich documents
     /// </summary>
-    public class AddFileField {
+    public class ExtractField {
 
         /// <summary>
         /// The name of the field to index
@@ -140,11 +140,11 @@ namespace SolrNet
         public string Boost { get; set; }
 
         /// <summary>
-        /// Constructs a new AddFileField with required values
+        /// Constructs a new ExtractField with required values
         /// </summary>
         /// <param name="fieldName">The name of the field to index</param>
         /// <param name="value">The value to index</param>
-        public AddFileField(string fieldName, string value) {
+        public ExtractField(string fieldName, string value) {
             FieldName = fieldName;
             Value = value;
         }

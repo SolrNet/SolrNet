@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright Mauricio Scheffer 2007-2011")]
 [assembly: AssemblyVersion("0.3.0")]
 [assembly: AssemblyFileVersion("0.3.0")]
-[assembly: AssemblyInformationalVersion("e49362cb56cf56a04e0d1ca4b4b55a399481cebd")]
+[assembly: AssemblyInformationalVersion("b240afdbdc39432d93f8103286abd9374138f4a4")]
 [assembly: AssemblyDelaySign(false)]
 
 

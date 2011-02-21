@@ -23,19 +23,23 @@ using SolrNet.Impl;
 
 namespace SolrNet.Tests {
     [TestFixture]
-    public class AddBinaryCommandTests {
+    public class ExtractCommandTests {
         [Test]
         public void Execute() {
             var mocks = new MockRepository();
             var conn = mocks.StrictMock<ISolrConnection>();
-            With.Mocks(mocks).Expecting(() =>
-            {
-                Expect.Call(conn.PostBinary("/update/extract", null, new List<KeyValuePair<string, string>>()))
-                    .Repeat.Once()
-                    .Return("");
-            }).Verify(() =>
-            {
-                var cmd = new AddBinaryCommand(new AddBinaryParameters(null, "1", "text.doc"));
+            var parameters = new ExtractParameters(null, "1", "text.doc");
+
+            With.Mocks(mocks).Expecting(() => {
+                Expect.Call(conn.PostBinary("/update/extract", null, new List<KeyValuePair<string, string>> {
+                    new KeyValuePair<string, string>("literal.id", parameters.Id),
+                    new KeyValuePair<string, string>("resource.name", parameters.ResourceName),
+                }))
+                .Repeat.Once()
+                .Return("");
+            })
+            .Verify(() => {
+                var cmd = new ExtractCommand(new ExtractParameters(null, "1", "text.doc"));
                 cmd.Execute(conn);
             });
         }

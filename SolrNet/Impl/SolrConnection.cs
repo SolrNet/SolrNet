@@ -123,7 +123,6 @@ namespace SolrNet.Impl {
 
             request.ContentLength = content.Length;
             request.ProtocolVersion = HttpVersion.Version11;
-            request.AllowWriteStreamBuffering = true;
 
             var buffer = new byte[32768];
             try {

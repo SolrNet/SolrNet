@@ -67,10 +67,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
-    <Compile Include="AddBinaryParameters.cs" />
+    <Compile Include="ExtractParameters.cs" />
     <Compile Include="AddParameters.cs" />
     <Compile Include="CollapsedDocument.cs" />
-    <Compile Include="Commands\AddBinaryCommand.cs" />
+    <Compile Include="Commands\ExtractCommand.cs" />
     <Compile Include="Commands\GetSchemaCommand.cs" />
     <Compile Include="Commands\Parameters\CollapseParameters.cs" />
     <Compile Include="Commands\Parameters\DeleteByIdAndOrQueryParam.cs" />
@@ -120,6 +120,7 @@
     <Compile Include="Impl\FieldSerializers\ToStringFieldSerializer.cs" />
     <Compile Include="Impl\FieldSerializers\TypeConvertingFieldSerializer.cs" />
     <Compile Include="Impl\ISelfSerializingQuery.cs" />
+    <Compile Include="Impl\ISolrExtractResponseParser.cs" />
     <Compile Include="Impl\ISolrCache.cs" />
     <Compile Include="Impl\ISolrDocumentActivator.cs" />
     <Compile Include="Impl\ISolrDocumentPropertyVisitor.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="Impl\QuerySerializers\RangeQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\SelfSerializingQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\SingleTypeQuerySerializer.cs" />
+    <Compile Include="Impl\ResponseParsers\ExtractResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\CollapseResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\FacetsResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\HeaderResponseParser.cs" />
@@ -201,6 +203,7 @@
     <Compile Include="Mapping\Validation\Rules\UniqueKeyMatchesMappingRule.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="RandomSortOrder.cs" />
+    <Compile Include="Response.cs" />
     <Compile Include="ResponseHeader.cs" />
     <Compile Include="Impl\SolrDocumentSerializer.cs" />
     <Compile Include="Mapping\Validation\IMappingValidator.cs" />

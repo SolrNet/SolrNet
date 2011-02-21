@@ -16,8 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml;
 using System.Xml.Linq;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
@@ -35,9 +33,10 @@ namespace SolrNet.Impl {
         private readonly ISolrSchemaParser schemaParser;
         private readonly ISolrHeaderResponseParser headerParser;
         private readonly ISolrQuerySerializer querySerializer;
+        private readonly ISolrDIHStatusParser dihStatusParser;
         private readonly ISolrExtractResponseParser extractResponseParser;
 
-        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrExtractResponseParser extractResponseParser) {
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDIHStatusParser dihStatusParser, ISolrExtractResponseParser extractResponseParser) {
             this.connection = connection;
             this.extractResponseParser = extractResponseParser;
             this.queryExecuter = queryExecuter;
@@ -45,6 +44,7 @@ namespace SolrNet.Impl {
             this.schemaParser = schemaParser;
             this.headerParser = headerParser;
             this.querySerializer = querySerializer;
+            this.dihStatusParser = dihStatusParser;
         }
 
         public ResponseHeader Commit(CommitOptions options) {
@@ -116,6 +116,12 @@ namespace SolrNet.Impl {
             string schemaXml = new GetSchemaCommand().Execute(connection);
             var schema = XDocument.Parse(schemaXml);
             return schemaParser.Parse(schema);
+        }
+
+        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options) {
+            var response = connection.Get("/dataimport", null);
+            var dihstatus = XDocument.Parse(response);
+            return dihStatusParser.Parse(dihstatus);
         }
     }
 }

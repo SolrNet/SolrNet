@@ -80,6 +80,7 @@ namespace AutofacContrib.SolrNet {
                 .As(typeof(ISolrOperations<>), typeof(ISolrReadOnlyOperations<>))
                 .SingleInstance();
             builder.RegisterType<SolrSchemaParser>().As<ISolrSchemaParser>();
+            builder.RegisterType<SolrDIHStatusParser>().As<ISolrDIHStatusParser>();
             builder.RegisterType<MappingValidator>().As<IMappingValidator>();
         }
     }

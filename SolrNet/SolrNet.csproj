@@ -82,6 +82,9 @@
     <Compile Include="CollapseResults.cs" />
     <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
+    <Compile Include="Impl\ISolrDIHStatusParser.cs" />
+    <Compile Include="SolrDIHStatus.cs" />
+    <Compile Include="Impl\SolrDIHStatusParser.cs" />
     <Compile Include="Exceptions\TypeNotSupportedException.cs" />
     <Compile Include="ExtractResponse.cs" />
     <Compile Include="FacetDateOther.cs" />

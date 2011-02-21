@@ -1,0 +1,36 @@
+﻿<response>
+  <lst name="responseHeader">
+    <int name="status">0</int>
+    <int name="QTime">0</int>
+  </lst>
+  
+  <lst name="initArgs">
+    <lst name="defaults">
+      <str name="config">
+        data-config.xml
+      </str>
+    </lst>
+  </lst>
+  
+  <str name="status">idle</str>
+  <str name="importResponse"/>
+  
+  <lst name="statusMessages">
+    <str name="Total Requests made to DataSource">1</str>
+    <str name="Total Rows Fetched">1500000</str>
+    <str name="Total Documents Skipped">0</str>
+    <str name="Full Dump Started">2010-12-09 00:00:00</str>
+    <str name="">
+      Indexing completed. Added/Updated: 764648 documents. Deleted 0 documents.
+    </str>
+    <str name="Committed">2010-12-09 00:00:00</str>
+    <str name="Optimized">2010-12-09 00:00:00</str>
+    <str name="Total Documents Processed">764648</str>
+    <str name="Total Documents Failed">735352</str>
+    <str name="Time taken ">0:9:48.65</str>
+  </lst>
+  
+  <str name="WARNING">
+    This response format is experimental.  It is likely to change in the future.
+  </str>
+</response>

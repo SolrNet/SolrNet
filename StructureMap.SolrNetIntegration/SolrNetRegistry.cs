@@ -89,6 +89,7 @@ namespace StructureMap.SolrNetIntegration
             For(typeof(ISolrQueryResultParser<>)).Use(typeof(SolrQueryResultParser<>));
             For<ISolrFieldParser>().Use<DefaultFieldParser>();
             For<ISolrSchemaParser>().Use<SolrSchemaParser>();
+            For<ISolrDIHStatusParser>().Use<SolrDIHStatusParser>();
         }
 
         /// <summary>

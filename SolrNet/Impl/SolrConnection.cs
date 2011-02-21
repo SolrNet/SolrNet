@@ -212,44 +212,32 @@ namespace SolrNet.Impl {
                 if (cacheControl != null && cacheControl.Contains("no-cache"))
                     etag = null; // avoid caching things marked as no-cache
 
-                return new SolrResponse(etag, DeflateResponse(response));
+                return new SolrResponse(etag, UncompressResponse(response));
             }
         }
+
         /// <summary>
         /// Attempts to deflate response stream if compressed in any way.
         /// </summary>
         /// <see cref="http://west-wind.com/weblog/posts/102969.aspx"/>
         /// <param name="response">Web response from request to Solr</param>
         /// <returns></returns>
-        private string DeflateResponse(IHttpWebResponse response)
-        {
-            Stream responseStream = response.GetResponseStream();
-
-            if (response.ContentEncoding != null)
-            {
-                if (response.ContentEncoding.ToLower().Contains("gzip"))
-                {
-                    responseStream = new GZipStream(responseStream, CompressionMode.Decompress);
-                }
-                else if (response.ContentEncoding.ToLower().Contains("deflate"))
-                {
-                    responseStream = new DeflateStream(responseStream, CompressionMode.Decompress);
-                }
+        private string UncompressResponse(IHttpWebResponse response) {
+            using (var responseStream = response.GetResponseStream())
+            using (var compressedStream = GetWrappedCompressionStream(response, responseStream)) {
+                var reader = new StreamReader(compressedStream, TryGetEncoding(response));
+                return reader.ReadToEnd();
             }
+        }
 
-            if (responseStream == null)
-            {
-                return string.Empty;
-            }
-
-            var reader = new StreamReader(responseStream, TryGetEncoding(response));
-
-            string rawResponse = reader.ReadToEnd();
-
-            response.Close();
-            responseStream.Close();
-
-            return rawResponse;         
+        private Stream GetWrappedCompressionStream(IHttpWebResponse response, Stream responseStream) {
+            if (response.ContentEncoding == null)
+                return responseStream;
+            if (response.ContentEncoding.ToLower().Contains("gzip"))
+                return new GZipStream(responseStream, CompressionMode.Decompress);
+            if (response.ContentEncoding.ToLower().Contains("deflate"))
+                return new DeflateStream(responseStream, CompressionMode.Decompress);
+            return responseStream;
         }
 
         private struct SolrResponse {

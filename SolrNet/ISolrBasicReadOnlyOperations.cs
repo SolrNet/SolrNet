@@ -14,7 +14,7 @@
 // limitations under the License.
 #endregion
 
-using System.Xml;
+using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
 using SolrNet.Schema;
 
@@ -44,5 +44,11 @@ namespace SolrNet {
         /// </summary>
         /// <returns>A XmlDocument containing the Solr schema XML.</returns>
         SolrSchema GetSchema();
+
+        /// <summary>
+        /// Gets the schema.
+        /// </summary>
+        /// <returns>A XmlDocument containing the DIH Status XML.</returns>
+        SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options);
     }
 }

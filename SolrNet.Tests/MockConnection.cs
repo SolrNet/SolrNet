@@ -46,7 +46,7 @@ namespace SolrNet.Tests {
             return string.Empty;
         }
 
-        public virtual string PostBinary(string relativeUrl, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public virtual string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
             return string.Empty;
         }
 

@@ -38,7 +38,7 @@ namespace SolrNet {
         /// <param name="content">Binary content</param>
         /// <param name="getParameters">extra GET-parameters</param>
         /// <returns></returns>
-        string PostBinary(string relativeUrl, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters);
+        string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters);
 
         /// <summary>
         /// GETs from Solr

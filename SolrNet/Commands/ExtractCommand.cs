@@ -29,7 +29,7 @@ namespace SolrNet.Commands {
 
         public string Execute(ISolrConnection connection) {
             var queryParameters = ConvertToQueryParameters();
-            return connection.PostBinary("/update/extract", parameters.Content, queryParameters);
+            return connection.PostStream("/update/extract", null, parameters.Content, queryParameters);
         }
 
         private IEnumerable<KeyValuePair<string, string>> ConvertToQueryParameters() {

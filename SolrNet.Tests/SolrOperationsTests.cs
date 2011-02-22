@@ -135,7 +135,7 @@ namespace SolrNet.Tests {
             With.Mocks(mocks)
                 .Expecting(() => {
                     Expect.On(connection)
-                        .Call(connection.PostBinary("/update/extract", parameters.Content, new List<KeyValuePair<string, string>> {
+                        .Call(connection.PostStream("/update/extract", null, parameters.Content, new List<KeyValuePair<string, string>> {
                             new KeyValuePair<string, string>("literal.id", parameters.Id),
                             new KeyValuePair<string, string>("resource.name", parameters.ResourceName),
                         }))

@@ -31,9 +31,9 @@ namespace SolrNet.Tests.Utils {
             return conn.Post(relativeUrl, s);
         }
 
-        public string PostBinary(string relativeUrl, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
             Console.WriteLine("Posting Binary");
-            return conn.PostBinary(relativeUrl, content, parameters);
+            return conn.PostStream(relativeUrl, contentType, content, parameters);
         }
 
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {

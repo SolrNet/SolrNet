@@ -31,7 +31,7 @@ namespace SolrNet.Tests {
             var parameters = new ExtractParameters(null, "1", "text.doc");
 
             With.Mocks(mocks).Expecting(() => {
-                Expect.Call(conn.PostBinary("/update/extract", null, new List<KeyValuePair<string, string>> {
+                Expect.Call(conn.PostStream("/update/extract", null, null, new List<KeyValuePair<string, string>> {
                     new KeyValuePair<string, string>("literal.id", parameters.Id),
                     new KeyValuePair<string, string>("resource.name", parameters.ResourceName),
                 }))

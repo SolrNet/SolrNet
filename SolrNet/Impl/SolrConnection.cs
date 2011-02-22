@@ -82,62 +82,45 @@ namespace SolrNet.Impl {
         public int Timeout { get; set; }
 
         public string Post(string relativeUrl, string s) {
-            var u = new UriBuilder(serverURL);
-            u.Path += relativeUrl;
-            var request = HttpWebRequestFactory.Create(u.Uri);
-            request.Method = HttpWebRequestMethod.POST;
-            request.KeepAlive = true;
-            if (Timeout > 0) {
-                request.ReadWriteTimeout = Timeout;
-                request.Timeout = Timeout;                
-            }
-            request.ContentType = "text/xml; charset=utf-8";
             var bytes = Encoding.UTF8.GetBytes(s);
-            request.ContentLength = bytes.Length;
-            request.ProtocolVersion = HttpVersion.Version11;
-            try {
-                using (var postParams = request.GetRequestStream())
-                using (var sw = new StreamWriter(postParams)) {
-                    sw.Write(s);
-                }
-                return GetResponse(request).Data;
-            }
-            catch (WebException e) {
-                throw new SolrConnectionException(e);
-            }
+            using (var content = new MemoryStream(bytes))
+                return PostStream(relativeUrl, "text/xml; charset=utf-8", content, null);
         }
 
-        public string PostBinary(string relativeUrl, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
             u.Query = GetQuery(parameters);
 
             var request = HttpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.POST;
-            request.KeepAlive = false;
+            request.KeepAlive = true;
 
             if (Timeout > 0) {
                 request.ReadWriteTimeout = Timeout;
                 request.Timeout = Timeout;
             }
+            if (contentType != null)
+                request.ContentType = contentType;
 
             request.ContentLength = content.Length;
             request.ProtocolVersion = HttpVersion.Version11;
 
-            var buffer = new byte[32768];
             try {
                 using (var postStream = request.GetRequestStream()) {
-                    int read;
-                    while ((read = content.Read(buffer, 0, buffer.Length)) > 0) {
-                        postStream.Write(buffer, 0, read);
-                    }
+                    CopyTo(content, postStream);
                 }
                 return GetResponse(request).Data;
             } catch (WebException e) {
                 throw new SolrConnectionException(e);
-            } catch (IOException e) {
-                throw new SolrConnectionException(e);
             }
+        }
+
+        private static void CopyTo(Stream input, Stream output) {
+            byte[] buffer = new byte[0x1000];
+            int read;
+            while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                output.Write(buffer, 0, read);
         }
 
         public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {

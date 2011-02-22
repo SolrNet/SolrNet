@@ -250,7 +250,7 @@ namespace SolrNet.Tests {
 				Expect.Call(request.GetRequestStream())
                     .Repeat.Once()
                     .Return(new MemoryStream());
-				Expect.Call(reqFactory.Create(new Uri("https://pepe")))
+				Expect.Call(reqFactory.Create(new Uri("https://pepe/?version=2.2")))
                     .Repeat.Once()
                     .Return(request);
 				request.Method = HttpWebRequestMethod.POST;

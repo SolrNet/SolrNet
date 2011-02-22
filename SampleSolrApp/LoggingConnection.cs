@@ -14,7 +14,9 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using log4net;
 using SolrNet;
@@ -30,6 +32,11 @@ namespace SampleSolrApp {
         public string Post(string relativeUrl, string s) {
             logger.DebugFormat("POSTing '{0}' to '{1}'", s, relativeUrl);
             return connection.Post(relativeUrl, s);
+        }
+
+        public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters) {
+            logger.DebugFormat("POSTing to '{0}'", relativeUrl);
+            return connection.PostStream(relativeUrl, contentType, content, getParameters);
         }
 
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {

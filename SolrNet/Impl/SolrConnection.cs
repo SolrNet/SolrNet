@@ -112,7 +112,13 @@ namespace SolrNet.Impl {
                 }
                 return GetResponse(request).Data;
             } catch (WebException e) {
-                throw new SolrConnectionException(e);
+                var msg = e.Message;
+                if (e.Response != null) {
+                    using (var s = e.Response.GetResponseStream())
+                    using (var sr = new StreamReader(s))
+                        msg = sr.ReadToEnd();
+                }
+                throw new SolrConnectionException(msg, e);
             }
         }
 

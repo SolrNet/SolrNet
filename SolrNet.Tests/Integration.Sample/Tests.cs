@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
@@ -432,6 +433,19 @@ namespace SolrNet.Tests.Integration.Sample {
             product.OtherFields["features"] = new[] {"a", "b", "c"};
             product.Score = null;
             solr.Add(product);
+        }
+
+        [Test]
+        public void ExtractRequestHandler() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            using (var file = File.OpenRead(@"..\..\test.pdf")) {
+                var response = solr.Extract(new ExtractParameters(file, "abcd") {
+                    ExtractOnly = true,
+                    ExtractFormat = ExtractFormat.Text,
+                });
+                Console.WriteLine(response.Content);
+                Assert.AreEqual("Your PDF viewing software works!\n\n\n", response.Content);
+            }
         }
     }
 }

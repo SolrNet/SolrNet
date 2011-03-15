@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Linq.Expressions;
 using NHibernate.Engine;
 using NHibernate.Stat;
 using NHibernate.Type;
@@ -61,6 +62,14 @@ namespace NHibernate.SolrNet.Impl {
 
         public bool IsDirty() {
             return session.IsDirty();
+        }
+
+        public bool IsReadOnly(object entityOrProxy) {
+            return session.IsReadOnly(entityOrProxy);
+        }
+
+        public void SetReadOnly(object entityOrProxy, bool readOnly) {
+            session.SetReadOnly(entityOrProxy, readOnly);
         }
 
         public object GetIdentifier(object obj) {
@@ -175,42 +184,6 @@ namespace NHibernate.SolrNet.Impl {
             session.Delete(entityName, obj);
         }
 
-        public IList Find(string query) {
-            return session.Find(query);
-        }
-
-        public IList Find(string query, object value, IType type) {
-            return session.Find(query, value, type);
-        }
-
-        public IList Find(string query, object[] values, IType[] types) {
-            return session.Find(query, values, types);
-        }
-
-        public IEnumerable Enumerable(string query) {
-            return session.Enumerable(query);
-        }
-
-        public IEnumerable Enumerable(string query, object value, IType type) {
-            return session.Enumerable(query, value, type);
-        }
-
-        public IEnumerable Enumerable(string query, object[] values, IType[] types) {
-            return session.Enumerable(query, values, types);
-        }
-
-        public ICollection Filter(object collection, string filter) {
-            return session.Filter(collection, filter);
-        }
-
-        public ICollection Filter(object collection, string filter, object value, IType type) {
-            return session.Filter(collection, filter, value, type);
-        }
-
-        public ICollection Filter(object collection, string filter, object[] values, IType[] types) {
-            return session.Filter(collection, filter, values, types);
-        }
-
         public int Delete(string query) {
             return session.Delete(query);
         }
@@ -275,6 +248,14 @@ namespace NHibernate.SolrNet.Impl {
             return session.CreateCriteria(entityName, alias);
         }
 
+        public IQueryOver<T, T> QueryOver<T>() where T : class {
+            return session.QueryOver<T>();
+        }
+
+        public IQueryOver<T, T> QueryOver<T>(Expression<Func<T>> alias) where T : class {
+            return session.QueryOver<T>(alias);
+        }
+
         public IQuery CreateQuery(string queryString) {
             return session.CreateQuery(queryString);
         }
@@ -285,14 +266,6 @@ namespace NHibernate.SolrNet.Impl {
 
         public IQuery GetNamedQuery(string queryName) {
             return session.GetNamedQuery(queryName);
-        }
-
-        public IQuery CreateSQLQuery(string sql, string returnAlias, System.Type returnClass) {
-            return session.CreateSQLQuery(sql, returnAlias, returnClass);
-        }
-
-        public IQuery CreateSQLQuery(string sql, string[] returnAliases, System.Type[] returnClasses) {
-            return session.CreateSQLQuery(sql, returnAliases, returnClasses);
         }
 
         public ISQLQuery CreateSQLQuery(string queryString) {
@@ -387,6 +360,11 @@ namespace NHibernate.SolrNet.Impl {
 
         public bool IsConnected {
             get { return session.IsConnected; }
+        }
+
+        public bool DefaultReadOnly {
+            get { return session.DefaultReadOnly; }
+            set { session.DefaultReadOnly = value; }
         }
 
         public ITransaction Transaction {

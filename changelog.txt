@@ -1,3 +1,5 @@
+- Upgraded to NHibernate 3.1.0
+- Added support for ExtractingRequestHandler
 - Fixed NRE with facet.missing=true
 - Null values in range queries now translated to *
 - Fixed LocalParams + per-field facet parameters

@@ -105,6 +105,11 @@ namespace SolrNet.Impl.ResponseParsers {
                         r.End = (DateTime) dateParser.Parse(dateFacetingNode, typeof (DateTime));
                         break;
                     default:
+                        // Temp fix to support Solr 3.1, which has added a new element <date name="start">...</date>
+                        // not seen in Solr 1.4 to the facet date response – just ignore this element.
+                        if (dateFacetingNode.Name != "int")
+                            break;
+                            
                         var count = (int) intParser.Parse(dateFacetingNode, typeof (int));
                         if (name == FacetDateOther.After.ToString())
                             r.OtherResults[FacetDateOther.After] = count;

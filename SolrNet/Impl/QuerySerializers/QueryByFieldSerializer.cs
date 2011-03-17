@@ -27,7 +27,7 @@ namespace SolrNet.Impl.QuerySerializers {
 
         public string quote(string value) {
             string r = Regex.Replace(value, "(\\+|\\-|\\&\\&|\\|\\||\\!|\\{|\\}|\\[|\\]|\\^|\\(|\\)|\\\"|\\~|\\:|\\;|\\\\)", "\\$1");
-            if (r.IndexOf(' ') != -1)
+            if (r.IndexOf(' ') != -1 || r == "")
                 r = string.Format("\"{0}\"", r);
             return r;
         }

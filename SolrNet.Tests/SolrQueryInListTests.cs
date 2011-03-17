@@ -40,6 +40,13 @@ namespace SolrNet.Tests {
             Assert.AreEqual("(id:one OR id:\"two thousand\")", Serialize(q));
         }
 
+
+        [Test]
+        public void ShouldQuoteEmptyValues() {
+            var q = new SolrQueryInList("id", new[] { "", "two thousand" });
+            Assert.AreEqual("(id:\"\" OR id:\"two thousand\")", Serialize(q));
+        }
+
         [Test]
         public void EmptyList_should_be_null_query() {
             var q = new SolrQueryInList("id", new string[0]);

@@ -419,7 +419,8 @@ namespace SolrNet.Tests {
 			Console.WriteLine(r.FacetFields.Count);
 			Assert.IsTrue(r.FacetFields.ContainsKey("cat"));
 			Assert.IsTrue(r.FacetFields.ContainsKey("inStock"));
-			Assert.AreEqual(2, r.FacetFields["cat"].Where(q => q.Key == "connector").First().Value);
+			Assert.AreEqual(2, r.FacetFields["cat"].First(q => q.Key == "connector").Value);
+            Assert.AreEqual(2, r.FacetFields["cat"].First(q => q.Key == "").Value); // facet.missing as empty string
 
 			Assert.IsNotNull(r.FacetQueries);
 			Console.WriteLine(r.FacetQueries.Count);

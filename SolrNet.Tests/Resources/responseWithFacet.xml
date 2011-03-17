@@ -27,6 +27,7 @@
         <int name="monitor">0</int>
         <int name="drive">0</int>
         <int name="printer">0</int>
+        <int>2</int> <!-- facet.missing=true -->
       </lst>
       <lst name="inStock">
         <int name="false">3</int>

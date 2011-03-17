@@ -30,7 +30,6 @@ namespace SolrNet.Impl {
     /// Manages HTTP connection with Solr
     /// </summary>
     public class SolrConnection : ISolrConnection {
-        private readonly IHttpWebRequestFactory httpWebRequestFactory = new HttpWebRequestFactory();
         private string serverURL;
         private string version = "2.2";
 
@@ -39,14 +38,16 @@ namespace SolrNet.Impl {
         /// </summary>
         public ISolrCache Cache { get; set; }
 
+        /// <summary>
+        /// HTTP request factory
+        /// </summary>
+        public IHttpWebRequestFactory HttpWebRequestFactory { get; set; }
+
         public SolrConnection(string serverURL) {
             ServerURL = serverURL;
             Timeout = -1;
             Cache = new NullCache();
-        }
-
-        public SolrConnection(string serverURL, IHttpWebRequestFactory httpWebRequestFactory) : this(serverURL) {
-            this.httpWebRequestFactory = httpWebRequestFactory;
+            HttpWebRequestFactory = new HttpWebRequestFactory();
         }
 
         public string ServerURL {
@@ -81,7 +82,7 @@ namespace SolrNet.Impl {
         public string Post(string relativeUrl, string s) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
-            var request = httpWebRequestFactory.Create(u.Uri);
+            var request = HttpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.POST;
             request.KeepAlive = true;
             if (Timeout > 0) {
@@ -120,7 +121,7 @@ namespace SolrNet.Impl {
                 Func.Select(parameters, input => string.Format("{0}={1}", HttpUtility.UrlEncode(input.Key),
                                                             HttpUtility.UrlEncode(input.Value))), "?",
                 (x, y) => string.Format("{0}&{1}", x, y));
-            var request = httpWebRequestFactory.Create(u.Uri);
+            var request = HttpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.GET;
             request.KeepAlive = true;
             var cached = Cache[u.Uri.ToString()];

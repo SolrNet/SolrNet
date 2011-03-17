@@ -28,6 +28,8 @@ namespace SolrNet.Impl.QuerySerializers {
         }
 
         public string SerializeSingle(object o) {
+            if (o == null)
+                return "*";
             return Func.First(fieldSerializer.Serialize(o)).FieldValue;
         }
 

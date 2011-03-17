@@ -30,7 +30,7 @@ namespace SolrNet.Impl.QuerySerializers {
                 new QueryInListSerializer(this),
                 new NullableDateTimeRangeQuerySerializer(fieldSerializer),
                 new DateTimeRangeQuerySerializer(fieldSerializer),
-                new RangeQuerySerializer(),
+                new RangeQuerySerializer(fieldSerializer),
                 new MultipleCriteriaQuerySerializer(this),
                 new SelfSerializingQuerySerializer(),
             });

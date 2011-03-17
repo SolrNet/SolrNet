@@ -60,7 +60,7 @@ namespace SolrNet.Impl.ResponseParsers {
                 var field = fieldNode.Attributes["name"].Value;
                 var c = new List<KeyValuePair<string, int>>();
                 foreach (XmlNode facetNode in fieldNode.ChildNodes) {
-                    var nameAttr = facetNode.Attributes["name"];
+                    var nameAttr = facetNode.Attributes == null ? null : facetNode.Attributes["name"];
                     var key = nameAttr == null ? "" : nameAttr.Value;
                     var value = Convert.ToInt32(facetNode.InnerText);
                     c.Add(new KeyValuePair<string, int>(key, value));

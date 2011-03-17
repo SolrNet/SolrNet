@@ -109,5 +109,14 @@ namespace SolrNet.Tests {
             var pg = (Guid)r;
             Assert.AreEqual(g, pg);
         }
+
+        [Test]
+        public void SupportsNullableGuid() {
+            var p = new DefaultFieldParser();
+            var g = Guid.NewGuid();
+            var r = p.Parse(XmlUtils.CreateNode("str", g.ToString()), typeof(Guid?)); 
+            var pg = (Guid?)r;
+            Assert.AreEqual(g, pg.Value);
+        }
     }
 }

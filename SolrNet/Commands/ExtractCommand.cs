@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -37,6 +38,10 @@ namespace SolrNet.Commands {
                 KV("literal.id", parameters.Id),
                 KV("resource.name", parameters.ResourceName)
             };
+
+            if (parameters.Fields != null) {
+                parms.AddRange(parameters.Fields.Select(field => KV(string.Format("literal.{0}", field.FieldName), field.Value)));
+            }
 
             if (parameters.AutoCommit)
                 parms.Add(KV("commit", "true"));

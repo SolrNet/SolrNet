@@ -32,8 +32,8 @@ namespace SolrNet.Tests {
 
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(conn.PostStream("/update/extract", null, null, new List<KeyValuePair<string, string>> {
-                    new KeyValuePair<string, string>("literal.id", parameters.Id),
-                    new KeyValuePair<string, string>("resource.name", parameters.ResourceName),
+                    KV("literal.id", parameters.Id),
+                    KV("resource.name", parameters.ResourceName),
                 }))
                 .Repeat.Once()
                 .Return("");
@@ -42,6 +42,55 @@ namespace SolrNet.Tests {
                 var cmd = new ExtractCommand(new ExtractParameters(null, "1", "text.doc"));
                 cmd.Execute(conn);
             });
+        }
+
+        [Test]
+        public void ExecuteWithAllParameters() {
+            var mocks = new MockRepository();
+            var conn = mocks.StrictMock<ISolrConnection>();
+            var parameters = new ExtractParameters(null, "1", "text.doc");
+
+            With.Mocks(mocks).Expecting(() =>
+            {
+                Expect.Call(conn.PostStream("/update/extract", null, null, new List<KeyValuePair<string, string>> {
+                    KV("literal.id", parameters.Id),
+                    KV("resource.name", parameters.ResourceName),
+                    KV("literal.field1", "value1"),
+                    KV("literal.field2", "value2"),
+                    KV("commit", "true"),
+                    KV("uprefix", "pref"),
+                    KV("defaultField", "field1"),
+                    KV("extractOnly", "true"),
+                    KV("extractFormat", "text"),
+                    KV("capture", "html"),
+                    KV("captureAttr", "true"),
+                    KV("xpath", "body"),
+                    KV("lowernames", "true")
+                }))
+                .Repeat.Once()
+                .Return("");
+            })
+            .Verify(() =>
+            {
+                var cmd = new ExtractCommand(new ExtractParameters(null, "1", "text.doc")
+                {
+                    AutoCommit = true,
+                    Capture = "html",
+                    CaptureAttributes = true,
+                    DefaultField = "field1",
+                    ExtractOnly = true,
+                    ExtractFormat = ExtractFormat.Text,
+                    Fields = new[] { new ExtractField("field1", "value1"), new ExtractField("field2", "value2") },
+                    LowerNames = true,
+                    XPath = "body",
+                    Prefix = "pref"
+                });
+                cmd.Execute(conn);
+            });
+        }
+
+        private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
+            return new KeyValuePair<K, V>(key, value);
         }
     }
 }

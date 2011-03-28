@@ -1,3 +1,19 @@
+0.3.1
+===
+
+- Fixed issue #139 : fixed parsing of decimals with exponential notation
+- Fixed SolrQueryInList with empty strings
+- Fixed facet.missing=true
+- Added support for nullable Guid properties
+- Fixed date faceting for Solr 3.x by ignoring 'start' element
+- Fixed issue #135 : NRE with facet.missing=true
+- Fixed issue #130 : null in range queries translated to *
+- Fixed issue #133 : ignore LocalParams for facet field parameters
+
+0.3.0 (2010-12-05)
+===
+
+- NuGet packages
 - Upgraded to Ninject 2.1.0.76
 - Upgraded to Windsor 2.5.2
 - Signed assemblies

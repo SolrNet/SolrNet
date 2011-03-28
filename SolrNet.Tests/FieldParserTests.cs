@@ -90,6 +90,24 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void DecimalFieldParser() {
+            var p = new DecimalFieldParser();
+            var xml = new XDocument();
+            xml.Add(new XElement("item", "6.66E13"));
+            var value = (decimal) p.Parse(xml.Root, typeof(decimal));
+            Assert.AreEqual(66600000000000m, value);
+        }
+
+        [Test]
+        [ExpectedException(typeof(OverflowException))]
+        public void DecimalFieldParser_overflow() {
+            var p = new DecimalFieldParser();
+            var xml = new XDocument();
+            xml.Add(new XElement("item", "6.66E53"));
+            var value = (decimal)p.Parse(xml.Root, typeof(decimal));
+        }
+
+        [Test]
         public void DefaultFieldParser_EnumAsString() {
             var p = new DefaultFieldParser();
             var xml = new XDocument();

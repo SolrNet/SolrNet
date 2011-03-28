@@ -33,7 +33,7 @@ namespace SolrNet.Impl.FieldParsers {
         }
 
         public object Parse(XElement field, Type t) {
-            return decimal.Parse(field.Value, CultureInfo.InvariantCulture.NumberFormat);
+            return decimal.Parse(field.Value, NumberStyles.Any, CultureInfo.InvariantCulture.NumberFormat);
         }
     }
 }

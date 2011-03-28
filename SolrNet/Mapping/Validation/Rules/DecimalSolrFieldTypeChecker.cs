@@ -30,7 +30,7 @@ namespace SolrNet.Mapping.Validation.Rules {
             if (new[] { "solr.TextField", "solr.StrField" }.Any(st => st == solrFieldType.Type))
                 return new ValidationWarning(String.Format("Property '{0}' of type '{1}' is mapped to a solr field of type '{2}'. These types are not fully compatible. You won't be able to use this field for range queries.", propertyName, propertyType.FullName, solrFieldType.Name));
             if (new[] {"FloatField", "DoubleField"}.Any(st => Regex.IsMatch(solrFieldType.Type, st)))
-                return new ValidationWarning(String.Format("Property '{0}' of type '{1}' is mapped to a solr field of type '{2}'. These types are not fully compatible. You might lose precision.", propertyName, propertyType.FullName, solrFieldType.Name));
+                return new ValidationWarning(String.Format("Property '{0}' of type '{1}' is mapped to a solr field of type '{2}'. These types are not fully compatible. You might lose precision or get OverflowExceptions", propertyName, propertyType.FullName, solrFieldType.Name));
             return new ValidationError(String.Format("Property '{0}' of type '{1}' cannot be stored in solr field type '{2}'.", propertyName, propertyType.FullName, solrFieldType.Name));
         }
 

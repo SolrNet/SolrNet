@@ -1,3 +1,8 @@
+- Added SolrQueryByDistance
+- Fixed issue #139 : fixed parsing of decimals with exponential notation
+- Fixed SolrQueryInList with empty strings
+- Added support for nullable Guid properties
+- Fixed date faceting in Solr 3.x by ignoring the 'start' element
 - Upgraded to NHibernate 3.1.0
 - Added support for ExtractingRequestHandler
 - Fixed NRE with facet.missing=true

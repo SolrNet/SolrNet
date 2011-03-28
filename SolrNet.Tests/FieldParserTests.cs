@@ -84,6 +84,20 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void DecimalFieldParser() {
+            var p = new DecimalFieldParser();
+            var value = (decimal) p.Parse(XmlUtils.CreateNode("item", "6.66E13"), typeof(decimal));
+            Assert.AreEqual(66600000000000m, value);
+        }
+
+        [Test]
+        [ExpectedException(typeof(OverflowException))]
+        public void DecimalFieldParser_overflow() {
+            var p = new DecimalFieldParser();
+            var value = (decimal)p.Parse(XmlUtils.CreateNode("item", "6.66E53"), typeof(decimal));
+        }
+
+        [Test]
         public void DefaultFieldParser_EnumAsString() {
             var p = new DefaultFieldParser();
             var r = p.Parse(XmlUtils.CreateNode("str", "One"), typeof(Numbers));

@@ -32,7 +32,7 @@ namespace SolrNet.Impl.FieldParsers {
         }
 
         public object Parse(XmlNode field, Type t) {
-            return decimal.Parse(field.InnerText, CultureInfo.InvariantCulture.NumberFormat);
+            return decimal.Parse(field.InnerText, NumberStyles.Any, CultureInfo.InvariantCulture.NumberFormat);
         }
     }
 }

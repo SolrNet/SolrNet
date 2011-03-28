@@ -19,9 +19,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SolrNet")]
 [assembly: AssemblyDescription("SolrNet")]
 [assembly: AssemblyProduct("SolrNet")]
-[assembly: AssemblyCopyright("Copyright Mauricio Scheffer 2007-2010")]
+[assembly: AssemblyCopyright("Copyright Mauricio Scheffer 2007-2011")]
 [assembly: AssemblyVersion("0.3.0")]
-[assembly: AssemblyFileVersion("0.3.0")]
+[assembly: AssemblyFileVersion("0.3.1")]
+[assembly: AssemblyInformationalVersion("edd00288ce093a93770c1484908a91118fa8fb2d")]
 [assembly: AssemblyDelaySign(false)]
 
 

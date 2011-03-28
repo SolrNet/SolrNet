@@ -10,7 +10,8 @@ open System.Xml.Linq
 open Fake
 open Fake.FileUtils
 
-let version = "0.3.0"
+let version = "0.3.1"
+let asmVersion = "0.3.0"
 let buildDir = "merged"
 let nugetDir = "nuget"
 let nugetDocs = nugetDir @@ "content"
@@ -112,7 +113,7 @@ Target "Version" (fun _ ->
                                     AssemblyInformationalVersion = Git.sha1()
                                     AssemblyCopyright = "Copyright Mauricio Scheffer 2007-" + DateTime.Now.Year.ToString()
                                     Guid = "6688f9b4-5f2d-4fd6-aafc-3a81c84a69f1"
-                                    AssemblyVersion = version
+                                    AssemblyVersion = asmVersion
                                     AssemblyFileVersion = version })
 )
 

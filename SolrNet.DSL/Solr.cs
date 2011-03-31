@@ -49,8 +49,18 @@ namespace SolrNet.DSL {
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="document"></param>
-        public static void Add<T>(T document) {
-            Add<T>(new[] {document});
+        public static void Add<T>( T document ) {
+            Add<T>( new[] { document } );
+        }
+
+        /// <summary>
+        /// Adds/updates a document with an optional Boost Value to the entire document.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="document">The document.</param>
+        /// <param name="boostValue">The boost value to apply to the document.</param>
+        public static void Add<T>( T document, double? boostValue ) {
+            Add<T>( new[] { document }, boostValue );
         }
 
         /// <summary>
@@ -58,10 +68,22 @@ namespace SolrNet.DSL {
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="documents"></param>
-        public static void Add<T>(IEnumerable<T> documents) {
-            var docs = documents.Select(d => new KeyValuePair<T, double?>(d, null));
-            var cmd = new AddCommand<T>(docs, ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<T>>(), null);
-            cmd.Execute(Connection);
+        public static void Add<T>( IEnumerable<T> documents ) {
+            var docs = documents.Select( d => new KeyValuePair<T, double?>( d, null ) );
+            var cmd = new AddCommand<T>( docs, ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<T>>(), null );
+            cmd.Execute( Connection );
+        }
+
+        /// <summary>
+        /// Adds/updates a list of documents with an optional Boost Value to all documents specified.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="documents">The documents.</param>
+        /// <param name="boostValue">The boost value to apply to all documents.</param>
+        public static void Add<T>( IEnumerable<T> documents, double? boostValue ) {
+            var docs = documents.Select( d => new KeyValuePair<T, double?>( d, boostValue ) );
+            var cmd = new AddCommand<T>( docs, ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<T>>(), null );
+            cmd.Execute( Connection );
         }
 
         /// <summary>
@@ -73,13 +95,15 @@ namespace SolrNet.DSL {
         }
 
         /// <summary>
-        /// Sets the connection timeout.
+        /// Connects to the specified Solr server URL.
         /// </summary>
-        /// <param name="timeout">The HTTP timeout.</param>
-        public static void SetConnectionTimeout( int timeout ) {
-            var conn = Connection as SolrConnection;
-            if ( null != conn )
-                conn.Timeout = timeout;
+        /// <param name="serverURL">The server URL.</param>
+        /// <param name="timeout">The HTTP connection timeout.</param>
+        public static void Connect( string serverURL, int timeout ) {
+            Connection = new SolrConnection( serverURL ) {
+                Timeout = timeout
+            };
+
         }
 
         private static ISolrQueryExecuter<T> NewQueryExecuter<T>() {

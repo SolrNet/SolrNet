@@ -1,3 +1,5 @@
+- Upgraded to Windsor 2.5.3
+- Upgraded to Ninject 2.2.1.0
 - Fluent: added index-time document boosting
 - Fluent: added easier way to set Solr URL and timeout
 - Added SolrQueryByDistance

@@ -64,6 +64,24 @@ namespace SolrNet.DSL {
             cmd.Execute(Connection);
         }
 
+        /// <summary>
+        /// Connects to the specified Solr server URL.
+        /// </summary>
+        /// <param name="serverURL">The server URL.</param>
+        public static void Connect( string serverURL ) {
+            Connection = new SolrConnection( serverURL );
+        }
+
+        /// <summary>
+        /// Sets the connection timeout.
+        /// </summary>
+        /// <param name="timeout">The HTTP timeout.</param>
+        public static void SetConnectionTimeout( int timeout ) {
+            var conn = Connection as SolrConnection;
+            if ( null != conn )
+                conn.Timeout = timeout;
+        }
+
         private static ISolrQueryExecuter<T> NewQueryExecuter<T>() {
             return new SolrQueryExecuter<T>(
                 ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(),
@@ -192,9 +210,21 @@ namespace SolrNet.DSL {
         /// <param name="query">Query</param>
         /// <param name="orders">Sort orders</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>(SolrQuery query, ICollection<SortOrder> orders) {
-            var queryExecuter = NewQueryExecuter<T>(); 
-            return queryExecuter.Execute(query, new QueryOptions { OrderBy = orders });
+        public static ISolrQueryResults<T> Query<T>( SolrQuery query, ICollection<SortOrder> orders ) {
+            var queryExecuter = NewQueryExecuter<T>();
+            return queryExecuter.Execute( query, new QueryOptions { OrderBy = orders } );
+        }
+
+        /// <summary>
+        /// Executes a query
+        /// </summary>
+        /// <typeparam name="T">Document type</typeparam>
+        /// <param name="query">Query</param>
+        /// <param name="options">The QueryOptions to use.</param>
+        /// <returns>Query results</returns>
+        public static ISolrQueryResults<T> Query<T>( SolrQuery query, QueryOptions options ) {
+            var queryExecuter = NewQueryExecuter<T>();
+            return queryExecuter.Execute( query, options );
         }
 
         public static IDSLQuery<T> Query<T>() {

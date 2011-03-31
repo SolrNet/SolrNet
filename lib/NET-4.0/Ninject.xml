@@ -3153,11 +3153,6 @@
             </summary>
             <param name="action">The action callback.</param>
         </member>
-        <member name="M:Ninject.Planning.Bindings.BindingBuilder`1.Ninject#Syntax#IFluentSyntax#GetType">
-            <summary>
-            Provides a root for the fluent syntax associated with an <see cref="P:Ninject.Planning.Bindings.BindingBuilder`1.Binding"/>.
-            </summary>
-        </member>
         <member name="P:Ninject.Planning.Bindings.BindingBuilder`1.Binding">
             <summary>
             Gets the binding being built.

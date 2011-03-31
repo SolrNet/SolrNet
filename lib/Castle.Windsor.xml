@@ -1035,9 +1035,9 @@
               hierarchy (sub containers).
             </summary>
             <summary>
-            Default implementation of <see cref="T:Castle.MicroKernel.IKernel"/>. 
-            This implementation is complete and also support a kernel 
-            hierarchy (sub containers).
+              Default implementation of <see cref="T:Castle.MicroKernel.IKernel"/>. 
+              This implementation is complete and also support a kernel 
+              hierarchy (sub containers).
             </summary>
         </member>
         <member name="T:Castle.MicroKernel.IKernel">
@@ -1577,11 +1577,6 @@
         <member name="F:Castle.MicroKernel.DefaultKernel.subsystems">
             <summary>
               Map of subsystems registered.
-            </summary>
-        </member>
-        <member name="F:Castle.MicroKernel.DefaultKernel.modelBuilder">
-            <summary>
-              The implementation of <see cref="T:Castle.MicroKernel.IComponentModelBuilder"/>
             </summary>
         </member>
         <member name="F:Castle.MicroKernel.DefaultKernel.parentKernel">

@@ -1,3 +1,5 @@
+- Fluent: added index-time document boosting
+- Fluent: added easier way to set Solr URL and timeout
 - Added SolrQueryByDistance
 - Fixed issue #139 : fixed parsing of decimals with exponential notation
 - Fixed SolrQueryInList with empty strings

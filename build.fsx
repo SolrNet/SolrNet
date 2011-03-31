@@ -145,7 +145,7 @@ Target "NuGet.Windsor" (fun _ ->
         "Castle.Facilities.SolrNetIntegration" 
         "SolrNet.Windsor"
         "Windsor facility for SolrNet"
-        ["Castle.Windsor", "2.5.1"; "SolrNet", version]
+        ["Castle.Windsor", "[2.5.1,2.5.3]"; "SolrNet", version]
 )
 
 Target "NuGet.Ninject" (fun _ ->

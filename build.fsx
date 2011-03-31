@@ -146,7 +146,7 @@ Target "NuGet.Windsor" (fun _ ->
         "Castle.Facilities.SolrNetIntegration" 
         "SolrNet.Windsor"
         "Windsor facility for SolrNet"
-        ["Castle.Windsor", "2.5.1"; "SolrNet", "0.3.0"]
+        ["Castle.Windsor", "2.5.1"; "SolrNet", version]
 )
 
 Target "NuGet.Ninject" (fun _ ->
@@ -154,7 +154,7 @@ Target "NuGet.Ninject" (fun _ ->
         "Ninject.Integration.SolrNet" 
         "SolrNet.Ninject"
         "Ninject module for SolrNet"
-        ["Ninject", "2.1.0.76"; "SolrNet", "0.3.0"]
+        ["Ninject", "2.1.0.76"; "SolrNet", version]
 )
 
 Target "NuGet.NHibernate" (fun _ ->
@@ -162,7 +162,7 @@ Target "NuGet.NHibernate" (fun _ ->
         "NHibernate.SolrNet" 
         "SolrNet.NHibernate"
         "NHibernate integration for SolrNet"
-        ["NHibernate.Core", "2.1.2.4000"; "CommonServiceLocator", "1.0"; "SolrNet", "0.3.0"]
+        ["NHibernate.Core", "2.1.2.4000"; "CommonServiceLocator", "1.0"; "SolrNet", version]
 )
 
 Target "NuGet.StructureMap" (fun _ ->
@@ -170,7 +170,7 @@ Target "NuGet.StructureMap" (fun _ ->
         "StructureMap.SolrNetIntegration" 
         "SolrNet.StructureMap"
         "StructureMap registry for SolrNet"
-        ["structuremap", "2.6.1.0"; "SolrNet", "0.3.0"]
+        ["structuremap", "2.6.1.0"; "SolrNet", version]
 )
 
 Target "ReleasePackage" (fun _ -> 

@@ -153,7 +153,7 @@ Target "NuGet.Ninject" (fun _ ->
         "Ninject.Integration.SolrNet" 
         "SolrNet.Ninject"
         "Ninject module for SolrNet"
-        ["Ninject", "2.1.0.76"; "SolrNet", version]
+        ["Ninject", "[2.2.0.0,2.2.1.0]"; "SolrNet", version]
 )
 
 Target "NuGet.NHibernate" (fun _ ->
@@ -161,7 +161,7 @@ Target "NuGet.NHibernate" (fun _ ->
         "NHibernate.SolrNet" 
         "SolrNet.NHibernate"
         "NHibernate integration for SolrNet"
-        ["NHibernate.Core", "2.1.2.4000"; "CommonServiceLocator", "1.0"; "SolrNet", version]
+        ["NHibernate", "3.1.0.4000"; "CommonServiceLocator", "1.0"; "SolrNet", version]
 )
 
 Target "NuGet.StructureMap" (fun _ ->

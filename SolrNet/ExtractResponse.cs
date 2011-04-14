@@ -1,4 +1,6 @@
 ﻿namespace SolrNet {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Response of the Extraction
     /// </summary>
@@ -14,6 +16,11 @@
         /// http://wiki.apache.org/solr/TikaExtractOnlyExampleOutput 
         /// </summary>
         public string Content { get; set; }
+
+        /// <summary>
+        /// Metadata fields populated by ExtractingRequestHandler with extract only set to true
+        /// </summary>
+        public List<ExtractField> Metadata { get; set; }
 
         public ExtractResponse(ResponseHeader responseHeader) {
             ResponseHeader = responseHeader;

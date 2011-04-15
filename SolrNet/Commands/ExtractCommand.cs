@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,7 +31,7 @@ namespace SolrNet.Commands {
 
         public string Execute(ISolrConnection connection) {
             var queryParameters = ConvertToQueryParameters();
-            return connection.PostStream("/update/extract", null, parameters.Content, queryParameters);
+            return connection.PostStream("/update/extract", parameters.StreamType, parameters.Content, queryParameters);
         }
 
         private IEnumerable<KeyValuePair<string, string>> ConvertToQueryParameters() {
@@ -39,8 +40,22 @@ namespace SolrNet.Commands {
                 KV("resource.name", parameters.ResourceName)
             };
 
-            if (parameters.Fields != null) {
-                parms.AddRange(parameters.Fields.Select(field => KV(string.Format("literal.{0}", field.FieldName), field.Value)));
+            if (parameters.Fields != null)
+            {
+                foreach (var f in parameters.Fields)
+                {
+                    if (f.FieldName == "id")
+                    {
+                        throw new ArgumentException("ExtractField named 'id' is not permitted in ExtractParameters.Fields - use ExtractParameters.Id instead");
+                    }
+
+                    parms.Add(KV("literal." + f.FieldName, f.Value));
+                }
+            }
+
+            if (parameters.StreamType != null)
+            {
+                parms.Add(new KeyValuePair<string, string>("stream.type", parameters.StreamType));
             }
 
             if (parameters.AutoCommit)

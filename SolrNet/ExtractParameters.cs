@@ -90,6 +90,12 @@ namespace SolrNet
         /// </summary>
         public bool LowerNames { get; set; }
 
+
+        /// <summary>
+        /// Mime type of the file - if provided, Tika won't have to try to infer it from the ResourceName and content
+        /// </summary>
+        public string StreamType { get; set; }
+
         /// <summary>
         /// The rich document to index
         /// </summary>

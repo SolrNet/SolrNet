@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using MbUnit.Framework;
 using Rhino.Mocks;
@@ -52,11 +53,12 @@ namespace SolrNet.Tests {
 
             With.Mocks(mocks).Expecting(() =>
             {
-                Expect.Call(conn.PostStream("/update/extract", null, null, new List<KeyValuePair<string, string>> {
+                Expect.Call(conn.PostStream("/update/extract", "application/word-document", null, new List<KeyValuePair<string, string>> {
                     KV("literal.id", parameters.Id),
                     KV("resource.name", parameters.ResourceName),
                     KV("literal.field1", "value1"),
                     KV("literal.field2", "value2"),
+                    KV("stream.type", "application/word-document"),
                     KV("commit", "true"),
                     KV("uprefix", "pref"),
                     KV("defaultField", "field1"),
@@ -83,10 +85,26 @@ namespace SolrNet.Tests {
                     Fields = new[] { new ExtractField("field1", "value1"), new ExtractField("field2", "value2") },
                     LowerNames = true,
                     XPath = "body",
-                    Prefix = "pref"
+                    Prefix = "pref",
+                    StreamType = "application/word-document"
                 });
                 cmd.Execute(conn);
             });
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ExecuteWithDuplicateIdField()
+        {
+            var mocks = new MockRepository();
+            var conn = mocks.StrictMock<ISolrConnection>();
+
+            const string DuplicateId = "duplicateId";
+            var cmd = new ExtractCommand(new ExtractParameters(null, DuplicateId, "text.doc")
+            {
+                Fields = new[] { new ExtractField("id", DuplicateId), new ExtractField("field2", "value2") }
+            });
+            cmd.Execute(conn);
         }
 
         private static KeyValuePair<K, V> KV<K, V>(K key, V value) {

@@ -37,6 +37,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutofacContrib.SolrNet", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutofacContrib.SolrNet.Tests", "AutofacContrib.SolrNet.Tests\AutofacContrib.SolrNet.Tests.csproj", "{77E47E7C-2CEE-406A-B344-9699DA0F1851}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.SolrNetIntegration", "Unity.SolrNetIntegration\Unity.SolrNetIntegration.csproj", "{7645E009-0ADC-420E-B00D-3745934E6AB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.SolrNetIntegration.Tests", "Unity.SolrNetIntegration.Tests\Unity.SolrNetIntegration.Tests.csproj", "{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +107,14 @@ Global
 		{77E47E7C-2CEE-406A-B344-9699DA0F1851}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77E47E7C-2CEE-406A-B344-9699DA0F1851}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77E47E7C-2CEE-406A-B344-9699DA0F1851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7645E009-0ADC-420E-B00D-3745934E6AB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7645E009-0ADC-420E-B00D-3745934E6AB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7645E009-0ADC-420E-B00D-3745934E6AB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7645E009-0ADC-420E-B00D-3745934E6AB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

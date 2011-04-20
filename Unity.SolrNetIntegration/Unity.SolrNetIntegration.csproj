@@ -36,9 +36,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\SolrConfigurationSection.cs" />
+    <Compile Include="Config\SolrServerElement.cs" />
+    <Compile Include="Config\SolrServers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SolrCore.cs" />
+    <Compile Include="SolrNetContainerConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">

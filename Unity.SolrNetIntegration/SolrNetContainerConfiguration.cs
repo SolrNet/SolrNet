@@ -21,7 +21,7 @@ using Unity.SolrNetIntegration.Config;
 
 namespace Unity.SolrNetIntegration {
   public class SolrNetContainerConfiguration {
-    public IUnityContainer Configure(SolrServers solrServers, IUnityContainer container) {
+    public IUnityContainer ConfigureContainer(SolrServers solrServers, IUnityContainer container) {
       container.RegisterType<IReadOnlyMappingManager, MemoizingMappingManager>(new InjectionConstructor(new ResolvedParameter(typeof (AttributesMappingManager))));
       container.RegisterType(typeof (ISolrDocumentActivator<>), typeof (SolrDocumentActivator<>));
       container.RegisterType(typeof (ISolrQueryExecuter<>), typeof (SolrQueryExecuter<>));

@@ -180,6 +180,14 @@ Target "NuGet.Autofac" (fun _ ->
         ["Autofac", "2.2.4.900"; "SolrNet", version]
 )
 
+Target "NuGet.Unity" (fun _ ->
+    nuGetSingle 
+        "Unity.SolrNetIntegration" 
+        "SolrNet.Unity"
+        "Unity integration for SolrNet"
+        ["Unity", "2.0"; "SolrNet", version]
+)
+
 Target "ReleasePackage" (fun _ -> 
     let outputPath = "build"
     rm_rf outputPath

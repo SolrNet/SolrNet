@@ -1,23 +1,29 @@
+- Added Unity integration
 - Breaking change: SolrQueryByField now quotes '*' and '?'
 - Upgraded to Windsor 2.5.3
 - Upgraded to Ninject 2.2.1.0
 - Fluent: added index-time document boosting
 - Fluent: added easier way to set Solr URL and timeout
 - Added SolrQueryByDistance
-- Fixed issue #139 : fixed parsing of decimals with exponential notation
-- Fixed SolrQueryInList with empty strings
-- Added support for nullable Guid properties
-- Fixed date faceting in Solr 3.x by ignoring the 'start' element
 - Upgraded to NHibernate 3.1.0
 - Added support for ExtractingRequestHandler
-- Fixed NRE with facet.missing=true
-- Null values in range queries now translated to *
-- Fixed LocalParams + per-field facet parameters
 - Added Rollback (missing in top-level interface)
 - Added CommitWithin and Overwrite parameters for document add
 - Upgraded to .NET 3.5
 - Minor breaking change: removed SolrConnection constructor with IHttpWebRequestFactory parameter. Made IHttpWebRequestFactory a property.
 - Added Autofac integration module
+
+0.3.1 (2011-03-31)
+===
+
+- Fixed issue #139 : fixed parsing of decimals with exponential notation
+- Fixed SolrQueryInList with empty strings
+- Fixed facet.missing=true
+- Added support for nullable Guid properties
+- Fixed date faceting for Solr 3.x by ignoring 'start' element
+- Fixed issue #135 : NRE with facet.missing=true
+- Fixed issue #130 : null in range queries translated to *
+- Fixed issue #133 : ignore LocalParams for facet field parameters
 
 0.3.0 (2010-12-05)
 ===

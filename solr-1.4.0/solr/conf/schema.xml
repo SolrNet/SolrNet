@@ -428,7 +428,7 @@
    -->
 
    <field name="id" type="string" indexed="true" stored="true" required="true" /> 
-   <field name="guid" type="uuid" indexed="true" stored="true" required="true" /> 
+   <field name="guid" type="uuid" indexed="true" stored="true"/> 
    <field name="sku" type="textTight" indexed="true" stored="true" omitNorms="true"/>
    <field name="name" type="textgen" indexed="true" stored="true"/>
    <field name="alphaNameSort" type="alphaOnlySort" indexed="true" stored="false"/>

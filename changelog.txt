@@ -1,3 +1,4 @@
+- Breaking change: SolrQueryByField now quotes '*' and '?'
 - Upgraded to Windsor 2.5.3
 - Upgraded to Ninject 2.2.1.0
 - Fluent: added index-time document boosting

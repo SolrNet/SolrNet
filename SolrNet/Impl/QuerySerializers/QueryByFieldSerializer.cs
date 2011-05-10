@@ -25,8 +25,10 @@ namespace SolrNet.Impl.QuerySerializers {
             return string.Format("{0}:{1}", q.FieldName, Quote(q.FieldValue));
         }
 
-        public string Quote(string value) {
-            string r = Regex.Replace(value, "(\\+|\\-|\\&\\&|\\|\\||\\!|\\{|\\}|\\[|\\]|\\^|\\(|\\)|\\\"|\\~|\\:|\\;|\\\\|\\?|\\*)", "\\$1");
+        public static readonly Regex SpecialCharactersRx = new Regex("(\\+|\\-|\\&\\&|\\|\\||\\!|\\{|\\}|\\[|\\]|\\^|\\(|\\)|\\\"|\\~|\\:|\\;|\\\\|\\?|\\*)", RegexOptions.Compiled);
+
+        public static string Quote(string value) {
+            string r = SpecialCharactersRx.Replace(value, "\\$1");
             if (r.IndexOf(' ') != -1 || r == "")
                 r = string.Format("\"{0}\"", r);
             return r;

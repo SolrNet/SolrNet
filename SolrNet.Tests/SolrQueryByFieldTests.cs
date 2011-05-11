@@ -58,11 +58,5 @@ namespace SolrNet.Tests {
 			var q = new SolrQueryByField("id", "hello+world-bye&&q||w!e(r)t{y}[u]^i\"o~p:a\\s+d;;?*");
 			Assert.AreEqual(@"id:hello\+world\-bye\&&q\||w\!e\(r\)t\{y\}\[u\]\^i\""o\~p\:a\\s\+d\;\;\?\*", Serialize(q));
 		}
-
-		[Test]
-		public void ShouldNotQuoteWildcard() {
-			var q = new SolrQueryByField("id", "h?llo*");
-			Assert.AreEqual("id:h?llo*", Serialize(q));
-		}
 	}
 }

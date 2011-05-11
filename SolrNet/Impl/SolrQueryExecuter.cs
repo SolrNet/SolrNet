@@ -53,6 +53,7 @@ namespace SolrNet.Impl {
             this.querySerializer = querySerializer;
             this.facetQuerySerializer = facetQuerySerializer;
             DefaultRows = ConstDefaultRows;
+            Handler = DefaultHandler;
         }
 
         public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {

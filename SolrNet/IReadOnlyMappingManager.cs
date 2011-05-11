@@ -28,7 +28,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="type"></param>
         /// <returns>Empty collection if <paramref name="type"/> is not mapped</returns>
-        ICollection<SolrFieldModel> GetFields(Type type);
+        IDictionary<string,SolrFieldModel> GetFields(Type type);
 
         /// <summary>
         /// Gets unique key for the type

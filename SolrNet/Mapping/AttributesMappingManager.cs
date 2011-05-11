@@ -32,15 +32,18 @@ namespace SolrNet.Mapping {
             return propsAttrs;
         }
 
-        public ICollection<SolrFieldModel> GetFields(Type type) {
+        public IDictionary<string,SolrFieldModel> GetFields(Type type) {
             var propsAttrs = GetPropertiesWithAttribute<SolrFieldAttribute>(type);
 
-            var fields = propsAttrs.Select(kv => new SolrFieldModel {
-                Property = kv.Key, 
-                FieldName = kv.Value[0].FieldName ?? kv.Key.Name, 
-                Boost = kv.Value[0].Boost
-            });
-            return new List<SolrFieldModel>(fields);
+            var fields = propsAttrs
+                .Select(kv => new SolrFieldModel {
+                    Property = kv.Key,
+                    FieldName = kv.Value[0].FieldName ?? kv.Key.Name,
+                    Boost = kv.Value[0].Boost
+                })
+                .Select(m => new KeyValuePair<string, SolrFieldModel>(m.FieldName, m))
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
+            return fields;
         }
 
         public virtual T[] GetCustomAttributes<T>(PropertyInfo prop) where T : Attribute {

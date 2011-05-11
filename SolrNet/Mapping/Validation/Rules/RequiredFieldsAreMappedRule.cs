@@ -40,13 +40,7 @@ namespace SolrNet.Mapping.Validation.Rules {
 
             foreach (SolrField solrField in solrSchema.SolrFields) {
                 if (solrField.IsRequired) {
-                    bool fieldFoundInMappingOrCopyFields = false;
-                    foreach (var mappedField in mappingManager.GetFields(documentType)) {
-                        if (mappedField.FieldName.Equals(solrField.Name)) {
-                            fieldFoundInMappingOrCopyFields = true;
-                            break;
-                        }
-                    }
+                    bool fieldFoundInMappingOrCopyFields = mappingManager.GetFields(documentType).ContainsKey(solrField.Name);
 
                     if (!fieldFoundInMappingOrCopyFields) {
                         foreach (SolrCopyField copyField in solrSchema.SolrCopyFields) {

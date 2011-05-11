@@ -25,7 +25,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void GetFields() {
 			var m = new AllPropertiesMappingManager();
-			var fields = m.GetFields(typeof(Entity));
+			var fields = m.GetFields(typeof(Entity)).Values;
 			Assert.AreEqual(2, fields.Count);
 			foreach (var f in fields) {
 				if (f.FieldName == "Id")

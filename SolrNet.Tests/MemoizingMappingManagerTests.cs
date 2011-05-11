@@ -31,9 +31,8 @@ namespace SolrNet.Tests {
             With.Mocks(mocks)
                 .Expecting(() => Expect.Call(innerMapper.GetFields(typeof (TestDocument)))
                                      .Repeat.Once()
-                                     .Return(new List<SolrFieldModel> 
-                                     {
-                                         new SolrFieldModel { Property = typeof (TestDocument).GetProperty("Id"), FieldName = "id"},
+                                     .Return(new Dictionary<string,SolrFieldModel> {
+                                         {"id", new SolrFieldModel { Property = typeof (TestDocument).GetProperty("Id"), FieldName = "id"}},
                                      }))
                 .Verify(() => {
                     var mapper = new MemoizingMappingManager(innerMapper);

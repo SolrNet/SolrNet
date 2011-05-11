@@ -44,7 +44,7 @@ namespace SolrNet.Tests {
             var parser = new SolrDocumentResponseParser<TestDocument>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<TestDocument>());
 		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
             var docNode = xml.XPathSelectElement("response/result/doc");
-			var doc = parser.ParseDocument(docNode, mapper.GetFields(typeof(TestDocument)));
+			var doc = parser.ParseDocument(docNode);
 			Assert.IsNotNull(doc);
 			Assert.AreEqual(123456, doc.Id);
 		}
@@ -56,7 +56,7 @@ namespace SolrNet.Tests {
             var parser = new SolrDocumentResponseParser<TestDocumentWithoutAttributes>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<TestDocumentWithoutAttributes>());
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
             var docNode = xml.XPathSelectElement("response/result/doc");
-            var doc = parser.ParseDocument(docNode, mapper.GetFields(typeof(TestDocumentWithoutAttributes)));
+            var doc = parser.ParseDocument(docNode);
 			Assert.IsNotNull(doc);
 			Assert.AreEqual(123456, doc.Id);
 	    }
@@ -576,7 +576,7 @@ namespace SolrNet.Tests {
             var parser = new SolrDocumentResponseParser<TestDocWithoutSetter>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<TestDocWithoutSetter>());
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
             var docNode = xml.XPathSelectElement("response/result/doc");
-            var doc = parser.ParseDocument(docNode, mapper.GetFields(typeof(TestDocument)));
+            var doc = parser.ParseDocument(docNode);
             Assert.IsNotNull(doc);
             Assert.AreEqual(0, doc.Id);
         }

@@ -41,7 +41,7 @@ namespace SolrNet.Impl {
                 docNode.Attributes.Append(boostAttr);
             }
             var fields = mappingManager.GetFields(doc.GetType());
-            foreach (var field in fields) {
+            foreach (var field in fields.Values) {
                 var p = field.Property;
                 if (!p.CanRead)
                     continue;

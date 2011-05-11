@@ -44,7 +44,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof (Entity).GetProperty("Id"), "id2");
             var fields = mgr.GetFields(typeof (Entity));
             Assert.AreEqual(1, fields.Count);
-            Assert.AreEqual("id2", fields.First().FieldName);
+            Assert.AreEqual("id2", fields.First().Value.FieldName);
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace SolrNet.Tests {
             mgr.Add(property);
             var fields = mgr.GetFields(typeof (Entity));
             Assert.AreEqual(1, fields.Count);
-            Assert.AreEqual("Id", fields.First().FieldName);
+            Assert.AreEqual("Id", fields.First().Value.FieldName);
         }
 
         [Test]

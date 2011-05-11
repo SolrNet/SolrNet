@@ -38,8 +38,8 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
 
         public void Visit(object doc, string fieldName, XElement field) {
             var allFields = mapper.GetFields(doc.GetType());
-            var thisField = allFields.FirstOrDefault(p => p.FieldName == fieldName);
-            if (thisField == null)
+            SolrFieldModel thisField;
+            if (!allFields.TryGetValue(fieldName, out thisField))
                 return;
             if (!thisField.Property.CanWrite)
                 return;

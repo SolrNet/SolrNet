@@ -30,13 +30,13 @@ namespace SolrNet.Mapping.Validation.Rules {
 
         public IEnumerable<ValidationResult> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             foreach (var x in mappingManager.GetFields(documentType)) {
-                var solrField = solrSchema.FindSolrFieldByName(x.FieldName);
+                var solrField = solrSchema.FindSolrFieldByName(x.Key);
                 if (solrField == null)
                     continue;
                 foreach (var checker in fieldTypeCheckers) {
-                    if (!checker.CanHandleType(x.Property.PropertyType))
+                    if (!checker.CanHandleType(x.Value.Property.PropertyType))
                         continue;
-                    var i = checker.Validate(solrField.Type, x.Property.Name, x.Property.PropertyType);
+                    var i = checker.Validate(solrField.Type, x.Value.Property.Name, x.Value.Property.PropertyType);
                     if (i != null)
                         yield return i;
                 }

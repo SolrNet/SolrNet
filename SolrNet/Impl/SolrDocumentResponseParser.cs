@@ -46,7 +46,7 @@ namespace SolrNet.Impl {
             var allFields = mappingManager.GetFields(typeof (T));
             var nodes = parentNode.Elements("doc");
             foreach (var docNode in nodes) {
-                results.Add(ParseDocument(docNode, allFields));
+                results.Add(ParseDocument(docNode));
             }
             return results;
         }
@@ -57,7 +57,7 @@ namespace SolrNet.Impl {
         /// <param name="node">response xml node</param>
         /// <param name="fields">document fields</param>
         /// <returns>populated document</returns>
-        public T ParseDocument(XElement node, ICollection<SolrFieldModel> fields) {
+        public T ParseDocument(XElement node) {
             var doc = activator.Create();
             foreach (var field in node.Elements()) {
                 string fieldName = field.Attribute("name").Value;

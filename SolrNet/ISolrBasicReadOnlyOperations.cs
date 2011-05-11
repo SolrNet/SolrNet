@@ -42,13 +42,13 @@ namespace SolrNet {
         /// <summary>
         /// Gets the schema.
         /// </summary>
-        /// <returns>A XmlDocument containing the Solr schema XML.</returns>
+        /// <returns>Solr schema</returns>
         SolrSchema GetSchema();
 
         /// <summary>
-        /// Gets the schema.
+        /// Gets the current status of the DataImportHandler.
         /// </summary>
-        /// <returns>A XmlDocument containing the DIH Status XML.</returns>
+        /// <returns>DIH status</returns>
         SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options);
     }
 }

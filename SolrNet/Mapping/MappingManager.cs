@@ -24,7 +24,7 @@ namespace SolrNet.Mapping {
     /// Manual mapping manager
     /// </summary>
     public class MappingManager : IMappingManager {
-        private readonly IDictionary<Type, List<SolrFieldModel>> mappings = new Dictionary<Type, List<SolrFieldModel>>();
+        private readonly IDictionary<Type, Dictionary<string,SolrFieldModel>> mappings = new Dictionary<Type, Dictionary<string,SolrFieldModel>>();
         private readonly IDictionary<Type, PropertyInfo> uniqueKeys = new Dictionary<Type, PropertyInfo>();
 
         public void Add(PropertyInfo property) {
@@ -52,20 +52,17 @@ namespace SolrNet.Mapping {
 
             var t = property.ReflectedType;
 
-            if (!mappings.ContainsKey(t))
-            {
-                mappings[t] = new List<SolrFieldModel>();
+            if (!mappings.ContainsKey(t)) {
+                mappings[t] = new Dictionary<string,SolrFieldModel>();
             }
 
-            var idx = mappings[t].FindIndex(f => f.Property == fld.Property);
-
-            if(idx >= 0)
-            {
-                mappings[t][idx] = fld;
-                return;
+            var m = mappings[t].FirstOrDefault(k => k.Value.Property == property);
+            if (m.Key != null) {
+                mappings[t].Remove(m.Key);
             }
 
-            mappings[t].Add(fld);
+
+            mappings[t][fieldName] = fld;
         }
 
         /// <summary>
@@ -73,11 +70,11 @@ namespace SolrNet.Mapping {
         /// </summary>
         /// <param name="type">Document type</param>
         /// <returns>Null if <paramref name="type"/> is not mapped</returns>
-        public ICollection<SolrFieldModel> GetFields(Type type) {
+        public IDictionary<string,SolrFieldModel> GetFields(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
             if (!mappings.ContainsKey(type))
-                return new SolrFieldModel[0];// KeyValuePair<PropertyInfo, string>[0];
+                return new Dictionary<string, SolrFieldModel>();
             return mappings[type];
         }
 
@@ -95,9 +92,11 @@ namespace SolrNet.Mapping {
                 throw new ArgumentNullException("type");
             try {
                 var prop = uniqueKeys[type];
-                var unique = mappings[type].Find(t => t.Property == prop);
-                return unique;
+                var unique = mappings[type].First(kv => kv.Value.Property == prop);
+                return unique.Value;
             } catch (KeyNotFoundException) {
+                return null;
+            } catch (InvalidOperationException) {
                 return null;
             }
         }

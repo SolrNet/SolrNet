@@ -40,6 +40,13 @@ namespace SolrNet.Impl {
 
         public static readonly int ConstDefaultRows = 100000000;
 
+        public static readonly string DefaultHandler = "/select";
+
+        /// <summary>
+        /// Request handler to use. By default "/select"
+        /// </summary>
+        public string Handler { get; set; }
+
         public SolrQueryExecuter(ISolrQueryResultParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer, ISolrFacetQuerySerializer facetQuerySerializer) {
             this.resultParser = resultParser;
             this.connection = connection;
@@ -327,7 +334,7 @@ namespace SolrNet.Impl {
         /// <returns>query results</returns>
         public ISolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
             var param = GetAllParameters(q, options);
-            string r = connection.Get("/select", param);
+            string r = connection.Get(Handler, param);
             var qr = resultParser.Parse(r);
             return qr;
         }

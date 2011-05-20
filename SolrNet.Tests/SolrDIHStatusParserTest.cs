@@ -19,7 +19,7 @@ namespace SolrNet.Tests
             Assert.AreEqual("", dihStatusDoc.ImportResponse);
             Assert.AreEqual(DateTime.Parse("2010-12-09 00:00:00"), dihStatusDoc.Optimized);
             Assert.AreEqual(DIHStatus.IDLE, dihStatusDoc.Status);
-            Assert.AreEqual("\r\n      Indexing completed. Added/Updated: 764648 documents. Deleted 0 documents.\r\n    ", dihStatusDoc.Summary);
+            Assert.AreEqual("Indexing completed. Added/Updated: 764648 documents. Deleted 0 documents.", dihStatusDoc.Summary.Trim());
             Assert.AreEqual(new TimeSpan(), dihStatusDoc.TimeElapsed);
             Assert.AreEqual(new TimeSpan(0, 0, 9, 48, 65), dihStatusDoc.TimeTaken);
             Assert.AreEqual(735352, dihStatusDoc.TotalDocumentsFailed);

@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using SolrNet.Impl;
 
@@ -61,6 +62,7 @@ namespace SolrNet {
         /// <summary>
         /// More-like-this results
         /// </summary>
+        [Obsolete("Use MoreLikeThis.Results property instead", false)]
         IDictionary<string, IList<T>> SimilarResults { get; set; }
 
         /// <summary>
@@ -77,5 +79,10 @@ namespace SolrNet {
         /// Date faceting results
         /// </summary>
 		IDictionary<string, DateFacetingResult> FacetDates { get; set; }
+
+        /// <summary>
+        /// MoreLikeThis results
+        /// </summary>
+        MoreLikeThisResults<T> MoreLikeThis { get; set; }
 	}
 }

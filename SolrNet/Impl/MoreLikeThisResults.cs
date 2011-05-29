@@ -26,6 +26,7 @@ namespace SolrNet.Impl {
         public MoreLikeThisResults()
         {
             this.Results = new Dictionary<string, IList<T>>();
+            this.InterestingTerms = new Dictionary<string, float>();
         }
 
         public int NumFound { get; set; }
@@ -35,5 +36,7 @@ namespace SolrNet.Impl {
         public T Match { get; set; }
 
         public IDictionary<string, IList<T>> Results { get; set; }
+
+        public IDictionary<string, float> InterestingTerms { get; set; }
     }
 }

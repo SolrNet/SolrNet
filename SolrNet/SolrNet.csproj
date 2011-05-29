@@ -82,6 +82,7 @@
     <Compile Include="CollapseResults.cs" />
     <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
+    <Compile Include="Impl\MoreLikeThisResults.cs" />
     <Compile Include="Impl\ISolrDIHStatusParser.cs" />
     <Compile Include="SolrQueryByDistance.cs" />
     <Compile Include="SolrDIHStatus.cs" />

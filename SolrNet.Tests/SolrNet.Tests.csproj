@@ -128,6 +128,7 @@
     <Compile Include="SolrDIHStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
+    <Compile Include="SolrFacetPivotQueryTest.cs" />
     <Compile Include="SolrQueryByDistanceTests.cs" />
     <Compile Include="SolrQuerySerializerStub.cs" />
     <Compile Include="SolrSchemaParserTests.cs" />
@@ -212,6 +213,8 @@
     <EmbeddedResource Include="Resources\responseWithStats.xml" />
     <EmbeddedResource Include="Resources\partialResponseWithDateFacet.xml" />
     <EmbeddedResource Include="Resources\partialResponseWithDateFacetAndOther.xml" />
+    <EmbeddedResource Include="Resources\responseWithGroupingOnInstock.xml" />
+	<EmbeddedResource Include="Resources\responseWithFacetPivoting.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\collapseResponse.xml" />

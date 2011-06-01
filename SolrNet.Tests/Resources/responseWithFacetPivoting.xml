@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<response>
+
+	<lst name="responseHeader">
+		<int name="status">0</int>
+		<int name="QTime">1</int>
+		<lst name="params">
+			<str name="facet">true</str>
+			<str name="indent">true</str>
+			<str name="q">*</str>
+			<str name="facet.limit">10</str>
+			<str name="facet.pivot.mincount">1</str>
+			<str name="facet.pivot">inStock,manu</str>
+			<str name="rows">0</str>
+		</lst>
+	</lst>
+	<result name="response" numFound="17" start="0">
+	</result>
+	<lst name="facet_counts">
+		<lst name="facet_queries"/>
+		<lst name="facet_fields"/>
+		<lst name="facet_dates"/>
+		<lst name="facet_ranges"/>
+		<lst name="facet_pivot">
+			<arr name="inStock,manu">
+				<lst>
+					<str name="field">inStock</str>
+					<bool name="value">true</bool>
+					<int name="count">13</int>
+					<arr name="pivot">
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">inc</str>
+							<int name="count">7</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">apache</str>
+							<int name="count">2</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">canon</str>
+							<int name="count">2</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">corp</str>
+							<int name="count">2</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">corsair</str>
+							<int name="count">2</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">foundation</str>
+							<int name="count">2</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">microsystems</str>
+							<int name="count">2</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">software</str>
+							<int name="count">2</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">a</str>
+							<int name="count">1</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">adata</str>
+							<int name="count">1</int>
+						</lst>
+					</arr>
+				</lst>
+				<lst>
+					<str name="field">inStock</str>
+					<bool name="value">false</bool>
+					<int name="count">4</int>
+					<arr name="pivot">
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">belkin</str>
+							<int name="count">2</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">asus</str>
+							<int name="count">1</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">ati</str>
+							<int name="count">1</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">computer</str>
+							<int name="count">1</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">inc</str>
+							<int name="count">1</int>
+						</lst>
+						<lst>
+							<str name="field">manu</str>
+							<str name="value">technologies</str>
+							<int name="count">1</int>
+						</lst>
+					</arr>
+				</lst>
+			</arr>
+		</lst>
+	</lst>
+</response>

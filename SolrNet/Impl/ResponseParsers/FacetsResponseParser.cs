@@ -33,6 +33,7 @@ namespace SolrNet.Impl.ResponseParsers {
                 results.FacetQueries = ParseFacetQueries(mainFacetNode);
                 results.FacetFields = ParseFacetFields(mainFacetNode);
                 results.FacetDates = ParseFacetDates(mainFacetNode);
+				results.FacetPivots = ParseFacetPivots(mainFacetNode);
             }
         }
 
@@ -89,6 +90,10 @@ namespace SolrNet.Impl.ResponseParsers {
             return d;
         }
 
+		
+
+
+
         public KeyValuePair<K, V> KV<K, V>(K key, V value) {
             return new KeyValuePair<K, V>(key, value);
         }
@@ -128,5 +133,68 @@ namespace SolrNet.Impl.ResponseParsers {
             }
             return r;
         }
+
+		/// <summary>
+		/// Parses facet pivot results
+		/// </summary>
+		/// <param name="node"></param>
+		/// <returns></returns>
+		public IDictionary<string, IList<Pivot>> ParseFacetPivots(XElement node)
+		{
+			var d = new Dictionary<string, IList<Pivot>>();
+			var facetPivotNode = node.XPathSelectElement("lst[@name='facet_pivot']");
+			if (facetPivotNode != null)
+			{
+				foreach (var fieldNode in facetPivotNode.Elements())
+				{
+					var name = fieldNode.Attribute("name").Value;
+					d[name] = ParsePivotFacetingNode(fieldNode);
+				}
+			}
+			return d;
+		}
+
+
+		public List<Pivot> ParsePivotFacetingNode(XElement node)
+		{
+			List<Pivot> l = new List<Pivot>();
+
+			var pivotNodes = node.XPathSelectElements("lst");
+			if (pivotNodes != null)
+			{
+				foreach (var pivotNode in pivotNodes)
+				{
+					l.Add(ParsePivotNode(pivotNode));
+				}
+			}
+
+			return l;
+		}
+
+		public Pivot ParsePivotNode(XElement node)
+		{
+			Pivot pivot = new Pivot();
+
+			pivot.Field = node.XPathSelectElement("str[@name='field']").Value;
+			pivot.Value = node.XPathSelectElement("*[@name='value']").Value;
+			pivot.Count = Convert.ToInt32(node.XPathSelectElement("int[@name='count']").Value);
+
+
+			var childPivotNodes = node.XPathSelectElement("arr[@name='pivot']");
+			if (childPivotNodes != null)
+			{
+				pivot.HasChildPivots = true;
+				pivot.ChildPivots = new List<Pivot>();
+
+				foreach (var childNode in childPivotNodes.Elements())
+				{
+					pivot.ChildPivots.Add(ParsePivotNode(childNode));
+				}
+			}
+
+
+			return pivot;
+		}
+
     }
 }

@@ -179,6 +179,8 @@ namespace SolrNet.Impl {
 		public IDictionary<string, ICollection<KeyValuePair<string, int>>> FacetFields { get; set; }
 		public IDictionary<string, DateFacetingResult> FacetDates { get; set; }
 
+		public IDictionary<string, IList<Pivot>> FacetPivots { get; set; }
+
 		public ResponseHeader Header { get; set;}
 
 		public IDictionary<string, IDictionary<string, ICollection<string>>> Highlights { get; set; }
@@ -187,6 +189,10 @@ namespace SolrNet.Impl {
         public IDictionary<string, IList<T>> SimilarResults { get; set; }
         public IDictionary<string, StatsResult> Stats { get; set; }
         public CollapseResults Collapsing { get; set; }
+
+
+		public IDictionary<string, GroupedResults<T>> Grouping { set; get; }
+		//public GroupedResults<T> Grouping { get; set; }
 
         ///<summary>
 		///Returns an enumerator that iterates through the collection.
@@ -207,6 +213,8 @@ namespace SolrNet.Impl {
             SimilarResults = new Dictionary<string, IList<T>>();
             Stats = new Dictionary<string, StatsResult>();
             Collapsing = new CollapseResults();
+			//Grouping = new GroupedResults<T>();
+			Grouping = new Dictionary<string, GroupedResults<T>>();
         }
 	}
 }

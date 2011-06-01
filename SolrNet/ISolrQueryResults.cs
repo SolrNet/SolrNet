@@ -73,9 +73,19 @@ namespace SolrNet {
         /// </summary>
         CollapseResults Collapsing { get; set; }
 
+		/// <summary>
+		/// Grouped results
+		/// </summary>
+		IDictionary<string, GroupedResults<T>> Grouping { get; set; }
+
         /// <summary>
         /// Date faceting results
         /// </summary>
 		IDictionary<string, DateFacetingResult> FacetDates { get; set; }
+
+		/// <summary>
+		/// Pivot faceting results
+		/// </summary>
+		IDictionary<string, IList<Pivot>> FacetPivots { get; set; }
 	}
 }

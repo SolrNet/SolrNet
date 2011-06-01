@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<response>
+	<lst name="responseHeader">
+		<int name="status">0</int>
+		<int name="QTime">1</int>
+		<lst name="params">
+			<str name="q">*</str>
+			<str name="group.field">inStock</str>
+			<str name="group">true</str>
+		</lst>
+	</lst>
+	<lst name="grouped">
+		<lst name="inStock">
+			<int name="matches">17</int>
+			<arr name="groups">
+				<lst>
+					<int name="groupValue">2</int>
+					<result name="doclist" numFound="13" start="0">
+						<doc>
+							<str name="id">GB18030TEST</str>
+							<str name="name">Test with some GB18030 encoded characters</str>
+							<arr name="features">
+								<str>No accents here</str>
+								<str>这是一个功能</str>
+								<str>This is a feature (translated)</str>
+								<str>这份文件是很有光泽</str>
+								<str>This document is very shiny (translated)</str>
+							</arr>
+							<float name="price">0.0</float>
+							<bool name="inStock">true</bool>
+						</doc>
+					</result>
+				</lst>
+				<lst>
+					<int name="groupValue">1</int>
+					<result name="doclist" numFound="4" start="0">
+						<doc>
+							<str name="id">F8V7067-APL-KIT</str>
+							<str name="name">Belkin Mobile Power Cord for iPod w/ Dock</str>
+							<str name="manu">Belkin</str>
+							<str name="manu_id_s">belkin</str>
+							<arr name="cat">
+								<str>electronics</str>
+								<str>connector</str>
+							</arr>
+							<arr name="features">
+								<str>car power adapter, white</str>
+							</arr>
+							<float name="weight">4.0</float>
+							<float name="price">19.95</float>
+							<int name="popularity">1</int>
+							<bool name="inStock">false</bool>
+							<str name="store">45.18014,-93.87741</str>
+							<date name="manufacturedate_dt">2005-08-01T16:30:25Z</date>
+						</doc>
+					</result>
+				</lst>
+			</arr>
+		</lst>
+	</lst>
+</response>

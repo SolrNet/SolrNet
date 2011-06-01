@@ -40,28 +40,5 @@ namespace SolrNet {
 		/// The minimum number of documents that need to match for the result to show up in the results. Default value is 1
 		/// </summary>
 		public int? MinCount { get; set; }
-
-
-		private static KeyValuePair<K, V> KV<K, V>(K key, V value)
-		{
-			return new KeyValuePair<K, V>(key, value);
-		}
-
-		public IEnumerable<KeyValuePair<string, string>> Query
-		{
-			get
-			{
-				foreach (var pivotQ in Fields)
-				{
-					if (string.IsNullOrEmpty(pivotQ))
-						continue;
-					yield return KV("facet.pivot", pivotQ);
-				}
-				if (MinCount.HasValue)
-				{
-					yield return KV("facet.pivot.mincount", MinCount.ToString());
-				}
-			}
-		}
 	}
 }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using MbUnit.Framework;
+using SolrNet.Impl.FacetQuerySerializers;
 
 namespace SolrNet.Tests
 {
 	[TestFixture]
 	public class SolrFacetPivotQueryTest
 	{
+        private static readonly SolrFacetPivotQuerySerializer serializer = new SolrFacetPivotQuerySerializer();
 		[Test]
 		public void SinglePivotTest()
 		{
@@ -16,7 +18,7 @@ namespace SolrNet.Tests
 				MinCount = 1
 			};
 
-			var r = q.Query;
+            var r = serializer.Serialize(q);
 			Assert.Contains(r, KV("facet.pivot", "manu_exact,inStock"));
 			Assert.Contains(r, KV("facet.pivot.mincount", "1"));
 		}
@@ -29,7 +31,7 @@ namespace SolrNet.Tests
 				Fields = new[] { "manu_exact,inStock" }
 			};
 
-			var r = q.Query;
+            var r = serializer.Serialize(q);
 			Assert.Contains(r, KV("facet.pivot", "manu_exact,inStock"));
 			foreach(var kvPair in r)
 			{
@@ -46,7 +48,7 @@ namespace SolrNet.Tests
 				MinCount = 1
 			};
 
-			var r = q.Query;
+            var r = serializer.Serialize(q);
 			Assert.Contains(r, KV("facet.pivot", "manu_exact,inStock"));
 			Assert.Contains(r, KV("facet.pivot", "inStock,cat"));
 			Assert.Contains(r, KV("facet.pivot.mincount", "1"));

@@ -58,9 +58,11 @@ namespace AutofacContrib.SolrNet {
                 typeof(MoreLikeThisResponseParser<>),
                 typeof(SpellCheckResponseParser<>),
                 typeof(StatsResponseParser<>),
-                typeof(CollapseResponseParser<>)
+                typeof(CollapseResponseParser<>),
+				typeof(GroupingResponseParser<>)
             })
                 builder.RegisterGeneric(p).As(typeof(ISolrResponseParser<>));
+
             builder.RegisterType<HeaderResponseParser<string>>().As<ISolrHeaderResponseParser>();
             builder.RegisterType<ExtractResponseParser>().As<ISolrExtractResponseParser>();
             foreach (var p in new[] {

@@ -10,7 +10,7 @@ namespace SolrNet.Commands.Parameters
 	/// <summary>
 	/// Controls the output format of the grouping 
 	/// </summary>
-	public enum GroupingFomatMode
+	public enum GroupingFormatMode
 	{
 		/// <summary>
 		/// The documents are presented within their groups
@@ -81,14 +81,14 @@ namespace SolrNet.Commands.Parameters
 		/// Controls the way the group is formatted in the output
 		/// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
 		/// </summary>
-		public GroupingFomatMode GroupingFormat { get; set; }
+		public GroupingFormatMode GroupingFormat { get; set; }
 
 		/// <summary>
 		/// Constructor for GroupingParameters
 		/// </summary>
 		public GroupingParameters()
 		{
-			GroupingFormat = GroupingFomatMode.Grouped;
+			GroupingFormat = GroupingFormatMode.Grouped;
 		}
 	}
 }

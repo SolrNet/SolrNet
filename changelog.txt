@@ -1,3 +1,6 @@
+- Issue #127: Solr 4.0 grouping
+- Issue #128: Solr 4.0 pivot faceting
+- Fixed support for nullable enum properties
 - Added Unity integration
 - Breaking change: SolrQueryByField now quotes '*' and '?'
 - Upgraded to Windsor 2.5.3

@@ -30,16 +30,37 @@ namespace SolrNet.Impl.ResponseParsers {
             this.docParser = docParser;
         }
 
-        public void Parse(XDocument xml, SolrQueryResults<T> results) {
-            var resultNode = xml.Element("response").Element("result");
-            results.NumFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
-            var maxScore = resultNode.Attribute("maxScore");
-            if (maxScore != null) {
-                results.MaxScore = double.Parse(maxScore.Value, CultureInfo.InvariantCulture.NumberFormat);
-            }
+        public void Parse(XDocument xml, SolrQueryResults<T> results)
+        {
+            var resultNodes = xml.Element("response").Elements("result");
 
-            foreach (var result in docParser.ParseResults(resultNode))
-                results.Add(result);
+            foreach (var resultNode in resultNodes)
+            {
+                if (resultNode.Attribute("name").Value.Equals("response"))
+                {
+                    results.NumFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
+                    var maxScore = resultNode.Attribute("maxScore");
+                    if (maxScore != null)
+                    {
+                        results.MaxScore = double.Parse(maxScore.Value, CultureInfo.InvariantCulture.NumberFormat);
+                    }
+
+                    foreach (var result in docParser.ParseResults(resultNode))
+                        results.Add(result);
+                }
+                else if (resultNode.Attribute("name").Value.Equals("match"))
+                {
+                    results.MoreLikeThis.NumFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
+                    var maxScore = resultNode.Attribute("maxScore");
+                    if (maxScore != null)
+                    {
+                        results.MoreLikeThis.MaxScore = double.Parse(maxScore.Value, CultureInfo.InvariantCulture.NumberFormat);
+                    }
+
+                    foreach (var result in docParser.ParseResults(resultNode))
+                        results.MoreLikeThis.Match = result;
+                }
+            }
         }
     }
 }

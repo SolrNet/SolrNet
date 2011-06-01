@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -184,9 +185,22 @@ namespace SolrNet.Impl {
 		public IDictionary<string, IDictionary<string, ICollection<string>>> Highlights { get; set; }
 
         public SpellCheckResults SpellChecking { get; set; }
-        public IDictionary<string, IList<T>> SimilarResults { get; set; }
+
+        public IDictionary<string, IList<T>> SimilarResults 
+        { 
+            get
+            {
+                return this.MoreLikeThis.Results;
+            }
+            set
+            {
+                this.MoreLikeThis.Results = value;
+            }
+        }
+        
         public IDictionary<string, StatsResult> Stats { get; set; }
         public CollapseResults Collapsing { get; set; }
+        public MoreLikeThisResults<T> MoreLikeThis { get; set; }
 
         ///<summary>
 		///Returns an enumerator that iterates through the collection.
@@ -204,9 +218,9 @@ namespace SolrNet.Impl {
 	        FacetQueries = new Dictionary<string, int>();
             FacetFields = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
             SpellChecking = new SpellCheckResults();
-            SimilarResults = new Dictionary<string, IList<T>>();
             Stats = new Dictionary<string, StatsResult>();
             Collapsing = new CollapseResults();
+            MoreLikeThis = new MoreLikeThisResults<T>();
         }
 	}
 }

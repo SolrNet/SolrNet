@@ -7,21 +7,9 @@ namespace SolrNet.Impl.FacetQuerySerializers
 {
 	public class SolrFacetPivotQuerySerializer : SingleTypeFacetQuerySerializer<SolrFacetPivotQuery> 
 	{
-        private readonly ISolrFieldSerializer fieldSerializer;
-
-		public SolrFacetPivotQuerySerializer(ISolrFieldSerializer fieldSerializer)
-		{
-            this.fieldSerializer = fieldSerializer;
-        }
-
 		private static KeyValuePair<K, V> KV<K, V>(K key, V value)
 		{
 			return new KeyValuePair<K, V>(key, value);
-		}
-
-		public string SerializeSingle(object o)
-		{
-			return fieldSerializer.Serialize(o).First().FieldValue;
 		}
 
 		public override IEnumerable<KeyValuePair<string, string>> Serialize(SolrFacetPivotQuery q)

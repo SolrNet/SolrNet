@@ -597,6 +597,34 @@ namespace SolrNet.Tests {
             Assert.AreEqual(0, other[FacetDateOther.Between]);
         }
 
+		[Test]
+		public void ParseResultsWithGroups()
+		{
+			var mapper = new AttributesMappingManager();
+			var innerParser = new GroupingResponseParser<Product>(new SolrDocumentResponseParser<Product>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<Product>()));
+			var parser = new SolrQueryResultParser<Product>(new[] { innerParser });
+			var results = parser.Parse(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithGroupingOnInstock.xml"));
+			Assert.AreEqual(1, results.Grouping.Count);
+			Assert.AreEqual(2, results.Grouping["inStock"].Groups.Count());
+			Assert.AreEqual(13, results.Grouping["inStock"].Groups.First().NumFound);
+		}
+
+		[Test]
+		public void ParseResultsWithFacetPivot()
+		{
+			var innerParser = new FacetsResponseParser<Product>();
+			var parser = new SolrQueryResultParser<Product>(new[] { innerParser });
+			var r = parser.Parse(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithFacetPivoting.xml"));
+			Assert.IsNotNull(r.FacetPivots);
+			Console.WriteLine(r.FacetPivots.Count);
+			Assert.IsTrue(r.FacetPivots.ContainsKey("inStock,manu"));
+
+			Assert.AreEqual(2, r.FacetPivots["inStock,manu"].Count);
+			Assert.AreEqual("inStock", r.FacetPivots["inStock,manu"][0].Field);
+			Assert.AreEqual(10, r.FacetPivots["inStock,manu"][0].ChildPivots.Count); 
+
+		}
+
         [Test]
         public void PropertyWithoutSetter() {
             var parser = GetDocumentParser<TestDocWithoutSetter>();

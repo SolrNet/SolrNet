@@ -409,6 +409,29 @@ namespace SolrNet.Tests.Integration.Sample {
             Console.WriteLine("CollapsedDocuments.Count {0}", results.Collapsing.CollapsedDocuments.Count);
         }
 
+
+		[Test]
+		public void FieldGrouping()
+		{
+			var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+			var results = solr.Query(SolrQuery.All, new QueryOptions
+			{
+				Grouping = new GroupingParameters()
+				{
+					Fields = new [] { "manu_exact" },
+					GroupingFormat = GroupingFomatMode.Grouped,
+					Limit = 1,
+				}
+			});
+			
+			Console.WriteLine("Group.Count {0}", results.Grouping.Count);
+			Assert.AreEqual(1, results.Grouping.Count);
+			Assert.AreEqual(true, results.Grouping.ContainsKey("manu_exact"));
+			Assert.GreaterThanOrEqualTo(results.Grouping["manu_exact"].Groups.Count,1);
+		}
+
+
+
         [Test]
         public void SemiLooseMapping() {
             Add_then_query();

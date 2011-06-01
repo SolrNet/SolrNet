@@ -100,6 +100,10 @@ namespace SolrNet.Impl {
                 foreach (var p in GetCollapseQueryOptions(Options))
                     yield return p;
 
+				//GetGroupingQueryOptions
+				foreach (var p in GetGroupingQueryOptions(Options))
+					yield return p;
+
                 if (Options.ExtraParams != null)
                     foreach (var p in Options.ExtraParams)
                         yield return p;
@@ -328,6 +332,40 @@ namespace SolrNet.Impl {
             if (options.Collapse.MaxDocs.HasValue)
                 yield return KVP("collapse.maxdocs", options.Collapse.MaxDocs.ToString());
         }
+
+		/// <summary>
+		/// Gets the Solr parameters for collapse queries
+		/// </summary>
+		/// <param name="options"></param>
+		/// <returns></returns>
+		public IEnumerable<KeyValuePair<string, string>> GetGroupingQueryOptions(QueryOptions options)
+		{
+			if (options.Grouping == null || options.Grouping.Fields.Count == 0)
+				yield break;
+
+			yield return KVP("group",true.ToString().ToLowerInvariant());
+
+			foreach (var groupfield in options.Grouping.Fields)
+			{
+				if (string.IsNullOrEmpty(groupfield))
+					continue;
+				yield return KVP("group.field", groupfield);
+			}
+			if (options.Grouping.Limit.HasValue)
+				yield return KVP("group.limit", options.Grouping.Limit.ToString());
+
+			if (options.Grouping.Offset.HasValue)
+				yield return KVP("group.offset", options.Grouping.Offset.ToString());
+
+			if (options.Grouping.GroupMain.HasValue)
+				yield return KVP("group.main", options.Grouping.GroupMain.ToString().ToLowerInvariant());
+
+			if (options.Grouping.OrderBy != null && options.Grouping.OrderBy.Count > 0)
+				yield return KVP("group.sort", string.Join(",", options.Grouping.OrderBy.Select(x => x.ToString()).ToArray()));
+
+			yield return KVP("group.format", options.Grouping.GroupingFormat.ToString().ToLowerInvariant());
+		
+		}
 
         /// <summary>
         /// Executes the query and returns results

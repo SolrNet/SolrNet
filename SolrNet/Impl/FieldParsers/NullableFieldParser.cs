@@ -39,7 +39,7 @@ namespace SolrNet.Impl.FieldParsers {
         }
 
         public object Parse(XElement field, Type t) {
-            if (string.IsNullOrEmpty(field.Value))
+            if (string.IsNullOrEmpty(field.Value) && TypeHelper.IsNullableType(t))
                 return null;
             return parser.Parse(field, t);
         }

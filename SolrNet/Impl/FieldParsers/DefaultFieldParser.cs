@@ -36,7 +36,7 @@ namespace SolrNet.Impl.FieldParsers {
                 new NullableFieldParser(new DateTimeFieldParser()),
                 new NullableFieldParser(new DecimalFieldParser()),
                 new NullableFieldParser(new LongFieldParser()),
-                new EnumFieldParser(),
+                new NullableFieldParser(new EnumFieldParser()),
                 new NullableFieldParser(new GuidFieldParser()),
                 new CollectionFieldParser(this),
                 new TypeConvertingFieldParser(),

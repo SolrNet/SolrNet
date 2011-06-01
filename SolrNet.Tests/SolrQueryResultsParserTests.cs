@@ -260,6 +260,29 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        [ExpectedException(typeof(Exception))]
+        public void EmptyEnumThrows() {
+            var mapper = new MappingManager();
+            mapper.Add(typeof(TestDocWithEnum).GetProperty("En"), "basicview");
+            var docParser = GetDocumentParser<TestDocWithEnum>(mapper);
+            var innerParser = new ResultsResponseParser<TestDocWithEnum>(docParser);
+            var parser = new SolrQueryResultParser<TestDocWithEnum>(new[] { innerParser });
+            var xml = EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml");
+            parser.Parse(xml);
+        }
+
+        [Test]
+        public void SupportsNullableGuidWithEmptyField() {
+            var docParser = GetDocumentParser<TestDocWithNullableEnum>();
+            var innerParser = new ResultsResponseParser<TestDocWithNullableEnum>(docParser);
+            var parser = new SolrQueryResultParser<TestDocWithNullableEnum>(new[] { innerParser });
+            var xml = EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml");
+            var results = parser.Parse(xml);
+            Assert.AreEqual(1, results.Count);
+            Assert.IsFalse(results[0].BasicView.HasValue);
+        }
+
+        [Test]
         public void GenericDictionary_string_string() {
             var docParser = GetDocumentParser<TestDocWithGenDict>();
             var innerParser = new ResultsResponseParser<TestDocWithGenDict>(docParser);
@@ -593,6 +616,11 @@ namespace SolrNet.Tests {
         public class TestDocWithEnum {
             [SolrField]
             public AEnum En { get; set; }
+        }
+
+        public class TestDocWithNullableEnum {
+            [SolrField("basicview")]
+            public AEnum? BasicView { get; set; }
         }
 	}
 }

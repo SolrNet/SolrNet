@@ -99,7 +99,7 @@ namespace StructureMap.SolrNetIntegration.Tests
 
             var field = parser.GetType().GetField("parsers", BindingFlags.NonPublic | BindingFlags.Instance);
             var parsers = (ISolrResponseParser<Entity>[])field.GetValue(parser);
-            Assert.AreEqual(8, parsers.Length);
+            Assert.AreEqual(9, parsers.Length);
             foreach (var t in parsers)
                 Console.WriteLine(t);
         }

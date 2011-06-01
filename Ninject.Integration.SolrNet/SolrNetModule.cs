@@ -57,6 +57,7 @@ namespace Ninject.Integration.SolrNet {
                 typeof(SpellCheckResponseParser<>),
                 typeof(StatsResponseParser<>),
                 typeof(CollapseResponseParser<>),
+                typeof(GroupingResponseParser<>)
             })
                 Bind(typeof(ISolrResponseParser<>)).To(p);
             Bind<ISolrHeaderResponseParser>().To<HeaderResponseParser<string>>();

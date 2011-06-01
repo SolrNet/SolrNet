@@ -127,7 +127,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             var parser = container.Resolve<ISolrQueryResultParser<Document>>() as SolrQueryResultParser<Document>;
             var field = parser.GetType().GetField("parsers", BindingFlags.NonPublic | BindingFlags.Instance);
             var parsers = (ISolrResponseParser<Document>[]) field.GetValue(parser);
-            Assert.AreEqual(8, parsers.Length);
+            Assert.AreEqual(9, parsers.Length);
             foreach (var t in parsers)
                 Console.WriteLine(t);            
         }

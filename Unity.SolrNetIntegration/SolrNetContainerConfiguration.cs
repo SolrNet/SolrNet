@@ -70,6 +70,7 @@ namespace Unity.SolrNetIntegration {
         typeof (SpellCheckResponseParser<>),
         typeof (StatsResponseParser<>),
         typeof (CollapseResponseParser<>),
+        typeof(GroupingResponseParser<>)
       };
 
       foreach (var parser in parsers) {

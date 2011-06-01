@@ -547,14 +547,14 @@ namespace SolrNet.Tests {
             var p = new FacetsResponseParser<Product>();
             var results = p.ParseFacetDates(xml.Root);
             Assert.AreEqual(1, results.Count);
-            foreach (var kv in results) {
-                Console.WriteLine("date facets for field '{0}'", kv.Key);
-                Console.WriteLine("gap: {0}", kv.Value.Gap);
-                Console.WriteLine("end: {0}", kv.Value.End);
-                foreach (var vv in kv.Value.DateResults) {
-                    Console.WriteLine("Facet count for '{0}': {1}", vv.Key, vv.Value);
-                }
-            }
+            var result = results.First();
+            Assert.AreEqual("timestamp", result.Key);
+            Assert.AreEqual("+1DAY", result.Value.Gap);
+            Assert.AreEqual(new DateTime(2009, 8, 10, 0, 33, 46, 578), result.Value.End);
+            var dateResults = result.Value.DateResults;
+            Assert.AreEqual(1, dateResults.Count);
+            Assert.AreEqual(16, dateResults[0].Value);
+            Assert.AreEqual(new DateTime(2009, 8, 9, 0, 33, 46, 578), dateResults[0].Key);
         }
 
         [Test]
@@ -563,20 +563,15 @@ namespace SolrNet.Tests {
             var p = new FacetsResponseParser<Product>();
             var results = p.ParseFacetDates(xml.Root);
             Assert.AreEqual(1, results.Count);
-            foreach (var kv in results) {
-                Console.WriteLine("date facets for field '{0}'", kv.Key);
-                Console.WriteLine("gap: {0}", kv.Value.Gap);
-                Console.WriteLine("end: {0}", kv.Value.End);
-                foreach (var vv in kv.Value.DateResults) {
-                    Console.WriteLine("Facet count for '{0}': {1}", vv.Key, vv.Value);
-                }
-                foreach (var vv in kv.Value.OtherResults) {
-                    Console.WriteLine("Facet count for '{0}': {1}", vv.Key, vv.Value);
-                }
-            }
-            Assert.AreEqual(1, results["timestamp"].OtherResults[FacetDateOther.Before]);
-            Assert.AreEqual(0, results["timestamp"].OtherResults[FacetDateOther.After]);
-            Assert.AreEqual(0, results["timestamp"].OtherResults[FacetDateOther.Between]);
+            var result = results.First();
+            Assert.AreEqual("timestamp", result.Key);
+            Assert.AreEqual("+1DAY", result.Value.Gap);
+            Assert.AreEqual(new DateTime(2009, 8, 10, 0, 46, 29), result.Value.End);
+            Assert.AreEqual(new DateTime(2009, 8, 9, 22, 46, 29), result.Value.DateResults[0].Key);
+            var other = result.Value.OtherResults;
+            Assert.AreEqual(1, other[FacetDateOther.Before]);
+            Assert.AreEqual(0, other[FacetDateOther.After]);
+            Assert.AreEqual(0, other[FacetDateOther.Between]);
         }
 
         [Test]

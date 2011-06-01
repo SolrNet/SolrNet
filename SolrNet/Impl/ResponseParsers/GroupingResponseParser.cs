@@ -37,11 +37,6 @@ namespace SolrNet.Impl.ResponseParsers
 					GroupedResults<T> g = ParseGroupedResults(groupNode);
 					results.Grouping.Add(groupName, g);
 				}
-				//results.Collapsing = new CollapseResults
-				//{
-				//    CollapsedDocuments = ParseCollapsedResults(mainGroupingNode).ToArray(),
-				//    Field = mainGroupingNode.XPathSelectElement("str[@name='field']").Value
-				//};
 			}
 		}
 
@@ -52,8 +47,6 @@ namespace SolrNet.Impl.ResponseParsers
 		/// <returns></returns>
 		public GroupedResults<T> ParseGroupedResults(XElement groupNode)
 		{
-			//var groupName = groupNode.Attribute("name").Value;
-//
 				var g = new GroupedResults<T>
 				{
 					Matches = Convert.ToInt32(groupNode.XPathSelectElement("int[@name='matches']").Value)
@@ -65,15 +58,7 @@ namespace SolrNet.Impl.ResponseParsers
 				}
 
 				return g;
-				//Id = docNode.Attribute("name").Value;
 
-				//yield return new CollapsedDocument
-				//{
-				//    Id = docNode.Attribute("name").Value,
-				//    FieldValue = docNode.XPathSelectElement("str[@name='fieldValue']").Value,
-				//    CollapseCount = Convert.ToInt32(docNode.XPathSelectElement("int[@name='collapseCount']").Value)
-				//};
-			//}
 		}
 
 		/// <summary>
@@ -110,20 +95,13 @@ namespace SolrNet.Impl.ResponseParsers
 
 				yield return g;
 
-				//yield return new CollapsedDocument
-				//{
-				//    Id = docNode.Attribute("name").Value,
-				//    FieldValue = docNode.XPathSelectElement("str[@name='fieldValue']").Value,
-				//    CollapseCount = Convert.ToInt32(docNode.XPathSelectElement("int[@name='collapseCount']").Value)
-				//};
 			}
 		}
 
 		private void Parsedoclist(XElement xml, Group<T> results)
 		{
 			var resultNode = xml.XPathSelectElement("result[@name='doclist']");
-			//var numFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
-			//var start = resultNode.Attribute("start");
+
 			results.NumFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
 			
 			foreach (var result in docParser.ParseResults(resultNode))

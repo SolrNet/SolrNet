@@ -10,7 +10,7 @@ namespace SolrNet.Commands.Parameters
 	/// <summary>
 	/// Controls the output format of the grouping 
 	/// </summary>
-	public enum GroupingFormatMode
+	public enum GroupingFormat
 	{
 		/// <summary>
 		/// The documents are presented within their groups
@@ -61,7 +61,7 @@ namespace SolrNet.Commands.Parameters
 		/// If true, the result of the first field grouping command is used as the main result list in the response, using group.format=simple
 		/// default is false
 		/// </summary>
-		public bool? GroupMain { get; set; }
+		public bool? Main { get; set; }
 
 		/// <summary>
 		/// NOT YET IMPLEMENTED
@@ -81,14 +81,14 @@ namespace SolrNet.Commands.Parameters
 		/// Controls the way the group is formatted in the output
 		/// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
 		/// </summary>
-		public GroupingFormatMode GroupingFormat { get; set; }
+		public GroupingFormat Format { get; set; }
 
 		/// <summary>
 		/// Constructor for GroupingParameters
 		/// </summary>
 		public GroupingParameters()
 		{
-			GroupingFormat = GroupingFormatMode.Grouped;
+			Format = GroupingFormat.Grouped;
 		}
 	}
 }

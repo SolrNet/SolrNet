@@ -419,7 +419,7 @@ namespace SolrNet.Tests.Integration.Sample {
 				Grouping = new GroupingParameters()
 				{
 					Fields = new [] { "manu_exact" },
-					GroupingFormat = GroupingFormatMode.Grouped,
+					Format = GroupingFormat.Grouped,
 					Limit = 1,
 				}
 			});

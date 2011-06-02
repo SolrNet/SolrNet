@@ -357,13 +357,13 @@ namespace SolrNet.Impl {
 			if (options.Grouping.Offset.HasValue)
 				yield return KVP("group.offset", options.Grouping.Offset.ToString());
 
-			if (options.Grouping.GroupMain.HasValue)
-				yield return KVP("group.main", options.Grouping.GroupMain.ToString().ToLowerInvariant());
+			if (options.Grouping.Main.HasValue)
+				yield return KVP("group.main", options.Grouping.Main.ToString().ToLowerInvariant());
 
 			if (options.Grouping.OrderBy != null && options.Grouping.OrderBy.Count > 0)
 				yield return KVP("group.sort", string.Join(",", options.Grouping.OrderBy.Select(x => x.ToString()).ToArray()));
 
-			yield return KVP("group.format", options.Grouping.GroupingFormat.ToString().ToLowerInvariant());
+			yield return KVP("group.format", options.Grouping.Format.ToString().ToLowerInvariant());
 		
 		}
 

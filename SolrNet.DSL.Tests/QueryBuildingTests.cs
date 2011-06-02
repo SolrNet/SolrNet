@@ -48,6 +48,12 @@ namespace SolrNet.DSL.Tests {
         }
 
         [Test]
+        public void FieldValueEmpty() {
+            var q = Query.Field("price").Is("");
+            Assert.AreEqual("price:\"\"", Serialize(q));
+        }
+
+        [Test]
         public void FieldValueNot() {
             var q = Query.Field("name").Is("solr").Not();
             Assert.AreEqual("-name:solr", Serialize(q));

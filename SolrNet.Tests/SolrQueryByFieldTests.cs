@@ -17,6 +17,7 @@
 using MbUnit.Framework;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
+using System;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -39,6 +40,12 @@ namespace SolrNet.Tests {
         public void NullValue_yields_null_query() {
             var q = new SolrQueryByField("id", null);
             Assert.IsNull(Serialize(q));
+        }
+
+        [Test]
+        public void EmptyValue() {
+            var q = new SolrQueryByField("id", "");
+            Assert.AreEqual("id:\"\"", Serialize(q));
         }
 
 		[Test]

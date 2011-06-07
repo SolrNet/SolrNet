@@ -360,6 +360,12 @@ namespace SolrNet.Impl {
 			if (options.Grouping.Main.HasValue)
 				yield return KVP("group.main", options.Grouping.Main.ToString().ToLowerInvariant());
 
+			if (!string.IsNullOrEmpty(options.Grouping.Query))
+				yield return KVP("group.query", options.Grouping.Query);
+
+			if (!string.IsNullOrEmpty(options.Grouping.Func))
+				yield return KVP("group.func", options.Grouping.Func);
+
 			if (options.Grouping.OrderBy != null && options.Grouping.OrderBy.Count > 0)
 				yield return KVP("group.sort", string.Join(",", options.Grouping.OrderBy.Select(x => x.ToString()).ToArray()));
 

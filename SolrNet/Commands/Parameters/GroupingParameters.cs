@@ -64,15 +64,11 @@ namespace SolrNet.Commands.Parameters
 		public bool? Main { get; set; }
 
 		/// <summary>
-		/// NOT YET IMPLEMENTED
-		/// 
 		/// Return a single group of documents that also match the given query.
 		/// </summary>
 		public string Query { get; set; }
 
 		/// <summary>
-		/// NOT YET IMPLEMENTED
-		/// 
 		/// Group based on the unique values of a function query.
 		/// </summary>
 		public string Func { get; set; }

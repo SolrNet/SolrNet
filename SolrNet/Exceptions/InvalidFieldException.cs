@@ -22,6 +22,7 @@ namespace SolrNet.Exceptions {
     /// Solr did not understand one the specified fields
     /// </summary>
     [Serializable]
+    [Obsolete("No longer thrown, catch SolrNetException or SolrConnectionException instead")]
 	public class InvalidFieldException : SolrNetException {
         /// <summary>
         /// Solr did not understand one the specified fields

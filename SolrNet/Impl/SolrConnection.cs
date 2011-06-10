@@ -160,15 +160,18 @@ namespace SolrNet.Impl {
                 return response.Data;
             } catch (WebException e) {
                 if (e.Response != null) {
-                    var r = new HttpWebResponseAdapter(e.Response);
-                    if (r.StatusCode == HttpStatusCode.NotModified) {
-                        return cached.Data;
-                    }
-                    if (r.StatusCode == HttpStatusCode.BadRequest) {
-                        throw new InvalidFieldException(r.StatusDescription, e);
+                    using (e.Response) {
+                        var r = new HttpWebResponseAdapter(e.Response);
+                        if (r.StatusCode == HttpStatusCode.NotModified) {
+                            return cached.Data;
+                        }
+                        using (var s = e.Response.GetResponseStream())
+                        using (var sr = new StreamReader(s)) {
+                            throw new SolrConnectionException(sr.ReadToEnd(), e, u.Uri.ToString());
+                        }
                     }
                 }
-                throw new SolrConnectionException(e);
+                throw new SolrConnectionException(e, u.Uri.ToString());
             }
         }
 

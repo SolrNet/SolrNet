@@ -36,7 +36,7 @@ namespace SolrNet.Tests {
 		[Test]
 		[Category("Integration")]
 		[Ignore]
-		public void ActualConnectionTest() {
+		public void ActualConnection() {
             var conn = new SolrConnection(solrURL) { HttpWebRequestFactory = new HttpWebRequestFactory() };
 			var p = new Dictionary<string, string>();
 			p["version"] = "2.1";
@@ -47,15 +47,20 @@ namespace SolrNet.Tests {
 
 		[Test]
 		[Category("Integration")]
-		[ExpectedException(typeof (InvalidFieldException))]
 		[Ignore]
-		public void ActualInvalidFieldException() {
+		public void ActualConnectionWithException() {
             var conn = new SolrConnection(solrURL);
 			var p = new Dictionary<string, string>();
 			p["version"] = "2.1";
 			p["indent"] = "on";
 			p["q"] = "idq:123";
-			Console.WriteLine(conn.Get("/select/", p));
+            try {
+                conn.Get("/select/", p);
+                Assert.Fail("Should have thrown");
+            } catch (SolrConnectionException e) {
+                Console.WriteLine(e);
+                Console.WriteLine(e.Url);
+            }
 		}
 
 		[Test]

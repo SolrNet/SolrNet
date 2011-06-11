@@ -22,11 +22,11 @@ namespace SolrNet.Impl {
     /// more-like-this query results
     /// </summary>
     public class MoreLikeThisResults<T>
-    {    
+    {
         public MoreLikeThisResults()
         {
-            this.Results = new Dictionary<string, IList<T>>();
-            this.InterestingTerms = new Dictionary<string, float>();
+            this.InterestingTermDetails = new Dictionary<string, float>();
+            this.InterestingTermList = new List<string>();
         }
 
         public int NumFound { get; set; }
@@ -35,8 +35,8 @@ namespace SolrNet.Impl {
 
         public T Match { get; set; }
 
-        public IDictionary<string, IList<T>> Results { get; set; }
+        public IDictionary<string, float> InterestingTermDetails { get; set; }
 
-        public IDictionary<string, float> InterestingTerms { get; set; }
+        public IList<string> InterestingTermList { get; set; }
     }
 }

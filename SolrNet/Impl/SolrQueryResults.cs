@@ -186,17 +186,7 @@ namespace SolrNet.Impl {
 
         public SpellCheckResults SpellChecking { get; set; }
 
-        public IDictionary<string, IList<T>> SimilarResults 
-        { 
-            get
-            {
-                return this.MoreLikeThis.Results;
-            }
-            set
-            {
-                this.MoreLikeThis.Results = value;
-            }
-        }
+        public IDictionary<string, IList<T>> SimilarResults { get; set; }
         
         public IDictionary<string, StatsResult> Stats { get; set; }
         public CollapseResults Collapsing { get; set; }
@@ -221,6 +211,7 @@ namespace SolrNet.Impl {
             Stats = new Dictionary<string, StatsResult>();
             Collapsing = new CollapseResults();
             MoreLikeThis = new MoreLikeThisResults<T>();
+            SimilarResults = new Dictionary<string, IList<T>>();
         }
 	}
 }

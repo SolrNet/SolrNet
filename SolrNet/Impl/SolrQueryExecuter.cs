@@ -345,10 +345,7 @@ namespace SolrNet.Impl {
             {
                 if (options.MoreLikeThis.UseMoreLikeThisHandler)
                 {
-                    if (string.IsNullOrEmpty(options.MoreLikeThis.Handler))
-                        throw new ArgumentNullException("You must configure the MoreLikeThisHandler");
-                    else
-                        this.Handler = options.MoreLikeThis.Handler;
+                    this.Handler = options.MoreLikeThis.Handler;
                 }
             }
             string r = connection.Get(Handler, param);

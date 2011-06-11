@@ -23,6 +23,7 @@ namespace SolrNet.Commands.Parameters {
     /// See http://wiki.apache.org/solr/MoreLikeThis
     /// </summary>
     public class MoreLikeThisParameters {
+        static private readonly string DefaultMoreLikeThisHandler = "/mlt";
         private readonly IEnumerable<string> fields;
 
         /// <summary>
@@ -32,6 +33,7 @@ namespace SolrNet.Commands.Parameters {
         public MoreLikeThisParameters(IEnumerable<string> fields) {
             this.fields = fields;
             this.UseMoreLikeThisHandler = false;
+            this.Handler = DefaultMoreLikeThisHandler;
         }
 
         /// <summary>
@@ -115,6 +117,7 @@ namespace SolrNet.Commands.Parameters {
             details,
             none
         }
+
         /// <summary>
         /// This will set what interesting terms are to be shown as part of the MoreLikeThis response
         /// </summary>

@@ -34,42 +34,7 @@ namespace SolrNet.Impl.ResponseParsers {
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
             var moreLikeThis = xml.XPathSelectElement("response/lst[@name='moreLikeThis']");
             if (moreLikeThis != null)
-                results.MoreLikeThis.Results = ParseMoreLikeThis(results, moreLikeThis);
-
-            var termList = xml.XPathSelectElement("response/arr[@name='interestingTerms']");
-            if (termList != null)
-                results.MoreLikeThis.InterestingTerms = ParseInterestingTerms(termList);
-
-            var termDetails = xml.XPathSelectElement("response/lst[@name='interestingTerms']");
-            if (termDetails != null)
-                results.MoreLikeThis.InterestingTerms = ParseInterestingTerms(termDetails);
-        }
-
-        /// <summary>
-        /// Parses the interesting-params
-        /// </summary>
-        /// <param name="node"></param>
-        /// <returns></returns>
-        public IDictionary<string, float> ParseInterestingTerms(XElement node)
-        {
-            var r = new Dictionary<string, float>();
-            var strings = node.Elements("str");
-            if (strings != null)
-            {
-                foreach (var str in strings)
-                {
-                    r[str.Value] = 0;
-                }
-            }
-            var floats = node.Elements("float");
-            if (floats != null)
-            {
-                foreach (var flt in floats)
-                {
-                    r[flt.Attribute("name").Value] = float.Parse(flt.Value);
-                }
-            }
-            return r;
+                results.SimilarResults = ParseMoreLikeThis(results, moreLikeThis);
         }
 
         /// <summary>

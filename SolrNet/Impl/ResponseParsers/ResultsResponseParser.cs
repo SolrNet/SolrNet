@@ -36,8 +36,8 @@ namespace SolrNet.Impl.ResponseParsers {
 
             foreach (var resultNode in resultNodes)
             {
-                if (resultNode.Attribute("name").Value.Equals("response"))
-                {
+                if (resultNode.Attribute("name") == null || resultNode.Attribute("name").Value.Equals("response"))
+                    {
                     results.NumFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
                     var maxScore = resultNode.Attribute("maxScore");
                     if (maxScore != null)
@@ -47,18 +47,6 @@ namespace SolrNet.Impl.ResponseParsers {
 
                     foreach (var result in docParser.ParseResults(resultNode))
                         results.Add(result);
-                }
-                else if (resultNode.Attribute("name").Value.Equals("match"))
-                {
-                    results.MoreLikeThis.NumFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
-                    var maxScore = resultNode.Attribute("maxScore");
-                    if (maxScore != null)
-                    {
-                        results.MoreLikeThis.MaxScore = double.Parse(maxScore.Value, CultureInfo.InvariantCulture.NumberFormat);
-                    }
-
-                    foreach (var result in docParser.ParseResults(resultNode))
-                        results.MoreLikeThis.Match = result;
                 }
             }
         }

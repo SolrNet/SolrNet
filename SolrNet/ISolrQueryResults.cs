@@ -62,7 +62,6 @@ namespace SolrNet {
         /// <summary>
         /// More-like-this results
         /// </summary>
-        [Obsolete("Use MoreLikeThis.Results property instead", false)]
         IDictionary<string, IList<T>> SimilarResults { get; set; }
 
         /// <summary>

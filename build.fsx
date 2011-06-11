@@ -197,7 +197,7 @@ Target "ReleasePackage" (fun _ ->
         cp docsFile outputPath
 
     !+ (buildDir @@ "SolrNet.*")
-        ++ "license.txt" ++ "lib\\Microsoft.Practices.*"
+        ++ "license.txt" ++ "lib\\Microsoft.Practices.ServiceLocation.*"
         |> Scan
         |> Copy outputPath
 

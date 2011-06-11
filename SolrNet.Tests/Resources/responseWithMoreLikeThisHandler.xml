@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <lst name="responseHeader">
+    <int name="status">0</int>
+    <int name="QTime">2</int>
+  </lst>
+  <result name="match" numFound="1" start="0">
+    <doc>
+      <arr name="cat">
+        <str>electronics</str>
+        <str>hard drive</str>
+        <str>something</str>
+      </arr>
+      <arr name="features">
+        <str>7200RPM, 8MB cache, IDE Ultra ATA-133</str>
+        <str>NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor</str>
+        <str>áéíóúñç &amp; two</str>
+        <str>ÚóÁ⌠╒"ĥÛē…&lt;&gt;ܐóジャストシステムは、日本で初めてユニコードベースのワードプロセ ッサーを開発しました。このことにより、10年以上も前から、日本のコンピューターユーザーはユニコード、特に日中韓の統合漢 字の恩恵を享受してきました。ジャストシステムは現在、”xfy”というJava環境で稼働する 先進的なXML関連製品の世界市場への展開を積極的に推進していますが、ユニコードを基盤としているために、”xfy”は初めから国際化されているのです。ジャストシステムは、ユニコードの普遍的な思想とアーキテクチャに 感謝するとともに、その第5版の刊行を心から歓迎します</str>
+        <str>control</str>
+      </arr>
+      <str name="guid">78d734ed-12f8-44e0-8aa3-8ca3f353998d</str>
+      <str name="id">SP2514N</str>
+      <bool name="inStock">true</bool>
+      <str name="manu">Samsung Electronics Co. Ltd.</str>
+      <str name="name">Samsuñg SpinPoint P120 SP2514N - hárd drívè - 250 GB - ÁTÀ-133</str>
+      <int name="popularity">6</int>
+      <float name="price">92.0</float>
+      <float name="price_afterrebate">100.0</float>
+      <float name="price_regular">150.0</float>
+      <date name="timestamp">1-01-01T00:00:00Z</date>
+      <float name="weight">0.0</float>
+    </doc>
+  </result>
+  <result name="response" numFound="0" start="0" />
+  <lst name="interestingTerms">
+    <float name="manu:electronics">1.01</float>
+    <float name="cat:something">1.0</float>
+    <float name="manu:ltd">1.0</float>
+    <float name="cat:hard">1.0</float>
+    <float name="manu:samsung">1.0</float>
+    <float name="manu:co">1.0</float>
+    <float name="cat:drive">1.0</float>
+  </lst>
+</response>

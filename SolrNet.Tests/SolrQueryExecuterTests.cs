@@ -322,6 +322,35 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void MoreLikeThisHandlerParameters() {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var querySerializer = new SolrQuerySerializerStub("apache");
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null);
+            var p = queryExecuter.GetAllParameters(new SolrQuery("apache"), new QueryOptions
+            {
+                MoreLikeThis = new MoreLikeThisParameters(new[] { "manu", "cat" })
+                {
+                    MinDocFreq = 1,
+                    MinTermFreq = 1,
+                    UseMoreLikeThisHandler = true,
+                    IncludeMatch = true,
+                    MatchOffset = 0,
+                    ShowTerms = MoreLikeThisParameters.InterestingTerms.details
+                },
+            }).ToList();
+            Assert.Contains(p, KVP("mlt", "true"));
+            Assert.Contains(p, KVP("mlt.mindf", "1"));
+            Assert.Contains(p, KVP("mlt.fl", "manu,cat"));
+            Assert.Contains(p, KVP("mlt.mintf", "1"));
+            Assert.Contains(p, KVP("q", "apache"));
+            Assert.Contains(p, KVP("mlt.match.include", "true"));
+            Assert.Contains(p, KVP("mlt.match.offset", "0"));
+            Assert.Contains(p, KVP("mlt.interestingTerms", "details"));
+        }
+
+        [Test]
         public void MoreLikeThis() {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
@@ -370,7 +399,7 @@ namespace SolrNet.Tests {
             Assert.Contains(p, KVP("mlt.mintf", "6"));
             Assert.Contains(p, KVP("mlt.minwl", "7"));
             Assert.Contains(p, KVP("mlt.fl", "field1,field2"));
-            Assert.Contains(p, KVP("mlt.qf", "qf1,qf2"));
+            Assert.Contains(p, KVP("mlt.qf", "qf1 qf2"));
         }
 
         [Test]

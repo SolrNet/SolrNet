@@ -276,30 +276,6 @@ namespace SolrNet.Tests {
 		}
 
 		[Test]
-		[ExpectedException(typeof (InvalidFieldException))]
-		public void UndefinedFieldQueryError_ShouldThrow() {
-			var mocks = new MockRepository();
-			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-			var request = mocks.DynamicMock<IHttpWebRequest>();
-			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(reqFactory.Create(new UriBuilder().Uri))
-                    .IgnoreArguments()
-                    .Repeat.Once()
-                    .Return(request);
-                Expect.Call(request.Headers)
-                    .Repeat.Any()
-                    .Return(new WebHeaderCollection());
-				var r = new WebResponseStub {StatusCode = HttpStatusCode.BadRequest};
-				Expect.Call(request.GetResponse())
-                    .Repeat.Once()
-					.Throw(new WebException("(400) Bad Request", new ApplicationException(), WebExceptionStatus.ProtocolError, r));
-			}).Verify(delegate {
-                var conn = new SolrConnection("https://pepe") { HttpWebRequestFactory = reqFactory };
-				conn.Get("", new Dictionary<string, string>());
-			});
-		}
-
-		[Test]
 		public void UrlHttp_ShouldntThrowException() {
 			var mocks = new MockRepository();
 			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();

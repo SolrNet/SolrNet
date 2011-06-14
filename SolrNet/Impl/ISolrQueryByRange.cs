@@ -14,11 +14,21 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 namespace SolrNet.Impl {
     public interface ISolrQueryByRange {
         string FieldName { get; }
+
         object From { get; }
+
         object To { get; }
+
+        [Obsolete("Use InclusiveFrom and InclusiveTo", false)]
         bool Inclusive { get; }
+
+        bool InclusiveFrom { get; }
+
+        bool InclusiveTo { get; }
     }
 }

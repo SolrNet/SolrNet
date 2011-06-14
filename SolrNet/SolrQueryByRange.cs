@@ -16,6 +16,7 @@
 
 #endregion
 
+using System;
 using SolrNet.Impl;
 
 namespace SolrNet {
@@ -27,15 +28,19 @@ namespace SolrNet {
         private readonly string fieldName;
         private readonly RT from;
         private readonly RT to;
-        private readonly bool inclusive;
+        private readonly bool inclusiveFrom;
+        private readonly bool inclusiveTo;
 
         public SolrQueryByRange(string fieldName, RT from, RT to) : this(fieldName, from, to, true) {}
 
-        public SolrQueryByRange(string fieldName, RT @from, RT to, bool inclusive) {
+        public SolrQueryByRange(string fieldName, RT @from, RT to, bool inclusive) : this(fieldName, from, to, inclusive, inclusive) {}
+
+        public SolrQueryByRange(string fieldName, RT @from, RT to, bool inclusiveFrom, bool inclusiveTo) {
             this.fieldName = fieldName;
             this.from = from;
             this.to = to;
-            this.inclusive = inclusive;
+            this.inclusiveTo = inclusiveFrom;
+            this.inclusiveTo = inclusiveTo;
         }
 
         public string FieldName {
@@ -58,8 +63,18 @@ namespace SolrNet {
             get { return to; }
         }
 
+        [Obsolete("Use InclusiveFrom and InclusiveTo", false)]
         public bool Inclusive {
-            get { return inclusive; }
+            get { return inclusiveFrom && inclusiveTo; }
         }
+
+        public bool InclusiveFrom {
+            get { return inclusiveFrom; }
+        }
+
+        public bool InclusiveTo {
+            get { return inclusiveTo; }
+        }
+
     }
 }

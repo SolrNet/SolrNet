@@ -39,7 +39,7 @@ namespace SolrNet {
             this.fieldName = fieldName;
             this.from = from;
             this.to = to;
-            this.inclusiveTo = inclusiveFrom;
+            this.inclusiveFrom = inclusiveFrom;
             this.inclusiveTo = inclusiveTo;
         }
 
@@ -68,10 +68,16 @@ namespace SolrNet {
             get { return inclusiveFrom && inclusiveTo; }
         }
 
+        /// <summary>
+        /// Is lower bound <see cref="From"/> inclusive
+        /// </summary>
         public bool InclusiveFrom {
             get { return inclusiveFrom; }
         }
 
+        /// <summary>
+        /// Is upper bound <see cref="To"/> inclusive
+        /// </summary>
         public bool InclusiveTo {
             get { return inclusiveTo; }
         }

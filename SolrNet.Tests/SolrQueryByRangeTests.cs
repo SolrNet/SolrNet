@@ -77,5 +77,49 @@ namespace SolrNet.Tests {
             var q = new SolrQueryByRange<DateTime?>("ts", null, new DateTime(2002, 3, 4, 5, 6, 7));
             Assert.AreEqual("ts:[* TO 2002-03-04T05:06:07Z]", Serialize(q));
         }
-	}
+
+
+        [Test]
+        public void IntLowerInclusiveUpperInclusive()
+        {
+            var q = new SolrQueryByRange<int>("id", 123, 456, true, true);
+            Assert.AreEqual("id:[123 TO 456]", Serialize(q));
+        }
+
+        [Test]
+        public void IntLowerInclusiveUpperExclusive()
+        {
+            var q = new SolrQueryByRange<int>("id", 123, 456, true, false);
+            Assert.AreEqual("id:[123 TO 456}", Serialize(q));
+        }
+
+        [Test]
+        public void IntLowerExclusiveUpperInclusive()
+        {
+            var q = new SolrQueryByRange<int>("id", 123, 456, false, true);
+            Assert.AreEqual("id:{123 TO 456]", Serialize(q));
+        }
+
+        [Test]
+        public void IntLowerExclusiveUpperExclusive()
+        {
+            var q = new SolrQueryByRange<int>("id", 123, 456, false, false);
+            Assert.AreEqual("id:{123 TO 456}", Serialize(q));
+        }
+
+
+        [Test]
+        public void IntLowerExclusiveUpperInclusiveWithNull()
+        {
+            var q = new SolrQueryByRange<int?>("id", 123, null, false, true);
+            Assert.AreEqual("id:{123 TO *]", Serialize(q));
+        }
+
+        [Test]
+        public void IntLowerExclusiveUpperExclusiveWithNull()
+        {
+            var q = new SolrQueryByRange<int?>("id", 123, null, false, false);
+            Assert.AreEqual("id:{123 TO *}", Serialize(q));
+        }
+    }
 }

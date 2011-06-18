@@ -33,7 +33,7 @@ namespace SolrNet.Impl.QuerySerializers {
         }
 
         public override string Serialize(SolrQueryByRange<DateTime> q) {
-            return RangeQuerySerializer.BuildRange(q.FieldName, SerializeSingle(q.From), SerializeSingle(q.To), q.Inclusive);
+            return RangeQuerySerializer.BuildRange(q.FieldName, SerializeSingle(q.From), SerializeSingle(q.To), q.InclusiveFrom, q.InclusiveTo);
         }
     }
 }

@@ -31,10 +31,14 @@ namespace SolrNet.Impl.QuerySerializers {
         }
 
         public static string BuildRange(string fieldName, string @from, string @to, bool inclusive) {
+            return BuildRange(fieldName, @from, @to, inclusive, inclusive);
+        }
+
+        public static string BuildRange(string fieldName, string @from, string @to, bool inclusiveFrom, bool inclusiveTo) {
             return "$field:$ii$from TO $to$if"
                             .Replace("$field", fieldName)
-                            .Replace("$ii", inclusive ? "[" : "{")
-                            .Replace("$if", inclusive ? "]" : "}")
+                            .Replace("$ii", inclusiveFrom ? "[" : "{")
+                            .Replace("$if", inclusiveTo ? "]" : "}")
                             .Replace("$from", @from)
                             .Replace("$to", to);
         }
@@ -50,7 +54,9 @@ namespace SolrNet.Impl.QuerySerializers {
             return BuildRange(query.FieldName, 
                 SerializeValue(query.From),
                 SerializeValue(query.To),
-                query.Inclusive);
+                query.InclusiveFrom,
+                query.InclusiveTo
+                );
         }
     }
 }

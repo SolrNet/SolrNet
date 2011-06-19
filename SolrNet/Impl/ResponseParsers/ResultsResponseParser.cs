@@ -33,19 +33,22 @@ namespace SolrNet.Impl.ResponseParsers {
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
             var resultNode = xml.Element("response").Element("result");
 
-			//FIX BY klaas 
-			//If resultNode == null exit func
-			//		This can occur when grouped results are returned
+			// This can occur when grouped results are returned
 			if (resultNode == null)
-			{
 				return;
-			}
+
+            var name = resultNode.Attribute("name");
+
+            if (name != null && name.Value != "response")
+                return;
 
             results.NumFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
             var maxScore = resultNode.Attribute("maxScore");
-            if (maxScore != null) {
+            if (maxScore != null)
                 results.MaxScore = double.Parse(maxScore.Value, CultureInfo.InvariantCulture.NumberFormat);
-            }
+
+            foreach (var result in docParser.ParseResults(resultNode))
+                results.Add(result);
         }
     }
 }

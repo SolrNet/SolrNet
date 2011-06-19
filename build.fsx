@@ -169,7 +169,7 @@ Target "NuGet.StructureMap" (fun _ ->
         "StructureMap.SolrNetIntegration" 
         "SolrNet.StructureMap"
         "StructureMap registry for SolrNet"
-        ["structuremap", "2.6.1.0"; "SolrNet", version]
+        ["structuremap", "2.6.2.0"; "SolrNet", version]
 )
 
 Target "NuGet.Autofac" (fun _ ->

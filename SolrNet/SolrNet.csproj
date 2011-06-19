@@ -85,10 +85,12 @@
     <Compile Include="DateFacetingResult.cs" />
     <Compile Include="GroupedResults.cs" />
     <Compile Include="Impl\FacetQuerySerializers\SolrFacetPivotQuerySerializer.cs" />
+    <Compile Include="Impl\MoreLikeThisResults.cs" />
     <Compile Include="Impl\ISolrDIHStatusParser.cs" />
     <Compile Include="PivotFacetingResult.cs" />
     <Compile Include="Impl\ResponseParsers\GroupingResponseParser.cs" />
     <Compile Include="SolrFacetPivotQuery.cs" />
+    <Compile Include="Impl\ResponseParsers\MoreLikeThisHandlerResponseParser.cs" />
     <Compile Include="SolrQueryByDistance.cs" />
     <Compile Include="SolrDIHStatus.cs" />
     <Compile Include="Impl\SolrDIHStatusParser.cs" />

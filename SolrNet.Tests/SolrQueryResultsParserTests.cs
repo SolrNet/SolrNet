@@ -501,6 +501,32 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void ParseMoreLikeThisHandlerResults()
+        {
+            var mapper = new AttributesMappingManager();
+            var innerParser = new ResultsResponseParser<Product>(new SolrDocumentResponseParser<Product>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<Product>()));
+            var parser = new SolrQueryResultParser<Product>(new[] {innerParser});
+            var r = parser.Parse(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithMoreLikeThisHandler.xml"));
+
+            Assert.AreEqual(0, r.NumFound);
+        }
+        
+        [Test]
+        public void ParseMoreLikeThisHandler()
+        {
+            var mapper = new AttributesMappingManager();
+            var parser = new MoreLikeThisHandlerResponseParser<Product>(new SolrDocumentResponseParser<Product>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<Product>()));
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithMoreLikeThisHandler.xml");
+            var mlth = parser.ParseMoreLikeThisHandler(xml);
+
+            Assert.IsNotNull(mlth);
+            Assert.AreEqual(1, mlth.NumFound);
+            Assert.AreEqual("SP2514N", mlth.Match.Id);
+            Assert.AreEqual(7, mlth.InterestingTermDetails.Count);
+            Assert.AreEqual(1.01F, mlth.InterestingTermDetails["manu:electronics"]);
+        }
+
+        [Test]
         public void ParseMoreLikeThis() {
             var mapper = new AttributesMappingManager();
             var parser = new MoreLikeThisResponseParser<Product>(new SolrDocumentResponseParser<Product>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<Product>()));

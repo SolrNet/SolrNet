@@ -311,6 +311,46 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
+        public void MoreLikeThisHandler()
+        {
+            Add_then_query();
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Add(new Product
+            {
+                Id = "apache-cocoon",
+                Categories = new[] { "framework", "java" },
+                Name = "Apache Cocoon",
+                Manufacturer = "Apache",
+            });
+            solr.Add(new Product
+            {
+                Id = "apache-hadoop",
+                Categories = new[] { "framework", "java", "mapreduce" },
+                Name = "Apache Hadoop",
+                Manufacturer = "Apache",
+            });
+            solr.Commit();
+            var results = solr.Query(new SolrQuery("id:apache-cocoon"), new QueryOptions
+            {
+                MoreLikeThis = new MoreLikeThisParameters(new[] { "cat", "manu" })
+                {
+                    MinDocFreq = 1,
+                    MinTermFreq = 1,
+                    UseMoreLikeThisHandler = true
+                    //Count = 1,
+                },
+            });
+            Assert.GreaterThan(results.Count, 0);
+            foreach (var r in results)
+            {
+                Console.WriteLine("Id: {0}", r.Id);
+                Console.WriteLine("Name: {0}", r.Name);
+                Console.WriteLine("Manufacturer: {0}", r.Manufacturer);
+                Console.WriteLine();
+            }
+        }
+
+        [Test]
         public void Stats() {
             Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();

@@ -46,9 +46,6 @@ namespace SolrNet.Impl.ResponseParsers {
             if (maxScore != null) {
                 results.MaxScore = double.Parse(maxScore.Value, CultureInfo.InvariantCulture.NumberFormat);
             }
-
-            foreach (var result in docParser.ParseResults(resultNode))
-                results.Add(result);
         }
     }
 }

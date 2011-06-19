@@ -172,7 +172,13 @@ namespace SolrNet.Impl {
             if (mlt.MinWordLength.HasValue)
                 yield return KVP("mlt.minwl", mlt.MinWordLength.ToString());
             if (mlt.QueryFields != null && mlt.QueryFields.Count > 0)
-                yield return KVP("mlt.qf", string.Join(",", mlt.QueryFields.ToArray()));
+                yield return KVP("mlt.qf", string.Join(" ", mlt.QueryFields.ToArray()));
+            if (mlt.IncludeMatch.HasValue)
+                yield return KVP("mlt.match.include", mlt.IncludeMatch.Value ? "true" : "false");
+            if (mlt.MatchOffset.HasValue)
+                yield return KVP("mlt.match.offset", mlt.MatchOffset.Value.ToString());
+            if (mlt.ShowTerms.HasValue)
+                yield return KVP("mlt.interestingTerms", mlt.ShowTerms.ToString());
         }
 
         /// <summary>
@@ -379,6 +385,13 @@ namespace SolrNet.Impl {
         /// <returns>query results</returns>
         public ISolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
             var param = GetAllParameters(q, options);
+            if (options != null && options.MoreLikeThis != null)
+            {
+                if (options.MoreLikeThis.UseMoreLikeThisHandler)
+                {
+                    this.Handler = options.MoreLikeThis.Handler;
+                }
+            }
             string r = connection.Get(Handler, param);
             var qr = resultParser.Parse(r);
             return qr;

@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using SolrNet.Impl;
 
@@ -87,5 +88,10 @@ namespace SolrNet {
 		/// Pivot faceting results
 		/// </summary>
 		IDictionary<string, IList<Pivot>> FacetPivots { get; set; }
+
+        /// <summary>
+        /// MoreLikeThis results
+        /// </summary>
+        MoreLikeThisResults<T> MoreLikeThis { get; set; }
 	}
 }

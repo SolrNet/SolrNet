@@ -23,6 +23,7 @@ namespace SolrNet.Commands.Parameters {
     /// See http://wiki.apache.org/solr/MoreLikeThis
     /// </summary>
     public class MoreLikeThisParameters {
+        static private readonly string DefaultMoreLikeThisHandler = "/mlt";
         private readonly IEnumerable<string> fields;
 
         /// <summary>
@@ -31,6 +32,8 @@ namespace SolrNet.Commands.Parameters {
         /// <param name="fields">The fields to use for similarity. </param>
         public MoreLikeThisParameters(IEnumerable<string> fields) {
             this.fields = fields;
+            this.UseMoreLikeThisHandler = false;
+            this.Handler = DefaultMoreLikeThisHandler;
         }
 
         /// <summary>
@@ -86,5 +89,38 @@ namespace SolrNet.Commands.Parameters {
         /// The number of similar documents to return for each result.
         /// </summary>
         public int? Count { get; set; }
+
+        /// <summary>
+        /// This parameter is used to indicate that the MoreLikeThisHandler should be used along with the 
+        /// MoreListThisHandlerParameters that include the specific configuration for the handler in Solr
+        /// </summary>
+        public bool UseMoreLikeThisHandler { set; get; }
+        
+        /// <summary>
+        /// The name of the MoreLikeThisHandler as configured in Solr
+        /// </summary>
+        public string Handler { get; set; }
+
+        /// <summary>
+        /// Indicates whether the matched document should be included in the normal/select response
+        /// </summary>
+        public bool? IncludeMatch { get; set; }
+
+        /// <summary>
+        /// The offset into the matched documents that will be used to find MoreLikeThis items
+        /// </summary>
+        public int? MatchOffset { get; set; }
+
+        public enum InterestingTerms
+        {
+            list,
+            details,
+            none
+        }
+
+        /// <summary>
+        /// This will set what interesting terms are to be shown as part of the MoreLikeThis response
+        /// </summary>
+        public InterestingTerms? ShowTerms { get; set; }
     }
 }

@@ -43,8 +43,14 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\SolrConfigurationSection.cs" />
+    <Compile Include="Config\SolrServerElement.cs" />
+    <Compile Include="Config\SolrServers.cs" />
+    <Compile Include="SolrCore.cs" />
     <Compile Include="SolrNetModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

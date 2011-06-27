@@ -118,7 +118,7 @@ namespace SolrNet.Impl {
                     using (var sr = new StreamReader(s))
                         msg = sr.ReadToEnd();
                 }
-                throw new SolrConnectionException(msg, e);
+                throw new SolrConnectionException(msg, e, request.RequestUri.ToString());
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿#I @"lib"
 #r "FakeLib.dll"
-#r "NuGet.Core.dll"
+#r "NuGet.exe"
 #r "NuGet.Core.XmlSerializers.-872272761.dll"
 #r "System.Xml.Linq"
 

@@ -10,7 +10,7 @@ open System.Xml.Linq
 open Fake
 open Fake.FileUtils
 
-let version = "0.4.0"
+let version = "0.4.0.1001"
 let buildDir = "merged"
 let nugetDir = "nuget"
 let nugetDocs = nugetDir @@ "content"
@@ -169,7 +169,7 @@ Target "NuGet.StructureMap" (fun _ ->
         "StructureMap.SolrNetIntegration" 
         "SolrNet.StructureMap"
         "StructureMap registry for SolrNet"
-        ["structuremap", "2.6.1.0"; "SolrNet", version]
+        ["structuremap", "2.6.2.0"; "SolrNet", version]
 )
 
 Target "NuGet.Autofac" (fun _ ->
@@ -185,7 +185,7 @@ Target "NuGet.Unity" (fun _ ->
         "Unity.SolrNetIntegration" 
         "SolrNet.Unity"
         "Unity integration for SolrNet"
-        ["Unity", "2.0"; "SolrNet", version]
+        ["Unity", "2.1.505.0"; "SolrNet", version]
 )
 
 Target "ReleasePackage" (fun _ -> 

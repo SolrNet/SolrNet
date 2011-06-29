@@ -224,10 +224,12 @@ namespace SolrNet.Tests {
 			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
 			var request = mocks.DynamicMock<IHttpWebRequest>();
 			With.Mocks(mocks).Expecting(delegate {
+                var uri = new Uri("http://lalala:12345/update");
 				Expect.Call(request.GetRequestStream())
                     .Repeat.Once()
                     .Throw(new WebException());
-				Expect.Call(reqFactory.Create(new Uri("http://lalala:12345/update")))
+                Expect.Call(request.RequestUri).Repeat.Once().Return(uri);
+				Expect.Call(reqFactory.Create(uri))
                     .IgnoreArguments()
                     .Repeat.Once()
                     .Return(request);

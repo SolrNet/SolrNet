@@ -124,26 +124,46 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader AddWithBoost(T doc, double boost, AddParameters parameters) {
-            return ((ISolrOperations<T>)this).AddWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) }, parameters);
+            return ((ISolrOperations<T>)this).AddRangeWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) }, parameters);
         }
 
         public ExtractResponse Extract(ExtractParameters parameters) {
             return basicServer.Extract(parameters);
         }
 
+        [Obsolete("Use AddRange instead")]
         public ResponseHeader Add(IEnumerable<T> docs) {
             return Add(docs, null);
         }
 
+        public ResponseHeader AddRange(IEnumerable<T> docs) {
+            return AddRange(docs, null);
+        }
+
+        [Obsolete("Use AddRange instead")]
         public ResponseHeader Add(IEnumerable<T> docs, AddParameters parameters) {
             return basicServer.AddWithBoost(docs.Select(d => new KeyValuePair<T, double?>(d, null)), parameters);
         }
 
+        public ResponseHeader AddRange(IEnumerable<T> docs, AddParameters parameters) {
+            return basicServer.AddWithBoost(docs.Select(d => new KeyValuePair<T, double?>(d, null)), parameters);
+        }
+
+        [Obsolete("Use AddRangeWithBoost instead")]
         ResponseHeader ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
             return ((ISolrOperations<T>)this).AddWithBoost(docs, null);
         }
 
+        public ResponseHeader AddRangeWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
+            return ((ISolrOperations<T>)this).AddRangeWithBoost(docs, null);
+        }
+
+        [Obsolete("Use AddRangeWithBoost instead")]
         ResponseHeader ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters) {
+            return basicServer.AddWithBoost(docs, parameters);
+        }
+
+        public ResponseHeader AddRangeWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters) {
             return basicServer.AddWithBoost(docs, parameters);
         }
 
@@ -211,7 +231,7 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader Add(T doc, AddParameters parameters) {
-            return Add(new[] { doc }, parameters);
+            return AddRange(new[] { doc }, parameters);
         }
 
         public SolrSchema GetSchema() {

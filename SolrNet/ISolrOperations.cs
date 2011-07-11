@@ -88,7 +88,16 @@ namespace SolrNet {
         /// </summary>
         /// <param name="docs">documents to add/update</param>
         /// <returns></returns>
+        [Obsolete("Use AddRange instead")]
         ResponseHeader Add(IEnumerable<T> docs);
+
+
+        /// <summary>
+        /// Adds / updates several documents at once
+        /// </summary>
+        /// <param name="docs">documents to add/update</param>
+        /// <returns></returns>
+        ResponseHeader AddRange(IEnumerable<T> docs);
 
         /// <summary>
         /// Adds / updates several documents at once
@@ -96,14 +105,31 @@ namespace SolrNet {
         /// <param name="docs">documents to add/update</param>
         /// <param name="parameters">The add parameters.</param>
         /// <returns></returns>
+        [Obsolete("Use AddRange instead")]
         ResponseHeader Add(IEnumerable<T> docs, AddParameters parameters);
+
+        /// <summary>
+        /// Adds / updates several documents at once
+        /// </summary>
+        /// <param name="docs">documents to add/update</param>
+        /// <param name="parameters">The add parameters.</param>
+        /// <returns></returns>
+        ResponseHeader AddRange(IEnumerable<T> docs, AddParameters parameters);
 
         /// <summary>
         /// Adds / updates documents with index-time boost
         /// </summary>
         /// <param name="docs">List of docs / boost. If boost is null, no boost is applied</param>
         /// <returns></returns>
+        [Obsolete("Use AddRangeWithBoost instead")]
         ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs);
+
+        /// <summary>
+        /// Adds / updates documents with index-time boost
+        /// </summary>
+        /// <param name="docs">List of docs / boost. If boost is null, no boost is applied</param>
+        /// <returns></returns>
+        ResponseHeader AddRangeWithBoost(IEnumerable<KeyValuePair<T, double?>> docs);
 
         /// <summary>
         /// Adds / updates documents with index-time boost and add parameters
@@ -111,7 +137,16 @@ namespace SolrNet {
         /// <param name="docs">List of docs / boost. If boost is null, no boost is applied</param>
         /// <param name="parameters">The add parameters.</param>
         /// <returns></returns>
+        [Obsolete("Use AddRangeWithBoost instead")]
         ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters);
+
+        /// <summary>
+        /// Adds / updates documents with index-time boost and add parameters
+        /// </summary>
+        /// <param name="docs">List of docs / boost. If boost is null, no boost is applied</param>
+        /// <param name="parameters">The add parameters.</param>
+        /// <returns></returns>
+        ResponseHeader AddRangeWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters);
 
         /// <summary>
         /// Deletes a document (requires the document to have a unique key defined with non-null value)

@@ -172,7 +172,7 @@ namespace SolrNet.Tests.Integration.Sample {
                     }
             };
 
-            solr.Add(products);
+            solr.AddRange(products);
             solr.Commit();
             
             solr.Delete(new[] { "DEL12345", "DEL12346" }, new SolrQueryByField("features", "feature 3"));

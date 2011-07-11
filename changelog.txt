@@ -1,3 +1,8 @@
+- Obsoleted Add(IEnumerable<T>). Use AddRange() instead.
+
+0.4.0a1 (2011-06-19)
+===
+
 - Upgraded to StructureMap 2.6.2
 - Added mixed exclusive/inclusive range queries (for Solr 4.0) (issue #142)
 - Breaking change for IReadOnlyMappingManager implementors: it now indexes fields by name to speed up lookup

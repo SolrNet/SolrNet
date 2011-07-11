@@ -127,7 +127,7 @@ namespace SolrNet.Tests {
                 {
                     var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
                     var t = new[] { new TestDocument(), new TestDocument() };
-                    s.Add(t);
+                    s.AddRange(t);
                 });
         }
 
@@ -148,7 +148,7 @@ namespace SolrNet.Tests {
                 {
                     var s = new SolrServer<TestDocument>(basicServer, mapper, validationManager);
                     var t = new[] { new TestDocument(), new TestDocument() };
-                    s.Add(t, parameters);
+                    s.AddRange(t, parameters);
                 });
         }
 

@@ -26,6 +26,7 @@ using HttpWebAdapters;
 using HttpWebAdapters.Adapters;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
+using HttpUtility = SolrNet.Utils.HttpUtility;
 
 namespace SolrNet.Impl {
     /// <summary>

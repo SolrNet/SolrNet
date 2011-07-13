@@ -60,6 +60,7 @@
       <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -266,6 +267,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Impl\SolrConnection.cs" />
     <Compile Include="Exceptions\SolrNetException.cs" />
+    <Compile Include="Utils\HttpEncoder.cs" />
+    <Compile Include="Utils\HttpUtility.cs" />
     <Compile Include="Utils\IContainer.cs" />
     <Compile Include="Utils\Memoizer.cs" />
     <Compile Include="Utils\TypeHelper.cs" />

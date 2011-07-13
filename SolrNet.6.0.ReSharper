@@ -2,6 +2,10 @@
   <CodeStyleSettings>
     <ExternalPath>C:\Development\Workspaces\BUZ\ThirdParty\SolrNet\SolrNet\My.ReSharper.CodingStyle.xml</ExternalPath>
     <Sharing>SOLUTION</Sharing>
+    <CSS>
+      <FormatSettings />
+      <Naming2 />
+    </CSS>
     <CSharp>
       <FormatSettings>
         <ALIGN_MULTILINE_ARRAY_AND_OBJECT_INITIALIZER>False</ALIGN_MULTILINE_ARRAY_AND_OBJECT_INITIALIZER>
@@ -47,6 +51,9 @@
         <Abbreviation Text="NH" />
       </Naming2>
     </CSharp>
+    <HTML>
+      <FormatSettings />
+    </HTML>
     <JavaScript>
       <FormatSettings />
       <Naming2 />

@@ -39,8 +39,17 @@ namespace SolrNet.Impl.FieldParsers {
 
         public DateTime ParseDate(string s) {
             var p = s.Split('-');
-            s = p[0].PadLeft(4, '0') + '-' + string.Join("-", p.Skip(1).ToArray());
-            return DateTime.ParseExact(s, "yyyy-MM-dd'T'HH:mm:ss.FFF'Z'", CultureInfo.InvariantCulture);
+            s = p[0].PadLeft(4, '0') + '-' + string.Join("-", p.Skip(1).ToArray());          
+            
+            // Mono does not support that exact format string for some reason, however Parse appears to properly handle the input. 
+            // Try using the format string, and if that fails, fall back to just a niave Parse.
+            DateTime result;
+            if (!DateTime.TryParseExact(s, "yyyy-MM-dd'T'HH:mm:ss.FFF'Z'", CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
+            {
+                result = DateTime.Parse(s, CultureInfo.InvariantCulture);
+            }
+            
+            return result;
         }
     }
 }

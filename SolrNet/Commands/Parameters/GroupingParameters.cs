@@ -72,6 +72,12 @@ namespace SolrNet.Commands.Parameters
 		/// Group based on the unique values of a function query.
 		/// </summary>
 		public string Func { get; set; }
+
+        /// <summary>
+        /// Includes the number of groups that have matched the query.
+        /// Default is false.
+        /// </summary>
+        public bool? Ngroups { get; set; }
 	
 		/// <summary>
 		/// Controls the way the group is formatted in the output

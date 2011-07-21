@@ -369,6 +369,9 @@ namespace SolrNet.Impl {
 			if (options.Grouping.OrderBy != null && options.Grouping.OrderBy.Count > 0)
 				yield return KVP("group.sort", string.Join(",", options.Grouping.OrderBy.Select(x => x.ToString()).ToArray()));
 
+            if (options.Grouping.Ngroups.HasValue)
+                yield return KVP("group.ngroups", options.Grouping.Ngroups.ToString().ToLowerInvariant());
+
 			yield return KVP("group.format", options.Grouping.Format.ToString().ToLowerInvariant());
 		
 		}

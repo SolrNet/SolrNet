@@ -43,21 +43,25 @@ namespace SolrNet.Impl.ResponseParsers
 		/// <summary>
 		/// Parses collapsed document.ids and their counts
 		/// </summary>
-		/// <param name="node"></param>
+        /// <param name="groupNode"></param>
 		/// <returns></returns>
 		public GroupedResults<T> ParseGroupedResults(XElement groupNode)
 		{
-				var g = new GroupedResults<T>
-				{
-					Matches = Convert.ToInt32(groupNode.XPathSelectElement("int[@name='matches']").Value)
-					
-				};
-				foreach (var gg in ParseGroup(groupNode))
-				{
-					g.Groups.Add(gg);
-				}
 
-				return g;
+			var g = new GroupedResults<T> {
+				Matches = Convert.ToInt32(groupNode.XPathSelectElement("int[@name='matches']").Value),
+			};
+
+            var ngroupNode = groupNode.XPathSelectElement("int[@name='ngroups']");
+
+            if (ngroupNode != null)
+                g.Ngroups = int.Parse(ngroupNode.Value);
+
+			foreach (var gg in ParseGroup(groupNode)) {
+				g.Groups.Add(gg);
+			}
+
+			return g;
 
 		}
 

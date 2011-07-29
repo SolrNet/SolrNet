@@ -245,6 +245,24 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void HighlightingWithFastVectorHighlighter() {
+            var e = new SolrQueryExecuter<TestDocument>(null, null, null, null);
+            var p = e.GetHighlightingParameters(new QueryOptions {
+                Highlight = new HighlightingParameters {
+                    Fields = new[] {"a"},
+                    AfterTerm = "after",
+                    BeforeTerm = "before",
+                    UseFastVectorHighlighter = true,
+                }
+            });
+            Assert.AreEqual("true", p["hl.useFastVectorHighlighter"]);
+            Assert.AreEqual("before", p["hl.tag.pre"]);
+            Assert.AreEqual("after", p["hl.tag.post"]);
+            Assert.IsFalse(p.ContainsKey("hl.simple.pre"));
+            Assert.IsFalse(p.ContainsKey("hl.simple.post"));
+        }
+
+        [Test]
         public void FilterQuery() {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();

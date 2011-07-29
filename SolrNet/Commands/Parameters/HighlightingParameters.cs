@@ -100,7 +100,7 @@ namespace SolrNet.Commands.Parameters {
         public bool? UsePhraseHighlighter { get; set; }
         
         /// <summary>
-        /// Uses FastVectorHighlighter (Solr 1.5). FastVectorHighlighter requires the field is termVectors=on, termPositions=on and termOffsets=on.
+        /// Uses FastVectorHighlighter (Solr 3.1+). FastVectorHighlighter requires the field is termVectors=on, termPositions=on and termOffsets=on.
         /// The default value is "false"
         /// </summary>
         public bool? UseFastVectorHighlighter { get; set; }

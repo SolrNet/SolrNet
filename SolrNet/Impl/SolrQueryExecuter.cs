@@ -214,10 +214,10 @@ namespace SolrNet.Impl {
                         param["hl.alternateField"] = h.AlternateField;
 
                     if (h.BeforeTerm != null)
-                        param["hl.simple.pre"] = h.BeforeTerm;
+                        param[h.UseFastVectorHighlighter.IsTrue() ? "hl.tag.pre" : "hl.simple.pre"] = h.BeforeTerm;
 
                     if (h.AfterTerm != null)
-                        param["hl.simple.post"] = h.AfterTerm;
+                        param[h.UseFastVectorHighlighter.IsTrue() ? "hl.tag.post" : "hl.simple.post"] = h.AfterTerm;
 
                     if (h.RegexSlop.HasValue)
                         param["hl.regex.slop"] = Convert.ToString(h.RegexSlop.Value, CultureInfo.InvariantCulture);

@@ -92,6 +92,12 @@ namespace SolrNet.Commands.Parameters {
 		/// </summary>
 		public GroupingParameters Grouping { get; set; }
 
+
+        /// <summary>
+        /// This parmeter can be used to group query results into clusters based on document similarity 
+        /// </summary>
+        public ClusteringParameters Clustering { get; set; }
+
         /// <summary>
         /// Extra arbitrary parameters to be passed in the request querystring
         /// </summary>

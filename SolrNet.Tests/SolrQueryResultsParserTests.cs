@@ -501,6 +501,20 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void ParseClustering() {
+            var parser = new ClusterResponseParser<Product>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithClustering.xml");
+            var docNode = xml.XPathSelectElement("response/arr[@name='clusters']");
+            var clustering = parser.ParseClusterNode(docNode);
+            Assert.IsNotNull(clustering);
+            Assert.AreEqual(89, clustering.Clusters.Count());
+            Assert.AreEqual("International", clustering.Clusters.First().Label);
+            Assert.AreEqual(33.729704170097, clustering.Clusters.First().Score);
+            Assert.AreEqual(8, clustering.Clusters.First().Documents.Count());
+            Assert.AreEqual("19622040", clustering.Clusters.First().Documents.First());
+        }
+
+        [Test]
         public void ParseMoreLikeThis() {
             var mapper = new AttributesMappingManager();
             var parser = new MoreLikeThisResponseParser<Product>(new SolrDocumentResponseParser<Product>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<Product>()));

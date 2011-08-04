@@ -103,6 +103,9 @@ namespace SolrNet.Impl {
 				//GetGroupingQueryOptions
 				foreach (var p in GetGroupingQueryOptions(Options))
 					yield return p;
+                
+                foreach (var p in GetClusteringParameters(Options))
+                    yield return p;
 
                 if (Options.ExtraParams != null)
                     foreach (var p in Options.ExtraParams)
@@ -375,6 +378,42 @@ namespace SolrNet.Impl {
 			yield return KVP("group.format", options.Grouping.Format.ToString().ToLowerInvariant());
 		
 		}
+
+        /// <summary>
+        /// Get the solr parameters for clustering
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public IEnumerable<KeyValuePair<string, string>> GetClusteringParameters(QueryOptions options) {
+            if (options.Clustering == null)
+                yield break;
+            var clst = options.Clustering;
+            yield return KVP("clustering", true.ToString().ToLowerInvariant());
+            if (clst.Engine != null)
+                yield return KVP("clustering.engine", clst.Engine.ToString());
+            if (clst.Results.HasValue)
+                yield return KVP("clustering.results", clst.Results.ToString().ToLowerInvariant());
+            if (clst.Collection.HasValue)
+                yield return KVP("clustering.collection", clst.Collection.ToString().ToLowerInvariant());
+            if (clst.Algorithm != null)
+                yield return KVP("carrot.algorithm", clst.Algorithm.ToString());
+            if (clst.Title != null)
+                yield return KVP("carrot.title", clst.Title.ToString());
+            if (clst.Snippet != null)
+                yield return KVP("carrot.snippet", clst.Snippet.ToString());
+            if (clst.Url != null)
+                yield return KVP("carrot.url", clst.Url.ToString());
+            if (clst.ProduceSummary.HasValue)
+                yield return KVP("carrot.produceSummary", clst.ProduceSummary.ToString().ToLowerInvariant());
+            if (clst.FragSize.HasValue)
+                yield return KVP("carrot.fragSize", clst.FragSize.ToString());
+            if (clst.NumDescriptions.HasValue)
+                yield return KVP("carrot.numDescriptions", clst.NumDescriptions.ToString());
+            if (clst.SubClusters.HasValue)
+                yield return KVP("carrot.outputSubClusters", clst.SubClusters.ToString().ToLowerInvariant());
+            if (clst.LexicalResources != null)
+                yield return KVP("carrot.lexicalResourcesDir", clst.LexicalResources.ToString());
+        }
 
         /// <summary>
         /// Executes the query and returns results

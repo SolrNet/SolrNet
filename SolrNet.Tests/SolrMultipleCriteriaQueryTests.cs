@@ -45,7 +45,7 @@ namespace SolrNet.Tests {
             var q2 = new SolrQueryByField("f", "v");
             var qm = new SolrMultipleCriteriaQuery(new ISolrQuery[] {q1, q2});
             Console.WriteLine(Serialize(qm));
-            Assert.AreEqual("(1  f:v)", Serialize(qm));
+            Assert.AreEqual("(1  (f:v))", Serialize(qm));
         }
 
 
@@ -79,7 +79,7 @@ namespace SolrNet.Tests {
         public void StaticConstructor() {
             var q = SolrMultipleCriteriaQuery.Create(new SolrQueryByField("id", "123"), new SolrQuery("solr"));
             Assert.AreEqual(2, q.Queries.Count());
-            Assert.AreEqual("(id:123  solr)", Serialize(q));
+            Assert.AreEqual("((id:123)  solr)", Serialize(q));
             Assert.IsEmpty(q.Oper);
         }
     }

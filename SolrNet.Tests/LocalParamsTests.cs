@@ -82,7 +82,7 @@ namespace SolrNet.Tests {
             };
             var q = new SolrQueryByField("field", "value");
             var qq = p + q;
-            Assert.AreEqual("{!type=spatial}field:value", SerializeQuery(qq));
+            Assert.AreEqual("{!type=spatial}(field:value)", SerializeQuery(qq));
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace SolrNet.Tests {
             var q = new SolrQueryByField("field", "value");
             var q2 = new SolrQueryByRange<decimal>("price", 100m, 200m);
             var qq = p + (q + q2);
-            Assert.AreEqual("{!type=spatial}(field:value  price:[100 TO 200])", SerializeQuery(qq));
+            Assert.AreEqual("{!type=spatial}((field:value)  price:[100 TO 200])", SerializeQuery(qq));
         }
     }
 }

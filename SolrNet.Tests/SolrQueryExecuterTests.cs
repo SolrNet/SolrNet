@@ -205,8 +205,8 @@ namespace SolrNet.Tests {
             q["hl.fragsize"] = fragsize.ToString();
             q["hl.requireFieldMatch"] = "true";
             q["hl.alternateField"] = alt;
-            q["hl.simple.pre"] = beforeTerm;
-            q["hl.simple.post"] = afterTerm;
+            q["hl.tag.pre"] = beforeTerm;
+            q["hl.tag.post"] = afterTerm;
             q["hl.regex.slop"] = "4.12";
             q["hl.regex.pattern"] = "\\.";
             q["hl.regex.maxAnalyzedChars"] = "8000";

@@ -39,7 +39,7 @@ namespace SolrNet.Tests {
         public void QueryByField() {
             var q = new SolrQueryByField("desc", "samsung");
             var notq = new SolrNotQuery(q);
-            Assert.AreEqual("-desc:samsung", Serialize(notq));
+            Assert.AreEqual("-(desc:samsung)", Serialize(notq));
         }
 
         [Test]
@@ -53,20 +53,20 @@ namespace SolrNet.Tests {
         public void QueryInList() {
             var q = new SolrQueryInList("desc", "samsung", "hitachi", "fujitsu");
             var notq = new SolrNotQuery(q);
-            Assert.AreEqual("-(desc:samsung OR desc:hitachi OR desc:fujitsu)", Serialize(notq));
+            Assert.AreEqual("-((desc:samsung) OR (desc:hitachi) OR (desc:fujitsu))", Serialize(notq));
         }
 
         [Test]
         public void MultipleCriteria() {
             var q = SolrMultipleCriteriaQuery.Create(new SolrQueryByField("desc", "samsung"), new SolrQueryByRange<decimal>("price", 100, 200));
             var notq = new SolrNotQuery(q);
-            Assert.AreEqual("-(desc:samsung  price:[100 TO 200])", Serialize(notq));
+            Assert.AreEqual("-((desc:samsung)  price:[100 TO 200])", Serialize(notq));
         }
 
         [Test]
         public void MultipleCriteria_not() {
             var q = SolrMultipleCriteriaQuery.Create(new SolrQueryByField("desc", "samsung"), new SolrQueryByRange<decimal>("price", 100, 200));
-            Assert.AreEqual("-(desc:samsung  price:[100 TO 200])", Serialize(q.Not()));
+            Assert.AreEqual("-((desc:samsung)  price:[100 TO 200])", Serialize(q.Not()));
         }
 
         [Test]

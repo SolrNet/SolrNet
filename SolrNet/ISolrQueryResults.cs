@@ -91,7 +91,7 @@ namespace SolrNet {
         /// <summary>
         /// Clustering results
         /// </summary>
-        ClusterResults Cluster { get; set; }
+        ClusterResults Clusters { get; set; }
 
 	}
 }

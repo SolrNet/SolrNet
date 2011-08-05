@@ -189,7 +189,7 @@ namespace SolrNet.Impl {
         public IDictionary<string, IList<T>> SimilarResults { get; set; }
         public IDictionary<string, StatsResult> Stats { get; set; }
         public CollapseResults Collapsing { get; set; }
-        public ClusterResults Cluster { get; set; }
+        public ClusterResults Clusters { get; set; }
 
 
 		public IDictionary<string, GroupedResults<T>> Grouping { set; get; }

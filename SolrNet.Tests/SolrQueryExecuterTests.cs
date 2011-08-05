@@ -480,5 +480,40 @@ namespace SolrNet.Tests {
                     Assert.AreEqual("1", p["radius"]);
                 });
         }
+
+        [Test]
+        public void GetClusteringParameters() {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var querySerializer = new SolrQuerySerializerStub("apache");
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null);
+            var p = queryExecuter.GetAllParameters(new SolrQuery("apache"), new QueryOptions {
+                Clustering = new ClusteringParameters() {
+                    Title = "headline",
+                    FragSize = 10,
+                    LexicalResources = "fakedir",
+                    ProduceSummary = true,
+                    Algorithm = "org.carrot2.clustering.lingo.LingoClusteringAlgorithm",
+                    Url = "none",
+                    Collection = false,
+                    Engine = "default",
+                    SubClusters = false,
+                    Snippet = "synopsis",
+                    NumDescriptions = 20
+                },
+            }).ToList();
+            Assert.Contains(p, KVP("carrot.title", "headline"));
+            Assert.Contains(p, KVP("clustering.engine", "default"));
+            Assert.Contains(p, KVP("clustering.collection", "false"));
+            Assert.Contains(p, KVP("carrot.algorithm", "org.carrot2.clustering.lingo.LingoClusteringAlgorithm"));
+            Assert.Contains(p, KVP("carrot.url", "none"));
+            Assert.Contains(p, KVP("carrot.snippet", "synopsis"));
+            Assert.Contains(p, KVP("carrot.produceSummary", "true"));
+            Assert.Contains(p, KVP("carrot.fragSize", "10"));
+            Assert.Contains(p, KVP("carrot.numDescriptions", "20"));
+            Assert.Contains(p, KVP("carrot.outputSubClusters", "false"));
+            Assert.Contains(p, KVP("carrot.lexicalResourcesDir", "fakedir"));
+        }
     }
 }

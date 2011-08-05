@@ -68,6 +68,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
+    <Compile Include="ClusterResults.cs" />
+    <Compile Include="Commands\Parameters\ClusteringParameters.cs" />
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
     <Compile Include="ExtractParameters.cs" />
     <Compile Include="AddParameters.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="GroupedResults.cs" />
     <Compile Include="Impl\FacetQuerySerializers\SolrFacetPivotQuerySerializer.cs" />
     <Compile Include="Impl\ISolrDIHStatusParser.cs" />
+    <Compile Include="Impl\ResponseParsers\ClusterResponseParser.cs" />
     <Compile Include="PivotFacetingResult.cs" />
     <Compile Include="Impl\ResponseParsers\GroupingResponseParser.cs" />
     <Compile Include="SolrFacetPivotQuery.cs" />

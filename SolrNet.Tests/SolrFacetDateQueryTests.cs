@@ -26,7 +26,7 @@ namespace SolrNet.Tests {
     [TestFixture]
     public class SolrFacetDateQueryTests {
         [Test]
-        public void tt() {
+        public void Serialize() {
             var q = new SolrFacetDateQuery("timestamp", new DateTime(2009,1,1), new DateTime(2009,2,2), "+1DAY") {
                 HardEnd = true,
                 Other = new[] {FacetDateOther.After},
@@ -41,7 +41,7 @@ namespace SolrNet.Tests {
         }
         
         [Test]
-        public void tt_IgnoresLocalParams() {
+        public void IgnoresLocalParams() {
             var q = new SolrFacetDateQuery(new LocalParams { { "ex", "cat" } } + "timestamp", new DateTime(2009, 1, 1), new DateTime(2009, 2, 2), "+1DAY") {
                 HardEnd = true,
                 Other = new[] { FacetDateOther.After },

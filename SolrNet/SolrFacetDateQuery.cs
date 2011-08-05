@@ -81,19 +81,5 @@ namespace SolrNet {
         public string Gap {
             get { return gap; }
         }
-
-        public IEnumerable<KeyValuePair<string, string>> Query {
-            get {
-                yield return KV("facet.date", field);
-                yield return KV(string.Format("f.{0}.facet.date.start", field), dateSerializer.SerializeDate(start));
-                yield return KV(string.Format("f.{0}.facet.date.end", field), dateSerializer.SerializeDate(end));
-                yield return KV(string.Format("f.{0}.facet.date.gap", field), gap);
-                if (HardEnd.HasValue)
-                    yield return KV(string.Format("f.{0}.facet.date.hardend", field), boolSerializer.SerializeBool(HardEnd.Value));
-                if (Other != null && Other.Count > 0)
-                    foreach (var o in Other)
-                        yield return KV(string.Format("f.{0}.facet.date.other", field), o.ToString());
-            }
-        }
     }
 }

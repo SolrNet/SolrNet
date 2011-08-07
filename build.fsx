@@ -71,11 +71,8 @@ Target "Coverage" (fun _ ->
 )
 
 Target "IntegrationTest" (fun _ ->
-    Solr.start()
-    try
-        testAssemblies |> Gallio.Run (fun p -> { p with Filters = onlyIntegrationTests })
-    finally
-        Solr.stop()
+    use s = Solr.start()
+    testAssemblies |> Gallio.Run (fun p -> { p with Filters = onlyIntegrationTests })
 )
 
 let merge libraries = 

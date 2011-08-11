@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <result numFound="1" start="0">
+    <doc>
+      <str name="Key">224fbdc1-12df-4520-9fbe-dd91f916eba1</str>
+    </doc>
+  </result>
+  <lst name="terms">
+    <lst name="text">
+      <int name="boot">479</int>
+      <int name="booti">13</int>
+    </lst>
+    <lst name="textgen">
+      <int name="boots">463</int>
+      <int name="boot">215</int>
+    </lst>
+  </lst>
+</response>

@@ -312,6 +312,48 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void Terms()
+        {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
+            var p = queryExecuter.GetTermsParameters(new QueryOptions
+            {
+                Terms = new TermsParameters
+                {
+                    Field = "text",
+                    Limit = 10,
+                    Lower = "lower",
+                    LowerInclude = true,
+                    MaxCount = 10,
+                    MinCount = 0,
+                    Prefix = "pre",
+                    Raw = true,
+                    Regex = "regex",
+                    RegexFlag = new List<string>{ RegexFlags.CanonEq, RegexFlags.CaseInsensitive },
+                    Sort = "count",
+                    Upper = "upper",
+                    UpperInclude = true
+                },
+            }).ToList();
+            Assert.Contains(p, KVP("terms", "true"));
+            Assert.Contains(p, KVP("terms.fl", "text"));
+            Assert.Contains(p, KVP("terms.lower", "lower"));
+            Assert.Contains(p, KVP("terms.lower.incl", "true"));
+            Assert.Contains(p, KVP("terms.maxcount", "10"));
+            Assert.Contains(p, KVP("terms.mincount", "0"));
+            Assert.Contains(p, KVP("terms.prefix", "pre"));
+            Assert.Contains(p, KVP("terms.raw", "true"));
+            Assert.Contains(p, KVP("terms.regex", "regex"));
+            Assert.Contains(p, KVP("terms.regex.flag", RegexFlags.CanonEq));
+            Assert.Contains(p, KVP("terms.regex.flag", RegexFlags.CaseInsensitive));
+            Assert.Contains(p, KVP("terms.sort", "count"));
+            Assert.Contains(p, KVP("terms.upper", "upper"));
+            Assert.Contains(p, KVP("terms.upper.incl", "true"));
+        }
+
+        [Test]
         public void GetAllParameters_with_spelling() {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();

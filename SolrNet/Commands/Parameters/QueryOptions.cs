@@ -62,6 +62,11 @@ namespace SolrNet.Commands.Parameters {
         public SpellCheckingParameters SpellCheck { get; set; }
 
         /// <summary>
+        /// Terms parameters
+        /// </summary>
+        public TermsParameters Terms { get; set; }
+
+        /// <summary>
         /// More-like-this parameters
         /// </summary>
         public MoreLikeThisParameters MoreLikeThis { get; set; }

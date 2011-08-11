@@ -515,6 +515,23 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void ParseTerms()
+        {
+            var parser = new TermsResponseParser<Product>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithTerms.xml");
+            var docNode = xml.XPathSelectElement("response/lst[@name='terms']");
+            var terms = parser.ParseTerms(docNode);
+            Assert.IsNotNull(terms);
+            Assert.AreEqual(2, terms.Count);
+            Assert.AreEqual("text", terms.First().Field);
+            Assert.AreEqual("textgen", terms.ElementAt(1).Field);
+            Assert.AreEqual("boot", terms.First().Terms.First().Key);
+            Assert.AreEqual(479, terms.First().Terms.First().Value);
+            Assert.AreEqual("boots", terms.ElementAt(1).Terms.First().Key);
+            Assert.AreEqual(463, terms.ElementAt(1).Terms.First().Value);
+        }
+
+        [Test]
         public void ParseMoreLikeThis() {
             var mapper = new AttributesMappingManager();
             var parser = new MoreLikeThisResponseParser<Product>(new SolrDocumentResponseParser<Product>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<Product>()));

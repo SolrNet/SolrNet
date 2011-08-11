@@ -78,7 +78,8 @@ namespace StructureMap.SolrNetIntegration
                                     typeof(StatsResponseParser<>),
                                     typeof(CollapseResponseParser<>),
                                     typeof(GroupingResponseParser<>),
-                                    typeof(ClusterResponseParser<>)
+                                    typeof(ClusterResponseParser<>),
+                                    typeof(TermsResponseParser<>)
                                 };
 
             foreach (var p in parsers)

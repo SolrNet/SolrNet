@@ -98,7 +98,7 @@ namespace Unity.SolrNetIntegration.Tests {
 
       var field = parser.GetType().GetField("parsers", BindingFlags.NonPublic | BindingFlags.Instance);
       var parsers = (ISolrResponseParser<Entity>[]) field.GetValue(parser);
-      Assert.AreEqual(10, parsers.Length);
+      Assert.AreEqual(11, parsers.Length);
       foreach (var t in parsers)
         Console.WriteLine(t);
     }

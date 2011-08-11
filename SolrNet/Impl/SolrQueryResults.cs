@@ -190,6 +190,7 @@ namespace SolrNet.Impl {
         public IDictionary<string, StatsResult> Stats { get; set; }
         public CollapseResults Collapsing { get; set; }
         public ClusterResults Clusters { get; set; }
+        public TermsResults Terms { get; set; }
 
 
 		public IDictionary<string, GroupedResults<T>> Grouping { set; get; }
@@ -216,6 +217,7 @@ namespace SolrNet.Impl {
             Collapsing = new CollapseResults();
 			//Grouping = new GroupedResults<T>();
 			Grouping = new Dictionary<string, GroupedResults<T>>();
+            Terms = new TermsResults();
         }
 	}
 }

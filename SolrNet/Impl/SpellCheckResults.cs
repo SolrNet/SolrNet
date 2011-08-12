@@ -25,7 +25,7 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Suggestion query from spell-checking
         /// </summary>
-        public string Collation { get; set; }
+        public CollationResults Collations { get; set; }
 
         private readonly ICollection<SpellCheckResult> SpellChecks = new List<SpellCheckResult>();
 

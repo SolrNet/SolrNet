@@ -87,6 +87,8 @@
     <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
     <Compile Include="GroupedResults.cs" />
+    <Compile Include="Impl\CollationResult.cs" />
+    <Compile Include="Impl\CollationResults.cs" />
     <Compile Include="Impl\FacetQuerySerializers\SolrFacetPivotQuerySerializer.cs" />
     <Compile Include="Impl\ISolrDIHStatusParser.cs" />
     <Compile Include="Impl\ResponseParsers\ClusterResponseParser.cs" />

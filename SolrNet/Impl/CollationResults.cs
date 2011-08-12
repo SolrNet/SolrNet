@@ -21,44 +21,49 @@ namespace SolrNet.Impl {
     /// <summary>
     /// Spell-checking query results
     /// </summary>
-    public class SpellCheckResults : ICollection<SpellCheckResult> {
+    public class CollationResults : ICollection<CollationResult> {
         /// <summary>
         /// Suggestion query from spell-checking
         /// </summary>
-        public CollationResults Collations { get; set; }
+   
 
-        private readonly ICollection<SpellCheckResult> SpellChecks = new List<SpellCheckResult>();
+        private readonly ICollection<CollationResult> Collations = new List<CollationResult>();
 
-        public IEnumerator<SpellCheckResult> GetEnumerator() {
-            return SpellChecks.GetEnumerator();
+        public IEnumerator<CollationResult> GetEnumerator()
+        {
+            return Collations.GetEnumerator();
         }
 
-        public void Add(SpellCheckResult item) {
-            SpellChecks.Add(item);
+        public void Add(CollationResult item)
+        {
+            Collations.Add(item);
         }
 
         public void Clear() {
-            SpellChecks.Clear();
+            Collations.Clear();
         }
 
-        public bool Contains(SpellCheckResult item) {
-            return SpellChecks.Contains(item);
+        public bool Contains(CollationResult item)
+        {
+            return Collations.Contains(item);
         }
 
-        public void CopyTo(SpellCheckResult[] array, int arrayIndex) {
-            SpellChecks.CopyTo(array, arrayIndex);
+        public void CopyTo(CollationResult[] array, int arrayIndex)
+        {
+            Collations.CopyTo(array, arrayIndex);
         }
 
-        public bool Remove(SpellCheckResult item) {
-            return SpellChecks.Remove(item);
+        public bool Remove(CollationResult item)
+        {
+            return Collations.Remove(item);
         }
 
         public int Count {
-            get { return SpellChecks.Count; }
+            get { return Collations.Count; }
         }
 
         public bool IsReadOnly {
-            get { return SpellChecks.IsReadOnly; }
+            get { return Collations.IsReadOnly; }
         }
 
         IEnumerator IEnumerable.GetEnumerator() {

@@ -2,7 +2,7 @@
 
 namespace SolrNet.Commands.Parameters {
     /// <summary>
-    /// Spell checking parameters
+    /// TermsComponent parameters
     /// </summary>
     public class TermsParameters {
 

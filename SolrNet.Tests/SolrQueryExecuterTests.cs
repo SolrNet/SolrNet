@@ -331,7 +331,7 @@ namespace SolrNet.Tests {
                     Prefix = "pre",
                     Raw = true,
                     Regex = "regex",
-                    RegexFlag = new List<string>{ RegexFlags.CanonEq, RegexFlags.CaseInsensitive },
+                    RegexFlag = new[] { RegexFlags.CanonEq, RegexFlags.CaseInsensitive },
                     Sort = "count",
                     Upper = "upper",
                     UpperInclude = true

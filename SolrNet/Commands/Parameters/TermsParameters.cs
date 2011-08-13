@@ -75,9 +75,9 @@ namespace SolrNet.Commands.Parameters {
         /// terms.regex.flag={case_insensitive|comments|multiline|literal|dotall|unicode_case|canon_eq|unix_lines} - Optional. 
         /// Flags to be used when evaluating the regular expression defined in the "terms.regex" parameter (see http://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/Pattern.html#compile%28java.lang.String,%20int%29 fore more details). 
         /// This parameter can be defined multiple times (each time with different flag)  Solr3.1
-        /// TODO: Make this an array to allow for mutliple selections
+        /// TODO: Make this an array to allow for multiple selections
         /// </summary>
-        public List<string> RegexFlag { get; set; }       
+        public ICollection<string> RegexFlag { get; set; }
 
         /// <summary>
         /// terms.limit={integer} - The maximum number of terms to return. The default is 10. If less than 0, then include all terms.

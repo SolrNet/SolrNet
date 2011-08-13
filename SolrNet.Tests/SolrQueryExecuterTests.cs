@@ -331,7 +331,7 @@ namespace SolrNet.Tests {
                     Prefix = "pre",
                     Raw = true,
                     Regex = "regex",
-                    RegexFlag = new[] { RegexFlags.CanonEq, RegexFlags.CaseInsensitive },
+                    RegexFlag = new[] { RegexFlag.CanonEq, RegexFlag.CaseInsensitive },
                     Sort = "count",
                     Upper = "upper",
                     UpperInclude = true
@@ -346,8 +346,8 @@ namespace SolrNet.Tests {
             Assert.Contains(p, KVP("terms.prefix", "pre"));
             Assert.Contains(p, KVP("terms.raw", "true"));
             Assert.Contains(p, KVP("terms.regex", "regex"));
-            Assert.Contains(p, KVP("terms.regex.flag", RegexFlags.CanonEq));
-            Assert.Contains(p, KVP("terms.regex.flag", RegexFlags.CaseInsensitive));
+            Assert.Contains(p, KVP("terms.regex.flag", RegexFlag.CanonEq.ToString()));
+            Assert.Contains(p, KVP("terms.regex.flag", RegexFlag.CaseInsensitive.ToString()));
             Assert.Contains(p, KVP("terms.sort", "count"));
             Assert.Contains(p, KVP("terms.upper", "upper"));
             Assert.Contains(p, KVP("terms.upper.incl", "true"));

@@ -70,6 +70,7 @@
     <Compile Include="AbstractSolrQuery.cs" />
     <Compile Include="ClusterResults.cs" />
     <Compile Include="Commands\Parameters\ClusteringParameters.cs" />
+    <Compile Include="Commands\Parameters\RegexFlag.cs" />
     <Compile Include="Commands\Parameters\TermsParameters.cs" />
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
     <Compile Include="ExtractParameters.cs" />

@@ -1,23 +1,6 @@
 ﻿using System.Collections.Generic;
 
 namespace SolrNet.Commands.Parameters {
-
-    /// <summary>
-    /// Constants for the choices of Regex Flags 
-    /// </summary>
-    public class RegexFlags
-    {
-        public const string CaseInsensitive = "case_insensitive";
-        public const string Comments = "comments";
-        public const string MultiLine = "multiline";
-        public const string Literal = "literal";
-        public const string Multiline = "multiline";
-        public const string DotAll = "dotall";
-        public const string UnicodeCase = "unicode_case";
-        public const string CanonEq = "canon_eq";
-        public const string UnixLines = "unix_lines";
-    }
-
     /// <summary>
     /// Spell checking parameters
     /// </summary>
@@ -84,9 +67,8 @@ namespace SolrNet.Commands.Parameters {
         /// (see http://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/Pattern.html#compile%28java.lang.String,%20int%29 for more details).
         /// This parameter can be defined multiple times (each time with different flag). Requires Solr 3.1+
         /// (terms.regex.flag)
-        /// TODO: Make this an array to allow for multiple selections
         /// </summary>
-        public ICollection<string> RegexFlag { get; set; }
+        public ICollection<RegexFlag> RegexFlag { get; set; }
 
         /// <summary>
         /// The maximum number of terms to return. The default is 10. If less than 0, then include all terms.

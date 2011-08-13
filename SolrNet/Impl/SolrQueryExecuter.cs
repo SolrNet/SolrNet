@@ -455,9 +455,9 @@ namespace SolrNet.Impl {
                     yield return KVP("terms.raw", terms.Raw.ToString().ToLowerInvariant());
                 if (!string.IsNullOrEmpty(terms.Regex))
                     yield return KVP("terms.regex", terms.Regex);
-                if (terms.RegexFlag != null && terms.RegexFlag.Any())
-                    foreach (string flag in terms.RegexFlag)
-                        yield return KVP("terms.regex.flag", flag);
+                if (terms.RegexFlag != null)
+                    foreach (var flag in terms.RegexFlag)
+                        yield return KVP("terms.regex.flag", flag.ToString());
             }
         }
 

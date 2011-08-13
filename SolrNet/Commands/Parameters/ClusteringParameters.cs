@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SolrNet.Commands.Parameters
 {
@@ -17,12 +14,6 @@ namespace SolrNet.Commands.Parameters
 
     public class ClusteringParameters
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public ClusteringParameters() {
-        }
-
         /// <summary>
         /// Engine to use for clustering
         /// </summary>

@@ -393,19 +393,19 @@ namespace SolrNet.Impl {
             var clst = options.Clustering;
             yield return KVP("clustering", true.ToString().ToLowerInvariant());
             if (clst.Engine != null)
-                yield return KVP("clustering.engine", clst.Engine.ToString());
+                yield return KVP("clustering.engine", clst.Engine);
             if (clst.Results.HasValue)
                 yield return KVP("clustering.results", clst.Results.ToString().ToLowerInvariant());
             if (clst.Collection.HasValue)
                 yield return KVP("clustering.collection", clst.Collection.ToString().ToLowerInvariant());
             if (clst.Algorithm != null)
-                yield return KVP("carrot.algorithm", clst.Algorithm.ToString());
+                yield return KVP("carrot.algorithm", clst.Algorithm);
             if (clst.Title != null)
-                yield return KVP("carrot.title", clst.Title.ToString());
+                yield return KVP("carrot.title", clst.Title);
             if (clst.Snippet != null)
-                yield return KVP("carrot.snippet", clst.Snippet.ToString());
+                yield return KVP("carrot.snippet", clst.Snippet);
             if (clst.Url != null)
-                yield return KVP("carrot.url", clst.Url.ToString());
+                yield return KVP("carrot.url", clst.Url);
             if (clst.ProduceSummary.HasValue)
                 yield return KVP("carrot.produceSummary", clst.ProduceSummary.ToString().ToLowerInvariant());
             if (clst.FragSize.HasValue)
@@ -415,7 +415,7 @@ namespace SolrNet.Impl {
             if (clst.SubClusters.HasValue)
                 yield return KVP("carrot.outputSubClusters", clst.SubClusters.ToString().ToLowerInvariant());
             if (clst.LexicalResources != null)
-                yield return KVP("carrot.lexicalResourcesDir", clst.LexicalResources.ToString());
+                yield return KVP("carrot.lexicalResourcesDir", clst.LexicalResources);
         }
 
         /// <summary>

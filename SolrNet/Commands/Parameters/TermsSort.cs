@@ -4,7 +4,7 @@ namespace SolrNet.Commands.Parameters {
     /// <summary>
     /// TermsComponent sort options
     /// </summary>
-    public abstract class TermsSort {
+    public abstract class TermsSort : IEquatable<TermsSort> {
         internal TermsSort() {}
 
         /// <summary>
@@ -27,6 +27,20 @@ namespace SolrNet.Commands.Parameters {
             public override string ToString() {
                 return "index";
             }
+        }
+
+        public bool Equals(TermsSort other) {
+            if (other == null)
+                return false;
+            return ToString() == other.ToString();
+        }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as TermsSort);
+        }
+
+        public override int GetHashCode() {
+            return ToString().GetHashCode();
         }
     }
 }

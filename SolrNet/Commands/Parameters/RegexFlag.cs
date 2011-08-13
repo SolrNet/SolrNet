@@ -1,8 +1,10 @@
+using System;
+
 namespace SolrNet.Commands.Parameters {
     /// <summary>
     /// Constants for the choices of Regex Flags 
     /// </summary>
-    public abstract class RegexFlag {
+    public abstract class RegexFlag: IEquatable<RegexFlag> {
         internal RegexFlag() {}
 
         /// <summary>
@@ -98,6 +100,20 @@ namespace SolrNet.Commands.Parameters {
             public override string ToString() {
                 return "unix_lines";
             }
+        }
+
+        public bool Equals(RegexFlag other) {
+            if (other == null)
+                return false;
+            return ToString() == other.ToString();
+        }
+
+        public override bool Equals(object obj) {
+            return Equals(obj as RegexFlag);
+        }
+
+        public override int GetHashCode() {
+            return ToString().GetHashCode();
         }
     }
 }

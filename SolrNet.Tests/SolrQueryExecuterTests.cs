@@ -320,9 +320,8 @@ namespace SolrNet.Tests {
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
             var p = queryExecuter.GetTermsParameters(new QueryOptions
             {
-                Terms = new TermsParameters
+                Terms = new TermsParameters("text")
                 {
-                    Field = "text",
                     Limit = 10,
                     Lower = "lower",
                     LowerInclude = true,

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using SolrNet.Commands.Parameters;
+using SolrNet.Exceptions;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl {
@@ -426,39 +427,37 @@ namespace SolrNet.Impl {
         public IEnumerable<KeyValuePair<string, string>> GetTermsParameters(QueryOptions Options)
         {
             var terms = Options.Terms;
-            if (terms != null)
-            {
-                if (!string.IsNullOrEmpty(terms.Field))
-                {
-                    yield return KVP("terms", "true");
-                    yield return KVP("terms.fl", terms.Field);
-                }   
-                if (!string.IsNullOrEmpty(terms.Prefix))
-                    yield return KVP("terms.prefix", terms.Prefix);
-                if (terms.Sort != null)
-                    yield return KVP("terms.sort", terms.Sort.ToString());
-                if (terms.Limit.HasValue)
-                    yield return KVP("terms.limit", terms.Limit.ToString());
-                if (!string.IsNullOrEmpty(terms.Lower))
-                    yield return KVP("terms.lower", terms.Lower);
-                if (terms.LowerInclude.HasValue)
-                    yield return KVP("terms.lower.incl", terms.LowerInclude.ToString().ToLowerInvariant());
-                if (!string.IsNullOrEmpty(terms.Upper))
-                    yield return KVP("terms.upper", terms.Upper);
-                if (terms.UpperInclude.HasValue)
-                    yield return KVP("terms.upper.incl", terms.UpperInclude.ToString().ToLowerInvariant());
-                if (terms.MaxCount.HasValue)
-                    yield return KVP("terms.maxcount", terms.MaxCount.ToString());
-                if (terms.MinCount.HasValue)
-                    yield return KVP("terms.mincount", terms.MinCount.ToString());
-                if (terms.Raw.HasValue)
-                    yield return KVP("terms.raw", terms.Raw.ToString().ToLowerInvariant());
-                if (!string.IsNullOrEmpty(terms.Regex))
-                    yield return KVP("terms.regex", terms.Regex);
-                if (terms.RegexFlag != null)
-                    foreach (var flag in terms.RegexFlag)
-                        yield return KVP("terms.regex.flag", flag.ToString());
-            }
+            if (terms == null)
+                yield break;
+            if (string.IsNullOrEmpty(terms.Field))
+                throw new SolrNetException("Terms field can't be empty or null");
+            yield return KVP("terms", "true");
+            yield return KVP("terms.fl", terms.Field);
+            if (!string.IsNullOrEmpty(terms.Prefix))
+                yield return KVP("terms.prefix", terms.Prefix);
+            if (terms.Sort != null)
+                yield return KVP("terms.sort", terms.Sort.ToString());
+            if (terms.Limit.HasValue)
+                yield return KVP("terms.limit", terms.Limit.ToString());
+            if (!string.IsNullOrEmpty(terms.Lower))
+                yield return KVP("terms.lower", terms.Lower);
+            if (terms.LowerInclude.HasValue)
+                yield return KVP("terms.lower.incl", terms.LowerInclude.ToString().ToLowerInvariant());
+            if (!string.IsNullOrEmpty(terms.Upper))
+                yield return KVP("terms.upper", terms.Upper);
+            if (terms.UpperInclude.HasValue)
+                yield return KVP("terms.upper.incl", terms.UpperInclude.ToString().ToLowerInvariant());
+            if (terms.MaxCount.HasValue)
+                yield return KVP("terms.maxcount", terms.MaxCount.ToString());
+            if (terms.MinCount.HasValue)
+                yield return KVP("terms.mincount", terms.MinCount.ToString());
+            if (terms.Raw.HasValue)
+                yield return KVP("terms.raw", terms.Raw.ToString().ToLowerInvariant());
+            if (!string.IsNullOrEmpty(terms.Regex))
+                yield return KVP("terms.regex", terms.Regex);
+            if (terms.RegexFlag != null)
+                foreach (var flag in terms.RegexFlag)
+                    yield return KVP("terms.regex.flag", flag.ToString());
         }
 
         /// <summary>

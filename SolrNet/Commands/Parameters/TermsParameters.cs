@@ -7,6 +7,14 @@ namespace SolrNet.Commands.Parameters {
     public class TermsParameters {
 
         /// <summary>
+        /// TermsComponent parameters
+        /// </summary>
+        /// <param name="field">The name of the field to get the terms from.</param>
+        public TermsParameters(string field) {
+            Field = field;
+        }
+
+        /// <summary>
         /// The name of the field to get the terms from. Required.
         /// (terms.fl)
         /// </summary>

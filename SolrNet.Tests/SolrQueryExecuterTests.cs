@@ -332,7 +332,7 @@ namespace SolrNet.Tests {
                     Raw = true,
                     Regex = "regex",
                     RegexFlag = new[] { RegexFlag.CanonEq, RegexFlag.CaseInsensitive },
-                    Sort = "count",
+                    Sort = TermsSort.Count,
                     Upper = "upper",
                     UpperInclude = true
                 },

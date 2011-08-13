@@ -435,8 +435,8 @@ namespace SolrNet.Impl {
                 }   
                 if (!string.IsNullOrEmpty(terms.Prefix))
                     yield return KVP("terms.prefix", terms.Prefix);
-                if (!string.IsNullOrEmpty(terms.Sort))
-                    yield return KVP("terms.sort", terms.Sort);
+                if (terms.Sort != null)
+                    yield return KVP("terms.sort", terms.Sort.ToString());
                 if (terms.Limit.HasValue)
                     yield return KVP("terms.limit", terms.Limit.ToString());
                 if (!string.IsNullOrEmpty(terms.Lower))

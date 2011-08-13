@@ -73,6 +73,7 @@
     <Compile Include="Commands\Parameters\RegexFlag.cs" />
     <Compile Include="Commands\Parameters\TermsParameters.cs" />
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
+    <Compile Include="Commands\Parameters\TermsSort.cs" />
     <Compile Include="ExtractParameters.cs" />
     <Compile Include="AddParameters.cs" />
     <Compile Include="CollapsedDocument.cs" />

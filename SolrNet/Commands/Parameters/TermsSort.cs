@@ -1,0 +1,32 @@
+﻿using System;
+
+namespace SolrNet.Commands.Parameters {
+    /// <summary>
+    /// TermsComponent sort options
+    /// </summary>
+    public abstract class TermsSort {
+        internal TermsSort() {}
+
+        /// <summary>
+        /// Sorts the terms by the term frequency (highest count first)
+        /// </summary>
+        public static readonly TermsSort Count = new TermsSort_Count();
+
+        /// <summary>
+        /// Sorts the terms in index order.
+        /// </summary>
+        public static readonly TermsSort Index = new TermsSort_Index();
+
+        private class TermsSort_Count : TermsSort {
+            public override string ToString() {
+                return "count";
+            }
+        }
+
+        private class TermsSort_Index : TermsSort {
+            public override string ToString() {
+                return "index";
+            }
+        }
+    }
+}

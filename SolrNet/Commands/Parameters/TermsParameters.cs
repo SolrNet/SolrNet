@@ -88,7 +88,7 @@ namespace SolrNet.Commands.Parameters {
         /// Default is to sort by count.
         /// (terms.sort)
         /// </summary>
-        public string Sort { get; set; }
+        public TermsSort Sort { get; set; }
        
     }
 }

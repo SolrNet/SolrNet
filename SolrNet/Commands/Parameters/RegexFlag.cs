@@ -23,6 +23,13 @@ namespace SolrNet.Commands.Parameters {
         public static readonly RegexFlag MultiLine = new RegexFlagMultiLine();
 
         /// <summary>
+        /// When this flag is specified then the input string that specifies the pattern is treated as a sequence of literal characters. 
+        /// Metacharacters or escape sequences in the input sequence will be given no special meaning.
+        /// The flags CASE_INSENSITIVE and UNICODE_CASE retain their impact on matching when used in conjunction with this flag. The other flags become superfluous.
+        /// </summary>
+        public static readonly RegexFlag Literal = new RegexFlagLiteral();
+
+        /// <summary>
         /// In dotall mode, the expression . matches any character, including a line terminator. By default this expression does not match line terminators.
         /// </summary>
         public static readonly RegexFlag DotAll = new RegexFlagDotAll();

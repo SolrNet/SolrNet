@@ -15,7 +15,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -37,30 +36,31 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <param name="results"></param>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IDictionary<string, IDictionary<string, ICollection<string>>> ParseHighlighting(IEnumerable<T> results, XElement node) {
-            var r = new Dictionary<string, IDictionary<string, ICollection<string>>>();
+        public IDictionary<string, HighlightedFields> ParseHighlighting(IEnumerable<T> results, XElement node) {
+            var highlights = new Dictionary<string, HighlightedFields>();
             var docRefs = node.Elements("lst");
             foreach (var docRef in docRefs) {
                 var docRefKey = docRef.Attribute("name").Value;
-                r[docRefKey] = ParseHighlightingFields(docRef.Elements());
+                highlights.Add(docRefKey, ParseHighlightingFields(docRef.Elements()));                    
             }
-            return r;
+            return highlights;
         }
 
         /// <summary>
-        /// Parses highlighting results
+        /// Parse highlighting snippets for each field.
         /// </summary>
         /// <param name="nodes"></param>
         /// <returns></returns>
-        public IDictionary<string, ICollection<string>> ParseHighlightingFields(IEnumerable<XElement> nodes) {
-            var fields = new Dictionary<string, ICollection<string>>();
-            foreach (var field in nodes) {
+        public HighlightedFields ParseHighlightingFields(IEnumerable<XElement> nodes)
+        {
+            var fields = new HighlightedFields();
+            foreach (var field in nodes){
                 var fieldName = field.Attribute("name").Value;
-                var snippets = new List<string>();
-                foreach (var str in field.Elements("str")) {
-                    snippets.Add(str.Value);
+                var snippets = new HighlightingSnippets();
+                foreach (var str in field.Elements("str")){
+                    snippets.Snippets.Add(str.Value);
                 }
-                fields[fieldName] = snippets;
+                fields.Fields.Add(fieldName, snippets);
             }
             return fields;
         }

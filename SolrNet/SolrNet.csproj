@@ -90,6 +90,8 @@
     <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
     <Compile Include="GroupedResults.cs" />
+    <Compile Include="Impl\HighlightedFields.cs" />
+    <Compile Include="Impl\HighlightingSnippets.cs" />
     <Compile Include="Impl\TermsResults.cs" />
     <Compile Include="Impl\TermsResult.cs" />
     <Compile Include="Impl\FacetQuerySerializers\SolrFacetPivotQuerySerializer.cs" />

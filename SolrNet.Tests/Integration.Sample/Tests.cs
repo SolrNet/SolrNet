@@ -194,8 +194,8 @@ namespace SolrNet.Tests.Integration.Sample {
             });
             Assert.IsNotNull(results.Highlights);
             Assert.AreEqual(1, results.Highlights.Count);
-            foreach (var h in results.Highlights[results[0].Id]) {
-                Console.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.ToArray()));
+            foreach (var h in results.Highlights[results[0].Id].Fields) {
+                Console.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.Snippets.ToArray()));
             }
         }
 

@@ -87,5 +87,11 @@ namespace SolrNet.Tests {
             var q = new SolrQuery("solr") - new SolrQuery("name:desc");
             Assert.AreEqual("(solr  -name:desc)", Serialize(q));
         }
+
+        [Test]
+        public void AllMinus() {
+            var q = SolrQuery.All - new SolrQuery("product");
+            Assert.AreEqual("(*:*  -product)", Serialize(q));
+        }
     }
 }

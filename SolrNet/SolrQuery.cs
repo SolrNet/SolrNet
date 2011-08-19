@@ -38,13 +38,9 @@ namespace SolrNet {
 			get { return query; }
 		}
 
-		static SolrQuery() {
-			All = new SolrQuery("*:*");
-		}
-
         /// <summary>
         /// Represents a query for all documents ("*:*")
         /// </summary>
-		public static ISolrQuery All { get; private set; }
+        public static readonly AbstractSolrQuery All = new SolrQuery("*:*");
 	}
 }

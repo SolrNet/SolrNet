@@ -194,8 +194,29 @@ namespace SolrNet.Tests.Integration.Sample {
             });
             Assert.IsNotNull(results.Highlights);
             Assert.AreEqual(1, results.Highlights.Count);
-            foreach (var h in results.Highlights[results[0].Id].Fields) {
-                Console.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.Snippets.ToArray()));
+            foreach (var h in results.Highlights[results[0].Id])
+            {
+                Console.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.ToArray()));
+            }
+        }
+
+        [Test]
+        public void HighlightingWrappedWithClass()
+        {
+            Add_then_query();
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var results = solr.Query(new SolrQueryByField("features", "noise"), new QueryOptions
+            {
+                Highlight = new HighlightingParameters
+                {
+                    Fields = new[] { "features" },
+                }
+            });
+            Assert.IsNotNull(results.Highlights);
+            Assert.AreEqual(1, results.Highlights.Count);
+            foreach (var h in results.Highlights[results[0].Id].Snippets)
+            {
+                Console.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.ToArray()));
             }
         }
 

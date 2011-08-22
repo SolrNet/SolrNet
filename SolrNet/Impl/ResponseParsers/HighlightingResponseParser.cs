@@ -36,8 +36,8 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <param name="results"></param>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IDictionary<string, HighlightedFields> ParseHighlighting(IEnumerable<T> results, XElement node) {
-            var highlights = new Dictionary<string, HighlightedFields>();
+        public IDictionary<string, HighlightedSnippets> ParseHighlighting(IEnumerable<T> results, XElement node) {
+            var highlights = new Dictionary<string, HighlightedSnippets>();
             var docRefs = node.Elements("lst");
             foreach (var docRef in docRefs) {
                 var docRefKey = docRef.Attribute("name").Value;
@@ -51,16 +51,16 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="nodes"></param>
         /// <returns></returns>
-        public HighlightedFields ParseHighlightingFields(IEnumerable<XElement> nodes)
+        public HighlightedSnippets ParseHighlightingFields(IEnumerable<XElement> nodes)
         {
-            var fields = new HighlightedFields();
+            var fields = new HighlightedSnippets();
             foreach (var field in nodes){
                 var fieldName = field.Attribute("name").Value;
-                var snippets = new HighlightingSnippets();
+                var snippets = new List<string>();
                 foreach (var str in field.Elements("str")){
-                    snippets.Snippets.Add(str.Value);
+                    snippets.Add(str.Value);
                 }
-                fields.Fields.Add(fieldName, snippets);
+                fields.Add(fieldName, snippets);
             }
             return fields;
         }

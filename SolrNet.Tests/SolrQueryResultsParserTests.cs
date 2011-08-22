@@ -460,7 +460,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual("Hello world!", extractResponse.Content);
         }
 
-        private IDictionary<string, HighlightedFields> ParseHighlightingResults(string rawXml) {
+        private IDictionary<string, HighlightedSnippets> ParseHighlightingResults(string rawXml) {
             var mapper = new AttributesMappingManager();
             var parser = new HighlightingResponseParser<Product>();
             var xml = XDocument.Parse(rawXml);
@@ -469,15 +469,28 @@ namespace SolrNet.Tests {
             return parser.ParseHighlighting(new SolrQueryResults<Product> { item }, docNode);
         }
 
+        [Test]
+        public void ParseHighlighting() {
+            var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting.xml"));
+            Assert.AreEqual(1, highlights.Count);
+            var kv = highlights.First().Value;
+            Assert.AreEqual(1, kv.Count);
+            Assert.AreEqual("features", kv.First().Key);
+            Assert.AreEqual(1, kv.First().Value.Count);
+            //Console.WriteLine(kv.First().Value.First());
+            Assert.Like(kv.First().Value.First(), "Noise");
+        }
+
 		[Test]
-		public void ParseHighlighting() {
+		public void ParseHighlightingWrappedWithClass() {
 		    var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting.xml"));
 			Assert.AreEqual(1, highlights.Count);
-            Assert.AreEqual("SP2514N", highlights.First().Key);
-		    var fields = highlights["SP2514N"].Fields;
-            Assert.AreEqual(1, fields.Count);
-            Assert.AreEqual("features", fields.First().Key);
-		    var snippets = fields["features"].Snippets;
+		    var first = highlights.First();
+            Assert.AreEqual("SP2514N",first.Key);
+		    var fieldsWithSnippets = highlights["SP2514N"].Snippets;
+            Assert.AreEqual(1, fieldsWithSnippets.Count);
+            Assert.AreEqual("features", fieldsWithSnippets.First().Key);
+		    var snippets = highlights["SP2514N"].Snippets["features"];
             Assert.AreEqual(1, snippets.Count);
             Assert.Like(snippets.First(), "Noise");
 		}
@@ -486,11 +499,21 @@ namespace SolrNet.Tests {
         public void ParseHighlighting2() {
             var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting2.xml"));
             var first = highlights.First();
-            first.Value.Fields.Keys.ToList().ForEach(Console.WriteLine);
-            first.Value.Fields["source_en"].Snippets.ForEach(Console.WriteLine);
-            Assert.AreEqual(3, first.Value.Fields["source_en"].Snippets.Count);
+            first.Value.Keys.ToList().ForEach(Console.WriteLine);
+            first.Value["source_en"].ToList().ForEach(Console.WriteLine);
+            Assert.AreEqual(3, first.Value["source_en"].Count);
         }
 
+        [Test]
+        public void ParseHighlighting2WrappedWithClass()
+        {
+            var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting2.xml"));
+            var first = highlights.First();
+            first.Value.Snippets.Keys.ToList().ForEach(Console.WriteLine);
+            first.Value.Snippets["source_en"].ForEach(Console.WriteLine);
+            Assert.AreEqual(3, first.Value.Snippets["source_en"].Count);
+        }
+        
         [Test]
         public void ParseSpellChecking() {
             var parser = new SpellCheckResponseParser<Product>();

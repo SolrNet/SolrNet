@@ -19,11 +19,11 @@ using System.Collections.Generic;
 
 namespace SolrNet.Impl {
     /// <summary>
-    /// Highlighted Fields
+    /// Highlighted snippets by field
     /// </summary>
     public class HighlightedSnippets : IDictionary<string, ICollection<string>> {
         /// <summary>
-        /// Fields
+        /// Highlighted snippets by field
         /// </summary>
         public IDictionary<string, ICollection<string>> Snippets {
             get { return fields; }

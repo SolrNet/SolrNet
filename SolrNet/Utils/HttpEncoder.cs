@@ -209,12 +209,13 @@ namespace SolrNet.Utils {
             if (String.IsNullOrEmpty(value))
                 return value;
 
-            MemoryStream result = new MemoryStream();
-            int length = value.Length;
-            for (int i = 0; i < length; i++)
-                UrlPathEncodeChar(value[i], result);
+			using (MemoryStream result = new MemoryStream()) {
+				int length = value.Length;
+				for (int i = 0; i < length; i++)
+					UrlPathEncodeChar(value[i], result);
 
-            return Encoding.ASCII.GetString(result.ToArray());
+				return Encoding.ASCII.GetString(result.ToArray());
+			}
         }
 
         internal static byte[] UrlEncodeToBytes(byte[] bytes, int offset, int count) {
@@ -231,12 +232,13 @@ namespace SolrNet.Utils {
             if (count < 0 || count > blen - offset)
                 throw new ArgumentOutOfRangeException("count");
 
-            MemoryStream result = new MemoryStream(count);
-            int end = offset + count;
-            for (int i = offset; i < end; i++)
-                UrlEncodeChar((char)bytes[i], result, false);
+			using (MemoryStream result = new MemoryStream(count)) {
+				int end = offset + count;
+				for (int i = offset; i < end; i++)
+					UrlEncodeChar((char) bytes[i], result, false);
 
-            return result.ToArray();
+				return result.ToArray();
+			}
         }
 
         internal static string HtmlEncode(string s) {

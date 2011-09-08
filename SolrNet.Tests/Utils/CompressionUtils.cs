@@ -10,28 +10,28 @@ namespace SolrNet.Tests.Utils
         {
             var data = Encoding.GetEncoding("iso-8859-1").GetBytes(textToCompress);
 
-            var ms = new MemoryStream();
+			using (var ms = new MemoryStream()) {
 
-            using (var zip = new GZipStream(ms, CompressionMode.Compress))
-            {
-                zip.Write(data, 0, data.Length);
-            }
+				using (var zip = new GZipStream(ms, CompressionMode.Compress)) {
+					zip.Write(data, 0, data.Length);
+				}
 
-            return new MemoryStream(ms.ToArray());
+				return new MemoryStream(ms.ToArray());
+			}
         }
 
         public static Stream DeflateCompressStream(string textToCompress)
         {
             var data = Encoding.GetEncoding("iso-8859-1").GetBytes(textToCompress);
 
-            var ms = new MemoryStream();
+			using (var ms = new MemoryStream()) {
 
-            using (var zip = new DeflateStream(ms, CompressionMode.Compress))
-            {
-                zip.Write(data, 0, data.Length);
-            }
+				using (var zip = new DeflateStream(ms, CompressionMode.Compress)) {
+					zip.Write(data, 0, data.Length);
+				}
 
-            return new MemoryStream(ms.ToArray());
+				return new MemoryStream(ms.ToArray());
+			}
         }
     }
 }

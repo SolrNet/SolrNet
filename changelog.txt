@@ -1,3 +1,13 @@
+- Friendlier highlighting results (issue #96)
+- Added Terms component support (issue #122)
+- Added Clustering component support (issue #121)
+- Fixed issue #159 : ignore LocalParams for facet date parameters
+- Added option to disable quoting in SolrQueryByField
+- Added ngroups for grouping
+- Fixed bug with fastVectorHighlighter
+- Fixed bug when using SolrNet in Application_Start in IIS 7+
+- Upgraded to Autofac 2.5.2
+- Added support for multicode in Autofac module
 - Obsoleted Add(IEnumerable<T>). Use AddRange() instead.
 
 0.4.0a1 (2011-06-19)

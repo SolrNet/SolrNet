@@ -8,7 +8,7 @@ namespace SolrNet.Tests.Utils
     {
         public static Stream GzipCompressStream(string textToCompress)
         {
-            var data = Encoding.GetEncoding("iso-8859-1").GetBytes(textToCompress);
+            var data = Encoding.UTF8.GetBytes(textToCompress);
 
 			using (var ms = new MemoryStream()) {
 
@@ -22,7 +22,7 @@ namespace SolrNet.Tests.Utils
 
         public static Stream DeflateCompressStream(string textToCompress)
         {
-            var data = Encoding.GetEncoding("iso-8859-1").GetBytes(textToCompress);
+            var data = Encoding.UTF8.GetBytes(textToCompress);
 
 			using (var ms = new MemoryStream()) {
 

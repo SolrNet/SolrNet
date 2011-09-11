@@ -174,7 +174,7 @@ Target "NuGet.Autofac" (fun _ ->
         "AutofacContrib.SolrNet" 
         "SolrNet.Autofac"
         "Autofac module for SolrNet"
-        ["Autofac", "2.2.4.900"; "SolrNet", version]
+        ["Autofac", "2.5.2.830"; "SolrNet", version]
 )
 
 Target "NuGet.Unity" (fun _ ->

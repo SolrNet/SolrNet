@@ -218,8 +218,9 @@ namespace SolrNet.Impl {
         private string UncompressResponse(IHttpWebResponse response) {
             using (var responseStream = response.GetResponseStream())
             using (var compressedStream = GetWrappedCompressionStream(response, responseStream)) {
-                var reader = new StreamReader(compressedStream, TryGetEncoding(response));
-                return reader.ReadToEnd();
+				using (var reader = new StreamReader(compressedStream, TryGetEncoding(response))) {
+					return reader.ReadToEnd();
+				}
             }
         }
 

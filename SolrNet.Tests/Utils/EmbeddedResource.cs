@@ -85,9 +85,10 @@ namespace SolrNet.Tests.Utils {
         /// <param name="fileName">The name of the resource</param>
         /// <returns>An XmlDocument with the contents of the embedded resource.</returns>
         public static XDocument GetEmbeddedXml(Type type, string fileName) {
-            Stream str = GetEmbeddedFile(type, fileName);
-            var tr = new XmlTextReader(str);
-            return XDocument.Load(tr);
+			using (Stream str = GetEmbeddedFile(type, fileName)) {
+				var tr = new XmlTextReader(str);
+				return XDocument.Load(tr);
+			}
         }
     }
 }

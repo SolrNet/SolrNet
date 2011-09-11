@@ -195,7 +195,7 @@ namespace AutofacContrib.SolrNet
             builder.RegisterType(SolrQueryExecuter)
                 .Named(core.Id + SolrQueryExecuter, ISolrQueryExecuter)
                 .WithParameters(new[] {
-                        new ResolvedParameter((p, c) => p.Name == "connection", (p, c) => c.Resolve(coreConnectionId, typeof(ISolrConnection))),
+                        new ResolvedParameter((p, c) => p.Name == "connection", (p, c) => c.ResolveNamed(coreConnectionId, typeof(ISolrConnection))),
                         
                     }
                 );
@@ -207,16 +207,16 @@ namespace AutofacContrib.SolrNet
             builder.RegisterType(SolrBasicServer)
                 .Named(core.Id + SolrBasicServer, ISolrBasicOperations)
                 .WithParameters(new[] {
-                    new ResolvedParameter((p, c) => p.Name == "connection", (p, c) => c.Resolve(coreConnectionId, typeof(ISolrConnection))),
-                    new ResolvedParameter((p, c) => p.Name == "queryExecuter", (p, c) => c.Resolve(core.Id + SolrQueryExecuter, ISolrQueryExecuter))
+                    new ResolvedParameter((p, c) => p.Name == "connection", (p, c) => c.ResolveNamed(coreConnectionId, typeof(ISolrConnection))),
+                    new ResolvedParameter((p, c) => p.Name == "queryExecuter", (p, c) => c.ResolveNamed(core.Id + SolrQueryExecuter, ISolrQueryExecuter))
                    }
                 );
 
             builder.RegisterType(SolrBasicServer)
                 .Named(core.Id + SolrBasicServer, ISolrBasicReadOnlyOperations)
                 .WithParameters(new[] {
-                                new ResolvedParameter((p, c) => p.Name == "connection", (p, c) => c.Resolve(coreConnectionId, typeof(ISolrConnection) )),
-                                new ResolvedParameter((p, c) => p.Name == "queryExecuter", (p, c) => c.Resolve(core.Id + SolrQueryExecuter, ISolrQueryExecuter))
+                                new ResolvedParameter((p, c) => p.Name == "connection", (p, c) => c.ResolveNamed(coreConnectionId, typeof(ISolrConnection) )),
+                                new ResolvedParameter((p, c) => p.Name == "queryExecuter", (p, c) => c.ResolveNamed(core.Id + SolrQueryExecuter, ISolrQueryExecuter))
                                }
                 );
 
@@ -227,14 +227,14 @@ namespace AutofacContrib.SolrNet
             builder.RegisterType(SolrServer)
                .As(ISolrOperations)
                .WithParameters(new[] {
-                                new ResolvedParameter((p, c) => p.Name == "basicServer", (p, c) => c.Resolve(core.Id + SolrBasicServer, ISolrBasicOperations)),
+                                new ResolvedParameter((p, c) => p.Name == "basicServer", (p, c) => c.ResolveNamed(core.Id + SolrBasicServer, ISolrBasicOperations)),
                                }
                );
 
             builder.RegisterType(SolrServer)
                .As(ISolrReadOnlyOperations)
                .WithParameters(new[] {
-                                new ResolvedParameter((p, c) => p.Name == "basicServer", (p, c) => c.Resolve(core.Id + SolrBasicServer, ISolrBasicOperations)),
+                                new ResolvedParameter((p, c) => p.Name == "basicServer", (p, c) => c.ResolveNamed(core.Id + SolrBasicServer, ISolrBasicOperations)),
                                }
                );
         }

@@ -312,7 +312,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void Terms()
+        public void TermsSingleField()
         {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
@@ -338,6 +338,49 @@ namespace SolrNet.Tests {
             }).ToList();
             Assert.Contains(p, KVP("terms", "true"));
             Assert.Contains(p, KVP("terms.fl", "text"));
+            Assert.Contains(p, KVP("terms.lower", "lower"));
+            Assert.Contains(p, KVP("terms.lower.incl", "true"));
+            Assert.Contains(p, KVP("terms.maxcount", "10"));
+            Assert.Contains(p, KVP("terms.mincount", "0"));
+            Assert.Contains(p, KVP("terms.prefix", "pre"));
+            Assert.Contains(p, KVP("terms.raw", "true"));
+            Assert.Contains(p, KVP("terms.regex", "regex"));
+            Assert.Contains(p, KVP("terms.regex.flag", RegexFlag.CanonEq.ToString()));
+            Assert.Contains(p, KVP("terms.regex.flag", RegexFlag.CaseInsensitive.ToString()));
+            Assert.Contains(p, KVP("terms.sort", "count"));
+            Assert.Contains(p, KVP("terms.upper", "upper"));
+            Assert.Contains(p, KVP("terms.upper.incl", "true"));
+        }
+
+        [Test]
+        public void TermsMutlipleFields()
+        {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
+            var p = queryExecuter.GetTermsParameters(new QueryOptions
+            {
+                Terms = new TermsParameters(new List<string> {"text", "text2", "text3"})
+                {
+                    Limit = 10,
+                    Lower = "lower",
+                    LowerInclude = true,
+                    MaxCount = 10,
+                    MinCount = 0,
+                    Prefix = "pre",
+                    Raw = true,
+                    Regex = "regex",
+                    RegexFlag = new[] { RegexFlag.CanonEq, RegexFlag.CaseInsensitive },
+                    Sort = TermsSort.Count,
+                    Upper = "upper",
+                    UpperInclude = true
+                },
+            }).ToList();
+            Assert.Contains(p, KVP("terms", "true"));
+            Assert.Contains(p, KVP("terms.fl", "text"));
+            Assert.Contains(p, KVP("terms.fl", "text2"));
+            Assert.Contains(p, KVP("terms.fl", "text3"));
             Assert.Contains(p, KVP("terms.lower", "lower"));
             Assert.Contains(p, KVP("terms.lower.incl", "true"));
             Assert.Contains(p, KVP("terms.maxcount", "10"));

@@ -11,14 +11,23 @@ namespace SolrNet.Commands.Parameters {
         /// </summary>
         /// <param name="field">The name of the field to get the terms from.</param>
         public TermsParameters(string field) {
-            Field = field;
+            Fields = new List<string> { field };
+        }
+
+        /// <summary>
+        /// TermsComponent parameters
+        /// </summary>
+        /// <param name="fields">The list of names of the fields to get the terms from.</param>
+        public TermsParameters(IEnumerable<string> fields)
+        {
+            Fields = fields;
         }
 
         /// <summary>
         /// The name of the field to get the terms from. Required.
         /// (terms.fl)
         /// </summary>
-        public string Field { get; set; }
+        public IEnumerable<string> Fields { get; set; }
 
         /// <summary>
         /// Lower bound term to start at.

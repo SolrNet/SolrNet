@@ -429,7 +429,7 @@ namespace SolrNet.Impl {
             var terms = Options.Terms;
             if (terms == null)
                 yield break;
-            if (terms.Fields == null && !terms.Fields.Any())
+            if (terms.Fields == null || !terms.Fields.Any())
                 throw new SolrNetException("Terms field can't be empty or null");
             yield return KVP("terms", "true");
             foreach(string field in terms.Fields)

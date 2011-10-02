@@ -449,8 +449,8 @@ namespace SolrNet.Tests {
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
-            var p = queryExecuter.GetMoreLikeThisParameters(new QueryOptions {
-                MoreLikeThis = new MoreLikeThisParameters(new[] {"field1", "field2"}) {
+            var p = queryExecuter.GetMoreLikeThisParameters(
+                new MoreLikeThisParameters(new[] {"field1", "field2"}) {
                     Boost = true,
                     Count = 10,
                     QueryFields = new[] {"qf1", "qf2"},
@@ -460,7 +460,6 @@ namespace SolrNet.Tests {
                     MinDocFreq = 5,
                     MinTermFreq = 6,
                     MinWordLength = 7,
-                }
             }).ToList();
             Assert.Contains(p, KVP("mlt", "true"));
             Assert.Contains(p, KVP("mlt.boost", "true"));
@@ -483,8 +482,8 @@ namespace SolrNet.Tests {
             var querySerializer = new SolrQuerySerializerStub("q");
             var facetQuerySerializer = new DefaultFacetQuerySerializer(querySerializer, null);
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, facetQuerySerializer);
-            var facetOptions = queryExecuter.GetFacetFieldOptions(new QueryOptions {
-                Facet = new FacetParameters {
+            var facetOptions = queryExecuter.GetFacetFieldOptions(
+                new FacetParameters {
                     Queries = new List<ISolrFacetQuery> {
                         new SolrFacetQuery(new SolrQuery("q")),
                     },
@@ -496,7 +495,7 @@ namespace SolrNet.Tests {
                     Offset = 55,
                     Sort = true,
                 }
-            }).ToDictionary(x => x.Key, x => x.Value);
+            ).ToDictionary(x => x.Key, x => x.Value);
             Assert.AreEqual("pref", facetOptions["facet.prefix"]);
             Assert.AreEqual("123", facetOptions["facet.enum.cache.minDf"]);
             Assert.AreEqual("100", facetOptions["facet.limit"]);

@@ -428,6 +428,33 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void MoreLikeThisHandlerQuery()
+        {
+            const string qstring = "id:123";
+
+            var mocks = new MockRepository();
+            var query = new Dictionary<string, string>();
+            query["q"] = qstring;
+
+            var connection = new MockConnection(query);
+            var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocumentWithUniqueKey>>();
+            var docSerializer = mocks.StrictMock<ISolrDocumentSerializer<TestDocumentWithUniqueKey>>();
+            var querySerializer = mocks.StrictMock<ISolrQuerySerializer>();
+
+            var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, null, docSerializer, null, null, null, null, null);
+            solr.MoreLikeThisHandlerQuery(new SolrMoreLikeThisHandlerQuery(qstring),
+                new MoreLikeThisHandlerQueryOptions
+                {
+                    Parameters = new MoreLikeThisHandlerParameters(null)
+                    {
+                        MatchInclude = false,
+
+                    }
+                });
+
+        }
+
+        [Test]
         public void QueryWithPagination() {
             const string qstring = "id:123";
             const int start = 10;

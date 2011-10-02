@@ -92,6 +92,9 @@
     <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
     <Compile Include="GroupedResults.cs" />
+    <Compile Include="IAbstractSolrQueryResults.cs" />
+    <Compile Include="IMoreLikeThisQueryResults.cs" />
+    <Compile Include="Impl\AbstractSolrQueryResults.cs" />
     <Compile Include="Impl\HighlightedSnippets.cs" />
     <Compile Include="Impl\MoreLikeThisHandlerResults.cs" />
     <Compile Include="Impl\TermsResults.cs" />

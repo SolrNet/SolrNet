@@ -22,31 +22,11 @@ namespace SolrNet {
 	/// Query results.
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public interface ISolrQueryResults<T> : IList<T>  {
-		/// <summary>
-		/// Total documents found
-		/// </summary>
-		int NumFound { get; }
-
+	public interface ISolrQueryResults<T> : IAbstractSolrQueryResults<T>  {
         /// <summary>
         /// Max score in these results
         /// </summary>
 		double? MaxScore { get; }
-
-        /// <summary>
-        /// Facet queries results
-        /// </summary>
-		IDictionary<string, int> FacetQueries { get; set; }
-
-        /// <summary>
-        /// Facet field queries results
-        /// </summary>
-		IDictionary<string, ICollection<KeyValuePair<string, int>>> FacetFields { get; set; }
-
-        /// <summary>
-        /// Query response header
-        /// </summary>
-		ResponseHeader Header { get; set; }
 
         /// <summary>
         /// Highlight results
@@ -77,11 +57,6 @@ namespace SolrNet {
 		/// Grouped results
 		/// </summary>
 		IDictionary<string, GroupedResults<T>> Grouping { get; set; }
-
-        /// <summary>
-        /// Date faceting results
-        /// </summary>
-		IDictionary<string, DateFacetingResult> FacetDates { get; set; }
 
 		/// <summary>
 		/// Pivot faceting results

@@ -5,19 +5,15 @@ using System.Text;
 
 namespace SolrNet.Impl
 {
-    public class MoreLikeThisHandlerResults<T>
+    public class MoreLikeThisHandlerResults<T> : AbstractSolrQueryResults<T>, IMoreLikeThisQueryResults<T>
     {
         public MoreLikeThisHandlerResults()
         {
-            this.Results = new List<T>();
+            this.InterestingTerms = new List<KeyValuePair<string, double>>();
         }
-
-        public int NumFound { get; set; }
-
-        public double? MaxScore { get; set; }
 
         public T Match { get; set; }
 
-        public IList<T> Results { get; private set; }
+        public IList<KeyValuePair<string, double>> InterestingTerms { get; set; }
     }
 }

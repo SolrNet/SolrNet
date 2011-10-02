@@ -134,6 +134,11 @@ namespace SolrNet.Impl {
             else if (query is SolrMoreLikeThisHandlerStreamUrlQuery)
                 yield return KVP("stream.url", Uri.EscapeUriString(query.Query));
 
+            if (options.Parameters.Handler != null)
+            {
+                MoreLikeThisHandler = options.Parameters.Handler;
+            }
+
             if (options != null)
             {
                 if (options.Start.HasValue)

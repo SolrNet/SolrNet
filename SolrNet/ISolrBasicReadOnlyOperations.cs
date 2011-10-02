@@ -32,6 +32,8 @@ namespace SolrNet {
         /// <returns></returns>
         ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options);
 
+        ISolrQueryResults<T> MoreLikeThisHandlerQuery(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options);
+
         /// <summary>
         /// Pings the Solr server.
         /// It can be used by a load balancer in front of a set of Solr servers to check response time of all the Solr servers in order to do response time based load balancing.

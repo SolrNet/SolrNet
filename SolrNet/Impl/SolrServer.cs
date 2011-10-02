@@ -49,6 +49,8 @@ namespace SolrNet.Impl {
             return basicServer.Query(query, options);
         }
 
+        
+
         public ResponseHeader Ping() {
             return basicServer.Ping();
         }
@@ -251,6 +253,11 @@ namespace SolrNet.Impl {
         public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options)
         {
             return basicServer.GetDIHStatus(options);
+        }
+
+        public ISolrQueryResults<T> MoreLikeThisHandlerQuery(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options)
+        {
+            return basicServer.MoreLikeThisHandlerQuery(query, options);
         }
     }
 }

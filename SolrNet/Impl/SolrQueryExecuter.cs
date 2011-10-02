@@ -43,10 +43,14 @@ namespace SolrNet.Impl {
 
         public static readonly string DefaultHandler = "/select";
 
+        public static readonly string DefaultMoreLikeThisHandler = "/mlt";
+
         /// <summary>
         /// Request handler to use. By default "/select"
         /// </summary>
         public string Handler { get; set; }
+
+        public string MoreLikeThisHandler { get; set; }
 
         public SolrQueryExecuter(ISolrQueryResultParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer, ISolrFacetQuerySerializer facetQuerySerializer) {
             this.resultParser = resultParser;
@@ -55,6 +59,7 @@ namespace SolrNet.Impl {
             this.facetQuerySerializer = facetQuerySerializer;
             DefaultRows = ConstDefaultRows;
             Handler = DefaultHandler;
+            MoreLikeThisHandler = DefaultMoreLikeThisHandler;
         }
 
         public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {
@@ -83,7 +88,7 @@ namespace SolrNet.Impl {
                 foreach (var p in GetHighlightingParameters(Options))
                     yield return p;
 
-                foreach (var p in GetFilterQueries(Options))
+                foreach (var p in GetFilterQueries(Options.FilterQueries))
                     yield return p;
 
                 foreach (var p in GetSpellCheckingParameters(Options))
@@ -92,10 +97,13 @@ namespace SolrNet.Impl {
                 foreach (var p in GetTermsParameters(Options))
                     yield return p;
 
-                foreach (var p in GetMoreLikeThisParameters(Options))
-                    yield return p;
+                if (Options.MoreLikeThis != null)
+                {
+                    foreach (var p in GetMoreLikeThisParameters(Options.MoreLikeThis))
+                        yield return p;
+                }
 
-                foreach (var p in GetFacetFieldOptions(Options))
+                foreach (var p in GetFacetFieldOptions(Options.Facet))
                     yield return p;
 
                 foreach (var p in GetStatsQueryOptions(Options))
@@ -117,48 +125,102 @@ namespace SolrNet.Impl {
             }
         }
 
+        public IEnumerable<KeyValuePair<string,string>> GetAllParameters(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options)
+        {
+            if (query is SolrMoreLikeThisHandlerQuery)
+                yield return KVP("q", querySerializer.Serialize(query));
+            else if (query is SolrMoreLikeThisHandlerStreamBodyQuery)
+                yield return KVP("stream.body", Uri.EscapeDataString(query.Query));
+            else if (query is SolrMoreLikeThisHandlerStreamUrlQuery)
+                yield return KVP("stream.url", Uri.EscapeUriString(query.Query));
+
+            if (options != null)
+            {
+                if (options.Start.HasValue)
+                {
+                    yield return KVP("start", options.Start.ToString());
+                }
+
+                var rows = options.Rows.HasValue ? options.Rows.Value : DefaultRows;
+                yield return KVP("rows", rows.ToString());
+
+                if (options.Fields != null && options.Fields.Count > 0)
+                {
+                    yield return KVP("fl", string.Join(",", options.Fields.ToArray()));
+                }
+
+                foreach (var p in GetMoreLikeThisHandlerParameters(options.Parameters))
+                    yield return p;
+
+                foreach (var p in GetFacetFieldOptions(options.Facet))
+                {
+                    yield return p;
+                }
+
+                foreach (var p in GetFilterQueries(options.FilterQueries))
+                {
+                    yield return p;
+                }
+            }
+        }
+
         /// <summary>
         /// Gets Solr parameters for facet queries
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetFacetFieldOptions(QueryOptions options) {
-            if (options.Facet == null)
+        public IEnumerable<KeyValuePair<string, string>> GetFacetFieldOptions(FacetParameters fp) {
+            if (fp == null)
                 yield break;
-            if (options.Facet.Queries == null || options.Facet.Queries.Count == 0)
+            if (fp.Queries == null || fp.Queries.Count == 0)
                 yield break;
 
             yield return KVP("facet", "true");
 
-            foreach (var fq in options.Facet.Queries)
+            foreach (var fq in fp.Queries)
                 foreach (var fqv in facetQuerySerializer.Serialize(fq))
                     yield return fqv;
 
-            if (options.Facet.Prefix != null)
-                yield return KVP("facet.prefix", options.Facet.Prefix);
-            if (options.Facet.EnumCacheMinDf.HasValue)
-                yield return KVP("facet.enum.cache.minDf", options.Facet.EnumCacheMinDf.ToString());
-            if (options.Facet.Limit.HasValue)
-                yield return KVP("facet.limit", options.Facet.Limit.ToString());
-            if (options.Facet.MinCount.HasValue)
-                yield return KVP("facet.mincount", options.Facet.MinCount.ToString());
-            if (options.Facet.Missing.HasValue)
-                yield return KVP("facet.missing", options.Facet.Missing.ToString().ToLowerInvariant());
-            if (options.Facet.Offset.HasValue)
-                yield return KVP("facet.offset", options.Facet.Offset.ToString());
-            if (options.Facet.Sort.HasValue)
-                yield return KVP("facet.sort", options.Facet.Sort.ToString().ToLowerInvariant());
+            if (fp.Prefix != null)
+                yield return KVP("facet.prefix", fp.Prefix);
+            if (fp.EnumCacheMinDf.HasValue)
+                yield return KVP("facet.enum.cache.minDf", fp.EnumCacheMinDf.ToString());
+            if (fp.Limit.HasValue)
+                yield return KVP("facet.limit", fp.Limit.ToString());
+            if (fp.MinCount.HasValue)
+                yield return KVP("facet.mincount", fp.MinCount.ToString());
+            if (fp.Missing.HasValue)
+                yield return KVP("facet.missing", fp.Missing.ToString().ToLowerInvariant());
+            if (fp.Offset.HasValue)
+                yield return KVP("facet.offset", fp.Offset.ToString());
+            if (fp.Sort.HasValue)
+                yield return KVP("facet.sort", fp.Sort.ToString().ToLowerInvariant());
+        }
+
+        public IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisHandlerParameters(MoreLikeThisHandlerParameters mlt)
+        {
+            if (mlt.Handler != null)
+                this.Handler = mlt.Handler;
+
+            if (mlt.MatchInclude != null)
+                yield return KVP("mlt.match.include", mlt.MatchInclude.Value.ToString().ToLowerInvariant());
+
+            if (mlt.MatchOffset != null)
+                yield return KVP("mlt.match.offset", mlt.MatchOffset.Value.ToString());
+
+            if (mlt.ShowTerms != null)
+                yield return KVP("mlt.interestingTerms", mlt.ShowTerms.ToString());
+
+            foreach (var p in GetMoreLikeThisParameters(mlt))
+                yield return p;
         }
 
         /// <summary>
         /// Gets Solr parameters for defined more-like-this options
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="mltp"></param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisParameters(QueryOptions options) {
-            if (options.MoreLikeThis == null)
-                yield break;
-            var mlt = options.MoreLikeThis;
+        public IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisParameters(MoreLikeThisParameters mlt) {
             yield return KVP("mlt", "true");
             if (mlt.Fields != null)
                 yield return KVP("mlt.fl", string.Join(",", mlt.Fields.ToArray()));
@@ -187,10 +249,10 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetFilterQueries(QueryOptions options) {
-            if (options.FilterQueries == null || options.FilterQueries.Count == 0)
+        public IEnumerable<KeyValuePair<string, string>> GetFilterQueries(ICollection<ISolrQuery> filterQueries) {
+            if (filterQueries == null || filterQueries.Count == 0)
                 yield break;
-            foreach (var fq in options.FilterQueries) {
+            foreach (var fq in filterQueries) {
                 yield return new KeyValuePair<string, string>("fq", querySerializer.Serialize(fq));
             }
         }
@@ -468,6 +530,16 @@ namespace SolrNet.Impl {
         public ISolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
             var param = GetAllParameters(q, options);
             string r = connection.Get(Handler, param);
+            var qr = resultParser.Parse(r);
+            return qr;
+        }
+
+        // Tutaj powinno być MoreLikeThisHandlerQuery z podziałem na fieldquery i contentstreamy
+        public ISolrQueryResults<T> Execute(ISolrMoreLikeThisHandlerQuery q, MoreLikeThisHandlerQueryOptions options)
+        {
+            var param = GetAllParameters(q, options);
+            var p = param.ToList();
+            string r = connection.Get(MoreLikeThisHandler, param);
             var qr = resultParser.Parse(r);
             return qr;
         }

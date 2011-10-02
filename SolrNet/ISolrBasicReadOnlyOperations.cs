@@ -32,6 +32,12 @@ namespace SolrNet {
         /// <returns></returns>
         ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options);
 
+        /// <summary>
+        /// Executes a MoreLikeThisHandler query
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         ISolrQueryResults<T> MoreLikeThisHandlerQuery(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options);
 
         /// <summary>

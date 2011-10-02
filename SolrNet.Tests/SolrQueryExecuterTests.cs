@@ -475,6 +475,90 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void GetAllParameters_mlt_with_field_query()
+        {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var serializer = new SelfSerializingQuerySerializer();
+            var qe = new SolrQueryExecuter<TestDocument>(parser, conn, serializer, null);
+            var p = qe.GetAllParameters(
+                new SolrMoreLikeThisHandlerQuery("id:1234"),
+                new MoreLikeThisHandlerQueryOptions()
+                {
+                    Start = 0,
+                    Rows = 5,
+                    Fields = new string[] { "one", "two", "three" },
+                    Parameters = new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
+                    {
+                    	Handler = "/moreLikeThisHandler",
+                        MatchInclude = false,
+                        MatchOffset = 5,
+                        ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
+                    }
+                }).ToList();
+            Assert.Contains(p, KVP("q", "id:1234"));
+            Assert.Contains(p, KVP("start", "0"));
+            Assert.Contains(p, KVP("rows", "5"));
+            Assert.Contains(p, KVP("fl", "one,two,three"));
+            Assert.Contains(p, KVP("mlt.fl", "one,three"));
+            Assert.AreEqual("/moreLikeThisHandler", qe.MoreLikeThisHandler);
+            Assert.Contains(p, KVP("mlt.match.include", "false"));
+            Assert.Contains(p, KVP("mlt.match.offset", "5"));
+            Assert.Contains(p, KVP("mlt.interestingTerms", "none"));
+        }
+
+        [Test]
+        public void GetAllParameters_mlt_with_stream_body_query()
+        {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var qe = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
+            var p = qe.GetAllParameters(
+                new SolrMoreLikeThisHandlerStreamBodyQuery("one two three"),
+                new MoreLikeThisHandlerQueryOptions()
+                {
+                    Start = 0,
+                    Rows = 5,
+                    Fields = new string[] { "one", "two", "three" },
+                    Parameters = new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
+                    {
+                        Handler = "/moreLikeThisHandler",
+                        MatchInclude = false,
+                        MatchOffset = 5,
+                        ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
+                    }
+                }).ToList();
+            Assert.Contains(p, KVP("stream.body", "one%20two%20three"));
+        }
+
+        [Test]
+        public void GetAllParameters_mlt_with_stream_url_query()
+        {
+            var mocks = new MockRepository();
+            var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
+            var conn = mocks.DynamicMock<ISolrConnection>();
+            var qe = new SolrQueryExecuter<TestDocument>(parser, conn, null, null);
+            var p = qe.GetAllParameters(
+                new SolrMoreLikeThisHandlerStreamUrlQuery("http://wiki.apache.org/solr/MoreLikeThisHandler"),
+                new MoreLikeThisHandlerQueryOptions()
+                {
+                    Start = 0,
+                    Rows = 5,
+                    Fields = new string[] { "one", "two", "three" },
+                    Parameters = new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
+                    {
+                        Handler = "/moreLikeThisHandler",
+                        MatchInclude = false,
+                        MatchOffset = 5,
+                        ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
+                    }
+                }).ToList();
+            Assert.Contains(p, KVP("stream.url", "http://wiki.apache.org/solr/MoreLikeThisHandler"));
+        }
+
+        [Test]
         public void FacetFieldOptions() {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();

@@ -17,6 +17,7 @@
 using System;
 using System.Globalization;
 using System.Xml.Linq;
+using System.Linq;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -31,7 +32,8 @@ namespace SolrNet.Impl.ResponseParsers {
         }
 
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
-            var resultNode = xml.Element("response").Element("result");
+            // IsNullOrEmpty part is needed to pass tests
+            var resultNode = xml.Element("response").Elements("result").FirstOrDefault(e => String.IsNullOrEmpty((string)e.Attribute("name")) || (string)e.Attribute("name") == "response");
 
 			//FIX BY klaas 
 			//If resultNode == null exit func

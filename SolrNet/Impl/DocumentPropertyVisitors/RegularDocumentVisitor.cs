@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -46,7 +47,11 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
             if (parser.CanHandleSolrType(field.Name.LocalName) &&
                 parser.CanHandleType(thisField.Property.PropertyType)) {
                 var v = parser.Parse(field, thisField.Property.PropertyType);
-                thisField.Property.SetValue(doc, v, null);
+                try {
+                    thisField.Property.SetValue(doc, v, null);                    
+                } catch (ArgumentException e) {
+                    throw new ArgumentException(string.Format("Could not convert value '{0}' to property '{1}' of document type {2}", v, thisField.Property.Name, thisField.Property.DeclaringType), e);
+                }
             }
         }
     }

@@ -96,7 +96,13 @@
     <Compile Include="IMoreLikeThisQueryResults.cs" />
     <Compile Include="Impl\AbstractSolrQueryResults.cs" />
     <Compile Include="Impl\HighlightedSnippets.cs" />
+    <Compile Include="Impl\ISolrAbstractResponseParser.cs" />
+    <Compile Include="Impl\ISolrMoreLikeThisHandlerQueryResultsParser.cs" />
+    <Compile Include="Impl\ISolrMoreLikeThisHandlerResponseParser.cs" />
     <Compile Include="Impl\MoreLikeThisHandlerResults.cs" />
+    <Compile Include="Impl\ResponseParsers\AbstractResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\InterestingTermsResponseParser.cs" />
+    <Compile Include="Impl\SolrMoreLikeThisHandlerQueryResultsParser.cs" />
     <Compile Include="Impl\TermsResults.cs" />
     <Compile Include="Impl\TermsResult.cs" />
     <Compile Include="Impl\FacetQuerySerializers\SolrFacetPivotQuerySerializer.cs" />

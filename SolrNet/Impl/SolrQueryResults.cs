@@ -23,9 +23,6 @@ namespace SolrNet.Impl {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
 	public class SolrQueryResults<T> : AbstractSolrQueryResults<T>, ISolrQueryResults<T> {
-		public double? MaxScore { get; set; }
-
-		public IDictionary<string, IList<Pivot>> FacetPivots { get; set; }
 		public IDictionary<string, HighlightedSnippets> Highlights { get; set; }
         public SpellCheckResults SpellChecking { get; set; }
         public IDictionary<string, IList<T>> SimilarResults { get; set; }

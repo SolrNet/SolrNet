@@ -9,11 +9,11 @@ namespace SolrNet.Impl
     {
         public MoreLikeThisHandlerResults()
         {
-            this.InterestingTerms = new List<KeyValuePair<string, double>>();
+            this.InterestingTerms = new List<KeyValuePair<string, float>>();
         }
 
         public T Match { get; set; }
 
-        public IList<KeyValuePair<string, double>> InterestingTerms { get; set; }
+        public IList<KeyValuePair<string, float>> InterestingTerms { get; set; }
     }
 }

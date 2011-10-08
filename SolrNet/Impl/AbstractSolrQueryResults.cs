@@ -183,12 +183,14 @@ namespace SolrNet.Impl
         }
 
         public int NumFound { get; set; }
+        public double? MaxScore { get; set; }
 
         public ResponseHeader Header { get; set; }
 
         public IDictionary<string, int> FacetQueries { get; set; }
         public IDictionary<string, ICollection<KeyValuePair<string, int>>> FacetFields { get; set; }
         public IDictionary<string, DateFacetingResult> FacetDates { get; set; }
+        public IDictionary<string, IList<Pivot>> FacetPivots { get; set; }
 
         public AbstractSolrQueryResults()
         {

@@ -24,14 +24,15 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses documents from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class ResultsResponseParser<T> : ISolrResponseParser<T> {
+    public class ResultsResponseParser<T> : AbstractResponseParser<T>, ISolrAbstractResponseParser<T>
+    {
         private readonly ISolrDocumentResponseParser<T> docParser;
 
         public ResultsResponseParser(ISolrDocumentResponseParser<T> docParser) {
             this.docParser = docParser;
         }
 
-        public void Parse(XDocument xml, SolrQueryResults<T> results) {
+        public override void Parse(XDocument xml, IAbstractSolrQueryResults<T> results) {
             // IsNullOrEmpty part is needed to pass tests
             var resultNode = xml.Element("response").Elements("result").FirstOrDefault(e => String.IsNullOrEmpty((string)e.Attribute("name")) || (string)e.Attribute("name") == "response");
 

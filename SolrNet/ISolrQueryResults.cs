@@ -24,11 +24,6 @@ namespace SolrNet {
 	/// <typeparam name="T">Document type</typeparam>
 	public interface ISolrQueryResults<T> : IAbstractSolrQueryResults<T>  {
         /// <summary>
-        /// Max score in these results
-        /// </summary>
-		double? MaxScore { get; }
-
-        /// <summary>
         /// Highlight results
         /// </summary>
         IDictionary<string, HighlightedSnippets> Highlights { get; set; }
@@ -57,11 +52,6 @@ namespace SolrNet {
 		/// Grouped results
 		/// </summary>
 		IDictionary<string, GroupedResults<T>> Grouping { get; set; }
-
-		/// <summary>
-		/// Pivot faceting results
-		/// </summary>
-		IDictionary<string, IList<Pivot>> FacetPivots { get; set; }
 
         /// <summary>
         /// Clustering results

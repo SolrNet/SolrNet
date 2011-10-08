@@ -26,8 +26,9 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses header (status, QTime, etc) from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class HeaderResponseParser<T> : ISolrResponseParser<T>, ISolrHeaderResponseParser {
-        public void Parse(XDocument xml, SolrQueryResults<T> results) {
+    public class HeaderResponseParser<T> : AbstractResponseParser<T>, ISolrAbstractResponseParser<T>, ISolrHeaderResponseParser
+    {
+        public override void Parse(XDocument xml, IAbstractSolrQueryResults<T> results) {
             var header = Parse(xml);
             if (header != null)
                 results.Header = header;

@@ -19,6 +19,6 @@ namespace SolrNet
         /// <summary>
         /// Interesting terms extracted from base document
         /// </summary>
-        IList<KeyValuePair<string, double>> InterestingTerms { get; set; }
+        IList<KeyValuePair<string, float>> InterestingTerms { get; set; }
     }
 }

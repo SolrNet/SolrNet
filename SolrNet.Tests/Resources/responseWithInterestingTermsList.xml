@@ -1,0 +1,29 @@
+﻿<response>
+  <lst name="responseHeader">
+    <int name="status">
+      0
+    </int>
+    <int name="QTime">
+      150
+    </int>
+  </lst>
+  <result name="match" numFound="1" start="0">
+      <doc>
+        <str name="Key">224fbdc1-12df-4520-9fbe-dd91f916eba1</str>
+      </doc>
+  </result>
+  <arr name="interestingTerms">
+    <str>
+      one
+    </str>
+    <str>
+      two
+    </str>
+    <str>
+      three
+    </str>
+    <str>
+      four
+    </str>
+  </arr>
+</response>

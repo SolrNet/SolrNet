@@ -9,15 +9,22 @@ using System.Globalization;
 
 namespace SolrNet.Impl.ResponseParsers
 {
-    public class ClusterResponseParser<T> : ISolrResponseParser<T>
+    public class ClusterResponseParser<T> : AbstractResponseParser<T>, ISolrResponseParser<T>
     {
         public ClusterResponseParser() { }
+
+        public override void  Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        {
+            if (results is ISolrQueryResults<T>)
+ 	            this.Parse(xml, (ISolrQueryResults<T>)results);
+        }
+
         /// <summary>
         /// Parse the xml document returned by solr 
         /// </summary>
         /// <param name="xml"></param>
         /// <param name="results"></param>
-        public void Parse(XDocument xml, SolrQueryResults<T> results) {
+        public void Parse(XDocument xml, ISolrQueryResults<T> results) {
             XElement clusterNode = xml.XPathSelectElement("response/arr[@name='clusters']");
             if (clusterNode != null)
                 results.Clusters = ParseClusterNode(clusterNode);

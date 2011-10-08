@@ -10,7 +10,12 @@ namespace SolrNet
         /// <summary>
         /// Total documents found
         /// </summary>
-        int NumFound { get; }
+        int NumFound { get; set; }
+
+        /// <summary>
+        /// Max score in these results
+        /// </summary>
+        double? MaxScore { get; set; }
 
         /// <summary>
         /// Query response header
@@ -31,5 +36,10 @@ namespace SolrNet
         /// Date faceting results
         /// </summary>
         IDictionary<string, DateFacetingResult> FacetDates { get; set; }
+
+        /// <summary>
+        /// Pivot faceting results
+        /// </summary>
+        IDictionary<string, IList<Pivot>> FacetPivots { get; set; }
     }
 }

@@ -30,6 +30,7 @@ namespace SolrNet.Impl {
     public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> {
 
         private readonly ISolrQueryResultParser<T> resultParser;
+        private readonly ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser;
         private readonly ISolrConnection connection;
         private readonly ISolrQuerySerializer querySerializer;
         private readonly ISolrFacetQuerySerializer facetQuerySerializer;
@@ -52,8 +53,9 @@ namespace SolrNet.Impl {
 
         public string MoreLikeThisHandler { get; set; }
 
-        public SolrQueryExecuter(ISolrQueryResultParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer, ISolrFacetQuerySerializer facetQuerySerializer) {
+        public SolrQueryExecuter(ISolrQueryResultParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer, ISolrFacetQuerySerializer facetQuerySerializer, ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser) {
             this.resultParser = resultParser;
+            this.mlthResultParser = mlthResultParser;
             this.connection = connection;
             this.querySerializer = querySerializer;
             this.facetQuerySerializer = facetQuerySerializer;
@@ -125,7 +127,7 @@ namespace SolrNet.Impl {
             }
         }
 
-        public IEnumerable<KeyValuePair<string,string>> GetAllParameters(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options)
+        public IEnumerable<KeyValuePair<string,string>> GetAllMoreLikeThisHandlerParameters(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options)
         {
             if (query is SolrMoreLikeThisHandlerQuery)
                 yield return KVP("q", querySerializer.Serialize(query));
@@ -134,13 +136,13 @@ namespace SolrNet.Impl {
             else if (query is SolrMoreLikeThisHandlerStreamUrlQuery)
                 yield return KVP("stream.url", Uri.EscapeUriString(query.Query));
 
-            if (options.Parameters.Handler != null)
-            {
-                MoreLikeThisHandler = options.Parameters.Handler;
-            }
-
             if (options != null)
             {
+                if (options.Parameters.Handler != null)
+                {
+                    MoreLikeThisHandler = options.Parameters.Handler;
+                }
+
                 if (options.Start.HasValue)
                 {
                     yield return KVP("start", options.Start.ToString());
@@ -540,12 +542,12 @@ namespace SolrNet.Impl {
         }
 
         // Tutaj powinno być MoreLikeThisHandlerQuery z podziałem na fieldquery i contentstreamy
-        public ISolrQueryResults<T> Execute(ISolrMoreLikeThisHandlerQuery q, MoreLikeThisHandlerQueryOptions options)
+        public IMoreLikeThisQueryResults<T> Execute(ISolrMoreLikeThisHandlerQuery q, MoreLikeThisHandlerQueryOptions options)
         {
-            var param = GetAllParameters(q, options);
+            var param = GetAllMoreLikeThisHandlerParameters(q, options);
             var p = param.ToList();
             string r = connection.Get(MoreLikeThisHandler, param);
-            var qr = resultParser.Parse(r);
+            var qr = mlthResultParser.Parse(r);
             return qr;
         }
     }

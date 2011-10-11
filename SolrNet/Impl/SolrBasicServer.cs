@@ -124,7 +124,7 @@ namespace SolrNet.Impl {
             return dihStatusParser.Parse(dihstatus);
         }
 
-        public ISolrQueryResults<T> MoreLikeThisHandlerQuery(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options)
+        public IMoreLikeThisQueryResults<T> MoreLikeThisHandlerQuery(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options)
         {
             return this.queryExecuter.Execute(query, options);
         }

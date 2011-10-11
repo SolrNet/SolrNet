@@ -50,7 +50,8 @@ namespace SolrNet.DSL.Impl {
                 ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(),
                 connection,
                 ServiceLocator.Current.GetInstance<ISolrQuerySerializer>(),
-                ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>());
+                ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>(),
+                ServiceLocator.Current.GetInstance<ISolrMoreLikeThisHandlerQueryResultsParser<T>>());
         }
 
         public ISolrQueryResults<T> Run() {

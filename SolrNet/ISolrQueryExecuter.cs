@@ -29,6 +29,6 @@ namespace SolrNet {
 		/// <returns>query results</returns>
 		ISolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options);
 
-        ISolrQueryResults<T> Execute(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options);
+        IMoreLikeThisQueryResults<T> Execute(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options);
 	}
 }

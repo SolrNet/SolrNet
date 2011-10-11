@@ -33,7 +33,7 @@ namespace SolrNet.Impl.ResponseParsers {
         }
 
         public override void Parse(XDocument xml, IAbstractSolrQueryResults<T> results) {
-            // IsNullOrEmpty part is needed to pass tests
+            // IsNullOrEmpty part is needed to pass tests -- ptasz3k
             var resultNode = xml.Element("response").Elements("result").FirstOrDefault(e => String.IsNullOrEmpty((string)e.Attribute("name")) || (string)e.Attribute("name") == "response");
 
 			//FIX BY klaas 

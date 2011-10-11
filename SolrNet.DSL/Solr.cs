@@ -111,7 +111,8 @@ namespace SolrNet.DSL {
                 ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(),
                 Connection,
                 ServiceLocator.Current.GetInstance<ISolrQuerySerializer>(),
-                ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>());
+                ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>(),
+                ServiceLocator.Current.GetInstance<ISolrMoreLikeThisHandlerQueryResultsParser<T>>());
         }
 
         /// <summary>

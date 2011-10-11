@@ -255,7 +255,7 @@ namespace SolrNet.Impl {
             return basicServer.GetDIHStatus(options);
         }
 
-        public ISolrQueryResults<T> MoreLikeThisHandlerQuery(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options)
+        public IMoreLikeThisQueryResults<T> MoreLikeThisHandlerQuery(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options)
         {
             return basicServer.MoreLikeThisHandlerQuery(query, options);
         }

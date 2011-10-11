@@ -721,6 +721,19 @@ namespace SolrNet.Tests {
             Assert.AreEqual(3.3f, results.InterestingTerms[2].Value);
         }
 
+        [Test]
+        public void ParseMlthMatch()
+        {
+            var innerParser = new MlthMatchParser<TestDocWithGuid>(GetDocumentParser<TestDocWithGuid>());
+            var parser = new SolrMoreLikeThisHandlerQueryResultsParser<TestDocWithGuid>(new[] { innerParser });
+            var response = EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithInterestingTermsDetails.xml");
+            var results = parser.Parse(response);
+
+            Assert.IsNotNull(results);
+            Assert.IsNotNull(results.Match);
+            Assert.AreEqual(new Guid("224fbdc1-12df-4520-9fbe-dd91f916eba1"), results.Match.Key);
+        }
+
         public enum AEnum {
             One,
             Two,

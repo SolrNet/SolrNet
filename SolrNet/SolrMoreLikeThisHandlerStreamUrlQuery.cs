@@ -7,11 +7,16 @@ namespace SolrNet
 {
     public class SolrMoreLikeThisHandlerStreamUrlQuery : ISolrMoreLikeThisHandlerQuery
     {
-        private string _query;
+        private readonly string _query;
 
         public SolrMoreLikeThisHandlerStreamUrlQuery(string url)
         {
             this._query = url;
+        }
+
+        public SolrMoreLikeThisHandlerStreamUrlQuery(Uri url)
+        {
+            this._query = url.AbsoluteUri;
         }
 
         public string Query

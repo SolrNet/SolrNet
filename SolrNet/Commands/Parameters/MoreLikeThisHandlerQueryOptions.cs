@@ -7,10 +7,11 @@ namespace SolrNet.Commands.Parameters
 {
     public class MoreLikeThisHandlerQueryOptions
     {
-        public MoreLikeThisHandlerQueryOptions()
+        public MoreLikeThisHandlerQueryOptions(MoreLikeThisHandlerParameters parameters)
         {
             this.Fields = new List<string>();
             this.FilterQueries = new List<ISolrQuery>();
+            this.Parameters = parameters;
         }
 
         /// <summary>

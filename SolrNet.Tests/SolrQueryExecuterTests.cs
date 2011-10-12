@@ -484,18 +484,18 @@ namespace SolrNet.Tests {
             var qe = new SolrQueryExecuter<TestDocument>(parser, conn, serializer, null, null);
             var p = qe.GetAllMoreLikeThisHandlerParameters(
                 new SolrMoreLikeThisHandlerQuery("id:1234"),
-                new MoreLikeThisHandlerQueryOptions()
+                new MoreLikeThisHandlerQueryOptions(
+                    new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
+                        {
+                    	    Handler = "/moreLikeThisHandler",
+                            MatchInclude = false,
+                            MatchOffset = 5,
+                            ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
+                        })
                 {
                     Start = 0,
                     Rows = 5,
                     Fields = new string[] { "one", "two", "three" },
-                    Parameters = new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
-                    {
-                    	Handler = "/moreLikeThisHandler",
-                        MatchInclude = false,
-                        MatchOffset = 5,
-                        ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
-                    }
                 }).ToList();
             Assert.Contains(p, KVP("q", "id:1234"));
             Assert.Contains(p, KVP("start", "0"));
@@ -517,18 +517,18 @@ namespace SolrNet.Tests {
             var qe = new SolrQueryExecuter<TestDocument>(parser, conn, null, null, null);
             var p = qe.GetAllMoreLikeThisHandlerParameters(
                 new SolrMoreLikeThisHandlerStreamBodyQuery("one two three"),
-                new MoreLikeThisHandlerQueryOptions()
+                new MoreLikeThisHandlerQueryOptions(
+                    new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
+                        {
+                            Handler = "/moreLikeThisHandler",
+                            MatchInclude = false,
+                            MatchOffset = 5,
+                            ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
+                        })
                 {
                     Start = 0,
                     Rows = 5,
                     Fields = new string[] { "one", "two", "three" },
-                    Parameters = new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
-                    {
-                        Handler = "/moreLikeThisHandler",
-                        MatchInclude = false,
-                        MatchOffset = 5,
-                        ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
-                    }
                 }).ToList();
             Assert.Contains(p, KVP("stream.body", "one%20two%20three"));
         }
@@ -542,18 +542,18 @@ namespace SolrNet.Tests {
             var qe = new SolrQueryExecuter<TestDocument>(parser, conn, null, null, null);
             var p = qe.GetAllMoreLikeThisHandlerParameters(
                 new SolrMoreLikeThisHandlerStreamUrlQuery("http://wiki.apache.org/solr/MoreLikeThisHandler"),
-                new MoreLikeThisHandlerQueryOptions()
+                new MoreLikeThisHandlerQueryOptions(
+                    new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
+                        {
+                            Handler = "/moreLikeThisHandler",
+                            MatchInclude = false,
+                            MatchOffset = 5,
+                            ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
+                        })
                 {
                     Start = 0,
                     Rows = 5,
                     Fields = new string[] { "one", "two", "three" },
-                    Parameters = new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
-                    {
-                        Handler = "/moreLikeThisHandler",
-                        MatchInclude = false,
-                        MatchOffset = 5,
-                        ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
-                    }
                 }).ToList();
             Assert.Contains(p, KVP("stream.url", "http://wiki.apache.org/solr/MoreLikeThisHandler"));
         }

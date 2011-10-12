@@ -463,7 +463,7 @@ namespace SolrNet.Tests {
                 {
                     var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(null, connection, querySerializer, null, mlthParser);
                     var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, docSerializer, null, null, null, null, null);
-                    var r = solr.MoreLikeThisHandlerQuery(new SolrMoreLikeThisHandlerQuery(qstring), new MoreLikeThisHandlerQueryOptions { Parameters = new MoreLikeThisHandlerParameters( new string[] { "id" }) { MatchInclude = true } });
+                    var r = solr.MoreLikeThisHandlerQuery(new SolrMoreLikeThisHandlerQuery(qstring), new MoreLikeThisHandlerQueryOptions(new MoreLikeThisHandlerParameters( new string[] { "id" }) { MatchInclude = true }));
                 });
         }
 

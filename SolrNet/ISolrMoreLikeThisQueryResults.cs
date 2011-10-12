@@ -9,7 +9,7 @@ namespace SolrNet
     /// MoreLikeThisHandler query results
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IMoreLikeThisQueryResults<T> : IAbstractSolrQueryResults<T>
+    public interface ISolrMoreLikeThisQueryResults<T> : IAbstractSolrQueryResults<T>
     {
         /// <summary>
         /// Base document for matching

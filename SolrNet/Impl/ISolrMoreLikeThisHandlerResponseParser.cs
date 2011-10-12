@@ -17,6 +17,6 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="xml">query response</param>
         /// <param name="results">results object</param>
-        void Parse(XDocument xml, IMoreLikeThisQueryResults<T> results);
+        void Parse(XDocument xml, ISolrMoreLikeThisQueryResults<T> results);
     }
 }

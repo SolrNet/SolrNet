@@ -16,6 +16,6 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="r">solr response</param>
         /// <returns>query results</returns>
-        IMoreLikeThisQueryResults<T> Parse(string r);
+        ISolrMoreLikeThisQueryResults<T> Parse(string r);
     }
 }

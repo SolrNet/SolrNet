@@ -457,7 +457,7 @@ namespace SolrNet.Tests {
                     Expect.On(mlthParser)
                         .Call(mlthParser.Parse(null))
                         .IgnoreArguments()
-                        .Return(new MoreLikeThisHandlerResults<TestDocumentWithUniqueKey>());
+                        .Return(new SolrMoreLikeThisHandlerResults<TestDocumentWithUniqueKey>());
                 })
                 .Verify(() =>
                 {

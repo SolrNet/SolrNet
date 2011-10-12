@@ -17,13 +17,13 @@ namespace SolrNet.Impl.ResponseParsers
 
         public void Parse(System.Xml.Linq.XDocument xml, IAbstractSolrQueryResults<T> results)
         {
-            if (results is IMoreLikeThisQueryResults<T>)
+            if (results is ISolrMoreLikeThisQueryResults<T>)
             {
-                this.Parse(xml, (IMoreLikeThisQueryResults<T>)results);
+                this.Parse(xml, (ISolrMoreLikeThisQueryResults<T>)results);
             }
         }
 
-        public void Parse(System.Xml.Linq.XDocument xml, IMoreLikeThisQueryResults<T> results)
+        public void Parse(System.Xml.Linq.XDocument xml, ISolrMoreLikeThisQueryResults<T> results)
         {
             Func<XElement, KeyValuePair<string, float>> extract;
 

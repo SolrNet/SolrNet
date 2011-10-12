@@ -14,9 +14,9 @@ namespace SolrNet.Impl
             this.parsers = parsers;
         }
 
-        public IMoreLikeThisQueryResults<T> Parse(string r)
+        public ISolrMoreLikeThisQueryResults<T> Parse(string r)
         {
-            var results = new MoreLikeThisHandlerResults<T>();
+            var results = new SolrMoreLikeThisHandlerResults<T>();
             var xml = XDocument.Parse(r);
             foreach (var p in parsers)
             {

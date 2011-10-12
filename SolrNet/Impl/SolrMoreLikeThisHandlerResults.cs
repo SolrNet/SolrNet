@@ -5,9 +5,9 @@ using System.Text;
 
 namespace SolrNet.Impl
 {
-    public class MoreLikeThisHandlerResults<T> : AbstractSolrQueryResults<T>, IMoreLikeThisQueryResults<T>
+    public class SolrMoreLikeThisHandlerResults<T> : AbstractSolrQueryResults<T>, ISolrMoreLikeThisQueryResults<T>
     {
-        public MoreLikeThisHandlerResults()
+        public SolrMoreLikeThisHandlerResults()
         {
             this.InterestingTerms = new List<KeyValuePair<string, float>>();
         }

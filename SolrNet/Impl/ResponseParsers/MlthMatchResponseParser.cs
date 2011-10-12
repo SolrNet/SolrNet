@@ -6,11 +6,11 @@ using System.Xml.Linq;
 
 namespace SolrNet.Impl.ResponseParsers
 {
-    public class MlthMatchParser<T> : ISolrMoreLikeThisHandlerResponseParser<T>
+    public class MlthMatchResponseParser<T> : ISolrMoreLikeThisHandlerResponseParser<T>
     {
         private readonly ISolrDocumentResponseParser<T> docParser;
 
-        public MlthMatchParser(ISolrDocumentResponseParser<T> docParser)
+        public MlthMatchResponseParser(ISolrDocumentResponseParser<T> docParser)
         {
             this.docParser = docParser;
         }

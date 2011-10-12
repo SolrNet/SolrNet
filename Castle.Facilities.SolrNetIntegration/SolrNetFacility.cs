@@ -90,7 +90,7 @@ namespace Castle.Facilities.SolrNetIntegration {
                 typeof(GroupingResponseParser<>),
                 typeof(ClusterResponseParser<>),
                 typeof(TermsResponseParser<>),
-                typeof (MlthMatchParser<>),
+                typeof (MlthMatchResponseParser<>),
                 typeof (InterestingTermsResponseParser<>),
             }) {
                 Kernel.Register(Component.For(typeof (ISolrAbstractResponseParser<>)).ImplementedBy(parserType));

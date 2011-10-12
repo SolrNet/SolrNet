@@ -9,10 +9,10 @@ namespace SolrNet.Impl.ResponseParsers
 {
     public class InterestingTermsResponseParser<T> : ISolrAbstractResponseParser<T>, ISolrMoreLikeThisHandlerResponseParser<T>
     {
-        private static Func<XElement, KeyValuePair<string, float>> extractList = 
+        private static readonly Func<XElement, KeyValuePair<string, float>> extractList = 
             x => new KeyValuePair<string, float>(x.Value.Trim(), 0.0f);
 
-        private static Func<XElement, KeyValuePair<string, float>> extractDetails =
+        private static readonly Func<XElement, KeyValuePair<string, float>> extractDetails =
             x => new KeyValuePair<string, float>((string)x.Attribute("name"), float.Parse(x.Value, CultureInfo.InvariantCulture.NumberFormat));
 
         public void Parse(System.Xml.Linq.XDocument xml, IAbstractSolrQueryResults<T> results)

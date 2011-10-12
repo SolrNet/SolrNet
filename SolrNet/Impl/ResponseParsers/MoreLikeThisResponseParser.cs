@@ -24,10 +24,10 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses more-like-this results from a query response
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class MoreLikeThisResponseParser<T> : AbstractResponseParser<T>, ISolrResponseParser<T> {
+    public class MoreLikeThisResponseParser<T> : ISolrResponseParser<T> {
         private readonly ISolrDocumentResponseParser<T> docParser;
 
-        public override void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
         {
             if (results is ISolrQueryResults<T>)
                 this.Parse(xml, (ISolrQueryResults<T>)results);

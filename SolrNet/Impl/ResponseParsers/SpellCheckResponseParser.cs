@@ -25,9 +25,9 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses spell-checking results from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class SpellCheckResponseParser<T> : AbstractResponseParser<T>, ISolrResponseParser<T>
+    public class SpellCheckResponseParser<T> : ISolrResponseParser<T>
     {
-        public override void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
         {
             if (results is ISolrQueryResults<T>)
             {

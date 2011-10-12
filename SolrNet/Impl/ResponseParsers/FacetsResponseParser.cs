@@ -26,8 +26,8 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses facets from query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class FacetsResponseParser<T> : AbstractResponseParser<T>, ISolrAbstractResponseParser<T> {
-        public override void Parse(XDocument xml, IAbstractSolrQueryResults<T> results) {
+    public class FacetsResponseParser<T> : ISolrAbstractResponseParser<T> {
+        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results) {
             var mainFacetNode = xml.XPathSelectElement("response/lst[@name='facet_counts']");
             if (mainFacetNode != null) {
                 results.FacetQueries = ParseFacetQueries(mainFacetNode);

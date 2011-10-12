@@ -11,11 +11,11 @@ namespace SolrNet.Impl.ResponseParsers
 	/// Parses group.fields from query response
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-    public class GroupingResponseParser<T> : AbstractResponseParser<T>, ISolrResponseParser<T>
+    public class GroupingResponseParser<T> : ISolrResponseParser<T>
 	{
 		private readonly ISolrDocumentResponseParser<T> docParser;
 
-        public override void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
         {
             if (results is ISolrQueryResults<T>)
                 this.Parse(xml, (ISolrQueryResults<T>)results);

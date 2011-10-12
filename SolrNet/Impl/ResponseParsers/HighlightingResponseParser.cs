@@ -23,9 +23,9 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses highlighting results from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class HighlightingResponseParser<T> : AbstractResponseParser<T>, ISolrResponseParser<T>
+    public class HighlightingResponseParser<T> : ISolrResponseParser<T>
     {
-        public override void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
         {
             if (results is ISolrQueryResults<T>)
                 this.Parse(xml, (ISolrQueryResults<T>)results);

@@ -26,9 +26,9 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses stats results from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class StatsResponseParser<T> : AbstractResponseParser<T>, ISolrResponseParser<T>
+    public class StatsResponseParser<T> : ISolrResponseParser<T>
     {
-        public override void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
         {
             if (results is ISolrQueryResults<T>)
             {

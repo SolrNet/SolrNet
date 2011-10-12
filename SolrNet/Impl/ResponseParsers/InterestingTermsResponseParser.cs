@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace SolrNet.Impl.ResponseParsers
 {
-    public class InterestingTermsResponseParser<T> : ISolrAbstractResponseParser<T>, ISolrMoreLikeThisHandlerResponseParser<T>
+    public class InterestingTermsResponseParser<T> : ISolrMoreLikeThisHandlerResponseParser<T>
     {
         private static readonly Func<XElement, KeyValuePair<string, float>> extractList = 
             x => new KeyValuePair<string, float>(x.Value.Trim(), 0.0f);

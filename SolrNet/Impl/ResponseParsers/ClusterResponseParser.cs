@@ -9,11 +9,11 @@ using System.Globalization;
 
 namespace SolrNet.Impl.ResponseParsers
 {
-    public class ClusterResponseParser<T> : AbstractResponseParser<T>, ISolrResponseParser<T>
+    public class ClusterResponseParser<T> : ISolrResponseParser<T>
     {
         public ClusterResponseParser() { }
 
-        public override void  Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void  Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
         {
             if (results is ISolrQueryResults<T>)
  	            this.Parse(xml, (ISolrQueryResults<T>)results);

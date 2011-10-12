@@ -35,6 +35,7 @@ namespace SolrNet.Impl.ResponseParsers
                 
                 if (it == null)
                 {
+                    results.InterestingTerms = new List<KeyValuePair<string, float>>();
                     return;
                 }
 

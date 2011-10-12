@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.Globalization;
 
 namespace SolrNet.Impl.ResponseParsers
 {
@@ -11,8 +12,8 @@ namespace SolrNet.Impl.ResponseParsers
         private static Func<XElement, KeyValuePair<string, float>> extractList = 
             x => new KeyValuePair<string, float>(x.Value.Trim(), 0.0f);
 
-        private static Func<XElement, KeyValuePair<string, float>> extractDetails = 
-            x => new KeyValuePair<string, float>((string)x.Attribute("name"), float.Parse(x.Value));
+        private static Func<XElement, KeyValuePair<string, float>> extractDetails =
+            x => new KeyValuePair<string, float>((string)x.Attribute("name"), float.Parse(x.Value, CultureInfo.InvariantCulture.NumberFormat));
 
         public void Parse(System.Xml.Linq.XDocument xml, IAbstractSolrQueryResults<T> results)
         {

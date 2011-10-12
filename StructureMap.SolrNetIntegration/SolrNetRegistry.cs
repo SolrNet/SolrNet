@@ -79,17 +79,20 @@ namespace StructureMap.SolrNetIntegration
                                     typeof(CollapseResponseParser<>),
                                     typeof(GroupingResponseParser<>),
                                     typeof(ClusterResponseParser<>),
-                                    typeof(TermsResponseParser<>)
+                                    typeof(TermsResponseParser<>),
+                                    typeof(InterestingTermsResponseParser<>),
+                                    typeof(MlthMatchResponseParser<>),
                                 };
 
             foreach (var p in parsers)
             {
-                For(typeof(ISolrResponseParser<>)).Use(p);
+                For(typeof(ISolrAbstractResponseParser<>)).Use(p);
             }
 
             For<ISolrHeaderResponseParser>().Use<HeaderResponseParser<string>>();
             For<ISolrExtractResponseParser>().Use<ExtractResponseParser>();
             For(typeof(ISolrQueryResultParser<>)).Use(typeof(SolrQueryResultParser<>));
+            For(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>)).Use(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
             For<ISolrFieldParser>().Use<DefaultFieldParser>();
             For<ISolrSchemaParser>().Use<SolrSchemaParser>();
             For<ISolrDIHStatusParser>().Use<SolrDIHStatusParser>();

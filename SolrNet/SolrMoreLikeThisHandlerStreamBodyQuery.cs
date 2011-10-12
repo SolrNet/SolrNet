@@ -5,6 +5,9 @@ using System.Text;
 
 namespace SolrNet
 {
+    /// <summary>
+    /// MoreLikeThisHandler stream.body query 
+    /// </summary>
     public class SolrMoreLikeThisHandlerStreamBodyQuery : ISolrMoreLikeThisHandlerQuery
     {
         private readonly string _query;

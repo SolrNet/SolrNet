@@ -17,16 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Text;
 using HttpWebAdapters;
 using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
-using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -95,72 +92,6 @@ namespace SolrNet.Tests {
 			});
 		}
 
-        [Test]
-        public void Get_Compressed_Gzip()
-        {
-            var mocks = new MockRepository();
-            var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-            var request = mocks.DynamicMock<IHttpWebRequest>();
-            var response = mocks.DynamicMock<IHttpWebResponse>();
-            With.Mocks(mocks).Expecting(delegate
-            {
-                Expect.Call(reqFactory.Create(new UriBuilder().Uri))
-                    .IgnoreArguments()
-                    .Repeat.Once()
-                    .Return(request);
-                Expect.Call(request.Headers)
-                    .Repeat.Any()
-                    .Return(new WebHeaderCollection());
-                Expect.Call(response.ContentEncoding)
-                    .Repeat.Any()
-                    .Return("gzip");
-                Expect.Call(response.Headers)
-                    .Repeat.Any()
-                    .Return(new WebHeaderCollection());
-                Expect.Call(request.GetResponse())
-                    .Repeat.Once()
-                    .Return(response);
-                Expect.Call(response.GetResponseStream())
-                    .Repeat.Once()
-                    .Return(CompressionUtils.GzipCompressStream("Testing compression"));
-            }).Verify(delegate {
-                var conn = new SolrConnection("http://localhost") { HttpWebRequestFactory = reqFactory };
-                Assert.AreEqual("Testing compression", conn.Get("", new Dictionary<string, string>()));
-            });
-        }
-
-        [Test]
-        public void Get_Compressed_Deflate()
-        {
-            var mocks = new MockRepository();
-            var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-            var request = mocks.DynamicMock<IHttpWebRequest>();
-            var response = mocks.DynamicMock<IHttpWebResponse>();
-            With.Mocks(mocks).Expecting(delegate {
-                Expect.Call(reqFactory.Create(new UriBuilder().Uri))
-                    .IgnoreArguments()
-                    .Repeat.Once()
-                    .Return(request);
-                Expect.Call(request.Headers)
-                    .Repeat.Any()
-                    .Return(new WebHeaderCollection());
-                Expect.Call(response.ContentEncoding)
-                    .Repeat.Any()
-                    .Return("deflate");
-                Expect.Call(response.Headers)
-                    .Repeat.Any()
-                    .Return(new WebHeaderCollection());
-                Expect.Call(request.GetResponse())
-                    .Repeat.Once()
-                    .Return(response);
-                Expect.Call(response.GetResponseStream())
-                    .Repeat.Once()
-                    .Return(CompressionUtils.DeflateCompressStream("Testing compression"));
-            }).Verify(delegate {
-                var conn = new SolrConnection("http://localhost") { HttpWebRequestFactory = reqFactory };
-                Assert.AreEqual("Testing compression", conn.Get("", new Dictionary<string, string>()));
-            });
-        }
 
 		[Test]
 		public void GetWithNullParameters_ShouldAcceptNull() {

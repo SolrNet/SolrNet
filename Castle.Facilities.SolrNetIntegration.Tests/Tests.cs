@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Castle.Core.Configuration;
 using Castle.Core.Resource;
@@ -287,6 +288,25 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             var container = new WindsorContainer();
             container.AddFacility("solr", solrFacility);
             var validator = container.Resolve<IMappingValidator>();
+        }
+
+        [Test]
+        public void SetConnectionTimeoutInMulticore() {
+            const string core0url = "http://localhost:8983/solr/core0";
+            const string core1url = "http://localhost:8983/solr/core1";
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr/defaultCore");
+            solrFacility.AddCore("core0-id", typeof(Document), core0url);
+            solrFacility.AddCore("core1-id", typeof(Document), core1url);
+            solrFacility.AddCore("core2-id", typeof(Core1Entity), core1url);
+            var container = new WindsorContainer();
+            container.Kernel.ComponentModelCreated += model => {
+                if (model.Implementation == typeof(SolrConnection))
+                    model.Parameters.Add("Timeout", "2000");
+            };
+            container.AddFacility("solr", solrFacility);
+            var allTimeouts = container.ResolveAll<ISolrConnection>().Cast<SolrConnection>().Select(x => x.Timeout);
+            foreach (var t in allTimeouts)
+                Assert.AreEqual(2000, t);
         }
 
         public class Document {}

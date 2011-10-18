@@ -4,7 +4,7 @@
         xmlns="http://www.gallio.org/">
   <traits>
     <name>TestDriven.Net Runner</name>
-    <version>3.2.0.0</version>
+    <version>3.3.0.0</version>
     <description>Enables TestDriven.Net to run tests using Gallio.</description>
     <icon>plugin://Gallio.TDNetRunner/Resources/TestDriven.ico</icon>
   </traits>
@@ -20,7 +20,7 @@
   </files>
 
   <assemblies>
-    <assembly fullName="Gallio.TDNetRunner, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
+    <assembly fullName="Gallio.TDNetRunner, Version=3.3.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
               codeBase="Gallio.TDNetRunner.dll"
               qualifyPartialName="true" />
   </assemblies>

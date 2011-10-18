@@ -5,7 +5,7 @@
         xmlns="http://www.gallio.org/">
   <traits>
     <name>MbUnit v3 Extensions for .Net 4.0</name>
-    <version>3.2.0.0</version>
+    <version>3.3.0.0</version>
     <description>Provides additional MbUnit v3 features for use with .Net 4.0.</description>
     <icon>plugin://MbUnit/Resources/MbUnit.ico</icon>
   </traits>
@@ -23,7 +23,7 @@
   </files>
 
   <assemblies>
-    <assembly fullName="MbUnit40, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
+    <assembly fullName="MbUnit40, Version=3.3.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
               codeBase="MbUnit40.dll"
               qualifyPartialName="true" />
   </assemblies>

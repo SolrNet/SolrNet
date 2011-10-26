@@ -97,7 +97,6 @@ namespace SolrNet.Tests.Integration.Sample {
             Assert.AreEqual(150m, products[0].Prices["regular"]);
             Assert.AreEqual(100m, products[0].Prices["afterrebate"]);
             Assert.IsNotNull(products.Header);
-            Assert.GreaterThan(products.Header.QTime, 0);
             Console.WriteLine("QTime is {0}", products.Header.QTime);
         }
 

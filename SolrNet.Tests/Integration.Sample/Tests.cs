@@ -377,6 +377,20 @@ namespace SolrNet.Tests.Integration.Sample {
         }
 
         [Test]
+        public void LocalParams2() {
+            Add_then_query();
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Query(new LocalParams { { "tag", "pp" } } + new SolrQueryByField("cat", "bla"));
+        }
+
+        [Test]
+        public void LocalParams3() {
+            Add_then_query();
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Query(new LocalParams { { "tag", "pp" } } + new SolrQuery("cat:bla"));
+        }
+
+        [Test]
         public void LooseMapping() {
             Add_then_query();
             Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));

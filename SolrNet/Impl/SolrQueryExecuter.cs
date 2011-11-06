@@ -540,7 +540,7 @@ namespace SolrNet.Impl {
 
         public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options)
         {
-            var param = GetAllMoreLikeThisHandlerParameters(q, options);
+            var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
             string r = connection.Get(MoreLikeThisHandler, param);
             var qr = mlthResultParser.Parse(r);
             return qr;

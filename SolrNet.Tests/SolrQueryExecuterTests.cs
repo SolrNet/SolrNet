@@ -480,7 +480,7 @@ namespace SolrNet.Tests {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
-            var serializer = new SelfSerializingQuerySerializer();
+            var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             var qe = new SolrQueryExecuter<TestDocument>(parser, conn, serializer, null, null);
             var p = qe.GetAllMoreLikeThisHandlerParameters(
                 new SolrMoreLikeThisHandlerQuery(new SolrQueryByField("id", "1234")),
@@ -497,7 +497,7 @@ namespace SolrNet.Tests {
                     Rows = 5,
                     Fields = new string[] { "one", "two", "three" },
                 }).ToList();
-            Assert.Contains(p, KVP("q", "id:1234"));
+            Assert.Contains(p, KVP("q", "(id:1234)"));
             Assert.Contains(p, KVP("start", "0"));
             Assert.Contains(p, KVP("rows", "5"));
             Assert.Contains(p, KVP("fl", "one,two,three"));
@@ -530,7 +530,7 @@ namespace SolrNet.Tests {
                     Rows = 5,
                     Fields = new string[] { "one", "two", "three" },
                 }).ToList();
-            Assert.Contains(p, KVP("stream.body", "one%20two%20three"));
+            Assert.Contains(p, KVP("stream.body", "one two three"));
         }
 
         [Test]

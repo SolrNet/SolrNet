@@ -93,7 +93,6 @@
     <Compile Include="DateFacetingResult.cs" />
     <Compile Include="GroupedResults.cs" />
     <Compile Include="IAbstractSolrQueryResults.cs" />
-    <Compile Include="ISolrMoreLikeThisQueryResults.cs" />
     <Compile Include="Impl\AbstractSolrQueryResults.cs" />
     <Compile Include="Impl\HighlightedSnippets.cs" />
     <Compile Include="Impl\ISolrAbstractResponseParser.cs" />

@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 using SolrNet.Schema;
 
 namespace SolrNet {
@@ -38,7 +39,7 @@ namespace SolrNet {
         /// <param name="query"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        ISolrMoreLikeThisQueryResults<T> MoreLikeThisHandlerQuery(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options);
+        SolrMoreLikeThisHandlerResults<T> MoreLikeThisHandlerQuery(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options);
 
         /// <summary>
         /// Pings the Solr server.

@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 
 namespace SolrNet {
 	/// <summary>
@@ -29,6 +30,6 @@ namespace SolrNet {
 		/// <returns>query results</returns>
 		ISolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options);
 
-        ISolrMoreLikeThisQueryResults<T> Execute(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options);
+        SolrMoreLikeThisHandlerResults<T> Execute(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options);
 	}
 }

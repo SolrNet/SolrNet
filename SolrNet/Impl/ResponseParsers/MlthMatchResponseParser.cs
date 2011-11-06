@@ -17,13 +17,13 @@ namespace SolrNet.Impl.ResponseParsers
 
         public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
         {
-            if (results is ISolrMoreLikeThisQueryResults<T>)
+            if (results is SolrMoreLikeThisHandlerResults<T>)
             {
-                this.Parse(xml, (ISolrMoreLikeThisQueryResults<T>)results);
+                this.Parse(xml, (SolrMoreLikeThisHandlerResults<T>)results);
             }
         }
 
-        public void Parse(XDocument xml, ISolrMoreLikeThisQueryResults<T> results)
+        public void Parse(XDocument xml, SolrMoreLikeThisHandlerResults<T> results)
         {
             var resultNode = xml.Element("response").Elements("result").FirstOrDefault(e => (string)e.Attribute("name") == "match");
 

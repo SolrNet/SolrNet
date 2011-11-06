@@ -1,28 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SolrNet
-{
+﻿namespace SolrNet {
     /// <summary>
     /// Standard MoreLikeThisHandlerQuery
     /// </summary>
-    public class SolrMoreLikeThisHandlerQuery : ISolrMoreLikeThisHandlerQuery
-    {
+    public class SolrMoreLikeThisHandlerQuery : ISolrMoreLikeThisHandlerQuery {
         private readonly string _query;
 
-        public SolrMoreLikeThisHandlerQuery(string query)
-        {
-            this._query = query;
+        public SolrMoreLikeThisHandlerQuery(string query) {
+            _query = query;
         }
 
-        public string Query
-        {
-            get
-            {
-                return this._query;
-            }
+        public string Query {
+            get { return _query; }
         }
     }
 }

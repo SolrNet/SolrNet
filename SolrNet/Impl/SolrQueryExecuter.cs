@@ -541,7 +541,6 @@ namespace SolrNet.Impl {
             return qr;
         }
 
-        // Tutaj powinno być MoreLikeThisHandlerQuery z podziałem na fieldquery i contentstreamy
         public SolrMoreLikeThisHandlerResults<T> Execute(ISolrMoreLikeThisHandlerQuery q, MoreLikeThisHandlerQueryOptions options)
         {
             var param = GetAllMoreLikeThisHandlerParameters(q, options);

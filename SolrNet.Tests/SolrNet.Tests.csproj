@@ -130,6 +130,7 @@
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
     <Compile Include="SolrFacetPivotQueryTest.cs" />
+    <Compile Include="SolrMoreLikeThisHandlerStreamUrlQueryTests.cs" />
     <Compile Include="SolrQueryByDistanceTests.cs" />
     <Compile Include="SolrQuerySerializerStub.cs" />
     <Compile Include="SolrSchemaParserTests.cs" />

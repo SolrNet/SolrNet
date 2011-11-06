@@ -1,4 +1,5 @@
 ﻿using System;
+using SolrNet.Utils;
 
 namespace SolrNet {
     /// <summary>
@@ -8,7 +9,7 @@ namespace SolrNet {
         private readonly string _query;
 
         public SolrMoreLikeThisHandlerStreamUrlQuery(string url) {
-            _query = url;
+            _query = UriValidator.ValidateHTTP(url);
         }
 
         public SolrMoreLikeThisHandlerStreamUrlQuery(Uri url) {

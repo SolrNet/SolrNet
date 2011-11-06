@@ -27,17 +27,17 @@ namespace SolrNet.Impl.ResponseParsers {
     public class MoreLikeThisResponseParser<T> : ISolrResponseParser<T> {
         private readonly ISolrDocumentResponseParser<T> docParser;
 
-        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results)
         {
-            if (results is ISolrQueryResults<T>)
-                this.Parse(xml, (ISolrQueryResults<T>)results);
+            if (results is SolrQueryResults<T>)
+                this.Parse(xml, (SolrQueryResults<T>)results);
         }
 
         public MoreLikeThisResponseParser(ISolrDocumentResponseParser<T> docParser) {
             this.docParser = docParser;
         }
 
-        public void Parse(XDocument xml, ISolrQueryResults<T> results) {
+        public void Parse(XDocument xml, SolrQueryResults<T> results) {
             var moreLikeThis = xml.XPathSelectElement("response/lst[@name='moreLikeThis']");
             if (moreLikeThis != null)
                 results.SimilarResults = ParseMoreLikeThis(results, moreLikeThis);

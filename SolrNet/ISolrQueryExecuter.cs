@@ -28,7 +28,7 @@ namespace SolrNet {
 		/// Executes the query and returns results
 		/// </summary>
 		/// <returns>query results</returns>
-		ISolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options);
+		SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options);
 
         SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options);
 	}

@@ -687,7 +687,7 @@ namespace SolrNet.Tests {
         [Test]
         public void SearchResults_ShouldBeIterable() {
             var mocks = new MockRepository();
-            var results = mocks.StrictMock<ISolrQueryResults<string>>();
+            var results = mocks.StrictMock<SolrQueryResults<string>>();
             Assert.IsInstanceOfType(typeof(IEnumerable<string>), results);
         }
 

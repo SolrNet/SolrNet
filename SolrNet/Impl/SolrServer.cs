@@ -45,7 +45,7 @@ namespace SolrNet.Impl {
         /// <param name="query"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
+        public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
             return basicServer.Query(query, options);
         }
 
@@ -55,7 +55,7 @@ namespace SolrNet.Impl {
             return basicServer.Ping();
         }
 
-        public ISolrQueryResults<T> Query(string q) {
+        public SolrQueryResults<T> Query(string q) {
             return Query(new SolrQuery(q));
         }
 
@@ -65,7 +65,7 @@ namespace SolrNet.Impl {
         /// <param name="q"></param>
         /// <param name="orders"></param>
         /// <returns></returns>
-        public ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders) {
+        public SolrQueryResults<T> Query(string q, ICollection<SortOrder> orders) {
             return Query(new SolrQuery(q), orders);
         }
 
@@ -75,7 +75,7 @@ namespace SolrNet.Impl {
         /// <param name="q"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public ISolrQueryResults<T> Query(string q, QueryOptions options) {
+        public SolrQueryResults<T> Query(string q, QueryOptions options) {
             return basicServer.Query(new SolrQuery(q), options);
         }
 
@@ -84,7 +84,7 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="q"></param>
         /// <returns></returns>
-        public ISolrQueryResults<T> Query(ISolrQuery q) {
+        public SolrQueryResults<T> Query(ISolrQuery q) {
             return Query(q, new QueryOptions());
         }
 
@@ -94,7 +94,7 @@ namespace SolrNet.Impl {
         /// <param name="query"></param>
         /// <param name="orders"></param>
         /// <returns></returns>
-        public ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders) {
+        public SolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders) {
             return Query(query, new QueryOptions { OrderBy = orders });
         }
 

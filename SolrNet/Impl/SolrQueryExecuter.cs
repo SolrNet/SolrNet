@@ -531,7 +531,7 @@ namespace SolrNet.Impl {
         /// Executes the query and returns results
         /// </summary>
         /// <returns>query results</returns>
-        public ISolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
+        public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
             var param = GetAllParameters(q, options);
             string r = connection.Get(Handler, param);
             var qr = resultParser.Parse(r);

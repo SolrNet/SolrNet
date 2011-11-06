@@ -28,7 +28,7 @@ namespace SolrNet.Impl.ResponseParsers {
     /// <typeparam name="T">Document type</typeparam>
     public class HeaderResponseParser<T> : ISolrAbstractResponseParser<T>, ISolrHeaderResponseParser
     {
-        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results) {
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             var header = Parse(xml);
             if (header != null)
                 results.Header = header;

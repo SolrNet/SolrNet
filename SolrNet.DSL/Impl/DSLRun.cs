@@ -54,7 +54,7 @@ namespace SolrNet.DSL.Impl {
                 ServiceLocator.Current.GetInstance<ISolrMoreLikeThisHandlerQueryResultsParser<T>>());
         }
 
-        public ISolrQueryResults<T> Run() {
+        public SolrQueryResults<T> Run() {
             var exe = NewQueryExecuter();
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
@@ -65,7 +65,7 @@ namespace SolrNet.DSL.Impl {
             });
         }
 
-        public ISolrQueryResults<T> Run(int start, int rows) {
+        public SolrQueryResults<T> Run(int start, int rows) {
             var exe = NewQueryExecuter(); 
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,

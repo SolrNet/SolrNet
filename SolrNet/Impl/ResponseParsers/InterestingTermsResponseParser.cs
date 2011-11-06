@@ -15,7 +15,7 @@ namespace SolrNet.Impl.ResponseParsers
         private static readonly Func<XElement, KeyValuePair<string, float>> extractDetails =
             x => new KeyValuePair<string, float>((string)x.Attribute("name"), float.Parse(x.Value, CultureInfo.InvariantCulture.NumberFormat));
 
-        public void Parse(System.Xml.Linq.XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void Parse(System.Xml.Linq.XDocument xml, AbstractSolrQueryResults<T> results)
         {
             if (results is SolrMoreLikeThisHandlerResults<T>)
             {

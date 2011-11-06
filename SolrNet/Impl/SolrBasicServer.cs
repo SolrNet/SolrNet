@@ -88,7 +88,7 @@ namespace SolrNet.Impl {
             return SendAndParseHeader(delete);
         }
 
-        public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
+        public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
             return queryExecuter.Execute(query, options);
         }
 

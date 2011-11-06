@@ -13,10 +13,10 @@ namespace SolrNet.Impl.ResponseParsers
     {
         public ClusterResponseParser() { }
 
-        public void  Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void  Parse(XDocument xml, AbstractSolrQueryResults<T> results)
         {
-            if (results is ISolrQueryResults<T>)
- 	            this.Parse(xml, (ISolrQueryResults<T>)results);
+            if (results is SolrQueryResults<T>)
+ 	            this.Parse(xml, (SolrQueryResults<T>)results);
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace SolrNet.Impl.ResponseParsers
         /// </summary>
         /// <param name="xml"></param>
         /// <param name="results"></param>
-        public void Parse(XDocument xml, ISolrQueryResults<T> results) {
+        public void Parse(XDocument xml, SolrQueryResults<T> results) {
             XElement clusterNode = xml.XPathSelectElement("response/arr[@name='clusters']");
             if (clusterNode != null)
                 results.Clusters = ParseClusterNode(clusterNode);

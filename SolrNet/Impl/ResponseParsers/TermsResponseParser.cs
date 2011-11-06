@@ -27,15 +27,15 @@ namespace SolrNet.Impl.ResponseParsers {
     /// <typeparam name="T">Document type</typeparam>
     public class TermsResponseParser<T> : ISolrResponseParser<T>
     {
-        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results)
         {
-            if (results is ISolrQueryResults<T>)
+            if (results is SolrQueryResults<T>)
             {
-                this.Parse(xml, (ISolrQueryResults<T>)results);
+                this.Parse(xml, (SolrQueryResults<T>)results);
             }
         }
 
-        public void Parse(XDocument xml, ISolrQueryResults<T> results) {
+        public void Parse(XDocument xml, SolrQueryResults<T> results) {
             var termsNode = xml.XPathSelectElement("response/lst[@name='terms']");
             if (termsNode != null)
                 results.Terms = ParseTerms(termsNode);

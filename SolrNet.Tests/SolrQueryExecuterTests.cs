@@ -43,7 +43,7 @@ namespace SolrNet.Tests {
             var conn = new MockConnection(q);
             var mocks = new MockRepository();
             var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
-            var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
+            var mockR = mocks.DynamicMock<SolrQueryResults<TestDocument>>();
             var serializer = mocks.StrictMock<ISolrQuerySerializer>();
             With.Mocks(mocks).Expecting(() => {
                 Expect.On(parser)
@@ -72,7 +72,7 @@ namespace SolrNet.Tests {
             var conn = new MockConnection(q);
             var mocks = new MockRepository();
             var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
-            var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
+            var mockR = mocks.DynamicMock<SolrQueryResults<TestDocument>>();
             var querySerializer = new SolrQuerySerializerStub(queryString);
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(parser.Parse(null))
@@ -97,7 +97,7 @@ namespace SolrNet.Tests {
             var conn = new MockConnection(q);
             var mocks = new MockRepository();
             var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
-            var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
+            var mockR = mocks.DynamicMock<SolrQueryResults<TestDocument>>();
             var querySerializer = new SolrQuerySerializerStub(queryString);
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);
@@ -122,7 +122,7 @@ namespace SolrNet.Tests {
             var conn = new MockConnection(q);
             var mocks = new MockRepository();
             var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
-            var mockR = mocks.DynamicMock<ISolrQueryResults<TestDocument>>();
+            var mockR = mocks.DynamicMock<SolrQueryResults<TestDocument>>();
             var querySerializer = new SolrQuerySerializerStub(queryString);
             With.Mocks(mocks).Expecting(delegate {
                 Expect.Call(parser.Parse(null)).IgnoreArguments().Repeat.Once().Return(mockR);

@@ -15,7 +15,7 @@ namespace SolrNet.Impl.ResponseParsers
             this.docParser = docParser;
         }
 
-        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results)
         {
             if (results is SolrMoreLikeThisHandlerResults<T>)
             {

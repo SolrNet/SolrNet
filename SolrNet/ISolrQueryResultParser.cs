@@ -26,6 +26,6 @@ namespace SolrNet {
 		/// </summary>
 		/// <param name="r">solr response</param>
 		/// <returns>query results</returns>
-		ISolrQueryResults<T> Parse(string r);
+		SolrQueryResults<T> Parse(string r);
 	}
 }

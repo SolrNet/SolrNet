@@ -28,15 +28,15 @@ namespace SolrNet.Impl.ResponseParsers {
     /// <typeparam name="T">Document type</typeparam>
     public class StatsResponseParser<T> : ISolrResponseParser<T>
     {
-        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results)
         {
-            if (results is ISolrQueryResults<T>)
+            if (results is SolrQueryResults<T>)
             {
-                this.Parse(xml, (ISolrQueryResults<T>)results);
+                this.Parse(xml, (SolrQueryResults<T>)results);
             }
         }
 
-        public void Parse(XDocument xml, ISolrQueryResults<T> results) {
+        public void Parse(XDocument xml, SolrQueryResults<T> results) {
             var statsNode = xml.XPathSelectElement("response/lst[@name='stats']");
             if (statsNode != null)
                 results.Stats = ParseStats(statsNode, "stats_fields");

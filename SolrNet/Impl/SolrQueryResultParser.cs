@@ -36,7 +36,7 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="r">solr xml response</param>
         /// <returns>query results</returns>
-        public ISolrQueryResults<T> Parse(string r) {
+        public SolrQueryResults<T> Parse(string r) {
             var results = new SolrQueryResults<T>();
             var xml = XDocument.Parse(r);
             foreach (var p in parsers)

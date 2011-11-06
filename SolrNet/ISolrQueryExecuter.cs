@@ -30,6 +30,6 @@ namespace SolrNet {
 		/// <returns>query results</returns>
 		ISolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options);
 
-        SolrMoreLikeThisHandlerResults<T> Execute(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options);
+        SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options);
 	}
 }

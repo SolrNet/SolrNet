@@ -2,15 +2,15 @@
     /// <summary>
     /// MoreLikeThisHandler stream.body query 
     /// </summary>
-    public class SolrMoreLikeThisHandlerStreamBodyQuery : ISolrMoreLikeThisHandlerQuery {
-        private readonly string _query;
+    public class SolrMoreLikeThisHandlerStreamBodyQuery : SolrMLTQuery {
+        private readonly string body;
 
         public SolrMoreLikeThisHandlerStreamBodyQuery(string body) {
-            _query = body;
+            this.body = body;
         }
 
-        public string Query {
-            get { return _query; }
+        public string Body {
+            get { return body; }
         }
     }
 }

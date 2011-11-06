@@ -108,7 +108,7 @@
     <Compile Include="Impl\ISolrDIHStatusParser.cs" />
     <Compile Include="Impl\ResponseParsers\ClusterResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\TermsResponseParser.cs" />
-    <Compile Include="ISolrMoreLikeThisHandlerQuery.cs" />
+    <Compile Include="SolrMLTQuery.cs" />
     <Compile Include="PivotFacetingResult.cs" />
     <Compile Include="Impl\ResponseParsers\GroupingResponseParser.cs" />
     <Compile Include="SolrFacetPivotQuery.cs" />

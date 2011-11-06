@@ -39,7 +39,7 @@ namespace SolrNet {
         /// <param name="query"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        SolrMoreLikeThisHandlerResults<T> MoreLikeThisHandlerQuery(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options);
+        SolrMoreLikeThisHandlerResults<T> MoreLikeThisHandlerQuery(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options);
 
         /// <summary>
         /// Pings the Solr server.

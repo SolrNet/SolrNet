@@ -2,15 +2,15 @@
     /// <summary>
     /// Standard MoreLikeThisHandlerQuery
     /// </summary>
-    public class SolrMoreLikeThisHandlerQuery : ISolrMoreLikeThisHandlerQuery {
-        private readonly string _query;
+    public class SolrMoreLikeThisHandlerQuery : SolrMLTQuery {
+        private readonly ISolrQuery query;
 
-        public SolrMoreLikeThisHandlerQuery(string query) {
-            _query = query;
+        public SolrMoreLikeThisHandlerQuery(ISolrQuery query) {
+            this.query = query;
         }
 
-        public string Query {
-            get { return _query; }
+        public ISolrQuery Query {
+            get { return query; }
         }
     }
 }

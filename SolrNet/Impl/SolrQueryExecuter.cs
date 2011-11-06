@@ -127,14 +127,11 @@ namespace SolrNet.Impl {
             }
         }
 
-        public IEnumerable<KeyValuePair<string,string>> GetAllMoreLikeThisHandlerParameters(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options)
-        {
-            if (query is SolrMoreLikeThisHandlerQuery)
-                yield return KVP("q", querySerializer.Serialize(query));
-            else if (query is SolrMoreLikeThisHandlerStreamBodyQuery)
-                yield return KVP("stream.body", Uri.EscapeDataString(query.Query));
-            else if (query is SolrMoreLikeThisHandlerStreamUrlQuery)
-                yield return KVP("stream.url", Uri.EscapeUriString(query.Query));
+        public IEnumerable<KeyValuePair<string, string>> GetAllMoreLikeThisHandlerParameters(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
+            yield return 
+                query.Match(q => KVP("q", querySerializer.Serialize(query)),
+                            body => KVP("stream.body", body),
+                            url => KVP("stream.url", url.ToString()));
 
             if (options != null)
             {
@@ -541,7 +538,7 @@ namespace SolrNet.Impl {
             return qr;
         }
 
-        public SolrMoreLikeThisHandlerResults<T> Execute(ISolrMoreLikeThisHandlerQuery q, MoreLikeThisHandlerQueryOptions options)
+        public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options)
         {
             var param = GetAllMoreLikeThisHandlerParameters(q, options);
             string r = connection.Get(MoreLikeThisHandler, param);

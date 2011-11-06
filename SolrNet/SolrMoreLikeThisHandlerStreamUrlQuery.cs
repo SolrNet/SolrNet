@@ -5,19 +5,19 @@ namespace SolrNet {
     /// <summary>
     /// MoreLikeThisHandler stream.url query
     /// </summary>
-    public class SolrMoreLikeThisHandlerStreamUrlQuery : ISolrMoreLikeThisHandlerQuery {
-        private readonly string _query;
+    public class SolrMoreLikeThisHandlerStreamUrlQuery : SolrMLTQuery {
+        private readonly Uri url;
 
         public SolrMoreLikeThisHandlerStreamUrlQuery(string url) {
-            _query = UriValidator.ValidateHTTP(url);
+            this.url = new Uri(UriValidator.ValidateHTTP(url));
         }
 
         public SolrMoreLikeThisHandlerStreamUrlQuery(Uri url) {
-            _query = url.AbsoluteUri;
+            this.url = url;
         }
 
-        public string Query {
-            get { return _query; }
+        public Uri Url {
+            get { return url; }
         }
     }
 }

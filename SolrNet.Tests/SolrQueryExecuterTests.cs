@@ -483,7 +483,7 @@ namespace SolrNet.Tests {
             var serializer = new SelfSerializingQuerySerializer();
             var qe = new SolrQueryExecuter<TestDocument>(parser, conn, serializer, null, null);
             var p = qe.GetAllMoreLikeThisHandlerParameters(
-                new SolrMoreLikeThisHandlerQuery("id:1234"),
+                new SolrMoreLikeThisHandlerQuery(new SolrQueryByField("id", "1234")),
                 new MoreLikeThisHandlerQueryOptions(
                     new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
                         {

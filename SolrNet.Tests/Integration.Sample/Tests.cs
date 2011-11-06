@@ -97,7 +97,6 @@ namespace SolrNet.Tests.Integration.Sample {
             Assert.AreEqual(150m, products[0].Prices["regular"]);
             Assert.AreEqual(100m, products[0].Prices["afterrebate"]);
             Assert.IsNotNull(products.Header);
-            Assert.GreaterThan(products.Header.QTime, 0);
             Console.WriteLine("QTime is {0}", products.Header.QTime);
         }
 
@@ -375,6 +374,20 @@ namespace SolrNet.Tests.Integration.Sample {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             var results = solr.Query(new LocalParams {{"q.op", "AND"}} + "solr ipod");
             Assert.AreEqual(0, results.Count);
+        }
+
+        [Test]
+        public void LocalParams2() {
+            Add_then_query();
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Query(new LocalParams { { "tag", "pp" } } + new SolrQueryByField("cat", "bla"));
+        }
+
+        [Test]
+        public void LocalParams3() {
+            Add_then_query();
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Query(new LocalParams { { "tag", "pp" } } + new SolrQuery("cat:bla"));
         }
 
         [Test]

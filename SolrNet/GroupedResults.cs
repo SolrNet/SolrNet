@@ -55,11 +55,7 @@ namespace SolrNet
 		/// </summary>
 		public ICollection<T> Documents { get; set; }
 
-		/// <summary>
-		/// Default constructor
-		/// </summary>
-		public Group()
-		{
+		public Group() {
 			Documents = new List<T>();
 		}
 	}

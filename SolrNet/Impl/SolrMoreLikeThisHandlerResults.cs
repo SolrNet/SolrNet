@@ -16,5 +16,9 @@ namespace SolrNet.Impl {
         /// Interesting terms in More-like-this query
         /// </summary>
         public IList<KeyValuePair<string, float>> InterestingTerms { get; set; }
+
+        public SolrMoreLikeThisHandlerResults() {
+            InterestingTerms = new List<KeyValuePair<string, float>>();
+        }
     }
 }

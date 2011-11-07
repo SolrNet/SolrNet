@@ -1,4 +1,5 @@
 ﻿#region license
+
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +13,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
 
 using System.Collections.Generic;
@@ -28,7 +30,7 @@ using SolrNet.Impl.QuerySerializers;
 namespace SolrNet.Tests {
     [TestFixture]
     public class SolrQueryExecuterTests {
-        public class TestDocument  {
+        public class TestDocument {
             [SolrUniqueKey]
             public int Id { get; set; }
 
@@ -80,7 +82,7 @@ namespace SolrNet.Tests {
                     .Repeat.Once()
                     .Return(mockR);
             }).Verify(() => {
-                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null, null);                
+                var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null, null);
                 var r = queryExecuter.Execute(new SolrQuery(queryString), new QueryOptions {
                     OrderBy = new[] {new SortOrder("id")}
                 });
@@ -223,7 +225,7 @@ namespace SolrNet.Tests {
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null, null);
             queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
                 Highlight = new HighlightingParameters {
-                    Fields = new[] { highlightedField },
+                    Fields = new[] {highlightedField},
                     AfterTerm = afterTerm,
                     BeforeTerm = beforeTerm,
                     Snippets = snippets,
@@ -312,16 +314,13 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void TermsSingleField()
-        {
+        public void TermsSingleField() {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null, null);
-            var p = queryExecuter.GetTermsParameters(new QueryOptions
-            {
-                Terms = new TermsParameters("text")
-                {
+            var p = queryExecuter.GetTermsParameters(new QueryOptions {
+                Terms = new TermsParameters("text") {
                     Limit = 10,
                     Lower = "lower",
                     LowerInclude = true,
@@ -330,7 +329,7 @@ namespace SolrNet.Tests {
                     Prefix = "pre",
                     Raw = true,
                     Regex = "regex",
-                    RegexFlag = new[] { RegexFlag.CanonEq, RegexFlag.CaseInsensitive },
+                    RegexFlag = new[] {RegexFlag.CanonEq, RegexFlag.CaseInsensitive},
                     Sort = TermsSort.Count,
                     Upper = "upper",
                     UpperInclude = true
@@ -353,16 +352,13 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void TermsMutlipleFields()
-        {
+        public void TermsMutlipleFields() {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null, null);
-            var p = queryExecuter.GetTermsParameters(new QueryOptions
-            {
-                Terms = new TermsParameters(new List<string> {"text", "text2", "text3"})
-                {
+            var p = queryExecuter.GetTermsParameters(new QueryOptions {
+                Terms = new TermsParameters(new List<string> {"text", "text2", "text3"}) {
                     Limit = 10,
                     Lower = "lower",
                     LowerInclude = true,
@@ -371,7 +367,7 @@ namespace SolrNet.Tests {
                     Prefix = "pre",
                     Raw = true,
                     Regex = "regex",
-                    RegexFlag = new[] { RegexFlag.CanonEq, RegexFlag.CaseInsensitive },
+                    RegexFlag = new[] {RegexFlag.CanonEq, RegexFlag.CaseInsensitive},
                     Sort = TermsSort.Count,
                     Upper = "upper",
                     UpperInclude = true
@@ -431,7 +427,7 @@ namespace SolrNet.Tests {
             var querySerializer = new SolrQuerySerializerStub("apache");
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null, null);
             var p = queryExecuter.GetAllParameters(new SolrQuery("apache"), new QueryOptions {
-                MoreLikeThis = new MoreLikeThisParameters(new[] { "manu", "cat" }) {
+                MoreLikeThis = new MoreLikeThisParameters(new[] {"manu", "cat"}) {
                     MinDocFreq = 1,
                     MinTermFreq = 1,
                 },
@@ -460,7 +456,7 @@ namespace SolrNet.Tests {
                     MinDocFreq = 5,
                     MinTermFreq = 6,
                     MinWordLength = 7,
-            }).ToList();
+                }).ToList();
             Assert.Contains(p, KVP("mlt", "true"));
             Assert.Contains(p, KVP("mlt.boost", "true"));
             Assert.Contains(p, KVP("mlt.count", "10"));
@@ -475,8 +471,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void GetAllParameters_mlt_with_field_query()
-        {
+        public void GetAllParameters_mlt_with_field_query() {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
@@ -485,17 +480,15 @@ namespace SolrNet.Tests {
             var p = qe.GetAllMoreLikeThisHandlerParameters(
                 new SolrMoreLikeThisHandlerQuery(new SolrQueryByField("id", "1234")),
                 new MoreLikeThisHandlerQueryOptions(
-                    new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
-                        {
-                            MatchInclude = false,
-                            MatchOffset = 5,
-                            ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
-                        })
-                {
-                    Start = 0,
-                    Rows = 5,
-                    Fields = new string[] { "one", "two", "three" },
-                }).ToList();
+                    new MoreLikeThisHandlerParameters(new[] {"one", "three"}) {
+                        MatchInclude = false,
+                        MatchOffset = 5,
+                        ShowTerms = MoreLikeThisHandlerParameters.InterestingTerms.none,
+                    }) {
+                        Start = 0,
+                        Rows = 5,
+                        Fields = new[] {"one", "two", "three"},
+                    }).ToList();
             Assert.Contains(p, KVP("q", "(id:1234)"));
             Assert.Contains(p, KVP("start", "0"));
             Assert.Contains(p, KVP("rows", "5"));
@@ -507,8 +500,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void GetAllParameters_mlt_with_stream_body_query()
-        {
+        public void GetAllParameters_mlt_with_stream_body_query() {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
@@ -516,23 +508,20 @@ namespace SolrNet.Tests {
             var p = qe.GetAllMoreLikeThisHandlerParameters(
                 new SolrMoreLikeThisHandlerStreamBodyQuery("one two three"),
                 new MoreLikeThisHandlerQueryOptions(
-                    new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
-                        {
-                            MatchInclude = false,
-                            MatchOffset = 5,
-                            ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
-                        })
-                {
-                    Start = 0,
-                    Rows = 5,
-                    Fields = new string[] { "one", "two", "three" },
-                }).ToList();
+                    new MoreLikeThisHandlerParameters(new[] {"one", "three"}) {
+                        MatchInclude = false,
+                        MatchOffset = 5,
+                        ShowTerms = MoreLikeThisHandlerParameters.InterestingTerms.none,
+                    }) {
+                        Start = 0,
+                        Rows = 5,
+                        Fields = new[] {"one", "two", "three"},
+                    }).ToList();
             Assert.Contains(p, KVP("stream.body", "one two three"));
         }
 
         [Test]
-        public void GetAllParameters_mlt_with_stream_url_query()
-        {
+        public void GetAllParameters_mlt_with_stream_url_query() {
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var conn = mocks.DynamicMock<ISolrConnection>();
@@ -540,17 +529,15 @@ namespace SolrNet.Tests {
             var p = qe.GetAllMoreLikeThisHandlerParameters(
                 new SolrMoreLikeThisHandlerStreamUrlQuery("http://wiki.apache.org/solr/MoreLikeThisHandler"),
                 new MoreLikeThisHandlerQueryOptions(
-                    new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
-                        {
-                            MatchInclude = false,
-                            MatchOffset = 5,
-                            ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
-                        })
-                {
-                    Start = 0,
-                    Rows = 5,
-                    Fields = new string[] { "one", "two", "three" },
-                }).ToList();
+                    new MoreLikeThisHandlerParameters(new[] {"one", "three"}) {
+                        MatchInclude = false,
+                        MatchOffset = 5,
+                        ShowTerms = MoreLikeThisHandlerParameters.InterestingTerms.none,
+                    }) {
+                        Start = 0,
+                        Rows = 5,
+                        Fields = new[] {"one", "two", "three"},
+                    }).ToList();
             Assert.Contains(p, KVP("stream.url", "http://wiki.apache.org/solr/MoreLikeThisHandler"));
         }
 
@@ -574,8 +561,7 @@ namespace SolrNet.Tests {
                     Missing = true,
                     Offset = 55,
                     Sort = true,
-                }
-            ).ToDictionary(x => x.Key, x => x.Value);
+                }).ToDictionary(x => x.Key, x => x.Value);
             Assert.AreEqual("pref", facetOptions["facet.prefix"]);
             Assert.AreEqual("123", facetOptions["facet.enum.cache.minDf"]);
             Assert.AreEqual("100", facetOptions["facet.limit"]);
@@ -593,10 +579,10 @@ namespace SolrNet.Tests {
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, null, null, null);
             var statsOptions = queryExecuter.GetStatsQueryOptions(new QueryOptions {
                 Stats = new StatsParameters()
-                .AddField("popularity")
-                .AddFieldWithFacet("price", "inStock")
-                .AddFieldWithFacets("afield", "facet1", "facet2")
-                .AddFacet("globalfacet")
+                    .AddField("popularity")
+                    .AddFieldWithFacet("price", "inStock")
+                    .AddFieldWithFacets("afield", "facet1", "facet2")
+                    .AddFacet("globalfacet")
             }).ToList();
             Assert.AreEqual(8, statsOptions.Count);
             AssertContains(statsOptions, "stats", "true");
@@ -625,9 +611,9 @@ namespace SolrNet.Tests {
             var serializer = mocks.StrictMock<ISolrQuerySerializer>();
             With.Mocks(mocks)
                 .Expecting(() => Expect.On(serializer)
-                    .Call(serializer.Serialize(null))
-                    .IgnoreArguments()
-                    .Return("123123"))
+                                     .Call(serializer.Serialize(null))
+                                     .IgnoreArguments()
+                                     .Return("123123"))
                 .Verify(() => {
                     var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, serializer, null, null);
                     var p = queryExecuter.GetAllParameters(new SolrQuery("123123"), new QueryOptions {
@@ -652,7 +638,7 @@ namespace SolrNet.Tests {
             var querySerializer = new SolrQuerySerializerStub("apache");
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null, null);
             var p = queryExecuter.GetAllParameters(new SolrQuery("apache"), new QueryOptions {
-                Clustering = new ClusteringParameters() {
+                Clustering = new ClusteringParameters {
                     Title = "headline",
                     FragSize = 10,
                     LexicalResources = "fakedir",

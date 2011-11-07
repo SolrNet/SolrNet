@@ -19,5 +19,9 @@ namespace SolrNet {
         public Uri Url {
             get { return url; }
         }
+
+        public override T Match<T>(Func<ISolrQuery, T> query, Func<string, T> streamBody, Func<Uri, T> streamUrl) {
+            return streamUrl(url);
+        }
     }
 }

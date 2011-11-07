@@ -1,4 +1,6 @@
-﻿namespace SolrNet {
+﻿using System;
+
+namespace SolrNet {
     /// <summary>
     /// Standard MoreLikeThisHandlerQuery
     /// </summary>
@@ -11,6 +13,10 @@
 
         public ISolrQuery Query {
             get { return query; }
+        }
+
+        public override T Match<T>(Func<ISolrQuery, T> q, Func<string, T> streamBody, Func<Uri, T> streamUrl) {
+            return q(query);
         }
     }
 }

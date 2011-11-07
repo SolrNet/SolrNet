@@ -91,6 +91,7 @@
     <Compile Include="CollapseResults.cs" />
     <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
+    <Compile Include="Group.cs" />
     <Compile Include="GroupedResults.cs" />
     <Compile Include="Impl\AbstractSolrQueryResults.cs" />
     <Compile Include="Impl\HighlightedSnippets.cs" />

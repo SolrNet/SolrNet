@@ -297,6 +297,7 @@
     <Compile Include="Utils\Memoizer.cs" />
     <Compile Include="Utils\NullableExtensions.cs" />
     <Compile Include="Utils\TypeHelper.cs" />
+    <Compile Include="Utils\Unit.cs" />
     <Compile Include="Utils\UriValidator.cs" />
   </ItemGroup>
   <ItemGroup>

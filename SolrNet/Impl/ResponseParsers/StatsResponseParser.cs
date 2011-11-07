@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
 using System.Globalization;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -26,14 +25,9 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses stats results from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class StatsResponseParser<T> : ISolrResponseParser<T>
-    {
-        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results)
-        {
-            if (results is SolrQueryResults<T>)
-            {
-                this.Parse(xml, (SolrQueryResults<T>)results);
-            }
+    public class StatsResponseParser<T> : ISolrResponseParser<T> {
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
+            results.Switch(r => Parse(xml, r), _ => { });
         }
 
         public void Parse(XDocument xml, SolrQueryResults<T> results) {

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl {
     public abstract class AbstractSolrQueryResults<T> : List<T> {
@@ -37,11 +39,17 @@ namespace SolrNet.Impl {
         /// </summary>
         public IDictionary<string, IList<Pivot>> FacetPivots { get; set; }
 
-        public AbstractSolrQueryResults() {
+        protected AbstractSolrQueryResults() {
             FacetQueries = new Dictionary<string, int>();
             FacetFields = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
             FacetDates = new Dictionary<string, DateFacetingResult>();
             FacetPivots = new Dictionary<string, IList<Pivot>>();
+        }
+
+        public abstract R Switch<R>(Func<SolrQueryResults<T>, R> queryResults, Func<SolrMoreLikeThisHandlerResults<T>, R> mltResults);
+
+        public void Switch(Action<SolrQueryResults<T>> queryResults, Action<SolrMoreLikeThisHandlerResults<T>> mltResults) {
+            Switch(Unit.ActionToFunc(queryResults), Unit.ActionToFunc(mltResults));
         }
     }
 }

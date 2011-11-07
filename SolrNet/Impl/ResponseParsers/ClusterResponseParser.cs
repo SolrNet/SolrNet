@@ -8,8 +8,7 @@ using System.Xml.XPath;
 namespace SolrNet.Impl.ResponseParsers {
     public class ClusterResponseParser<T> : ISolrResponseParser<T> {
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
-            if (results is SolrQueryResults<T>)
-                Parse(xml, (SolrQueryResults<T>) results);
+            results.Switch(r => Parse(xml, r), _ => {});
         }
 
         /// <summary>

@@ -16,6 +16,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using SolrNet.Impl;
 
@@ -72,6 +73,10 @@ namespace SolrNet {
             Collapsing = new CollapseResults();
             Grouping = new Dictionary<string, GroupedResults<T>>();
             Terms = new TermsResults();
+        }
+
+        public override R Switch<R>(Func<SolrQueryResults<T>, R> queryResults, Func<SolrMoreLikeThisHandlerResults<T>, R> mltResults) {
+            return queryResults(this);
         }
     }
 }

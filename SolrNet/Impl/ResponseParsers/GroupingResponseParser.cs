@@ -13,8 +13,7 @@ namespace SolrNet.Impl.ResponseParsers {
         private readonly ISolrDocumentResponseParser<T> docParser;
 
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
-            if (results is SolrQueryResults<T>)
-                Parse(xml, (SolrQueryResults<T>) results);
+            results.Switch(r => Parse(xml, r), _ => {});
         }
 
         public GroupingResponseParser(ISolrDocumentResponseParser<T> docParser) {

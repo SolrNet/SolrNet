@@ -27,8 +27,7 @@ namespace SolrNet.Impl.ResponseParsers {
     {
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results)
         {
-            if (results is SolrQueryResults<T>)
-                this.Parse(xml, (SolrQueryResults<T>)results);
+            results.Switch(r => Parse(xml, r), _ => { });
         }
 
         public void Parse(XDocument xml, SolrQueryResults<T> results) {

@@ -25,13 +25,44 @@ namespace SolrNet {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class SolrQueryResults<T> : AbstractSolrQueryResults<T> {
+        /// <summary>
+        /// Highlight results
+        /// </summary>
         public IDictionary<string, HighlightedSnippets> Highlights { get; set; }
+
+        /// <summary>
+        /// Spellchecking results
+        /// </summary>
         public SpellCheckResults SpellChecking { get; set; }
+
+        /// <summary>
+        /// More-like-this component results
+        /// </summary>
         public IDictionary<string, IList<T>> SimilarResults { get; set; }
+
+        /// <summary>
+        /// Stats component results
+        /// </summary>
         public IDictionary<string, StatsResult> Stats { get; set; }
+
+        /// <summary>
+        /// Collapse results
+        /// </summary>
         public CollapseResults Collapsing { get; set; }
+
+        /// <summary>
+        /// Clustering results
+        /// </summary>
         public ClusterResults Clusters { get; set; }
+
+        /// <summary>
+        /// TermsComponent results
+        /// </summary>
         public TermsResults Terms { get; set; }
+
+        /// <summary>
+        /// Grouping results
+        /// </summary>
         public IDictionary<string, GroupedResults<T>> Grouping { set; get; }
 
         public SolrQueryResults() {

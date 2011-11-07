@@ -135,11 +135,6 @@ namespace SolrNet.Impl {
 
             if (options != null)
             {
-                if (options.Parameters.Handler != null)
-                {
-                    MoreLikeThisHandler = options.Parameters.Handler;
-                }
-
                 if (options.Start.HasValue)
                 {
                     yield return KVP("start", options.Start.ToString());
@@ -201,11 +196,7 @@ namespace SolrNet.Impl {
                 yield return KVP("facet.sort", fp.Sort.ToString().ToLowerInvariant());
         }
 
-        public IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisHandlerParameters(MoreLikeThisHandlerParameters mlt)
-        {
-            if (mlt.Handler != null)
-                this.Handler = mlt.Handler;
-
+        public IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisHandlerParameters(MoreLikeThisHandlerParameters mlt) {
             if (mlt.MatchInclude != null)
                 yield return KVP("mlt.match.include", mlt.MatchInclude.Value.ToString().ToLowerInvariant());
 

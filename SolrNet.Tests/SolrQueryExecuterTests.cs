@@ -487,7 +487,6 @@ namespace SolrNet.Tests {
                 new MoreLikeThisHandlerQueryOptions(
                     new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
                         {
-                    	    Handler = "/moreLikeThisHandler",
                             MatchInclude = false,
                             MatchOffset = 5,
                             ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
@@ -502,7 +501,6 @@ namespace SolrNet.Tests {
             Assert.Contains(p, KVP("rows", "5"));
             Assert.Contains(p, KVP("fl", "one,two,three"));
             Assert.Contains(p, KVP("mlt.fl", "one,three"));
-            Assert.AreEqual("/moreLikeThisHandler", qe.MoreLikeThisHandler);
             Assert.Contains(p, KVP("mlt.match.include", "false"));
             Assert.Contains(p, KVP("mlt.match.offset", "5"));
             Assert.Contains(p, KVP("mlt.interestingTerms", "none"));
@@ -520,7 +518,6 @@ namespace SolrNet.Tests {
                 new MoreLikeThisHandlerQueryOptions(
                     new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
                         {
-                            Handler = "/moreLikeThisHandler",
                             MatchInclude = false,
                             MatchOffset = 5,
                             ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,
@@ -545,7 +542,6 @@ namespace SolrNet.Tests {
                 new MoreLikeThisHandlerQueryOptions(
                     new MoreLikeThisHandlerParameters(new string[] { "one", "three" })
                         {
-                            Handler = "/moreLikeThisHandler",
                             MatchInclude = false,
                             MatchOffset = 5,
                             ShowTerms = SolrNet.Commands.Parameters.MoreLikeThisHandlerParameters.InterestingTerms.none,

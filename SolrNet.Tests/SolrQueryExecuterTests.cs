@@ -585,22 +585,14 @@ namespace SolrNet.Tests {
                     .AddFacet("globalfacet")
             }).ToList();
             Assert.AreEqual(8, statsOptions.Count);
-            AssertContains(statsOptions, "stats", "true");
-            AssertContains(statsOptions, "stats.field", "popularity");
-            AssertContains(statsOptions, "stats.field", "price");
-            AssertContains(statsOptions, "f.price.stats.facet", "inStock");
-            AssertContains(statsOptions, "stats.field", "afield");
-            AssertContains(statsOptions, "f.afield.stats.facet", "facet1");
-            AssertContains(statsOptions, "f.afield.stats.facet", "facet2");
-            AssertContains(statsOptions, "stats.facet", "globalfacet");
-        }
-
-        public void AssertContains<K, V>(IEnumerable<KeyValuePair<K, V>> d, K key, V value) {
-            foreach (var kv in d) {
-                if (Equals(kv.Key, key) && Equals(kv.Value, value))
-                    return;
-            }
-            Assert.Fail("KeyValue ('{0}','{1}') not found", key, value);
+            Assert.Contains(statsOptions, KVP("stats", "true"));
+            Assert.Contains(statsOptions, KVP("stats.field", "popularity"));
+            Assert.Contains(statsOptions, KVP("stats.field", "price"));
+            Assert.Contains(statsOptions, KVP("f.price.stats.facet", "inStock"));
+            Assert.Contains(statsOptions, KVP("stats.field", "afield"));
+            Assert.Contains(statsOptions, KVP("f.afield.stats.facet", "facet1"));
+            Assert.Contains(statsOptions, KVP("f.afield.stats.facet", "facet2"));
+            Assert.Contains(statsOptions, KVP("stats.facet", "globalfacet"));
         }
 
         [Test]

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SolrNet;
-using LINQ.SolrNet.Helpers;
+using SolrNet.LINQ.Helpers;
 using System.Linq.Expressions;
 using SolrNet.Commands.Parameters;
 
-namespace LINQ.SolrNet
+namespace SolrNet.LINQ
 {
     public class SolrNetQueryProvider<TData> : IQueryProvider
     {

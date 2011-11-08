@@ -44,9 +44,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.SolrNetIntegration", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.SolrNetIntegration.Tests", "Unity.SolrNetIntegration.Tests\Unity.SolrNetIntegration.Tests.csproj", "{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LINQ.SolrNet", "LINQ.SolrNet\LINQ.SolrNet.csproj", "{B9A5B77C-5FA1-407F-A53B-7046703AF9E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.LINQ", "LINQ.SolrNet\SolrNet.LINQ.csproj", "{B9A5B77C-5FA1-407F-A53B-7046703AF9E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LINQ.SolrNet.Tests", "LINQ.SolrNet.Tests\LINQ.SolrNet.Tests.csproj", "{C375D00C-03F5-4CED-A33C-AE29770F3E89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.LINQ.Tests", "LINQ.SolrNet.Tests\SolrNet.LINQ.Tests.csproj", "{C375D00C-03F5-4CED-A33C-AE29770F3E89}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

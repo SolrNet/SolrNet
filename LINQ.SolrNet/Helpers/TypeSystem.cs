@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LINQ.SolrNet.Helpers
+namespace SolrNet.LINQ.Helpers
 {
     internal static class TypeSystem
     {

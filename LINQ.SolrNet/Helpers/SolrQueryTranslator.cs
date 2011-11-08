@@ -5,7 +5,7 @@ using System.Text;
 using System.Linq.Expressions;
 using SolrNet;
 
-namespace LINQ.SolrNet.Helpers
+namespace SolrNet.LINQ.Helpers
 {
     internal class SolrQueryTranslator : ExpressionVisitor
     {

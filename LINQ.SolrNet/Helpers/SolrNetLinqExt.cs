@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using SolrNet;
 
-namespace LINQ.SolrNet.Helpers
+namespace SolrNet.LINQ
 {
     public static class SolrNetLinqExt
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 
-namespace LINQ.SolrNet.Helpers
+namespace SolrNet.LINQ.Helpers
 {
     public static class Evaluator
     {

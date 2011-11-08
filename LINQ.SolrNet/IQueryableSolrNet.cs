@@ -5,7 +5,7 @@ using System.Text;
 using SolrNet;
 using SolrNet.Commands.Parameters;
 
-namespace LINQ.SolrNet
+namespace SolrNet.LINQ
 {
     public interface IQueryableSolrNet<TData> : IOrderedQueryable<TData>
     {

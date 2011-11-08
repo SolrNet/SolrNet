@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using SolrNet.Attributes;
 
-namespace LINQ.SolrNet.Helpers
+namespace SolrNet.LINQ.Helpers
 {
     public class FieldNameTraslator
     {

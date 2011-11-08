@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="f7d1ddfe-f502-41f2-b3f1-1d88441063ca" name="Jim@JIM-MOBILE7 2011-11-08 17:53:40" runUser="LOGIC\Jim" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="Local" id="cac0bc0b-ab24-4a67-8e6f-c38ad8aab0d0">
+    <Description>These are default test settings for a local test run.</Description>
+    <Deployment userDeploymentRoot="D:\Misc\Code\SolrNet\TestResults" useDefaultDeploymentRoot="false" enabled="false" runDeploymentRoot="Jim_JIM-MOBILE7 2011-11-08 17_53_40">
+      <DeploymentItem filename="D:\Misc\Code\SolrNet\lib\Gallio.dll" />
+      <DeploymentItem filename="D:\Misc\Code\SolrNet\SolrNet.Tests\bin\Debug\SolrNet.Tests.dll" />
+      <DeploymentItem filename="D:\Misc\Code\SolrNet\LINQ.SolrNet\bin\Debug\SolrNet.LINQ.dll" />
+      <DeploymentItem filename="D:\Misc\Code\SolrNet\lib\Rhino.Mocks.dll" />
+      <DeploymentItem filename="D:\Misc\Code\SolrNet\lib\MbUnit.dll" />
+      <DeploymentItem filename="D:\Misc\Code\SolrNet\SolrNet\bin\Debug\SolrNet.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2011-11-08T17:53:40.6955690+02:00" queuing="2011-11-08T17:53:47.3522346+02:00" start="2011-11-08T17:53:47.6582652+02:00" finish="2011-11-08T17:53:51.4856479+02:00" />
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" error="0" failed="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="FilterQueries" storage="d:\misc\code\solrnet\linq.solrnet.tests\bin\debug\linq.solrnet.tests.dll" id="f0001cd2-dbd4-a4c8-7b5a-637ccb7b8507">
+      <Execution id="4106ec4e-e223-4183-b9b6-c0cc815ace8e" />
+      <TestMethod codeBase="D:/Misc/Code/SolrNet/LINQ.SolrNet.Tests/bin/Debug/LINQ.SolrNet.Tests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="LINQ.SolrNet.Tests.QueryableSolrNetTester, LINQ.SolrNet.Tests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="FilterQueries" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="f0001cd2-dbd4-a4c8-7b5a-637ccb7b8507" executionId="4106ec4e-e223-4183-b9b6-c0cc815ace8e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="4106ec4e-e223-4183-b9b6-c0cc815ace8e" testId="f0001cd2-dbd4-a4c8-7b5a-637ccb7b8507" testName="FilterQueries" computerName="JIM-MOBILE7" duration="00:00:00.8450180" startTime="2011-11-08T17:53:47.9332927+02:00" endTime="2011-11-08T17:53:51.2506244+02:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4106ec4e-e223-4183-b9b6-c0cc815ace8e">
+    </UnitTestResult>
+  </Results>
+</TestRun>

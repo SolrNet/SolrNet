@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using SolrNet.Commands.Parameters;
 using SolrNet;
 
-namespace LINQ.SolrNet
+namespace SolrNet.LINQ
 {
     public class QueryableSolrNet<TData> : IQueryableSolrNet<TData>
     {

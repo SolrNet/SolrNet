@@ -8,13 +8,13 @@ using SolrNet;
 
 namespace LINQ.SolrNet
 {
-    public class QueryableSolrNet<TData> : IOrderedQueryable<TData>
+    public class QueryableSolrNet<TData> : IQueryableSolrNet<TData>
     {
         #region Constructors
         /// <summary>
         /// This constructor is called by the client to create the data source.
         /// </summary>
-        public QueryableSolrNet(ISolrOperations<TData> solrOperation)
+        public QueryableSolrNet(ISolrBasicReadOnlyOperations<TData> solrOperation)
         {
             Provider = new SolrNetQueryProvider<TData>(solrOperation);
             Expression = Expression.Constant(this);
@@ -56,17 +56,7 @@ namespace LINQ.SolrNet
             get { return typeof(TData); }
         }
 
-        public SolrQuery GetSolrQuery(out QueryOptions queryOptions)
-        {
-
-            return ((SolrNetQueryProvider<TData>)Provider).GetSolrQuery(Expression, out queryOptions);
-        }
-
-        internal void SetPaging(int start, int rows)
-        {
-
-            ((SolrNetQueryProvider<TData>)Provider).SetPaging(start, rows);
-        }
+        
 
         #endregion
 
@@ -82,9 +72,27 @@ namespace LINQ.SolrNet
         }
         #endregion
 
+        #region Methods
+
+        public SolrQuery GetSolrQuery(out QueryOptions queryOptions)
+        {
+
+            return ((SolrNetQueryProvider<TData>)Provider).GetSolrQuery(Expression, out queryOptions);
+        }
+
+
         internal void SetAdditinalParameters(Dictionary<string, string> extraParams)
         {
             ((SolrNetQueryProvider<TData>)Provider).SetAdditinalParameters(extraParams);
         }
+
+      
+        internal void SetPaging(int start, int rows)
+        {
+
+            ((SolrNetQueryProvider<TData>)Provider).SetPaging(start, rows);
+        }
+
+        #endregion
     }
 }

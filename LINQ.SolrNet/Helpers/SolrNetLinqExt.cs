@@ -26,7 +26,7 @@ namespace LINQ.SolrNet.Helpers
         }
 
 
-        public static QueryableSolrNet<T> GetQueryable<T>(this ISolrOperations<T> solrOperation)
+        public static QueryableSolrNet<T> AsQueryable<T>(this ISolrBasicReadOnlyOperations<T> solrOperation)
         {
 
             return new QueryableSolrNet<T>(solrOperation);
@@ -49,6 +49,12 @@ namespace LINQ.SolrNet.Helpers
 
         //Boost
         public static string DynamicField(this object obj, string value)
+        {
+            throw new NotSupportedException("Should Not Call this Method");
+        }
+
+        //any item in collection
+        public static TSource AnyItem<TSource>(this IEnumerable<TSource> source)
         {
             throw new NotSupportedException("Should Not Call this Method");
         }

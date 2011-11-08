@@ -45,6 +45,7 @@
     <Compile Include="Helpers\SolrNetLinqExt.cs" />
     <Compile Include="Helpers\SolrQueryTranslator.cs" />
     <Compile Include="Helpers\TypeSystem.cs" />
+    <Compile Include="IQueryableSolrNet.cs" />
     <Compile Include="QueryableSolrNet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolrNetQueryProvider.cs" />

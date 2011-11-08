@@ -20,20 +20,15 @@ namespace LINQ.SolrNet.Helpers
         {
             _resultType = resultType;
             SortItems = new List<SortOrder>();
-
         }
 
 
 
         internal string Translate(Expression expression)
         {
-
             this.sb = new StringBuilder();
-
             this.Visit(expression);
-
             return this.sb.ToString();
-
         }
 
 
@@ -43,20 +38,16 @@ namespace LINQ.SolrNet.Helpers
 
             while (e.NodeType == ExpressionType.Quote)
             {
-
                 e = ((UnaryExpression)e).Operand;
-
             }
-
             return e;
-
         }
 
 
 
         protected override Expression VisitMethodCall(MethodCallExpression m)
         {
-
+            #region Queryable methods
             if (m.Method.DeclaringType == typeof(Queryable) && m.Method.Name == "Where")
             {
 
@@ -103,15 +94,13 @@ namespace LINQ.SolrNet.Helpers
 
             }
 
+            #endregion
 
+            #region SolrNetLinq specific
             if (m.Method.DeclaringType == typeof(SolrNetLinqExt) && m.Method.Name == "DefaultField")
             {
-
-
                 this.Visit(m.Arguments[1]);
-
                 return m;
-
             }
 
 
@@ -128,22 +117,19 @@ namespace LINQ.SolrNet.Helpers
 
             if (m.Method.DeclaringType == typeof(SolrNetLinqExt) && m.Method.Name == "DynamicField")
             {
-                //this.Visit(m.Arguments[0]);
-                //sb.Append("^");
                 this.Visit(m.Arguments[1]);
-
                 return m;
-
             }
 
-            if (m.Method.DeclaringType == typeof(Enumerable) && m.Method.Name == "Single")
+
+
+            if (m.Method.DeclaringType == typeof(SolrNetLinqExt) && m.Method.Name == "AnyItem")
             {
                 this.Visit(m.Arguments[0]);
-
-
                 return m;
-
             }
+
+            #endregion
 
             throw new NotSupportedException(string.Format("The method '{0}' is not supported", m.Method.Name));
 
@@ -156,21 +142,13 @@ namespace LINQ.SolrNet.Helpers
 
             switch (u.NodeType)
             {
-
                 case ExpressionType.Not:
-
                     sb.Append("-");
-
                     this.Visit(u.Operand);
-
                     break;
 
                 case ExpressionType.Convert:
-
-
-
                     this.Visit(u.Operand);
-
                     break;
                 default:
 
@@ -185,26 +163,20 @@ namespace LINQ.SolrNet.Helpers
 
         protected override Expression VisitBinary(BinaryExpression b)
         {
-
             sb.Append("(");
 
             this.Visit(b.Left);
 
             switch (b.NodeType)
             {
-
                 case ExpressionType.And:
                 case ExpressionType.AndAlso:
-
                     sb.Append(" AND ");
-
                     break;
 
                 case ExpressionType.Or:
                 case ExpressionType.OrElse:
-
                     sb.Append(" OR ");
-
                     break;
 
                 case ExpressionType.Equal:
@@ -218,13 +190,10 @@ namespace LINQ.SolrNet.Helpers
                     _inRangeQuery = true;
                     break;
 
-
                 case ExpressionType.LessThanOrEqual:
                     sb.Append(":[*");
                     _inRangeQuery = true;
                     break;
-
-
 
                 default:
 
@@ -244,21 +213,16 @@ namespace LINQ.SolrNet.Helpers
 
         protected override Expression VisitConstant(ConstantExpression c)
         {
-
             IQueryable q = c.Value as IQueryable;
 
             if (q != null)
             {
-
-
-
                 sb.Append(q.ElementType.Name);
 
             }
-
-
             else
             {
+                //handle in range query
                 if (_inRangeQuery)
                 {
                     if (sb[sb.Length - 1] == '*')
@@ -274,6 +238,7 @@ namespace LINQ.SolrNet.Helpers
                     sb.Append("]");
                     _inRangeQuery = false;
                 }
+                
                 else
                 {
                     AppendConstValue(c.Value);
@@ -287,7 +252,7 @@ namespace LINQ.SolrNet.Helpers
 
         private void AppendConstValue(object val)
         {
-            //1995-12-31T23:59:59.999Z
+            //Set date format of Solr 1995-12-31T23:59:59.999Z
             if (val.GetType() == typeof(DateTime))
             {
                 sb.Append(((DateTime)val).ToString("yyyy-MM-ddThh:mm:ss.fffZ"));
@@ -324,8 +289,6 @@ namespace LINQ.SolrNet.Helpers
 
             throw new NotSupportedException(string.Format("The member '{0}' is not supported", m.Member.Name));
         }
-
-
 
     }
 }

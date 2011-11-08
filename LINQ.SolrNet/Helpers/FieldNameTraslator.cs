@@ -13,14 +13,21 @@ namespace LINQ.SolrNet.Helpers
             var pi = objectType.GetProperty(properyName);
             if (pi == null)
             {
-                throw new ArgumentException(string.Format("No Property {0} in type {1}", properyName, objectType.Name));
+                throw new ArgumentException(string.Format("No Property named {0} in type {1}", properyName, objectType.Name));
             }
 
             var attrbs = pi.GetCustomAttributes(typeof(SolrFieldAttribute), false);
+            //No attribute on property
+            if (attrbs.Length == 0)
+            {
+                return properyName;
+            }
+            else
+            {
+                var solrField = attrbs[0] as SolrFieldAttribute;
 
-            var solrField = attrbs[0] as SolrFieldAttribute;
-
-            return solrField.FieldName;
+                return solrField.FieldName;
+            }
         }
     }
 }

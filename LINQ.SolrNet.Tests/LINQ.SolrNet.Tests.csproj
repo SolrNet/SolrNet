@@ -34,6 +34,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\lib\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -46,7 +49,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="QueryableSolrNetTester.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LINQ.SolrNet\LINQ.SolrNet.csproj">
+      <Project>{B9A5B77C-5FA1-407F-A53B-7046703AF9E3}</Project>
+      <Name>LINQ.SolrNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet.Tests\SolrNet.Tests.csproj">
+      <Project>{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}</Project>
+      <Name>SolrNet.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj">
+      <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>
+      <Name>SolrNet</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

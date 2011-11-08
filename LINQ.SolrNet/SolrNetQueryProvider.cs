@@ -11,10 +11,10 @@ namespace LINQ.SolrNet
 {
     public class SolrNetQueryProvider<TData> : IQueryProvider
     {
-        private ISolrOperations<TData> _solrOperation;
+        private ISolrBasicReadOnlyOperations<TData> _solrOperation;
         private QueryOptions _queryOptions = new QueryOptions();
 
-        public SolrNetQueryProvider(ISolrOperations<TData> solrOperation)
+        public SolrNetQueryProvider(ISolrBasicReadOnlyOperations<TData> solrOperation)
         {
             _solrOperation = solrOperation;
         }

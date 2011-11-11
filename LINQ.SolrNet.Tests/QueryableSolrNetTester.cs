@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using SolrNet.Mapping;
 using SolrNet.Tests;
 using SolrNet;
 using SolrNet.Impl;
@@ -16,6 +17,11 @@ namespace SolrNet.LINQ.Tests
     [TestFixture]
     public class QueryableSolrNetTester
     {
+        [FixtureSetUp]
+        public void FixtureSetup() {
+            SolrNetLinqExt.Init(new AttributesMappingManager());
+        }
+
         [Test]
         public void WhereEqual()
         {

@@ -12,11 +12,13 @@ namespace SolrNet.LINQ
     public class SolrNetQueryProvider<TData> : IQueryProvider
     {
         private ISolrBasicReadOnlyOperations<TData> _solrOperation;
+        private readonly IReadOnlyMappingManager mapper;
         private QueryOptions _queryOptions = new QueryOptions();
 
-        public SolrNetQueryProvider(ISolrBasicReadOnlyOperations<TData> solrOperation)
+        public SolrNetQueryProvider(ISolrBasicReadOnlyOperations<TData> solrOperation, IReadOnlyMappingManager mapper)
         {
             _solrOperation = solrOperation;
+            this.mapper = mapper;
         }
 
         public IQueryable CreateQuery(Expression expression)
@@ -65,7 +67,7 @@ namespace SolrNet.LINQ
         internal SolrQuery GetSolrQuery(Expression expression, out QueryOptions queryOptions)
         {
             Type elementType = TypeSystem.GetElementType(expression.Type);
-            SolrQueryTranslator qt = new SolrQueryTranslator(elementType);
+            SolrQueryTranslator qt = new SolrQueryTranslator(elementType, mapper);
             expression = Evaluator.PartialEval(expression);
             var queryStr = qt.Translate(expression);
             if (qt.SortItems.Count > 0)

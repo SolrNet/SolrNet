@@ -14,9 +14,9 @@ namespace SolrNet.LINQ
         /// <summary>
         /// This constructor is called by the client to create the data source.
         /// </summary>
-        public QueryableSolrNet(ISolrBasicReadOnlyOperations<TData> solrOperation)
+        public QueryableSolrNet(ISolrBasicReadOnlyOperations<TData> solrOperation, IReadOnlyMappingManager mapper)
         {
-            Provider = new SolrNetQueryProvider<TData>(solrOperation);
+            Provider = new SolrNetQueryProvider<TData>(solrOperation, mapper);
             Expression = Expression.Constant(this);
         }
 

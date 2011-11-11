@@ -16,11 +16,15 @@ namespace SolrNet.LINQ.Helpers
         private Type _resultType;
         private bool _inRangeQuery = false;
         public List<SortOrder> SortItems { get; set; }
+        private readonly IDictionary<string,string> solrFields;
+        private readonly IReadOnlyMappingManager mapper;
 
 
-        internal SolrQueryTranslator(Type resultType)
+        internal SolrQueryTranslator(Type resultType, IReadOnlyMappingManager mapper)
         {
             _resultType = resultType;
+            this.mapper = mapper;
+            solrFields = mapper.GetFields(resultType).Values.ToDictionary(x => x.Property.Name, x => x.FieldName);
             SortItems = new List<SortOrder>();
         }
 
@@ -69,7 +73,7 @@ namespace SolrNet.LINQ.Helpers
 
                 Visit(m.Arguments[0]);
 
-                SolrQueryTranslator solrQueryTranslator = new SolrQueryTranslator(_resultType);
+                SolrQueryTranslator solrQueryTranslator = new SolrQueryTranslator(_resultType, mapper);
                 var fieldName = solrQueryTranslator.Translate(lambda.Body);
 
                 SortItems.Add(new SortOrder(fieldName, Order.ASC));
@@ -86,7 +90,7 @@ namespace SolrNet.LINQ.Helpers
 
                 Visit(m.Arguments[0]);
 
-                SolrQueryTranslator solrQueryTranslator = new SolrQueryTranslator(_resultType);
+                SolrQueryTranslator solrQueryTranslator = new SolrQueryTranslator(_resultType, mapper);
                 var fieldName = solrQueryTranslator.Translate(lambda.Body);
 
                 SortItems.Add(new SortOrder(fieldName, Order.DESC));
@@ -273,9 +277,8 @@ namespace SolrNet.LINQ.Helpers
 
         protected override Expression VisitMember(MemberExpression m)
         {
-            if (m.Expression != null && m.Expression.NodeType == ExpressionType.Parameter)
-            {
-                string fieldName = FieldNameTraslator.TranslateToFieldName(_resultType, m.Member.Name);
+            if (m.Expression != null && m.Expression.NodeType == ExpressionType.Parameter) {
+                string fieldName = solrFields[m.Member.Name];
                 sb.Append(fieldName);
 
                 return m;

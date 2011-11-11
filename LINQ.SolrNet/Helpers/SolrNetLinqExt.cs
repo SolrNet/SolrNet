@@ -6,8 +6,18 @@ using SolrNet;
 
 namespace SolrNet.LINQ
 {
-    public static class SolrNetLinqExt
+    public static class SolrNetLinqExt 
     {
+
+        private static IReadOnlyMappingManager _mapper;
+
+        public static void Init(IReadOnlyMappingManager mapper) {
+            _mapper = mapper;
+        }
+
+        public static void Init(IServiceProvider provider) {
+            _mapper = (IReadOnlyMappingManager) provider.GetService(typeof (IReadOnlyMappingManager));
+        }
 
 
         public static QueryableSolrNet<T> Pagination<T>(this IEnumerable<T> enumerable, int start, int rows)
@@ -29,7 +39,7 @@ namespace SolrNet.LINQ
         public static QueryableSolrNet<T> AsQueryable<T>(this ISolrBasicReadOnlyOperations<T> solrOperation)
         {
 
-            return new QueryableSolrNet<T>(solrOperation);
+            return new QueryableSolrNet<T>(solrOperation, _mapper);
 
         }
 

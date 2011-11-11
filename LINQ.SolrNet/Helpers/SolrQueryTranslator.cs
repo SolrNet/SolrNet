@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using SolrNet;
+using SolrNet.Impl;
+
 
 namespace SolrNet.LINQ.Helpers
 {
@@ -97,7 +99,7 @@ namespace SolrNet.LINQ.Helpers
             #endregion
 
             #region SolrNetLinq specific
-            if (m.Method.DeclaringType == typeof(SolrNetLinqExt) && m.Method.Name == "DefaultField")
+            if (m.Method.DeclaringType == typeof(SolrNetLinqExt) && m.Method.Name == "DefaultFieldEquals")
             {
                 this.Visit(m.Arguments[1]);
                 return m;

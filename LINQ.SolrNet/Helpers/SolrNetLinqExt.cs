@@ -35,7 +35,7 @@ namespace SolrNet.LINQ
 
 
         //Default
-        public static bool DefaultField(this object obj, string value)
+        public static bool DefaultFieldEquals(this object obj, string value)
         {
             throw new NotSupportedException("Should Not Call this Method");
         }

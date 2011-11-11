@@ -103,7 +103,7 @@ namespace SolrNet.LINQ.Tests
             ISolrBasicReadOnlyOperations<Document> solr = new SolrBasicServer<Document>(conn, queryExec, docSerializer, null, null, null, null, null);
 
             var linqQuery = from doc in solr.AsQueryable()
-                            where doc.DefaultField("aa")
+                            where doc.DefaultFieldEquals("aa")
                             select doc;
 
             QueryOptions qo;
@@ -126,7 +126,7 @@ namespace SolrNet.LINQ.Tests
             ISolrBasicReadOnlyOperations<Document> solr = new SolrBasicServer<Document>(conn, queryExec, docSerializer, null, null, null, null, null);
 
             var linqQuery = from doc in solr.AsQueryable()
-                            where doc.DefaultField("aa") && (doc.Price >= 1 || doc.Price <= 11)
+                            where doc.DefaultFieldEquals("aa") && (doc.Price >= 1 || doc.Price <= 11)
                             select doc;
 
             QueryOptions qo;

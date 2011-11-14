@@ -34,8 +34,11 @@ namespace NHibernate.SolrNet.Tests {
                 session.Save(child3);
                 session.Flush();
             }
-        }
 
+            var solr = ServiceLocator.Current.GetInstance<ISolrReadOnlyOperations<Dictionary<string,object>>>();
+            var all = solr.Query(SolrQuery.All);
+            Assert.AreEqual(4, all.Count);
+        }
 
         private static Configuration SetupNHibernate() {
             var cfg = ConfigurationExtensions.GetEmptyNHConfig();
@@ -87,6 +90,9 @@ namespace NHibernate.SolrNet.Tests {
 
             Startup.Init<Child>(connection);
             Startup.Init<Parent>(connection);
+            Startup.Init<Dictionary<string,object>>(connection);
+            Startup.Container.RemoveAll<ISolrDocumentResponseParser<Dictionary<string, object>>>();
+            Startup.Container.Register<ISolrDocumentResponseParser<Dictionary<string, object>>>(c => new SolrDictionaryDocumentResponseParser(c.GetInstance<ISolrFieldParser>()));
 
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Child>>();
 
@@ -98,15 +104,15 @@ namespace NHibernate.SolrNet.Tests {
             if (mapper == null)
                 mapper = new MappingManager();
             mapper.Add(typeof (Child).GetProperty("Id"), "id");
-            mapper.Add(typeof (Child).GetProperty("ChildProp1"), "manu_exact");
+            mapper.Add(typeof (Child).GetProperty("ChildProp1"), "name_s");
             mapper.Add(typeof (Parent).GetProperty("Id"), "id");
-            mapper.Add(typeof (Parent).GetProperty("ParentProp1"), "manu_exact");
+            mapper.Add(typeof(Parent).GetProperty("ParentProp1"), "name_s");
             return mapper;
         }
 
         [FixtureSetUp]
         public void FixtureSetup() {
-            BasicConfigurator.Configure();
+            //BasicConfigurator.Configure();
             SetupSolr();
 
             cfg = SetupNHibernate();

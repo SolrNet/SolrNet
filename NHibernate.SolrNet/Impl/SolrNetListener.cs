@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NHibernate.Event;
-using NHibernate.Util;
 using SolrNet;
 
 namespace NHibernate.SolrNet.Impl {
@@ -28,8 +27,8 @@ namespace NHibernate.SolrNet.Impl {
     /// <typeparam name="T"></typeparam>
     public class SolrNetListener<T> : IListenerSettings, IAutoFlushEventListener, IFlushEventListener, IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener where T : class {
         private readonly ISolrOperations<T> solr;
-        private readonly WeakHashtable entitiesToAdd = new WeakHashtable();
-        private readonly WeakHashtable entitiesToDelete = new WeakHashtable();
+        private readonly IDictionary<ITransaction, List<T>> entitiesToAdd = new WeakDictionary<ITransaction, List<T>>();
+        private readonly IDictionary<ITransaction, List<T>> entitiesToDelete = new WeakDictionary<ITransaction, List<T>>();
 
         /// <summary>
         /// Automatically commit Solr after each update
@@ -48,12 +47,12 @@ namespace NHibernate.SolrNet.Impl {
             this.solr = solr;
         }
 
-        private static void EnlistEntity(ITransaction s, T entity, WeakHashtable entities) {
-            lock (entities.SyncRoot) {
-                if (!entities.Contains(s))
+        private static void EnlistEntity(ITransaction s, T entity, IDictionary<ITransaction, List<T>> entities) {
+            lock (entities) {
+                if (!entities.ContainsKey(s))
                     entities[s] = new List<T>();
-                var l = ((IList<T>)entities[s]);
-                if (l != null && !l.Contains(entity))
+                var l = entities[s];
+                if (!l.Contains(entity))
                     l.Add(entity);
             }
         }
@@ -113,13 +112,14 @@ namespace NHibernate.SolrNet.Impl {
             }
         }
 
-        public bool DoWithEntities(WeakHashtable entities, ITransaction s, Action<T> action) {
-            lock (entities.SyncRoot) {
-                var hasToDo = entities.Contains(s);
+        public bool DoWithEntities(IDictionary<ITransaction, List<T>> entities, ITransaction s, Action<T> action) {
+            lock (entities) {
+                var hasToDo = entities.ContainsKey(s);
                 if (hasToDo) {
-                    var e = (IList<T>) entities[s];
+                    var e = entities[s];
                     if (e == null)
                         throw new Exception(string.Format("Unexpected entity list null for transaction {0}", s.GetHashCode()));
+                    Console.WriteLine("{0} entities to process", e.Count);
                     foreach (var i in e)
                         action(i);
                 }

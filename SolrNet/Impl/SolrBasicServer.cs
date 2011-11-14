@@ -123,5 +123,10 @@ namespace SolrNet.Impl {
             var dihstatus = XDocument.Parse(response);
             return dihStatusParser.Parse(dihstatus);
         }
+
+        public ISolrMoreLikeThisQueryResults<T> MoreLikeThisHandlerQuery(ISolrMoreLikeThisHandlerQuery query, MoreLikeThisHandlerQueryOptions options)
+        {
+            return this.queryExecuter.Execute(query, options);
+        }
     }
 }

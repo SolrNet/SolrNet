@@ -79,9 +79,11 @@ namespace AutofacContrib.SolrNet {
                 typeof (StatsResponseParser<>),
                 typeof (CollapseResponseParser<>),
                 typeof (GroupingResponseParser<>),
-                typeof (ClusterResponseParser<>)
+                typeof (ClusterResponseParser<>),
+                typeof (InterestingTermsResponseParser<>),
+                typeof (MlthMatchResponseParser<>),
             })
-                builder.RegisterGeneric(p).As(typeof (ISolrResponseParser<>));
+                builder.RegisterGeneric(p).As(typeof (ISolrAbstractResponseParser<>));
 
             builder.RegisterType<HeaderResponseParser<string>>().As<ISolrHeaderResponseParser>();
             builder.RegisterType<ExtractResponseParser>().As<ISolrExtractResponseParser>();
@@ -93,6 +95,7 @@ namespace AutofacContrib.SolrNet {
                 builder.RegisterType(p).As<IValidationRule>();
             builder.RegisterInstance(new SolrConnection(ServerUrl)).As<ISolrConnection>();
             builder.RegisterGeneric(typeof (SolrQueryResultParser<>)).As(typeof (ISolrQueryResultParser<>));
+            builder.RegisterGeneric(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>)).As(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>));
             builder.RegisterGeneric(typeof (SolrQueryExecuter<>)).As(typeof (ISolrQueryExecuter<>));
             builder.RegisterGeneric(typeof (SolrDocumentSerializer<>)).As(typeof (ISolrDocumentSerializer<>));
             builder.RegisterGeneric(typeof (SolrBasicServer<>))
@@ -142,10 +145,12 @@ namespace AutofacContrib.SolrNet {
                 typeof (StatsResponseParser<>),
                 typeof (CollapseResponseParser<>),
                 typeof (GroupingResponseParser<>),
-                typeof (ClusterResponseParser<>)
+                typeof (ClusterResponseParser<>),
+                typeof (InterestingTermsResponseParser<>),
+                typeof (MlthMatchResponseParser<>),
             })
 
-                builder.RegisterGeneric(p).As(typeof (ISolrResponseParser<>));
+                builder.RegisterGeneric(p).As(typeof (ISolrAbstractResponseParser<>));
             builder.RegisterType<HeaderResponseParser<string>>().As<ISolrHeaderResponseParser>();
             builder.RegisterType<ExtractResponseParser>().As<ISolrExtractResponseParser>();
             foreach (var p in new[] {
@@ -157,6 +162,7 @@ namespace AutofacContrib.SolrNet {
                 builder.RegisterType(p).As<IValidationRule>();
             builder.RegisterType<SolrSchemaParser>().As<ISolrSchemaParser>();
             builder.RegisterGeneric(typeof (SolrQueryResultParser<>)).As(typeof (ISolrQueryResultParser<>));
+            builder.RegisterGeneric(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>)).As(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>));
             builder.RegisterGeneric(typeof (SolrDocumentSerializer<>)).As(typeof (ISolrDocumentSerializer<>));
             builder.RegisterType<SolrDIHStatusParser>().As<ISolrDIHStatusParser>();
             builder.RegisterType<MappingValidator>().As<IMappingValidator>();

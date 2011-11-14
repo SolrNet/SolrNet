@@ -23,8 +23,15 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses highlighting results from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class HighlightingResponseParser<T> : ISolrResponseParser<T> {
-        public void Parse(XDocument xml, SolrQueryResults<T> results) {
+    public class HighlightingResponseParser<T> : ISolrResponseParser<T>
+    {
+        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        {
+            if (results is ISolrQueryResults<T>)
+                this.Parse(xml, (ISolrQueryResults<T>)results);
+        }
+
+        public void Parse(XDocument xml, ISolrQueryResults<T> results) {
             var highlightingNode = xml.XPathSelectElement("response/lst[@name='highlighting']");
             if (highlightingNode != null)
                 results.Highlights = ParseHighlighting(results, highlightingNode);

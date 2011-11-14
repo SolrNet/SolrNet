@@ -89,9 +89,11 @@ namespace Castle.Facilities.SolrNetIntegration {
                 typeof (CollapseResponseParser<>),
                 typeof(GroupingResponseParser<>),
                 typeof(ClusterResponseParser<>),
-                typeof(TermsResponseParser<>)
+                typeof(TermsResponseParser<>),
+                typeof (MlthMatchResponseParser<>),
+                typeof (InterestingTermsResponseParser<>),
             }) {
-                Kernel.Register(Component.For(typeof (ISolrResponseParser<>)).ImplementedBy(parserType));
+                Kernel.Register(Component.For(typeof (ISolrAbstractResponseParser<>)).ImplementedBy(parserType));
             }
             Kernel.Register(Component.For<ISolrHeaderResponseParser>().ImplementedBy<HeaderResponseParser<string>>());
             Kernel.Register(Component.For<ISolrExtractResponseParser>().ImplementedBy<ExtractResponseParser>());
@@ -104,6 +106,8 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Resolver.AddSubResolver(new StrictArrayResolver(Kernel));
             Kernel.Register(Component.For(typeof (ISolrQueryResultParser<>))
                                 .ImplementedBy(typeof (SolrQueryResultParser<>)));
+            Kernel.Register(Component.For(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>))
+                .ImplementedBy(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>)));
             Kernel.Register(Component.For(typeof (ISolrQueryExecuter<>)).ImplementedBy(typeof (SolrQueryExecuter<>)));
 
             Kernel.Register(Component.For(typeof (ISolrDocumentSerializer<>))

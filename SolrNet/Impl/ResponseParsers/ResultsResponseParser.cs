@@ -17,21 +17,24 @@
 using System;
 using System.Globalization;
 using System.Xml.Linq;
+using System.Linq;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
     /// Parses documents from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class ResultsResponseParser<T> : ISolrResponseParser<T> {
+    public class ResultsResponseParser<T> : ISolrAbstractResponseParser<T>
+    {
         private readonly ISolrDocumentResponseParser<T> docParser;
 
         public ResultsResponseParser(ISolrDocumentResponseParser<T> docParser) {
             this.docParser = docParser;
         }
 
-        public void Parse(XDocument xml, SolrQueryResults<T> results) {
-            var resultNode = xml.Element("response").Element("result");
+        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results) {
+            // IsNullOrEmpty part is needed to pass tests -- ptasz3k
+            var resultNode = xml.Element("response").Elements("result").FirstOrDefault(e => String.IsNullOrEmpty((string)e.Attribute("name")) || (string)e.Attribute("name") == "response");
 
 			//FIX BY klaas 
 			//If resultNode == null exit func

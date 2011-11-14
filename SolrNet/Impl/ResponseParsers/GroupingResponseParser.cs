@@ -11,9 +11,15 @@ namespace SolrNet.Impl.ResponseParsers
 	/// Parses group.fields from query response
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public class GroupingResponseParser<T> : ISolrResponseParser<T>
+    public class GroupingResponseParser<T> : ISolrResponseParser<T>
 	{
 		private readonly ISolrDocumentResponseParser<T> docParser;
+
+        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        {
+            if (results is ISolrQueryResults<T>)
+                this.Parse(xml, (ISolrQueryResults<T>)results);
+        }
 
 		public GroupingResponseParser(ISolrDocumentResponseParser<T> docParser)
 		{
@@ -25,7 +31,7 @@ namespace SolrNet.Impl.ResponseParsers
 		/// </summary>
 		/// <param name="xml"></param>
 		/// <param name="results"></param>
-		public void Parse(XDocument xml, SolrQueryResults<T> results)
+		public void Parse(XDocument xml, ISolrQueryResults<T> results)
 		{
 			var mainGroupingNode = xml.XPathSelectElement("response/lst[@name='grouped']");
 			if (mainGroupingNode != null)

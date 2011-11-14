@@ -29,7 +29,13 @@ namespace SolrNet.Impl.ResponseParsers {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class CollapseResponseParser<T> : ISolrResponseParser<T> {
-        public void Parse(XDocument xml, SolrQueryResults<T> results) {
+        public void Parse(XDocument xml, IAbstractSolrQueryResults<T> results)
+        {
+            if (results is ISolrQueryResults<T>)
+                this.Parse(xml, (ISolrQueryResults<T>)results);
+        }
+
+        public void Parse(XDocument xml, ISolrQueryResults<T> results) {
             var mainCollapseNode = xml.XPathSelectElement("response/lst[@name='collapse_counts']");
             if (mainCollapseNode != null) {
                 results.Collapsing = new CollapseResults {

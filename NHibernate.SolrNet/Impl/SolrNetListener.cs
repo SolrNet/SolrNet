@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NHibernate.Event;
 using NHibernate.Util;
 using SolrNet;
@@ -47,24 +48,22 @@ namespace NHibernate.SolrNet.Impl {
             this.solr = solr;
         }
 
-        private void Add(ITransaction s, T entity) {
-            lock (entitiesToAdd.SyncRoot) {
-                if (!entitiesToAdd.Contains(s))
-                    entitiesToAdd[s] = new List<T>();
-                var l = ((IList<T>)entitiesToAdd[s]);
-                if (!l.Contains(entity))
+        private static void EnlistEntity(ITransaction s, T entity, WeakHashtable entities) {
+            lock (entities.SyncRoot) {
+                if (!entities.Contains(s))
+                    entities[s] = new List<T>();
+                var l = ((IList<T>)entities[s]);
+                if (l != null && !l.Contains(entity))
                     l.Add(entity);
             }
         }
 
+        private void Add(ITransaction s, T entity) {
+            EnlistEntity(s, entity, entitiesToAdd);
+        }
+
         private void Delete(ITransaction s, T entity) {
-            lock (entitiesToDelete.SyncRoot) {
-                if (!entitiesToDelete.Contains(s))
-                    entitiesToDelete[s] = new List<T>();
-                var l = ((IList<T>)entitiesToAdd[s]);
-                if (!l.Contains(entity))
-                    l.Add(entity);
-            }
+            EnlistEntity(s, entity, entitiesToDelete);
         }
 
         public virtual void OnPostInsert(PostInsertEvent e) {
@@ -75,7 +74,7 @@ namespace NHibernate.SolrNet.Impl {
             UpdateInternal(e, e.Entity as T);
         }
 
-        private readonly List<FlushMode> deferFlushModes = new List<FlushMode> {
+        private readonly IEnumerable<FlushMode> deferFlushModes = new List<FlushMode> {
             FlushMode.Commit, 
             FlushMode.Never,
         };
@@ -117,9 +116,13 @@ namespace NHibernate.SolrNet.Impl {
         public bool DoWithEntities(WeakHashtable entities, ITransaction s, Action<T> action) {
             lock (entities.SyncRoot) {
                 var hasToDo = entities.Contains(s);
-                if (hasToDo)
-                    foreach (var i in (IList<T>)entities[s])
+                if (hasToDo) {
+                    var e = (IList<T>) entities[s];
+                    if (e == null)
+                        throw new Exception(string.Format("Unexpected entity list null for transaction {0}", s.GetHashCode()));
+                    foreach (var i in e)
                         action(i);
+                }
                 entities.Remove(s);
                 return hasToDo;
             }

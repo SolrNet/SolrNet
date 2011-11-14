@@ -27,8 +27,8 @@ namespace NHibernate.SolrNet.Impl {
     /// <typeparam name="T"></typeparam>
     public class SolrNetListener<T> : IListenerSettings, IAutoFlushEventListener, IFlushEventListener, IPostInsertEventListener, IPostDeleteEventListener, IPostUpdateEventListener where T : class {
         private readonly ISolrOperations<T> solr;
-        private readonly IDictionary<ITransaction, List<T>> entitiesToAdd = new WeakDictionary<ITransaction, List<T>>();
-        private readonly IDictionary<ITransaction, List<T>> entitiesToDelete = new WeakDictionary<ITransaction, List<T>>();
+        private readonly IDictionary<ITransaction, List<T>> entitiesToAdd = new Dictionary<ITransaction, List<T>>();
+        private readonly IDictionary<ITransaction, List<T>> entitiesToDelete = new Dictionary<ITransaction, List<T>>();
 
         /// <summary>
         /// Automatically commit Solr after each update

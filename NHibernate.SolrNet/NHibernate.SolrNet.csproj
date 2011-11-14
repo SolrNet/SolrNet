@@ -72,7 +72,6 @@
     <Compile Include="Impl\DelegatingSession.cs" />
     <Compile Include="Impl\IListenerSettings.cs" />
     <Compile Include="Impl\NHHelper.cs" />
-    <Compile Include="Impl\WeakDictionary.cs" />
     <Compile Include="INHSolrQuery.cs" />
     <Compile Include="ISolrSession.cs" />
     <Compile Include="Impl\NHSolrQueryImpl.cs" />

@@ -59,7 +59,7 @@ namespace NHibernate.SolrNet.Tests {
             }
             var listener = cfg.EventListeners.PostInsertEventListeners[0];
             var addField = typeof (SolrNetListener<Entity>).GetField("entitiesToAdd", BindingFlags.NonPublic | BindingFlags.Instance);
-            var addDict = (WeakDictionary<ITransaction, List<Entity>>)addField.GetValue(listener);
+            var addDict = (IDictionary<ITransaction, List<Entity>>)addField.GetValue(listener);
             Assert.AreEqual(0, addDict.Count);
         }
 

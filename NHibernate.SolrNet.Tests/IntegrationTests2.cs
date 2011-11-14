@@ -10,7 +10,9 @@ using SolrNet.Mapping;
 
 namespace NHibernate.SolrNet.Tests {
     /// <summary>
-    /// This test does not reflect a valid usage of Solr, SolrNet or the SolrNet-NHibernate integration.
+    /// This test does not reflect a reference usage of Solr, SolrNet or the SolrNet-NHibernate integration.
+    /// Storing more than one type in a single Solr index should almost never be done.
+    /// Instead, the object model should be flattened.
     /// Do not use as reference.
     /// </summary>
     [TestFixture]
@@ -112,7 +114,7 @@ namespace NHibernate.SolrNet.Tests {
 
         [FixtureSetUp]
         public void FixtureSetup() {
-            //BasicConfigurator.Configure();
+            BasicConfigurator.Configure();
             SetupSolr();
 
             cfg = SetupNHibernate();

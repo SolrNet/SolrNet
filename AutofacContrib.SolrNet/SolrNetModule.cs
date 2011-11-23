@@ -79,7 +79,8 @@ namespace AutofacContrib.SolrNet {
                 typeof (StatsResponseParser<>),
                 typeof (CollapseResponseParser<>),
                 typeof (GroupingResponseParser<>),
-                typeof (ClusterResponseParser<>)
+                typeof (ClusterResponseParser<>),
+                typeof (TermsResponseParser<>)
             })
                 builder.RegisterGeneric(p).As(typeof (ISolrResponseParser<>));
 
@@ -142,7 +143,8 @@ namespace AutofacContrib.SolrNet {
                 typeof (StatsResponseParser<>),
                 typeof (CollapseResponseParser<>),
                 typeof (GroupingResponseParser<>),
-                typeof (ClusterResponseParser<>)
+                typeof (ClusterResponseParser<>),
+                typeof (TermsResponseParser<>)
             })
 
                 builder.RegisterGeneric(p).As(typeof (ISolrResponseParser<>));

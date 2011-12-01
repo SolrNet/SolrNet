@@ -1,4 +1,5 @@
 ﻿#region license
+
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +13,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
 
 using System;
@@ -28,7 +30,6 @@ namespace SolrNet.Impl {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> {
-
         private readonly ISolrQueryResultParser<T> resultParser;
         private readonly ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser;
         private readonly ISolrConnection connection;
@@ -99,8 +100,7 @@ namespace SolrNet.Impl {
                 foreach (var p in GetTermsParameters(Options))
                     yield return p;
 
-                if (Options.MoreLikeThis != null)
-                {
+                if (Options.MoreLikeThis != null) {
                     foreach (var p in GetMoreLikeThisParameters(Options.MoreLikeThis))
                         yield return p;
                 }
@@ -114,10 +114,10 @@ namespace SolrNet.Impl {
                 foreach (var p in GetCollapseQueryOptions(Options))
                     yield return p;
 
-				//GetGroupingQueryOptions
-				foreach (var p in GetGroupingQueryOptions(Options))
-					yield return p;
-                
+                //GetGroupingQueryOptions
+                foreach (var p in GetGroupingQueryOptions(Options))
+                    yield return p;
+
                 foreach (var p in GetClusteringParameters(Options))
                     yield return p;
 
@@ -128,15 +128,13 @@ namespace SolrNet.Impl {
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetAllMoreLikeThisHandlerParameters(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
-            yield return 
+            yield return
                 query.Match(q => KVP("q", querySerializer.Serialize(q)),
                             body => KVP("stream.body", body),
                             url => KVP("stream.url", url.ToString()));
 
-            if (options != null)
-            {
-                if (options.Start.HasValue)
-                {
+            if (options != null) {
+                if (options.Start.HasValue) {
                     yield return KVP("start", options.Start.ToString());
                 }
 
@@ -144,22 +142,16 @@ namespace SolrNet.Impl {
                 yield return KVP("rows", rows.ToString());
 
                 if (options.Fields != null && options.Fields.Count > 0)
-                {
                     yield return KVP("fl", string.Join(",", options.Fields.ToArray()));
-                }
 
                 foreach (var p in GetMoreLikeThisHandlerParameters(options.Parameters))
                     yield return p;
 
                 foreach (var p in GetFacetFieldOptions(options.Facet))
-                {
                     yield return p;
-                }
 
                 foreach (var p in GetFilterQueries(options.FilterQueries))
-                {
                     yield return p;
-                }
             }
         }
 
@@ -397,48 +389,45 @@ namespace SolrNet.Impl {
                 yield return KVP("collapse.maxdocs", options.Collapse.MaxDocs.ToString());
         }
 
-		/// <summary>
-		/// Gets the Solr parameters for collapse queries
-		/// </summary>
-		/// <param name="options"></param>
-		/// <returns></returns>
-		public IEnumerable<KeyValuePair<string, string>> GetGroupingQueryOptions(QueryOptions options)
-		{
-			if (options.Grouping == null || options.Grouping.Fields.Count == 0)
-				yield break;
+        /// <summary>
+        /// Gets the Solr parameters for collapse queries
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public IEnumerable<KeyValuePair<string, string>> GetGroupingQueryOptions(QueryOptions options) {
+            if (options.Grouping == null || options.Grouping.Fields.Count == 0)
+                yield break;
 
-			yield return KVP("group",true.ToString().ToLowerInvariant());
+            yield return KVP("group", true.ToString().ToLowerInvariant());
 
-			foreach (var groupfield in options.Grouping.Fields)
-			{
-				if (string.IsNullOrEmpty(groupfield))
-					continue;
-				yield return KVP("group.field", groupfield);
-			}
-			if (options.Grouping.Limit.HasValue)
-				yield return KVP("group.limit", options.Grouping.Limit.ToString());
+            foreach (var groupfield in options.Grouping.Fields) {
+                if (string.IsNullOrEmpty(groupfield))
+                    continue;
+                yield return KVP("group.field", groupfield);
+            }
+            if (options.Grouping.Limit.HasValue)
+                yield return KVP("group.limit", options.Grouping.Limit.ToString());
 
-			if (options.Grouping.Offset.HasValue)
-				yield return KVP("group.offset", options.Grouping.Offset.ToString());
+            if (options.Grouping.Offset.HasValue)
+                yield return KVP("group.offset", options.Grouping.Offset.ToString());
 
-			if (options.Grouping.Main.HasValue)
-				yield return KVP("group.main", options.Grouping.Main.ToString().ToLowerInvariant());
+            if (options.Grouping.Main.HasValue)
+                yield return KVP("group.main", options.Grouping.Main.ToString().ToLowerInvariant());
 
-			if (!string.IsNullOrEmpty(options.Grouping.Query))
-				yield return KVP("group.query", options.Grouping.Query);
+            if (!string.IsNullOrEmpty(options.Grouping.Query))
+                yield return KVP("group.query", options.Grouping.Query);
 
-			if (!string.IsNullOrEmpty(options.Grouping.Func))
-				yield return KVP("group.func", options.Grouping.Func);
+            if (!string.IsNullOrEmpty(options.Grouping.Func))
+                yield return KVP("group.func", options.Grouping.Func);
 
-			if (options.Grouping.OrderBy != null && options.Grouping.OrderBy.Count > 0)
-				yield return KVP("group.sort", string.Join(",", options.Grouping.OrderBy.Select(x => x.ToString()).ToArray()));
+            if (options.Grouping.OrderBy != null && options.Grouping.OrderBy.Count > 0)
+                yield return KVP("group.sort", string.Join(",", options.Grouping.OrderBy.Select(x => x.ToString()).ToArray()));
 
             if (options.Grouping.Ngroups.HasValue)
                 yield return KVP("group.ngroups", options.Grouping.Ngroups.ToString().ToLowerInvariant());
 
-			yield return KVP("group.format", options.Grouping.Format.ToString().ToLowerInvariant());
-		
-		}
+            yield return KVP("group.format", options.Grouping.Format.ToString().ToLowerInvariant());
+        }
 
         /// <summary>
         /// Get the solr parameters for clustering
@@ -481,15 +470,14 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="Options"></param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetTermsParameters(QueryOptions Options)
-        {
+        public IEnumerable<KeyValuePair<string, string>> GetTermsParameters(QueryOptions Options) {
             var terms = Options.Terms;
             if (terms == null)
                 yield break;
             if (terms.Fields == null || !terms.Fields.Any())
                 throw new SolrNetException("Terms field can't be empty or null");
             yield return KVP("terms", "true");
-            foreach(string field in terms.Fields)
+            foreach (var field in terms.Fields)
                 yield return KVP("terms.fl", field);
             if (!string.IsNullOrEmpty(terms.Prefix))
                 yield return KVP("terms.prefix", terms.Prefix);
@@ -524,15 +512,14 @@ namespace SolrNet.Impl {
         /// <returns>query results</returns>
         public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
             var param = GetAllParameters(q, options);
-            string r = connection.Get(Handler, param);
+            var r = connection.Get(Handler, param);
             var qr = resultParser.Parse(r);
             return qr;
         }
 
-        public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options)
-        {
+        public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options) {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
-            string r = connection.Get(MoreLikeThisHandler, param);
+            var r = connection.Get(MoreLikeThisHandler, param);
             var qr = mlthResultParser.Parse(r);
             return qr;
         }

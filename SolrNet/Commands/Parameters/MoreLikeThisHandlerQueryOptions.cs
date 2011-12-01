@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace SolrNet.Commands.Parameters
-{
-    public class MoreLikeThisHandlerQueryOptions
-    {
-        public MoreLikeThisHandlerQueryOptions(MoreLikeThisHandlerParameters parameters)
-        {
-            this.Fields = new List<string>();
-            this.FilterQueries = new List<ISolrQuery>();
-            this.Parameters = parameters;
+namespace SolrNet.Commands.Parameters {
+    public class MoreLikeThisHandlerQueryOptions {
+        public MoreLikeThisHandlerQueryOptions(MoreLikeThisHandlerParameters parameters) {
+            Fields = new List<string>();
+            FilterQueries = new List<ISolrQuery>();
+            Parameters = parameters;
         }
 
         /// <summary>
@@ -45,7 +39,5 @@ namespace SolrNet.Commands.Parameters
         /// Facet parameters
         /// </summary>
         public FacetParameters Facet { get; set; }
-
-        
     }
 }

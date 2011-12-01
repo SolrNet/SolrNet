@@ -52,6 +52,9 @@ namespace SolrNet.Impl {
         /// </summary>
         public string Handler { get; set; }
 
+        /// <summary>
+        /// Request handler to use for MLT-handler queries. By default "/mlt"
+        /// </summary>
         public string MoreLikeThisHandler { get; set; }
 
         public SolrQueryExecuter(ISolrQueryResultParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer, ISolrFacetQuerySerializer facetQuerySerializer, ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser) {
@@ -203,7 +206,7 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Gets Solr parameters for defined more-like-this options
         /// </summary>
-        /// <param name="mltp"></param>
+        /// <param name="mlt"></param>
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisParameters(MoreLikeThisParameters mlt) {
             yield return KVP("mlt", "true");
@@ -232,8 +235,6 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Gets Solr parameters for defined filter queries
         /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetFilterQueries(ICollection<ISolrQuery> filterQueries) {
             if (filterQueries == null || filterQueries.Count == 0)
                 yield break;
@@ -245,8 +246,6 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Gets Solr parameters for defined highlightings
         /// </summary>
-        /// <param name="Options"></param>
-        /// <returns></returns>
         public IDictionary<string, string> GetHighlightingParameters(QueryOptions Options) {
             var param = new Dictionary<string, string>();
             if (Options.Highlight != null) {
@@ -310,8 +309,6 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Gets solr parameters for defined spell-checking
         /// </summary>
-        /// <param name="Options"></param>
-        /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetSpellCheckingParameters(QueryOptions Options) {
             var spellCheck = Options.SpellCheck;
             if (spellCheck == null)

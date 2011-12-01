@@ -69,62 +69,72 @@ namespace SolrNet.Impl {
             return new KeyValuePair<T1, T2>(a, b);
         }
 
+        public IEnumerable<KeyValuePair<string, string>> GetCommonParameters(CommonQueryOptions options) {
+            if (options == null)
+                yield break;
+
+            if (options.Start.HasValue)
+                yield return KVP("start", options.Start.ToString());
+
+            var rows = options.Rows.HasValue ? options.Rows.Value : DefaultRows;
+            yield return KVP("rows", rows.ToString());
+
+            if (options.Fields != null && options.Fields.Count > 0)
+                yield return KVP("fl", string.Join(",", options.Fields.ToArray()));
+
+            foreach (var p in GetFilterQueries(options.FilterQueries))
+                yield return p;
+
+            foreach (var p in GetFacetFieldOptions(options.Facet))
+                yield return p;
+
+            if (options.ExtraParams != null)
+                foreach (var p in options.ExtraParams)
+                    yield return p;
+        }
+
         /// <summary>
         /// Gets Solr parameters for all defined query options
         /// </summary>
         /// <param name="Query"></param>
-        /// <param name="Options"></param>
+        /// <param name="options"></param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery Query, QueryOptions Options) {
+        public IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery Query, QueryOptions options) {
             yield return KVP("q", querySerializer.Serialize(Query));
-            if (Options != null) {
-                if (Options.Start.HasValue)
-                    yield return KVP("start", Options.Start.ToString());
-                var rows = Options.Rows.HasValue ? Options.Rows.Value : DefaultRows;
-                yield return KVP("rows", rows.ToString());
-                if (Options.OrderBy != null && Options.OrderBy.Count > 0)
-                    yield return KVP("sort", string.Join(",", Options.OrderBy.Select(x => x.ToString()).ToArray()));
+            if (options == null)
+                yield break;
 
-                if (Options.Fields != null && Options.Fields.Count > 0)
-                    yield return KVP("fl", string.Join(",", Options.Fields.ToArray()));
+            foreach (var p in GetCommonParameters(options))
+                yield return p;
 
-                foreach (var p in GetHighlightingParameters(Options))
+            if (options.OrderBy != null && options.OrderBy.Count > 0)
+                yield return KVP("sort", string.Join(",", options.OrderBy.Select(x => x.ToString()).ToArray()));
+
+            foreach (var p in GetHighlightingParameters(options))
+                yield return p;
+
+            foreach (var p in GetSpellCheckingParameters(options))
+                yield return p;
+
+            foreach (var p in GetTermsParameters(options))
+                yield return p;
+
+            if (options.MoreLikeThis != null) {
+                foreach (var p in GetMoreLikeThisParameters(options.MoreLikeThis))
                     yield return p;
-
-                foreach (var p in GetFilterQueries(Options.FilterQueries))
-                    yield return p;
-
-                foreach (var p in GetSpellCheckingParameters(Options))
-                    yield return p;
-
-                foreach (var p in GetTermsParameters(Options))
-                    yield return p;
-
-                if (Options.MoreLikeThis != null) {
-                    foreach (var p in GetMoreLikeThisParameters(Options.MoreLikeThis))
-                        yield return p;
-                }
-
-                foreach (var p in GetFacetFieldOptions(Options.Facet))
-                    yield return p;
-
-                foreach (var p in GetStatsQueryOptions(Options))
-                    yield return p;
-
-                foreach (var p in GetCollapseQueryOptions(Options))
-                    yield return p;
-
-                //GetGroupingQueryOptions
-                foreach (var p in GetGroupingQueryOptions(Options))
-                    yield return p;
-
-                foreach (var p in GetClusteringParameters(Options))
-                    yield return p;
-
-                if (Options.ExtraParams != null)
-                    foreach (var p in Options.ExtraParams)
-                        yield return p;
             }
+
+            foreach (var p in GetStatsQueryOptions(options))
+                yield return p;
+
+            foreach (var p in GetCollapseQueryOptions(options))
+                yield return p;
+
+            foreach (var p in GetGroupingQueryOptions(options))
+                yield return p;
+
+            foreach (var p in GetClusteringParameters(options))
+                yield return p;
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetAllMoreLikeThisHandlerParameters(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
@@ -133,32 +143,20 @@ namespace SolrNet.Impl {
                             body => KVP("stream.body", body),
                             url => KVP("stream.url", url.ToString()));
 
-            if (options != null) {
-                if (options.Start.HasValue) {
-                    yield return KVP("start", options.Start.ToString());
-                }
+            if (options == null)
+                yield break;
 
-                var rows = options.Rows.HasValue ? options.Rows.Value : DefaultRows;
-                yield return KVP("rows", rows.ToString());
+            foreach (var p in GetCommonParameters(options))
+                yield return p;
 
-                if (options.Fields != null && options.Fields.Count > 0)
-                    yield return KVP("fl", string.Join(",", options.Fields.ToArray()));
-
-                foreach (var p in GetMoreLikeThisHandlerParameters(options.Parameters))
-                    yield return p;
-
-                foreach (var p in GetFacetFieldOptions(options.Facet))
-                    yield return p;
-
-                foreach (var p in GetFilterQueries(options.FilterQueries))
-                    yield return p;
-            }
+            foreach (var p in GetMoreLikeThisHandlerParameters(options.Parameters))
+                yield return p;
         }
 
         /// <summary>
         /// Gets Solr parameters for facet queries
         /// </summary>
-        /// <param name="options"></param>
+        /// <param name="fp"></param>
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetFacetFieldOptions(FacetParameters fp) {
             if (fp == null)
@@ -316,23 +314,24 @@ namespace SolrNet.Impl {
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetSpellCheckingParameters(QueryOptions Options) {
             var spellCheck = Options.SpellCheck;
-            if (spellCheck != null) {
-                yield return KVP("spellcheck", "true");
-                if (!string.IsNullOrEmpty(spellCheck.Query))
-                    yield return KVP("spellcheck.q", spellCheck.Query);
-                if (spellCheck.Build.HasValue)
-                    yield return KVP("spellcheck.build", spellCheck.Build.ToString().ToLowerInvariant());
-                if (spellCheck.Collate.HasValue)
-                    yield return KVP("spellcheck.collate", spellCheck.Collate.ToString().ToLowerInvariant());
-                if (spellCheck.Count.HasValue)
-                    yield return KVP("spellcheck.count", spellCheck.Count.ToString());
-                if (!string.IsNullOrEmpty(spellCheck.Dictionary))
-                    yield return KVP("spellcheck.dictionary", spellCheck.Dictionary);
-                if (spellCheck.OnlyMorePopular.HasValue)
-                    yield return KVP("spellcheck.onlyMorePopular", spellCheck.OnlyMorePopular.ToString().ToLowerInvariant());
-                if (spellCheck.Reload.HasValue)
-                    yield return KVP("spellcheck.reload", spellCheck.Reload.ToString().ToLowerInvariant());
-            }
+            if (spellCheck == null)
+                yield break;
+
+            yield return KVP("spellcheck", "true");
+            if (!string.IsNullOrEmpty(spellCheck.Query))
+                yield return KVP("spellcheck.q", spellCheck.Query);
+            if (spellCheck.Build.HasValue)
+                yield return KVP("spellcheck.build", spellCheck.Build.ToString().ToLowerInvariant());
+            if (spellCheck.Collate.HasValue)
+                yield return KVP("spellcheck.collate", spellCheck.Collate.ToString().ToLowerInvariant());
+            if (spellCheck.Count.HasValue)
+                yield return KVP("spellcheck.count", spellCheck.Count.ToString());
+            if (!string.IsNullOrEmpty(spellCheck.Dictionary))
+                yield return KVP("spellcheck.dictionary", spellCheck.Dictionary);
+            if (spellCheck.OnlyMorePopular.HasValue)
+                yield return KVP("spellcheck.onlyMorePopular", spellCheck.OnlyMorePopular.ToString().ToLowerInvariant());
+            if (spellCheck.Reload.HasValue)
+                yield return KVP("spellcheck.reload", spellCheck.Reload.ToString().ToLowerInvariant());
         }
 
         /// <summary>

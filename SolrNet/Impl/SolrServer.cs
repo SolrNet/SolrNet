@@ -250,14 +250,12 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="options">command options</param>
         /// <returns>A XmlDocument containing the DIH Status XML.</returns>
-        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options)
-        {
+        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options) {
             return basicServer.GetDIHStatus(options);
         }
 
-        public SolrMoreLikeThisHandlerResults<T> MoreLikeThisHandlerQuery(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
-        {
-            return basicServer.MoreLikeThisHandlerQuery(query, options);
+        public SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
+            return basicServer.MoreLikeThis(query, options);
         }
     }
 }

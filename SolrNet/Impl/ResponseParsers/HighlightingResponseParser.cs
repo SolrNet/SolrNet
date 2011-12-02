@@ -17,17 +17,17 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
     /// Parses highlighting results from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class HighlightingResponseParser<T> : ISolrResponseParser<T>
-    {
-        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results)
-        {
-            results.Switch(r => Parse(xml, r), _ => { });
+    public class HighlightingResponseParser<T> : ISolrResponseParser<T> {
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
+            results.Switch(query: r => Parse(xml, r),
+                           moreLikeThis: F.DoNothing);
         }
 
         public void Parse(XDocument xml, SolrQueryResults<T> results) {

@@ -4,11 +4,13 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     public class ClusterResponseParser<T> : ISolrResponseParser<T> {
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
-            results.Switch(r => Parse(xml, r), _ => {});
+            results.Switch(query: r => Parse(xml, r), 
+                           moreLikeThis: F.DoNothing);
         }
 
         /// <summary>

@@ -75,8 +75,8 @@ namespace SolrNet {
             Terms = new TermsResults();
         }
 
-        public override R Switch<R>(Func<SolrQueryResults<T>, R> queryResults, Func<SolrMoreLikeThisHandlerResults<T>, R> mltResults) {
-            return queryResults(this);
+        public override R Switch<R>(Func<SolrQueryResults<T>, R> query, Func<SolrMoreLikeThisHandlerResults<T>, R> moreLikeThis) {
+            return query(this);
         }
     }
 }

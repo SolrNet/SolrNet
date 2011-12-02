@@ -21,8 +21,8 @@ namespace SolrNet.Impl {
             InterestingTerms = new List<KeyValuePair<string, float>>();
         }
 
-        public override R Switch<R>(Func<SolrQueryResults<T>, R> queryResults, Func<SolrMoreLikeThisHandlerResults<T>, R> mltResults) {
-            return mltResults(this);
+        public override R Switch<R>(Func<SolrQueryResults<T>, R> query, Func<SolrMoreLikeThisHandlerResults<T>, R> moreLikeThis) {
+            return moreLikeThis(this);
         }
     }
 }

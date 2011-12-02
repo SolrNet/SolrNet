@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -13,7 +14,8 @@ namespace SolrNet.Impl.ResponseParsers {
         private readonly ISolrDocumentResponseParser<T> docParser;
 
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
-            results.Switch(r => Parse(xml, r), _ => {});
+            results.Switch(query: r => Parse(xml, r),
+                           moreLikeThis: F.DoNothing);
         }
 
         public GroupingResponseParser(ISolrDocumentResponseParser<T> docParser) {

@@ -46,10 +46,10 @@ namespace SolrNet.Impl {
             FacetPivots = new Dictionary<string, IList<Pivot>>();
         }
 
-        public abstract R Switch<R>(Func<SolrQueryResults<T>, R> queryResults, Func<SolrMoreLikeThisHandlerResults<T>, R> mltResults);
+        public abstract R Switch<R>(Func<SolrQueryResults<T>, R> query, Func<SolrMoreLikeThisHandlerResults<T>, R> moreLikeThis);
 
-        public void Switch(Action<SolrQueryResults<T>> queryResults, Action<SolrMoreLikeThisHandlerResults<T>> mltResults) {
-            Switch(Unit.ActionToFunc(queryResults), Unit.ActionToFunc(mltResults));
+        public void Switch(Action<SolrQueryResults<T>> query, Action<SolrMoreLikeThisHandlerResults<T>> moreLikeThis) {
+            Switch(F.ActionToFunc(query), F.ActionToFunc(moreLikeThis));
         }
     }
 }

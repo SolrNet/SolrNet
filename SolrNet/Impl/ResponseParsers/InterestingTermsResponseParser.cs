@@ -6,35 +6,41 @@ using SolrNet.Impl.FieldParsers;
 
 namespace SolrNet.Impl.ResponseParsers {
     public class InterestingTermsResponseParser<T> : ISolrMoreLikeThisHandlerResponseParser<T> {
-        private static readonly Func<XElement, KeyValuePair<string, float>> extractList =
-            x => new KeyValuePair<string, float>(x.Value.Trim(), 0.0f);
-
-        private static readonly Func<XElement, KeyValuePair<string, float>> extractDetails =
-            x => new KeyValuePair<string, float>((string) x.Attribute("name"), FloatFieldParser.Parse(x));
-
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             results.Switch(_ => {}, x => Parse(xml, x));
         }
 
+        public static IEnumerable<KeyValuePair<string,float>> ParseList(XDocument xml) {
+            var root = 
+                xml.Element("response")
+                    .Elements("arr")
+                    .FirstOrDefault(e => e.Attribute("name").Value == "interestingTerms");
+            if (root == null)
+                return Enumerable.Empty<KeyValuePair<string, float>>();
+            return root.Elements()
+                .Select(x => new KeyValuePair<string, float>(x.Value.Trim(), 0.0f));
+        }
+
+        public static IEnumerable<KeyValuePair<string, float>> ParseDetails(XDocument xml) {
+            var root =
+                xml.Element("response")
+                .Elements("lst")
+                .FirstOrDefault(e => e.Attribute("name").Value == "interestingTerms");
+            if (root == null)
+                return Enumerable.Empty<KeyValuePair<string, float>>();
+            return root.Elements()
+                .Select(x => new KeyValuePair<string, float>(x.Attribute("name").Value, FloatFieldParser.Parse(x)));
+        }
+
+        public static IList<KeyValuePair<string, float>> ParseListOrDetails(XDocument xml) {
+            var list = ParseList(xml).ToList();
+            if (list.Count > 0)
+                return list;
+            return ParseDetails(xml).ToList();
+        }
+
         public void Parse(XDocument xml, SolrMoreLikeThisHandlerResults<T> results) {
-            Func<XElement, KeyValuePair<string, float>> extract;
-
-            var it = xml.Element("response").Elements("arr").FirstOrDefault(e => (string) e.Attribute("name") == "interestingTerms");
-
-            if (it == null) {
-                it = xml.Element("response").Elements("lst").FirstOrDefault(e => (string) e.Attribute("name") == "interestingTerms");
-
-                if (it == null) {
-                    results.InterestingTerms = new List<KeyValuePair<string, float>>();
-                    return;
-                }
-
-                extract = extractDetails;
-            } else {
-                extract = extractList;
-            }
-
-            results.InterestingTerms = it.Elements().Select(x => extract(x)).ToList();
+            results.InterestingTerms = ParseListOrDetails(xml);
         }
     }
 }

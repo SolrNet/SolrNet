@@ -119,6 +119,7 @@
     <Compile Include="MappingTypesAreCompatibleWithSolrTypesRuleTests.cs" />
     <Compile Include="MemoizingMappingManagerTests.cs" />
     <Compile Include="MockConnection.cs" />
+    <Compile Include="MoreLikeThisHandlerMatchResponseParserTests.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="MultivaluedMappedToCollectionRuleTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
@@ -259,6 +260,9 @@
     <EmbeddedResource Include="Resources\responseWithInterestingTermsDetails.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithMLTHandlerMatch.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

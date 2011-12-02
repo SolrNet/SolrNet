@@ -518,6 +518,7 @@ namespace SolrNet.Tests.Integration.Sample {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             var results = solr.MoreLikeThis(SolrMLTQuery.Query(new SolrQuery("id:UTF8TEST")), new MoreLikeThisHandlerQueryOptions(new MoreLikeThisHandlerParameters(new[] { "cat", "name" }) { MatchInclude = true, MinTermFreq = 1, MinDocFreq = 1,}));
             Console.WriteLine("{0} results", results.Count);
+            Assert.IsNotNull(results.Match);
             Console.WriteLine("Match id: {0}", results.Match.Id);
             foreach (var t in results.InterestingTerms) {
                 Console.WriteLine("Interesting term: {0} ({1})", t.Key, t.Value);

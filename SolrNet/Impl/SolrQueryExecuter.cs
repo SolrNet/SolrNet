@@ -513,6 +513,12 @@ namespace SolrNet.Impl {
             return qr;
         }
 
+        /// <summary>
+        /// Executes a MoreLikeThis handler query
+        /// </summary>
+        /// <param name="q"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options) {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
             var r = connection.Get(MoreLikeThisHandler, param);

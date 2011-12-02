@@ -1,7 +1,13 @@
 ﻿using System.Collections.Generic;
 
 namespace SolrNet.Commands.Parameters {
+    /// <summary>
+    /// Common, shared query options
+    /// </summary>
     public class CommonQueryOptions {
+        /// <summary>
+        /// Common, shared query options
+        /// </summary>
         public CommonQueryOptions() {
             Fields = new List<string>();
             FilterQueries = new List<ISolrQuery>();

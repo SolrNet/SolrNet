@@ -46,8 +46,20 @@ namespace SolrNet.Impl {
             FacetPivots = new Dictionary<string, IList<Pivot>>();
         }
 
+        /// <summary>
+        /// Visitor / pattern match
+        /// </summary>
+        /// <typeparam name="R"></typeparam>
+        /// <param name="query"></param>
+        /// <param name="moreLikeThis"></param>
+        /// <returns></returns>
         public abstract R Switch<R>(Func<SolrQueryResults<T>, R> query, Func<SolrMoreLikeThisHandlerResults<T>, R> moreLikeThis);
 
+        /// <summary>
+        /// Visitor / pattern match
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="moreLikeThis"></param>
         public void Switch(Action<SolrQueryResults<T>> query, Action<SolrMoreLikeThisHandlerResults<T>> moreLikeThis) {
             Switch(F.ActionToFunc(query), F.ActionToFunc(moreLikeThis));
         }

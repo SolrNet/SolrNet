@@ -433,6 +433,8 @@
      </arr>
   </requestHandler>
 
+  <requestHandler name="/mlt" class="solr.MoreLikeThisHandler"/>
+  
 <!-- Please refer to http://wiki.apache.org/solr/SolrReplication for details on configuring replication -->
 <!--Master config-->
 <!--

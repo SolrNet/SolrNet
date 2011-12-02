@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands.Parameters;
@@ -100,76 +101,72 @@ namespace SolrNet.Tests.Integration.Sample {
             Console.WriteLine("QTime is {0}", products.Header.QTime);
         }
 
+        private static readonly IEnumerable<Product> products = new[] {
+            new Product {
+                Id = "DEL12345",
+                Name = "Delete test product 1",
+                Manufacturer = "Acme ltd",
+                Categories = new[] {
+                    "electronics",
+                    "test products",
+                },
+                Features = new[] {
+                    "feature 1",
+                    "feature 2",
+                },
+                Prices = new Dictionary<string, decimal> {
+                    {"regular", 150m},
+                    {"afterrebate", 100m},
+                },
+                Price = 92,
+                Popularity = 6,
+                InStock = false,
+            },
+            new Product {
+                Id = "DEL12346",
+                Name = "Delete test product 2",
+                Manufacturer = "Acme ltd",
+                Categories = new[] {
+                    "electronics",
+                    "test products",
+                },
+                Features = new[] {
+                    "feature 1",
+                    "feature 3",
+                },
+                Prices = new Dictionary<string, decimal> {
+                    {"regular", 150m},
+                    {"afterrebate", 100m},
+                },
+                Price = 92,
+                Popularity = 6,
+                InStock = false,
+            },
+            new Product {
+                Id = "DEL12347",
+                Name = "Delete test product 3",
+                Manufacturer = "Acme ltd",
+                Categories = new[] {
+                    "electronics",
+                    "test products",
+                },
+                Features = new[] {
+                    "feature 1",
+                    "feature 3",
+                },
+                Prices = new Dictionary<string, decimal> {
+                    {"regular", 150m},
+                    {"afterrebate", 100m},
+                },
+                Price = 92,
+                Popularity = 6,
+                InStock = false,
+            }
+        };
+
         [Test]
         public void DeleteByIdAndOrQuery() {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-
-            var products = new List<Product> 
-            {
-                    new Product
-                    {
-                        Id = "DEL12345",
-                        Name = "Delete test product 1",
-                        Manufacturer = "Acme ltd",
-                        Categories = new[] {
-                            "electronics",
-                            "test products",
-                        },
-                        Features = new[] {
-                            "feature 1",
-                            "feature 2",
-                        },
-                        Prices = new Dictionary<string, decimal> {
-                            {"regular", 150m},
-                            {"afterrebate", 100m},
-                        },
-                        Price = 92,
-                        Popularity = 6,
-                        InStock = false,
-                    },
-                    new Product
-                    {
-                        Id = "DEL12346",
-                        Name = "Delete test product 2",
-                        Manufacturer = "Acme ltd",
-                        Categories = new[] {
-                            "electronics",
-                            "test products",
-                        },
-                        Features = new[] {
-                            "feature 1",
-                            "feature 3",
-                        },
-                        Prices = new Dictionary<string, decimal> {
-                            {"regular", 150m},
-                            {"afterrebate", 100m},
-                        },
-                        Price = 92,
-                        Popularity = 6,
-                        InStock = false,
-                    },
-                    new Product
-                    {
-                        Id = "DEL12347",
-                        Name = "Delete test product 3",
-                        Manufacturer = "Acme ltd",
-                        Categories = new[] {
-                            "electronics",
-                            "test products",
-                        },
-                        Features = new[] {
-                            "feature 1",
-                            "feature 3",
-                        },
-                        Prices = new Dictionary<string, decimal> {
-                            {"regular", 150m},
-                            {"afterrebate", 100m},
-                        },
-                        Price = 92,
-                        Popularity = 6,
-                        InStock = false,
-                    }
-            };
 
             solr.AddRange(products);
             solr.Commit();
@@ -503,6 +500,25 @@ namespace SolrNet.Tests.Integration.Sample {
                 Console.WriteLine(response.Content);
                 Assert.AreEqual("Your PDF viewing software works!\n\n\n", response.Content);
             }
+        }
+
+        [Test]
+        public void MoreLikeThisHandler() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.AddRange(products);
+            var connection = ServiceLocator.Current.GetInstance<ISolrConnection>();
+            var files = Directory.GetFiles(@"..\..\..\SampleSolrApp\exampledocs", "*.xml");
+            foreach (var file in files) {
+                connection.Post("/update", File.ReadAllText(file, Encoding.UTF8));
+            }
+            solr.Commit();
+            var results = solr.MoreLikeThis(SolrMLTQuery.Query(new SolrQuery("id:UTF8TEST")), new MoreLikeThisHandlerQueryOptions(new MoreLikeThisHandlerParameters(new[] { "cat", "name" }) { MatchInclude = true, MinTermFreq = 1, MinDocFreq = 1,}));
+            Console.WriteLine("{0} results", results.Count);
+            Console.WriteLine("Match id: {0}", results.Match.Id);
+            foreach (var t in results.InterestingTerms) {
+                Console.WriteLine("Interesting term: {0} ({1})", t.Key, t.Value);
+            }
+            
         }
     }
 }

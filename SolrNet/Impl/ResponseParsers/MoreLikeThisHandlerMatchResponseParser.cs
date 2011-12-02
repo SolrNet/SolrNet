@@ -17,14 +17,11 @@ namespace SolrNet.Impl.ResponseParsers {
             var resultNode = xml
                 .Element("response")
                 .Elements("result")
-                .FirstOrDefault(e => (string) e.Attribute("name") == "match");
+                .FirstOrDefault(e => e.Attribute("name").Value == "match");
 
-            if (resultNode == null) {
-                results.Match = default(T);
-                return;
-            }
-
-            results.Match = docParser.ParseResults(resultNode).FirstOrDefault();
+            results.Match = resultNode == null ? 
+                default(T) : 
+                docParser.ParseResults(resultNode).FirstOrDefault();
         }
     }
 }

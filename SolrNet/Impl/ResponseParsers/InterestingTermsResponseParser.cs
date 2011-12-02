@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
+using SolrNet.Impl.FieldParsers;
 
 namespace SolrNet.Impl.ResponseParsers {
     public class InterestingTermsResponseParser<T> : ISolrMoreLikeThisHandlerResponseParser<T> {
@@ -10,7 +10,7 @@ namespace SolrNet.Impl.ResponseParsers {
             x => new KeyValuePair<string, float>(x.Value.Trim(), 0.0f);
 
         private static readonly Func<XElement, KeyValuePair<string, float>> extractDetails =
-            x => new KeyValuePair<string, float>((string) x.Attribute("name"), float.Parse(x.Value, CultureInfo.InvariantCulture.NumberFormat));
+            x => new KeyValuePair<string, float>((string) x.Attribute("name"), FloatFieldParser.Parse(x));
 
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             results.Switch(_ => {}, x => Parse(xml, x));

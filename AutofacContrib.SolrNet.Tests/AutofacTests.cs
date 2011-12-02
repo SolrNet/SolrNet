@@ -70,8 +70,7 @@ namespace AutofacContrib.SolrNet.Tests {
         }
         
         [Test]
-        public void ResponseParsers()
-        {
+        public void ResponseParsers() {
             var builder = new ContainerBuilder();
             builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
             var container = builder.Build();
@@ -79,8 +78,8 @@ namespace AutofacContrib.SolrNet.Tests {
             var parser = container.Resolve<ISolrQueryResultParser<Entity>>();
 
             var field = parser.GetType().GetField("parsers", BindingFlags.NonPublic | BindingFlags.Instance);
-            var parsers = (ISolrResponseParser<Entity>[])field.GetValue(parser);
-            Assert.AreEqual(11, parsers.Length);
+            var parsers = (Array)field.GetValue(parser);
+            Assert.AreEqual(13, parsers.Length);
             foreach (var t in parsers)
                 Console.WriteLine(t);
         }

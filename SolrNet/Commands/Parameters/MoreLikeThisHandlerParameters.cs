@@ -23,12 +23,6 @@ namespace SolrNet.Commands.Parameters {
         /// </summary>
         public int? MatchOffset { get; set; }
 
-        public enum InterestingTerms {
-            list,
-            details,
-            none
-        }
-
         /// <summary>
         /// One of: "list", "details", "none" -- this will show what "interesting" terms are used for the MoreLikeThis query. These are the top tf/idf terms.
         /// </summary>

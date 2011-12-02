@@ -483,7 +483,7 @@ namespace SolrNet.Tests {
                     new MoreLikeThisHandlerParameters(new[] {"one", "three"}) {
                         MatchInclude = false,
                         MatchOffset = 5,
-                        ShowTerms = MoreLikeThisHandlerParameters.InterestingTerms.none,
+                        ShowTerms = InterestingTerms.none,
                     }) {
                         Start = 0,
                         Rows = 5,
@@ -511,7 +511,7 @@ namespace SolrNet.Tests {
                     new MoreLikeThisHandlerParameters(new[] {"one", "three"}) {
                         MatchInclude = false,
                         MatchOffset = 5,
-                        ShowTerms = MoreLikeThisHandlerParameters.InterestingTerms.none,
+                        ShowTerms = InterestingTerms.none,
                     }) {
                         Start = 0,
                         Rows = 5,
@@ -532,7 +532,7 @@ namespace SolrNet.Tests {
                     new MoreLikeThisHandlerParameters(new[] {"one", "three"}) {
                         MatchInclude = false,
                         MatchOffset = 5,
-                        ShowTerms = MoreLikeThisHandlerParameters.InterestingTerms.none,
+                        ShowTerms = InterestingTerms.none,
                     }) {
                         Start = 0,
                         Rows = 5,

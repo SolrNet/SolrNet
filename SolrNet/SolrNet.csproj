@@ -71,6 +71,7 @@
     <Compile Include="ClusterResults.cs" />
     <Compile Include="Commands\Parameters\CommonQueryOptions.cs" />
     <Compile Include="Commands\Parameters\ClusteringParameters.cs" />
+    <Compile Include="Commands\Parameters\InterestingTerms.cs" />
     <Compile Include="Commands\Parameters\MoreLikeThisHandlerParameters.cs" />
     <Compile Include="Commands\Parameters\MoreLikeThisHandlerQueryOptions.cs" />
     <Compile Include="Commands\Parameters\RegexFlag.cs" />

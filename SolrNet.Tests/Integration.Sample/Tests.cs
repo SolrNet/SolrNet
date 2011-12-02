@@ -516,7 +516,7 @@ namespace SolrNet.Tests.Integration.Sample {
         public void MoreLikeThisHandler() {
             AddSampleDocs();
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-            var results = solr.MoreLikeThis(SolrMLTQuery.Query(new SolrQuery("id:UTF8TEST")), new MoreLikeThisHandlerQueryOptions(new MoreLikeThisHandlerParameters(new[] { "cat", "name" }) { MatchInclude = true, MinTermFreq = 1, MinDocFreq = 1, ShowTerms = MoreLikeThisHandlerParameters.InterestingTerms.list }));
+            var results = solr.MoreLikeThis(SolrMLTQuery.Query(new SolrQuery("id:UTF8TEST")), new MoreLikeThisHandlerQueryOptions(new MoreLikeThisHandlerParameters(new[] { "cat", "name" }) { MatchInclude = true, MinTermFreq = 1, MinDocFreq = 1, ShowTerms = InterestingTerms.list }));
             Assert.AreEqual(1, results.Count);
             Assert.IsNotNull(results.Match);
             Assert.AreEqual("UTF8TEST", results.Match.Id);

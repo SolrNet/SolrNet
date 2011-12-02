@@ -10,9 +10,7 @@ namespace SolrNet.Impl.ResponseParsers {
         }
 
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
-            if (results is SolrMoreLikeThisHandlerResults<T>) {
-                Parse(xml, (SolrMoreLikeThisHandlerResults<T>) results);
-            }
+            results.Switch(_ => {}, x => Parse(xml, x));
         }
 
         public void Parse(XDocument xml, SolrMoreLikeThisHandlerResults<T> results) {

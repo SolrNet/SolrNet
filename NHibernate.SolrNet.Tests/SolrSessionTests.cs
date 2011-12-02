@@ -26,7 +26,7 @@ namespace NHibernate.SolrNet.Tests {
     [TestFixture]
     public class SolrSessionTests: BaseNHTests {
 
-        public delegate ISolrQueryResults<Entity> SQuery(string q, QueryOptions options);
+        public delegate SolrQueryResults<Entity> SQuery(string q, QueryOptions options);
 
         [Test]
         public void QueryAll() {

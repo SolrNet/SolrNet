@@ -72,16 +72,19 @@ namespace Unity.SolrNetIntegration {
         typeof (CollapseResponseParser<>),
         typeof(GroupingResponseParser<>),
         typeof(ClusterResponseParser<>),
-        typeof(TermsResponseParser<>)
+        typeof(TermsResponseParser<>),
+        typeof(InterestingTermsResponseParser<>),
+        typeof(MoreLikeThisHandlerMatchResponseParser<>),
       };
 
       foreach (var parser in parsers) {
-        container.RegisterType(typeof (ISolrResponseParser<>), parser, parser.ToString());
+        container.RegisterType(typeof (ISolrAbstractResponseParser<>), parser, parser.ToString());
       }
 
       container.RegisterType<ISolrHeaderResponseParser, HeaderResponseParser<string>>();
       container.RegisterType<ISolrExtractResponseParser, ExtractResponseParser>();
       container.RegisterType(typeof (ISolrQueryResultParser<>), typeof (SolrQueryResultParser<>));
+      container.RegisterType(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>), typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
       container.RegisterType<ISolrFieldParser, DefaultFieldParser>();
       container.RegisterType<ISolrSchemaParser, SolrSchemaParser>();
       container.RegisterType<ISolrDIHStatusParser, SolrDIHStatusParser>();
@@ -101,7 +104,8 @@ namespace Unity.SolrNetIntegration {
           new ResolvedParameter(typeof (ISolrQueryResultParser<>).MakeGenericType(core.DocumentType)),
           new ResolvedParameter(typeof (ISolrConnection), coreConnectionId),
           new ResolvedParameter(typeof (ISolrQuerySerializer)),
-          new ResolvedParameter(typeof (ISolrFacetQuerySerializer))));
+          new ResolvedParameter(typeof (ISolrFacetQuerySerializer)),
+          new ResolvedParameter(typeof (ISolrMoreLikeThisHandlerQueryResultsParser<>).MakeGenericType(core.DocumentType))));
 
       var ISolrBasicOperations = typeof (ISolrBasicOperations<>).MakeGenericType(core.DocumentType);
       var ISolrBasicReadOnlyOperations = typeof (ISolrBasicReadOnlyOperations<>).MakeGenericType(core.DocumentType);

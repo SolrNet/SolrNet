@@ -57,9 +57,11 @@ namespace Ninject.Integration.SolrNet {
                 typeof(SpellCheckResponseParser<>),
                 typeof(StatsResponseParser<>),
                 typeof(CollapseResponseParser<>),
-                typeof(GroupingResponseParser<>)
+                typeof(GroupingResponseParser<>),
+                typeof(InterestingTermsResponseParser<>),
+                typeof(MoreLikeThisHandlerMatchResponseParser<>),
             })
-                Bind(typeof(ISolrResponseParser<>)).To(p);
+                Bind(typeof(ISolrAbstractResponseParser<>)).To(p);
             Bind<ISolrHeaderResponseParser>().To<HeaderResponseParser<string>>();
             Bind<ISolrExtractResponseParser>().To<ExtractResponseParser>();
             foreach (var p in new[] {
@@ -70,6 +72,7 @@ namespace Ninject.Integration.SolrNet {
                 Bind<IValidationRule>().To(p);
             Bind<ISolrConnection>().ToConstant(new SolrConnection(serverURL));
             Bind(typeof (ISolrQueryResultParser<>)).To(typeof (SolrQueryResultParser<>));
+            Bind(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>)).To(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
             Bind(typeof(ISolrQueryExecuter<>)).To(typeof(SolrQueryExecuter<>));
             Bind(typeof(ISolrDocumentSerializer<>)).To(typeof(SolrDocumentSerializer<>));
             Bind(typeof(ISolrBasicOperations<>)).To(typeof(SolrBasicServer<>));

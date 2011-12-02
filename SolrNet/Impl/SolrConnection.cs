@@ -56,16 +56,7 @@ namespace SolrNet.Impl {
         public string ServerURL {
             get { return serverURL; }
             set {
-                try {
-                    var u = new Uri(value);
-                    if (u.Scheme != Uri.UriSchemeHttp && u.Scheme != Uri.UriSchemeHttps)
-                        throw new InvalidURLException("Only HTTP or HTTPS protocols are supported");
-                } catch (ArgumentException e) {
-                    throw new InvalidURLException(e);
-                } catch (UriFormatException e) {
-                    throw new InvalidURLException(e);
-                }
-                serverURL = value;
+                serverURL = UriValidator.ValidateHTTP(value);
             }
         }
 

@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using SolrNet.Impl;
 namespace SolrNet {
 	/// <summary>
 	/// Query results parser interface
@@ -25,6 +26,6 @@ namespace SolrNet {
 		/// </summary>
 		/// <param name="r">solr response</param>
 		/// <returns>query results</returns>
-		ISolrQueryResults<T> Parse(string r);
+		SolrQueryResults<T> Parse(string r);
 	}
 }

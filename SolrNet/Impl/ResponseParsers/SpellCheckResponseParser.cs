@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -26,6 +27,11 @@ namespace SolrNet.Impl.ResponseParsers {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class SpellCheckResponseParser<T> : ISolrResponseParser<T> {
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
+            results.Switch(query: r => Parse(xml, r),
+                           moreLikeThis: F.DoNothing);
+        }
+
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
             var spellCheckingNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             if (spellCheckingNode != null)

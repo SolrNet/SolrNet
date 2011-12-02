@@ -111,7 +111,8 @@ namespace SolrNet.DSL {
                 ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(),
                 Connection,
                 ServiceLocator.Current.GetInstance<ISolrQuerySerializer>(),
-                ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>());
+                ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>(),
+                ServiceLocator.Current.GetInstance<ISolrMoreLikeThisHandlerQueryResultsParser<T>>());
         }
 
         /// <summary>
@@ -122,7 +123,7 @@ namespace SolrNet.DSL {
         /// <param name="start">Pagination item start</param>
         /// <param name="rows">Pagination item count</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>(string s, int start, int rows) {
+        public static SolrQueryResults<T> Query<T>(string s, int start, int rows) {
             var q = NewQueryExecuter<T>();
             return q.Execute(new SolrQuery(s), new QueryOptions {Start = start, Rows = rows});
         }
@@ -133,7 +134,7 @@ namespace SolrNet.DSL {
         /// <typeparam name="T">Document type</typeparam>
         /// <param name="s">Query</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>(string s) {
+        public static SolrQueryResults<T> Query<T>(string s) {
             var q = NewQueryExecuter<T>(); 
             return q.Execute(new SolrQuery(s), null);
         }
@@ -145,7 +146,7 @@ namespace SolrNet.DSL {
         /// <param name="s">Query</param>
         /// <param name="order">Sort order</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>(string s, SortOrder order) {
+        public static SolrQueryResults<T> Query<T>(string s, SortOrder order) {
             return Query<T>(s, new[] {order});
         }
 
@@ -156,7 +157,7 @@ namespace SolrNet.DSL {
         /// <param name="s">Query</param>
         /// <param name="order">Sort orders</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order) {
+        public static SolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order) {
             var q = NewQueryExecuter<T>(); 
             return q.Execute(new SolrQuery(s), new QueryOptions {OrderBy = order});
         }
@@ -170,7 +171,7 @@ namespace SolrNet.DSL {
         /// <param name="start">Pagination item start</param>
         /// <param name="rows">Pagination item count</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>(string s, SortOrder order, int start, int rows) {
+        public static SolrQueryResults<T> Query<T>(string s, SortOrder order, int start, int rows) {
             return Query<T>(s, new[] {order}, start, rows);
         }
 
@@ -183,7 +184,7 @@ namespace SolrNet.DSL {
         /// <param name="start">Pagination item start</param>
         /// <param name="rows">Pagination item count</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order, int start, int rows) {
+        public static SolrQueryResults<T> Query<T>(string s, ICollection<SortOrder> order, int start, int rows) {
             var q = NewQueryExecuter<T>();
             return q.Execute(new SolrQuery(s), new QueryOptions {
                 OrderBy = order,
@@ -198,7 +199,7 @@ namespace SolrNet.DSL {
         /// <typeparam name="T">Document type</typeparam>
         /// <param name="q">Query</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>(ISolrQuery q) {
+        public static SolrQueryResults<T> Query<T>(ISolrQuery q) {
             var queryExecuter = NewQueryExecuter<T>();
             return queryExecuter.Execute(q, null);
         }
@@ -211,7 +212,7 @@ namespace SolrNet.DSL {
         /// <param name="start">Pagination item start</param>
         /// <param name="rows">Pagination item count</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>(ISolrQuery q, int start, int rows) {
+        public static SolrQueryResults<T> Query<T>(ISolrQuery q, int start, int rows) {
             var queryExecuter = NewQueryExecuter<T>(); 
             return queryExecuter.Execute(q, new QueryOptions {Start = start, Rows = rows});
         }
@@ -223,7 +224,7 @@ namespace SolrNet.DSL {
         /// <param name="query">Query</param>
         /// <param name="order">Sort order</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>(SolrQuery query, SortOrder order) {
+        public static SolrQueryResults<T> Query<T>(SolrQuery query, SortOrder order) {
             return Query<T>(query, new[] {order});
         }
 
@@ -234,7 +235,7 @@ namespace SolrNet.DSL {
         /// <param name="query">Query</param>
         /// <param name="orders">Sort orders</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>( SolrQuery query, ICollection<SortOrder> orders ) {
+        public static SolrQueryResults<T> Query<T>( SolrQuery query, ICollection<SortOrder> orders ) {
             var queryExecuter = NewQueryExecuter<T>();
             return queryExecuter.Execute( query, new QueryOptions { OrderBy = orders } );
         }
@@ -246,7 +247,7 @@ namespace SolrNet.DSL {
         /// <param name="query">Query</param>
         /// <param name="options">The QueryOptions to use.</param>
         /// <returns>Query results</returns>
-        public static ISolrQueryResults<T> Query<T>( SolrQuery query, QueryOptions options ) {
+        public static SolrQueryResults<T> Query<T>( SolrQuery query, QueryOptions options ) {
             var queryExecuter = NewQueryExecuter<T>();
             return queryExecuter.Execute( query, options );
         }

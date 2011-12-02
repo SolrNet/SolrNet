@@ -88,7 +88,7 @@ namespace SolrNet.Impl {
             return SendAndParseHeader(delete);
         }
 
-        public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
+        public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
             return queryExecuter.Execute(query, options);
         }
 
@@ -122,6 +122,11 @@ namespace SolrNet.Impl {
             var response = connection.Get("/dataimport", null);
             var dihstatus = XDocument.Parse(response);
             return dihStatusParser.Parse(dihstatus);
+        }
+
+        public SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
+        {
+            return this.queryExecuter.Execute(query, options);
         }
     }
 }

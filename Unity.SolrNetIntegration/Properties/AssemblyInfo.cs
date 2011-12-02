@@ -10,19 +10,16 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: ComVisible(false)]
-[assembly: CLSCompliant(true)]
-[assembly: Guid("6688f9b4-5f2d-4fd6-aafc-3a81c84a69f1")]
-[assembly: AssemblyTitle("Unity.SolrNetIntegration")]
-[assembly: AssemblyDescription("Unity.SolrNetIntegration")]
-[assembly: AssemblyProduct("Unity.SolrNetIntegration")]
-[assembly: AssemblyCopyright("Copyright Mauricio Scheffer 2007-2011")]
-[assembly: AssemblyVersion("0.4.0.1001")]
-[assembly: AssemblyFileVersion("0.4.0.1001")]
-[assembly: AssemblyInformationalVersion("8a6f2f50663f803c18f9b2a4a23d53db670b321d")]
-[assembly: AssemblyDelaySign(false)]
-
-
+[assembly : ComVisible(false)]
+[assembly : CLSCompliant(true)]
+[assembly : Guid("6688f9b4-5f2d-4fd6-aafc-3a81c84a69f1")]
+[assembly : AssemblyTitle("Unity.SolrNetIntegration")]
+[assembly : AssemblyDescription("Unity.SolrNetIntegration")]
+[assembly : AssemblyProduct("Unity.SolrNetIntegration")]
+[assembly : AssemblyCopyright("Copyright Mauricio Scheffer 2007-2011")]
+[assembly : AssemblyVersion("0.4.0.1001")]
+[assembly : AssemblyFileVersion("0.4.0.1001")]
+[assembly : AssemblyInformationalVersion("8a6f2f50663f803c18f9b2a4a23d53db670b321d")]
+[assembly : AssemblyDelaySign(false)]

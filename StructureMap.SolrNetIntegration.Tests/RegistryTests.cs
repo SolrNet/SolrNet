@@ -98,8 +98,8 @@ namespace StructureMap.SolrNetIntegration.Tests
             var parser = ObjectFactory.GetInstance<ISolrQueryResultParser<Entity>>() as SolrQueryResultParser<Entity>;
 
             var field = parser.GetType().GetField("parsers", BindingFlags.NonPublic | BindingFlags.Instance);
-            var parsers = (ISolrResponseParser<Entity>[])field.GetValue(parser);
-            Assert.AreEqual(11, parsers.Length);
+            var parsers = (ISolrAbstractResponseParser<Entity>[])field.GetValue(parser);
+            Assert.AreEqual(13, parsers.Length);
             foreach (var t in parsers)
                 Console.WriteLine(t);
         }

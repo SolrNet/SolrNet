@@ -108,9 +108,11 @@ namespace SolrNet {
 
             Container.Register(ChooseDocumentResponseParser<T>);
 
-            Container.Register<ISolrResponseParser<T>>(typeof(ResultsResponseParser<T>).FullName, c => new ResultsResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
-            Container.Register<ISolrResponseParser<T>>(typeof (HeaderResponseParser<T>).FullName, c => new HeaderResponseParser<T>());
-            Container.Register<ISolrResponseParser<T>>(typeof(FacetsResponseParser<T>).FullName, c => new FacetsResponseParser<T>());
+            Container.Register<ISolrAbstractResponseParser<T>>(typeof(ResultsResponseParser<T>).FullName, c => new ResultsResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
+            Container.Register<ISolrAbstractResponseParser<T>>(typeof (HeaderResponseParser<T>).FullName, c => new HeaderResponseParser<T>());
+            Container.Register<ISolrAbstractResponseParser<T>>(typeof(FacetsResponseParser<T>).FullName, c => new FacetsResponseParser<T>());
+            Container.Register<ISolrAbstractResponseParser<T>>(typeof(InterestingTermsResponseParser<T>).FullName, c => new InterestingTermsResponseParser<T>());
+            Container.Register<ISolrAbstractResponseParser<T>>(typeof(MoreLikeThisHandlerMatchResponseParser<T>).FullName, c => new MoreLikeThisHandlerMatchResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
             Container.Register<ISolrResponseParser<T>>(typeof(HighlightingResponseParser<T>).FullName, c => new HighlightingResponseParser<T>());
             Container.Register<ISolrResponseParser<T>>(typeof(MoreLikeThisResponseParser<T>).FullName, c => new MoreLikeThisResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
             Container.Register<ISolrResponseParser<T>>(typeof(SpellCheckResponseParser<T>).FullName, c => new SpellCheckResponseParser<T>());
@@ -122,8 +124,9 @@ namespace SolrNet {
 
 			Container.Register<ISolrResponseParser<T>>(typeof(GroupingResponseParser<T>).FullName, c => new GroupingResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
 
-            Container.Register<ISolrQueryResultParser<T>>(c => new SolrQueryResultParser<T>(c.GetAllInstances<ISolrResponseParser<T>>().ToArray()));
-            Container.Register<ISolrQueryExecuter<T>>(c => new SolrQueryExecuter<T>(c.GetInstance<ISolrQueryResultParser<T>>(), connection, c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrFacetQuerySerializer>()));
+            Container.Register<ISolrQueryResultParser<T>>(c => new SolrQueryResultParser<T>(c.GetAllInstances<ISolrAbstractResponseParser<T>>().ToArray()));
+            Container.Register<ISolrMoreLikeThisHandlerQueryResultsParser<T>>(c => new SolrMoreLikeThisHandlerQueryResultsParser<T>(c.GetAllInstances<ISolrAbstractResponseParser<T>>().ToArray()));
+            Container.Register<ISolrQueryExecuter<T>>(c => new SolrQueryExecuter<T>(c.GetInstance<ISolrQueryResultParser<T>>(), connection, c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrFacetQuerySerializer>(), c.GetInstance<ISolrMoreLikeThisHandlerQueryResultsParser<T>>()));
 
             Container.Register(ChooseDocumentSerializer<T>);
 

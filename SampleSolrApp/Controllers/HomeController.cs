@@ -100,7 +100,7 @@ namespace SampleSolrApp.Controllers {
             }
         }
 
-        private string GetSpellCheckingResult(ISolrQueryResults<Product> products) {
+        private string GetSpellCheckingResult(SolrQueryResults<Product> products) {
             return string.Join(" ", products.SpellChecking
                                         .Select(c => c.Suggestions.FirstOrDefault())
                                         .Where(c => !string.IsNullOrEmpty(c))

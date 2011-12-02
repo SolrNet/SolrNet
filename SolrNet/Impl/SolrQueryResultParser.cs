@@ -25,9 +25,9 @@ namespace SolrNet.Impl {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class SolrQueryResultParser<T> : ISolrQueryResultParser<T> {
-        private readonly ISolrResponseParser<T>[] parsers;
+        private readonly ISolrAbstractResponseParser<T>[] parsers;
 
-        public SolrQueryResultParser(ISolrResponseParser<T>[] parsers) {
+        public SolrQueryResultParser(ISolrAbstractResponseParser<T>[] parsers) {
             this.parsers = parsers;
         }
 
@@ -36,7 +36,7 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="r">solr xml response</param>
         /// <returns>query results</returns>
-        public ISolrQueryResults<T> Parse(string r) {
+        public SolrQueryResults<T> Parse(string r) {
             var results = new SolrQueryResults<T>();
             var xml = XDocument.Parse(r);
             foreach (var p in parsers)

@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using System.Xml;
-using System.Globalization;
+using SolrNet.Utils;
 
-namespace SolrNet.Impl.ResponseParsers
-{
-    public class ClusterResponseParser<T> : ISolrResponseParser<T>
-    {
-        public ClusterResponseParser() { }
+namespace SolrNet.Impl.ResponseParsers {
+    public class ClusterResponseParser<T> : ISolrResponseParser<T> {
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
+            results.Switch(query: r => Parse(xml, r), 
+                           moreLikeThis: F.DoNothing);
+        }
+
         /// <summary>
         /// Parse the xml document returned by solr 
         /// </summary>
         /// <param name="xml"></param>
         /// <param name="results"></param>
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
-            XElement clusterNode = xml.XPathSelectElement("response/arr[@name='clusters']");
+            var clusterNode = xml.XPathSelectElement("response/arr[@name='clusters']");
             if (clusterNode != null)
                 results.Clusters = ParseClusterNode(clusterNode);
         }
@@ -28,12 +29,8 @@ namespace SolrNet.Impl.ResponseParsers
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        private ICollection<string> GetDocumentList(XElement node) {
-            List<string> coll = new List<string>();
-            foreach (var d in node.Elements()) {
-                coll.Add(d.Value);
-            }
-            return coll;
+        private static ICollection<string> GetDocumentList(XElement node) {
+            return node.Elements().Select(d => d.Value).ToList();
         }
 
         /// <summary>
@@ -43,9 +40,9 @@ namespace SolrNet.Impl.ResponseParsers
         /// <param name="n"> Node to parse into a Cluster </param>
         /// <returns></returns>
         public ClusterResults ParseClusterNode(XElement n) {
-            ClusterResults c = new ClusterResults();
+            var c = new ClusterResults();
             foreach (var v in n.Elements()) {
-                Cluster cluster = new Cluster();
+                var cluster = new Cluster();
                 foreach (var x in v.Elements()) {
                     var name = x.Attribute("name").Value;
                     if (name == "labels")

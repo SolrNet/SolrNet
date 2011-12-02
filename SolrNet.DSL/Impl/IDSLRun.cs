@@ -18,8 +18,8 @@ using SolrNet.Commands.Parameters;
 
 namespace SolrNet.DSL.Impl {
     public interface IDSLRun<T> {
-        ISolrQueryResults<T> Run();
-        ISolrQueryResults<T> Run(int start, int rows);
+        SolrQueryResults<T> Run();
+        SolrQueryResults<T> Run(int start, int rows);
         IDSLRun<T> OrderBy(string fieldName);
         IDSLRun<T> OrderBy(string fieldName, Order o);
         IDSLFacetFieldOptions<T> WithFacetField(string fieldName);

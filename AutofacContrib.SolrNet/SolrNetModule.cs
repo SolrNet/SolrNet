@@ -80,7 +80,7 @@ namespace AutofacContrib.SolrNet {
                 typeof (CollapseResponseParser<>),
                 typeof (GroupingResponseParser<>),
                 typeof (ClusterResponseParser<>),
-                typeof (TermsResponseParser<>)
+                typeof (TermsResponseParser<>),
                 typeof (InterestingTermsResponseParser<>),
                 typeof (MoreLikeThisHandlerMatchResponseParser<>),
             })
@@ -147,7 +147,7 @@ namespace AutofacContrib.SolrNet {
                 typeof (CollapseResponseParser<>),
                 typeof (GroupingResponseParser<>),
                 typeof (ClusterResponseParser<>),
-                typeof (TermsResponseParser<>)
+                typeof (TermsResponseParser<>),
                 typeof (InterestingTermsResponseParser<>),
                 typeof (MoreLikeThisHandlerMatchResponseParser<>),
             })

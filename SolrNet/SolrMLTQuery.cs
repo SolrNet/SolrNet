@@ -43,6 +43,6 @@ namespace SolrNet {
         /// <param name="streamBody"></param>
         /// <param name="streamUrl"></param>
         /// <returns></returns>
-        public abstract T Match<T>(Func<ISolrQuery, T> query, Func<string, T> streamBody, Func<Uri, T> streamUrl);
+        public abstract T Switch<T>(Func<ISolrQuery, T> query, Func<string, T> streamBody, Func<Uri, T> streamUrl);
     }
 }

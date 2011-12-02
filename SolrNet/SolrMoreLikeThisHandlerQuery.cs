@@ -15,7 +15,7 @@ namespace SolrNet {
             get { return query; }
         }
 
-        public override T Match<T>(Func<ISolrQuery, T> q, Func<string, T> streamBody, Func<Uri, T> streamUrl) {
+        public override T Switch<T>(Func<ISolrQuery, T> q, Func<string, T> streamBody, Func<Uri, T> streamUrl) {
             return q(query);
         }
     }

@@ -502,16 +502,20 @@ namespace SolrNet.Tests.Integration.Sample {
             }
         }
 
-        [Test]
-        public void MoreLikeThisHandler() {
+        public void AddSampleDocs() {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-            solr.AddRange(products);
             var connection = ServiceLocator.Current.GetInstance<ISolrConnection>();
             var files = Directory.GetFiles(@"..\..\..\SampleSolrApp\exampledocs", "*.xml");
             foreach (var file in files) {
                 connection.Post("/update", File.ReadAllText(file, Encoding.UTF8));
             }
-            solr.Commit();
+            solr.Commit();            
+        }
+
+        [Test]
+        public void MoreLikeThisHandler() {
+            AddSampleDocs();
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             var results = solr.MoreLikeThis(SolrMLTQuery.Query(new SolrQuery("id:UTF8TEST")), new MoreLikeThisHandlerQueryOptions(new MoreLikeThisHandlerParameters(new[] { "cat", "name" }) { MatchInclude = true, MinTermFreq = 1, MinDocFreq = 1,}));
             Console.WriteLine("{0} results", results.Count);
             Console.WriteLine("Match id: {0}", results.Match.Id);

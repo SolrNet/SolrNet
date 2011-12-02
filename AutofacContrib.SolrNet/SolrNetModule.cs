@@ -58,75 +58,8 @@ namespace AutofacContrib.SolrNet {
         private readonly string ServerUrl;
         public IReadOnlyMappingManager Mapper { get; set; }
 
-        private void RegisterSingleCore(ContainerBuilder builder) {
+        private void RegisterCommonComponents(ContainerBuilder builder) {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
-            builder.RegisterInstance(mapper).As<IReadOnlyMappingManager>();
-            //builder.RegisterType<HttpRuntimeCache>().As<ISolrCache>();
-            builder.RegisterType<DefaultDocumentVisitor>().As<ISolrDocumentPropertyVisitor>();
-            builder.RegisterType<DefaultFieldParser>().As<ISolrFieldParser>();
-            builder.RegisterGeneric(typeof (SolrDocumentActivator<>)).As(typeof (ISolrDocumentActivator<>));
-            builder.RegisterGeneric(typeof (SolrDocumentResponseParser<>)).As(typeof (ISolrDocumentResponseParser<>));
-            builder.RegisterType<DefaultFieldSerializer>().As<ISolrFieldSerializer>();
-            builder.RegisterType<DefaultQuerySerializer>().As<ISolrQuerySerializer>();
-            builder.RegisterType<DefaultFacetQuerySerializer>().As<ISolrFacetQuerySerializer>();
-            foreach (var p in new[] {
-                typeof (ResultsResponseParser<>),
-                typeof (HeaderResponseParser<>),
-                typeof (FacetsResponseParser<>),
-                typeof (HighlightingResponseParser<>),
-                typeof (MoreLikeThisResponseParser<>),
-                typeof (SpellCheckResponseParser<>),
-                typeof (StatsResponseParser<>),
-                typeof (CollapseResponseParser<>),
-                typeof (GroupingResponseParser<>),
-                typeof (ClusterResponseParser<>),
-                typeof (TermsResponseParser<>),
-                typeof (InterestingTermsResponseParser<>),
-                typeof (MoreLikeThisHandlerMatchResponseParser<>),
-            })
-                builder.RegisterGeneric(p).As(typeof (ISolrAbstractResponseParser<>));
-
-            builder.RegisterType<HeaderResponseParser<string>>().As<ISolrHeaderResponseParser>();
-            builder.RegisterType<ExtractResponseParser>().As<ISolrExtractResponseParser>();
-            foreach (var p in new[] {
-                typeof (MappedPropertiesIsInSolrSchemaRule),
-                typeof (RequiredFieldsAreMappedRule),
-                typeof (UniqueKeyMatchesMappingRule),
-            })
-                builder.RegisterType(p).As<IValidationRule>();
-            builder.RegisterInstance(new SolrConnection(ServerUrl)).As<ISolrConnection>();
-            builder.RegisterGeneric(typeof (SolrQueryResultParser<>)).As(typeof (ISolrQueryResultParser<>));
-            builder.RegisterGeneric(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>)).As(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>));
-            builder.RegisterGeneric(typeof (SolrQueryExecuter<>)).As(typeof (ISolrQueryExecuter<>));
-            builder.RegisterGeneric(typeof (SolrDocumentSerializer<>)).As(typeof (ISolrDocumentSerializer<>));
-            builder.RegisterGeneric(typeof (SolrBasicServer<>))
-                .As(typeof (ISolrBasicOperations<>), typeof (ISolrBasicReadOnlyOperations<>))
-                .SingleInstance();
-            builder.RegisterGeneric(typeof (SolrServer<>))
-                .As(typeof (ISolrOperations<>), typeof (ISolrReadOnlyOperations<>))
-                .SingleInstance();
-            builder.RegisterType<SolrSchemaParser>().As<ISolrSchemaParser>();
-            builder.RegisterType<SolrDIHStatusParser>().As<ISolrDIHStatusParser>();
-            builder.RegisterType<MappingValidator>().As<IMappingValidator>();
-        }
-
-        private readonly SolrServers solrServers;
-
-        /// <summary>
-        ///   Register multi-core server
-        /// </summary>
-        /// <param name = "solrServers"></param>
-        public SolrNetModule(SolrServers solrServers) {
-            this.solrServers = solrServers;
-        }
-
-        private void RegisterMultiCore(ContainerBuilder builder) {
-            RegisterInterfaces(builder);
-            AddCoresFromConfig(builder);
-        }
-
-        private void RegisterInterfaces(ContainerBuilder builder) {
-            var mapper = new MemoizingMappingManager(new AttributesMappingManager());
             builder.RegisterInstance(mapper).As<IReadOnlyMappingManager>();
             // builder.RegisterType<HttpRuntimeCache>().As<ISolrCache>();
             builder.RegisterType<DefaultDocumentVisitor>().As<ISolrDocumentPropertyVisitor>();
@@ -151,7 +84,7 @@ namespace AutofacContrib.SolrNet {
                 typeof (InterestingTermsResponseParser<>),
                 typeof (MoreLikeThisHandlerMatchResponseParser<>),
             })
-
+			
                 builder.RegisterGeneric(p).As(typeof (ISolrAbstractResponseParser<>));
             builder.RegisterType<HeaderResponseParser<string>>().As<ISolrHeaderResponseParser>();
             builder.RegisterType<ExtractResponseParser>().As<ISolrExtractResponseParser>();
@@ -160,22 +93,49 @@ namespace AutofacContrib.SolrNet {
                 typeof (RequiredFieldsAreMappedRule),
                 typeof (UniqueKeyMatchesMappingRule),
             })
-
+			
                 builder.RegisterType(p).As<IValidationRule>();
-            builder.RegisterType<SolrSchemaParser>().As<ISolrSchemaParser>();
+            builder.RegisterType<SolrSchemaParser>().As<ISolrSchemaParser>();				
             builder.RegisterGeneric(typeof (SolrQueryResultParser<>)).As(typeof (ISolrQueryResultParser<>));
             builder.RegisterGeneric(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>)).As(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>));
+            builder.RegisterGeneric(typeof(SolrQueryExecuter<>)).As(typeof(ISolrQueryExecuter<>));
             builder.RegisterGeneric(typeof (SolrDocumentSerializer<>)).As(typeof (ISolrDocumentSerializer<>));
             builder.RegisterType<SolrDIHStatusParser>().As<ISolrDIHStatusParser>();
-            builder.RegisterType<MappingValidator>().As<IMappingValidator>();
+            builder.RegisterType<MappingValidator>().As<IMappingValidator>();            
+        }
+
+        private void RegisterSingleCore(ContainerBuilder builder) {
+            RegisterCommonComponents(builder);
+            builder.RegisterInstance(new SolrConnection(ServerUrl)).As<ISolrConnection>();
+
+            builder.RegisterGeneric(typeof (SolrBasicServer<>))
+                .As(typeof (ISolrBasicOperations<>), typeof (ISolrBasicReadOnlyOperations<>))
+                .SingleInstance();
+            builder.RegisterGeneric(typeof (SolrServer<>))
+                .As(typeof (ISolrOperations<>), typeof (ISolrReadOnlyOperations<>))
+                .SingleInstance();
+        }
+
+        private readonly SolrServers solrServers;
+
+        /// <summary>
+        ///   Register multi-core server
+        /// </summary>
+        /// <param name = "solrServers"></param>
+        public SolrNetModule(SolrServers solrServers) {
+            this.solrServers = solrServers;
+        }
+
+        private void RegisterMultiCore(ContainerBuilder builder) {
+            RegisterCommonComponents(builder);
+            AddCoresFromConfig(builder);
         }
 
         /// <summary>
         ///   Registers a new core in the container.
         ///   This method is meant to be used after the facility initialization
         /// </summary>
-        /// <param name = "core"></param>
-        private void RegisterCore(SolrCore core, ContainerBuilder builder) {
+        private static void RegisterCore(SolrCore core, ContainerBuilder builder) {
             var coreConnectionId = core.Id + typeof (SolrConnection);
 
             builder.RegisterType(typeof (SolrConnection))

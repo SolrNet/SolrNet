@@ -20,7 +20,6 @@ using Autofac;
 using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet;
-using SolrNet.Impl;
 
 namespace AutofacContrib.SolrNet.Tests {
     [TestFixture]
@@ -59,8 +58,7 @@ namespace AutofacContrib.SolrNet.Tests {
         /// resolve to the same instance.
         /// </summary>
         [Test]
-        public void ResolveSolrBasicOperationsAndSolrBasicReadOnlyOperationsUseSameEntity()
-        {
+        public void ResolveSolrBasicOperationsAndSolrBasicReadOnlyOperationsUseSameEntity() {
             var builder = new ContainerBuilder();
             builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
             var container = builder.Build();

@@ -1,48 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using System.Globalization;
+using System.Linq;
+using System.Xml.Linq;
 
-namespace SolrNet.Impl.ResponseParsers
-{
-    public class InterestingTermsResponseParser<T> : ISolrMoreLikeThisHandlerResponseParser<T>
-    {
-        private static readonly Func<XElement, KeyValuePair<string, float>> extractList = 
+namespace SolrNet.Impl.ResponseParsers {
+    public class InterestingTermsResponseParser<T> : ISolrMoreLikeThisHandlerResponseParser<T> {
+        private static readonly Func<XElement, KeyValuePair<string, float>> extractList =
             x => new KeyValuePair<string, float>(x.Value.Trim(), 0.0f);
 
         private static readonly Func<XElement, KeyValuePair<string, float>> extractDetails =
-            x => new KeyValuePair<string, float>((string)x.Attribute("name"), float.Parse(x.Value, CultureInfo.InvariantCulture.NumberFormat));
+            x => new KeyValuePair<string, float>((string) x.Attribute("name"), float.Parse(x.Value, CultureInfo.InvariantCulture.NumberFormat));
 
-        public void Parse(System.Xml.Linq.XDocument xml, AbstractSolrQueryResults<T> results)
-        {
-            if (results is SolrMoreLikeThisHandlerResults<T>)
-            {
-                this.Parse(xml, (SolrMoreLikeThisHandlerResults<T>)results);
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
+            if (results is SolrMoreLikeThisHandlerResults<T>) {
+                Parse(xml, (SolrMoreLikeThisHandlerResults<T>) results);
             }
         }
 
-        public void Parse(System.Xml.Linq.XDocument xml, SolrMoreLikeThisHandlerResults<T> results)
-        {
+        public void Parse(XDocument xml, SolrMoreLikeThisHandlerResults<T> results) {
             Func<XElement, KeyValuePair<string, float>> extract;
 
-            var it = xml.Element("response").Elements("arr").FirstOrDefault(e => (string)e.Attribute("name") == "interestingTerms");
+            var it = xml.Element("response").Elements("arr").FirstOrDefault(e => (string) e.Attribute("name") == "interestingTerms");
 
-            if (it == null)
-            {
-                it = xml.Element("response").Elements("lst").FirstOrDefault(e => (string)e.Attribute("name") == "interestingTerms");
-                
-                if (it == null)
-                {
+            if (it == null) {
+                it = xml.Element("response").Elements("lst").FirstOrDefault(e => (string) e.Attribute("name") == "interestingTerms");
+
+                if (it == null) {
                     results.InterestingTerms = new List<KeyValuePair<string, float>>();
                     return;
                 }
 
                 extract = extractDetails;
-            }
-            else
-            {
+            } else {
                 extract = extractList;
             }
 

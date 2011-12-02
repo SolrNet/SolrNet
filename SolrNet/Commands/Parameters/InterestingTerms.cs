@@ -6,16 +6,16 @@
         /// <summary>
         /// Simple list of top terms
         /// </summary>
-        list,
+        List,
 
         /// <summary>
         /// List of top terms and boost used for each term. Unless <see cref="MoreLikeThisParameters.Boost"/> = true all terms will have boost=1.0
         /// </summary>
-        details,
+        Details,
 
         /// <summary>
         /// No top terms
         /// </summary>
-        none
+        None
     }
 }

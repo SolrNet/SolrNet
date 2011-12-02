@@ -197,7 +197,7 @@ namespace SolrNet.Impl {
                 yield return KVP("mlt.match.offset", mlt.MatchOffset.Value.ToString());
 
             if (mlt.ShowTerms != null)
-                yield return KVP("mlt.interestingTerms", mlt.ShowTerms.ToString());
+                yield return KVP("mlt.interestingTerms", mlt.ShowTerms.ToString().ToLowerInvariant());
 
             foreach (var p in GetMoreLikeThisParameters(mlt))
                 yield return p;

@@ -142,7 +142,8 @@ namespace SolrNet.Impl {
 
         public IEnumerable<KeyValuePair<string, string>> GetAllMoreLikeThisHandlerParameters(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
             yield return
-                query.Switch(query: q => KVP("q", querySerializer.Serialize(q)),
+                query.Switch<KeyValuePair<string,string>>(
+                             query: q => KVP("q", querySerializer.Serialize(q)),
                              streamBody: body => KVP("stream.body", body),
                              streamUrl: url => KVP("stream.url", url.ToString()));
 

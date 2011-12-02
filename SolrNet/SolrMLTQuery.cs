@@ -13,7 +13,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static SolrMoreLikeThisHandlerStreamUrlQuery StreamUrl(string url) {
+        public static SolrMoreLikeThisHandlerStreamUrlQuery FromStreamUrl(string url) {
             return new SolrMoreLikeThisHandlerStreamUrlQuery(url);
         }
 
@@ -22,7 +22,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="body"></param>
         /// <returns></returns>
-        public static SolrMoreLikeThisHandlerStreamBodyQuery StreamBody(string body) {
+        public static SolrMoreLikeThisHandlerStreamBodyQuery FromStreamBody(string body) {
             return new SolrMoreLikeThisHandlerStreamBodyQuery(body);
         }
 
@@ -31,7 +31,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="q"></param>
         /// <returns></returns>
-        public static SolrMoreLikeThisHandlerQuery Query(ISolrQuery q) {
+        public static SolrMoreLikeThisHandlerQuery FromQuery(ISolrQuery q) {
             return new SolrMoreLikeThisHandlerQuery(q);
         }
 

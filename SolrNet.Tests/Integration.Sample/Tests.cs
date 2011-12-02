@@ -522,7 +522,7 @@ namespace SolrNet.Tests.Integration.Sample {
                 MinDocFreq = 1, 
                 ShowTerms = InterestingTerms.List,
             };
-            var q = SolrMLTQuery.Query(new SolrQuery("id:UTF8TEST"));
+            var q = SolrMLTQuery.FromQuery(new SolrQuery("id:UTF8TEST"));
             var results = solr.MoreLikeThis(q, new MoreLikeThisHandlerQueryOptions(mltParams));
             Assert.AreEqual(1, results.Count);
             Assert.IsNotNull(results.Match);

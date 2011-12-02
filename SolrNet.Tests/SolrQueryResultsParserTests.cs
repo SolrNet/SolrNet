@@ -724,7 +724,7 @@ namespace SolrNet.Tests {
         [Test]
         public void ParseMlthMatch()
         {
-            var innerParser = new MlthMatchResponseParser<TestDocWithGuid>(GetDocumentParser<TestDocWithGuid>());
+            var innerParser = new MoreLikeThisHandlerMatchResponseParser<TestDocWithGuid>(GetDocumentParser<TestDocWithGuid>());
             var parser = new SolrMoreLikeThisHandlerQueryResultsParser<TestDocWithGuid>(new[] { innerParser });
             var response = EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithInterestingTermsDetails.xml");
             var results = parser.Parse(response);

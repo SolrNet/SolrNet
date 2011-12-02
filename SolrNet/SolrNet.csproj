@@ -101,7 +101,7 @@
     <Compile Include="Impl\ISolrMoreLikeThisHandlerResponseParser.cs" />
     <Compile Include="Impl\SolrMoreLikeThisHandlerResults.cs" />
     <Compile Include="Impl\ResponseParsers\InterestingTermsResponseParser.cs" />
-    <Compile Include="Impl\ResponseParsers\MlthMatchResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\MoreLikeThisHandlerMatchResponseParser.cs" />
     <Compile Include="Impl\SolrMoreLikeThisHandlerQueryResultsParser.cs" />
     <Compile Include="Impl\TermsResults.cs" />
     <Compile Include="Impl\TermsResult.cs" />

@@ -28,8 +28,6 @@ namespace SolrNet {
         private readonly DateTime start;
         private readonly DateTime end;
         private readonly string gap;
-        private readonly DateTimeFieldSerializer dateSerializer = new DateTimeFieldSerializer();
-        private readonly BoolFieldSerializer boolSerializer = new BoolFieldSerializer();
 
         /// <summary>
         /// Creates a date facet query

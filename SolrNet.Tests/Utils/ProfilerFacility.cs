@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using Castle.Core;
 using Castle.MicroKernel.Facilities;
+using Castle.MicroKernel.Registration;
 using SolrNet.Utils;
 using IInterceptor = Castle.DynamicProxy.IInterceptor;
 using IInvocation = Castle.DynamicProxy.IInvocation;
@@ -28,7 +29,7 @@ using IInvocation = Castle.DynamicProxy.IInvocation;
 namespace SolrNet.Tests.Utils {
     public class ProfilerFacility : AbstractFacility {
         protected override void Init() {
-            Kernel.AddComponent<ProfilingInterceptor>(LifestyleType.Thread);
+            Kernel.Register(Component.For<ProfilingInterceptor>().LifeStyle.PerThread);
             Kernel.ComponentModelCreated += model => {
                 if (model.Implementation != typeof(ProfilingInterceptor))
                     model.Interceptors.AddFirst(InterceptorReference.ForType<ProfilingInterceptor>());

@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
-namespace SolrNet
-{
+namespace SolrNet {
     /// <summary>
     /// Contains parameters that can be specified when extracting a rich document to the index.
     /// </summary>
     /// <remarks>
     /// See http://wiki.apache.org/solr/ExtractingRequestHandler#Input_Parameters
     /// </remarks>
-    public class ExtractParameters
-    {
+    public class ExtractParameters {
         ///<summary>
         /// Provides the necessary unique id for the document being indexed 
         ///</summary>
@@ -123,51 +119,5 @@ namespace SolrNet
             ResourceName = content.Name;
             Content = content;
         }
-    }
-
-    /// <summary>
-    /// Contains the Fields to index along with the rich documents
-    /// </summary>
-    public class ExtractField {
-
-        /// <summary>
-        /// The name of the field to index
-        /// </summary>
-        public string FieldName { get; private set; }
-
-        /// <summary>
-        /// The value to index
-        /// </summary>
-        public string Value { get; private set; }
-
-        /// <summary>
-        /// Boost to apply to this field
-        /// </summary>
-        public string Boost { get; set; }
-
-        /// <summary>
-        /// Constructs a new ExtractField with required values
-        /// </summary>
-        /// <param name="fieldName">The name of the field to index</param>
-        /// <param name="value">The value to index</param>
-        public ExtractField(string fieldName, string value) {
-            FieldName = fieldName;
-            Value = value;
-        }
-    }
-
-    /// <summary>
-    /// Allows you to specify the extract format when ExtractOnly is specified
-    /// </summary>
-    public enum ExtractFormat {
-        /// <summary>
-        /// Output as XML
-        /// </summary>
-        XML,
-
-        ///<summary>
-        /// Output as Text
-        ///</summary>
-        Text
     }
 }

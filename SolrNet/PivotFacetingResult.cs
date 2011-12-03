@@ -1,4 +1,5 @@
 ﻿#region license
+
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,39 +13,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
 
 using System.Collections.Generic;
-using System;
 
-namespace SolrNet
-{
-	public class PivotFacetingResult
-	{
+namespace SolrNet {
+    public class PivotFacetingResult {
+        public IDictionary<string, Pivot> Result;
 
-		public IDictionary<string, Pivot> Result;
-
-		public PivotFacetingResult() {
-			Result = new Dictionary<string, Pivot>();
-		}
-	}
-
-	public class Pivot
-	{
-		/// <summary>
-		/// Pivot Field name e.g. "manu"  or "cat"
-		/// </summary>
-		public string Field { get; set; }
-		public string Value { get; set; }
-		public int Count { get; set; }
-
-		public List<Pivot> ChildPivots { get; set; }
-
-		public bool HasChildPivots { get; set; }
-
-		public Pivot()
-		{
-			HasChildPivots = false;
-		}
-	}
+        public PivotFacetingResult() {
+            Result = new Dictionary<string, Pivot>();
+        }
+    }
 }

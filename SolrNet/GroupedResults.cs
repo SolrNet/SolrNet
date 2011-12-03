@@ -3,12 +3,12 @@ using SolrNet.Commands.Parameters;
 
 namespace SolrNet {
     /// <summary>
-    /// GroupedResults<typeparamref name="T"/> contains all the results for one group
+    /// Contains all the results for one group
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class GroupedResults<T> {
         /// <summary>
-        /// Returns the number of matching (unique!!) documents that are grouped. 
+        /// Returns the number of unique matching documents that are grouped. 
         /// </summary>
         public int Matches { get; set; }
 
@@ -24,7 +24,7 @@ namespace SolrNet {
         public int? Ngroups { get; set; }
 
         /// <summary>
-        /// Constructur for Groups
+        /// Constructor for GroupedResults
         /// </summary>
         public GroupedResults() {
             Groups = new List<Group<T>>();

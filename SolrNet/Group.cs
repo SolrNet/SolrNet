@@ -22,6 +22,9 @@ namespace SolrNet {
         /// </summary>
         public ICollection<T> Documents { get; set; }
 
+        /// <summary>
+        /// A single group of documents
+        /// </summary>
         public Group() {
             Documents = new List<T>();
         }

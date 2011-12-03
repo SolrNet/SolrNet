@@ -17,11 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Web;
 using HttpWebAdapters;
 using HttpWebAdapters.Adapters;
 using SolrNet.Exceptions;
@@ -46,6 +44,10 @@ namespace SolrNet.Impl {
         /// </summary>
         public IHttpWebRequestFactory HttpWebRequestFactory { get; set; }
 
+        /// <summary>
+        /// Manages HTTP connection with Solr
+        /// </summary>
+        /// <param name="serverURL">URL to Solr</param>
         public SolrConnection(string serverURL) {
             ServerURL = serverURL;
             Timeout = -1;
@@ -53,6 +55,9 @@ namespace SolrNet.Impl {
             HttpWebRequestFactory = new HttpWebRequestFactory();
         }
 
+        /// <summary>
+        /// URL to Solr
+        /// </summary>
         public string ServerURL {
             get { return serverURL; }
             set {

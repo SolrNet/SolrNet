@@ -29,10 +29,21 @@ using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 
 namespace Ninject.Integration.SolrNet {
+    /// <summary>
+    /// Configures SolrNet in a Ninject kernel
+    /// </summary>
     public class SolrNetModule : NinjectModule {
         private readonly string serverURL;
+
+        /// <summary>
+        /// Optional override for document mapper
+        /// </summary>
         public IReadOnlyMappingManager Mapper { get; set; }
 
+        /// <summary>
+        /// Configures SolrNet in a Ninject kernel
+        /// </summary>
+        /// <param name="serverURL"></param>
         public SolrNetModule(string serverURL) {
             this.serverURL = serverURL;
         }

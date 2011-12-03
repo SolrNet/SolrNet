@@ -1,7 +1,14 @@
 ﻿using System.Configuration;
 
 namespace AutofacContrib.SolrNet.Config {
+    /// <summary>
+    /// Solr cores / instances configuration
+    /// </summary>
     public class SolrServers : ConfigurationElementCollection {
+        /// <summary>
+        /// Adds a new core / instance to the config
+        /// </summary>
+        /// <param name="configurationElement"></param>
         public void Add(SolrServerElement configurationElement) {
             base.BaseAdd(configurationElement);
         }

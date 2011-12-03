@@ -30,6 +30,12 @@ namespace SolrNet.Commands {
 	    private readonly ISolrDocumentSerializer<T> documentSerializer;
 	    private readonly AddParameters parameters;
 
+        /// <summary>
+        /// Adds / updates documents to solr
+        /// </summary>
+        /// <param name="documents"></param>
+        /// <param name="serializer"></param>
+        /// <param name="parameters"></param>
 	    public AddCommand(IEnumerable<KeyValuePair<T, double?>> documents, ISolrDocumentSerializer<T> serializer, AddParameters parameters) {
             this.documents = documents;
             documentSerializer = serializer;
@@ -46,6 +52,10 @@ namespace SolrNet.Commands {
             return Regex.Replace(xml, "&\\#x(0?[0-8BCEF]|1[0-9A-F]|FFF[E-F]);", "");
         }
 
+        /// <summary>
+        /// Serializes command to Solr XML
+        /// </summary>
+        /// <returns></returns>
         public string ConvertToXml() {
             var xml = new XmlDocument();
             var addElement = xml.CreateElement("add");

@@ -76,6 +76,9 @@ namespace SolrNet {
         /// </summary>
         public IDictionary<string, Dictionary<string, StatsResult>> FacetResults { get; set; }
 
+        /// <summary>
+        /// Stats results
+        /// </summary>
         public StatsResult() {
             FacetResults = new Dictionary<string, Dictionary<string, StatsResult>>();
         }

@@ -44,8 +44,15 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// </summary>
         public IReadOnlyMappingManager Mapper { get; set; }
 
+        /// <summary>
+        /// Configures SolrNet in a Windsor container
+        /// </summary>
         public SolrNetFacility() {}
 
+        /// <summary>
+        /// Configures SolrNet in a Windsor container
+        /// </summary>
+        /// <param name="solrURL"></param>
         public SolrNetFacility(string solrURL) {
             ValidateUrl(solrURL);
             this.solrURL = solrURL;

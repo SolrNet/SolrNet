@@ -58,7 +58,7 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
         /// </summary>
         /// <param name="typeArgs">Key and Value type parameters</param>
         /// <returns></returns>
-        public object NewDictionary(Type[] typeArgs) {
+        private static object NewDictionary(Type[] typeArgs) {
             var genericType = typeof (Dictionary<,>).MakeGenericType(typeArgs);
             return Activator.CreateInstance(genericType);
         }
@@ -69,11 +69,11 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
         /// <param name="dict"><see cref="Dictionary{TKey,TValue}"/> instance</param>
         /// <param name="key">Key value</param>
         /// <param name="value">Value value</param>
-        public void SetKV(object dict, object key, object value) {
+        private static void SetKV(object dict, object key, object value) {
             dict.GetType().GetMethod("set_Item").Invoke(dict, new[] {key, value});
         }
 
-        public object ConvertTo(string s, Type t) {
+        private static object ConvertTo(string s, Type t) {
             var converter = TypeDescriptor.GetConverter(t);
             return converter.ConvertFrom(s);
         }
@@ -85,7 +85,7 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
             return matchingFields.FirstOrDefault(f => !allFields.Any(x => x.FieldName == fieldName && !Equals(x, f)));
         }
 
-        public string GetKeyToUse(string k, string fieldName) {
+        private static string GetKeyToUse(string k, string fieldName) {
             if (fieldName == "*")
                 return k;
             return k.Substring(fieldName.Length);

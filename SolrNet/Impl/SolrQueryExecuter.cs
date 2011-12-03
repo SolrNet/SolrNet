@@ -41,22 +41,39 @@ namespace SolrNet.Impl {
         /// </summary>
         public int DefaultRows { get; set; }
 
+        /// <summary>
+        /// When row limit is not defined, this value is used
+        /// </summary>
         public static readonly int ConstDefaultRows = 100000000;
 
+        /// <summary>
+        /// Default Solr query handler
+        /// </summary>
         public static readonly string DefaultHandler = "/select";
 
+        /// <summary>
+        /// Default Solr handler for More Like This queries
+        /// </summary>
         public static readonly string DefaultMoreLikeThisHandler = "/mlt";
 
         /// <summary>
-        /// Request handler to use. By default "/select"
+        /// Solr query request handler to use. By default "/select"
         /// </summary>
         public string Handler { get; set; }
 
         /// <summary>
-        /// Request handler to use for MLT-handler queries. By default "/mlt"
+        /// Solr request handler to use for MoreLikeThis-handler queries. By default "/mlt"
         /// </summary>
         public string MoreLikeThisHandler { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="resultParser"></param>
+        /// <param name="connection"></param>
+        /// <param name="querySerializer"></param>
+        /// <param name="facetQuerySerializer"></param>
+        /// <param name="mlthResultParser"></param>
         public SolrQueryExecuter(ISolrQueryResultParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer, ISolrFacetQuerySerializer facetQuerySerializer, ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser) {
             this.resultParser = resultParser;
             this.mlthResultParser = mlthResultParser;
@@ -68,6 +85,11 @@ namespace SolrNet.Impl {
             MoreLikeThisHandler = DefaultMoreLikeThisHandler;
         }
 
+        /// <summary>
+        /// Serializes common query parameters
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetCommonParameters(CommonQueryOptions options) {
             if (options == null)
                 yield break;
@@ -136,9 +158,15 @@ namespace SolrNet.Impl {
                 yield return p;
         }
 
+        /// <summary>
+        /// Serializes all More Like This handler parameters
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetAllMoreLikeThisHandlerParameters(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
             yield return
-                query.Switch<KeyValuePair<string,string>>(
+                query.Switch<KeyValuePair<string, string>>(
                              query: q => KV.Create("q", querySerializer.Serialize(q)),
                              streamBody: body => KV.Create("stream.body", body),
                              streamUrl: url => KV.Create("stream.url", url.ToString()));
@@ -186,6 +214,11 @@ namespace SolrNet.Impl {
                 yield return KV.Create("facet.sort", fp.Sort.ToString().ToLowerInvariant());
         }
 
+        /// <summary>
+        /// Serializes More Like This handler specific parameters
+        /// </summary>
+        /// <param name="mlt"></param>
+        /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisHandlerParameters(MoreLikeThisHandlerParameters mlt) {
             if (mlt.MatchInclude != null)
                 yield return KV.Create("mlt.match.include", mlt.MatchInclude.Value.ToString().ToLowerInvariant());

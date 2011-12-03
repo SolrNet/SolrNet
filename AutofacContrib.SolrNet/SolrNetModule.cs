@@ -37,6 +37,9 @@ using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 
 namespace AutofacContrib.SolrNet {
+    /// <summary>
+    /// Configures SolrNet in an Autofac container
+    /// </summary>
     public class SolrNetModule : Module {
         protected override void Load(ContainerBuilder builder) {
             if (!string.IsNullOrEmpty(ServerUrl))
@@ -56,6 +59,10 @@ namespace AutofacContrib.SolrNet {
         }
 
         private readonly string ServerUrl;
+
+        /// <summary>
+        /// Optional override for document mapper
+        /// </summary>
         public IReadOnlyMappingManager Mapper { get; set; }
 
         private void RegisterCommonComponents(ContainerBuilder builder) {

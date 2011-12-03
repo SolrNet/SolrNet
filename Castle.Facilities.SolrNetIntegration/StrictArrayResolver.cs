@@ -20,9 +20,16 @@ using Castle.MicroKernel;
 using Castle.MicroKernel.Context;
 
 namespace Castle.Facilities.SolrNetIntegration {
+    /// <summary>
+    /// Resolves all components with a particular service interface, without subtyping
+    /// </summary>
     public class StrictArrayResolver: ISubDependencyResolver {
         private readonly IKernel kernel;
 
+        /// <summary>
+        /// Resolves all components with a particular service interface, without subtyping
+        /// </summary>
+        /// <param name="kernel"></param>
         public StrictArrayResolver(IKernel kernel) {
             this.kernel = kernel;
         }

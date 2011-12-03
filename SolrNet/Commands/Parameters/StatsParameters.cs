@@ -93,6 +93,9 @@ namespace SolrNet.Commands.Parameters {
             return AddFieldWithFacets(field, (IEnumerable<string>)facets);
         }
 
+        /// <summary>
+        /// Parameters to query stats
+        /// </summary>
         public StatsParameters() {
             FieldsWithFacets = new Dictionary<string, ICollection<string>>();
             Facets = new List<string>();

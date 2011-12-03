@@ -73,6 +73,9 @@ namespace SolrNet.Commands.Parameters {
         /// </summary>
         public int? EnumCacheMinDf { get; set; }
 
+        /// <summary>
+        /// Faceting parameters
+        /// </summary>
         public FacetParameters() {
             Queries = new List<ISolrFacetQuery>();
         }

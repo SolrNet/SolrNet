@@ -22,7 +22,14 @@ namespace SolrNet.Utils {
     /// <see cref="Type"/>-related helper functions
     /// </summary>
     public static class TypeHelper {
-        // From http://davidhayden.com/blog/dave/archive/2006/11/26/IsTypeNullableTypeConverter.aspx
+        /// <summary>
+        /// Returns the underlying type from a nullable type.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// From http://davidhayden.com/blog/dave/archive/2006/11/26/IsTypeNullableTypeConverter.aspx
+        /// </remarks>
         public static Type GetUnderlyingNullableType(Type t) {
             if (!IsNullableType(t))
                 return t;
@@ -30,12 +37,14 @@ namespace SolrNet.Utils {
             return nc.UnderlyingType;
         }
 
-        public static Type MakeNullable(Type t) {
-            return typeof (Nullable<>).MakeGenericType(t);
-        }
-
-
-        // From http://davidhayden.com/blog/dave/archive/2006/11/26/IsTypeNullableTypeConverter.aspx
+        /// <summary>
+        /// Returns true if the argument is a nullable type
+        /// </summary>
+        /// <param name="theType"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// From http://davidhayden.com/blog/dave/archive/2006/11/26/IsTypeNullableTypeConverter.aspx
+        /// </remarks>
         public static bool IsNullableType(Type theType) {
             return theType.IsGenericType && theType.GetGenericTypeDefinition().Equals(typeof (Nullable<>));
         }

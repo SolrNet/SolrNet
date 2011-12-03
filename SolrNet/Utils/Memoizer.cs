@@ -69,6 +69,14 @@ namespace SolrNet.Utils {
             }
         }
 
+        /// <summary>
+        /// Memoize a binary function
+        /// </summary>
+        /// <typeparam name="TArg1"></typeparam>
+        /// <typeparam name="TArg2"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="function"></param>
+        /// <returns></returns>
         public static Func<TArg1, TArg2, TResult> Memoize2<TArg1, TArg2, TResult>(Func<TArg1, TArg2, TResult> function) {
             var results = new Dictionary<Tuple2<TArg1, TArg2>, TResult>();
 

@@ -14,6 +14,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 namespace SolrNet.Commands.Parameters {
     /// <summary>
     /// Parameters to query collapse
@@ -48,6 +50,7 @@ namespace SolrNet.Commands.Parameters {
     /// Parameters to query collapse
     /// <see cref="https://issues.apache.org/jira/browse/SOLR-236"/>
     /// </summary>
+    [Obsolete("Use result grouping instead")]
     public class CollapseParameters {
         /// <summary>
         /// Field to group results by

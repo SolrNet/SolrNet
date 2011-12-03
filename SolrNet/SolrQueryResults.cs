@@ -49,6 +49,7 @@ namespace SolrNet {
         /// <summary>
         /// Collapse results
         /// </summary>
+        [Obsolete("Use result grouping instead")]
         public CollapseResults Collapsing { get; set; }
 
         /// <summary>

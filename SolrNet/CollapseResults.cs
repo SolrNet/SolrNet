@@ -22,6 +22,7 @@ namespace SolrNet {
     /// Collapse results
     /// <see href="https://issues.apache.org/jira/browse/SOLR-236"/>
     /// </summary>
+    [Obsolete("Use result grouping instead")]
     public class CollapseResults {
 
         /// <summary>

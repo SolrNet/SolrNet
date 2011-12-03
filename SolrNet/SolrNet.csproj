@@ -299,6 +299,7 @@
     <Compile Include="Utils\HttpEncoder.cs" />
     <Compile Include="Utils\HttpUtility.cs" />
     <Compile Include="Utils\IContainer.cs" />
+    <Compile Include="Utils\KV.cs" />
     <Compile Include="Utils\Memoizer.cs" />
     <Compile Include="Utils\NullableExtensions.cs" />
     <Compile Include="Utils\TypeHelper.cs" />

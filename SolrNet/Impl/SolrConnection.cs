@@ -127,10 +127,6 @@ namespace SolrNet.Impl {
                 output.Write(buffer, 0, read);
         }
 
-        public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {
-            return new KeyValuePair<T1, T2>(a, b);
-        }
-
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
@@ -181,9 +177,9 @@ namespace SolrNet.Impl {
             if (parameters != null)
                 param.AddRange(parameters);
 
-            param.Add(KVP("version", version));
+            param.Add(KV.Create("version", version));
             return string.Join("&", param
-                .Select(kv => KVP(HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
+                .Select(kv => KV.Create(HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
                 .Select(kv => string.Format("{0}={1}", kv.Key, kv.Value))
                 .ToArray());
         }

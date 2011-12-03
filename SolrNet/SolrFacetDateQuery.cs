@@ -62,10 +62,6 @@ namespace SolrNet {
         /// </summary>
         public ICollection<FacetDateOther> Other { get; set; }
 
-        private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
-            return new KeyValuePair<K, V>(key, value);
-        }
-
         public string Field {
             get { return field; }
         }

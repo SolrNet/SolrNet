@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using SolrNet.Commands.Parameters;
+using SolrNet.Utils;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -45,16 +46,12 @@ namespace SolrNet.Commands {
 			get { return deleteParam; }
 		}
 
-        private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
-            return new KeyValuePair<K, V>(key, value);
-        }
-
 		public string Execute(ISolrConnection connection) {
 			var xml = new XmlDocument();
 			var deleteNode = xml.CreateElement("delete");
 		    var param = new[] {
-		        KV(FromPending, "fromPending"), 
-                KV(FromCommitted, "fromCommitted")
+		        KV.Create(FromPending, "fromPending"), 
+                KV.Create(FromCommitted, "fromCommitted")
 		    };
 		    foreach (var p in param) {
 				if (p.Key.HasValue) {

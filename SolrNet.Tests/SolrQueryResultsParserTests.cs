@@ -382,10 +382,6 @@ namespace SolrNet.Tests {
 			Assert.IsNull(results.MaxScore);
 		}
 
-        private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
-            return new KeyValuePair<K, V>(key, value);
-        }
-
         public void ProfileTest(ProfilingContainer container) {
             var parser = container.Resolve<ISolrQueryResultParser<TestDocumentWithArrays>>();
             var xml = EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithArraysSimple.xml");

@@ -26,6 +26,7 @@ using SolrNet.Impl;
 using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
+using SolrNet.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -160,18 +161,14 @@ namespace SolrNet.Tests {
             });
         }
 
-        public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {
-            return new KeyValuePair<T1, T2>(a, b);
-        }
-
         [Test]
         public void MultipleFacetFields() {
             var conn = new MockConnection(new[] {
-                KVP("q", ""),
-                KVP("rows", SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString()),
-                KVP("facet", "true"),
-                KVP("facet.field", "Id"),
-                KVP("facet.field", "OtherField"),
+                KV.Create("q", ""),
+                KV.Create("rows", SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString()),
+                KV.Create("facet", "true"),
+                KV.Create("facet.field", "Id"),
+                KV.Create("facet.field", "OtherField"),
             });
             var mocks = new MockRepository();
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
@@ -270,10 +267,10 @@ namespace SolrNet.Tests {
             var parser = mocks.DynamicMock<ISolrQueryResultParser<TestDocument>>();
             var querySerializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             var conn = new MockConnection(new[] {
-                KVP("q", "*:*"),
-                KVP("rows", "10"),
-                KVP("fq", "id:0"),
-                KVP("fq", "id:2"),
+                KV.Create("q", "*:*"),
+                KV.Create("rows", "10"),
+                KV.Create("fq", "id:0"),
+                KV.Create("fq", "id:2"),
             });
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null, null) {
                 DefaultRows = 10,
@@ -303,14 +300,14 @@ namespace SolrNet.Tests {
                     Reload = true,
                 },
             }).ToList();
-            Assert.Contains(p, KVP("spellcheck", "true"));
-            Assert.Contains(p, KVP("spellcheck.q", "hell"));
-            Assert.Contains(p, KVP("spellcheck.build", "true"));
-            Assert.Contains(p, KVP("spellcheck.collate", "true"));
-            Assert.Contains(p, KVP("spellcheck.count", "4"));
-            Assert.Contains(p, KVP("spellcheck.dictionary", "spanish"));
-            Assert.Contains(p, KVP("spellcheck.onlyMorePopular", "true"));
-            Assert.Contains(p, KVP("spellcheck.reload", "true"));
+            Assert.Contains(p, KV.Create("spellcheck", "true"));
+            Assert.Contains(p, KV.Create("spellcheck.q", "hell"));
+            Assert.Contains(p, KV.Create("spellcheck.build", "true"));
+            Assert.Contains(p, KV.Create("spellcheck.collate", "true"));
+            Assert.Contains(p, KV.Create("spellcheck.count", "4"));
+            Assert.Contains(p, KV.Create("spellcheck.dictionary", "spanish"));
+            Assert.Contains(p, KV.Create("spellcheck.onlyMorePopular", "true"));
+            Assert.Contains(p, KV.Create("spellcheck.reload", "true"));
         }
 
         [Test]
@@ -335,20 +332,20 @@ namespace SolrNet.Tests {
                     UpperInclude = true
                 },
             }).ToList();
-            Assert.Contains(p, KVP("terms", "true"));
-            Assert.Contains(p, KVP("terms.fl", "text"));
-            Assert.Contains(p, KVP("terms.lower", "lower"));
-            Assert.Contains(p, KVP("terms.lower.incl", "true"));
-            Assert.Contains(p, KVP("terms.maxcount", "10"));
-            Assert.Contains(p, KVP("terms.mincount", "0"));
-            Assert.Contains(p, KVP("terms.prefix", "pre"));
-            Assert.Contains(p, KVP("terms.raw", "true"));
-            Assert.Contains(p, KVP("terms.regex", "regex"));
-            Assert.Contains(p, KVP("terms.regex.flag", RegexFlag.CanonEq.ToString()));
-            Assert.Contains(p, KVP("terms.regex.flag", RegexFlag.CaseInsensitive.ToString()));
-            Assert.Contains(p, KVP("terms.sort", "count"));
-            Assert.Contains(p, KVP("terms.upper", "upper"));
-            Assert.Contains(p, KVP("terms.upper.incl", "true"));
+            Assert.Contains(p, KV.Create("terms", "true"));
+            Assert.Contains(p, KV.Create("terms.fl", "text"));
+            Assert.Contains(p, KV.Create("terms.lower", "lower"));
+            Assert.Contains(p, KV.Create("terms.lower.incl", "true"));
+            Assert.Contains(p, KV.Create("terms.maxcount", "10"));
+            Assert.Contains(p, KV.Create("terms.mincount", "0"));
+            Assert.Contains(p, KV.Create("terms.prefix", "pre"));
+            Assert.Contains(p, KV.Create("terms.raw", "true"));
+            Assert.Contains(p, KV.Create("terms.regex", "regex"));
+            Assert.Contains(p, KV.Create("terms.regex.flag", RegexFlag.CanonEq.ToString()));
+            Assert.Contains(p, KV.Create("terms.regex.flag", RegexFlag.CaseInsensitive.ToString()));
+            Assert.Contains(p, KV.Create("terms.sort", "count"));
+            Assert.Contains(p, KV.Create("terms.upper", "upper"));
+            Assert.Contains(p, KV.Create("terms.upper.incl", "true"));
         }
 
         [Test]
@@ -373,22 +370,22 @@ namespace SolrNet.Tests {
                     UpperInclude = true
                 },
             }).ToList();
-            Assert.Contains(p, KVP("terms", "true"));
-            Assert.Contains(p, KVP("terms.fl", "text"));
-            Assert.Contains(p, KVP("terms.fl", "text2"));
-            Assert.Contains(p, KVP("terms.fl", "text3"));
-            Assert.Contains(p, KVP("terms.lower", "lower"));
-            Assert.Contains(p, KVP("terms.lower.incl", "true"));
-            Assert.Contains(p, KVP("terms.maxcount", "10"));
-            Assert.Contains(p, KVP("terms.mincount", "0"));
-            Assert.Contains(p, KVP("terms.prefix", "pre"));
-            Assert.Contains(p, KVP("terms.raw", "true"));
-            Assert.Contains(p, KVP("terms.regex", "regex"));
-            Assert.Contains(p, KVP("terms.regex.flag", RegexFlag.CanonEq.ToString()));
-            Assert.Contains(p, KVP("terms.regex.flag", RegexFlag.CaseInsensitive.ToString()));
-            Assert.Contains(p, KVP("terms.sort", "count"));
-            Assert.Contains(p, KVP("terms.upper", "upper"));
-            Assert.Contains(p, KVP("terms.upper.incl", "true"));
+            Assert.Contains(p, KV.Create("terms", "true"));
+            Assert.Contains(p, KV.Create("terms.fl", "text"));
+            Assert.Contains(p, KV.Create("terms.fl", "text2"));
+            Assert.Contains(p, KV.Create("terms.fl", "text3"));
+            Assert.Contains(p, KV.Create("terms.lower", "lower"));
+            Assert.Contains(p, KV.Create("terms.lower.incl", "true"));
+            Assert.Contains(p, KV.Create("terms.maxcount", "10"));
+            Assert.Contains(p, KV.Create("terms.mincount", "0"));
+            Assert.Contains(p, KV.Create("terms.prefix", "pre"));
+            Assert.Contains(p, KV.Create("terms.raw", "true"));
+            Assert.Contains(p, KV.Create("terms.regex", "regex"));
+            Assert.Contains(p, KV.Create("terms.regex.flag", RegexFlag.CanonEq.ToString()));
+            Assert.Contains(p, KV.Create("terms.regex.flag", RegexFlag.CaseInsensitive.ToString()));
+            Assert.Contains(p, KV.Create("terms.sort", "count"));
+            Assert.Contains(p, KV.Create("terms.upper", "upper"));
+            Assert.Contains(p, KV.Create("terms.upper.incl", "true"));
         }
 
         [Test]
@@ -409,14 +406,14 @@ namespace SolrNet.Tests {
                     Reload = true,
                 },
             }).ToList();
-            Assert.Contains(p, KVP("spellcheck", "true"));
-            Assert.Contains(p, KVP("spellcheck.q", "hell"));
-            Assert.Contains(p, KVP("spellcheck.build", "true"));
-            Assert.Contains(p, KVP("spellcheck.collate", "true"));
-            Assert.Contains(p, KVP("spellcheck.count", "4"));
-            Assert.Contains(p, KVP("spellcheck.dictionary", "spanish"));
-            Assert.Contains(p, KVP("spellcheck.onlyMorePopular", "true"));
-            Assert.Contains(p, KVP("spellcheck.reload", "true"));
+            Assert.Contains(p, KV.Create("spellcheck", "true"));
+            Assert.Contains(p, KV.Create("spellcheck.q", "hell"));
+            Assert.Contains(p, KV.Create("spellcheck.build", "true"));
+            Assert.Contains(p, KV.Create("spellcheck.collate", "true"));
+            Assert.Contains(p, KV.Create("spellcheck.count", "4"));
+            Assert.Contains(p, KV.Create("spellcheck.dictionary", "spanish"));
+            Assert.Contains(p, KV.Create("spellcheck.onlyMorePopular", "true"));
+            Assert.Contains(p, KV.Create("spellcheck.reload", "true"));
         }
 
         [Test]
@@ -432,11 +429,11 @@ namespace SolrNet.Tests {
                     MinTermFreq = 1,
                 },
             }).ToList();
-            Assert.Contains(p, KVP("mlt", "true"));
-            Assert.Contains(p, KVP("mlt.mindf", "1"));
-            Assert.Contains(p, KVP("mlt.fl", "manu,cat"));
-            Assert.Contains(p, KVP("mlt.mintf", "1"));
-            Assert.Contains(p, KVP("q", "apache"));
+            Assert.Contains(p, KV.Create("mlt", "true"));
+            Assert.Contains(p, KV.Create("mlt.mindf", "1"));
+            Assert.Contains(p, KV.Create("mlt.fl", "manu,cat"));
+            Assert.Contains(p, KV.Create("mlt.mintf", "1"));
+            Assert.Contains(p, KV.Create("q", "apache"));
         }
 
         [Test]
@@ -457,17 +454,17 @@ namespace SolrNet.Tests {
                     MinTermFreq = 6,
                     MinWordLength = 7,
                 }).ToList();
-            Assert.Contains(p, KVP("mlt", "true"));
-            Assert.Contains(p, KVP("mlt.boost", "true"));
-            Assert.Contains(p, KVP("mlt.count", "10"));
-            Assert.Contains(p, KVP("mlt.maxqt", "2"));
-            Assert.Contains(p, KVP("mlt.maxntp", "3"));
-            Assert.Contains(p, KVP("mlt.maxwl", "4"));
-            Assert.Contains(p, KVP("mlt.mindf", "5"));
-            Assert.Contains(p, KVP("mlt.mintf", "6"));
-            Assert.Contains(p, KVP("mlt.minwl", "7"));
-            Assert.Contains(p, KVP("mlt.fl", "field1,field2"));
-            Assert.Contains(p, KVP("mlt.qf", "qf1,qf2"));
+            Assert.Contains(p, KV.Create("mlt", "true"));
+            Assert.Contains(p, KV.Create("mlt.boost", "true"));
+            Assert.Contains(p, KV.Create("mlt.count", "10"));
+            Assert.Contains(p, KV.Create("mlt.maxqt", "2"));
+            Assert.Contains(p, KV.Create("mlt.maxntp", "3"));
+            Assert.Contains(p, KV.Create("mlt.maxwl", "4"));
+            Assert.Contains(p, KV.Create("mlt.mindf", "5"));
+            Assert.Contains(p, KV.Create("mlt.mintf", "6"));
+            Assert.Contains(p, KV.Create("mlt.minwl", "7"));
+            Assert.Contains(p, KV.Create("mlt.fl", "field1,field2"));
+            Assert.Contains(p, KV.Create("mlt.qf", "qf1,qf2"));
         }
 
         [Test]
@@ -489,14 +486,14 @@ namespace SolrNet.Tests {
                         Rows = 5,
                         Fields = new[] {"one", "two", "three"},
                     }).ToList();
-            Assert.Contains(p, KVP("q", "(id:1234)"));
-            Assert.Contains(p, KVP("start", "0"));
-            Assert.Contains(p, KVP("rows", "5"));
-            Assert.Contains(p, KVP("fl", "one,two,three"));
-            Assert.Contains(p, KVP("mlt.fl", "one,three"));
-            Assert.Contains(p, KVP("mlt.match.include", "false"));
-            Assert.Contains(p, KVP("mlt.match.offset", "5"));
-            Assert.Contains(p, KVP("mlt.interestingTerms", "none"));
+            Assert.Contains(p, KV.Create("q", "(id:1234)"));
+            Assert.Contains(p, KV.Create("start", "0"));
+            Assert.Contains(p, KV.Create("rows", "5"));
+            Assert.Contains(p, KV.Create("fl", "one,two,three"));
+            Assert.Contains(p, KV.Create("mlt.fl", "one,three"));
+            Assert.Contains(p, KV.Create("mlt.match.include", "false"));
+            Assert.Contains(p, KV.Create("mlt.match.offset", "5"));
+            Assert.Contains(p, KV.Create("mlt.interestingTerms", "none"));
         }
 
         [Test]
@@ -517,7 +514,7 @@ namespace SolrNet.Tests {
                         Rows = 5,
                         Fields = new[] {"one", "two", "three"},
                     }).ToList();
-            Assert.Contains(p, KVP("stream.body", "one two three"));
+            Assert.Contains(p, KV.Create("stream.body", "one two three"));
         }
 
         [Test]
@@ -538,7 +535,7 @@ namespace SolrNet.Tests {
                         Rows = 5,
                         Fields = new[] {"one", "two", "three"},
                     }).ToList();
-            Assert.Contains(p, KVP("stream.url", "http://wiki.apache.org/solr/MoreLikeThisHandler"));
+            Assert.Contains(p, KV.Create("stream.url", "http://wiki.apache.org/solr/MoreLikeThisHandler"));
         }
 
         [Test]
@@ -585,14 +582,14 @@ namespace SolrNet.Tests {
                     .AddFacet("globalfacet")
             }).ToList();
             Assert.AreEqual(8, statsOptions.Count);
-            Assert.Contains(statsOptions, KVP("stats", "true"));
-            Assert.Contains(statsOptions, KVP("stats.field", "popularity"));
-            Assert.Contains(statsOptions, KVP("stats.field", "price"));
-            Assert.Contains(statsOptions, KVP("f.price.stats.facet", "inStock"));
-            Assert.Contains(statsOptions, KVP("stats.field", "afield"));
-            Assert.Contains(statsOptions, KVP("f.afield.stats.facet", "facet1"));
-            Assert.Contains(statsOptions, KVP("f.afield.stats.facet", "facet2"));
-            Assert.Contains(statsOptions, KVP("stats.facet", "globalfacet"));
+            Assert.Contains(statsOptions, KV.Create("stats", "true"));
+            Assert.Contains(statsOptions, KV.Create("stats.field", "popularity"));
+            Assert.Contains(statsOptions, KV.Create("stats.field", "price"));
+            Assert.Contains(statsOptions, KV.Create("f.price.stats.facet", "inStock"));
+            Assert.Contains(statsOptions, KV.Create("stats.field", "afield"));
+            Assert.Contains(statsOptions, KV.Create("f.afield.stats.facet", "facet1"));
+            Assert.Contains(statsOptions, KV.Create("f.afield.stats.facet", "facet2"));
+            Assert.Contains(statsOptions, KV.Create("stats.facet", "globalfacet"));
         }
 
         [Test]
@@ -644,17 +641,17 @@ namespace SolrNet.Tests {
                     NumDescriptions = 20
                 },
             }).ToList();
-            Assert.Contains(p, KVP("carrot.title", "headline"));
-            Assert.Contains(p, KVP("clustering.engine", "default"));
-            Assert.Contains(p, KVP("clustering.collection", "false"));
-            Assert.Contains(p, KVP("carrot.algorithm", "org.carrot2.clustering.lingo.LingoClusteringAlgorithm"));
-            Assert.Contains(p, KVP("carrot.url", "none"));
-            Assert.Contains(p, KVP("carrot.snippet", "synopsis"));
-            Assert.Contains(p, KVP("carrot.produceSummary", "true"));
-            Assert.Contains(p, KVP("carrot.fragSize", "10"));
-            Assert.Contains(p, KVP("carrot.numDescriptions", "20"));
-            Assert.Contains(p, KVP("carrot.outputSubClusters", "false"));
-            Assert.Contains(p, KVP("carrot.lexicalResourcesDir", "fakedir"));
+            Assert.Contains(p, KV.Create("carrot.title", "headline"));
+            Assert.Contains(p, KV.Create("clustering.engine", "default"));
+            Assert.Contains(p, KV.Create("clustering.collection", "false"));
+            Assert.Contains(p, KV.Create("carrot.algorithm", "org.carrot2.clustering.lingo.LingoClusteringAlgorithm"));
+            Assert.Contains(p, KV.Create("carrot.url", "none"));
+            Assert.Contains(p, KV.Create("carrot.snippet", "synopsis"));
+            Assert.Contains(p, KV.Create("carrot.produceSummary", "true"));
+            Assert.Contains(p, KV.Create("carrot.fragSize", "10"));
+            Assert.Contains(p, KV.Create("carrot.numDescriptions", "20"));
+            Assert.Contains(p, KV.Create("carrot.outputSubClusters", "false"));
+            Assert.Contains(p, KV.Create("carrot.lexicalResourcesDir", "fakedir"));
         }
     }
 }

@@ -68,22 +68,18 @@ namespace SolrNet.Impl {
             MoreLikeThisHandler = DefaultMoreLikeThisHandler;
         }
 
-        public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {
-            return new KeyValuePair<T1, T2>(a, b);
-        }
-
         public IEnumerable<KeyValuePair<string, string>> GetCommonParameters(CommonQueryOptions options) {
             if (options == null)
                 yield break;
 
             if (options.Start.HasValue)
-                yield return KVP("start", options.Start.ToString());
+                yield return KV.Create("start", options.Start.ToString());
 
             var rows = options.Rows.HasValue ? options.Rows.Value : DefaultRows;
-            yield return KVP("rows", rows.ToString());
+            yield return KV.Create("rows", rows.ToString());
 
             if (options.Fields != null && options.Fields.Count > 0)
-                yield return KVP("fl", string.Join(",", options.Fields.ToArray()));
+                yield return KV.Create("fl", string.Join(",", options.Fields.ToArray()));
 
             foreach (var p in GetFilterQueries(options.FilterQueries))
                 yield return p;
@@ -103,7 +99,7 @@ namespace SolrNet.Impl {
         /// <param name="options"></param>
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery Query, QueryOptions options) {
-            yield return KVP("q", querySerializer.Serialize(Query));
+            yield return KV.Create("q", querySerializer.Serialize(Query));
             if (options == null)
                 yield break;
 
@@ -111,7 +107,7 @@ namespace SolrNet.Impl {
                 yield return p;
 
             if (options.OrderBy != null && options.OrderBy.Count > 0)
-                yield return KVP("sort", string.Join(",", options.OrderBy.Select(x => x.ToString()).ToArray()));
+                yield return KV.Create("sort", string.Join(",", options.OrderBy.Select(x => x.ToString()).ToArray()));
 
             foreach (var p in GetHighlightingParameters(options))
                 yield return p;
@@ -143,9 +139,9 @@ namespace SolrNet.Impl {
         public IEnumerable<KeyValuePair<string, string>> GetAllMoreLikeThisHandlerParameters(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
             yield return
                 query.Switch<KeyValuePair<string,string>>(
-                             query: q => KVP("q", querySerializer.Serialize(q)),
-                             streamBody: body => KVP("stream.body", body),
-                             streamUrl: url => KVP("stream.url", url.ToString()));
+                             query: q => KV.Create("q", querySerializer.Serialize(q)),
+                             streamBody: body => KV.Create("stream.body", body),
+                             streamUrl: url => KV.Create("stream.url", url.ToString()));
 
             if (options == null)
                 yield break;
@@ -168,37 +164,37 @@ namespace SolrNet.Impl {
             if (fp.Queries == null || fp.Queries.Count == 0)
                 yield break;
 
-            yield return KVP("facet", "true");
+            yield return KV.Create("facet", "true");
 
             foreach (var fq in fp.Queries)
                 foreach (var fqv in facetQuerySerializer.Serialize(fq))
                     yield return fqv;
 
             if (fp.Prefix != null)
-                yield return KVP("facet.prefix", fp.Prefix);
+                yield return KV.Create("facet.prefix", fp.Prefix);
             if (fp.EnumCacheMinDf.HasValue)
-                yield return KVP("facet.enum.cache.minDf", fp.EnumCacheMinDf.ToString());
+                yield return KV.Create("facet.enum.cache.minDf", fp.EnumCacheMinDf.ToString());
             if (fp.Limit.HasValue)
-                yield return KVP("facet.limit", fp.Limit.ToString());
+                yield return KV.Create("facet.limit", fp.Limit.ToString());
             if (fp.MinCount.HasValue)
-                yield return KVP("facet.mincount", fp.MinCount.ToString());
+                yield return KV.Create("facet.mincount", fp.MinCount.ToString());
             if (fp.Missing.HasValue)
-                yield return KVP("facet.missing", fp.Missing.ToString().ToLowerInvariant());
+                yield return KV.Create("facet.missing", fp.Missing.ToString().ToLowerInvariant());
             if (fp.Offset.HasValue)
-                yield return KVP("facet.offset", fp.Offset.ToString());
+                yield return KV.Create("facet.offset", fp.Offset.ToString());
             if (fp.Sort.HasValue)
-                yield return KVP("facet.sort", fp.Sort.ToString().ToLowerInvariant());
+                yield return KV.Create("facet.sort", fp.Sort.ToString().ToLowerInvariant());
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisHandlerParameters(MoreLikeThisHandlerParameters mlt) {
             if (mlt.MatchInclude != null)
-                yield return KVP("mlt.match.include", mlt.MatchInclude.Value.ToString().ToLowerInvariant());
+                yield return KV.Create("mlt.match.include", mlt.MatchInclude.Value.ToString().ToLowerInvariant());
 
             if (mlt.MatchOffset != null)
-                yield return KVP("mlt.match.offset", mlt.MatchOffset.Value.ToString());
+                yield return KV.Create("mlt.match.offset", mlt.MatchOffset.Value.ToString());
 
             if (mlt.ShowTerms != null)
-                yield return KVP("mlt.interestingTerms", mlt.ShowTerms.ToString().ToLowerInvariant());
+                yield return KV.Create("mlt.interestingTerms", mlt.ShowTerms.ToString().ToLowerInvariant());
 
             foreach (var p in GetMoreLikeThisParameters(mlt))
                 yield return p;
@@ -210,27 +206,27 @@ namespace SolrNet.Impl {
         /// <param name="mlt"></param>
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetMoreLikeThisParameters(MoreLikeThisParameters mlt) {
-            yield return KVP("mlt", "true");
+            yield return KV.Create("mlt", "true");
             if (mlt.Fields != null)
-                yield return KVP("mlt.fl", string.Join(",", mlt.Fields.ToArray()));
+                yield return KV.Create("mlt.fl", string.Join(",", mlt.Fields.ToArray()));
             if (mlt.Boost.HasValue)
-                yield return KVP("mlt.boost", mlt.Boost.ToString().ToLowerInvariant());
+                yield return KV.Create("mlt.boost", mlt.Boost.ToString().ToLowerInvariant());
             if (mlt.Count.HasValue)
-                yield return KVP("mlt.count", mlt.Count.ToString());
+                yield return KV.Create("mlt.count", mlt.Count.ToString());
             if (mlt.MaxQueryTerms.HasValue)
-                yield return KVP("mlt.maxqt", mlt.MaxQueryTerms.ToString());
+                yield return KV.Create("mlt.maxqt", mlt.MaxQueryTerms.ToString());
             if (mlt.MaxTokens.HasValue)
-                yield return KVP("mlt.maxntp", mlt.MaxTokens.ToString());
+                yield return KV.Create("mlt.maxntp", mlt.MaxTokens.ToString());
             if (mlt.MaxWordLength.HasValue)
-                yield return KVP("mlt.maxwl", mlt.MaxWordLength.ToString());
+                yield return KV.Create("mlt.maxwl", mlt.MaxWordLength.ToString());
             if (mlt.MinDocFreq.HasValue)
-                yield return KVP("mlt.mindf", mlt.MinDocFreq.ToString());
+                yield return KV.Create("mlt.mindf", mlt.MinDocFreq.ToString());
             if (mlt.MinTermFreq.HasValue)
-                yield return KVP("mlt.mintf", mlt.MinTermFreq.ToString());
+                yield return KV.Create("mlt.mintf", mlt.MinTermFreq.ToString());
             if (mlt.MinWordLength.HasValue)
-                yield return KVP("mlt.minwl", mlt.MinWordLength.ToString());
+                yield return KV.Create("mlt.minwl", mlt.MinWordLength.ToString());
             if (mlt.QueryFields != null && mlt.QueryFields.Count > 0)
-                yield return KVP("mlt.qf", string.Join(",", mlt.QueryFields.ToArray()));
+                yield return KV.Create("mlt.qf", string.Join(",", mlt.QueryFields.ToArray()));
         }
 
         /// <summary>
@@ -315,21 +311,21 @@ namespace SolrNet.Impl {
             if (spellCheck == null)
                 yield break;
 
-            yield return KVP("spellcheck", "true");
+            yield return KV.Create("spellcheck", "true");
             if (!string.IsNullOrEmpty(spellCheck.Query))
-                yield return KVP("spellcheck.q", spellCheck.Query);
+                yield return KV.Create("spellcheck.q", spellCheck.Query);
             if (spellCheck.Build.HasValue)
-                yield return KVP("spellcheck.build", spellCheck.Build.ToString().ToLowerInvariant());
+                yield return KV.Create("spellcheck.build", spellCheck.Build.ToString().ToLowerInvariant());
             if (spellCheck.Collate.HasValue)
-                yield return KVP("spellcheck.collate", spellCheck.Collate.ToString().ToLowerInvariant());
+                yield return KV.Create("spellcheck.collate", spellCheck.Collate.ToString().ToLowerInvariant());
             if (spellCheck.Count.HasValue)
-                yield return KVP("spellcheck.count", spellCheck.Count.ToString());
+                yield return KV.Create("spellcheck.count", spellCheck.Count.ToString());
             if (!string.IsNullOrEmpty(spellCheck.Dictionary))
-                yield return KVP("spellcheck.dictionary", spellCheck.Dictionary);
+                yield return KV.Create("spellcheck.dictionary", spellCheck.Dictionary);
             if (spellCheck.OnlyMorePopular.HasValue)
-                yield return KVP("spellcheck.onlyMorePopular", spellCheck.OnlyMorePopular.ToString().ToLowerInvariant());
+                yield return KV.Create("spellcheck.onlyMorePopular", spellCheck.OnlyMorePopular.ToString().ToLowerInvariant());
             if (spellCheck.Reload.HasValue)
-                yield return KVP("spellcheck.reload", spellCheck.Reload.ToString().ToLowerInvariant());
+                yield return KV.Create("spellcheck.reload", spellCheck.Reload.ToString().ToLowerInvariant());
         }
 
         /// <summary>
@@ -341,19 +337,19 @@ namespace SolrNet.Impl {
             if (options.Stats == null || options.Stats.FieldsWithFacets.Count == 0)
                 yield break;
 
-            yield return KVP("stats", "true");
+            yield return KV.Create("stats", "true");
 
             foreach (var fieldAndFacet in options.Stats.FieldsWithFacets) {
                 var field = fieldAndFacet.Key;
                 if (string.IsNullOrEmpty(field))
                     continue;
                 var facets = fieldAndFacet.Value;
-                yield return KVP("stats.field", field);
+                yield return KV.Create("stats.field", field);
                 if (facets != null && facets.Count > 0) {
                     foreach (var facet in facets) {
                         if (string.IsNullOrEmpty(facet))
                             continue;
-                        yield return KVP(string.Format("f.{0}.stats.facet", field), facet);
+                        yield return KV.Create(string.Format("f.{0}.stats.facet", field), facet);
                     }
                 }
             }
@@ -364,7 +360,7 @@ namespace SolrNet.Impl {
             foreach (var facet in options.Stats.Facets) {
                 if (string.IsNullOrEmpty(facet))
                     continue;
-                yield return KVP("stats.facet", facet);
+                yield return KV.Create("stats.facet", facet);
             }
         }
 
@@ -377,13 +373,13 @@ namespace SolrNet.Impl {
             if (options.Collapse == null || string.IsNullOrEmpty(options.Collapse.Field))
                 yield break;
 
-            yield return KVP("collapse.field", options.Collapse.Field);
+            yield return KV.Create("collapse.field", options.Collapse.Field);
             if (options.Collapse.Threshold.HasValue)
-                yield return KVP("collapse.threshold", options.Collapse.Threshold.ToString());
-            yield return KVP("collapse.type", options.Collapse.Type.ToString());
-            yield return KVP("collapse.facet", options.Collapse.FacetMode.ToString().ToLowerInvariant());
+                yield return KV.Create("collapse.threshold", options.Collapse.Threshold.ToString());
+            yield return KV.Create("collapse.type", options.Collapse.Type.ToString());
+            yield return KV.Create("collapse.facet", options.Collapse.FacetMode.ToString().ToLowerInvariant());
             if (options.Collapse.MaxDocs.HasValue)
-                yield return KVP("collapse.maxdocs", options.Collapse.MaxDocs.ToString());
+                yield return KV.Create("collapse.maxdocs", options.Collapse.MaxDocs.ToString());
         }
 
         /// <summary>
@@ -395,35 +391,35 @@ namespace SolrNet.Impl {
             if (options.Grouping == null || options.Grouping.Fields.Count == 0)
                 yield break;
 
-            yield return KVP("group", true.ToString().ToLowerInvariant());
+            yield return KV.Create("group", true.ToString().ToLowerInvariant());
 
             foreach (var groupfield in options.Grouping.Fields) {
                 if (string.IsNullOrEmpty(groupfield))
                     continue;
-                yield return KVP("group.field", groupfield);
+                yield return KV.Create("group.field", groupfield);
             }
             if (options.Grouping.Limit.HasValue)
-                yield return KVP("group.limit", options.Grouping.Limit.ToString());
+                yield return KV.Create("group.limit", options.Grouping.Limit.ToString());
 
             if (options.Grouping.Offset.HasValue)
-                yield return KVP("group.offset", options.Grouping.Offset.ToString());
+                yield return KV.Create("group.offset", options.Grouping.Offset.ToString());
 
             if (options.Grouping.Main.HasValue)
-                yield return KVP("group.main", options.Grouping.Main.ToString().ToLowerInvariant());
+                yield return KV.Create("group.main", options.Grouping.Main.ToString().ToLowerInvariant());
 
             if (!string.IsNullOrEmpty(options.Grouping.Query))
-                yield return KVP("group.query", options.Grouping.Query);
+                yield return KV.Create("group.query", options.Grouping.Query);
 
             if (!string.IsNullOrEmpty(options.Grouping.Func))
-                yield return KVP("group.func", options.Grouping.Func);
+                yield return KV.Create("group.func", options.Grouping.Func);
 
             if (options.Grouping.OrderBy != null && options.Grouping.OrderBy.Count > 0)
-                yield return KVP("group.sort", string.Join(",", options.Grouping.OrderBy.Select(x => x.ToString()).ToArray()));
+                yield return KV.Create("group.sort", string.Join(",", options.Grouping.OrderBy.Select(x => x.ToString()).ToArray()));
 
             if (options.Grouping.Ngroups.HasValue)
-                yield return KVP("group.ngroups", options.Grouping.Ngroups.ToString().ToLowerInvariant());
+                yield return KV.Create("group.ngroups", options.Grouping.Ngroups.ToString().ToLowerInvariant());
 
-            yield return KVP("group.format", options.Grouping.Format.ToString().ToLowerInvariant());
+            yield return KV.Create("group.format", options.Grouping.Format.ToString().ToLowerInvariant());
         }
 
         /// <summary>
@@ -435,31 +431,31 @@ namespace SolrNet.Impl {
             if (options.Clustering == null)
                 yield break;
             var clst = options.Clustering;
-            yield return KVP("clustering", true.ToString().ToLowerInvariant());
+            yield return KV.Create("clustering", true.ToString().ToLowerInvariant());
             if (clst.Engine != null)
-                yield return KVP("clustering.engine", clst.Engine);
+                yield return KV.Create("clustering.engine", clst.Engine);
             if (clst.Results.HasValue)
-                yield return KVP("clustering.results", clst.Results.ToString().ToLowerInvariant());
+                yield return KV.Create("clustering.results", clst.Results.ToString().ToLowerInvariant());
             if (clst.Collection.HasValue)
-                yield return KVP("clustering.collection", clst.Collection.ToString().ToLowerInvariant());
+                yield return KV.Create("clustering.collection", clst.Collection.ToString().ToLowerInvariant());
             if (clst.Algorithm != null)
-                yield return KVP("carrot.algorithm", clst.Algorithm);
+                yield return KV.Create("carrot.algorithm", clst.Algorithm);
             if (clst.Title != null)
-                yield return KVP("carrot.title", clst.Title);
+                yield return KV.Create("carrot.title", clst.Title);
             if (clst.Snippet != null)
-                yield return KVP("carrot.snippet", clst.Snippet);
+                yield return KV.Create("carrot.snippet", clst.Snippet);
             if (clst.Url != null)
-                yield return KVP("carrot.url", clst.Url);
+                yield return KV.Create("carrot.url", clst.Url);
             if (clst.ProduceSummary.HasValue)
-                yield return KVP("carrot.produceSummary", clst.ProduceSummary.ToString().ToLowerInvariant());
+                yield return KV.Create("carrot.produceSummary", clst.ProduceSummary.ToString().ToLowerInvariant());
             if (clst.FragSize.HasValue)
-                yield return KVP("carrot.fragSize", clst.FragSize.ToString());
+                yield return KV.Create("carrot.fragSize", clst.FragSize.ToString());
             if (clst.NumDescriptions.HasValue)
-                yield return KVP("carrot.numDescriptions", clst.NumDescriptions.ToString());
+                yield return KV.Create("carrot.numDescriptions", clst.NumDescriptions.ToString());
             if (clst.SubClusters.HasValue)
-                yield return KVP("carrot.outputSubClusters", clst.SubClusters.ToString().ToLowerInvariant());
+                yield return KV.Create("carrot.outputSubClusters", clst.SubClusters.ToString().ToLowerInvariant());
             if (clst.LexicalResources != null)
-                yield return KVP("carrot.lexicalResourcesDir", clst.LexicalResources);
+                yield return KV.Create("carrot.lexicalResourcesDir", clst.LexicalResources);
         }
 
         /// <summary>
@@ -473,34 +469,34 @@ namespace SolrNet.Impl {
                 yield break;
             if (terms.Fields == null || !terms.Fields.Any())
                 throw new SolrNetException("Terms field can't be empty or null");
-            yield return KVP("terms", "true");
+            yield return KV.Create("terms", "true");
             foreach (var field in terms.Fields)
-                yield return KVP("terms.fl", field);
+                yield return KV.Create("terms.fl", field);
             if (!string.IsNullOrEmpty(terms.Prefix))
-                yield return KVP("terms.prefix", terms.Prefix);
+                yield return KV.Create("terms.prefix", terms.Prefix);
             if (terms.Sort != null)
-                yield return KVP("terms.sort", terms.Sort.ToString());
+                yield return KV.Create("terms.sort", terms.Sort.ToString());
             if (terms.Limit.HasValue)
-                yield return KVP("terms.limit", terms.Limit.ToString());
+                yield return KV.Create("terms.limit", terms.Limit.ToString());
             if (!string.IsNullOrEmpty(terms.Lower))
-                yield return KVP("terms.lower", terms.Lower);
+                yield return KV.Create("terms.lower", terms.Lower);
             if (terms.LowerInclude.HasValue)
-                yield return KVP("terms.lower.incl", terms.LowerInclude.ToString().ToLowerInvariant());
+                yield return KV.Create("terms.lower.incl", terms.LowerInclude.ToString().ToLowerInvariant());
             if (!string.IsNullOrEmpty(terms.Upper))
-                yield return KVP("terms.upper", terms.Upper);
+                yield return KV.Create("terms.upper", terms.Upper);
             if (terms.UpperInclude.HasValue)
-                yield return KVP("terms.upper.incl", terms.UpperInclude.ToString().ToLowerInvariant());
+                yield return KV.Create("terms.upper.incl", terms.UpperInclude.ToString().ToLowerInvariant());
             if (terms.MaxCount.HasValue)
-                yield return KVP("terms.maxcount", terms.MaxCount.ToString());
+                yield return KV.Create("terms.maxcount", terms.MaxCount.ToString());
             if (terms.MinCount.HasValue)
-                yield return KVP("terms.mincount", terms.MinCount.ToString());
+                yield return KV.Create("terms.mincount", terms.MinCount.ToString());
             if (terms.Raw.HasValue)
-                yield return KVP("terms.raw", terms.Raw.ToString().ToLowerInvariant());
+                yield return KV.Create("terms.raw", terms.Raw.ToString().ToLowerInvariant());
             if (!string.IsNullOrEmpty(terms.Regex))
-                yield return KVP("terms.regex", terms.Regex);
+                yield return KV.Create("terms.regex", terms.Regex);
             if (terms.RegexFlag != null)
                 foreach (var flag in terms.RegexFlag)
-                    yield return KVP("terms.regex.flag", flag.ToString());
+                    yield return KV.Create("terms.regex.flag", flag.ToString());
         }
 
         /// <summary>

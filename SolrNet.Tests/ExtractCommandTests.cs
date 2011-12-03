@@ -19,8 +19,7 @@ using System.Collections.Generic;
 using MbUnit.Framework;
 using Rhino.Mocks;
 using SolrNet.Commands;
-using SolrNet.Commands.Parameters;
-using SolrNet.Impl;
+using SolrNet.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
@@ -33,8 +32,8 @@ namespace SolrNet.Tests {
 
             With.Mocks(mocks).Expecting(() => {
                 Expect.Call(conn.PostStream("/update/extract", null, null, new List<KeyValuePair<string, string>> {
-                    KV("literal.id", parameters.Id),
-                    KV("resource.name", parameters.ResourceName),
+                    KV.Create("literal.id", parameters.Id),
+                    KV.Create("resource.name", parameters.ResourceName),
                 }))
                 .Repeat.Once()
                 .Return("");
@@ -54,20 +53,20 @@ namespace SolrNet.Tests {
             With.Mocks(mocks).Expecting(() =>
             {
                 Expect.Call(conn.PostStream("/update/extract", "application/word-document", null, new List<KeyValuePair<string, string>> {
-                    KV("literal.id", parameters.Id),
-                    KV("resource.name", parameters.ResourceName),
-                    KV("literal.field1", "value1"),
-                    KV("literal.field2", "value2"),
-                    KV("stream.type", "application/word-document"),
-                    KV("commit", "true"),
-                    KV("uprefix", "pref"),
-                    KV("defaultField", "field1"),
-                    KV("extractOnly", "true"),
-                    KV("extractFormat", "text"),
-                    KV("capture", "html"),
-                    KV("captureAttr", "true"),
-                    KV("xpath", "body"),
-                    KV("lowernames", "true")
+                    KV.Create("literal.id", parameters.Id),
+                    KV.Create("resource.name", parameters.ResourceName),
+                    KV.Create("literal.field1", "value1"),
+                    KV.Create("literal.field2", "value2"),
+                    KV.Create("stream.type", "application/word-document"),
+                    KV.Create("commit", "true"),
+                    KV.Create("uprefix", "pref"),
+                    KV.Create("defaultField", "field1"),
+                    KV.Create("extractOnly", "true"),
+                    KV.Create("extractFormat", "text"),
+                    KV.Create("capture", "html"),
+                    KV.Create("captureAttr", "true"),
+                    KV.Create("xpath", "body"),
+                    KV.Create("lowernames", "true")
                 }))
                 .Repeat.Once()
                 .Return("");
@@ -107,8 +106,5 @@ namespace SolrNet.Tests {
             cmd.Execute(conn);
         }
 
-        private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
-            return new KeyValuePair<K, V>(key, value);
-        }
     }
 }

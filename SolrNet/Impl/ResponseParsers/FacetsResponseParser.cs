@@ -20,6 +20,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using SolrNet.Impl.FieldParsers;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -90,14 +91,6 @@ namespace SolrNet.Impl.ResponseParsers {
             return d;
         }
 
-		
-
-
-
-        public KeyValuePair<K, V> KV<K, V>(K key, V value) {
-            return new KeyValuePair<K, V>(key, value);
-        }
-
         public DateFacetingResult ParseDateFacetingNode(XElement node) {
             var r = new DateFacetingResult();
             var dateParser = new DateTimeFieldParser();
@@ -126,7 +119,7 @@ namespace SolrNet.Impl.ResponseParsers {
                             r.OtherResults[FacetDateOther.Between] = count;
                         else {
                             var d = dateParser.ParseDate(name);
-                            r.DateResults.Add(KV(d, count));
+                            r.DateResults.Add(KV.Create(d, count));
                         }
                         break;
                 }

@@ -6,7 +6,9 @@ This release is built against:
 Castle Windsor 2.5.3
 Ninject 2.2.1.0
 StructureMap 2.6.2
-NHibernate 3.1.0
+Autofac 2.5.2
+NHibernate 3.2.0
+Unity 2.1.505
 
 If you use the built-in container, you'll need Microsoft.Practices.ServiceLocation.dll
 If you use SolrNet with the Windsor integration, you'll need Windsor binaries instead.

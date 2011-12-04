@@ -1,3 +1,7 @@
+- Upgraded to NHibernate 3.2.0
+- Added support for MoreLikeThis handler
+- Fixed intermitent bug in NHibernate integration
+- Breaking change: removed query result interfaces (ISolrQueryResults)
 - Friendlier highlighting results (issue #96)
 - Added Terms component support (issue #122)
 - Added Clustering component support (issue #121)
@@ -7,7 +11,7 @@
 - Fixed bug with fastVectorHighlighter
 - Fixed bug when using SolrNet in Application_Start in IIS 7+
 - Upgraded to Autofac 2.5.2
-- Added support for multicode in Autofac module
+- Added support for multicore in Autofac module
 - Obsoleted Add(IEnumerable<T>). Use AddRange() instead.
 
 0.4.0a1 (2011-06-19)

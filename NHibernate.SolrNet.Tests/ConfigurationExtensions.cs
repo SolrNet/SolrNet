@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using NHibernate.ByteCode.LinFu;
 using NHibernate.Connection;
 using NHibernate.Dialect;
 using NHibernate.Driver;
@@ -32,7 +31,6 @@ namespace NHibernate.SolrNet.Tests {
                     {Environment.ConnectionDriver, typeof(SQLite20Driver).FullName},
                     {Environment.Dialect, typeof(SQLiteDialect).FullName},
                     {Environment.ConnectionString, "Data Source=test.db;Version=3;New=True;"},
-                    {Environment.ProxyFactoryFactoryClass, typeof(ProxyFactoryFactory).AssemblyQualifiedName},
                 }
             };
             return nhConfig;

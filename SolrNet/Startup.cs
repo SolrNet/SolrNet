@@ -113,7 +113,7 @@ namespace SolrNet {
             Container.Register<ISolrAbstractResponseParser<T>>(typeof(FacetsResponseParser<T>).FullName, c => new FacetsResponseParser<T>());
             Container.Register<ISolrAbstractResponseParser<T>>(typeof(InterestingTermsResponseParser<T>).FullName, c => new InterestingTermsResponseParser<T>());
             Container.Register<ISolrAbstractResponseParser<T>>(typeof(MoreLikeThisHandlerMatchResponseParser<T>).FullName, c => new MoreLikeThisHandlerMatchResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
-            Container.Register<ISolrResponseParser<T>>(typeof(HighlightingResponseParser<T>).FullName, c => new HighlightingResponseParser<T>());
+			Container.Register<ISolrAbstractResponseParser<T>>(typeof(HighlightingResponseParser<T>).FullName, c => new HighlightingResponseParser<T>());
             Container.Register<ISolrResponseParser<T>>(typeof(MoreLikeThisResponseParser<T>).FullName, c => new MoreLikeThisResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
             Container.Register<ISolrResponseParser<T>>(typeof(SpellCheckResponseParser<T>).FullName, c => new SpellCheckResponseParser<T>());
             Container.Register<ISolrResponseParser<T>>(typeof(TermsResponseParser<T>).FullName, c => new TermsResponseParser<T>());

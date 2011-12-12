@@ -110,9 +110,8 @@ namespace SolrNet {
 
             Container.Register<ISolrAbstractResponseParser<T>>(c => new DefaultResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
 
-            Container.Register<ISolrQueryResultParser<T>>(c => new SolrQueryResultParser<T>(c.GetAllInstances<ISolrAbstractResponseParser<T>>().ToArray()));
             Container.Register<ISolrMoreLikeThisHandlerQueryResultsParser<T>>(c => new SolrMoreLikeThisHandlerQueryResultsParser<T>(c.GetAllInstances<ISolrAbstractResponseParser<T>>().ToArray()));
-            Container.Register<ISolrQueryExecuter<T>>(c => new SolrQueryExecuter<T>(c.GetInstance<ISolrQueryResultParser<T>>(), connection, c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrFacetQuerySerializer>(), c.GetInstance<ISolrMoreLikeThisHandlerQueryResultsParser<T>>()));
+            Container.Register<ISolrQueryExecuter<T>>(c => new SolrQueryExecuter<T>(c.GetInstance<ISolrAbstractResponseParser<T>>(), connection, c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrFacetQuerySerializer>(), c.GetInstance<ISolrMoreLikeThisHandlerQueryResultsParser<T>>()));
 
             Container.Register(ChooseDocumentSerializer<T>);
 

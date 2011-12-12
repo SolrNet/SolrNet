@@ -64,7 +64,6 @@ namespace Unity.SolrNetIntegration {
 
       container.RegisterType<ISolrHeaderResponseParser, HeaderResponseParser<string>>();
       container.RegisterType<ISolrExtractResponseParser, ExtractResponseParser>();
-      container.RegisterType(typeof (ISolrQueryResultParser<>), typeof (SolrQueryResultParser<>));
       container.RegisterType(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>), typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
       container.RegisterType<ISolrFieldParser, DefaultFieldParser>();
       container.RegisterType<ISolrSchemaParser, SolrSchemaParser>();
@@ -82,7 +81,7 @@ namespace Unity.SolrNetIntegration {
       container.RegisterType(
         ISolrQueryExecuter, SolrQueryExecuter,
         new InjectionConstructor(
-          new ResolvedParameter(typeof (ISolrQueryResultParser<>).MakeGenericType(core.DocumentType)),
+            new ResolvedParameter(typeof(ISolrAbstractResponseParser<>).MakeGenericType(core.DocumentType)),
           new ResolvedParameter(typeof (ISolrConnection), coreConnectionId),
           new ResolvedParameter(typeof (ISolrQuerySerializer)),
           new ResolvedParameter(typeof (ISolrFacetQuerySerializer)),

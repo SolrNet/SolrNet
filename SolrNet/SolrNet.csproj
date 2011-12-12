@@ -234,7 +234,6 @@
     <Compile Include="ISolrQueryExecuter.cs" />
     <Compile Include="ISolrOperations.cs" />
     <Compile Include="ISolrQuery.cs" />
-    <Compile Include="ISolrQueryResultParser.cs" />
     <Compile Include="ISolrReadOnlyOperations.cs" />
     <Compile Include="Mapping\MappingManager.cs" />
     <Compile Include="Mapping\MemoizingMappingManager.cs" />
@@ -284,7 +283,6 @@
     <Compile Include="SolrQueryByField.cs" />
     <Compile Include="SolrQueryByRange.cs" />
     <Compile Include="SolrQueryInList.cs" />
-    <Compile Include="Impl\SolrQueryResultParser.cs" />
     <Compile Include="SolrQueryResults.cs" />
     <Compile Include="Impl\SolrBasicServer.cs" />
     <Compile Include="Attributes\SolrUniqueKeyAttribute.cs" />

@@ -15,7 +15,6 @@
 #endregion
 
 using System;
-using System.Reflection;
 using Autofac;
 using MbUnit.Framework;
 using Rhino.Mocks;
@@ -67,21 +66,6 @@ namespace AutofacContrib.SolrNet.Tests {
             Assert.AreSame(basic, basicReadonly);
         }
         
-        [Test]
-        public void ResponseParsers() {
-            var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
-            var container = builder.Build();
-
-            var parser = container.Resolve<ISolrQueryResultParser<Entity>>();
-
-            var field = parser.GetType().GetField("parsers", BindingFlags.NonPublic | BindingFlags.Instance);
-            var parsers = (Array)field.GetValue(parser);
-            Assert.AreEqual(13, parsers.Length);
-            foreach (var t in parsers)
-                Console.WriteLine(t);
-        }
-
         public class Entity {}
     }
 }

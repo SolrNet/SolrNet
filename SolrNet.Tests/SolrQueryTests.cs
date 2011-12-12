@@ -28,16 +28,14 @@ namespace SolrNet.Tests {
 		public void tt() {
 			var mocks = new MockRepository();
 			var connection = mocks.StrictMock<ISolrConnection>();
-			var parser = mocks.StrictMock<ISolrQueryResultParser<TestDocument>>();
-			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(connection.Get(null, null))
-                    .IgnoreArguments()
-                    .Repeat.Once()
-                    .Return("");
-				Expect.Call(parser.Parse(null))
-                    .IgnoreArguments()
-                    .Repeat.Once()
-                    .Return(new SolrQueryResults<TestDocument>());
+		    var parser = mocks.StrictMock<ISolrAbstractResponseParser<TestDocument>>();
+			With.Mocks(mocks).Expecting(() => {
+			    Expect.Call(connection.Get(null, null))
+			        .IgnoreArguments()
+			        .Repeat.Once()
+			        .Return("<response/>");
+			    Expect.Call(() => parser.Parse(null, null))
+			        .IgnoreArguments();
 			}).Verify(delegate {
 			    var q = new SolrQueryExecuter<TestDocument>(parser, connection, null, null, null);
 				var r = q.Execute(new SolrQuery("id:123456"), null);

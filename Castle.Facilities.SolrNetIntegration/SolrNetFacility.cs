@@ -96,8 +96,6 @@ namespace Castle.Facilities.SolrNetIntegration {
             })
                 Kernel.Register(Component.For<IValidationRule>().ImplementedBy(validationRule));
             Kernel.Resolver.AddSubResolver(new StrictArrayResolver(Kernel));
-            Kernel.Register(Component.For(typeof (ISolrQueryResultParser<>))
-                                .ImplementedBy(typeof (SolrQueryResultParser<>)));
             Kernel.Register(Component.For(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>))
                 .ImplementedBy(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>)));
             Kernel.Register(Component.For(typeof (ISolrQueryExecuter<>)).ImplementedBy(typeof (SolrQueryExecuter<>)));

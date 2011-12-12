@@ -69,7 +69,6 @@ namespace Ninject.Integration.SolrNet {
             })
                 Bind<IValidationRule>().To(p);
             Bind<ISolrConnection>().ToConstant(new SolrConnection(serverURL));
-            Bind(typeof (ISolrQueryResultParser<>)).To(typeof (SolrQueryResultParser<>));
             Bind(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>)).To(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
             Bind(typeof(ISolrQueryExecuter<>)).To(typeof(SolrQueryExecuter<>));
             Bind(typeof(ISolrDocumentSerializer<>)).To(typeof(SolrDocumentSerializer<>));

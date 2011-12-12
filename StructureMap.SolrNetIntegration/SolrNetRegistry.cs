@@ -72,7 +72,6 @@ namespace StructureMap.SolrNetIntegration
 
             For<ISolrHeaderResponseParser>().Use<HeaderResponseParser<string>>();
             For<ISolrExtractResponseParser>().Use<ExtractResponseParser>();
-            For(typeof(ISolrQueryResultParser<>)).Use(typeof(SolrQueryResultParser<>));
             For(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>)).Use(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
             For<ISolrFieldParser>().Use<DefaultFieldParser>();
             For<ISolrSchemaParser>().Use<SolrSchemaParser>();

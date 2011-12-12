@@ -17,7 +17,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using Autofac;
 using Autofac.Core;
@@ -76,7 +75,7 @@ namespace AutofacContrib.SolrNet {
             builder.RegisterType<DefaultFieldSerializer>().As<ISolrFieldSerializer>();
             builder.RegisterType<DefaultQuerySerializer>().As<ISolrQuerySerializer>();
             builder.RegisterType<DefaultFacetQuerySerializer>().As<ISolrFacetQuerySerializer>();
-            builder.RegisterGeneric(typeof(ISolrAbstractResponseParser<>)).As(typeof(DefaultResponseParser<>));
+            builder.RegisterGeneric(typeof(DefaultResponseParser<>)).As(typeof(ISolrAbstractResponseParser<>));
 
             builder.RegisterType<HeaderResponseParser<string>>().As<ISolrHeaderResponseParser>();
             builder.RegisterType<ExtractResponseParser>().As<ISolrExtractResponseParser>();
@@ -88,7 +87,6 @@ namespace AutofacContrib.SolrNet {
 			
                 builder.RegisterType(p).As<IValidationRule>();
             builder.RegisterType<SolrSchemaParser>().As<ISolrSchemaParser>();				
-            builder.RegisterGeneric(typeof (SolrQueryResultParser<>)).As(typeof (ISolrQueryResultParser<>));
             builder.RegisterGeneric(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>)).As(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>));
             builder.RegisterGeneric(typeof(SolrQueryExecuter<>)).As(typeof(ISolrQueryExecuter<>));
             builder.RegisterGeneric(typeof (SolrDocumentSerializer<>)).As(typeof (ISolrDocumentSerializer<>));

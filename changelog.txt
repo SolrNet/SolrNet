@@ -1,3 +1,8 @@
+- Fixed response parser registrations in built-in container
+
+0.4.0b1 (2011-12-04)
+===
+
 - Upgraded to NHibernate 3.2.0
 - Added support for MoreLikeThis handler
 - Fixed intermitent bug in NHibernate integration

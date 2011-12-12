@@ -85,23 +85,8 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
                 .ImplementedBy<SolrDictionaryDocumentResponseParser>());
 
-            foreach (var parserType in new[] {
-                typeof (ResultsResponseParser<>),
-                typeof (HeaderResponseParser<>),
-                typeof (FacetsResponseParser<>),
-                typeof (HighlightingResponseParser<>),
-                typeof (MoreLikeThisResponseParser<>),
-                typeof (SpellCheckResponseParser<>),
-                typeof (StatsResponseParser<>),
-                typeof (CollapseResponseParser<>),
-                typeof(GroupingResponseParser<>),
-                typeof(ClusterResponseParser<>),
-                typeof(TermsResponseParser<>),
-                typeof (MoreLikeThisHandlerMatchResponseParser<>),
-                typeof (InterestingTermsResponseParser<>),
-            }) {
-                Kernel.Register(Component.For(typeof (ISolrAbstractResponseParser<>)).ImplementedBy(parserType));
-            }
+            Kernel.Register(Component.For(typeof (ISolrAbstractResponseParser<>)).ImplementedBy(typeof (DefaultResponseParser<>)));
+
             Kernel.Register(Component.For<ISolrHeaderResponseParser>().ImplementedBy<HeaderResponseParser<string>>());
             Kernel.Register(Component.For<ISolrExtractResponseParser>().ImplementedBy<ExtractResponseParser>());
             foreach (var validationRule in new[] {

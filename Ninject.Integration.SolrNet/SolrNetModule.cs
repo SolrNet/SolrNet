@@ -59,20 +59,7 @@ namespace Ninject.Integration.SolrNet {
             Bind<ISolrFieldSerializer>().To<DefaultFieldSerializer>();
             Bind<ISolrQuerySerializer>().To<DefaultQuerySerializer>();
             Bind<ISolrFacetQuerySerializer>().To<DefaultFacetQuerySerializer>();
-            foreach (var p in new[] {
-                typeof(ResultsResponseParser<>),
-                typeof(HeaderResponseParser<>),
-                typeof(FacetsResponseParser<>),
-                typeof(HighlightingResponseParser<>),
-                typeof(MoreLikeThisResponseParser<>),
-                typeof(SpellCheckResponseParser<>),
-                typeof(StatsResponseParser<>),
-                typeof(CollapseResponseParser<>),
-                typeof(GroupingResponseParser<>),
-                typeof(InterestingTermsResponseParser<>),
-                typeof(MoreLikeThisHandlerMatchResponseParser<>),
-            })
-                Bind(typeof(ISolrAbstractResponseParser<>)).To(p);
+            Bind(typeof (ISolrAbstractResponseParser<>)).To(typeof (DefaultResponseParser<>));
             Bind<ISolrHeaderResponseParser>().To<HeaderResponseParser<string>>();
             Bind<ISolrExtractResponseParser>().To<ExtractResponseParser>();
             foreach (var p in new[] {

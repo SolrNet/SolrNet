@@ -60,26 +60,7 @@ namespace Unity.SolrNetIntegration {
     private void RegisterParsers(IUnityContainer container) {
       container.RegisterType(typeof (ISolrDocumentResponseParser<>), typeof (SolrDocumentResponseParser<>));
       container.RegisterType<ISolrDocumentResponseParser<Dictionary<string, object>>, SolrDictionaryDocumentResponseParser>();
-
-      var parsers = new[] {
-        typeof (ResultsResponseParser<>),
-        typeof (HeaderResponseParser<>),
-        typeof (FacetsResponseParser<>),
-        typeof (HighlightingResponseParser<>),
-        typeof (MoreLikeThisResponseParser<>),
-        typeof (SpellCheckResponseParser<>),
-        typeof (StatsResponseParser<>),
-        typeof (CollapseResponseParser<>),
-        typeof(GroupingResponseParser<>),
-        typeof(ClusterResponseParser<>),
-        typeof(TermsResponseParser<>),
-        typeof(InterestingTermsResponseParser<>),
-        typeof(MoreLikeThisHandlerMatchResponseParser<>),
-      };
-
-      foreach (var parser in parsers) {
-        container.RegisterType(typeof (ISolrAbstractResponseParser<>), parser, parser.ToString());
-      }
+      container.RegisterType(typeof (ISolrAbstractResponseParser<>), typeof (DefaultResponseParser<>));
 
       container.RegisterType<ISolrHeaderResponseParser, HeaderResponseParser<string>>();
       container.RegisterType<ISolrExtractResponseParser, ExtractResponseParser>();

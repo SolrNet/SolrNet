@@ -76,23 +76,8 @@ namespace AutofacContrib.SolrNet {
             builder.RegisterType<DefaultFieldSerializer>().As<ISolrFieldSerializer>();
             builder.RegisterType<DefaultQuerySerializer>().As<ISolrQuerySerializer>();
             builder.RegisterType<DefaultFacetQuerySerializer>().As<ISolrFacetQuerySerializer>();
-            foreach (var p in new[] {
-                typeof (ResultsResponseParser<>),
-                typeof (HeaderResponseParser<>),
-                typeof (FacetsResponseParser<>),
-                typeof (HighlightingResponseParser<>),
-                typeof (MoreLikeThisResponseParser<>),
-                typeof (SpellCheckResponseParser<>),
-                typeof (StatsResponseParser<>),
-                typeof (CollapseResponseParser<>),
-                typeof (GroupingResponseParser<>),
-                typeof (ClusterResponseParser<>),
-                typeof (TermsResponseParser<>),
-                typeof (InterestingTermsResponseParser<>),
-                typeof (MoreLikeThisHandlerMatchResponseParser<>),
-            })
-			
-                builder.RegisterGeneric(p).As(typeof (ISolrAbstractResponseParser<>));
+            builder.RegisterGeneric(typeof(ISolrAbstractResponseParser<>)).As(typeof(DefaultResponseParser<>));
+
             builder.RegisterType<HeaderResponseParser<string>>().As<ISolrHeaderResponseParser>();
             builder.RegisterType<ExtractResponseParser>().As<ISolrExtractResponseParser>();
             foreach (var p in new[] {

@@ -68,26 +68,7 @@ namespace StructureMap.SolrNetIntegration
             For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
                 .Use<SolrDictionaryDocumentResponseParser>();
 
-            var parsers = new[] {
-                                    typeof(ResultsResponseParser<>),
-                                    typeof(HeaderResponseParser<>),
-                                    typeof(FacetsResponseParser<>),
-                                    typeof(HighlightingResponseParser<>),
-                                    typeof(MoreLikeThisResponseParser<>),
-                                    typeof(SpellCheckResponseParser<>),
-                                    typeof(StatsResponseParser<>),
-                                    typeof(CollapseResponseParser<>),
-                                    typeof(GroupingResponseParser<>),
-                                    typeof(ClusterResponseParser<>),
-                                    typeof(TermsResponseParser<>),
-                                    typeof(InterestingTermsResponseParser<>),
-                                    typeof(MoreLikeThisHandlerMatchResponseParser<>),
-                                };
-
-            foreach (var p in parsers)
-            {
-                For(typeof(ISolrAbstractResponseParser<>)).Use(p);
-            }
+            For(typeof (ISolrAbstractResponseParser<>)).Use(typeof (DefaultResponseParser<>));
 
             For<ISolrHeaderResponseParser>().Use<HeaderResponseParser<string>>();
             For<ISolrExtractResponseParser>().Use<ExtractResponseParser>();

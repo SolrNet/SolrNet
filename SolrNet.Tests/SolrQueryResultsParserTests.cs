@@ -36,12 +36,12 @@ namespace SolrNet.Tests {
 	[TestFixture]
 	public partial class SolrQueryResultsParserTests {
 
-        private SolrDocumentResponseParser<T> GetDocumentParser<T>() {
+        private static SolrDocumentResponseParser<T> GetDocumentParser<T>() {
             var mapper = new AttributesMappingManager();
             return GetDocumentParser<T>(mapper);
         }
 
-        private SolrDocumentResponseParser<T> GetDocumentParser<T>(IReadOnlyMappingManager mapper) {
+        private static SolrDocumentResponseParser<T> GetDocumentParser<T>(IReadOnlyMappingManager mapper) {
             return new SolrDocumentResponseParser<T>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<T>());
         }
 
@@ -67,24 +67,25 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(123456, doc.Id);
 	    }
 
+        private SolrQueryResults<T> ParseFromResource<T>(string xmlResource) {
+            var docParser = GetDocumentParser<T>();
+            var parser = new ResultsResponseParser<T>(docParser);
+            var r = new SolrQueryResults<T>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), xmlResource);
+            parser.Parse(xml, r);
+            return r;
+        }
+
 		[Test]
 		public void NumFound() {
-            var docParser = GetDocumentParser<TestDocument>();
-            var parser = new ResultsResponseParser<TestDocument>(docParser);
-		    var r = new SolrQueryResults<TestDocument>();
-		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
-            parser.Parse(xml, r);
+		    var r = ParseFromResource<TestDocument>("Resources.response.xml");
 			Assert.AreEqual(1, r.NumFound);
 		}
 
 		[Test]
 		public void Parse() {
-            var docParser = GetDocumentParser<TestDocument>();
-            var parser = new ResultsResponseParser<TestDocument>(docParser);
-		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
-            var results = new SolrQueryResults<TestDocument>();
-		    parser.Parse(xml, results);
-			Assert.AreEqual(1, results.Count);
+		    var results = ParseFromResource<TestDocument>("Resources.response.xml");
+    		Assert.AreEqual(1, results.Count);
 			var doc = results[0];
 			Assert.AreEqual(123456, doc.Id);
 		}
@@ -169,11 +170,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void ParseResultsWithArrays() {
-            var docParser = GetDocumentParser<TestDocumentWithArrays>();
-            var parser = new ResultsResponseParser<TestDocumentWithArrays>(docParser);
-		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithArrays.xml");
-		    var results = new SolrQueryResults<TestDocumentWithArrays>();
-		    parser.Parse(xml, results);
+		    var results = ParseFromResource<TestDocumentWithArrays>("Resources.responseWithArrays.xml");
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
 			Assert.AreEqual("SP2514N", doc.Id);
@@ -181,11 +178,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void SupportsDateTime() {
-            var docParser = GetDocumentParser<TestDocumentWithDate>();
-            var parser = new ResultsResponseParser<TestDocumentWithDate>(docParser);
-		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithDate.xml");
-            var results = new SolrQueryResults<TestDocumentWithDate>();
-		    parser.Parse(xml, results);
+		    var results = ParseFromResource<TestDocumentWithDate>("Resources.responseWithDate.xml");
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5), doc.Fecha);
@@ -207,11 +200,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void SupportsNullableDateTime() {
-            var docParser = GetDocumentParser<TestDocumentWithNullableDate>();
-            var parser = new ResultsResponseParser<TestDocumentWithNullableDate>(docParser);
-		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithDate.xml");
-		    var results = new SolrQueryResults<TestDocumentWithNullableDate>();
-            parser.Parse(xml, results);
+		    var results = ParseFromResource<TestDocumentWithNullableDate>("Resources.responseWithDate.xml");
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5), doc.Fecha);
@@ -219,11 +208,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void SupportsIEnumerable() {
-            var docParser = GetDocumentParser<TestDocumentWithArrays4>();
-            var parser = new ResultsResponseParser<TestDocumentWithArrays4>(docParser);
-		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithArraysSimple.xml");
-		    var results = new SolrQueryResults<TestDocumentWithArrays4>();
-		    parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocumentWithArrays4>("Resources.responseWithArraysSimple.xml");
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
 			Assert.AreEqual(2, new List<string>(doc.Features).Count);
@@ -231,11 +216,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void SupportsGuid() {
-            var docParser = GetDocumentParser<TestDocWithGuid>();
-            var parser = new ResultsResponseParser<TestDocWithGuid>(docParser);
-            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithGuid.xml");
-            var results = new SolrQueryResults<TestDocWithGuid>();
-            parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocWithGuid>("Resources.responseWithGuid.xml");
             Assert.AreEqual(1, results.Count);
             var doc = results[0];
             Console.WriteLine(doc.Key);
@@ -243,11 +224,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void SupportsEnumAsInteger() {
-            var docParser = GetDocumentParser<TestDocWithEnum>();
-            var parser = new ResultsResponseParser<TestDocWithEnum>(docParser);
-            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithEnumAsInt.xml");
-            var results = new SolrQueryResults<TestDocWithEnum>();
-            parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocWithEnum>("Resources.responseWithEnumAsInt.xml");
             Assert.AreEqual(1, results.Count);
             var doc = results[0];
             Console.WriteLine(doc.En);
@@ -255,11 +232,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void SupportsEnumAsString() {
-            var docParser = GetDocumentParser<TestDocWithEnum>();
-            var parser = new ResultsResponseParser<TestDocWithEnum>(docParser);
-            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithEnumAsString.xml");
-            var results = new SolrQueryResults<TestDocWithEnum>();
-            parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocWithEnum>("Resources.responseWithEnumAsString.xml");
             Assert.AreEqual(1, results.Count);
             var doc = results[0];
             Console.WriteLine(doc.En);
@@ -279,22 +252,14 @@ namespace SolrNet.Tests {
 
         [Test]
         public void SupportsNullableGuidWithEmptyField() {
-            var docParser = GetDocumentParser<TestDocWithNullableEnum>();
-            var parser = new ResultsResponseParser<TestDocWithNullableEnum>(docParser);
-            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
-            var results = new SolrQueryResults<TestDocWithNullableEnum>();
-            parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocWithNullableEnum>("Resources.response.xml");
             Assert.AreEqual(1, results.Count);
             Assert.IsFalse(results[0].BasicView.HasValue);
         }
 
         [Test]
         public void GenericDictionary_string_string() {
-            var docParser = GetDocumentParser<TestDocWithGenDict>();
-            var parser = new ResultsResponseParser<TestDocWithGenDict>(docParser);
-            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithDict.xml");
-            var results = new SolrQueryResults<TestDocWithGenDict>();
-            parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocWithGenDict>("Resources.responseWithDict.xml");
             Assert.AreEqual(1, results.Count);
             var doc = results[0];
             Assert.IsNotNull(doc.Dict);
@@ -305,11 +270,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void GenericDictionary_string_int() {
-            var docParser = GetDocumentParser<TestDocWithGenDict2>();
-            var parser = new ResultsResponseParser<TestDocWithGenDict2>(docParser);
-            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithDict.xml");
-            var results = new SolrQueryResults<TestDocWithGenDict2>();
-            parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocWithGenDict2>("Resources.responseWithDict.xml");
             Assert.AreEqual(1, results.Count);
             var doc = results[0];
             Assert.IsNotNull(doc.Dict);
@@ -320,11 +281,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void GenericDictionary_string_float() {
-            var docParser = GetDocumentParser<TestDocWithGenDict3>();
-            var parser = new ResultsResponseParser<TestDocWithGenDict3>(docParser);
-            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithDictFloat.xml");
-            var results = new SolrQueryResults<TestDocWithGenDict3>();
-            parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocWithGenDict3>("Resources.responseWithDictFloat.xml");
             Assert.AreEqual(1, results.Count);
             var doc = results[0];
             Assert.IsNotNull(doc.Dict);
@@ -335,11 +292,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void GenericDictionary_string_decimal() {
-            var docParser = GetDocumentParser<TestDocWithGenDict4>();
-            var parser = new ResultsResponseParser<TestDocWithGenDict4>(docParser);
-            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithDictFloat.xml");
-            var results = new SolrQueryResults<TestDocWithGenDict4>();
-            parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocWithGenDict4>("Resources.responseWithDictFloat.xml");
             Assert.AreEqual(1, results.Count);
             var doc = results[0];
             Assert.IsNotNull(doc.Dict);
@@ -350,11 +303,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void GenericDictionary_rest_of_fields() {
-            var docParser = GetDocumentParser<TestDocWithGenDict5>();
-            var parser = new ResultsResponseParser<TestDocWithGenDict5>(docParser);
-            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithDictFloat.xml");
-            var results = new SolrQueryResults<TestDocWithGenDict5>();
-            parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocWithGenDict5>("Resources.responseWithDictFloat.xml");
             Assert.AreEqual("1.45", results[0].DictOne);
             Assert.IsNotNull(results[0].Dict);
             Assert.AreEqual(4, results[0].Dict.Count);
@@ -366,32 +315,20 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void WrongFieldDoesntThrow() {
-            var docParser = GetDocumentParser<TestDocumentWithDate>();
-            var parser = new ResultsResponseParser<TestDocumentWithDate>(docParser);
-		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithArraysSimple.xml");
-		    var results = new SolrQueryResults<TestDocumentWithDate>();
-            parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocumentWithDate>("Resources.responseWithArraysSimple.xml");
 			Assert.AreEqual(1, results.Count);
 			var doc = results[0];
 		}
 
 		[Test]
 		public void ReadsMaxScoreAttribute() {
-            var docParser = GetDocumentParser<TestDocumentWithArrays4>();
-            var parser = new ResultsResponseParser<TestDocumentWithArrays4>(docParser);
-		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithArraysSimple.xml");
-		    var results = new SolrQueryResults<TestDocumentWithArrays4>();
-		    parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocumentWithArrays4>("Resources.responseWithArraysSimple.xml");
 			Assert.AreEqual(1.6578954, results.MaxScore);
 		}
 
 		[Test]
 		public void ReadMaxScore_doesnt_crash_if_not_present() {
-            var docParser = GetDocumentParser<TestDocument>();
-            var parser = new ResultsResponseParser<TestDocument>(docParser);
-		    var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
-		    var results = new SolrQueryResults<TestDocument>();
-            parser.Parse(xml, results);
+            var results = ParseFromResource<TestDocument>("Resources.response.xml");
 			Assert.IsNull(results.MaxScore);
 		}
 
@@ -471,8 +408,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual("Hello world!", extractResponse.Content);
         }
 
-        private IDictionary<string, HighlightedSnippets> ParseHighlightingResults(string rawXml) {
-            var mapper = new AttributesMappingManager();
+        private static IDictionary<string, HighlightedSnippets> ParseHighlightingResults(string rawXml) {
             var parser = new HighlightingResponseParser<Product>();
             var xml = XDocument.Parse(rawXml);
             var docNode = xml.XPathSelectElement("response/lst[@name='highlighting']");

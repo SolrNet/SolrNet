@@ -73,9 +73,9 @@ namespace SolrNet.Mapping {
         public IDictionary<string,SolrFieldModel> GetFields(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
-            if (!mappings.ContainsKey(type))
-                return new Dictionary<string, SolrFieldModel>();
-            return mappings[type];
+
+            return mappings.Keys.Where(t => t.IsAssignableFrom(type))
+                .SelectMany(t => mappings[t]).ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
         public void SetUniqueKey(PropertyInfo property) {

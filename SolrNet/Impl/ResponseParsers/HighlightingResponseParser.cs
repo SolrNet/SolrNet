@@ -46,10 +46,12 @@ namespace SolrNet.Impl.ResponseParsers {
             var highlights = new Dictionary<string, HighlightedSnippets>();
             var docRefs = node.Elements("lst");
             foreach (var docRef in docRefs) {
-                var docRefKey = docRef.Attribute("name").Value;
-                highlights.Add(docRefKey, ParseHighlightingFields(docRef.Elements()));                    
+            	var docRefAttribute = docRef.Attribute("name");
+            	if (docRefAttribute != null) {
+            		highlights.Add(docRefAttribute.Value, ParseHighlightingFields(docRef.Elements()));
+            	}
             }
-            return highlights;
+        	return highlights;
         }
 
         /// <summary>

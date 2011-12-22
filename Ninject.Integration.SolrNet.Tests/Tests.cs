@@ -16,7 +16,6 @@
 
 using System;
 using MbUnit.Framework;
-using Rhino.Mocks;
 using SolrNet;
 
 namespace Ninject.Integration.SolrNet.Tests {
@@ -35,7 +34,7 @@ namespace Ninject.Integration.SolrNet.Tests {
         [Test]
         public void ReplaceMapper() {
             var c = new StandardKernel();
-            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
+            var mapper = new global::SolrNet.Tests.Mocks.MReadOnlyMappingManager();
             c.Load(new SolrNetModule("http://localhost:8983/solr") {Mapper = mapper});
             var m = c.Get<IReadOnlyMappingManager>();
             Assert.AreSame(mapper, m);

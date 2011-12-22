@@ -17,8 +17,8 @@
 using System;
 using Autofac;
 using MbUnit.Framework;
-using Rhino.Mocks;
 using SolrNet;
+using SolrNet.Tests.Mocks;
 
 namespace AutofacContrib.SolrNet.Tests {
     [TestFixture]
@@ -37,7 +37,7 @@ namespace AutofacContrib.SolrNet.Tests {
         [Test]
         public void ReplaceMapper() {
             var builder = new ContainerBuilder();
-            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
+            var mapper = new MReadOnlyMappingManager();
             builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr") {Mapper = mapper});
             var container = builder.Build();
             var m = container.Resolve<IReadOnlyMappingManager>();

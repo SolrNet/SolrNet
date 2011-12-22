@@ -52,17 +52,22 @@ namespace SolrNet.Commands {
 			var xml = new XmlDocument();
 			var node = xml.CreateElement("commit");
 
-            foreach (var p in new[] { new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), new KeyValuePair<bool?, string>(ExpungeDeletes, "expungeDeletes") })
-            {
-                if (!p.Key.HasValue) continue;
+		    var keyValuePairs = new[] {
+		        new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), 
+                new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), 
+                new KeyValuePair<bool?, string>(ExpungeDeletes, "expungeDeletes")
+		    };
+
+		    foreach (var p in keyValuePairs) {
+                if (!p.Key.HasValue) 
+                    continue;
 
                 var att = xml.CreateAttribute(p.Value);
                 att.InnerText = p.Key.Value.ToString().ToLower();
                 node.Attributes.Append(att);
             }
 
-            if (MaxSegments.HasValue)
-            {
+            if (MaxSegments.HasValue) {
                 var att = xml.CreateAttribute("maxSegments");
                 att.InnerText = MaxSegments.ToString();
                 node.Attributes.Append(att);    

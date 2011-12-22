@@ -78,9 +78,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\lib\Rhino.Mocks.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -107,7 +104,6 @@
     <Compile Include="DeleteCommandTests.cs" />
     <Compile Include="ExceptionTests.cs" />
     <Compile Include="FieldParserTests.cs" />
-    <Compile Include="FilterQueryTests.cs" />
     <Compile Include="HttpTests.cs" />
     <Compile Include="Integration.Sample\Product.cs" />
     <Compile Include="Integration.Sample\ProductLoose.cs" />
@@ -119,6 +115,24 @@
     <Compile Include="MappingTypesAreCompatibleWithSolrTypesRuleTests.cs" />
     <Compile Include="MemoizingMappingManagerTests.cs" />
     <Compile Include="MockConnection.cs" />
+    <Compile Include="Mocks\HttpWebRequest.cs" />
+    <Compile Include="Mocks\HttpWebRequestFactory.cs" />
+    <Compile Include="Mocks\HttpWebResponse.cs" />
+    <Compile Include="Mocks\MMappingValidator.cs" />
+    <Compile Include="Mocks\MServiceLocator.cs" />
+    <Compile Include="Mocks\MServiceProvider.cs" />
+    <Compile Include="Mocks\MSolrMoreLikeThisHandlerQueryResultsParser.cs" />
+    <Compile Include="Mocks\MSolrOperations.cs" />
+    <Compile Include="Mocks\MReadOnlyMappingManager.cs" />
+    <Compile Include="Mocks\MSolrAbstractResponseParser.cs" />
+    <Compile Include="Mocks\MSolrBasicOperations.cs" />
+    <Compile Include="Mocks\MSolrCache.cs" />
+    <Compile Include="Mocks\MSolrConnection.cs" />
+    <Compile Include="Mocks\MSolrDocumentSerializer.cs" />
+    <Compile Include="Mocks\MSolrExtractResponseParser.cs" />
+    <Compile Include="Mocks\MSolrFieldParser.cs" />
+    <Compile Include="Mocks\MSolrHeaderResponseParser.cs" />
+    <Compile Include="Mocks\MSolrQuerySerializer.cs" />
     <Compile Include="MoreLikeThisHandlerMatchResponseParserTests.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="MultivaluedMappedToCollectionRuleTests.cs" />
@@ -139,6 +153,7 @@
     <Compile Include="Utils\CompressionUtils.cs" />
     <Compile Include="Utils\EmbeddedResource.cs" />
     <Compile Include="Utils\LoggingConnection.cs" />
+    <Compile Include="Utils\Moroco.cs" />
     <Compile Include="Utils\Node.cs" />
     <Compile Include="Utils\ProfilerFacility.cs" />
     <Compile Include="Utils\ProfilerTests.cs" />
@@ -164,7 +179,6 @@
     <Compile Include="SolrQueryResultsParserTests.cs" />
     <Compile Include="SolrQueryResultsParserTestsDocumentClasses.cs" />
     <Compile Include="SolrQueryResultsTests.cs" />
-    <Compile Include="SolrQueryTests.cs" />
     <Compile Include="SolrServerTests.cs" />
     <Compile Include="SortOrderTests.cs" />
     <Compile Include="ThreadHelper.cs" />

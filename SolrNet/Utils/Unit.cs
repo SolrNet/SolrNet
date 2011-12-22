@@ -9,7 +9,7 @@ namespace SolrNet.Utils {
     /// <summary>
     /// Function helpers
     /// </summary>
-    public abstract class F {
+    public static class F {
         /// <summary>
         /// Does nothing
         /// </summary>
@@ -23,11 +23,22 @@ namespace SolrNet.Utils {
         /// <typeparam name="T"></typeparam>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static Func<T,Unit> ActionToFunc<T>(Action<T> action) {
+        public static Func<T, Unit> ToFunc<T>(this Action<T> action) {
             return x => {
                 action(x);
                 return null;
             };
+        }
+
+        public static Func<A, B, Unit> ToFunc<A, B>(this Action<A, B> action) {
+            return (a, b) => {
+                action(a, b);
+                return null;
+            };
+        }
+
+        public static Action<A, B> ToAction<A, B>(this Func<A, B, Unit> f) {
+            return (a, b) => f(a, b);
         }
     }
 }

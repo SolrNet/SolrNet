@@ -15,34 +15,33 @@
 #endregion
 
 using MbUnit.Framework;
+using Moroco;
 using NHibernate.SolrNet.Impl;
-using Rhino.Mocks;
 using SolrNet;
 
-namespace NHibernate.SolrNet.Tests
-{
+namespace NHibernate.SolrNet.Tests {
     [TestFixture]
     public class ListenersWithAddParametersTests : BaseNHTests {
-        
-        AddParameters addParameters = new AddParameters { CommitWithin = 4343 };
+        readonly AddParameters addParameters = new AddParameters { CommitWithin = 4343 };
 
-        protected override SolrNetListener<Entity> GetSolrNetListener(ISolrOperations<Entity> solr)
-        {
+        protected override SolrNetListener<Entity> GetSolrNetListener(ISolrOperations<Entity> solr) {
             return new SolrNetListener<Entity>(solr) {AddParameters = addParameters};
         }
 
         [Test]
-        public void Add_includes_parameters_when_configured()
-        {
+        public void Add_includes_parameters_when_configured() {
             var entity = new Entity { Description = "pepe" };
-            using (var session = sessionFactory.OpenSession())
-            {
+            mockSolr.addDocParams += (doc, param) => {
+                Assert.AreSame(entity, doc);
+                Assert.AreSame(addParameters, param);
+                return null;
+            };
+            mockSolr.addDocParams &= x => x.Expect(1);
+            using (var session = sessionFactory.OpenSession()) {
                 session.FlushMode = FlushMode.Never;
                 session.Save(entity);
                 session.Flush();
             }
-            mockSolr.AssertWasCalled(x => x.Add(entity, addParameters), o => o.Repeat.Once().Return(null));
         }
-
     }
 }

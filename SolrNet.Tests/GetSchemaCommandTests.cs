@@ -16,29 +16,25 @@
 
 #endregion
 
-using System.Collections.Generic;
 using MbUnit.Framework;
-using Rhino.Mocks;
 using SolrNet.Commands;
+using SolrNet.Utils;
 
-namespace SolrNet.Tests
-{
+namespace SolrNet.Tests {
     [TestFixture]
-    public class GetSchemaCommandTests
-    {
+    public class GetSchemaCommandTests {
         [Test]
-        public void GetSchemaCommand()
-        {
-            var mocks = new MockRepository();
-            var conn = mocks.StrictMock<ISolrConnection>();
-            With.Mocks(mocks).Expecting(delegate
-            {
-                Expect.Call(conn.Get("/admin/file", new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("file", "schema.xml") })).Repeat.Once().Return("");
-            }).Verify(delegate
-            {
-                var cmd = new GetSchemaCommand();
-                cmd.Execute(conn);
-            });
-       }
+        public void GetSchemaCommand() {
+            var conn = new Mocks.MSolrConnection();
+            conn.get += (url, kvs) => {
+                Assert.AreEqual("/admin/file", url);
+                var expectedKVs = new[] {KV.Create("file", "schema.xml")};
+                Assert.AreElementsEqualIgnoringOrder(expectedKVs, kvs);
+                return "";
+            };
+            var cmd = new GetSchemaCommand();
+            cmd.Execute(conn);
+            Assert.AreEqual(1, conn.get.Calls);
+        }
     }
 }

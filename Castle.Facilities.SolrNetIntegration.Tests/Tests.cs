@@ -26,10 +26,10 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Castle.Windsor.Configuration.Interpreters;
 using MbUnit.Framework;
-using Rhino.Mocks;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Mapping.Validation;
+using SolrNet.Tests.Mocks;
 
 namespace Castle.Facilities.SolrNetIntegration.Tests {
     [TestFixture]
@@ -80,7 +80,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
 
         [Test]
         public void ReplacingMapper() {
-            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
+            var mapper = new MReadOnlyMappingManager();
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr") {Mapper = mapper};
             var container = new WindsorContainer();
             container.AddFacility("solr", solrFacility);

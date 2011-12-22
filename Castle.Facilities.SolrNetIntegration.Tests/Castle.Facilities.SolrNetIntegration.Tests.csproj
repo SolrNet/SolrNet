@@ -69,9 +69,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MbUnit.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\lib\Rhino.Mocks.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -90,6 +87,10 @@
     <ProjectReference Include="..\Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj">
       <Project>{0F21F5B6-5986-4301-B0F7-FD9800DB8091}</Project>
       <Name>Castle.Facilities.SolrNetIntegration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet.Tests\SolrNet.Tests.csproj">
+      <Project>{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}</Project>
+      <Name>SolrNet.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">
       <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>

@@ -20,6 +20,7 @@ using Castle.Core.Configuration;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.Registration;
 using SolrNet;
+using SolrNet.Exceptions;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -55,7 +56,7 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// </summary>
         /// <param name="solrURL"></param>
         public SolrNetFacility(string solrURL) {
-            UriValidator.ValidateHTTP(solrURL);
+            ValidateUrl(solrURL);
             this.solrURL = solrURL;
         }
 
@@ -68,7 +69,7 @@ namespace Castle.Facilities.SolrNetIntegration {
             if (configNode == null)
                 throw new FacilityException("Please add solrURL to the SolrNetFacility configuration");
             var url = configNode.Value;
-            UriValidator.ValidateHTTP(url);
+            ValidateUrl(url);
             return url;
         }
 
@@ -180,7 +181,7 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// <param name="documentType"></param>
         /// <param name="coreUrl"></param>
         public void AddCore(string coreId, Type documentType, string coreUrl) {
-            UriValidator.ValidateHTTP(coreUrl);
+            ValidateUrl(coreUrl);
             cores.Add(new SolrCore(coreId, documentType, coreUrl));
         }
 
@@ -213,6 +214,14 @@ namespace Castle.Facilities.SolrNetIntegration {
                 return Type.GetType(node.Value);                
             } catch (Exception e) {
                 throw new FacilityException(string.Format("Error getting document type '{0}'", node.Value), e);
+            }
+        }
+
+        private static void ValidateUrl(string s) {
+            try {
+                UriValidator.ValidateHTTP(s);
+            } catch (InvalidURLException e) {
+                throw new FacilityException("", e);
             }
         }
 

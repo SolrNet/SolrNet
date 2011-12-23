@@ -22,6 +22,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Castle.Core;
+using Castle.Core.Internal;
 using MbUnit.Framework;
 using SolrNet.Attributes;
 using SolrNet.Impl;

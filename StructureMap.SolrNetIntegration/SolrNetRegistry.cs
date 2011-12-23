@@ -29,6 +29,7 @@ namespace StructureMap.SolrNetIntegration
             For(typeof(ISolrQueryExecuter<>)).Use(typeof(SolrQueryExecuter<>));
             For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();
             For<IMappingValidator>().Use<MappingValidator>();
+            For<ISolrCache>().Use<NullCache>();
 
             RegisterParsers();
             RegisterValidationRules();
@@ -87,7 +88,10 @@ namespace StructureMap.SolrNetIntegration
         private void RegisterCore(SolrCore core) {
             var coreConnectionId = core.Id + typeof(SolrConnection);
 
-            For<ISolrConnection>().Add<SolrConnection>().Named(coreConnectionId).Ctor<string>("serverURL").Is(core.Url);
+            For<ISolrConnection>().Add<SolrConnection>()
+                .Named(coreConnectionId)
+                .Ctor<string>("serverURL").Is(core.Url)
+                .Setter(c => c.Cache).IsTheDefault();
 
             var ISolrQueryExecuter = typeof(ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
             var SolrQueryExecuter = typeof(SolrQueryExecuter<>).MakeGenericType(core.DocumentType);

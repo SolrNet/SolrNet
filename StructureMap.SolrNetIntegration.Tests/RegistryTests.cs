@@ -164,6 +164,16 @@ namespace StructureMap.SolrNetIntegration.Tests
             Assert.IsInstanceOfType<SolrDictionarySerializer>(serializer);
         }
 
+        [Test]
+        public void Cache() {
+            SetupContainer();
+            ObjectFactory.Configure(cfg => cfg.For<ISolrCache>().Use<HttpRuntimeCache>());
+            var connectionId = "entity" + typeof (SolrConnection);
+            var connection = (SolrConnection) ObjectFactory.GetNamedInstance<ISolrConnection>(connectionId);
+            Assert.IsNotNull(connection.Cache);
+            Assert.IsInstanceOfType<HttpRuntimeCache>(connection.Cache);
+        }
+
         private static void SetupContainer()
         {
             var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");

@@ -17,6 +17,7 @@ using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
+using SolrNet.Utils;
 using Unity.SolrNetIntegration.Config;
 
 namespace Unity.SolrNetIntegration {
@@ -153,7 +154,7 @@ namespace Unity.SolrNetIntegration {
       var id = server.Id ?? Guid.NewGuid().ToString();
       var documentType = GetCoreDocumentType(server);
       var coreUrl = GetCoreUrl(server);
-      ValidateUrl(coreUrl);
+      UriValidator.ValidateHTTP(coreUrl);
       return new SolrCore(id, documentType, coreUrl);
     }
 
@@ -184,19 +185,6 @@ namespace Unity.SolrNetIntegration {
         throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType));
 
       return type;
-    }
-
-    private static void ValidateUrl(string url) {
-      try {
-        var uri = new Uri(url);
-        if (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps) {
-          throw new InvalidURLException("Only HTTP or HTTPS protocols are supported");
-        }
-      } catch (ArgumentException e) {
-        throw new InvalidURLException(string.Format("Invalid URL '{0}'", url), e);
-      } catch (UriFormatException e) {
-        throw new InvalidURLException(string.Format("Invalid URL '{0}'", url), e);
-      }
     }
   }
 }

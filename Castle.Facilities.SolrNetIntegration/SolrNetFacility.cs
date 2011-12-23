@@ -31,6 +31,7 @@ using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
+using SolrNet.Utils;
 
 namespace Castle.Facilities.SolrNetIntegration {
     /// <summary>
@@ -54,7 +55,7 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// </summary>
         /// <param name="solrURL"></param>
         public SolrNetFacility(string solrURL) {
-            ValidateUrl(solrURL);
+            UriValidator.ValidateHTTP(solrURL);
             this.solrURL = solrURL;
         }
 
@@ -67,7 +68,7 @@ namespace Castle.Facilities.SolrNetIntegration {
             if (configNode == null)
                 throw new FacilityException("Please add solrURL to the SolrNetFacility configuration");
             var url = configNode.Value;
-            ValidateUrl(url);
+            UriValidator.ValidateHTTP(url);
             return url;
         }
 
@@ -163,18 +164,6 @@ namespace Castle.Facilities.SolrNetIntegration {
                                 .ServiceOverrides(ServiceOverride.ForKey("basicServer").Eq(core.Id + SolrBasicServer)));
         }
 
-        private static void ValidateUrl(string url) {
-            try {
-                var u = new Uri(url);
-                if (u.Scheme != Uri.UriSchemeHttp && u.Scheme != Uri.UriSchemeHttps)
-                    throw new FacilityException("Only HTTP or HTTPS protocols are supported");
-            } catch (ArgumentException e) {
-                throw new FacilityException(string.Format("Invalid URL '{0}'", url), e);
-            } catch (UriFormatException e) {
-                throw new FacilityException(string.Format("Invalid URL '{0}'", url), e);
-            }
-        }
-
         /// <summary>
         /// Adds a new core configuration to the facility
         /// </summary>
@@ -191,7 +180,7 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// <param name="documentType"></param>
         /// <param name="coreUrl"></param>
         public void AddCore(string coreId, Type documentType, string coreUrl) {
-            ValidateUrl(coreUrl);
+            UriValidator.ValidateHTTP(coreUrl);
             cores.Add(new SolrCore(coreId, documentType, coreUrl));
         }
 

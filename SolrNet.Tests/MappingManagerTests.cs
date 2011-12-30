@@ -119,7 +119,6 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        [Ignore("Fails, see issue #37")]
         public void Inherited() {
             var mgr = new MappingManager();
             mgr.Add(typeof(Entity).GetProperty("Id"), "id");

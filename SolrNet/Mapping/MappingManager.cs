@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SolrNet.Exceptions;
 
 namespace SolrNet.Mapping {
     /// <summary>
@@ -56,11 +57,12 @@ namespace SolrNet.Mapping {
                 mappings[t] = new Dictionary<string,SolrFieldModel>();
             }
 
+            EnsurePropertyNotAlreadyAddedOnInheritedType(property, t);
+
             var m = mappings[t].FirstOrDefault(k => k.Value.Property == property);
             if (m.Key != null) {
                 mappings[t].Remove(m.Key);
             }
-
 
             mappings[t][fieldName] = fld;
         }
@@ -73,9 +75,9 @@ namespace SolrNet.Mapping {
         public IDictionary<string,SolrFieldModel> GetFields(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
-            if (!mappings.ContainsKey(type))
-                return new Dictionary<string, SolrFieldModel>();
-            return mappings[type];
+            
+            return mappings.Keys.Where(t => t.IsAssignableFrom(type))
+                .SelectMany(t => mappings[t]).ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
         public void SetUniqueKey(PropertyInfo property) {
@@ -84,6 +86,7 @@ namespace SolrNet.Mapping {
             var t = property.ReflectedType;
             if (!mappings.ContainsKey(t))
                 throw new ArgumentException(string.Format("Property '{0}.{1}' not mapped. Please use Add() to map it first", t, property.Name));
+
             uniqueKeys[t] = property;
         }
 
@@ -91,9 +94,9 @@ namespace SolrNet.Mapping {
             if (type == null)
                 throw new ArgumentNullException("type");
             try {
-                var prop = uniqueKeys[type];
-                var unique = mappings[type].First(kv => kv.Value.Property == prop);
-                return unique.Value;
+                var prop = uniqueKeys.Where(k => k.Key.IsAssignableFrom(type)).Single().Value;
+
+                return FindPropertyInMappings(prop, type);
             } catch (KeyNotFoundException) {
                 return null;
             } catch (InvalidOperationException) {
@@ -102,7 +105,37 @@ namespace SolrNet.Mapping {
         }
 
         public ICollection<Type> GetRegisteredTypes() {
-            return mappings.Select(k => k.Key).Distinct().ToList();
+            return mappings.Select(k => k.Key).ToList();
+        }
+
+        private void EnsurePropertyNotAlreadyAddedOnInheritedType(PropertyInfo property, Type t)
+        {
+            foreach (var dic in mappings)
+            {
+                if (!dic.Key.IsAssignableFrom(t) && !t.IsAssignableFrom(dic.Key))
+                    continue;
+
+                if (dic.Key == t)
+                    continue;
+
+                if (dic.Value.Any(k => k.Value.Property.Name == property.Name))
+                    throw new SolrNetException(string.Format("There is no need to add the same property twice for inherited types ('{0}' and'{1}' are part of the same class hierarchy, and property '{2}' was added twice).",
+                                                             t, dic.Key, property.Name));
+            }
+        }
+
+        private SolrFieldModel FindPropertyInMappings(PropertyInfo prop, Type type)
+        {
+            foreach (var dic in mappings)
+            {
+                if (!dic.Key.IsAssignableFrom(type) && !type.IsAssignableFrom(dic.Key))
+                    continue;
+
+                if (dic.Value.Any(k => k.Value.Property == prop))
+                    return dic.Value.First(kv => kv.Value.Property == prop).Value;
+            }
+
+            throw new KeyNotFoundException(string.Format("No '{0}' property added for class '{1}'.", prop.Name, type));
         }
     }
 }

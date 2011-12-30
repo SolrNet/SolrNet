@@ -118,7 +118,7 @@ namespace SolrNet.Mapping {
         }
 
         public ICollection<Type> GetRegisteredTypes() {
-            return mappings.Select(k => k.Key).Distinct().ToList();
+            return mappings.Select(k => k.Key).ToList();
         }
     }
 }

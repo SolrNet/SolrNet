@@ -55,6 +55,20 @@ namespace SolrNet.Tests {
             mgr.Add(property, "id");
             mgr.SetUniqueKey(property);
             var key = mgr.GetUniqueKey(typeof (Entity));
+
+            Assert.AreEqual(property, key.Property);
+            Assert.AreEqual("id", key.FieldName);
+        }
+
+        [Test]
+        public void UniqueKey_Set_and_get_for_inherited_classes()
+        {
+            var mgr = new MappingManager();
+            var property = typeof(Entity).GetProperty("Id");
+            mgr.Add(property, "id");
+            mgr.SetUniqueKey(property);
+            var key = mgr.GetUniqueKey(typeof(InheritedEntity));
+
             Assert.AreEqual(property, key.Property);
             Assert.AreEqual("id", key.FieldName);
         }

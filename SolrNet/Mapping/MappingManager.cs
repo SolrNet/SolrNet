@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SolrNet.Exceptions;
 
 namespace SolrNet.Mapping {
     /// <summary>
@@ -56,13 +57,28 @@ namespace SolrNet.Mapping {
                 mappings[t] = new Dictionary<string,SolrFieldModel>();
             }
 
+            EnsurePropertyNotAlreadyAddedOnInheritedType(property, t);
+
             var m = mappings[t].FirstOrDefault(k => k.Value.Property == property);
             if (m.Key != null) {
                 mappings[t].Remove(m.Key);
             }
 
-
             mappings[t][fieldName] = fld;
+        }
+
+        private void EnsurePropertyNotAlreadyAddedOnInheritedType(PropertyInfo property, Type t) {
+            foreach (var dic in mappings) {
+                if (dic.Key == t)
+                    continue;
+
+                if (!dic.Key.IsAssignableFrom(t) && !t.IsAssignableFrom(dic.Key))
+                    continue;
+
+                if (dic.Value.Any(k => k.Value.Property.Name == property.Name))
+                    throw new SolrNetException(string.Format("There is no need to add the same property twice for inherited types ('{0}' and'{1}' are part of the same class hierarchy, and property '{2}' was added twice).",
+                                                             t, dic.Key, property.Name));
+            }
         }
 
         /// <summary>

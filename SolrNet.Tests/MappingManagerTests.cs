@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using MbUnit.Framework;
+using SolrNet.Exceptions;
 using SolrNet.Mapping;
 
 namespace SolrNet.Tests {
@@ -123,10 +124,28 @@ namespace SolrNet.Tests {
             var mgr = new MappingManager();
             mgr.Add(typeof(Entity).GetProperty("Id"), "id");
             mgr.Add(typeof(InheritedEntity).GetProperty("Description"), "desc");
-            var entityFields = mgr.GetFields(typeof (Entity));
+            var entityFields = mgr.GetFields(typeof(Entity));
             Assert.AreEqual(1, entityFields.Count);
             var inheritedEntityFields = mgr.GetFields(typeof(InheritedEntity));
             Assert.AreEqual(2, inheritedEntityFields.Count);
+        }
+
+        [Test]
+        [ExpectedException(typeof(SolrNetException))]
+        public void Inherited_doesnt_admit_duplicates()
+        {
+            var mgr = new MappingManager();
+            mgr.Add(typeof(Entity).GetProperty("Id"), "id");
+            mgr.Add(typeof(InheritedEntity).GetProperty("Id"), "id2");
+        }
+
+        [Test]
+        [ExpectedException(typeof(SolrNetException))]
+        public void Inherited_doesnt_admit_duplicates2()
+        {
+            var mgr = new MappingManager();
+            mgr.Add(typeof(InheritedEntity).GetProperty("Id"), "id2");
+            mgr.Add(typeof(Entity).GetProperty("Id"), "id");
         }
 
         [Test]

@@ -44,28 +44,35 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         [Test]
         [ExpectedException(typeof(FacilityException))]
         public void InvalidUrl_throws() {
-            var solrFacility = new SolrNetFacility("123");
-            var container = new WindsorContainer();
-            container.AddFacility(solrFacility);
+            var configStore = new DefaultConfigurationStore();
+            var configuration = new MutableConfiguration("facility");
+            configuration.CreateChild("solrURL", "123");
+            configStore.AddFacilityConfiguration("solr", configuration);
+            var container = new WindsorContainer(configStore);
+            container.AddFacility<SolrNetFacility>("solr");
         }
 
         [Test]
         [ExpectedException(typeof(FacilityException))]
         public void InvalidProtocol_throws() {
-
-            var solrFacility = new SolrNetFacility("ftp://localhost");
-            var container = new WindsorContainer();
-            container.AddFacility(solrFacility);
+            var configStore = new DefaultConfigurationStore();
+            var configuration = new MutableConfiguration("facility");
+            configuration.CreateChild("solrURL", "ftp://localhost");
+            configStore.AddFacilityConfiguration("solr", configuration);
+            var container = new WindsorContainer(configStore);
+            container.AddFacility<SolrNetFacility>("solr");
         }
 
-        
         [Test]
         [Category("Integration")]
         public void Ping_Query() {
-            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
-            var container = new WindsorContainer();
-            container.AddFacility(solrFacility);
-            
+            var configStore = new DefaultConfigurationStore();
+            var configuration = new MutableConfiguration("facility");
+            configuration.CreateChild("solrURL", "http://localhost:8983/solr");
+            configStore.AddFacilityConfiguration("solr", configuration);
+            var container = new WindsorContainer(configStore);
+            container.AddFacility<SolrNetFacility>("solr");
+
             var solr = container.Resolve<ISolrOperations<Document>>();
             solr.Ping();
             Console.WriteLine(solr.Query(SolrQuery.All).Count);
@@ -76,7 +83,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             var mapper = new MReadOnlyMappingManager();
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr") {Mapper = mapper};
             var container = new WindsorContainer();
-            container.AddFacility(solrFacility);
+            container.AddFacility("solr", solrFacility);
             var m = container.Resolve<IReadOnlyMappingManager>();
             Assert.AreSame(m, mapper);
         }
@@ -85,7 +92,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void Container_has_ISolrFieldParser() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility(solrFacility);
+            container.AddFacility("solr", solrFacility);
             container.Resolve<ISolrFieldParser>();
         }
 
@@ -93,7 +100,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void Container_has_ISolrFieldSerializer() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility(solrFacility);
+            container.AddFacility("solr", solrFacility);
             container.Resolve<ISolrFieldSerializer>();
         }
 
@@ -101,7 +108,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void Container_has_ISolrDocumentPropertyVisitor() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility(solrFacility);
+            container.AddFacility("solr", solrFacility);
             container.Resolve<ISolrDocumentPropertyVisitor>();
         }
 
@@ -109,7 +116,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void Resolve_ISolrOperations() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility(solrFacility);
+            container.AddFacility("solr", solrFacility);
             container.Resolve<ISolrOperations<Document>>();
         }
 
@@ -120,7 +127,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             const string core1url = "http://localhost:8983/solr/core1";
             var solrFacility = new SolrNetFacility(core0url);
             var container = new WindsorContainer();
-            container.AddFacility(solrFacility);
+            container.AddFacility("solr", solrFacility);
 
             // override core1 components
             const string core1Connection = "core1.connection";
@@ -135,9 +142,9 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             // assert that everything is correctly wired
             container.Kernel.DependencyResolving += (client, model, dep) => {
                 if (model.TargetType == typeof(ISolrConnection)) {
-                    if (client.Services.First() == typeof(ISolrBasicOperations<Core1Entity>) || client.Services.First() == typeof(ISolrQueryExecuter<Core1Entity>))
+                    if (client.Service == typeof(ISolrBasicOperations<Core1Entity>) || client.Service == typeof(ISolrQueryExecuter<Core1Entity>))
                         Assert.AreEqual(core1url, ((SolrConnection) dep).ServerURL);
-                    if (client.Services.First() == typeof(ISolrBasicOperations<Document>) || client.Services.First() == typeof(ISolrQueryExecuter<Document>))
+                    if (client.Service == typeof(ISolrBasicOperations<Document>) || client.Service == typeof(ISolrQueryExecuter<Document>))
                         Assert.AreEqual(core0url, ((SolrConnection) dep).ServerURL);
                 }
             };
@@ -155,17 +162,17 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             solrFacility.AddCore("core1-id", typeof(Document), core1url);
             solrFacility.AddCore("core2-id", typeof(Core1Entity), core1url);
             var container = new WindsorContainer();
-            container.AddFacility(solrFacility);
+            container.AddFacility("solr", solrFacility);
 
             TestCores(container);
         }
 
         [Test]
         public void AddCoreFromXML() {
-            
+            var solrFacility = new SolrNetFacility();
             var container = new WindsorContainer(new XmlInterpreter(new StaticContentResource(@"<castle>
 <facilities>
-    <facility id='solr' type='Castle.Facilities.SolrNetIntegration.SolrNetFacility'>
+    <facility id='solr'>
         <solrURL>http://localhost:8983/solr/defaultCore</solrURL>
         <cores>
             <core id='core0-id'>
@@ -184,7 +191,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
     </facility>
 </facilities>
 </castle>")));
-            
+            container.AddFacility("solr", solrFacility);
             TestCores(container);
         }
 

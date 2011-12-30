@@ -1,3 +1,4 @@
+- Upgraded to Windsor 3.0
 - Fixed cache injection in Structuremap integration
 - Fixed response parser registrations in built-in container
 

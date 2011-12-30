@@ -456,8 +456,10 @@ namespace SolrNet.Tests {
         {
             var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting2.xml"));
             var first = highlights.First();
-            first.Value.Snippets.Keys.ToList().ForEach(Console.WriteLine);
-            first.Value.Snippets["source_en"].ForEach(Console.WriteLine);
+            foreach (var i in first.Value.Snippets.Keys)
+                Console.WriteLine(i);
+            foreach (var i in first.Value.Snippets["source_en"])
+                Console.WriteLine(i);
             Assert.AreEqual(3, first.Value.Snippets["source_en"].Count);
         }
         

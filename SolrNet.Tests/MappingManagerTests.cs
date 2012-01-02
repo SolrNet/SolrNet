@@ -146,8 +146,7 @@ namespace SolrNet.Tests {
 
         [Test]
         [ExpectedException(typeof(SolrNetException))]
-        public void Inherited_doesnt_admit_duplicates()
-        {
+        public void Inherited_doesnt_admit_duplicates() {
             var mgr = new MappingManager();
             mgr.Add(typeof(Entity).GetProperty("Id"), "id");
             mgr.Add(typeof(InheritedEntity).GetProperty("Id"), "id2");
@@ -155,8 +154,7 @@ namespace SolrNet.Tests {
 
         [Test]
         [ExpectedException(typeof(SolrNetException))]
-        public void Inherited_doesnt_admit_duplicates2()
-        {
+        public void Inherited_doesnt_admit_duplicates2() {
             var mgr = new MappingManager();
             mgr.Add(typeof(InheritedEntity).GetProperty("Id"), "id2");
             mgr.Add(typeof(Entity).GetProperty("Id"), "id");

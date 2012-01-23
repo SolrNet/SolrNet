@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
@@ -67,6 +68,15 @@ namespace SolrNet.Tests {
         public void Add() {
             var q = new SolrQuery("solr") + new SolrQuery("name:desc");
             Assert.AreEqual("(solr  name:desc)", Serialize(q));
+        }
+
+        [Test]
+        public void PlusEqualMany() {
+            AbstractSolrQuery q = new SolrQuery("first");
+            foreach (var _ in Enumerable.Range(0, 10)) {
+                q += new SolrQuery("others");
+            }
+            Assert.AreEqual("((((((((((first  others)  others)  others)  others)  others)  others)  others)  others)  others)  others)", Serialize(q));
         }
 
         [Test]

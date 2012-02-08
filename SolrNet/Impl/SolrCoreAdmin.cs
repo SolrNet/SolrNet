@@ -17,6 +17,7 @@ namespace SolrNet.Impl
     public class SolrCoreAdmin : ISolrCoreAdmin
     {
         private readonly ISolrConnection connection;
+        private readonly ISolrHeaderResponseParser headerParser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SolrCoreAdmin"/> class.
@@ -27,13 +28,23 @@ namespace SolrNet.Impl
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SolrCoreAdmin"/> class.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="headerParser">The header parser.</param>
+        public SolrCoreAdmin( ISolrConnection connection, ISolrHeaderResponseParser headerParser ) {
+            this.connection = connection;
+            this.headerParser = headerParser;
+        }
+
+        /// <summary>
         /// The ALIAS action establishes an additional name by which a SolrCore may be referenced.
         /// Subsequent actions may use the SolrCore's original name or any of its aliases.
         /// </summary>
         /// <param name="coreName">The name or alias of an existing core.</param>
         /// <param name="otherName">The additional name by which this core should be known.</param>
-        public void Alias( string coreName, string otherName ) {
-            var response = this.Send( new AliasCommand( coreName, otherName ) );
+        public ResponseHeader Alias( string coreName, string otherName ) {
+            return SendAndParseHeader( new AliasCommand( coreName, otherName ) );
         }
 
         /// <summary>
@@ -45,8 +56,8 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="coreName">The name of the new core. Same as "name" on the &lt;core&gt; element.</param>
         /// <param name="instanceDir">The directory where files for this SolrCore should be stored. Same as "instanceDir" on the &lt;core&gt; element.</param>
-        public void Create( string coreName, string instanceDir ) {
-            var response = this.Send( new CreateCommand( coreName, instanceDir ) );
+        public ResponseHeader Create( string coreName, string instanceDir ) {
+            return SendAndParseHeader( new CreateCommand( coreName, instanceDir ) );
         }
 
         /// <summary>
@@ -61,8 +72,8 @@ namespace SolrNet.Impl
         /// <param name="configFile">(Optional) Name of the config file (solrconfig.xml) relative to "instanceDir".</param>
         /// <param name="schemaFile">(Optional) Name of the schema file (schema.xml) relative to "instanceDir".</param>
         /// <param name="dataDir">(Optional) Name of the data directory relative to "instanceDir".</param>
-        public void Create( string coreName, string instanceDir, string configFile, string schemaFile, string dataDir ) {
-            var response = this.Send( new CreateCommand( coreName, instanceDir, configFile, schemaFile, dataDir ) );
+        public ResponseHeader Create( string coreName, string instanceDir, string configFile, string schemaFile, string dataDir ) {
+            return SendAndParseHeader( new CreateCommand( coreName, instanceDir, configFile, schemaFile, dataDir ) );
         }
 
         /// <summary>
@@ -74,8 +85,8 @@ namespace SolrNet.Impl
         /// having to restart the Web container.
         /// </summary>
         /// <param name="coreName">The name of the core to be reloaded.</param>
-        public void Reload( string coreName ) {
-            var response = this.Send( new ReloadCommand( coreName ) );
+        public ResponseHeader Reload( string coreName ) {
+            return SendAndParseHeader( new ReloadCommand( coreName ) );
         }
 
         /// <summary>
@@ -85,8 +96,8 @@ namespace SolrNet.Impl
         /// <param name="otherName">The new name for the SolrCore. If the persistent attribute of &lt;solr&gt; is
         /// "true", the new name will be written to solr.xml as the "name" attribute
         /// of the &lt;core&gt; attribute.</param>
-        public void Rename( string coreName, string otherName ) {
-            var response = this.Send( new RenameCommand( coreName, otherName ) );
+        public ResponseHeader Rename( string coreName, string otherName ) {
+            return SendAndParseHeader( new RenameCommand( coreName, otherName ) );
         }
 
         /// <summary>
@@ -112,8 +123,8 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="coreName">The name of one of the cores to be swapped.</param>
         /// <param name="otherName">The name of one of the cores to be swapped.</param>
-        public void Swap( string coreName, string otherName ) {
-            var response = this.Send( new SwapCommand( coreName, otherName ) );
+        public ResponseHeader Swap( string coreName, string otherName ) {
+            return SendAndParseHeader( new SwapCommand( coreName, otherName ) );
         }
 
         /// <summary>
@@ -124,8 +135,8 @@ namespace SolrNet.Impl
         /// <param name="coreName">The name of the core to be to be removed. If the persistent
         /// attribute of &lt;solr&gt; is set to "true", the &lt;core&gt; element
         /// with this "name" attribute will be removed from solr.xml.</param>
-        public void Unload( string coreName ) {
-            var response = this.Send( new UnloadCommand( coreName ) );
+        public ResponseHeader Unload( string coreName ) {
+            return SendAndParseHeader( new UnloadCommand( coreName ) );
         }
 
         /// <summary>
@@ -137,8 +148,19 @@ namespace SolrNet.Impl
         /// attribute of &lt;solr&gt; is set to "true", the &lt;core&gt; element
         /// with this "name" attribute will be removed from solr.xml.</param>
         /// <param name="deleteIndex"></param>
-        public void Unload( string coreName, bool deleteIndex ) {
-            var response = this.Send( new UnloadCommand( coreName, deleteIndex ) );
+        public ResponseHeader Unload( string coreName, bool deleteIndex ) {
+            return SendAndParseHeader( new UnloadCommand( coreName, deleteIndex ) );
+        }
+
+        /// <summary>
+        /// Sends a command and parses the ResponseHeader.
+        /// </summary>
+        /// <param name="cmd">The CMD.</param>
+        /// <returns></returns>
+        public ResponseHeader SendAndParseHeader( ISolrCommand cmd ) {
+            var r = Send( cmd );
+            var xml = XDocument.Parse( r );
+            return headerParser.Parse( xml );
         }
 
         /// <summary>
@@ -150,6 +172,11 @@ namespace SolrNet.Impl
             return command.Execute( this.connection );
         }
 
+        /// <summary>
+        /// Parses the status response.
+        /// </summary>
+        /// <param name="responseXml">The response XML.</param>
+        /// <returns></returns>
         protected List<CoreResult> ParseStatusResponse( string responseXml ) {
             // List of Core Results.
             List<CoreResult> results = new List<CoreResult>();

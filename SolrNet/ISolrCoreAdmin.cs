@@ -16,7 +16,7 @@ namespace SolrNet
         /// </remarks>
         /// <param name="coreName">The name or alias of an existing core.</param>
         /// <param name="otherName">The additional name by which this core should be known.</param>
-        void Alias( string coreName, string otherName );
+        ResponseHeader Alias( string coreName, string otherName );
 
         /// <summary>
         /// The CREATE action creates a new core and registers it. If persistence is enabled
@@ -27,7 +27,7 @@ namespace SolrNet
         /// </summary>
         /// <param name="coreName">The name of the new core. Same as "name" on the &lt;core&gt; element.</param>
         /// <param name="instanceDir">The directory where files for this SolrCore should be stored. Same as "instanceDir" on the &lt;core&gt; element.</param>
-        void Create( string coreName, string instanceDir );
+        ResponseHeader Create( string coreName, string instanceDir );
 
         /// <summary>
         /// The CREATE action creates a new core and registers it. If persistence is enabled
@@ -41,7 +41,7 @@ namespace SolrNet
         /// <param name="configFile">(Optional) Name of the config file (solrconfig.xml) relative to "instanceDir".</param>
         /// <param name="schemaFile">(Optional) Name of the schema file (schema.xml) relative to "instanceDir".</param>
         /// <param name="dataDir">(Optional) Name of the data directory relative to "instanceDir".</param>
-        void Create( string coreName, string instanceDir, string configFile, string schemaFile, string dataDir );
+        ResponseHeader Create( string coreName, string instanceDir, string configFile, string schemaFile, string dataDir );
 
         /// <summary>
         /// The RELOAD action loads a new core from the configuration of an existing, registered SolrCore. 
@@ -52,7 +52,7 @@ namespace SolrNet
         /// having to restart the Web container.
         /// </summary>
         /// <param name="coreName">The name of the core to be reloaded.</param>
-        void Reload( string coreName );
+        ResponseHeader Reload( string coreName );
 
         /// <summary>
         /// The RENAME action hanges the name of a SolrCore.
@@ -63,7 +63,7 @@ namespace SolrNet
         /// "true", the new name will be written to solr.xml as the "name" attribute 
         /// of the &lt;core&gt; attribute.
         /// </param>
-        void Rename( string coreName, string otherName );
+        ResponseHeader Rename( string coreName, string otherName );
 
         /// <summary>
         /// The STATUS action returns the status of all running SolrCores,
@@ -86,7 +86,7 @@ namespace SolrNet
         /// </summary>
         /// <param name="coreName">The name of one of the cores to be swapped.</param>
         /// <param name="otherName">The name of one of the cores to be swapped.</param>
-        void Swap( string coreName, string otherName );
+        ResponseHeader Swap( string coreName, string otherName );
 
         /// <summary>
         /// The UNLOAD action removes a core from LucidWorks for Solr. Active requests will 
@@ -98,7 +98,7 @@ namespace SolrNet
         /// attribute of &lt;solr&gt; is set to "true", the &lt;core&gt; element
         /// with this "name" attribute will be removed from solr.xml.
         /// </param>
-        void Unload( string coreName );
+        ResponseHeader Unload( string coreName );
 
         /// <summary>
         /// The UNLOAD action removes a core from LucidWorks for Solr. Active requests will 
@@ -112,6 +112,6 @@ namespace SolrNet
         /// </param>
         /// <param name="deleteIndex">
         /// </param>
-        void Unload( string coreName, bool deleteIndex );
+        ResponseHeader Unload( string coreName, bool deleteIndex );
     }
 }

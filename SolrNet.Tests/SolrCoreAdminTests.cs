@@ -37,7 +37,7 @@ namespace SolrNet.Tests
         http://localhost:8983/solr/admin/cores?action=UNLOAD&core=core0
         */
 
-        private const string solrUrl = "http://192.168.3.20:8080/solr";
+        private const string solrUrl = "http://127.0.0.1:8080/solr";
         private const string instanceDir = "/apps/solr";
 
         [Test]

@@ -5,6 +5,7 @@ using SolrNet.Impl.ResponseParsers;
 
 namespace SolrNet.Tests {
     [TestFixture]
+    [Category("Integration")]
     public class SolrCoreAdminTests {
         /*
         CREATE

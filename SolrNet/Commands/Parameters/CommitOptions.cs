@@ -43,13 +43,5 @@ namespace SolrNet.Commands.Parameters {
         /// </summary>
         /// <remarks>Requires Solr 1.4</remarks>
         public bool? ExpungeDeletes { get; set; }
-
-        /// <summary>
-        /// Commit/optimize options
-        /// </summary>
-	    public CommitOptions() {
-	        WaitSearcher = true;
-	        WaitFlush = true;
-	    }
 	}
 }

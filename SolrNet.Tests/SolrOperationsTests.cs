@@ -16,8 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
 using MbUnit.Framework;
 using Moroco;
 using SolrNet.Attributes;
@@ -28,7 +26,6 @@ using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 using SolrNet.Mapping;
-using SolrNet.Mapping.Validation;
 using SolrNet.Tests.Mocks;
 using SolrNet.Tests.Utils;
 using SolrNet.Utils;
@@ -132,10 +129,9 @@ namespace SolrNet.Tests {
         public void Commit() {
 
             var connection = new MSolrConnection();
-            connection.post = connection.post
-                .Args("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />")
-                .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"))
-                .Expect(1);
+            connection.post &= x => x.Args("/update", "<commit />")
+                                     .Return(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml"))
+                                     .Expect(1);
 
             var headerParser = new MSolrHeaderResponseParser();
             headerParser.parse = headerParser.parse.Return(null);
@@ -150,7 +146,7 @@ namespace SolrNet.Tests {
             var connection = new MSolrConnection();
             connection.post += (url, content) => {
                 Assert.AreEqual("/update", url);
-                Assert.AreEqual("<commit waitSearcher=\"true\" waitFlush=\"true\" />", content);
+                Assert.AreEqual("<commit />", content);
                 return EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml");
             };
             connection.post &= x => x.Expect(1);
@@ -184,7 +180,7 @@ namespace SolrNet.Tests {
             var connection = new MSolrConnection();
             connection.post += (url, content) => {
                 Assert.AreEqual("/update", url);
-                Assert.AreEqual("<commit waitSearcher=\"false\" waitFlush=\"true\" />", content);
+                Assert.AreEqual("<commit waitSearcher=\"false\" />", content);
                 return EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml");
             };
             var headerParser = new MSolrHeaderResponseParser();
@@ -199,7 +195,7 @@ namespace SolrNet.Tests {
             var connection = new MSolrConnection();
             connection.post += (url, content) => {
                 Assert.AreEqual("/update", url);
-                Assert.AreEqual("<commit waitSearcher=\"true\" waitFlush=\"true\" />", content);
+                Assert.AreEqual("<commit waitFlush=\"true\" />", content);
                 return EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml");
             };
             var headerParser = new MSolrHeaderResponseParser();
@@ -280,7 +276,7 @@ namespace SolrNet.Tests {
             var connection = new MSolrConnection();
             connection.post += (url, content) => {
                 Assert.AreEqual("/update", url);
-                Assert.AreEqual("<optimize waitSearcher=\"true\" waitFlush=\"true\" />", content);
+                Assert.AreEqual("<optimize />", content);
                 return EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml");
             };
 

@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using SolrNet.Commands;
-using SolrNet.Commands.Cores;
 using System.Xml.Linq;
+using SolrNet.Commands.Cores;
 
-namespace SolrNet.Impl
-{
+namespace SolrNet.Impl {
     /// <summary>
     /// Class used to issue commands related to Cores to Solr.
     /// </summary>
     /// <remarks>
     /// Based on work done by  HowardvanRooijen
     /// </remarks>
-    public class SolrCoreAdmin : ISolrCoreAdmin
-    {
+    public class SolrCoreAdmin : ISolrCoreAdmin {
         private readonly ISolrConnection connection;
         private readonly ISolrHeaderResponseParser headerParser;
 
@@ -23,7 +18,7 @@ namespace SolrNet.Impl
         /// Initializes a new instance of the <see cref="SolrCoreAdmin"/> class.
         /// </summary>
         /// <param name="connection">The connection.</param>
-        public SolrCoreAdmin( ISolrConnection connection ) {
+        public SolrCoreAdmin(ISolrConnection connection) {
             this.connection = connection;
         }
 
@@ -32,7 +27,7 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="connection">The connection.</param>
         /// <param name="headerParser">The header parser.</param>
-        public SolrCoreAdmin( ISolrConnection connection, ISolrHeaderResponseParser headerParser ) {
+        public SolrCoreAdmin(ISolrConnection connection, ISolrHeaderResponseParser headerParser) {
             this.connection = connection;
             this.headerParser = headerParser;
         }
@@ -43,8 +38,8 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="coreName">The name or alias of an existing core.</param>
         /// <param name="otherName">The additional name by which this core should be known.</param>
-        public ResponseHeader Alias( string coreName, string otherName ) {
-            return SendAndParseHeader( new AliasCommand( coreName, otherName ) );
+        public ResponseHeader Alias(string coreName, string otherName) {
+            return SendAndParseHeader(new AliasCommand(coreName, otherName));
         }
 
         /// <summary>
@@ -56,8 +51,8 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="coreName">The name of the new core. Same as "name" on the &lt;core&gt; element.</param>
         /// <param name="instanceDir">The directory where files for this SolrCore should be stored. Same as "instanceDir" on the &lt;core&gt; element.</param>
-        public ResponseHeader Create( string coreName, string instanceDir ) {
-            return SendAndParseHeader( new CreateCommand( coreName, instanceDir ) );
+        public ResponseHeader Create(string coreName, string instanceDir) {
+            return SendAndParseHeader(new CreateCommand(coreName, instanceDir));
         }
 
         /// <summary>
@@ -72,8 +67,8 @@ namespace SolrNet.Impl
         /// <param name="configFile">(Optional) Name of the config file (solrconfig.xml) relative to "instanceDir".</param>
         /// <param name="schemaFile">(Optional) Name of the schema file (schema.xml) relative to "instanceDir".</param>
         /// <param name="dataDir">(Optional) Name of the data directory relative to "instanceDir".</param>
-        public ResponseHeader Create( string coreName, string instanceDir, string configFile, string schemaFile, string dataDir ) {
-            return SendAndParseHeader( new CreateCommand( coreName, instanceDir, configFile, schemaFile, dataDir ) );
+        public ResponseHeader Create(string coreName, string instanceDir, string configFile, string schemaFile, string dataDir) {
+            return SendAndParseHeader(new CreateCommand(coreName, instanceDir, configFile, schemaFile, dataDir));
         }
 
         /// <summary>
@@ -85,8 +80,8 @@ namespace SolrNet.Impl
         /// having to restart the Web container.
         /// </summary>
         /// <param name="coreName">The name of the core to be reloaded.</param>
-        public ResponseHeader Reload( string coreName ) {
-            return SendAndParseHeader( new ReloadCommand( coreName ) );
+        public ResponseHeader Reload(string coreName) {
+            return SendAndParseHeader(new ReloadCommand(coreName));
         }
 
         /// <summary>
@@ -96,23 +91,23 @@ namespace SolrNet.Impl
         /// <param name="otherName">The new name for the SolrCore. If the persistent attribute of &lt;solr&gt; is
         /// "true", the new name will be written to solr.xml as the "name" attribute
         /// of the &lt;core&gt; attribute.</param>
-        public ResponseHeader Rename( string coreName, string otherName ) {
-            return SendAndParseHeader( new RenameCommand( coreName, otherName ) );
+        public ResponseHeader Rename(string coreName, string otherName) {
+            return SendAndParseHeader(new RenameCommand(coreName, otherName));
         }
 
         /// <summary>
         /// The STATUS action returns the status of all running SolrCores,
         /// </summary>
         public List<CoreResult> Status() {
-            return this.ParseStatusResponse( this.Send( new StatusCommand() ) );
+            return ParseStatusResponse(Send(new StatusCommand()));
         }
 
         /// <summary>
         /// The STATUS action returns the status of the named core.
         /// </summary>
         /// <param name="coreName">The name of a core, as listed in the "name" attribute of a &lt;core&gt; element in solr.xml.</param>
-        public List<CoreResult> Status( string coreName ) {
-            return this.ParseStatusResponse( this.Send( new StatusCommand( coreName ) ) );
+        public List<CoreResult> Status(string coreName) {
+            return ParseStatusResponse(Send(new StatusCommand(coreName)));
         }
 
         /// <summary>
@@ -123,8 +118,8 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="coreName">The name of one of the cores to be swapped.</param>
         /// <param name="otherName">The name of one of the cores to be swapped.</param>
-        public ResponseHeader Swap( string coreName, string otherName ) {
-            return SendAndParseHeader( new SwapCommand( coreName, otherName ) );
+        public ResponseHeader Swap(string coreName, string otherName) {
+            return SendAndParseHeader(new SwapCommand(coreName, otherName));
         }
 
         /// <summary>
@@ -135,8 +130,8 @@ namespace SolrNet.Impl
         /// <param name="coreName">The name of the core to be to be removed. If the persistent
         /// attribute of &lt;solr&gt; is set to "true", the &lt;core&gt; element
         /// with this "name" attribute will be removed from solr.xml.</param>
-        public ResponseHeader Unload( string coreName ) {
-            return SendAndParseHeader( new UnloadCommand( coreName ) );
+        public ResponseHeader Unload(string coreName) {
+            return SendAndParseHeader(new UnloadCommand(coreName));
         }
 
         /// <summary>
@@ -148,8 +143,8 @@ namespace SolrNet.Impl
         /// attribute of &lt;solr&gt; is set to "true", the &lt;core&gt; element
         /// with this "name" attribute will be removed from solr.xml.</param>
         /// <param name="deleteIndex"></param>
-        public ResponseHeader Unload( string coreName, bool deleteIndex ) {
-            return SendAndParseHeader( new UnloadCommand( coreName, deleteIndex ) );
+        public ResponseHeader Unload(string coreName, bool deleteIndex) {
+            return SendAndParseHeader(new UnloadCommand(coreName, deleteIndex));
         }
 
         /// <summary>
@@ -157,10 +152,10 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="cmd">The CMD.</param>
         /// <returns></returns>
-        public ResponseHeader SendAndParseHeader( ISolrCommand cmd ) {
-            var r = Send( cmd );
-            var xml = XDocument.Parse( r );
-            return headerParser.Parse( xml );
+        public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
+            var r = Send(cmd);
+            var xml = XDocument.Parse(r);
+            return headerParser.Parse(xml);
         }
 
         /// <summary>
@@ -168,8 +163,8 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="command">The Command to send.</param>
         /// <returns></returns>
-        public string Send( ISolrCommand command ) {
-            return command.Execute( this.connection );
+        public string Send(ISolrCommand command) {
+            return command.Execute(connection);
         }
 
         /// <summary>
@@ -177,90 +172,90 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="responseXml">The response XML.</param>
         /// <returns></returns>
-        protected List<CoreResult> ParseStatusResponse( string responseXml ) {
+        protected List<CoreResult> ParseStatusResponse(string responseXml) {
             // List of Core Results.
-            List<CoreResult> results = new List<CoreResult>();
+            var results = new List<CoreResult>();
 
             try {
-                var xml = XDocument.Parse( responseXml );
-                foreach ( var lstNode in xml.Element( "response" ).Elements() ) {
-                    if ( !lstNode.Attribute( "name" ).Value.ToLower().Equals( "status" ) )
+                var xml = XDocument.Parse(responseXml);
+                foreach (var lstNode in xml.Element("response").Elements()) {
+                    if (!lstNode.Attribute("name").Value.ToLower().Equals("status"))
                         continue;
 
-                    foreach ( var coreNode in lstNode.Elements() ) {
+                    foreach (var coreNode in lstNode.Elements()) {
                         // Create a new Core.
-                        var core = new CoreResult( coreNode.Attribute( "name" ).Value );
+                        var core = new CoreResult(coreNode.Attribute("name").Value);
 
                         // Parse all elements in the list.
-                        foreach ( var propEl in coreNode.Elements() ) {
-                            switch ( propEl.Attribute( "name" ).Value.ToLower() ) {
+                        foreach (var propEl in coreNode.Elements()) {
+                            switch (propEl.Attribute("name").Value.ToLower()) {
                                 case "name":
-                                    if ( !string.IsNullOrEmpty( propEl.Value ) )
+                                    if (!string.IsNullOrEmpty(propEl.Value))
                                         core.Name = propEl.Value;
                                     break;
                                 case "instancedir":
-                                    if ( !string.IsNullOrEmpty( propEl.Value ) )
+                                    if (!string.IsNullOrEmpty(propEl.Value))
                                         core.InstanceDir = propEl.Value;
                                     break;
                                 case "datadir":
-                                    if ( !string.IsNullOrEmpty( propEl.Value ) )
+                                    if (!string.IsNullOrEmpty(propEl.Value))
                                         core.DataDir = propEl.Value;
                                     break;
                                 case "starttime":
-                                    if ( !string.IsNullOrEmpty( propEl.Value ) )
-                                        core.StartTime = DateTime.Parse( propEl.Value );
+                                    if (!string.IsNullOrEmpty(propEl.Value))
+                                        core.StartTime = DateTime.Parse(propEl.Value);
                                     break;
                                 case "uptime":
-                                    if ( !string.IsNullOrEmpty( propEl.Value ) )
-                                        core.Uptime = long.Parse( propEl.Value );
+                                    if (!string.IsNullOrEmpty(propEl.Value))
+                                        core.Uptime = long.Parse(propEl.Value);
                                     break;
                                 case "index":
                                     // Parse the Index response.
                                     core.Index = new CoreIndexResult();
 
-                                    foreach ( var indexEl in propEl.Elements() ) {
-                                        switch ( indexEl.Attribute( "name" ).Value.ToLower() ) {
+                                    foreach (var indexEl in propEl.Elements()) {
+                                        switch (indexEl.Attribute("name").Value.ToLower()) {
                                             case "numdocs":
-                                                if ( !string.IsNullOrEmpty( indexEl.Value ) )
-                                                    core.Index.DocumentCount = long.Parse( indexEl.Value );
+                                                if (!string.IsNullOrEmpty(indexEl.Value))
+                                                    core.Index.DocumentCount = long.Parse(indexEl.Value);
                                                 break;
                                             case "maxdoc":
                                                 // Ignore.  Not normally important.
                                                 break;
                                             case "version":
-                                                if ( !string.IsNullOrEmpty( indexEl.Value ) )
-                                                    core.Index.Version = int.Parse( indexEl.Value );
+                                                if (!string.IsNullOrEmpty(indexEl.Value))
+                                                    core.Index.Version = int.Parse(indexEl.Value);
                                                 break;
                                             case "segmentcount":
-                                                if ( !string.IsNullOrEmpty( indexEl.Value ) )
-                                                    core.Index.SegmentCount = int.Parse( indexEl.Value );
+                                                if (!string.IsNullOrEmpty(indexEl.Value))
+                                                    core.Index.SegmentCount = int.Parse(indexEl.Value);
                                                 break;
                                             case "current":
-                                                if ( !string.IsNullOrEmpty( indexEl.Value ) )
-                                                    core.Index.IsCurrent = bool.Parse( indexEl.Value );
+                                                if (!string.IsNullOrEmpty(indexEl.Value))
+                                                    core.Index.IsCurrent = bool.Parse(indexEl.Value);
                                                 break;
                                             case "hasdeletions":
-                                                if ( !string.IsNullOrEmpty( indexEl.Value ) )
-                                                    core.Index.HasDeletions = bool.Parse( indexEl.Value );
+                                                if (!string.IsNullOrEmpty(indexEl.Value))
+                                                    core.Index.HasDeletions = bool.Parse(indexEl.Value);
                                                 break;
                                             case "isoptimized":
-                                                if ( !string.IsNullOrEmpty( indexEl.Value ) )
-                                                    core.Index.IsOptimized = bool.Parse( indexEl.Value );
+                                                if (!string.IsNullOrEmpty(indexEl.Value))
+                                                    core.Index.IsOptimized = bool.Parse(indexEl.Value);
                                                 break;
                                             case "directory":
-                                                if ( !string.IsNullOrEmpty( indexEl.Value ) )
+                                                if (!string.IsNullOrEmpty(indexEl.Value))
                                                     core.Index.Directory = indexEl.Value;
                                                 break;
                                             case "lastmodified":
-                                                if ( !string.IsNullOrEmpty( indexEl.Value ) )
-                                                    core.Index.LastModified = DateTime.Parse( indexEl.Value );
+                                                if (!string.IsNullOrEmpty(indexEl.Value))
+                                                    core.Index.LastModified = DateTime.Parse(indexEl.Value);
                                                 break;
                                             case "sizeinbytes":
-                                                if ( !string.IsNullOrEmpty( indexEl.Value ) )
-                                                    core.Index.SizeInBytes = long.Parse( indexEl.Value );
+                                                if (!string.IsNullOrEmpty(indexEl.Value))
+                                                    core.Index.SizeInBytes = long.Parse(indexEl.Value);
                                                 break;
                                             case "size":
-                                                if ( !string.IsNullOrEmpty( indexEl.Value ) )
+                                                if (!string.IsNullOrEmpty(indexEl.Value))
                                                     core.Index.Size = indexEl.Value;
                                                 break;
                                             default:
@@ -276,11 +271,10 @@ namespace SolrNet.Impl
                         }
 
                         // Add the Core to the resultset.
-                        results.Add( core );
+                        results.Add(core);
                     }
                 }
-            }
-            catch ( Exception parseEx ) {
+            } catch (Exception parseEx) {
                 // Location to allow any exceptions be caught and handled.
             }
 

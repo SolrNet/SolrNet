@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace SolrNet.Impl
-{
-    public class CoreResult
-    {
+namespace SolrNet.Impl {
+    public class CoreResult {
         /// <summary>
         /// The name of the Core.
         /// </summary>
@@ -41,8 +36,8 @@ namespace SolrNet.Impl
         /// Initializes a new instance of the <see cref="CoreResult"/> class.
         /// </summary>
         /// <param name="coreName">Name of the core.</param>
-        public CoreResult( string coreName ) {
-            this.Name = coreName;
+        public CoreResult(string coreName) {
+            Name = coreName;
         }
     }
 }

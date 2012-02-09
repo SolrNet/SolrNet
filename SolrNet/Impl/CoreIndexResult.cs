@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace SolrNet.Impl
-{
-    public class CoreIndexResult
-    {
+namespace SolrNet.Impl {
+    public class CoreIndexResult {
         /// <summary>
         /// Gets or sets the document count.
         /// </summary>

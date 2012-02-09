@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace SolrNet.Commands
-{
-    public class CoreCommand : ISolrCommand
-    {
+namespace SolrNet.Commands {
+    public class CoreCommand : ISolrCommand {
         /// <summary>
         /// List of Parameters that will be sent to the /admin/cores handler.
         /// </summary>
@@ -17,8 +12,8 @@ namespace SolrNet.Commands
         /// </summary>
         /// <param name="connection">The SolrConnection to use.</param>
         /// <returns>The results of the Command.</returns>
-        public string Execute( ISolrConnection connection ) {
-            return connection.Get( "/admin/cores", this.Parameters.ToArray() );
+        public string Execute(ISolrConnection connection) {
+            return connection.Get("/admin/cores", Parameters.ToArray());
         }
 
         /// <summary>
@@ -26,8 +21,8 @@ namespace SolrNet.Commands
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
-        protected void AddParameter( string key, string value ) {
-            this.Parameters.Add( new KeyValuePair<string, string>( key, value ) );
+        protected void AddParameter(string key, string value) {
+            Parameters.Add(new KeyValuePair<string, string>(key, value));
         }
     }
 }

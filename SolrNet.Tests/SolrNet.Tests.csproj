@@ -139,6 +139,7 @@
     <Compile Include="RegularDocumentVisitorTests.cs" />
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
     <Compile Include="ServiceLocatorTestCase.cs" />
+    <Compile Include="SolrCoreAdminTests.cs" />
     <Compile Include="SolrDIHStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />

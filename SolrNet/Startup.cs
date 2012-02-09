@@ -120,6 +120,9 @@ namespace SolrNet {
 
             Container.Register<ISolrOperations<T>>(c => new SolrServer<T>(c.GetInstance<ISolrBasicOperations<T>>(), Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>()));
             Container.Register<ISolrReadOnlyOperations<T>>(c => new SolrServer<T>(c.GetInstance<ISolrBasicOperations<T>>(), Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>()));
+
+            // Register ISolrCoreAdmin
+            Container.Register<ISolrCoreAdmin>( c => new SolrCoreAdmin( connection, c.GetInstance<ISolrHeaderResponseParser>() ) );
         }
 
         private static ISolrDocumentSerializer<T> ChooseDocumentSerializer<T>(IServiceLocator c) {

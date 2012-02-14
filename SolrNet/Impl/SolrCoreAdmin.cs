@@ -13,6 +13,7 @@ namespace SolrNet.Impl {
     public class SolrCoreAdmin : ISolrCoreAdmin {
         private readonly ISolrConnection connection;
         private readonly ISolrHeaderResponseParser headerParser;
+        private readonly ISolrStatusResponseParser resultParser;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SolrCoreAdmin"/> class.
@@ -27,9 +28,10 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="connection">The connection.</param>
         /// <param name="headerParser">The header parser.</param>
-        public SolrCoreAdmin(ISolrConnection connection, ISolrHeaderResponseParser headerParser) {
+        public SolrCoreAdmin( ISolrConnection connection, ISolrHeaderResponseParser headerParser, ISolrStatusResponseParser resultParser ) {
             this.connection = connection;
             this.headerParser = headerParser;
+            this.resultParser = resultParser;
         }
 
         /// <summary>
@@ -173,113 +175,8 @@ namespace SolrNet.Impl {
         /// <param name="responseXml">The response XML.</param>
         /// <returns></returns>
         protected List<CoreResult> ParseStatusResponse(string responseXml) {
-            // List of Core Results.
-            var results = new List<CoreResult>();
-
-            try {
-                var xml = XDocument.Parse(responseXml);
-                foreach (var lstNode in xml.Element("response").Elements()) {
-                    if (!lstNode.Attribute("name").Value.ToLower().Equals("status"))
-                        continue;
-
-                    foreach (var coreNode in lstNode.Elements()) {
-                        // Create a new Core.
-                        var core = new CoreResult(coreNode.Attribute("name").Value);
-
-                        // Parse all elements in the list.
-                        foreach (var propEl in coreNode.Elements()) {
-                            switch (propEl.Attribute("name").Value.ToLower()) {
-                                case "name":
-                                    if (!string.IsNullOrEmpty(propEl.Value))
-                                        core.Name = propEl.Value;
-                                    break;
-                                case "instancedir":
-                                    if (!string.IsNullOrEmpty(propEl.Value))
-                                        core.InstanceDir = propEl.Value;
-                                    break;
-                                case "datadir":
-                                    if (!string.IsNullOrEmpty(propEl.Value))
-                                        core.DataDir = propEl.Value;
-                                    break;
-                                case "starttime":
-                                    if (!string.IsNullOrEmpty(propEl.Value))
-                                        core.StartTime = DateTime.Parse(propEl.Value);
-                                    break;
-                                case "uptime":
-                                    if (!string.IsNullOrEmpty(propEl.Value))
-                                        core.Uptime = long.Parse(propEl.Value);
-                                    break;
-                                case "index":
-                                    // Parse the Index response.
-                                    core.Index = new CoreIndexResult();
-
-                                    foreach (var indexEl in propEl.Elements()) {
-                                        switch (indexEl.Attribute("name").Value.ToLower()) {
-                                            case "numdocs":
-                                                if (!string.IsNullOrEmpty(indexEl.Value))
-                                                    core.Index.DocumentCount = long.Parse(indexEl.Value);
-                                                break;
-                                            case "maxdoc":
-                                                // Ignore.  Not normally important.
-                                                break;
-                                            case "version":
-                                                if (!string.IsNullOrEmpty(indexEl.Value))
-                                                    core.Index.Version = int.Parse(indexEl.Value);
-                                                break;
-                                            case "segmentcount":
-                                                if (!string.IsNullOrEmpty(indexEl.Value))
-                                                    core.Index.SegmentCount = int.Parse(indexEl.Value);
-                                                break;
-                                            case "current":
-                                                if (!string.IsNullOrEmpty(indexEl.Value))
-                                                    core.Index.IsCurrent = bool.Parse(indexEl.Value);
-                                                break;
-                                            case "hasdeletions":
-                                                if (!string.IsNullOrEmpty(indexEl.Value))
-                                                    core.Index.HasDeletions = bool.Parse(indexEl.Value);
-                                                break;
-                                            case "isoptimized":
-                                                if (!string.IsNullOrEmpty(indexEl.Value))
-                                                    core.Index.IsOptimized = bool.Parse(indexEl.Value);
-                                                break;
-                                            case "directory":
-                                                if (!string.IsNullOrEmpty(indexEl.Value))
-                                                    core.Index.Directory = indexEl.Value;
-                                                break;
-                                            case "lastmodified":
-                                                if (!string.IsNullOrEmpty(indexEl.Value))
-                                                    core.Index.LastModified = DateTime.Parse(indexEl.Value);
-                                                break;
-                                            case "sizeinbytes":
-                                                if (!string.IsNullOrEmpty(indexEl.Value))
-                                                    core.Index.SizeInBytes = long.Parse(indexEl.Value);
-                                                break;
-                                            case "size":
-                                                if (!string.IsNullOrEmpty(indexEl.Value))
-                                                    core.Index.Size = indexEl.Value;
-                                                break;
-                                            default:
-                                                // Unknown or new property.  Ignore.
-                                                break;
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    // Unkown or new property.  Ignore.
-                                    break;
-                            }
-                        }
-
-                        // Add the Core to the resultset.
-                        results.Add(core);
-                    }
-                }
-            } catch (Exception parseEx) {
-                // Location to allow any exceptions be caught and handled.
-            }
-
-            // Return the results we got back from Solr.
-            return results;
+            var xml = XDocument.Parse( responseXml );
+            return resultParser.Parse( xml );
         }
     }
 }

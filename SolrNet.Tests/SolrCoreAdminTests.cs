@@ -41,11 +41,18 @@ namespace SolrNet.Tests {
             Assert.IsNotEmpty(results);
         }
 
+        private HeaderResponseParser<string> GetHeaderParser() {
+            return new HeaderResponseParser<string>();
+        }
+
+        private SolrStatusResponseParser GetStatusResponseParser() {
+            return new SolrStatusResponseParser();
+        }
+
         [Test]
         public void Create() {
             var coreName = "core-new";
-            var headerParser = new HeaderResponseParser<string>();
-            var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl), headerParser);
+            var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
             try {
                 var createResponseHeader = solrCoreAdmin.Create(coreName, null, null, null, null);
@@ -74,8 +81,7 @@ namespace SolrNet.Tests {
         [Test]
         public void ReloadCore() {
             var coreName = "core-new";
-            var headerParser = new HeaderResponseParser<string>();
-            var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl), headerParser);
+            var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
             var reloadResponseHeader = solrCoreAdmin.Reload(coreName);
             Assert.AreEqual(reloadResponseHeader.Status, 0);
@@ -84,8 +90,7 @@ namespace SolrNet.Tests {
         [Test]
         public void Alias() {
             var coreName = "core-new";
-            var headerParser = new HeaderResponseParser<string>();
-            var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl), headerParser);
+            var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
             var aliasResponseHeader = solrCoreAdmin.Alias(coreName, "corefoo");
             Assert.AreEqual(aliasResponseHeader.Status, 0);
@@ -94,8 +99,7 @@ namespace SolrNet.Tests {
         [Test]
         public void CreateSwapCore() {
             var coreName = "core-swap";
-            var headerParser = new HeaderResponseParser<string>();
-            var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl), headerParser);
+            var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
             var createResponseHeader = solrCoreAdmin.Create(coreName, instanceDir);
             Assert.AreEqual(createResponseHeader.Status, 0);
@@ -107,8 +111,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void SwapCores() {
-            var headerParser = new HeaderResponseParser<string>();
-            var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl), headerParser);
+            var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
             var swapResponseHeader = solrCoreAdmin.Swap("core-new", "core-swap");
             Assert.AreEqual(swapResponseHeader.Status, 0);
@@ -116,8 +119,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void Unload() {
-            var headerParser = new HeaderResponseParser<string>();
-            var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl), headerParser);
+            var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
             var swapUnloadResponseHeader = solrCoreAdmin.Unload("core-swap", true);
             Assert.AreEqual(swapUnloadResponseHeader.Status, 0);

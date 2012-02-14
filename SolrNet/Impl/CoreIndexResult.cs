@@ -3,14 +3,21 @@
 namespace SolrNet.Impl {
     public class CoreIndexResult {
         /// <summary>
-        /// Gets or sets the document count.
+        /// Gets or sets the number of searchable documents in the index.
         /// </summary>
-        public long DocumentCount { get; set; }
+        /// <remarks>Represents the numDocs value in a Solr status result.</remarks>
+        public long SearchableDocumentCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total number of documents including logically deleted documents that have not been removed from the index yet.
+        /// </summary>
+        /// <remarks>Represents the maxDoc value in a Solr status result.</remarks>
+        public long TotalDocumentCount { get; set; }
 
         /// <summary>
         /// Gets or sets the Index version.
         /// </summary>
-        public int Version { get; set; }
+        public long Version { get; set; }
 
         /// <summary>
         /// The number of Segments that exist for the index.

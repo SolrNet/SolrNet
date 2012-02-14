@@ -111,11 +111,14 @@
     <Compile Include="Impl\CoreResult.cs" />
     <Compile Include="Impl\HighlightedSnippets.cs" />
     <Compile Include="Impl\ISolrAbstractResponseParser.cs" />
+    <Compile Include="Impl\ISolrStatusResponseParser.cs" />
     <Compile Include="Impl\ISolrMoreLikeThisHandlerQueryResultsParser.cs" />
     <Compile Include="Impl\ISolrMoreLikeThisHandlerResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\AggregateResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\CoreStatusResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\DefaultResponseParser.cs" />
     <Compile Include="Impl\SolrCoreAdmin.cs" />
+    <Compile Include="Impl\SolrStatusResponseParser.cs" />
     <Compile Include="Impl\SolrMoreLikeThisHandlerResults.cs" />
     <Compile Include="Impl\ResponseParsers\InterestingTermsResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\MoreLikeThisHandlerMatchResponseParser.cs" />

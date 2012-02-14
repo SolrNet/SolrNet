@@ -35,6 +35,12 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Initializes a new instance of the <see cref="CoreResult"/> class.
         /// </summary>
+        public CoreResult() {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoreResult"/> class.
+        /// </summary>
         /// <param name="coreName">Name of the core.</param>
         public CoreResult(string coreName) {
             Name = coreName;

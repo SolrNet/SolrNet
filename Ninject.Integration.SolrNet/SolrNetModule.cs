@@ -14,6 +14,10 @@
 // limitations under the License.
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using Ninject.Integration.SolrNet.Config;
 using Ninject.Modules;
 using SolrNet;
 using SolrNet.Impl;
@@ -27,6 +31,7 @@ using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
+using SolrNet.Utils;
 
 namespace Ninject.Integration.SolrNet {
     /// <summary>
@@ -34,7 +39,8 @@ namespace Ninject.Integration.SolrNet {
     /// </summary>
     public class SolrNetModule : NinjectModule {
         private readonly string serverURL;
-
+        private readonly List<SolrCore> cores = new List<SolrCore>();
+ 
         /// <summary>
         /// Optional override for document mapper
         /// </summary>
@@ -48,6 +54,94 @@ namespace Ninject.Integration.SolrNet {
             this.serverURL = serverURL;
         }
 
+        /// <summary>
+        /// Configures SolrNet in a Ninject kernel with multiple servers/cores
+        /// </summary>
+        /// <param name="solrServers"></param>
+        public SolrNetModule(SolrServers solrServers) {
+            AddCoresFromConfig(solrServers);            
+        }
+
+        private void AddCoresFromConfig(SolrServers solrServers) {
+            if (solrServers == null) {
+                return;
+            }
+
+            foreach (SolrServerElement server in solrServers)
+            {
+                var solrCore = GetCoreFrom(server);
+                cores.Add(solrCore);
+            }
+
+        }
+
+        private static SolrCore GetCoreFrom(SolrServerElement server) {
+            var id = server.Id ?? Guid.NewGuid().ToString();
+            var documentType = GetCoreDocumentType(server);
+            var coreUrl = GetCoreUrl(server);
+            UriValidator.ValidateHTTP(coreUrl);
+            return new SolrCore(id, documentType, coreUrl);
+        }
+
+        private static string GetCoreUrl(SolrServerElement server)
+        {
+            var url = server.Url;
+            if (string.IsNullOrEmpty(url))
+                throw new ConfigurationErrorsException("Core url missing in SolrNet core configuration");
+            return url;
+        }
+
+        private static Type GetCoreDocumentType(SolrServerElement server)
+        {
+            var documentType = server.DocumentType;
+
+            if (string.IsNullOrEmpty(documentType))
+                throw new ConfigurationErrorsException("Document type missing in SolrNet core configuration");
+
+            Type type;
+
+            try
+            {
+                type = Type.GetType(documentType);
+            }
+            catch (Exception e)
+            {
+                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType), e);
+            }
+
+            if (type == null)
+                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType));
+
+            return type;
+        }
+
+        private void RegisterCore(SolrCore core) {
+            var coreConnectionId = core.Id + typeof (SolrConnection);
+            var solrBasicOperations = typeof(ISolrBasicOperations<>).MakeGenericType(core.DocumentType);
+            var solrOperations = typeof(ISolrOperations<>).MakeGenericType(core.DocumentType);
+            var solrReadOnlyOperations = typeof(ISolrReadOnlyOperations<>).MakeGenericType(core.DocumentType);
+            var solrServer = typeof(SolrServer<>).MakeGenericType(core.DocumentType);
+            var solrBasicReadOnlyOperations = typeof(ISolrBasicReadOnlyOperations<>).MakeGenericType(core.DocumentType);
+            var solrBasicServer = typeof(SolrBasicServer<>).MakeGenericType(core.DocumentType);
+            var iSolrQueryExecuter = typeof(ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
+            var solrQueryExecuter = typeof(SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
+
+            Bind<ISolrConnection>().ToConstant(new SolrConnection(core.Url)).Named(coreConnectionId);
+            Bind(solrOperations).To(solrServer).Named(core.Id)
+                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+            Bind(solrReadOnlyOperations).To(solrServer).Named(core.Id)
+                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+            Bind(solrReadOnlyOperations).To(solrServer).Named(core.Id)
+                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+            Bind(solrBasicOperations).To(solrBasicServer).Named(core.Id)
+                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+            Bind(solrBasicReadOnlyOperations).To(solrBasicServer).Named(core.Id)
+                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+            Bind(iSolrQueryExecuter).To(solrQueryExecuter).Named(core.Id)
+                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+        }
+
+        
         public override void Load() {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Bind<IReadOnlyMappingManager>().ToConstant(mapper);
@@ -68,17 +162,29 @@ namespace Ninject.Integration.SolrNet {
                 typeof(UniqueKeyMatchesMappingRule),
             })
                 Bind<IValidationRule>().To(p);
-            Bind<ISolrConnection>().ToConstant(new SolrConnection(serverURL));
             Bind(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>)).To(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
-            Bind(typeof(ISolrQueryExecuter<>)).To(typeof(SolrQueryExecuter<>));
             Bind(typeof(ISolrDocumentSerializer<>)).To(typeof(SolrDocumentSerializer<>));
-            Bind(typeof(ISolrBasicOperations<>)).To(typeof(SolrBasicServer<>));
-            Bind(typeof(ISolrBasicReadOnlyOperations<>)).To(typeof(SolrBasicServer<>));
-            Bind(typeof(ISolrOperations<>)).To(typeof(SolrServer<>));
-            Bind(typeof(ISolrReadOnlyOperations<>)).To(typeof(SolrServer<>));
+
             Bind<ISolrSchemaParser>().To<SolrSchemaParser>();
             Bind<ISolrDIHStatusParser>().To<SolrDIHStatusParser>();
             Bind<IMappingValidator>().To<MappingValidator>();
+
+            if (cores.Count != 0)
+            {
+                foreach (var solrCore in cores)
+                {
+                    RegisterCore(solrCore);
+                }
+            }
+            else {
+                //Bind single type to a single url, prevent breaking existing functionality
+                Bind<ISolrConnection>().ToConstant(new SolrConnection(serverURL));
+                Bind(typeof (ISolrQueryExecuter<>)).To(typeof (SolrQueryExecuter<>));
+                Bind(typeof (ISolrBasicOperations<>)).To(typeof (SolrBasicServer<>));
+                Bind(typeof (ISolrBasicReadOnlyOperations<>)).To(typeof (SolrBasicServer<>));
+                Bind(typeof (ISolrOperations<>)).To(typeof (SolrServer<>));
+                Bind(typeof (ISolrReadOnlyOperations<>)).To(typeof (SolrServer<>));
+            }
         }
     }
 }

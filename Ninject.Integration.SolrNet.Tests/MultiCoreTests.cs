@@ -31,7 +31,6 @@ namespace Ninject.Integration.SolrNet.Tests {
         }
 
         [Test]
-        [Category("Integration")]
         public void ResolveSolrOperations() {
             //var kernel = new StandardKernel();
 
@@ -63,7 +62,7 @@ namespace Ninject.Integration.SolrNet.Tests {
             Console.WriteLine(solr.Query(SolrQuery.All).Count);
         }
 
-        [Test, Category("Integration")]
+        [Test]
         public void Resolve_MultiCore_FromConfig()
         {
             var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
@@ -125,8 +124,8 @@ namespace Ninject.Integration.SolrNet.Tests {
             Console.WriteLine("Query core 2: {0}", solr2.Query(SolrQuery.All).Count);
         }
 
-        [Test, Category("Integration")]
-        [Ignore]
+        [Test]
+        [Ignore("Not implemented yet")]
         public void MultiCore_SameClassBinding()
         {
             var solrServers = new SolrServers {

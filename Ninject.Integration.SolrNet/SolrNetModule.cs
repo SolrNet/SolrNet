@@ -131,8 +131,6 @@ namespace Ninject.Integration.SolrNet {
                 .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
             Bind(solrReadOnlyOperations).To(solrServer).Named(core.Id)
                 .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
-            Bind(solrReadOnlyOperations).To(solrServer).Named(core.Id)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
             Bind(solrBasicOperations).To(solrBasicServer).Named(core.Id)
                 .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
             Bind(solrBasicReadOnlyOperations).To(solrBasicServer).Named(core.Id)

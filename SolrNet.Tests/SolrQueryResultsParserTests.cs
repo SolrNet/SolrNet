@@ -462,6 +462,13 @@ namespace SolrNet.Tests {
                 Console.WriteLine(i);
             Assert.AreEqual(3, first.Value.Snippets["source_en"].Count);
         }
+
+		[Test]
+		public void ParseBlankHighlighting()
+		{
+			var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithBlankHighlighting.xml"));
+			Assert.AreEqual(0, highlights.Count);
+		}
         
         [Test]
         public void ParseSpellChecking() {

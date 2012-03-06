@@ -139,6 +139,7 @@
     <Compile Include="RegularDocumentVisitorTests.cs" />
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
     <Compile Include="ServiceLocatorTestCase.cs" />
+    <Compile Include="SolrCoreAdminTests.cs" />
     <Compile Include="SolrDIHStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
@@ -147,6 +148,7 @@
     <Compile Include="SolrQueryByDistanceTests.cs" />
     <Compile Include="SolrQuerySerializerStub.cs" />
     <Compile Include="SolrSchemaParserTests.cs" />
+    <Compile Include="SolrStatusResponseParserTests.cs" />
     <Compile Include="UniqueKeyMatchesMappingRuleTests.cs" />
     <Compile Include="Utils\CompressionUtils.cs" />
     <Compile Include="Utils\EmbeddedResource.cs" />
@@ -275,6 +277,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\responseWithMLTHandlerMatch.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithStatus.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

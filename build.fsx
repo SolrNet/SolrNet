@@ -102,7 +102,7 @@ Target "Version" (fun _ ->
     for l in libs do
         AssemblyInfo (fun p -> { p with
                                     OutputFileName = l @@ "Properties\\AssemblyInfo.cs"
-                                    CLSCompliant = true
+                                    CLSCompliant = Some true
                                     AssemblyTitle = l
                                     AssemblyDescription = l
                                     AssemblyProduct = l

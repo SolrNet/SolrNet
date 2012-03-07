@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <lst name="responseHeader">
+    <int name="status">0</int>
+    <int name="QTime">2</int>
+  </lst>
+  <lst name="status">
+    <lst name="core1">
+      <str name="name">core1</str>
+      <str name="instanceDir">C:\Projects\FDO\Main\Common\solr\core1\</str>
+      <str name="dataDir">C:\Projects\FDO\Main\Common\solr\core1\data\</str>
+      <date name="startTime">2010-07-16T10:01:05.854Z</date>
+      <long name="uptime">25133036</long>
+      <lst name="index">
+        <int name="numDocs">3604</int>
+        <int name="maxDoc">3604</int>
+        <long name="version">1276170296452</long>
+        <bool name="optimized">true</bool>
+        <bool name="current">true</bool>
+        <bool name="hasDeletions">false</bool>
+        <str name="directory">org.apache.lucene.store.SimpleFSDirectory:org.apache.lucene.store.SimpleFSDirectory@C:\Projects\FDO\Main\Common\solr\core1\data\index</str>
+        <date name="lastModified">2010-07-09T08:42:11.593Z</date>
+      </lst>
+    </lst>
+    <lst name="core0">
+      <str name="name">core0</str>
+      <str name="instanceDir">C:\Projects\FDO\Main\Common\solr\core0\</str>
+      <str name="dataDir">C:\Projects\FDO\Main\Common\solr\core0\data\</str>
+      <date name="startTime">2010-07-16T16:48:15.674Z</date>
+      <long name="uptime">703217</long>
+      <lst name="index">
+        <int name="numDocs">3610</int>
+        <int name="maxDoc">3613</int>
+        <long name="version">1276170296081</long>
+        <bool name="optimized">false</bool>
+        <bool name="current">true</bool>
+        <bool name="hasDeletions">true</bool>
+        <str name="directory">org.apache.lucene.store.SimpleFSDirectory:org.apache.lucene.store.SimpleFSDirectory@C:\Projects\FDO\Main\Common\solr\core0\data\index</str>
+        <date name="lastModified">2010-06-10T13:30:30Z</date>
+      </lst>
+    </lst>
+  </lst>
+</response>

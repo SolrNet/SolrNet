@@ -1,3 +1,11 @@
+- Added core admin commands
+- Added multicore to Ninject module
+- Fixed commit without parameters should not send waitFlush (issue #172)
+- Fixed MappingManager with class hierarchy (issue #37)
+
+0.4.0b2 (2011-12-29)
+===
+
 - Upgraded to Windsor 3.0
 - Fixed cache injection in Structuremap integration
 - Fixed response parser registrations in built-in container

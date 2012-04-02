@@ -35,7 +35,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void GetStatusForAllCores() {
-            var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl));
+            var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl), GetHeaderParser(), GetStatusResponseParser());
 
             var results = solrCoreAdmin.Status();
             Assert.IsNotEmpty(results);
@@ -71,7 +71,7 @@ namespace SolrNet.Tests {
         [Test]
         public void GetStatusForNamedCore() {
             var coreName = "core-new";
-            var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl));
+            var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl), GetHeaderParser(), GetStatusResponseParser());
 
             var results = solrCoreAdmin.Status(coreName);
             Assert.IsNotEmpty(results[0].Name);

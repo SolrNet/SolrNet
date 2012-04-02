@@ -18,17 +18,7 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Initializes a new instance of the <see cref="SolrCoreAdmin"/> class.
         /// </summary>
-        /// <param name="connection">The connection.</param>
-        public SolrCoreAdmin(ISolrConnection connection) {
-            this.connection = connection;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SolrCoreAdmin"/> class.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="headerParser">The header parser.</param>
-        public SolrCoreAdmin( ISolrConnection connection, ISolrHeaderResponseParser headerParser, ISolrStatusResponseParser resultParser ) {
+        public SolrCoreAdmin(ISolrConnection connection, ISolrHeaderResponseParser headerParser, ISolrStatusResponseParser resultParser) {
             this.connection = connection;
             this.headerParser = headerParser;
             this.resultParser = resultParser;

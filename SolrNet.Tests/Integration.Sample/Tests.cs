@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,7 @@ namespace SolrNet.Tests.Integration.Sample {
     [TestFixture]
     [Category("Integration")]
     public class Tests {
-        private const string serverURL = "http://localhost:8983/solr";
+        private static readonly string serverURL = ConfigurationManager.AppSettings["solr"];
 
 
         [FixtureSetUp]

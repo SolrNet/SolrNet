@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using MbUnit.Framework;
 using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
@@ -30,7 +31,7 @@ namespace SolrNet.Tests {
         http://localhost:8983/solr/admin/cores?action=UNLOAD&core=core0
         */
 
-        private const string solrUrl = "http://127.0.0.1:8080/solr";
+        private static readonly string solrUrl = ConfigurationManager.AppSettings["solr"];
         private const string instanceDir = "/apps/solr";
 
         [Test]

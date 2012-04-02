@@ -13,16 +13,7 @@ namespace SolrNet.Commands.Cores {
         /// </summary>
         /// <param name="name">The name of the core.</param>
         /// <param name="instanceDir">The Solr instance directory.</param>
-        public CreateCommand(string name, string instanceDir) {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentException("Core Name must be specified.", "name");
-            if (string.IsNullOrEmpty(instanceDir))
-                throw new ArgumentException("The Solr instance directory must be specified.", "instanceDir");
-
-            AddParameter("action", "CREATE");
-            AddParameter("name", name);
-            AddParameter("instanceDir", instanceDir);
-        }
+        public CreateCommand(string name, string instanceDir): this(name, instanceDir, null, null, null) {}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateCommand"/> class.
@@ -41,9 +32,12 @@ namespace SolrNet.Commands.Cores {
             AddParameter("action", "CREATE");
             AddParameter("name", name);
             AddParameter("instanceDir", instanceDir);
-            AddParameter("config", configFile);
-            AddParameter("schema", schemaFile);
-            AddParameter("dataDir", dataDir);
+            if (configFile != null)
+                AddParameter("config", configFile);
+            if (schemaFile != null)
+                AddParameter("schema", schemaFile);
+            if (dataDir != null)
+                AddParameter("dataDir", dataDir);
         }
     }
 }

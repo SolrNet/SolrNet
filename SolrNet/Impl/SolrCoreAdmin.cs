@@ -5,11 +5,9 @@ using SolrNet.Commands.Cores;
 
 namespace SolrNet.Impl {
     /// <summary>
-    /// Class used to issue commands related to Cores to Solr.
+    /// Solr core administration commands.
     /// </summary>
-    /// <remarks>
-    /// Based on work done by  HowardvanRooijen
-    /// </remarks>
+    /// <seealso href="http://wiki.apache.org/solr/CoreAdmin"/>
     public class SolrCoreAdmin : ISolrCoreAdmin {
         private readonly ISolrConnection connection;
         private readonly ISolrHeaderResponseParser headerParser;
@@ -25,9 +23,12 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
-        /// The ALIAS action establishes an additional name by which a SolrCore may be referenced.
-        /// Subsequent actions may use the SolrCore's original name or any of its aliases.
+        /// The ALIAS action establishes an additional name by which a core may be referenced.
+        /// Subsequent actions may use the core's original name or any of its aliases.
         /// </summary>
+        /// <remarks>
+        /// This action is still considered experimental.
+        /// </remarks>
         /// <param name="coreName">The name or alias of an existing core.</param>
         /// <param name="otherName">The additional name by which this core should be known.</param>
         public ResponseHeader Alias(string coreName, string otherName) {
@@ -37,12 +38,12 @@ namespace SolrNet.Impl {
         /// <summary>
         /// The CREATE action creates a new core and registers it. If persistence is enabled
         /// (persistent="true" on the &lt;solr&gt; element), the updated configuration for this new core will be
-        /// saved in solr.xml. If a SolrCore with the given name already exists, it will continue to handle requests
+        /// saved in solr.xml. If a core with the given name already exists, it will continue to handle requests
         /// while the new core is initializing. When the new core is ready, it will take new requests and the old core
         /// will be unloaded.
         /// </summary>
         /// <param name="coreName">The name of the new core. Same as "name" on the &lt;core&gt; element.</param>
-        /// <param name="instanceDir">The directory where files for this SolrCore should be stored. Same as "instanceDir" on the &lt;core&gt; element.</param>
+        /// <param name="instanceDir">The directory where files for this core should be stored. Same as "instanceDir" on the &lt;core&gt; element.</param>
         public ResponseHeader Create(string coreName, string instanceDir) {
             return SendAndParseHeader(new CreateCommand(coreName, instanceDir));
         }
@@ -50,7 +51,7 @@ namespace SolrNet.Impl {
         /// <summary>
         /// The CREATE action creates a new core and registers it. If persistence is enabled
         /// (persistent="true" on the &lt;solr&gt; element), the updated configuration for this new core will be
-        /// saved in solr.xml. If a SolrCore with the given name already exists, it will continue to handle requests
+        /// saved in solr.xml. If a core with the given name already exists, it will continue to handle requests
         /// while the new core is initializing. When the new core is ready, it will take new requests and the old core
         /// will be unloaded.
         /// </summary>
@@ -64,10 +65,10 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
-        /// The RELOAD action loads a new core from the configuration of an existing, registered SolrCore.
+        /// The RELOAD action loads a new core from the configuration of an existing, registered core.
         /// While the new core is initializing, the existing one will continue to handle requests.
-        /// When the new SolrCore is ready, it takes over and the old core is unloaded.
-        /// This is useful when you've made changes to a SolrCore's configuration on disk, such as adding
+        /// When the new core is ready, it takes over and the old core is unloaded.
+        /// This is useful when you've made changes to a core's configuration on disk, such as adding
         /// new field definitions. Calling the RELOAD action lets you apply the new configuration without
         /// having to restart the Web container.
         /// </summary>
@@ -77,10 +78,10 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
-        /// The RENAME action hanges the name of a SolrCore.
+        /// The RENAME action changes the name of a core.
         /// </summary>
-        /// <param name="coreName">The name of the SolrCore to be renamed.</param>
-        /// <param name="otherName">The new name for the SolrCore. If the persistent attribute of &lt;solr&gt; is
+        /// <param name="coreName">The name of the core to be renamed.</param>
+        /// <param name="otherName">The new name for the core. If the persistent attribute of &lt;solr&gt; is
         /// "true", the new name will be written to solr.xml as the "name" attribute
         /// of the &lt;core&gt; attribute.</param>
         public ResponseHeader Rename(string coreName, string otherName) {
@@ -88,7 +89,7 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
-        /// The STATUS action returns the status of all running SolrCores,
+        /// The STATUS action returns the status of all running cores.
         /// </summary>
         public List<CoreResult> Status() {
             return ParseStatusResponse(Send(new StatusCommand()));
@@ -103,7 +104,7 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
-        /// SWAP atomically swaps the names used to access two existing SolrCores.
+        /// SWAP atomically swaps the names used to access two existing cores.
         /// This can be used to swap new content into production. The prior core
         /// remains available and can be swapped back, if necessary. Each core will
         /// be known by the name of the other, after the swap.
@@ -115,7 +116,7 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
-        /// The UNLOAD action removes a core from LucidWorks for Solr. Active requests will
+        /// The UNLOAD action removes a core from Solr. Active requests will
         /// continue to be processed, but no new requests will be sent to the named core.
         /// If a core is registered under more than one name, only the given name is removed.
         /// </summary>
@@ -127,7 +128,7 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
-        /// The UNLOAD action removes a core from LucidWorks for Solr. Active requests will
+        /// The UNLOAD action removes a core from Solr. Active requests will
         /// continue to be processed, but no new requests will be sent to the named core.
         /// If a core is registered under more than one name, only the given name is removed.
         /// </summary>

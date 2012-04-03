@@ -22,7 +22,7 @@ namespace SolrNet.Impl.QuerySerializers {
         public override string Serialize(SolrQueryByField q) {
             if (q.FieldName == null || q.FieldValue == null)
                 return null;
-            return string.Format("({0}:{1})", q.FieldName, q.Quoted ? Quote(q.FieldValue) : q.FieldValue);
+            return string.Format("{0}:({1})", q.FieldName, q.Quoted ? Quote(q.FieldValue) : q.FieldValue);
         }
 
         public static readonly Regex SpecialCharactersRx = new Regex("(\\+|\\-|\\&\\&|\\|\\||\\!|\\{|\\}|\\[|\\]|\\^|\\(|\\)|\\\"|\\~|\\:|\\;|\\\\|\\?|\\*)", RegexOptions.Compiled);

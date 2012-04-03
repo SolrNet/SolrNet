@@ -444,7 +444,7 @@ namespace SolrNet.Tests {
                         Rows = 5,
                         Fields = new[] { "one", "two", "three" },
                     }).ToList();
-            Assert.Contains(p, KV.Create("q", "(id:1234)"));
+            Assert.Contains(p, KV.Create("q", "id:(1234)"));
             Assert.Contains(p, KV.Create("start", "0"));
             Assert.Contains(p, KV.Create("rows", "5"));
             Assert.Contains(p, KV.Create("fl", "one,two,three"));

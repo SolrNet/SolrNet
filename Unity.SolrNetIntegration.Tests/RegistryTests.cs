@@ -9,6 +9,7 @@ using Microsoft.Practices.Unity;
 using SolrNet;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
+using SolrNet.Mapping.Validation;
 using Unity.SolrNetIntegration.Config;
 
 #endregion
@@ -17,11 +18,28 @@ namespace Unity.SolrNetIntegration.Tests {
   [TestFixture]
   public class RegistryTests {
     private static IUnityContainer container;
+    private SolrServers testServers = new SolrServers {
+        new SolrServerElement {
+          Id = "entity",
+          DocumentType = typeof (Entity).AssemblyQualifiedName,
+          Url = "http://localhost:8983/solr/entity",
+        },
+        new SolrServerElement {
+          Id = "entity2Dict",
+          DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
+          Url = "http://localhost:8983/solr/entity2",
+        },
+        new SolrServerElement {
+          Id = "entity2",
+          DocumentType = typeof (Entity2).AssemblyQualifiedName,
+          Url = "http://localhost:8983/solr/entity2",
+        },
+      };
 
     [Test]
     public void ResolveSolrOperations() {
       SetupContainer();
-      var m = container.Resolve<ISolrOperations<Entity>>();
+      var m = container.Resolve<ISolrOperations<Entity>>("entity");
       Assert.IsNotNull(m);
     }
 
@@ -38,7 +56,7 @@ namespace Unity.SolrNetIntegration.Tests {
     [Test, Category("Integration")]
     public void Ping_And_Query() {
       SetupContainer();
-      var solr = container.Resolve<ISolrOperations<Entity>>();
+      var solr = container.Resolve<ISolrOperations<Entity>>("entity");
       solr.Ping();
       Console.WriteLine(solr.Query(SolrQuery.All).Count);
     }
@@ -105,53 +123,33 @@ namespace Unity.SolrNetIntegration.Tests {
 
     [Test]
     public void DictionaryDocument_and_multi_core() {
-      var cores = new SolrServers {
-        new SolrServerElement {
-          Id = "default",
-          DocumentType = typeof (Entity).AssemblyQualifiedName,
-          Url = "http://localhost:8983/solr/entity1",
-        },
-        new SolrServerElement {
-          Id = "entity1dict",
-          DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
-          Url = "http://localhost:8983/solr/entity1",
-        },
-        new SolrServerElement {
-          Id = "another",
-          DocumentType = typeof (Entity2).AssemblyQualifiedName,
-          Url = "http://localhost:8983/solr/entity2",
-        },
-      };
-
       container = new UnityContainer();
-      new SolrNetContainerConfiguration().ConfigureContainer(cores, container);
-      container.Resolve<ISolrOperations<Entity>>();
-      container.Resolve<ISolrOperations<Entity2>>();
-      container.Resolve<ISolrOperations<Dictionary<string, object>>>();
+      new SolrNetContainerConfiguration().ConfigureContainer(testServers, container);
+      container.Resolve<ISolrOperations<Entity>>("entity");
+      container.Resolve<ISolrOperations<Entity2>>("entity2");
+      container.Resolve<ISolrOperations<Dictionary<string, object>>>("entity2Dict");
     }
+
+    
 
     [Test, Category("Integration")]
     public void DictionaryDocument() {
-      SetupContainer();
-
-      var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
+      container = new UnityContainer();
+      new SolrNetContainerConfiguration().ConfigureContainer(testServers, container);
+      var solr = container.Resolve<ISolrOperations<Entity2>>("entity2");
       var results = solr.Query(SolrQuery.All);
       Assert.GreaterThan(results.Count, 0);
-      foreach (var d in results) {
-        Assert.GreaterThan(d.Count, 0);
-        foreach (var kv in d)
-          Console.WriteLine("{0}: {1}", kv.Key, kv.Value);
-      }
     }
 
     [Test, Category("Integration")]
     public void DictionaryDocument_add() {
-      SetupContainer();
+      container = new UnityContainer();
+      new SolrNetContainerConfiguration().ConfigureContainer(testServers, container);
 
-      var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
+      var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>("entity2Dict");
 
       solr.Add(new Dictionary<string, object> {
-        {"id", "ababa"},
+        {"id", "5"},
         {"manu", "who knows"},
         {"popularity", 55},
         {"timestamp", DateTime.UtcNow},

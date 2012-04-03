@@ -27,7 +27,6 @@ namespace Unity.SolrNetIntegration {
       container.RegisterType(typeof (ISolrQueryExecuter<>), typeof (SolrQueryExecuter<>));
       container.RegisterType<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>();
       container.RegisterType<IMappingValidator, MappingValidator>();
-
       RegisterParsers(container);
       RegisterValidationRules(container);
       RegisterSerializers(container);
@@ -99,7 +98,7 @@ namespace Unity.SolrNetIntegration {
       var SolrQueryExecuter = typeof (SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
 
       container.RegisterType(
-        ISolrQueryExecuter, SolrQueryExecuter,
+        ISolrQueryExecuter, SolrQueryExecuter, core.Id,
         new InjectionConstructor(
           new ResolvedParameter(typeof (ISolrQueryResultParser<>).MakeGenericType(core.DocumentType)),
           new ResolvedParameter(typeof (ISolrConnection), coreConnectionId),
@@ -112,10 +111,10 @@ namespace Unity.SolrNetIntegration {
       var SolrBasicServer = typeof (SolrBasicServer<>).MakeGenericType(core.DocumentType);
 
       container.RegisterType(
-        ISolrBasicOperations, SolrBasicServer,
+        ISolrBasicOperations, SolrBasicServer, core.Id,
         new InjectionConstructor(
           new ResolvedParameter(typeof (ISolrConnection), coreConnectionId),
-          new ResolvedParameter(ISolrQueryExecuter),
+          new ResolvedParameter(ISolrQueryExecuter, core.Id),
           new ResolvedParameter(typeof (ISolrDocumentSerializer<>).MakeGenericType(core.DocumentType)),
           new ResolvedParameter(typeof (ISolrSchemaParser)),
           new ResolvedParameter(typeof (ISolrHeaderResponseParser)),
@@ -124,10 +123,10 @@ namespace Unity.SolrNetIntegration {
           new ResolvedParameter(typeof (ISolrExtractResponseParser))));
 
       container.RegisterType(
-        ISolrBasicReadOnlyOperations, SolrBasicServer,
+        ISolrBasicReadOnlyOperations, SolrBasicServer, core.Id,
         new InjectionConstructor(
           new ResolvedParameter(typeof (ISolrConnection), coreConnectionId),
-          new ResolvedParameter(ISolrQueryExecuter),
+          new ResolvedParameter(ISolrQueryExecuter, core.Id),
           new ResolvedParameter(typeof (ISolrDocumentSerializer<>).MakeGenericType(core.DocumentType)),
           new ResolvedParameter(typeof (ISolrSchemaParser)),
           new ResolvedParameter(typeof (ISolrHeaderResponseParser)),
@@ -137,20 +136,19 @@ namespace Unity.SolrNetIntegration {
 
       var ISolrOperations = typeof (ISolrOperations<>).MakeGenericType(core.DocumentType);
       var SolrServer = typeof (SolrServer<>).MakeGenericType(core.DocumentType);
-
       container.RegisterType(
-        ISolrOperations, SolrServer,
+        ISolrOperations, SolrServer, core.Id,
         new InjectionConstructor(
-          new ResolvedParameter(ISolrBasicOperations),
+          new ResolvedParameter(ISolrBasicOperations, core.Id),
           new ResolvedParameter(typeof (IReadOnlyMappingManager)),
           new ResolvedParameter(typeof (IMappingValidator))));
 
       var ISolrReadOnlyOperations = typeof (ISolrReadOnlyOperations<>).MakeGenericType(core.DocumentType);
 
       container.RegisterType(
-        ISolrReadOnlyOperations, SolrServer,
+        ISolrReadOnlyOperations, SolrServer, core.Id,
         new InjectionConstructor(
-          new ResolvedParameter(ISolrBasicOperations),
+          new ResolvedParameter(ISolrBasicOperations, core.Id),
           new ResolvedParameter(typeof (IReadOnlyMappingManager)),
           new ResolvedParameter(typeof (IMappingValidator))));
     }

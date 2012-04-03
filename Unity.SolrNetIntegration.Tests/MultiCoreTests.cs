@@ -28,5 +28,27 @@ namespace Unity.SolrNetIntegration.Tests {
       var solrOperations2 = container.Resolve<ISolrOperations<Entity2>>();
       Assert.IsNotNull(solrOperations2);
     }
+
+    [Test]
+    public void Same_document_type_different_core_url()
+    {
+        var cores = new SolrServers {
+        new SolrServerElement {
+          Id = "core1",
+          DocumentType = typeof (Entity).AssemblyQualifiedName,
+          Url = "http://localhost:8983/solr/entity1",
+        },
+        new SolrServerElement {
+          Id = "core2",
+          DocumentType = typeof (Entity).AssemblyQualifiedName,
+          Url = "http://localhost:8983/solr/entity2",
+        }
+      };
+
+        container = new UnityContainer();
+        new SolrNetContainerConfiguration().ConfigureContainer(cores, container);
+        var core1 = container.Resolve<ISolrOperations<Entity>>("core1");
+        var core2 = container.Resolve<ISolrOperations<Entity2>>("core2");
+    }
   }
 }

@@ -117,21 +117,6 @@ namespace Unity.SolrNetIntegration.Tests {
     }
 
     [Test, Category("Integration")]
-    public void DictionaryDocument_and_multi_core() {
-      container = new UnityContainer();
-      new SolrNetContainerConfiguration().ConfigureContainer(testServers, container);
-      var entityOperation = container.Resolve<ISolrOperations<Entity>>("entity");
-      var dictionaryOperation = container.Resolve<ISolrOperations<Dictionary<string, object>>>("entity2Dict");
-      entityOperation.Add(new Entity());
-      dictionaryOperation.Add(new Dictionary<string, object>() {
-        {"id", 1},
-        {"name", "Sheldon Cooper"},
-        {"weapon", "Brain"}
-      });
-      Assert.AreEqual(1, dictionaryOperation.Query("*",new QueryOptions { Rows = 0 }).NumFound);
-    }
-
-    [Test, Category("Integration")]
     public void DictionaryDocument() {
       container = new UnityContainer();
       new SolrNetContainerConfiguration().ConfigureContainer(testServers, container);

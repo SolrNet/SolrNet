@@ -18,16 +18,30 @@ namespace Unity.SolrNetIntegration.Tests {
       new SolrNetContainerConfiguration().ConfigureContainer(solrConfig.SolrServers, container);
     }
 
-    [Test]
+    [Test, Ignore("(regression) Resolving SolrOperation without name not supported anymore")]
     public void Get_SolrOperations_for_Entity() {
       var solrOperations = container.Resolve<ISolrOperations<Entity>>();
       Assert.IsNotNull(solrOperations);
     }
 
-    [Test]
+    [Test, Ignore("(regression) Retrieving SolrOperation without name not supported anymore")]
     public void Get_SolrOperations_for_Entity2() {
       var solrOperations2 = container.Resolve<ISolrOperations<Entity2>>();
       Assert.IsNotNull(solrOperations2);
+    }
+
+    [Test]
+    public void Get_named_SolrOperations_for_Entity()
+    {
+        var solrOperations = container.Resolve<ISolrOperations<Entity>>("entity");
+        Assert.IsNotNull(solrOperations);
+    }
+
+    [Test]
+    public void Get_named_SolrOperations_for_Entity2()
+    {
+        var solrOperations2 = container.Resolve<ISolrOperations<Entity2>>("entity2");
+        Assert.IsNotNull(solrOperations2);
     }
 
     [Test]

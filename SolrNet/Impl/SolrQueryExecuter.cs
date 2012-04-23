@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
@@ -30,7 +31,7 @@ namespace SolrNet.Impl {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class SolrQueryExecuter<T> : ISolrQueryExecuter<T> {
-        private readonly ISolrQueryResultParser<T> resultParser;
+        private readonly ISolrAbstractResponseParser<T> resultParser;
         private readonly ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser;
         private readonly ISolrConnection connection;
         private readonly ISolrQuerySerializer querySerializer;
@@ -74,7 +75,7 @@ namespace SolrNet.Impl {
         /// <param name="querySerializer"></param>
         /// <param name="facetQuerySerializer"></param>
         /// <param name="mlthResultParser"></param>
-        public SolrQueryExecuter(ISolrQueryResultParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer, ISolrFacetQuerySerializer facetQuerySerializer, ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser) {
+        public SolrQueryExecuter(ISolrAbstractResponseParser<T> resultParser, ISolrConnection connection, ISolrQuerySerializer querySerializer, ISolrFacetQuerySerializer facetQuerySerializer, ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser) {
             this.resultParser = resultParser;
             this.mlthResultParser = mlthResultParser;
             this.connection = connection;
@@ -538,9 +539,11 @@ namespace SolrNet.Impl {
         /// <returns>query results</returns>
         public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
             var param = GetAllParameters(q, options);
+            var results = new SolrQueryResults<T>();
             var r = connection.Get(Handler, param);
-            var qr = resultParser.Parse(r);
-            return qr;
+            var xml = XDocument.Parse(r);
+            resultParser.Parse(xml, results);
+            return results;
         }
 
         /// <summary>

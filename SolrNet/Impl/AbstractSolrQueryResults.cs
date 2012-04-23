@@ -61,7 +61,7 @@ namespace SolrNet.Impl {
         /// <param name="query"></param>
         /// <param name="moreLikeThis"></param>
         public void Switch(Action<SolrQueryResults<T>> query, Action<SolrMoreLikeThisHandlerResults<T>> moreLikeThis) {
-            Switch(F.ActionToFunc(query), F.ActionToFunc(moreLikeThis));
+            Switch(F.ToFunc(query), F.ToFunc(moreLikeThis));
         }
     }
 }

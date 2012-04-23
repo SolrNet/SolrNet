@@ -19,8 +19,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using MbUnit.Framework;
-using Rhino.Mocks;
-using SolrNet.Impl;
 using SolrNet.Impl.FieldParsers;
 
 namespace SolrNet.Tests {
@@ -44,13 +42,6 @@ namespace SolrNet.Tests {
             Assert.Throws<FormatException>(() => p.Parse(xml.Root, null));
         }
 
-        public CollectionFieldParser CreateCollectionFieldParser() {
-            var mocks = new MockRepository();
-            var vp = mocks.StrictMock<ISolrFieldParser>();
-            var p = new CollectionFieldParser(vp);
-            return p;
-        }
-
         [Test]
         [Row(typeof(string))]
         [Row(typeof(Dictionary<,>))]
@@ -59,7 +50,7 @@ namespace SolrNet.Tests {
         [Row(typeof(IDictionary))]
         [Row(typeof(Hashtable))]
         public void CollectionFieldParser_cant_handle_types(Type t) {
-            var p = CreateCollectionFieldParser();
+            var p = new CollectionFieldParser(null);
             Assert.IsFalse(p.CanHandleType(t));
         }
 
@@ -77,7 +68,7 @@ namespace SolrNet.Tests {
         [Row(typeof(List<>))]
         [Row(typeof(List<int>))]
         public void CollectionFieldParser_can_handle_types(Type t) {
-            var p = CreateCollectionFieldParser();
+            var p = new CollectionFieldParser(null);
             Assert.IsTrue(p.CanHandleType(t));
         }
 

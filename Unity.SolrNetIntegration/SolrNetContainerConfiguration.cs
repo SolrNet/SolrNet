@@ -17,6 +17,7 @@ using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
+using SolrNet.Utils;
 using Unity.SolrNetIntegration.Config;
 
 namespace Unity.SolrNetIntegration {
@@ -59,30 +60,10 @@ namespace Unity.SolrNetIntegration {
     private void RegisterParsers(IUnityContainer container) {
       container.RegisterType(typeof (ISolrDocumentResponseParser<>), typeof (SolrDocumentResponseParser<>));
       container.RegisterType<ISolrDocumentResponseParser<Dictionary<string, object>>, SolrDictionaryDocumentResponseParser>();
-
-      var parsers = new[] {
-        typeof (ResultsResponseParser<>),
-        typeof (HeaderResponseParser<>),
-        typeof (FacetsResponseParser<>),
-        typeof (HighlightingResponseParser<>),
-        typeof (MoreLikeThisResponseParser<>),
-        typeof (SpellCheckResponseParser<>),
-        typeof (StatsResponseParser<>),
-        typeof (CollapseResponseParser<>),
-        typeof(GroupingResponseParser<>),
-        typeof(ClusterResponseParser<>),
-        typeof(TermsResponseParser<>),
-        typeof(InterestingTermsResponseParser<>),
-        typeof(MoreLikeThisHandlerMatchResponseParser<>),
-      };
-
-      foreach (var parser in parsers) {
-        container.RegisterType(typeof (ISolrAbstractResponseParser<>), parser, parser.ToString());
-      }
+      container.RegisterType(typeof (ISolrAbstractResponseParser<>), typeof (DefaultResponseParser<>));
 
       container.RegisterType<ISolrHeaderResponseParser, HeaderResponseParser<string>>();
       container.RegisterType<ISolrExtractResponseParser, ExtractResponseParser>();
-      container.RegisterType(typeof (ISolrQueryResultParser<>), typeof (SolrQueryResultParser<>));
       container.RegisterType(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>), typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
       container.RegisterType<ISolrFieldParser, DefaultFieldParser>();
       container.RegisterType<ISolrSchemaParser, SolrSchemaParser>();
@@ -100,7 +81,7 @@ namespace Unity.SolrNetIntegration {
       container.RegisterType(
         ISolrQueryExecuter, SolrQueryExecuter, core.Id,
         new InjectionConstructor(
-          new ResolvedParameter(typeof (ISolrQueryResultParser<>).MakeGenericType(core.DocumentType)),
+            new ResolvedParameter(typeof(ISolrAbstractResponseParser<>).MakeGenericType(core.DocumentType)),
           new ResolvedParameter(typeof (ISolrConnection), coreConnectionId),
           new ResolvedParameter(typeof (ISolrQuerySerializer)),
           new ResolvedParameter(typeof (ISolrFacetQuerySerializer)),
@@ -171,7 +152,7 @@ namespace Unity.SolrNetIntegration {
       var id = server.Id ?? Guid.NewGuid().ToString();
       var documentType = GetCoreDocumentType(server);
       var coreUrl = GetCoreUrl(server);
-      ValidateUrl(coreUrl);
+      UriValidator.ValidateHTTP(coreUrl);
       return new SolrCore(id, documentType, coreUrl);
     }
 
@@ -202,19 +183,6 @@ namespace Unity.SolrNetIntegration {
         throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType));
 
       return type;
-    }
-
-    private static void ValidateUrl(string url) {
-      try {
-        var uri = new Uri(url);
-        if (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps) {
-          throw new InvalidURLException("Only HTTP or HTTPS protocols are supported");
-        }
-      } catch (ArgumentException e) {
-        throw new InvalidURLException(string.Format("Invalid URL '{0}'", url), e);
-      } catch (UriFormatException e) {
-        throw new InvalidURLException(string.Format("Invalid URL '{0}'", url), e);
-      }
     }
   }
 }

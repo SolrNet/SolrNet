@@ -17,9 +17,9 @@ namespace SolrNet.Utils {
                     throw new InvalidURLException("Only HTTP or HTTPS protocols are supported");
                 return s;
             } catch (ArgumentException e) {
-                throw new InvalidURLException(e);
+                throw new InvalidURLException(string.Format("Invalid URL '{0}'", s), e);
             } catch (UriFormatException e) {
-                throw new InvalidURLException(e);
+                throw new InvalidURLException(string.Format("Invalid URL '{0}'", s), e);
             }
         }
     }

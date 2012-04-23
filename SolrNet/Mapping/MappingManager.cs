@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SolrNet.Exceptions;
 
 namespace SolrNet.Mapping {
     /// <summary>
@@ -33,8 +34,7 @@ namespace SolrNet.Mapping {
             Add(property, property.Name);
         }
 
-        public void Add(PropertyInfo property, string fieldName)
-        {
+        public void Add(PropertyInfo property, string fieldName) {
             if (property == null)
                 throw new ArgumentNullException("property");
             if (fieldName == null)
@@ -56,11 +56,12 @@ namespace SolrNet.Mapping {
                 mappings[t] = new Dictionary<string,SolrFieldModel>();
             }
 
+            EnsurePropertyNotAlreadyAddedOnInheritedType(property, t);
+
             var m = mappings[t].FirstOrDefault(k => k.Value.Property == property);
             if (m.Key != null) {
                 mappings[t].Remove(m.Key);
             }
-
 
             mappings[t][fieldName] = fld;
         }
@@ -73,9 +74,11 @@ namespace SolrNet.Mapping {
         public IDictionary<string,SolrFieldModel> GetFields(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
-            if (!mappings.ContainsKey(type))
-                return new Dictionary<string, SolrFieldModel>();
-            return mappings[type];
+            
+            return mappings.Keys
+                .Where(t => t.IsAssignableFrom(type))
+                .SelectMany(t => mappings[t])
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
         public void SetUniqueKey(PropertyInfo property) {
@@ -84,25 +87,46 @@ namespace SolrNet.Mapping {
             var t = property.ReflectedType;
             if (!mappings.ContainsKey(t))
                 throw new ArgumentException(string.Format("Property '{0}.{1}' not mapped. Please use Add() to map it first", t, property.Name));
+
             uniqueKeys[t] = property;
         }
 
         public SolrFieldModel GetUniqueKey(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
-            try {
-                var prop = uniqueKeys[type];
-                var unique = mappings[type].First(kv => kv.Value.Property == prop);
-                return unique.Value;
-            } catch (KeyNotFoundException) {
+            var props = uniqueKeys
+                .Where(k => k.Key.IsAssignableFrom(type))
+                .Select(x => x.Value)
+                .ToList();
+            if (props.Count == 0)
                 return null;
-            } catch (InvalidOperationException) {
-                return null;
-            }
+            var prop = props[0];
+            return FindPropertyInMappings(prop, type);
         }
 
         public ICollection<Type> GetRegisteredTypes() {
-            return mappings.Select(k => k.Key).Distinct().ToList();
+            return mappings.Select(k => k.Key).ToList();
+        }
+
+        private void EnsurePropertyNotAlreadyAddedOnInheritedType(PropertyInfo property, Type t) {
+            var existingMappings = 
+                from m in mappings 
+                where m.Key.IsAssignableFrom(t) || t.IsAssignableFrom(m.Key) 
+                where m.Key != t 
+                where m.Value.Any(k => k.Value.Property.Name == property.Name) 
+                select m;
+
+            foreach (var m in existingMappings)
+                throw new SolrNetException(string.Format("There is no need to add the same property twice for inherited types ('{0}' and'{1}' are part of the same class hierarchy, and property '{2}' was added twice).",
+                                                         t, m.Key, property.Name));
+        }
+
+        private SolrFieldModel FindPropertyInMappings(PropertyInfo prop, Type type) {
+            var solrFieldModels = 
+                from m in mappings 
+                where m.Key.IsAssignableFrom(type) || type.IsAssignableFrom(m.Key)
+                select m.Value.FirstOrDefault(kv => kv.Value.Property == prop).Value;
+            return solrFieldModels.FirstOrDefault();
         }
     }
 }

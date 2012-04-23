@@ -69,6 +69,15 @@
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
     <Compile Include="ClusterResults.cs" />
+    <Compile Include="Commands\CoreCommand.cs" />
+    <Compile Include="Commands\Cores\AliasCommand.cs" />
+    <Compile Include="Commands\Cores\CreateCommand.cs" />
+    <Compile Include="Commands\Cores\LoadCommand.cs" />
+    <Compile Include="Commands\Cores\ReloadCommand.cs" />
+    <Compile Include="Commands\Cores\RenameCommand.cs" />
+    <Compile Include="Commands\Cores\StatusCommand.cs" />
+    <Compile Include="Commands\Cores\SwapCommand.cs" />
+    <Compile Include="Commands\Cores\UnloadCommand.cs" />
     <Compile Include="Commands\Parameters\CommonQueryOptions.cs" />
     <Compile Include="Commands\Parameters\ClusteringParameters.cs" />
     <Compile Include="Commands\Parameters\InterestingTerms.cs" />
@@ -98,10 +107,18 @@
     <Compile Include="Group.cs" />
     <Compile Include="GroupedResults.cs" />
     <Compile Include="Impl\AbstractSolrQueryResults.cs" />
+    <Compile Include="Impl\CoreIndexResult.cs" />
+    <Compile Include="Impl\CoreResult.cs" />
     <Compile Include="Impl\HighlightedSnippets.cs" />
     <Compile Include="Impl\ISolrAbstractResponseParser.cs" />
+    <Compile Include="Impl\ISolrStatusResponseParser.cs" />
     <Compile Include="Impl\ISolrMoreLikeThisHandlerQueryResultsParser.cs" />
     <Compile Include="Impl\ISolrMoreLikeThisHandlerResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\AggregateResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\CoreStatusResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\DefaultResponseParser.cs" />
+    <Compile Include="Impl\SolrCoreAdmin.cs" />
+    <Compile Include="Impl\SolrStatusResponseParser.cs" />
     <Compile Include="Impl\SolrMoreLikeThisHandlerResults.cs" />
     <Compile Include="Impl\ResponseParsers\InterestingTermsResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\MoreLikeThisHandlerMatchResponseParser.cs" />
@@ -112,6 +129,7 @@
     <Compile Include="Impl\ISolrDIHStatusParser.cs" />
     <Compile Include="Impl\ResponseParsers\ClusterResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\TermsResponseParser.cs" />
+    <Compile Include="ISolrCoreAdmin.cs" />
     <Compile Include="Pivot.cs" />
     <Compile Include="SolrMLTQuery.cs" />
     <Compile Include="PivotFacetingResult.cs" />
@@ -232,7 +250,6 @@
     <Compile Include="ISolrQueryExecuter.cs" />
     <Compile Include="ISolrOperations.cs" />
     <Compile Include="ISolrQuery.cs" />
-    <Compile Include="ISolrQueryResultParser.cs" />
     <Compile Include="ISolrReadOnlyOperations.cs" />
     <Compile Include="Mapping\MappingManager.cs" />
     <Compile Include="Mapping\MemoizingMappingManager.cs" />
@@ -282,7 +299,6 @@
     <Compile Include="SolrQueryByField.cs" />
     <Compile Include="SolrQueryByRange.cs" />
     <Compile Include="SolrQueryInList.cs" />
-    <Compile Include="Impl\SolrQueryResultParser.cs" />
     <Compile Include="SolrQueryResults.cs" />
     <Compile Include="Impl\SolrBasicServer.cs" />
     <Compile Include="Attributes\SolrUniqueKeyAttribute.cs" />

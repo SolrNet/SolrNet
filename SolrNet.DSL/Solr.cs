@@ -108,7 +108,7 @@ namespace SolrNet.DSL {
 
         private static ISolrQueryExecuter<T> NewQueryExecuter<T>() {
             return new SolrQueryExecuter<T>(
-                ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(),
+                ServiceLocator.Current.GetInstance<ISolrAbstractResponseParser<T>>(),
                 Connection,
                 ServiceLocator.Current.GetInstance<ISolrQuerySerializer>(),
                 ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>(),

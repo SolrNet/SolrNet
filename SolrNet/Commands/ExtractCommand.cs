@@ -53,7 +53,7 @@ namespace SolrNet.Commands {
             }
 
             if (parameters.StreamType != null) {
-                param.Add(new KeyValuePair<string, string>("stream.type", parameters.StreamType));
+                param.Add(KV.Create("stream.type", parameters.StreamType));
             }
 
             if (parameters.AutoCommit)

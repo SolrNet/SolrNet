@@ -2,33 +2,34 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using MbUnit.Framework;
-using Rhino.Mocks;
-using SolrNet.Impl;
+using Moroco;
 using SolrNet.Impl.DocumentPropertyVisitors;
+using SolrNet.Tests.Mocks;
 
 namespace SolrNet.Tests {
     [TestFixture]
     public class RegularDocumentVisitorTests {
         [Test]
         public void InvalidCastReportsFieldName() {
-            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
-            mapper.Expect(x => x.GetFields(typeof(Entity)))
-                .Return(new Dictionary<string, SolrFieldModel> {
-                    {"Id", new SolrFieldModel {
-                        FieldName = "id",
-                        Property = typeof(Entity).GetProperty("Id"),
-                    }}
-                });
-            var parser = MockRepository.GenerateMock<ISolrFieldParser>();
-            parser.Expect(x => x.CanHandleSolrType(null))
-                .IgnoreArguments()
-                .Return(true);
-            parser.Expect(x => x.CanHandleType(null))
-                .IgnoreArguments()
-                .Return(true);
-            parser.Expect(x => x.Parse(null, null))
-                .IgnoreArguments()
-                .Return("something");
+            var mapper = new MReadOnlyMappingManager();
+            mapper.getFields += type => {
+                Assert.AreEqual(typeof (Entity), type);
+                var model = new SolrFieldModel {
+                    FieldName = "id",
+                    Property = typeof (Entity).GetProperty("Id"),
+                };
+                return new Dictionary<string, SolrFieldModel> {
+                    {"Id", model}
+                };
+            };
+            mapper.getFields &= x => x.Expect(1);
+
+            var parser = new MSolrFieldParser {
+                canHandleSolrType = _ => true,
+                canHandleType = _ => true,
+                parse = (a,b) => "something",
+            };
+
             var v = new RegularDocumentVisitor(parser, mapper);
             var doc = new Entity();
             var field = new XElement("tag");
@@ -39,6 +40,8 @@ namespace SolrNet.Tests {
                 Assert.Contains(e.Message, "property 'Id'");
                 Console.WriteLine(e.Message);
             }
+
+            mapper.getFields.Verify();
         }
     }
 }

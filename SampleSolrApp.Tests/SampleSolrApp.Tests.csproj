@@ -59,9 +59,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MbUnit.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\lib\Rhino.Mocks.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
@@ -88,6 +85,8 @@
   <ItemGroup>
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="ForeachWithSeparatorTests.cs" />
+    <Compile Include="Moroco.cs" />
+    <Compile Include="MSolrReadOnlyOperations.cs" />
     <Compile Include="PaginationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UrlHelperExtensionsTests.cs" />

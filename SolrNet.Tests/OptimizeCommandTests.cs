@@ -1,82 +1,60 @@
 using System;
 using MbUnit.Framework;
-using Rhino.Mocks;
 using SolrNet.Commands;
+using SolrNet.Tests.Mocks;
 
-namespace SolrNet.Tests
-{
+namespace SolrNet.Tests {
     [TestFixture]
-    public class OptimizeCommandTests
-    {
-        public delegate string Writer(string ignored, string s);
-
+    public class OptimizeCommandTests {
         [Test]
-        public void ExecuteBasic()
-        {
-            var mocks = new MockRepository();
-            var conn = mocks.StrictMock<ISolrConnection>();
-
-            With.Mocks(mocks).Expecting(() =>
-            {
-                conn.Post("/update","<optimize />");
-                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s)
-                {
-                    Console.WriteLine(s);
-                    return null;
-                }));
-            }).Verify(() =>
-            {
-                var cmd = new OptimizeCommand();
-                cmd.Execute(conn);
-            });
+        public void ExecuteBasic() {
+            var conn = new MSolrConnection();
+            conn.post += (url, content) => {
+                Assert.AreEqual("/update", url);
+                Assert.AreEqual("<optimize />", content);
+                Console.WriteLine(content);
+                return null;
+            };
+            var cmd = new OptimizeCommand();
+            cmd.Execute(conn);
+            Assert.AreEqual(1, conn.post.Calls);
         }
 
         [Test]
-        public void ExecuteWithBasicOptions()
-        {
-            var mocks = new MockRepository();
-            var conn = mocks.StrictMock<ISolrConnection>();
-
-            With.Mocks(mocks).Expecting(() =>
-            {
-                conn.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />");
-                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s)
-                {
-                    Console.WriteLine(s);
-                    return null;
-                }));
-            }).Verify(() =>
-            {
-                var cmd = new OptimizeCommand();
-                cmd.WaitFlush = true;
-                cmd.WaitSearcher = true;
-                cmd.Execute(conn);
-            });
+        public void ExecuteWithBasicOptions() {
+            var conn = new MSolrConnection();
+            conn.post += (url, content) => {
+                Assert.AreEqual("/update", url);
+                Assert.AreEqual("<optimize waitSearcher=\"true\" waitFlush=\"true\" />", content);
+                Console.WriteLine(content);
+                return null;
+            };
+            var cmd = new OptimizeCommand {
+                WaitFlush = true,
+                WaitSearcher = true
+            };
+            cmd.Execute(conn);
+            Assert.AreEqual(1, conn.post.Calls);
         }
 
         [Test]
-        public void ExecuteWithAllOptions()
-        {
-            var mocks = new MockRepository();
-            var conn = mocks.StrictMock<ISolrConnection>();
+        public void ExecuteWithAllOptions() {
+            var conn = new MSolrConnection();
+            conn.post += (url, content) => {
+                Assert.AreEqual("/update", url);
+                Assert.AreEqual("<optimize waitSearcher=\"true\" waitFlush=\"true\" expungeDeletes=\"true\" maxSegments=\"2\" />", content);
+                Console.WriteLine(content);
+                return null;
+            };
+            var cmd = new OptimizeCommand {
+                MaxSegments = 2,
+                ExpungeDeletes = true,
+                WaitFlush = true,
+                WaitSearcher = true
+            };
+            cmd.Execute(conn);
 
-            With.Mocks(mocks).Expecting(() =>
-            {
-                conn.Post("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" expungeDeletes=\"true\" maxSegments=\"2\" />");
-                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s)
-                {
-                    Console.WriteLine(s);
-                    return null;
-                }));
-            }).Verify(() =>
-            {
-                var cmd = new OptimizeCommand();
-                cmd.MaxSegments = 2;
-                cmd.ExpungeDeletes = true;
-                cmd.WaitFlush = true;
-                cmd.WaitSearcher = true;
-                cmd.Execute(conn);
-            });
+            Assert.AreEqual(1, conn.post.Calls);
         }
     }
 }

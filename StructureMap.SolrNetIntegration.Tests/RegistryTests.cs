@@ -91,20 +91,6 @@ namespace StructureMap.SolrNetIntegration.Tests
         }
 
         [Test]
-        public void ResponseParsers()
-        {
-            SetupContainer();
-
-            var parser = ObjectFactory.GetInstance<ISolrQueryResultParser<Entity>>() as SolrQueryResultParser<Entity>;
-
-            var field = parser.GetType().GetField("parsers", BindingFlags.NonPublic | BindingFlags.Instance);
-            var parsers = (ISolrAbstractResponseParser<Entity>[])field.GetValue(parser);
-            Assert.AreEqual(13, parsers.Length);
-            foreach (var t in parsers)
-                Console.WriteLine(t);
-        }
-
-        [Test]
         public void DictionaryDocument_and_multi_core() {
             var cores = new SolrServers {
                 new SolrServerElement {
@@ -176,6 +162,16 @@ namespace StructureMap.SolrNetIntegration.Tests
             SetupContainer();
             var serializer = ObjectFactory.GetInstance<ISolrDocumentSerializer<Dictionary<string, object>>>();
             Assert.IsInstanceOfType<SolrDictionarySerializer>(serializer);
+        }
+
+        [Test]
+        public void Cache() {
+            SetupContainer();
+            ObjectFactory.Configure(cfg => cfg.For<ISolrCache>().Use<HttpRuntimeCache>());
+            var connectionId = "entity" + typeof (SolrConnection);
+            var connection = (SolrConnection) ObjectFactory.GetNamedInstance<ISolrConnection>(connectionId);
+            Assert.IsNotNull(connection.Cache);
+            Assert.IsInstanceOfType<HttpRuntimeCache>(connection.Cache);
         }
 
         private static void SetupContainer()

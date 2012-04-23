@@ -116,18 +116,6 @@ namespace Unity.SolrNetIntegration.Tests {
       container.Resolve<ISolrDocumentPropertyVisitor>();
     }
 
-    [Test]
-    public void ResponseParsers() {
-      SetupContainer();
-
-      var parser = container.Resolve<ISolrQueryResultParser<Entity>>() as SolrQueryResultParser<Entity>;
-      var field = parser.GetType().GetField("parsers", BindingFlags.NonPublic | BindingFlags.Instance);
-      var parsers = (ISolrAbstractResponseParser<Entity>[]) field.GetValue(parser);
-      Assert.AreEqual(13, parsers.Length);
-      foreach (var t in parsers)
-        Console.WriteLine(t);
-    }
-
     [Test, Category("Integration")]
     public void DictionaryDocument_and_multi_core() {
       container = new UnityContainer();
@@ -142,8 +130,6 @@ namespace Unity.SolrNetIntegration.Tests {
       });
       Assert.AreEqual(1, dictionaryOperation.Query("*",new QueryOptions { Rows = 0 }).NumFound);
     }
-
-    
 
     [Test, Category("Integration")]
     public void DictionaryDocument() {

@@ -10,7 +10,7 @@ open System.Xml.Linq
 open Fake
 open Fake.FileUtils
 
-let version = "0.4.0.2001"
+let version = "0.4.0.2002"
 let buildDir = "merged"
 let nugetDir = "nuget"
 let nugetDocs = nugetDir @@ "content"
@@ -49,7 +49,7 @@ let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.Solr
 let dlls = [for l in libs -> l + ".dll"]
 let dirs = [for l in libs -> l @@ "bin" @@ config]
 
-let testAssemblies = !! ("**/bin/"+config+"/*Tests.dll")
+let testAssemblies = !! ("**/bin/"+config+"/*Tests.dll") |> Seq.distinctBy (fun p -> p.Split [|'/';'\\'|] |> System.Linq.Enumerable.Last)
 let noIntegrationTests = "exclude Category: Integration"
 let onlyIntegrationTests = "Category: Integration"
 
@@ -59,7 +59,7 @@ Target "Test" (fun _ ->
 
 for lib in libs do
     Target ("Test." + lib) (fun _ ->
-        !! ("**/bin/"+config+"/"+lib+".Tests.dll")
+        !! (lib+".Tests/bin/"+config+"/"+lib+".Tests.dll")
             |> Gallio.Run (fun p -> { p with Filters = noIntegrationTests })
     )
 
@@ -102,7 +102,7 @@ Target "Version" (fun _ ->
     for l in libs do
         AssemblyInfo (fun p -> { p with
                                     OutputFileName = l @@ "Properties\\AssemblyInfo.cs"
-                                    CLSCompliant = true
+                                    CLSCompliant = Some true
                                     AssemblyTitle = l
                                     AssemblyDescription = l
                                     AssemblyProduct = l
@@ -128,7 +128,7 @@ Target "NuGet" (fun _ ->
     mkdir nugetLib
     cp docsFile nugetDocs
     !!(buildDir @@ "SolrNet.*") |> Copy nugetLib
-    nuGetBuild "SolrNet" "Apache Solr client" ["CommonServiceLocator", "1.0"]
+    nuGetBuild "SolrNet" "Apache Solr client" ["CommonServiceLocator", "[1.0]"]
 )
 
 let nuGetSingle dir =
@@ -137,12 +137,14 @@ let nuGetSingle dir =
     !!(dir @@ "bin" @@ config @@ (dir + ".*")) |> Copy nugetLib
     nuGetBuild 
 
+let solrNetDep = "SolrNet", "[" + version + "]"
+
 Target "NuGet.Windsor" (fun _ ->
     nuGetSingle 
         "Castle.Facilities.SolrNetIntegration" 
         "SolrNet.Windsor"
         "Windsor facility for SolrNet"
-        ["Castle.Windsor", "[2.5.1,2.5.3]"; "SolrNet", version]
+        ["Castle.Windsor", "[3.0.0.4001]"; solrNetDep]
 )
 
 Target "NuGet.Ninject" (fun _ ->
@@ -150,7 +152,7 @@ Target "NuGet.Ninject" (fun _ ->
         "Ninject.Integration.SolrNet" 
         "SolrNet.Ninject"
         "Ninject module for SolrNet"
-        ["Ninject", "[2.2.0.0,2.2.1.0]"; "SolrNet", version]
+        ["Ninject", "[2.2.0.0,2.2.1.0]"; solrNetDep]
 )
 
 Target "NuGet.NHibernate" (fun _ ->
@@ -158,7 +160,7 @@ Target "NuGet.NHibernate" (fun _ ->
         "NHibernate.SolrNet" 
         "SolrNet.NHibernate"
         "NHibernate integration for SolrNet"
-        ["NHibernate", "3.1.0.4000"; "CommonServiceLocator", "1.0"; "SolrNet", version]
+        ["NHibernate", "[3.2.0.4000]"; solrNetDep]
 )
 
 Target "NuGet.StructureMap" (fun _ ->
@@ -166,7 +168,7 @@ Target "NuGet.StructureMap" (fun _ ->
         "StructureMap.SolrNetIntegration" 
         "SolrNet.StructureMap"
         "StructureMap registry for SolrNet"
-        ["structuremap", "2.6.2.0"; "SolrNet", version]
+        ["structuremap", "[2.6.2.0]"; solrNetDep]
 )
 
 Target "NuGet.Autofac" (fun _ ->
@@ -174,7 +176,7 @@ Target "NuGet.Autofac" (fun _ ->
         "AutofacContrib.SolrNet" 
         "SolrNet.Autofac"
         "Autofac module for SolrNet"
-        ["Autofac", "2.5.2.830"; "SolrNet", version]
+        ["Autofac", "[2.5.2.830]"; solrNetDep]
 )
 
 Target "NuGet.Unity" (fun _ ->
@@ -182,7 +184,7 @@ Target "NuGet.Unity" (fun _ ->
         "Unity.SolrNetIntegration" 
         "SolrNet.Unity"
         "Unity integration for SolrNet"
-        ["Unity", "2.1.505.0"; "SolrNet", version]
+        ["Unity", "[2.1.505.0]"; solrNetDep]
 )
 
 Target "ReleasePackage" (fun _ -> 

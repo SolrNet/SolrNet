@@ -38,25 +38,25 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void FieldValue() {
             var q = Query.Field("name").Is("solr");
-            Assert.AreEqual("(name:solr)", Serialize(q));
+            Assert.AreEqual("name:(solr)", Serialize(q));
         }
 
         [Test]
         public void FieldValueDecimal() {
             var q = Query.Field("price").Is(400);
-            Assert.AreEqual("(price:400)", Serialize(q));
+            Assert.AreEqual("price:(400)", Serialize(q));
         }
 
         [Test]
         public void FieldValueEmpty() {
             var q = Query.Field("price").Is("");
-            Assert.AreEqual("(price:\"\")", Serialize(q));
+            Assert.AreEqual("price:(\"\")", Serialize(q));
         }
 
         [Test]
         public void FieldValueNot() {
             var q = Query.Field("name").Is("solr").Not();
-            Assert.AreEqual("-(name:solr)", Serialize(q));
+            Assert.AreEqual("-name:(solr)", Serialize(q));
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void InList() {
             var q = Query.Field("price").In(10, 20, 30);
-            Assert.AreEqual("((price:10) OR (price:20) OR (price:30))", Serialize(q));
+            Assert.AreEqual("(price:(10) OR price:(20) OR price:(30))", Serialize(q));
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace SolrNet.DSL.Tests {
             var q = Query.Field("price").In(new string[0]) && Query.Field("id").Is(123);
             var query = Serialize(q);
             Console.WriteLine(query);
-            Assert.AreEqual("((id:123))", query);
+            Assert.AreEqual("(id:(123))", query);
         }
 
         [Test]

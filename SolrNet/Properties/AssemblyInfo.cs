@@ -20,9 +20,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("SolrNet")]
 [assembly: AssemblyProduct("SolrNet")]
 [assembly: AssemblyCopyright("Copyright Mauricio Scheffer 2007-2011")]
-[assembly: AssemblyVersion("0.4.0.2001")]
-[assembly: AssemblyFileVersion("0.4.0.2001")]
-[assembly: AssemblyInformationalVersion("f55b1dd618f963c27e88e46020bfadbde0a0d216")]
+[assembly: AssemblyVersion("0.4.0.2002")]
+[assembly: AssemblyFileVersion("0.4.0.2002")]
+[assembly: AssemblyInformationalVersion("4264843fb45f6ea6db335faca1164bda2b4c3bbf")]
 [assembly: AssemblyDelaySign(false)]
 
 

@@ -15,26 +15,30 @@
 #endregion
 
 using System;
-using System.ComponentModel.Design;
 using MbUnit.Framework;
+using Moroco;
 using NHibernate.SolrNet.Impl;
 using NHibernate.Tool.hbm2ddl;
-using Rhino.Mocks;
 using SolrNet;
+using SolrNet.Tests.Mocks;
 
 namespace NHibernate.SolrNet.Tests {
     public class BaseNHTests {
 
         protected ISessionFactory sessionFactory;
-        protected ISolrOperations<Entity> mockSolr;
+        protected MSolrOperations<Entity> mockSolr;
 
         [SetUp]
         public void FixtureSetup() {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
-            mockSolr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
-            var provider = MockRepository.GenerateMock<IServiceProvider>();
-            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
-            provider.Expect(x => x.GetService(typeof (IReadOnlyMappingManager))).Return(mapper);
+            mockSolr = new MSolrOperations<Entity>();
+            var mapper = new MReadOnlyMappingManager();
+            var provider = new MServiceProvider();
+            provider.getService += t => {
+                if (t == typeof(IReadOnlyMappingManager))
+                    return mapper;
+                throw new ArgumentException("Unexpected");
+            };
             NHHelper.SetListener(nhConfig, GetSolrNetListener(mockSolr));
             new SchemaExport(nhConfig).Execute(false, true, false);
             sessionFactory = nhConfig.BuildSessionFactory();
@@ -46,6 +50,7 @@ namespace NHibernate.SolrNet.Tests {
 
         [TearDown]
         public void FixtureTeardown() {
+            mockSolr.VerifyAll();
             sessionFactory.Dispose();
         }
     }

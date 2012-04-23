@@ -14,18 +14,21 @@
 // limitations under the License.
 #endregion
 
-using SolrNet.Impl;
-namespace SolrNet {
-	/// <summary>
-	/// Query results parser interface
-	/// </summary>
-	/// <typeparam name="T">Document type</typeparam>
-	public interface ISolrQueryResultParser<T> {
-		/// <summary>
-		/// Parses solr's response
-		/// </summary>
-		/// <param name="r">solr response</param>
-		/// <returns>query results</returns>
-		SolrQueryResults<T> Parse(string r);
-	}
+using System.Configuration;
+
+namespace Ninject.Integration.SolrNet.Config {
+    /// <summary>
+    /// Configuration section for Solr servers
+    /// </summary>
+    public class SolrConfigurationSection : ConfigurationSection
+    {
+        /// <summary>
+        /// Solr Servers configuration settings
+        /// </summary>
+        [ConfigurationProperty("", IsDefaultCollection = true)]
+        public SolrServers SolrServers
+        {
+            get { return (SolrServers)base[""]; }
+        }
+    }         
 }

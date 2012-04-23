@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
-namespace SolrNet.Impl
-{
+namespace SolrNet.Impl {
     /// <summary>
     /// Parses a chunk of a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public interface ISolrAbstractResponseParser<T>
-    {
+    public interface ISolrAbstractResponseParser<T> {
         /// <summary>
         /// Parses a chunk of a query response into the results object
         /// </summary>

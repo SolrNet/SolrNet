@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,7 @@ namespace SolrNet.Tests.Integration.Sample {
     [TestFixture]
     [Category("Integration")]
     public class Tests {
-        private const string serverURL = "http://localhost:8983/solr";
+        private static readonly string serverURL = ConfigurationManager.AppSettings["solr"];
 
 
         [FixtureSetUp]
@@ -266,6 +267,8 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void SpellChecking() {
+            Add_then_query();
+            AddSampleDocs();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var r = solr.Query(new SolrQuery("hell untrasharp"), new QueryOptions {
                 SpellCheck = new SpellCheckingParameters(),
@@ -276,6 +279,7 @@ namespace SolrNet.Tests.Integration.Sample {
             }
             Console.WriteLine();
             Console.WriteLine("Spell checking:");
+            Assert.GreaterThan(r.SpellChecking.Count, 0);
             foreach (var sc in r.SpellChecking) {
                 Console.WriteLine(sc.Query);
                 foreach (var s in sc.Suggestions) {

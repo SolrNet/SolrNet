@@ -19,9 +19,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using HttpWebAdapters;
 using MbUnit.Framework;
-using Rhino.Mocks;
+using Moroco;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
 
@@ -62,188 +63,109 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void Get() {
-			var mocks = new MockRepository();
-			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-			var request = mocks.DynamicMock<IHttpWebRequest>();
-			var response = mocks.DynamicMock<IHttpWebResponse>();
-			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(reqFactory.Create(new UriBuilder().Uri))
-                    .IgnoreArguments()
-                    .Repeat.Once()
-                    .Return(request);
-                Expect.Call(request.Headers)
-                    .Repeat.Any()
-                    .Return(new WebHeaderCollection());
-                Expect.Call(response.ContentEncoding)
-                    .Repeat.Any()
-                    .Return(string.Empty);
-			    Expect.Call(response.Headers)
-                    .Repeat.Any()
-                    .Return(new WebHeaderCollection());
-				Expect.Call(request.GetResponse())
-                    .Repeat.Once()
-                    .Return(response);
-				Expect.Call(response.GetResponseStream())
-                    .Repeat.Once()
-                    .Return(new MemoryStream());
-			}).Verify(delegate {
-				var conn = new SolrConnection("https://pepe"){ HttpWebRequestFactory = reqFactory };
-				conn.Get("", new Dictionary<string, string>());
-			});
-		}
-
-
-		[Test]
-		public void GetWithNullParameters_ShouldAcceptNull() {
-			var mocks = new MockRepository();
-			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-			var request = mocks.DynamicMock<IHttpWebRequest>();
-			var response = mocks.DynamicMock<IHttpWebResponse>();
-			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(reqFactory.Create(new UriBuilder().Uri))
-                    .IgnoreArguments()
-                    .Repeat.Once()
-                    .Return(request);
-                Expect.Call(request.Headers)
-                    .Repeat.Any()
-                    .Return(new WebHeaderCollection());
-                Expect.Call(response.ContentEncoding)
-                    .Repeat.Any()
-                    .Return(string.Empty);
-                Expect.Call(response.Headers)
-                    .Repeat.Any()
-                    .Return(new WebHeaderCollection());
-				Expect.Call(request.GetResponse())
-                    .Repeat.Once()
-                    .Return(response);
-				Expect.Call(response.GetResponseStream())
-                    .Repeat.Once()
-                    .Return(new MemoryStream());
-			}).Verify(delegate {
-                var conn = new SolrConnection("https://pepe") { HttpWebRequestFactory = reqFactory };
-                conn.Get("", new Dictionary<string, string>());
-			});
+		    var response = new Mocks.HttpWebResponse {
+		        dispose = () => {},
+                headers = () => new WebHeaderCollection(),
+                getResponseStream = () => new MemoryStream(Encoding.UTF8.GetBytes("hello world")),
+		    };
+		    var request = new Mocks.HttpWebRequest {
+		        getResponse = () => response
+		    };
+		    var reqFactory = new Mocks.HttpWebRequestFactory {
+		        create = _ => request
+		    };
+            var conn = new SolrConnection("https://pepe") {
+                HttpWebRequestFactory = reqFactory,
+            };
+		    var r = conn.Get("", new Dictionary<string, string>());
+            Assert.AreEqual("hello world", r);
 		}
 
 		[Test]
 		[ExpectedException(typeof (SolrConnectionException))]
 		public void InvalidHostGet_ShouldThrowException() {
-			var mocks = new MockRepository();
-			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-			var request = mocks.DynamicMock<IHttpWebRequest>();
-			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(reqFactory.Create(new UriBuilder().Uri))
-                    .IgnoreArguments()
-                    .Repeat.Once()
-                    .Return(request);
-                Expect.Call(request.Headers)
-                    .Repeat.Any()
-                    .Return(new WebHeaderCollection());
-				Expect.Call(request.GetResponse())
-                    .Repeat.Once()
-                    .Throw(new WebException());
-			}).Verify(delegate {
-				var conn = new SolrConnection("http://lalala:12345") { HttpWebRequestFactory = reqFactory };
-				conn.Get("", new Dictionary<string, string>());
-			});
+		    var reqFactory = new Mocks.HttpWebRequestFactory {
+		        create = _ => new Mocks.HttpWebRequest {
+		            getResponse = () => { throw new WebException();}
+		        }
+		    };
+            var conn = new SolrConnection("http://lalala:12345") { HttpWebRequestFactory = reqFactory };
+            conn.Get("", new Dictionary<string, string>());
 		}
 
 		[Test]
 		[ExpectedException(typeof (SolrConnectionException))]
 		public void InvalidHostPost_ShouldThrowException() {
-			var mocks = new MockRepository();
-			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-			var request = mocks.DynamicMock<IHttpWebRequest>();
-			With.Mocks(mocks).Expecting(delegate {
-                var uri = new Uri("http://lalala:12345/update");
-				Expect.Call(request.GetRequestStream())
-                    .Repeat.Once()
-                    .Throw(new WebException());
-                Expect.Call(request.RequestUri).Repeat.Once().Return(uri);
-				Expect.Call(reqFactory.Create(uri))
-                    .IgnoreArguments()
-                    .Repeat.Once()
-                    .Return(request);
-			}).Verify(delegate {
-				var conn = new SolrConnection("http://lalala:12345") { HttpWebRequestFactory = reqFactory };
-				conn.Post("/update", "");
-			});
+		    var reqFactory = new Mocks.HttpWebRequestFactory {
+		        create = _ => new Mocks.HttpWebRequest {
+		            getRequestStream = () => { throw new WebException(); },
+                    requestUri = () => new Uri("http://lalala:12345/update"),
+		        }
+		    };
+            var conn = new SolrConnection("http://lalala:12345") { HttpWebRequestFactory = reqFactory };
+            conn.Post("/update", "");
 		}
 
 		[Test]
 		[ExpectedException(typeof (InvalidURLException))]
 		public void InvalidUrl_ShouldThrowException() {
-			var mocks = new MockRepository();
-			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-            new SolrConnection("http:/locl") { HttpWebRequestFactory = reqFactory };
-		}
-
-		[Test]
-		public void Post() {
-			var mocks = new MockRepository();
-			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-			var request = mocks.DynamicMock<IHttpWebRequest>();
-			var response = mocks.DynamicMock<IHttpWebResponse>();
-			With.Mocks(mocks).Expecting(delegate {
-				Expect.Call(request.GetRequestStream())
-                    .Repeat.Once()
-                    .Return(new MemoryStream());
-				Expect.Call(reqFactory.Create(new Uri("https://pepe/?version=2.2")))
-                    .Repeat.Once()
-                    .Return(request);
-				request.Method = HttpWebRequestMethod.POST;
-				LastCall.On(request).Repeat.Once();
-				Expect.Call(request.GetResponse())
-                    .Repeat.Once()
-                    .Return(response);
-                Expect.Call(response.Headers)
-                    .Repeat.Any()
-                    .Return(new WebHeaderCollection());
-				Expect.Call(response.GetResponseStream())
-                    .Repeat.Once()
-                    .Return(new MemoryStream());
-			}).Verify(delegate {
-                var conn = new SolrConnection("https://pepe") { HttpWebRequestFactory = reqFactory };
-				conn.Post("", "");
-			});
+		    new SolrConnection("http:/locl");
 		}
 
 		[Test]
 		public void UrlHttp_ShouldntThrowException() {
-			var mocks = new MockRepository();
-			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-            new SolrConnection("http://pepe") { HttpWebRequestFactory = reqFactory };
+		    new SolrConnection("http://pepe");
 		}
 
 		[Test]
 		public void UrlHttps_ShouldntThrowException() {
-			var mocks = new MockRepository();
-			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-            new SolrConnection("https://pepe") { HttpWebRequestFactory = reqFactory };
+		    new SolrConnection("https://pepe");
 		}
 
 		[Test]
 		[ExpectedException(typeof (InvalidURLException))]
 		public void UrlNotHttp_ShouldThrowException() {
-			var mocks = new MockRepository();
-			var reqFactory = mocks.StrictMock<IHttpWebRequestFactory>();
-            new SolrConnection("ftp://pepe") { HttpWebRequestFactory = reqFactory };
+		    new SolrConnection("ftp://pepe");
 		}
 
         [Test]
-        [Ignore]
+        [Ignore("need to mock WebException!")]
         public void Cache_mocked() {
-            var conn = new SolrConnection(solrURL);
-            var cache = MockRepository.GenerateMock<ISolrCache>();
-            cache.Expect(x => x["http://localhost:8983/solr/select/?q=*:*"])
-                .Repeat.Once()
-                .Return(null);
-            cache.Expect(x => x.Add(null)).Repeat.Once();
-            conn.Cache = cache;
-            var response1 = conn.Get("/select/", new Dictionary<string, string> {
+            var cache = new Mocks.MSolrCache();
+            cache.get += url => {
+                Assert.AreEqual("http://localhost:8983/solr/select/?q=*:*&version=2.2", url);
+                return new SolrCacheEntity(url, "", "");
+            };
+            cache.add &= x => x.Stub();
+
+            var response = new Mocks.HttpWebResponse {
+                dispose = () => {},
+                headers = () => new WebHeaderCollection {
+                    {HttpResponseHeader.ETag, "123"},
+                },
+                getResponseStream = () => new MemoryStream(),
+            };
+            var getResponseCalls = 0;
+            var conn = new SolrConnection(solrURL) {
+                Cache = cache,
+                HttpWebRequestFactory = new Mocks.HttpWebRequestFactory {
+                    create = _ => new Mocks.HttpWebRequest {
+                        getResponse = () => {
+                            getResponseCalls++;
+                            if (getResponseCalls == 1)
+                                return response;
+                            throw new Exception();
+                        },
+                        Headers = new WebHeaderCollection(),
+                    },
+                }
+            };
+
+            conn.Get("/select/", new Dictionary<string, string> {
                 {"q", "*:*"},
             });
-            var response2 = conn.Get("/select/", new Dictionary<string, string> {
+
+            conn.Get("/select/", new Dictionary<string, string> {
                 {"q", "*:*"},
             });
         }
@@ -252,10 +174,10 @@ namespace SolrNet.Tests {
         [Ignore]
         public void Cache() {
             var conn = new SolrConnection(solrURL);
-            var response1 = conn.Get("/select/", new Dictionary<string, string> {
+            conn.Get("/select/", new Dictionary<string, string> {
                 {"q", "*:*"},
             });
-            var response2 = conn.Get("/select/", new Dictionary<string, string> {
+            conn.Get("/select/", new Dictionary<string, string> {
                 {"q", "*:*"},
             });
         }

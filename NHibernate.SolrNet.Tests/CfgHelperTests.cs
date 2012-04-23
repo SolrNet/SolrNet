@@ -15,24 +15,27 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using NHibernate.Event;
 using NHibernate.SolrNet.Impl;
-using Rhino.Mocks;
 using SolrNet;
+using SolrNet.Tests.Mocks;
 
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]
     public class CfgHelperTests {
         [Test]
         public void Configure_from_servicelocator() {
-            var serviceLocator = MockRepository.GenerateMock<IServiceLocator>();
-            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
-            mapper.Expect(x => x.GetRegisteredTypes()).Return(new[] { typeof(Entity) });
-            serviceLocator.Expect(x => x.GetInstance<IReadOnlyMappingManager>()).Return(mapper);
-            var solr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
-            serviceLocator.Expect(x => x.GetService(typeof(ISolrOperations<Entity>))).Return(solr);
+            var mapper = new MReadOnlyMappingManager();
+            mapper.getRegisteredTypes += () => new[] {typeof (Entity)};
+
+            var serviceLocator = new MServiceLocator();
+            serviceLocator.getInstance += MServiceLocator.One<IReadOnlyMappingManager>(mapper);
+
+            var solr = new MSolrOperations<Entity>();
+            serviceLocator.getService += MServiceLocator.One<ISolrOperations<Entity>>(solr);
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
             var nhConfig = ConfigurationExtensions.GetNhConfig();
             var helper = new CfgHelper();
@@ -47,12 +50,16 @@ namespace NHibernate.SolrNet.Tests {
         [Test]
         public void Configure_from_serviceprovider() {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
-            var provider = MockRepository.GenerateMock<IServiceProvider>();
-            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
-            mapper.Expect(x => x.GetRegisteredTypes()).Return(new[] {typeof (Entity)});
-            var solr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
-            provider.Expect(x => x.GetService(typeof (IReadOnlyMappingManager))).Return(mapper);
-            provider.Expect(x => x.GetService(typeof (ISolrOperations<Entity>))).Return(solr);
+
+            var provider = new MServiceProvider();
+            var mapper = new MReadOnlyMappingManager();
+            mapper.getRegisteredTypes += () => new[] {typeof (Entity)};
+
+            var solr = new MSolrOperations<Entity>();
+            provider.getService += MServiceLocator.Table(new Dictionary<System.Type, object> {
+                {typeof (IReadOnlyMappingManager), mapper},
+                {typeof (ISolrOperations<Entity>), solr},
+            });
             var helper = new CfgHelper(provider);
             helper.Configure(nhConfig, true);
             Assert.GreaterThan(nhConfig.EventListeners.PostInsertEventListeners.Length, 0);
@@ -65,12 +72,16 @@ namespace NHibernate.SolrNet.Tests {
         [Test]
         public void Configure_with_addparameters() {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
-            var provider = MockRepository.GenerateMock<IServiceProvider>();
-            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
-            mapper.Expect(x => x.GetRegisteredTypes()).Return(new[] {typeof (Entity)});
-            var solr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
-            provider.Expect(x => x.GetService(typeof (IReadOnlyMappingManager))).Return(mapper);
-            provider.Expect(x => x.GetService(typeof (ISolrOperations<Entity>))).Return(solr);
+            var mapper = new MReadOnlyMappingManager();
+            mapper.getRegisteredTypes += () => new[] {typeof (Entity)};
+            var solr = new MSolrOperations<Entity>();
+
+            var provider = new MServiceProvider();
+            provider.getService += MServiceLocator.Table(new Dictionary<System.Type, object> {
+                {typeof(IReadOnlyMappingManager), mapper},
+                {typeof(ISolrOperations<Entity>), solr},
+            });
+
             var addParameters = new AddParameters {CommitWithin = 4343};
             var helper = new CfgHelper(provider);
             helper.Configure(nhConfig, true, addParameters);
@@ -82,15 +93,20 @@ namespace NHibernate.SolrNet.Tests {
         [Test]
         public void Does_not_override_existing_listeners() {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
-            var mockListener = MockRepository.GenerateMock<IPostInsertEventListener>();
+
+            var mockListener = new MPostInsertEventListener();
             nhConfig.SetListener(ListenerType.PostInsert, mockListener);
 
-            var provider = MockRepository.GenerateMock<IServiceProvider>();
-            var mapper = MockRepository.GenerateMock<IReadOnlyMappingManager>();
-            mapper.Expect(x => x.GetRegisteredTypes()).Return(new[] { typeof(Entity) });
-            provider.Expect(x => x.GetService(typeof(IReadOnlyMappingManager))).Return(mapper);
-            var solr = MockRepository.GenerateMock<ISolrOperations<Entity>>();
-            provider.Expect(x => x.GetService(typeof(ISolrOperations<Entity>))).Return(solr);
+            var mapper = new MReadOnlyMappingManager();
+            mapper.getRegisteredTypes += () => new[] {typeof (Entity)};
+
+            var solr = new MSolrOperations<Entity>();
+
+            var provider = new MServiceProvider();
+            provider.getService += MServiceLocator.Table(new Dictionary<System.Type, object> {
+                {typeof(IReadOnlyMappingManager), mapper},
+                {typeof(ISolrOperations<Entity>), solr},
+            });
 
             var helper = new CfgHelper(provider);
             helper.Configure(nhConfig, true);

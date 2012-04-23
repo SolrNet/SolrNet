@@ -128,15 +128,15 @@ namespace Ninject.Integration.SolrNet {
 
             Bind<ISolrConnection>().ToConstant(new SolrConnection(core.Url)).Named(coreConnectionId);
             Bind(solrOperations).To(solrServer).Named(core.Id)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+                .WithConstructorArgument("connection", ctx => ctx.Kernel.Get<ISolrConnection>(coreConnectionId));
             Bind(solrReadOnlyOperations).To(solrServer).Named(core.Id)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+                .WithConstructorArgument("connection", ctx => ctx.Kernel.Get<ISolrConnection>(coreConnectionId));
             Bind(solrBasicOperations).To(solrBasicServer).Named(core.Id)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+                .WithConstructorArgument("connection", ctx => ctx.Kernel.Get<ISolrConnection>(coreConnectionId));
             Bind(solrBasicReadOnlyOperations).To(solrBasicServer).Named(core.Id)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+                .WithConstructorArgument("connection", ctx => ctx.Kernel.Get<ISolrConnection>(coreConnectionId));
             Bind(iSolrQueryExecuter).To(solrQueryExecuter).Named(core.Id)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+                .WithConstructorArgument("connection", ctx => ctx.Kernel.Get<ISolrConnection>(coreConnectionId));
         }
 
         

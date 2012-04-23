@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Configuration;
 using MbUnit.Framework;
 using Microsoft.Practices.Unity;
@@ -48,7 +49,8 @@ namespace Unity.SolrNetIntegration.Tests {
         container = new UnityContainer();
         new SolrNetContainerConfiguration().ConfigureContainer(cores, container);
         var core1 = container.Resolve<ISolrOperations<Entity>>("core1");
-        var core2 = container.Resolve<ISolrOperations<Entity2>>("core2");
+        var core2 = container.Resolve<ISolrOperations<Entity>>("core2");
     }
+   
   }
 }

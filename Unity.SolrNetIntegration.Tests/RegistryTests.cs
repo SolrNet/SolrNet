@@ -7,6 +7,7 @@ using System.Reflection;
 using MbUnit.Framework;
 using Microsoft.Practices.Unity;
 using SolrNet;
+using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
 using SolrNet.Mapping.Validation;
@@ -35,6 +36,13 @@ namespace Unity.SolrNetIntegration.Tests {
           Url = "http://localhost:8983/solr/entity2",
         },
       };
+
+    [SetUp]
+    public void Setup() {
+        
+    }
+
+   
 
     [Test]
     public void ResolveSolrOperations() {
@@ -113,7 +121,6 @@ namespace Unity.SolrNetIntegration.Tests {
       SetupContainer();
 
       var parser = container.Resolve<ISolrQueryResultParser<Entity>>() as SolrQueryResultParser<Entity>;
-
       var field = parser.GetType().GetField("parsers", BindingFlags.NonPublic | BindingFlags.Instance);
       var parsers = (ISolrAbstractResponseParser<Entity>[]) field.GetValue(parser);
       Assert.AreEqual(13, parsers.Length);
@@ -121,13 +128,19 @@ namespace Unity.SolrNetIntegration.Tests {
         Console.WriteLine(t);
     }
 
-    [Test]
+    [Test, Category("Integration")]
     public void DictionaryDocument_and_multi_core() {
       container = new UnityContainer();
       new SolrNetContainerConfiguration().ConfigureContainer(testServers, container);
-      container.Resolve<ISolrOperations<Entity>>("entity");
-      container.Resolve<ISolrOperations<Entity2>>("entity2");
-      container.Resolve<ISolrOperations<Dictionary<string, object>>>("entity2Dict");
+      var entityOperation = container.Resolve<ISolrOperations<Entity>>("entity");
+      var dictionaryOperation = container.Resolve<ISolrOperations<Dictionary<string, object>>>("entity2Dict");
+      entityOperation.Add(new Entity());
+      dictionaryOperation.Add(new Dictionary<string, object>() {
+        {"id", 1},
+        {"name", "Sheldon Cooper"},
+        {"weapon", "Brain"}
+      });
+      Assert.AreEqual(1, dictionaryOperation.Query("*",new QueryOptions { Rows = 0 }).NumFound);
     }
 
     

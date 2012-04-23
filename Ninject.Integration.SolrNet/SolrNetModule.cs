@@ -32,6 +32,7 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
+using Ninject.Planning.Bindings;
 
 namespace Ninject.Integration.SolrNet {
     /// <summary>
@@ -116,7 +117,6 @@ namespace Ninject.Integration.SolrNet {
         }
 
         private void RegisterCore(SolrCore core) {
-            var coreConnectionId = core.Id + typeof (SolrConnection);
             var solrBasicOperations = typeof(ISolrBasicOperations<>).MakeGenericType(core.DocumentType);
             var solrOperations = typeof(ISolrOperations<>).MakeGenericType(core.DocumentType);
             var solrReadOnlyOperations = typeof(ISolrReadOnlyOperations<>).MakeGenericType(core.DocumentType);
@@ -126,20 +126,14 @@ namespace Ninject.Integration.SolrNet {
             var iSolrQueryExecuter = typeof(ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
             var solrQueryExecuter = typeof(SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
 
-            Bind<ISolrConnection>().ToConstant(new SolrConnection(core.Url)).Named(coreConnectionId);
-            Bind(solrOperations).To(solrServer).Named(core.Id)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
-            Bind(solrReadOnlyOperations).To(solrServer).Named(core.Id)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
-            Bind(solrBasicOperations).To(solrBasicServer).Named(core.Id)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
-            Bind(solrBasicReadOnlyOperations).To(solrBasicServer).Named(core.Id)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
-            Bind(iSolrQueryExecuter).To(solrQueryExecuter).Named(core.Id)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(coreConnectionId));
+            Bind<ISolrConnection>().ToConstant(new SolrConnection(core.Url)).When(x => x.ParentRequest != null && x.ParentRequest.Service != null && x.ParentRequest.Service.IsGenericType && x.ParentRequest.Service.GetGenericArguments()[0].Equals(core.DocumentType));
+            Bind(solrOperations).To(solrServer);
+            Bind(solrReadOnlyOperations).To(solrServer);
+            Bind(solrBasicOperations).To(solrBasicServer);
+            Bind(solrBasicReadOnlyOperations).To(solrBasicServer);
+            Bind(iSolrQueryExecuter).To(solrQueryExecuter);
         }
 
-        
         public override void Load() {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Bind<IReadOnlyMappingManager>().ToConstant(mapper);

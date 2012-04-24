@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using MbUnit.Framework;
@@ -18,13 +19,14 @@ namespace Unity.SolrNetIntegration.Tests {
       new SolrNetContainerConfiguration().ConfigureContainer(solrConfig.SolrServers, container);
     }
 
-    [Test, Ignore("(regression) Resolving SolrOperation without name not supported anymore")]
+    [Test]
     public void Get_SolrOperations_for_Entity() {
       var solrOperations = container.Resolve<ISolrOperations<Entity>>();
       Assert.IsNotNull(solrOperations);
+
     }
 
-    [Test, Ignore("(regression) Retrieving SolrOperation without name not supported anymore")]
+    [Test]
     public void Get_SolrOperations_for_Entity2() {
       var solrOperations2 = container.Resolve<ISolrOperations<Entity2>>();
       Assert.IsNotNull(solrOperations2);

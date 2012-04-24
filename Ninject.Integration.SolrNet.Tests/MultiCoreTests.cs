@@ -125,7 +125,6 @@ namespace Ninject.Integration.SolrNet.Tests {
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void MultiCore_SameClassBinding()
         {
             var solrServers = new SolrServers {

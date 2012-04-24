@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using MbUnit.Framework;
@@ -22,6 +23,7 @@ namespace Unity.SolrNetIntegration.Tests {
     public void Get_SolrOperations_for_Entity() {
       var solrOperations = container.Resolve<ISolrOperations<Entity>>();
       Assert.IsNotNull(solrOperations);
+
     }
 
     [Test]

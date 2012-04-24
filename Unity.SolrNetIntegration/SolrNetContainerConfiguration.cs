@@ -74,13 +74,15 @@ namespace Unity.SolrNetIntegration {
             string connectionId = GetCoreConnectionId(core.Id);
             container.RegisterType<ISolrConnection, SolrConnection>(connectionId, new InjectionConstructor(core.Url));
             if (!container.IsRegistered(typeof (ISolrOperations<>).MakeGenericType(core.DocumentType))) {
-                RegisterSolrQueryExecuter(core, container, isNamed : false);
-                RegisterBasicOperations(core, container, isNamed : false);
-                RegisterSolrOperations(core, container, isNamed : false);
+                RegisterAll(core, container, isNamed : false);
             }
-            RegisterSolrQueryExecuter(core, container);
-            RegisterBasicOperations(core, container);
-            RegisterSolrOperations(core, container);
+            RegisterAll(core, container);
+        }
+
+        private static void RegisterAll(SolrCore core, IUnityContainer container, bool isNamed = true) {
+            RegisterSolrQueryExecuter(core, container, isNamed);
+            RegisterBasicOperations(core, container, isNamed);
+            RegisterSolrOperations(core, container, isNamed);
         }
 
         private static void RegisterSolrOperations(SolrCore core, IUnityContainer container, bool isNamed = true) {
@@ -104,29 +106,19 @@ namespace Unity.SolrNetIntegration {
             var ISolrQueryExecuter = typeof (ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
             var registrationId = isNamed ? core.Id : null;
             string coreConnectionId = GetCoreConnectionId(core.Id);
-            container.RegisterType(
-                ISolrBasicOperations, SolrBasicServer, registrationId,
-                new InjectionConstructor(
-                    new ResolvedParameter(typeof (ISolrConnection), coreConnectionId),
-                    new ResolvedParameter(ISolrQueryExecuter, registrationId),
-                    new ResolvedParameter(typeof (ISolrDocumentSerializer<>).MakeGenericType(core.DocumentType)),
-                    new ResolvedParameter(typeof (ISolrSchemaParser)),
-                    new ResolvedParameter(typeof (ISolrHeaderResponseParser)),
-                    new ResolvedParameter(typeof (ISolrQuerySerializer)),
-                    new ResolvedParameter(typeof (ISolrDIHStatusParser)),
-                    new ResolvedParameter(typeof (ISolrExtractResponseParser))));
 
-            container.RegisterType(
-                ISolrBasicReadOnlyOperations, SolrBasicServer, registrationId,
-                new InjectionConstructor(
-                    new ResolvedParameter(typeof (ISolrConnection), coreConnectionId),
-                    new ResolvedParameter(ISolrQueryExecuter, registrationId),
-                    new ResolvedParameter(typeof (ISolrDocumentSerializer<>).MakeGenericType(core.DocumentType)),
-                    new ResolvedParameter(typeof (ISolrSchemaParser)),
-                    new ResolvedParameter(typeof (ISolrHeaderResponseParser)),
-                    new ResolvedParameter(typeof (ISolrQuerySerializer)),
-                    new ResolvedParameter(typeof (ISolrDIHStatusParser)),
-                    new ResolvedParameter(typeof (ISolrExtractResponseParser))));
+            var injectionParameters = new InjectionConstructor(
+               new ResolvedParameter(typeof(ISolrConnection), coreConnectionId),
+               new ResolvedParameter(ISolrQueryExecuter, registrationId),
+               new ResolvedParameter(typeof(ISolrDocumentSerializer<>).MakeGenericType(core.DocumentType)),
+               new ResolvedParameter(typeof(ISolrSchemaParser)),
+               new ResolvedParameter(typeof(ISolrHeaderResponseParser)),
+               new ResolvedParameter(typeof(ISolrQuerySerializer)),
+               new ResolvedParameter(typeof(ISolrDIHStatusParser)),
+               new ResolvedParameter(typeof(ISolrExtractResponseParser)));
+
+            container.RegisterType(ISolrBasicOperations, SolrBasicServer, registrationId, injectionParameters);
+            container.RegisterType(ISolrBasicReadOnlyOperations, SolrBasicServer, registrationId, injectionParameters);
         }
 
         private static void RegisterSolrQueryExecuter(SolrCore core, IUnityContainer container, bool isNamed = true) {

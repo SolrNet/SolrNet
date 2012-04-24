@@ -32,8 +32,6 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
-using Ninject.Planning.Bindings;
-using Ninject.Activation;
 
 namespace Ninject.Integration.SolrNet {
     /// <summary>
@@ -43,6 +41,7 @@ namespace Ninject.Integration.SolrNet {
         private readonly string serverURL;
         private readonly List<SolrCore> cores = new List<SolrCore>();
         private const string CoreId = "CoreId";
+
         /// <summary>
         /// Optional override for document mapper
         /// </summary>
@@ -129,7 +128,7 @@ namespace Ninject.Integration.SolrNet {
             Bind(iSolrQueryExecuter).To(solrQueryExecuter)
                 .Named(coreConnectionId + solrQueryExecuter)
                 .WithMetadata(CoreId, coreConnectionId)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)));
+                .WithConstructorArgument("connection", ctx => ctx.Kernel.Get<ISolrConnection>(bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)));
 
             var solrBasicOperations = typeof(ISolrBasicOperations<>).MakeGenericType(core.DocumentType);
             var solrBasicReadOnlyOperations = typeof(ISolrBasicReadOnlyOperations<>).MakeGenericType(core.DocumentType);
@@ -138,14 +137,14 @@ namespace Ninject.Integration.SolrNet {
             Bind(solrBasicOperations).To(solrBasicServer)
                 .Named(coreConnectionId + solrBasicServer)
                 .WithMetadata(CoreId, coreConnectionId)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)))
-                .WithConstructorArgument("queryExecuter", Kernel.Get(iSolrQueryExecuter, bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)));
+                .WithConstructorArgument("connection", ctx => ctx.Kernel.Get<ISolrConnection>(bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)))
+                .WithConstructorArgument("queryExecuter", ctx => ctx.Kernel.Get(iSolrQueryExecuter, bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)));
 
             Bind(solrBasicReadOnlyOperations).To(solrBasicServer)
                 .Named(coreConnectionId + solrBasicServer)
                 .WithMetadata(CoreId, coreConnectionId)
-                .WithConstructorArgument("connection", Kernel.Get<ISolrConnection>(bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)))
-                .WithConstructorArgument("queryExecuter", Kernel.Get(iSolrQueryExecuter,bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)));
+                .WithConstructorArgument("connection", ctx => ctx.Kernel.Get<ISolrConnection>(bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)))
+                .WithConstructorArgument("queryExecuter", ctx => ctx.Kernel.Get(iSolrQueryExecuter, bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)));
 
             var solrOperations = typeof(ISolrOperations<>).MakeGenericType(core.DocumentType);
             var solrServer = typeof(SolrServer<>).MakeGenericType(core.DocumentType);
@@ -154,11 +153,11 @@ namespace Ninject.Integration.SolrNet {
             Bind(solrOperations).To(solrServer)
                 .Named(core.Id)
                 .WithMetadata(CoreId, coreConnectionId)
-                .WithConstructorArgument("basicServer", Kernel.Get(solrBasicOperations, bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)));
+                .WithConstructorArgument("basicServer", ctx => ctx.Kernel.Get(solrBasicOperations, bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)));
             Bind(solrReadOnlyOperations).To(solrServer)
                 .Named(core.Id)
                 .WithMetadata(CoreId, coreConnectionId)
-                .WithConstructorArgument("basicServer", Kernel.Get(solrBasicReadOnlyOperations, bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)));
+                .WithConstructorArgument("basicServer", ctx => ctx.Kernel.Get(solrBasicReadOnlyOperations, bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)));
         }
 
         public override void Load() {

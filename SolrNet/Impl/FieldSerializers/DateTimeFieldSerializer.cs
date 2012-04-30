@@ -23,7 +23,7 @@ namespace SolrNet.Impl.FieldSerializers {
     /// </summary>
     public class DateTimeFieldSerializer : AbstractFieldSerializer<DateTime> {
         public string SerializeDate(DateTime dt) {
-            return dt.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            return dt.ToString("yyyy-MM-dd'T'HH:mm:ss.FFF'Z'");
         }
 
         public override IEnumerable<PropertyNode> Parse(DateTime obj) {

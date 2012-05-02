@@ -32,7 +32,7 @@ namespace Unity.SolrNetIntegration.Tests {
         [Test]
         public void ResolveSolrOperations() {
             using (var container = SetupContainer()) {
-                var m = container.Resolve<ISolrOperations<Entity>>("entity");
+                var m = container.Resolve<ISolrOperations<Entity>>();
                 Assert.IsNotNull(m);
             }
         }
@@ -51,7 +51,7 @@ namespace Unity.SolrNetIntegration.Tests {
         [Test, Category("Integration")]
         public void Ping_And_Query() {
             using (var container = SetupContainer()) {
-                var solr = container.Resolve<ISolrOperations<Entity>>("entity");
+                var solr = container.Resolve<ISolrOperations<Entity>>();
                 solr.Ping();
                 Console.WriteLine(solr.Query(SolrQuery.All).Count);
             }
@@ -68,7 +68,7 @@ namespace Unity.SolrNetIntegration.Tests {
             };
             using (var container = new UnityContainer()) {
                 new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container);
-                container.Resolve<SolrConnection>();
+                container.Resolve<ISolrConnection>();
             }
         }
 
@@ -83,7 +83,7 @@ namespace Unity.SolrNetIntegration.Tests {
             };
             using (var container = new UnityContainer()) {
                 new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container);
-                container.Resolve<SolrConnection>();
+                container.Resolve<ISolrConnection>();
             }
         }
 
@@ -113,7 +113,7 @@ namespace Unity.SolrNetIntegration.Tests {
         public void DictionaryDocument() {
             using (var container = new UnityContainer()) {
                 new SolrNetContainerConfiguration().ConfigureContainer(testServers, container);
-                var solr = container.Resolve<ISolrOperations<Entity2>>("entity2");
+                var solr = container.Resolve<ISolrOperations<Entity2>>();
                 var results = solr.Query(SolrQuery.All);
                 Assert.GreaterThan(results.Count, 0);
             }
@@ -124,7 +124,7 @@ namespace Unity.SolrNetIntegration.Tests {
             using (var container = new UnityContainer()) {
                 new SolrNetContainerConfiguration().ConfigureContainer(testServers, container);
 
-                var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>("entity2Dict");
+                var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
 
                 solr.Add(new Dictionary<string, object> {
                     {"id", "5"},

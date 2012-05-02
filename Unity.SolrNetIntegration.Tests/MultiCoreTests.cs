@@ -17,6 +17,11 @@ namespace Unity.SolrNetIntegration.Tests {
             new SolrNetContainerConfiguration().ConfigureContainer(solrConfig.SolrServers, container);
         }
 
+        [TearDown]
+        public void Teardown() {
+            container.Dispose();
+        }
+
         [Test]
         public void Get_SolrOperations_for_Entity() {
             var solrOperations = container.Resolve<ISolrOperations<Entity>>();

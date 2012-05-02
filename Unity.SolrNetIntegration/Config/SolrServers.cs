@@ -1,7 +1,8 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 
 namespace Unity.SolrNetIntegration.Config {
-    public class SolrServers : ConfigurationElementCollection {
+    public class SolrServers : ConfigurationElementCollection, IEnumerable<SolrServerElement> {
         public override ConfigurationElementCollectionType CollectionType {
             get { return ConfigurationElementCollectionType.BasicMap; }
         }
@@ -21,6 +22,13 @@ namespace Unity.SolrNetIntegration.Config {
         protected override object GetElementKey(ConfigurationElement element) {
             var solrServerElement = (SolrServerElement) element;
             return solrServerElement.Url + solrServerElement.DocumentType;
+        }
+
+        IEnumerator<SolrServerElement> IEnumerable<SolrServerElement>.GetEnumerator() {
+            var c = (ConfigurationElementCollection) this;
+            foreach (SolrServerElement e in c) {
+                yield return e;
+            }
         }
     }
 }

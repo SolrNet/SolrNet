@@ -140,21 +140,19 @@ namespace Unity.SolrNetIntegration {
             return coreId + typeof (SolrConnection);
         }
 
-        private void AddCoresFromConfig(SolrServers solrServers, IUnityContainer container) {
+        private void AddCoresFromConfig(IEnumerable<SolrServerElement> solrServers, IUnityContainer container) {
             if (solrServers == null) {
                 return;
             }
 
-            var cores =
-                from server in solrServers.Cast<SolrServerElement>()
-                select GetCoreFrom(server);
+            var cores = solrServers.Select(GetCore);
 
             foreach (var core in cores) {
                 RegisterCore(core, container);
             }
         }
 
-        private static SolrCore GetCoreFrom(SolrServerElement server) {
+        private static SolrCore GetCore(SolrServerElement server) {
             var id = server.Id ?? Guid.NewGuid().ToString();
             var documentType = GetCoreDocumentType(server);
             var coreUrl = GetCoreUrl(server);

@@ -37,7 +37,7 @@ namespace SolrNet.Impl.FieldParsers {
             return ParseDate(field.Value);
         }
 
-        public DateTime ParseDate(string s) {
+        public static DateTime ParseDate(string s) {
             var p = s.Split('-');
             s = p[0].PadLeft(4, '0') + '-' + string.Join("-", p.Skip(1).ToArray());          
             

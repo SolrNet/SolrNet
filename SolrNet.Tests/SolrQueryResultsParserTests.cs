@@ -186,15 +186,13 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void ParseDate_without_milliseconds() {
-		    var parser = new DateTimeFieldParser();
-			var dt = parser.ParseDate("2001-01-02T03:04:05Z");
+            var dt = DateTimeFieldParser.ParseDate("2001-01-02T03:04:05Z");
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5), dt);
 		}
 
 		[Test]
 		public void ParseDate_with_milliseconds() {
-            var parser = new DateTimeFieldParser();
-            var dt = parser.ParseDate("2001-01-02T03:04:05.245Z");
+            var dt = DateTimeFieldParser.ParseDate("2001-01-02T03:04:05.245Z");
 			Assert.AreEqual(new DateTime(2001, 1, 2, 3, 4, 5, 245), dt);
 		}
 

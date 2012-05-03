@@ -41,9 +41,8 @@ namespace SolrNet.Tests {
 
         [StaticTestFactory]
         public static IEnumerable<Test> RoundTrip() {
-            var serializer = new DateTimeFieldSerializer();
             return dateTimes.Select(dt => new TestCase("RoundTrip " + dt, () => {
-                var value = DateTimeFieldParser.ParseDate(serializer.SerializeDate(dt));
+                var value = DateTimeFieldParser.ParseDate(DateTimeFieldSerializer.SerializeDate(dt));
                 Assert.AreEqual(dt, value);
             }));
         }

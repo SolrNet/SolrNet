@@ -37,6 +37,7 @@ namespace SolrNet.Tests {
             new[] {
                 KV.Create("1-01-01T00:00:00Z", new DateTime(1, 1, 1)),
                 KV.Create("2004-11-01T00:00:00Z", new DateTime(2004, 11, 1)),
+                KV.Create("2012-05-10T14:17:23.684Z", new DateTime(2012, 5, 10, 14, 17, 23, 684)),
             };
 
         [StaticTestFactory]
@@ -65,6 +66,7 @@ namespace SolrNet.Tests {
                 new DateTime(1, 1, 1),
                 new DateTime(2004, 11, 1),
                 new DateTime(2004, 11, 1, 15, 41, 23),
+                new DateTime(2012, 5, 10, 14, 17, 23, 684),
                 new DateTime(2008, 5, 6, 14, 21, 23, 0, DateTimeKind.Local),
             };
     }

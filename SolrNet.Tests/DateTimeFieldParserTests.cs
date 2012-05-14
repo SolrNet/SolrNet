@@ -38,6 +38,8 @@ namespace SolrNet.Tests {
                 KV.Create("1-01-01T00:00:00Z", new DateTime(1, 1, 1)),
                 KV.Create("2004-11-01T00:00:00Z", new DateTime(2004, 11, 1)),
                 KV.Create("2012-05-10T14:17:23.684Z", new DateTime(2012, 5, 10, 14, 17, 23, 684)),
+                KV.Create("2012-05-10T14:17:23.68Z", new DateTime(2012, 5, 10, 14, 17, 23, 680)),
+                KV.Create("2012-05-10T14:17:23.6Z", new DateTime(2012, 5, 10, 14, 17, 23, 600)),
             };
 
         [StaticTestFactory]

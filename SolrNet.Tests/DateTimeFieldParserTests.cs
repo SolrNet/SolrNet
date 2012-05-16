@@ -29,7 +29,8 @@ namespace SolrNet.Tests {
         public static IEnumerable<Test> ParseYears() {
             return parsedDates.Select(pd => {
                 var name = "ParseYears " + pd.Key;
-                return new TestCase(name, () => Assert.AreEqual(pd.Value, DateTimeFieldParser.ParseDate(pd.Key)));
+                Test t = new TestCase(name, () => Assert.AreEqual(pd.Value, DateTimeFieldParser.ParseDate(pd.Key)));
+                return t;
             });
         }
 
@@ -42,23 +43,29 @@ namespace SolrNet.Tests {
 
         [StaticTestFactory]
         public static IEnumerable<Test> RoundTrip() {
-            return dateTimes.Select(dt => new TestCase("RoundTrip " + dt, () => {
-                var value = DateTimeFieldParser.ParseDate(DateTimeFieldSerializer.SerializeDate(dt));
-                Assert.AreEqual(dt, value);
-            }));
+            return dateTimes.Select(dt => {
+                Test t = new TestCase("RoundTrip " + dt, () => {
+                    var value = DateTimeFieldParser.ParseDate(DateTimeFieldSerializer.SerializeDate(dt));
+                    Assert.AreEqual(dt, value);
+                });
+                return t;
+            });
         }
 
         [StaticTestFactory]
         public static IEnumerable<Test> NullableRoundTrips() {
             var parser = new NullableFieldParser(new DateTimeFieldParser());
             var serializer = new NullableFieldSerializer(new DateTimeFieldSerializer());
-            return dateTimes.Select(dt => new TestCase("NullableRoundTrips " + dt, () => {
-                var s = serializer.Serialize(dt).First().FieldValue;
-                var xml = new XDocument();
-                xml.Add(new XElement("date", s));
-                var value = (DateTime?)parser.Parse(xml.Root, typeof(DateTime?));
-                Assert.AreEqual(dt, value);
-            }));
+            return dateTimes.Select(dt => {
+                Test t = new TestCase("NullableRoundTrips " + dt, () => {
+                    var s = serializer.Serialize(dt).First().FieldValue;
+                    var xml = new XDocument();
+                    xml.Add(new XElement("date", s));
+                    var value = (DateTime?) parser.Parse(xml.Root, typeof (DateTime?));
+                    Assert.AreEqual(dt, value);
+                });
+                return t;
+            });
         }
 
         private static readonly IEnumerable<DateTime> dateTimes =

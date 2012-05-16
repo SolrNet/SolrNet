@@ -51,7 +51,8 @@ namespace SolrNet.Tests {
             return testParams.Select(dv => {
                 var expectedResult = dv.Value;
                 var localParams = dv.Key;
-                return new TestCase(expectedResult, () => Assert.AreEqual(expectedResult, new LocalParams(localParams).ToString()));
+                Test t = new TestCase(expectedResult, () => Assert.AreEqual(expectedResult, new LocalParams(localParams).ToString()));
+                return t;
             });
         }
 

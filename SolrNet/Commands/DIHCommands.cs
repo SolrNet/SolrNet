@@ -1,4 +1,7 @@
 namespace SolrNet.Commands {
+    /// <summary>
+    ///  The DataImportHandler operations
+    /// </summary>
     public enum DIHCommands {
         /// <summary>
         /// To know the status of the current command.
@@ -20,11 +23,11 @@ namespace SolrNet.Commands {
         /// <summary>
         /// Abort an ongoing operation.
         /// </summary>
-        //Abort,
+        Abort,
 
         /// <summary>
         ///  If the data-config is changed and you wish to reload the file without restarting Solr
         /// </summary>
-        //ReloadConfig
+        ReloadConfig
     }
 }

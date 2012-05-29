@@ -41,10 +41,26 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void DelatImportTest() {
+        public void DeltaImportTest() {
             var cmd = new DIHCommand {Command = DIHCommands.DeltaImport};
             AssertGet(cmd, "/dataimport", new[] {
                 KV.Create("command", "delta-import")
+            });
+        }
+
+        [Test]
+        public void ReloadConfigTest() {
+            var cmd = new DIHCommand {Command = DIHCommands.ReloadConfig};
+            AssertGet(cmd, "/dataimport", new[] {
+                KV.Create("command", "reload-config")
+            });
+        }
+
+        [Test]
+        public void AbortTest() {
+            var cmd = new DIHCommand {Command = DIHCommands.Abort};
+            AssertGet(cmd, "/dataimport", new[] {
+                KV.Create("command", "abort")
             });
         }
 
@@ -61,6 +77,30 @@ namespace SolrNet.Tests {
             var cmd = new DIHCommand {Clean = false};
             AssertGet(cmd, "/dataimport", new[] {
                 KV.Create("clean", "false")
+            });
+        }
+
+        [Test]
+        public void CommitTest() {
+            var cmd = new DIHCommand {Commit = false};
+            AssertGet(cmd, "/dataimport", new[] {
+                KV.Create("commit", "false")
+            });
+        }
+
+        [Test]
+        public void OptimizeTest() {
+            var cmd = new DIHCommand {Optimize = false};
+            AssertGet(cmd, "/dataimport", new[] {
+                KV.Create("optimize", "false")
+            });
+        }
+
+        [Test]
+        public void DebugTest() {
+            var cmd = new DIHCommand {Debug = true};
+            AssertGet(cmd, "/dataimport", new[] {
+                KV.Create("debug", "true")
             });
         }
 

@@ -79,6 +79,7 @@
     <Compile Include="Commands\Cores\SwapCommand.cs" />
     <Compile Include="Commands\Cores\UnloadCommand.cs" />
     <Compile Include="Commands\DIHCommand.cs" />
+    <Compile Include="Commands\DIHCommands.cs" />
     <Compile Include="Commands\Parameters\CommonQueryOptions.cs" />
     <Compile Include="Commands\Parameters\ClusteringParameters.cs" />
     <Compile Include="Commands\Parameters\InterestingTerms.cs" />

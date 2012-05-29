@@ -10,7 +10,15 @@ using SolrNet.Utils;
 namespace SolrNet.Tests {
     [TestFixture]
     public class DIHCommandTests {
-        private readonly IEnumerable<KeyValuePair<string, string>> emptyParameters = new KeyValuePair<string, string>[0]; 
+        private readonly IEnumerable<KeyValuePair<string, string>> emptyParameters = new KeyValuePair<string, string>[0];
+
+        [Test]
+        public void ConstructorDefaultValueTest() {
+            var cmd = new DIHCommand();
+            Assert.IsFalse(cmd.Clean.HasValue);
+            Assert.IsFalse(cmd.Command.HasValue);
+            Assert.AreEqual("dataimport", cmd.HandlerName);
+        }
 
         [Test]
         public void BasicDataImportTest() {
@@ -19,15 +27,15 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void NamedDataImportTest() {
+        public void NamedHandlerTest() {
             var cmd = new DIHCommand {HandlerName = "custom-name"};
             var conn = AssertGet(cmd, "/custom-name", emptyParameters);
             Assert.AreEqual(1, conn.get.Calls);
         }
 
         [Test]
-        public void CommandTypeFullImportTest() {
-            var cmd = new DIHCommand {CommandType = DIHCommand.DIHCommandType.FullImport};
+        public void FullImportTest() {
+            var cmd = new DIHCommand {Command = DIHCommands.FullImport};
             var conn = AssertGet(cmd, "/dataimport", new[] {
                 KV.Create("command", "full-import")
             });
@@ -35,12 +43,30 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void CommandTypeDelatImportTest() {
-            var cmd = new DIHCommand {CommandType = DIHCommand.DIHCommandType.DeltaImport};
+        public void DelatImportTest() {
+            var cmd = new DIHCommand {Command = DIHCommands.DeltaImport};
             var expectedParameters = new[] {
                 KV.Create("command", "delta-import")
             };
             var conn = AssertGet(cmd, "/dataimport", expectedParameters);
+            Assert.AreEqual(1, conn.get.Calls);
+        }
+
+        [Test]
+        public void CleanTrueTest() {
+            var cmd = new DIHCommand {Clean = true};
+            var conn = AssertGet(cmd, "/dataimport", new[] {
+                KV.Create("clean", "true")
+            });
+            Assert.AreEqual(1, conn.get.Calls);
+        }
+
+        [Test]
+        public void CleanFalseTest() {
+            var cmd = new DIHCommand {Clean = false};
+            var conn = AssertGet(cmd, "/dataimport", new[] {
+                KV.Create("clean", "false")
+            });
             Assert.AreEqual(1, conn.get.Calls);
         }
 

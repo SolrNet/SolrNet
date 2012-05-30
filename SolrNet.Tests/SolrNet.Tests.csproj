@@ -83,6 +83,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -235,9 +236,6 @@
     <EmbeddedResource Include="Resources\responseWithFacetPivoting.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\collapseResponse.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\collapseResponse2.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -281,6 +279,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\responseWithStatus.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithTermVector.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

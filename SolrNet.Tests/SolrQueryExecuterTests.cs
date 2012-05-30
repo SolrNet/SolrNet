@@ -358,6 +358,26 @@ namespace SolrNet.Tests {
             Assert.Contains(p, KV.Create("terms.upper.incl", "true"));
         }
 
+
+		[Test]
+		public void TermVector()
+		{
+			var queryExecuter = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
+			var p = queryExecuter.GetTermsParameters(new QueryOptions
+			{
+				TermVector = new TermVectorParameters("text")
+				{
+				All = true, Df = false, Tf = true, Tf_Idf = true
+				},
+			}).ToList();
+			Assert.Contains(p, KV.Create("tv", "true"));
+			Assert.Contains(p, KV.Create("tv.df", "false"));
+			Assert.Contains(p, KV.Create("tv.tf", "true"));
+			Assert.Contains(p, KV.Create("tv.tf_idf", "true"));
+			Assert.Contains(p, KV.Create("tv.fl", "text"));
+
+		}
+
         [Test]
         public void GetAllParameters_with_spelling() {
             var querySerializer = new SolrQuerySerializerStub("*:*");

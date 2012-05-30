@@ -78,8 +78,6 @@
     <Compile Include="Commands\Cores\StatusCommand.cs" />
     <Compile Include="Commands\Cores\SwapCommand.cs" />
     <Compile Include="Commands\Cores\UnloadCommand.cs" />
-    <Compile Include="Commands\DIHCommand.cs" />
-    <Compile Include="Commands\DIHCommands.cs" />
     <Compile Include="Commands\Parameters\CommonQueryOptions.cs" />
     <Compile Include="Commands\Parameters\ClusteringParameters.cs" />
     <Compile Include="Commands\Parameters\InterestingTerms.cs" />
@@ -89,6 +87,7 @@
     <Compile Include="Commands\Parameters\TermsParameters.cs" />
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
     <Compile Include="Commands\Parameters\TermsSort.cs" />
+    <Compile Include="DIHOptions.cs" />
     <Compile Include="ExtractField.cs" />
     <Compile Include="ExtractFormat.cs" />
     <Compile Include="ExtractParameters.cs" />
@@ -132,7 +131,9 @@
     <Compile Include="Impl\ResponseParsers\ClusterResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\TermsResponseParser.cs" />
     <Compile Include="ISolrCoreAdmin.cs" />
+    <Compile Include="ISolrDIHOperations.cs" />
     <Compile Include="Pivot.cs" />
+    <Compile Include="SolrDIHOperations.cs" />
     <Compile Include="SolrMLTQuery.cs" />
     <Compile Include="PivotFacetingResult.cs" />
     <Compile Include="Impl\ResponseParsers\GroupingResponseParser.cs" />

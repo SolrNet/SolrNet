@@ -1,25 +1,27 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SolrNet.Utils;
 
-namespace SolrNet.Commands {
+namespace SolrNet {
     /// <summary>
-    /// Request solr to perform a data import.
+    /// The options to make a DataImportHandler request.
     /// </summary>
-    public class DIHCommand : ISolrCommand {
+    public class DIHOptions {
         /// <summary>
-        /// Name of the data import request handler.
-        /// Default is dataimport.
+        /// The data handler options.
         /// </summary>
-        public string HandlerName { get; set; }
+        /// <param name="handlerName">the name of the handler to query. This argument cannot be null.</param>
+        public DIHOptions(string handlerName = "dataimport") {
+            if (handlerName == null) 
+                throw new ArgumentNullException("handlerName", "you must provide a handler name other than null");
+            HandlerName = handlerName;
+        }
 
         /// <summary>
-        /// Define what kind of import to perform. 
-        /// If no CommandType is set, the handler returns the status (e.g.: idle).
+        /// Name of the data import request handler.
+        /// Default is "dataimport".
         /// </summary>
-        public DIHCommands? Command { get; set; }
+        public string HandlerName { get; set; }
 
         /// <summary>
         /// Tells whether to clean up the index before the indexing is started.
@@ -48,19 +50,7 @@ namespace SolrNet.Commands {
         /// </summary>
         public bool? Debug { get; set; }
 
-        public DIHCommand() {
-            HandlerName = "dataimport";
-        }
-
-        public string Execute(ISolrConnection connection) {
-            string url = string.Format("/{0}", HandlerName);
-            var parameters = GetParameters();
-            return connection.Get(url, parameters);
-        }
-
-        private IEnumerable<KeyValuePair<string, string>> GetParameters() {
-            if (Command.HasValue)
-                yield return KV.Create("command", CommandValue(Command.Value));
+        public IEnumerable<KeyValuePair<string, string>> ToParameters() {
             if (Clean.HasValue)
                 yield return KV.Create("clean", Clean.ToString().ToLower());
             if (Commit.HasValue)
@@ -69,21 +59,6 @@ namespace SolrNet.Commands {
                 yield return KV.Create("optimize", Optimize.ToString().ToLower());
             if (Debug.HasValue)
                 yield return KV.Create("debug", Debug.ToString().ToLower());
-        }
-
-        private string CommandValue(DIHCommands commands) {
-            switch (commands) {
-                case DIHCommands.FullImport:
-                    return "full-import";
-                case DIHCommands.DeltaImport:
-                    return "delta-import";
-                case DIHCommands.ReloadConfig:
-                    return "reload-config";
-                case DIHCommands.Abort:
-                    return "abort";
-                default:
-                    return "";
-            }
         }
     }
 }

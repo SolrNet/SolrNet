@@ -27,6 +27,7 @@ namespace SolrNet.Impl.QuerySerializers {
                 new BoostQuerySerializer(this),
                 new HasValueQuerySerializer(this),
                 new NotQuerySerializer(this),
+                new RequiredQuerySerializer(this),
                 new QueryInListSerializer(this),
                 new NullableDateTimeRangeQuerySerializer(fieldSerializer),
                 new DateTimeRangeQuerySerializer(fieldSerializer),

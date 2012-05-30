@@ -60,6 +60,12 @@ namespace SolrNet.DSL.Tests {
         }
 
         [Test]
+        public void FieldValueRequired() {
+            var q = Query.Field("name").Is("solr").Required();
+            Assert.AreEqual("+name:(solr)", Serialize(q));
+        }
+
+        [Test]
         public void Range() {
             var q = Query.Field("price").From(10).To(20);
             Assert.AreEqual("price:[10 TO 20]", Serialize(q));

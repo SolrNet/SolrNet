@@ -12,7 +12,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="handlerName">the name of the handler to query. This argument cannot be null.</param>
         public DIHOptions(string handlerName = "dataimport") {
-            if (handlerName == null) 
+            if (handlerName == null)
                 throw new ArgumentNullException("handlerName", "you must provide a handler name other than null");
             HandlerName = handlerName;
         }

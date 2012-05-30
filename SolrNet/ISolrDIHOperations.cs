@@ -23,14 +23,14 @@ namespace SolrNet {
         /// </summary>
         /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        SolrDIHStatus ReloadConfig(string handlerName = null);
+        SolrDIHStatus ReloadConfig(string handlerName = "dataimport");
 
         /// <summary>
         /// Abort an ongoing operation.
         /// </summary>
         /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        SolrDIHStatus Abort(string handlerName = null);
+        SolrDIHStatus Abort(string handlerName = "dataimport");
 
         /// <summary>
         /// To know the status of the current command.
@@ -38,6 +38,6 @@ namespace SolrNet {
         /// </summary>
         /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        SolrDIHStatus Status(string handlerName = null);
+        SolrDIHStatus Status(string handlerName = "dataimport");
     }
 }

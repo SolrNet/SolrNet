@@ -13,7 +13,6 @@ using SolrNet.Utils;
 namespace SolrNet.Tests {
     [TestFixture]
     public class SolrDIHOperationsTests {
-
         [Test]
         public void FullImportCommandTest() {
             var connection = new MSolrConnection();
@@ -29,9 +28,9 @@ namespace SolrNet.Tests {
             var connection = new MSolrConnection();
             var solr = MakeSolrDihOperations(connection);
             var options = new DIHOptions("custom") {
-                Clean = true, 
-                Commit = true, 
-                Debug = false, 
+                Clean = true,
+                Commit = true,
+                Debug = false,
                 Optimize = true
             };
             ExpectGet(connection, "/custom", new[] {
@@ -88,22 +87,22 @@ namespace SolrNet.Tests {
         public void ParseActualResponseTest() {
             string responseText =
                 "<response>" +
-                    "<lst name=\"responseHeader\">" +
-                        "<int name=\"status\">0</int>" +
-                        "<int name=\"QTime\">0</int>" +
-                    "</lst>" +
-                    "<lst name=\"initArgs\">" +
-                        "<lst name=\"defaults\">" +
-                            "<str name=\"config\">./data-config.xml</str>" +
-                        "</lst>" +
-                    "</lst>" +
-                    "<str name=\"command\">status</str>" +
-                    "<str name=\"status\">idle</str>" +
-                    "<str name=\"importResponse\"/>" +
-                    "<lst name=\"statusMessages\"/>" +
-                    "<str name=\"WARNING\">" +
-                        "This response format is experimental. It is likely to change in the future." +
-                    "</str>" +
+                "<lst name=\"responseHeader\">" +
+                "<int name=\"status\">0</int>" +
+                "<int name=\"QTime\">0</int>" +
+                "</lst>" +
+                "<lst name=\"initArgs\">" +
+                "<lst name=\"defaults\">" +
+                "<str name=\"config\">./data-config.xml</str>" +
+                "</lst>" +
+                "</lst>" +
+                "<str name=\"command\">status</str>" +
+                "<str name=\"status\">idle</str>" +
+                "<str name=\"importResponse\"/>" +
+                "<lst name=\"statusMessages\"/>" +
+                "<str name=\"WARNING\">" +
+                "This response format is experimental. It is likely to change in the future." +
+                "</str>" +
                 "</response>";
             Func<string, IEnumerable<KeyValuePair<string, string>>, string> getResponse = (url, param) => responseText;
             var connection = new MSolrConnection() {
@@ -111,13 +110,12 @@ namespace SolrNet.Tests {
             };
             var parser = new SolrDIHStatusParserFake();
             var solr = new SolrDIHOperations(connection, parser);
-            
+
             solr.Status();
             Assert.Xml.AreEqual(responseText, parser.receivedXml.ToString());
-
         }
 
-        private static void ExpectGet(MSolrConnection connection, string url, IEnumerable<KeyValuePair<string, string>> parameters, string response = null) {
+        private static void ExpectGet(MSolrConnection connection, string url, IEnumerable<KeyValuePair<string, string>> parameters, string response = "<response></response>") {
             connection.get += (getUrl, param) => {
                 Assert.AreEqual(url, getUrl);
                 Assert.AreElementsEqualIgnoringOrder(parameters, param);
@@ -126,12 +124,13 @@ namespace SolrNet.Tests {
         }
 
         private ISolrDIHOperations MakeSolrDihOperations(ISolrConnection connection) {
-            return new SolrDIHOperations(connection, new SolrDIHStatusParser());
+            return new SolrDIHOperations(connection, new SolrDIHStatusParserFake());
         }
     }
 
-    class SolrDIHStatusParserFake : ISolrDIHStatusParser {
+    internal class SolrDIHStatusParserFake : ISolrDIHStatusParser {
         public XDocument receivedXml;
+
         public SolrDIHStatus Parse(XDocument solrDIHStatusXml) {
             receivedXml = solrDIHStatusXml;
             return new SolrDIHStatus();

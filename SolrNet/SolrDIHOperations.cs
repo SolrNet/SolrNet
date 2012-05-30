@@ -38,7 +38,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        public SolrDIHStatus ReloadConfig(string handlerName = null) {
+        public SolrDIHStatus ReloadConfig(string handlerName = DefaultHandlerName) {
             return GetAndParse("reload-config", new DIHOptions(handlerName ?? DefaultHandlerName));
         }
 
@@ -47,8 +47,8 @@ namespace SolrNet {
         /// </summary>
         /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        public SolrDIHStatus Abort(string handlerName = null) {
-            return GetAndParse("abort", new DIHOptions(handlerName ?? DefaultHandlerName));
+        public SolrDIHStatus Abort(string handlerName = DefaultHandlerName) {
+            return GetAndParse("abort", new DIHOptions(handlerName));
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        public SolrDIHStatus Status(string handlerName = null) {
+        public SolrDIHStatus Status(string handlerName = DefaultHandlerName) {
             return GetAndParse("status", new DIHOptions(handlerName ?? DefaultHandlerName));
         }
 

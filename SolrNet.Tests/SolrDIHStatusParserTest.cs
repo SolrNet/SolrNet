@@ -4,8 +4,7 @@ using SolrNet.Impl;
 using SolrNet.Tests.Utils;
 using MbUnit.Framework;
 
-namespace SolrNet.Tests
-{
+namespace SolrNet.Tests {
     [TestFixture]
     public class SolrDIHStatusParserTest {
         [Test]
@@ -32,14 +31,12 @@ namespace SolrNet.Tests
         [Test]
         // this occured when the data-import handler has not been initialized.
         // the status node contains then a longer message explaining the issue. (then stored in StatusText)
-        public void SolrDIHStatusParsingWithNoStatusMessageNode()
-        {
+        public void SolrDIHStatusParsingWithNoStatusMessageNode() {
             var DIHStatusParser = new SolrDIHStatusParser();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrDIHStatusBasic.xml");
             xml.XPathSelectElement("//lst[@name='statusMessages']").Remove();
             SolrDIHStatus dihStatusDoc = DIHStatusParser.Parse(xml);
             Assert.AreEqual("idle", dihStatusDoc.StatusText);
         }
-
     }
 }

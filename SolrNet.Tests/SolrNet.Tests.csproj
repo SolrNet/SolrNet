@@ -104,6 +104,7 @@
     <Compile Include="ExceptionTests.cs" />
     <Compile Include="FieldParserTests.cs" />
     <Compile Include="HttpTests.cs" />
+    <Compile Include="Integration.Sample\DIHTests.cs" />
     <Compile Include="Integration.Sample\Product.cs" />
     <Compile Include="Integration.Sample\ProductLoose.cs" />
     <Compile Include="Integration.Sample\Tests.cs" />

@@ -16,7 +16,7 @@ namespace SolrNet.Impl {
         public SolrDIHStatus Parse(XDocument solrDIHStatusXml) {
             var result = new SolrDIHStatus();
 
-            if (solrDIHStatusXml == null) 
+            if (solrDIHStatusXml == null)
                 return result;
 
             foreach (var fieldNode in solrDIHStatusXml.Element("response").Elements("str")) {
@@ -30,6 +30,7 @@ namespace SolrNet.Impl {
                                 result.Status = DIHStatus.BUSY;
                                 break;
                         }
+                        result.StatusText = fieldNode.Value;
                         break;
                     case "importResponse":
                         result.ImportResponse = fieldNode.Value;
@@ -37,7 +38,11 @@ namespace SolrNet.Impl {
                 }
             }
 
-            foreach (var fieldNode in solrDIHStatusXml.XPathSelectElement("//lst[@name='statusMessages']").Elements()) {
+            var statusMessagesNodes = solrDIHStatusXml.XPathSelectElement("//lst[@name='statusMessages']");
+            if (statusMessagesNodes == null)
+                return result;
+
+            foreach (var fieldNode in statusMessagesNodes.Elements()) {
                 DateTime tempDate;
                 string[] tempTimeSpanSplit;
 
@@ -46,7 +51,7 @@ namespace SolrNet.Impl {
                         tempTimeSpanSplit = fieldNode.Value.Split(':');
                         if (tempTimeSpanSplit.Length == 3)
                             result.TimeElapsed = new TimeSpan(0, Convert.ToInt32(tempTimeSpanSplit[0]), Convert.ToInt32(tempTimeSpanSplit[1]), Convert.ToInt32(tempTimeSpanSplit[2].Split('.')[0]), Convert.ToInt32(tempTimeSpanSplit[2].Split('.')[1]));
-                        
+
                         break;
                     case "Total Requests made to DataSource":
                         result.TotalRequestToDataSource = Convert.ToInt32(fieldNode.Value);
@@ -65,12 +70,12 @@ namespace SolrNet.Impl {
 
                         break;
                     case "Full Dump Started":
-                        if (DateTime.TryParse(fieldNode.Value, out tempDate)) 
+                        if (DateTime.TryParse(fieldNode.Value, out tempDate))
                             result.FullDumpStarted = tempDate;
-                        
+
                         break;
                     case "Committed":
-                        if (DateTime.TryParse(fieldNode.Value, out tempDate)) 
+                        if (DateTime.TryParse(fieldNode.Value, out tempDate))
                             result.Committed = tempDate;
 
                         break;

@@ -52,13 +52,10 @@ let dirs = [for l in libs -> l @@ "bin" @@ config]
 let testAssemblies = !! ("**/bin/"+config+"/*Tests.dll") |> Seq.distinctBy (fun p -> p.Split [|'/';'\\'|] |> System.Linq.Enumerable.Last)
 let noIntegrationTests = "exclude Category: Integration"
 let onlyIntegrationTests = "Category: Integration"
+let testTargets = List.map (fun lib -> "Test." + lib) libs
 
-Target "Test" (fun _ ->
-    testAssemblies |> Gallio.Run (fun p -> { p with Filters = noIntegrationTests })
-)
-
-for lib in libs do
-    Target ("Test." + lib) (fun _ ->
+for lib,target in List.zip libs testTargets do
+    Target target (fun _ ->
         !! (lib+".Tests/bin/"+config+"/"+lib+".Tests.dll")
             |> Gallio.Run (fun p -> { p with Filters = noIntegrationTests })
     )
@@ -265,8 +262,9 @@ Target "TestAndRelease" DoNothing
 Target "BuildAndRelease" DoNothing
 Target "NuGet.All" DoNothing
 Target "All" DoNothing
+Target "Test" DoNothing
 
-"Test" <== ["BuildAll"]
+"Test" <== ["BuildAll"] @ testTargets
 "BuildAll" <== ["Build";"Merge";"BuildSample"]
 "BuildAndRelease" <== ["Clean";"Version";"BuildAll";"Docs";"ReleasePackage"]
 "TestAndRelease" <== ["Clean";"Version";"Test";"ReleasePackage"]

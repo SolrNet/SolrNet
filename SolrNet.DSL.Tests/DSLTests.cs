@@ -151,7 +151,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void OrderBy() {
             var conn = new MockConnection(new Dictionary<string, string> {
-                {"q", "((Id:123456))"},
+                {"q", "(Id:(123456))"},
                 {"sort", "id asc"},
                 {"rows", DefaultRows()},
             });
@@ -194,7 +194,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void OrderByAscDesc() {
             var query = new Dictionary<string, string> {
-                {"q", "((Id:123456))"},
+                {"q", "(Id:(123456))"},
                 {"rows", DefaultRows()},
                 {"sort", "id asc"},
             };
@@ -210,7 +210,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void OrderByAscDescMultiple() {
             var query = new Dictionary<string, string> {
-                {"q", "((Id:123456))"},
+                {"q", "(Id:(123456))"},
                 {"rows", DefaultRows()},
                 {"sort", "id asc,name desc"},
             };
@@ -249,7 +249,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void QueryByAnyField() {
             var query = new Dictionary<string, string> {
-                {"q", "((id:123456))"},
+                {"q", "(id:(123456))"},
                 {"rows", DefaultRows()},
             };
             var conn = new MockConnection(query);
@@ -403,7 +403,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void Highlighting() {
             var conn = new MockConnection(new Dictionary<string, string> {
-                {"q", "((makedesc:bmw))"},
+                {"q", "(makedesc:(bmw))"},
                 {"hl", "true"},
                 {"hl.fl", "make"},
                 {"rows", DefaultRows()},
@@ -417,7 +417,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void HighlightingFields() {
             var conn = new MockConnection(new Dictionary<string, string> {
-                {"q", "((makedesc:bmw))"},
+                {"q", "(makedesc:(bmw))"},
                 {"hl", "true"},
                 {"hl.fl", "make,category"},
                 {"rows", DefaultRows()},

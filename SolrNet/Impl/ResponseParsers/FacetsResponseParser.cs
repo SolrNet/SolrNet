@@ -93,7 +93,6 @@ namespace SolrNet.Impl.ResponseParsers {
 
         public DateFacetingResult ParseDateFacetingNode(XElement node) {
             var r = new DateFacetingResult();
-            var dateParser = new DateTimeFieldParser();
             var intParser = new IntFieldParser();
             foreach (var dateFacetingNode in node.Elements()) {
                 var name = dateFacetingNode.Attribute("name").Value;
@@ -102,7 +101,7 @@ namespace SolrNet.Impl.ResponseParsers {
                         r.Gap = dateFacetingNode.Value;
                         break;
                     case "end":
-                        r.End = (DateTime) dateParser.Parse(dateFacetingNode, typeof (DateTime));
+                        r.End = DateTimeFieldParser.ParseDate(dateFacetingNode.Value);
                         break;
                     default:
                         // Temp fix to support Solr 3.1, which has added a new element <date name="start">...</date>
@@ -118,7 +117,7 @@ namespace SolrNet.Impl.ResponseParsers {
                         else if (name == FacetDateOther.Between.ToString())
                             r.OtherResults[FacetDateOther.Between] = count;
                         else {
-                            var d = dateParser.ParseDate(name);
+                            var d = DateTimeFieldParser.ParseDate(name);
                             r.DateResults.Add(KV.Create(d, count));
                         }
                         break;

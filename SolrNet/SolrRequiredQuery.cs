@@ -1,5 +1,5 @@
-﻿#region license
-// Copyright (c) 2007-2010 Mauricio Scheffer
+#region license
+// Copyright (c) 2007-2012 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,22 +14,25 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
+using SolrNet.Impl;
 
-namespace SolrNet.Impl.FieldSerializers {
+namespace SolrNet {
     /// <summary>
-    /// Serializes datetime fields
+    /// Requires a query
     /// </summary>
-    public class DateTimeFieldSerializer : AbstractFieldSerializer<DateTime> {
-        public static string SerializeDate(DateTime dt) {
-            return dt.ToString("yyyy-MM-dd'T'HH:mm:ss.FFF'Z'");
+    public class SolrRequiredQuery : AbstractSolrQuery {
+        private readonly ISolrQuery query;
+
+        /// <summary>
+        /// Requires a query
+        /// </summary>
+        /// <param name="q"></param>
+        public SolrRequiredQuery(ISolrQuery q) {
+            query = q;
         }
 
-        public override IEnumerable<PropertyNode> Parse(DateTime obj) {
-            yield return new PropertyNode {
-                FieldValue = SerializeDate(obj),
-            };
+        public ISolrQuery Query {
+            get { return query; }
         }
     }
 }

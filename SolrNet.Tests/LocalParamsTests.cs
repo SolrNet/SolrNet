@@ -1,4 +1,5 @@
 ﻿#region license
+
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,21 +13,47 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using MbUnit.Framework;
 using SolrNet.Exceptions;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
+using SolrNet.Utils;
 
 namespace SolrNet.Tests {
     [TestFixture]
     public class LocalParamsTests {
-        [Test]
-        [Factory("ParamsFactory")]
-        public void Serialize(Dictionary<string, string> s, string result) {
-            Assert.AreEqual(result, new LocalParams(s).ToString());
+        private static readonly IEnumerable<KeyValuePair<Dictionary<string, string>, string>> testParams =
+            new[] {
+                KV.Create(new Dictionary<string, string> {
+                    {"type", "spatial"},
+                }, "{!type=spatial}"),
+                KV.Create(new Dictionary<string, string> {
+                    {"type", "spatial"},
+                    {"a", "b"},
+                }, "{!type=spatial a=b}"),
+                KV.Create(new Dictionary<string, string> {
+                    {"type", "spatial"},
+                    {"a", "1 2 3"},
+                }, "{!type=spatial a='1 2 3'}"),
+                KV.Create(new Dictionary<string, string> {
+                    {"type", "spatial"},
+                    {"a", "1 2 '3"},
+                }, "{!type=spatial a='1 2 \\'3'}"),
+            };
+
+        [StaticTestFactory]
+        public static IEnumerable<Test> Tests() {
+            return testParams.Select(dv => {
+                var expectedResult = dv.Value;
+                var localParams = dv.Key;
+                Test t = new TestCase(expectedResult, () => Assert.AreEqual(expectedResult, new LocalParams(localParams).ToString()));
+                return t;
+            });
         }
 
         public string SerializeQuery(object q) {
@@ -34,40 +61,8 @@ namespace SolrNet.Tests {
             return serializer.Serialize(q);
         }
 
-
-        public IEnumerable<object[]> ParamsFactory() {
-            yield return new object[] {new Dictionary<string, string>(), ""};
-
-            yield return new object[] {
-                new Dictionary<string, string> {
-                   {"type", "spatial"},
-                }, "{!type=spatial}"
-            };
-
-            yield return new object[] {
-                new Dictionary<string, string> {
-                   {"type", "spatial"},
-                   {"a", "b"},
-                }, "{!type=spatial a=b}"
-            };
-
-            yield return new object[] {
-                new Dictionary<string, string> {
-                   {"type", "spatial"},
-                   {"a", "1 2 3"},
-                }, "{!type=spatial a='1 2 3'}"
-            };
-
-            yield return new object[] {
-                new Dictionary<string, string> {
-                   {"type", "spatial"},
-                   {"a", "1 2 '3"},
-                }, "{!type=spatial a='1 2 \\'3'}"
-            };
-        }
-
         [Test]
-        [ExpectedException(typeof(SolrNetException))]
+        [ExpectedException(typeof (SolrNetException))]
         public void NullValueThrows() {
             var p = new LocalParams {
                 {"a", null}

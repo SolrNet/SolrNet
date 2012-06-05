@@ -206,6 +206,7 @@
     <Compile Include="Impl\QuerySerializers\QueryByFieldSerializer.cs" />
     <Compile Include="Impl\QuerySerializers\QueryInListSerializer.cs" />
     <Compile Include="Impl\QuerySerializers\RangeQuerySerializer.cs" />
+    <Compile Include="Impl\QuerySerializers\RequiredQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\SelfSerializingQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\SingleTypeQuerySerializer.cs" />
     <Compile Include="Impl\ResponseParsers\ExtractResponseParser.cs" />
@@ -294,6 +295,7 @@
     <Compile Include="SolrHasValueQuery.cs" />
     <Compile Include="SolrMultipleCriteriaQuery.cs" />
     <Compile Include="SolrNotQuery.cs" />
+    <Compile Include="SolrRequiredQuery.cs" />
     <Compile Include="SolrQuery.cs" />
     <Compile Include="SolrQueryBoost.cs" />
     <Compile Include="SolrQueryByField.cs" />

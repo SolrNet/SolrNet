@@ -15,21 +15,17 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 
-namespace SolrNet.Impl.FieldSerializers {
-    /// <summary>
-    /// Serializes datetime fields
-    /// </summary>
-    public class DateTimeFieldSerializer : AbstractFieldSerializer<DateTime> {
-        public static string SerializeDate(DateTime dt) {
-            return dt.ToString("yyyy-MM-dd'T'HH:mm:ss.FFF'Z'");
+namespace SolrNet.Impl.QuerySerializers {
+    public class RequiredQuerySerializer : SingleTypeQuerySerializer<SolrRequiredQuery> {
+        private readonly ISolrQuerySerializer serializer;
+
+        public RequiredQuerySerializer(ISolrQuerySerializer serializer) {
+            this.serializer = serializer;
         }
 
-        public override IEnumerable<PropertyNode> Parse(DateTime obj) {
-            yield return new PropertyNode {
-                FieldValue = SerializeDate(obj),
-            };
+        public override string Serialize(SolrRequiredQuery q) {
+            return "+" + serializer.Serialize(q.Query);
         }
     }
 }

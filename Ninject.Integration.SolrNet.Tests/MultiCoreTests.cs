@@ -16,9 +16,12 @@
 
 using System;
 using MbUnit.Framework;
+using Moroco;
 using Ninject.Integration.SolrNet.Config;
 using SolrNet;
 using System.Configuration;
+using SolrNet.Exceptions;
+using SolrNet.Tests.Mocks;
 
 namespace Ninject.Integration.SolrNet.Tests {
     [TestFixture]
@@ -125,7 +128,6 @@ namespace Ninject.Integration.SolrNet.Tests {
         }
 
         [Test]
-        [Ignore("Not implemented yet")]
         public void MultiCore_SameClassBinding()
         {
             var solrServers = new SolrServers {
@@ -145,6 +147,46 @@ namespace Ninject.Integration.SolrNet.Tests {
             Assert.IsNotNull(solr1);
             var solr2 = kernel.Get<ISolrOperations<Entity>>("core-1");
             Assert.IsNotNull(solr2);
+        }
+
+        [Test]
+        public void MultiCore_Rebind_IConnection()
+        {
+            var solrServers = new SolrServers {
+                new SolrServerElement {
+                    Id = "core-0",
+                    Url = "http://localhost:8983/solr/core0",
+                    DocumentType = typeof(Entity).AssemblyQualifiedName,
+                },
+                new SolrServerElement {
+                    Id = "core-1",
+                    Url = "http://localhost:8983/solr/core1",
+                    DocumentType = typeof(Entity).AssemblyQualifiedName,
+                }
+            };
+            kernel.Load(new SolrNetModule(solrServers));
+
+            const string Response = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+<response>
+<lst name=""responseHeader""><int name=""status"">0</int><int name=""QTime"">0</int><lst name=""params""><str name=""q"">id:123456</str><str name=""?""/><str name=""version"">2.2</str></lst></lst><result name=""response"" numFound=""1"" start=""0""><doc></doc></result>
+</response>
+";
+
+            var solr1 = kernel.Get<ISolrOperations<Entity>>("core-0");
+            Assert.IsNotNull(solr1);
+
+            Assert.Throws<SolrConnectionException>(() => solr1.Query("SomeField:Value"));
+
+            MSolrConnection conn = new MSolrConnection();
+            conn.get &= x => x.Return(Response);
+            kernel.Rebind<ISolrConnection>().ToConstant(conn).WithMetadata("CoreId", "core-0");
+            kernel.Rebind<ISolrConnection>().ToConstant(conn).WithMetadata("CoreId", "core-1");
+
+            var solr2 = kernel.Get<ISolrOperations<Entity>>("core-1");
+            Assert.IsNotNull(solr2);
+
+            var r = solr2.Query("SomeField:Value");
+            Assert.AreEqual(1, r.NumFound);
         }
     }
 }

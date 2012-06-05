@@ -36,8 +36,15 @@ namespace StructureMap.SolrNetIntegration.Tests
         [Test]
         public void Get_SolrOperations_for_Entity2()
         {
-            var solrOperations2 = ObjectFactory.Container.GetInstance<ISolrOperations<Entity2>>();
+            var solrOperations2 = ObjectFactory.Container.GetInstance<ISolrOperations<Entity2>>("entity2");
             Assert.IsNotNull(solrOperations2);
+        }
+
+        [Test]
+        public void Same_document_type_different_core_url()
+        {
+            var core1 = ObjectFactory.Container.GetInstance<ISolrOperations<Entity2>>("entity2");
+            var core2 = ObjectFactory.Container.GetInstance<ISolrOperations<Entity2>>("entity3");
         }
     }
 }

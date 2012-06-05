@@ -104,6 +104,7 @@
     <Compile Include="ExceptionTests.cs" />
     <Compile Include="FieldParserTests.cs" />
     <Compile Include="HttpTests.cs" />
+    <Compile Include="Integration.Sample\DIHTests.cs" />
     <Compile Include="Integration.Sample\Product.cs" />
     <Compile Include="Integration.Sample\ProductLoose.cs" />
     <Compile Include="Integration.Sample\Tests.cs" />
@@ -141,6 +142,8 @@
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
     <Compile Include="ServiceLocatorTestCase.cs" />
     <Compile Include="SolrCoreAdminTests.cs" />
+    <Compile Include="SolrDIHOperationsTests.cs" />
+    <Compile Include="SolrDIHOptionsTests.cs" />
     <Compile Include="SolrDIHStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />

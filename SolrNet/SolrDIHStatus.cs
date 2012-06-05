@@ -34,6 +34,7 @@ namespace SolrNet {
         public int TotalDocumentsFailed { get; set; }
         public DateTime FullDumpStarted { get; set; }
         public string Summary { get; set; }
+        public string StatusText { get; set; }
         public DateTime Committed { get; set; }
         public DateTime Optimized { get; set; }
         public TimeSpan TimeTaken { get; set; }

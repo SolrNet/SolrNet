@@ -123,6 +123,8 @@ namespace SolrNet {
             Container.Register<ISolrOperations<T>>(c => new SolrServer<T>(c.GetInstance<ISolrBasicOperations<T>>(), Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>()));
             Container.Register<ISolrReadOnlyOperations<T>>(c => new SolrServer<T>(c.GetInstance<ISolrBasicOperations<T>>(), Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>()));
 
+            Container.Register<ISolrDIHOperations>(c => new SolrDIHOperations(connection, c.GetInstance<ISolrDIHStatusParser>()));
+
             var coreAdminKey = typeof(ISolrCoreAdmin).Name + connectionKey;
             Container.Register<ISolrCoreAdmin>(coreAdminKey, c => new SolrCoreAdmin(connection, c.GetInstance<ISolrHeaderResponseParser>(), c.GetInstance<ISolrStatusResponseParser>()));
         }

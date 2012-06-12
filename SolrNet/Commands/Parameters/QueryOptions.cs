@@ -61,6 +61,12 @@ namespace SolrNet.Commands.Parameters {
         public CollapseParameters Collapse { get; set; }
 
 		/// <summary>
+		/// This parameter can be used to collapse - or group - documents by the unique values of a specified field. Included in the results are the number of
+		/// records by document key and by field value
+		/// </summary>
+		public TermVectorParameters TermVector { get; set; }
+
+		/// <summary>
 		/// (only SOLR 4.0)
 		/// This parameter can be used to collapse - or group - documents by the unique values of a specified field. Included in the results are the number of
 		/// records by document key and by field value

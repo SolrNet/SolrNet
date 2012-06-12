@@ -54,6 +54,12 @@
     <DocumentationFile>bin\Release\SolrNet.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>DeveloperKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -87,6 +93,7 @@
     <Compile Include="Commands\Parameters\TermsParameters.cs" />
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
     <Compile Include="Commands\Parameters\TermsSort.cs" />
+    <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
     <Compile Include="ExtractField.cs" />
     <Compile Include="ExtractFormat.cs" />
     <Compile Include="ExtractParameters.cs" />
@@ -117,7 +124,9 @@
     <Compile Include="Impl\ResponseParsers\AggregateResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\CoreStatusResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\DefaultResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\TermVectorResultsParser.cs" />
     <Compile Include="Impl\SolrCoreAdmin.cs" />
+    <Compile Include="Impl\SolrPostConnection.cs" />
     <Compile Include="Impl\SolrStatusResponseParser.cs" />
     <Compile Include="Impl\SolrMoreLikeThisHandlerResults.cs" />
     <Compile Include="Impl\ResponseParsers\InterestingTermsResponseParser.cs" />
@@ -129,6 +138,8 @@
     <Compile Include="Impl\ISolrDIHStatusParser.cs" />
     <Compile Include="Impl\ResponseParsers\ClusterResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\TermsResponseParser.cs" />
+    <Compile Include="Impl\TermVectorDocumentResult.cs" />
+    <Compile Include="Impl\TermVectorResults.cs" />
     <Compile Include="ISolrCoreAdmin.cs" />
     <Compile Include="Pivot.cs" />
     <Compile Include="SolrMLTQuery.cs" />
@@ -346,6 +357,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DeveloperKey.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

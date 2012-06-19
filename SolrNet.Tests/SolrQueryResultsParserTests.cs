@@ -503,6 +503,33 @@ namespace SolrNet.Tests {
             Assert.AreEqual(463, terms.ElementAt(1).Terms.First().Value);
         }
 
+		[Test]
+		public void ParseTermVector()
+		{
+			var parser = new TermVectorResultsParser<Product>();
+			var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithTermVector.xml");
+			var docNode = xml.XPathSelectElement("response/lst[@name='termVectors']");
+			TermVectorResults docs = parser.ParseDocuments(docNode);
+
+			Assert.IsNotNull(docs);
+			Assert.AreEqual(2, docs.Count);
+			Assert.AreEqual(docs.First(d => d.UniqueKey == "3007WFP").TermVector.First(f => f.Field == "includes").Term, "cable");
+
+			var cable = docs.First(d => d.UniqueKey == "3007WFP").TermVector.First(f => f.Field == "includes");
+			
+			Assert.AreEqual(cable.Tf, 1);
+			Assert.AreEqual(cable.Df, 1);
+			Assert.AreEqual(1.0, cable.Tf_Idf);
+
+			Assert.AreEqual(cable.Positions.Count, 2);
+			Assert.AreEqual(cable.Positions[0], 1);
+			Assert.AreEqual(cable.Positions[1], 10);
+
+			Assert.AreEqual(cable.Offsets.Count, 1);
+			Assert.AreEqual(cable.Offsets[0].Start, 4);
+			Assert.AreEqual(cable.Offsets[0].End, 9);
+		}
+
         [Test]
         public void ParseMoreLikeThis() {
             var mapper = new AttributesMappingManager();

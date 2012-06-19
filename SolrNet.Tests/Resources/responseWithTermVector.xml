@@ -1,0 +1,37 @@
+﻿<response>
+	<lst name="termVectors">
+		<lst name="doc-0">
+			<str name="uniqueKey">SOLR1000</str>
+		</lst>
+		<str name="uniqueKeyFieldName">id</str>
+		<lst name="doc-1">
+			<str name="uniqueKey">3007WFP</str>
+			<lst name="includes">
+				<lst name="cable">
+					<int name="tf">1</int>
+					<lst name="offsets">
+						<int name="start">4</int><int name="end">9</int>
+					</lst>
+					<lst name="positions">
+						<int name="position">1</int>
+						<int name="position">10</int>
+					</lst>
+					<int name="df">1</int>
+					<double name="tf-idf">1.0</double>
+				</lst>
+				<lst name="usb">
+					<int name="tf">1</int>
+					<lst name="offsets">
+						<int name="start">0</int><int name="end">3</int>
+					</lst>
+					<lst name="positions">
+						<int name="position">0</int>
+					</lst>
+					<int name="df">1</int>
+					<double name="tf-idf">1.0</double>
+				</lst>
+			</lst>
+		</lst>
+		<str name="uniqueKeyFieldName">id</str>
+	</lst>
+</response>

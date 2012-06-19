@@ -152,6 +152,9 @@ namespace SolrNet.Impl {
             foreach (var p in GetCollapseQueryOptions(options))
                 yield return p;
 
+			foreach (var p in GetTermVectorQueryOptions(options))
+				yield return p;
+
             foreach (var p in GetGroupingQueryOptions(options))
                 yield return p;
 
@@ -415,6 +418,35 @@ namespace SolrNet.Impl {
             if (options.Collapse.MaxDocs.HasValue)
                 yield return KV.Create("collapse.maxdocs", options.Collapse.MaxDocs.ToString());
         }
+
+		/// <summary>
+		/// Gets the Solr parameters for collapse queries
+		/// </summary>
+		/// <param name="options"></param>
+		/// <returns></returns>
+		public IEnumerable<KeyValuePair<string, string>> GetTermVectorQueryOptions(QueryOptions options)
+		{
+			if (options.TermVector == null || !options.TermVector.Fields.Any())
+				yield break;
+
+			yield return KV.Create("tv", "true");
+
+			yield return KV.Create("tv.fl", string.Join(",", options.TermVector.Fields.ToArray()));
+
+			if (options.TermVector.All.HasValue)
+				yield return KV.Create("tv.all", options.TermVector.All.ToString().ToLowerInvariant());
+
+			if (options.TermVector.Tf_Idf.HasValue)
+				yield return KV.Create("tv.tf_idf", options.TermVector.Tf_Idf.ToString().ToLowerInvariant());
+
+			if (options.TermVector.Tf.HasValue)
+				yield return KV.Create("tv.tf", options.TermVector.Tf.ToString().ToLowerInvariant());
+
+			if (options.TermVector.Df.HasValue)
+				yield return KV.Create("tv.df", options.TermVector.Df.ToString().ToLowerInvariant());
+
+
+		}
 
         /// <summary>
         /// Gets the Solr parameters for collapse queries

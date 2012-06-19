@@ -20,6 +20,7 @@ namespace SolrNet.Impl.ResponseParsers {
                 new TermsResponseParser<T>(),
                 new MoreLikeThisHandlerMatchResponseParser<T>(docParser),
                 new InterestingTermsResponseParser<T>(),
+				new TermVectorResultsParser<T>()
             });
         }
 

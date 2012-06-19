@@ -91,17 +91,9 @@ namespace SolrNet.Impl.ResponseParsers
             return new TermVectorDocumentResult(uniqueKey, termVectorResults);
 		}
 		
-		private ICollection<TermVectorResult> ParseField(XElement fieldNode)
-		{
-			var r = new Collection<TermVectorResult>();
-			
-			foreach (var termNode in fieldNode.Elements()) {
-				var term = ParseTerm(termNode, fieldNode.Attribute("name").Value);
-
-				r.Add(term);
-			}
-
-			return r;
+		private IEnumerable<TermVectorResult> ParseField(XElement fieldNode) {
+		    return fieldNode.Elements()
+		        .Select(termNode => ParseTerm(termNode, fieldNode.Attribute("name").Value));
 		}
 
 		private TermVectorResult ParseTerm(XElement termNode, string fieldName)

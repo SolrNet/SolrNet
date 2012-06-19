@@ -68,7 +68,12 @@ namespace SolrNet.Impl
 	}
 
 	public class Offset {
-		public int Start;
-		public int End;
+		public readonly int Start;
+		public readonly int End;
+
+	    public Offset(int start, int end) {
+	        Start = start;
+	        End = end;
+	    }
 	}
 }

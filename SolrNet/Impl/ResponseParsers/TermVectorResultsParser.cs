@@ -138,7 +138,7 @@ namespace SolrNet.Impl.ResponseParsers
 						term.Tf_Idf = double.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
 						break;
 					case "offsets":
-						term.Offsets = ParseOffsets(valueNode);
+						term.Offsets = ParseOffsets(valueNode).ToList();
 						break;
 					case "positions":
 						term.Positions = ParsePositions(valueNode);
@@ -161,17 +161,10 @@ namespace SolrNet.Impl.ResponseParsers
 			return positions;
 		}
 
-		private IList<Offset> ParseOffsets(XElement valueNode)
-		{
-			var offsets = from e in valueNode.Elements()
-					   where e.Attribute("name").Value == "start"
-					   select new Offset
-					   {
-						   Start = int.Parse(e.Value),
-						   End = int.Parse(((XElement)e.NextNode).Value)
-					   };
-
-			return offsets.ToList();
+		private IEnumerable<Offset> ParseOffsets(XElement valueNode) {
+		    return from e in valueNode.Elements()
+		           where e.Attribute("name").Value == "start"
+		           select new Offset(start : int.Parse(e.Value), end : int.Parse(((XElement) e.NextNode).Value));
 		}
 	}
 }

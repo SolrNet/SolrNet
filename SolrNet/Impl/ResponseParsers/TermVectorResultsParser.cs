@@ -123,7 +123,7 @@ namespace SolrNet.Impl.ResponseParsers
 						term.Offsets = ParseOffsets(valueNode).ToList();
 						break;
 					case "positions":
-						term.Positions = ParsePositions(valueNode);
+						term.Positions = ParsePositions(valueNode).ToList();
 						break;
 				}
 			}
@@ -131,16 +131,8 @@ namespace SolrNet.Impl.ResponseParsers
 			return term;
 		}
 
-		private IList<int> ParsePositions(XElement valueNode)
-		{
-			var positions = new List<int>();
-
-			foreach(var p in valueNode.Elements())
-			{
-				positions.Add(int.Parse(p.Value));
-			}
-
-			return positions;
+		private IEnumerable<int> ParsePositions(XElement valueNode) {
+		    return valueNode.Elements().Select(p => int.Parse(p.Value));
 		}
 
 		private IEnumerable<Offset> ParseOffsets(XElement valueNode) {

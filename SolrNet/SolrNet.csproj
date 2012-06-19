@@ -328,6 +328,7 @@
     <Compile Include="Utils\TypeHelper.cs" />
     <Compile Include="Utils\Unit.cs" />
     <Compile Include="Utils\UriValidator.cs" />
+    <Compile Include="Utils\XAttributeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">
@@ -351,9 +352,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DeveloperKey.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

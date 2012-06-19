@@ -78,27 +78,17 @@ namespace SolrNet.Impl.ResponseParsers
 
 		private TermVectorDocumentResult ParseDoc(XElement docNode)
 		{
-			var r = new TermVectorDocumentResult();
 			var fieldNodes = docNode.Elements();
-			
-			foreach (var fieldNode in fieldNodes) {
-				string fieldName = fieldNode.Attribute("name").Value;
+		    var uniqueKey = fieldNodes
+		        .Where(x => x.Attribute("name").ValueOrNull() == "uniqueKey")
+		        .Select(x => x.Value)
+		        .FirstOrDefault();
+		    var termVectorResults = fieldNodes
+		        .Where(x => x.Attribute("name").ValueOrNull() == "includes")
+		        .SelectMany(ParseField)
+                .ToList();
 
-				if(fieldName == "uniqueKey")
-				{
-					r.UniqueKey = fieldNode.Value;
-				}
-				else 
-				{
-					var fields = ParseField(fieldNode);
-
-					foreach (var fieldVector in fields) {
-						r.TermVector.Add(fieldVector);
-					}
-				}
-			}
-
-			return r;
+            return new TermVectorDocumentResult(uniqueKey, termVectorResults);
 		}
 		
 		private ICollection<TermVectorResult> ParseField(XElement fieldNode)

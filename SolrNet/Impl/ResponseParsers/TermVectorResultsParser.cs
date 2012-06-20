@@ -96,39 +96,33 @@ namespace SolrNet.Impl.ResponseParsers
 		        .Select(termNode => ParseTerm(termNode, fieldNode.Attribute("name").Value));
 		}
 
-		private TermVectorResult ParseTerm(XElement termNode, string fieldName)
-		{
-			var term = new TermVectorResult();
+		private TermVectorResult ParseTerm(XElement termNode, string fieldName) {
+		    var nameValues = termNode.Elements()
+                .Select(e => new {name = e.Attribute("name").Value, value = e.Value})
+                .ToList();
 
-			foreach (var valueNode in termNode.Elements())
-			{
+		    var tf = nameValues
+		        .Where(x => x.name == "tf")
+		        .Select(x => (int?) int.Parse(x.value))
+		        .FirstOrDefault();
 
-				term.Field = fieldName;
-				term.Term = termNode.Attribute("name").Value;
+            var df = nameValues
+		        .Where(x => x.name == "df")
+		        .Select(x => (int?) int.Parse(x.value))
+		        .FirstOrDefault();
 
-				string key = valueNode.Attribute("name").Value;
-				string value = valueNode.Value;
-				switch (key)
-				{
-					case "tf":
-						term.Tf = int.Parse(value);
-						break;
-					case "df":
-						term.Df = int.Parse(value);
-						break;
-					case "tf-idf":
-						term.Tf_Idf = double.Parse(value, CultureInfo.InvariantCulture.NumberFormat);
-						break;
-					case "offsets":
-						term.Offsets = ParseOffsets(valueNode).ToList();
-						break;
-					case "positions":
-						term.Positions = ParsePositions(valueNode).ToList();
-						break;
-				}
-			}
+            var tfidf = nameValues
+		        .Where(x => x.name == "tf-idf")
+		        .Select(x => (double?) double.Parse(x.value, CultureInfo.InvariantCulture.NumberFormat))
+		        .FirstOrDefault();
 
-			return term;
+		    var offsets = termNode.Elements().SelectMany(ParseOffsets).ToList();
+            var positions = termNode.Elements().SelectMany(ParsePositions).ToList();
+
+            return new TermVectorResult(fieldName, 
+                term: termNode.Attribute("name").Value,
+                tf: tf, df: df, tfIdf: tfidf, 
+                offsets: offsets, positions: positions);
 		}
 
 		private IEnumerable<int> ParsePositions(XElement valueNode) {

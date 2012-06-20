@@ -521,13 +521,15 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(cable.Df, 1);
 			Assert.AreEqual(1.0, cable.Tf_Idf);
 
+		    var positions = cable.Positions.ToList();
 			Assert.AreEqual(cable.Positions.Count, 2);
-			Assert.AreEqual(cable.Positions[0], 1);
-			Assert.AreEqual(cable.Positions[1], 10);
+            Assert.AreEqual(positions[0], 1);
+            Assert.AreEqual(positions[1], 10);
 
+		    var offsets = cable.Offsets.ToList();
 			Assert.AreEqual(cable.Offsets.Count, 1);
-			Assert.AreEqual(cable.Offsets[0].Start, 4);
-			Assert.AreEqual(cable.Offsets[0].End, 9);
+            Assert.AreEqual(offsets[0].Start, 4);
+            Assert.AreEqual(offsets[0].End, 9);
 		}
 
         [Test]

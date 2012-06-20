@@ -513,23 +513,22 @@ namespace SolrNet.Tests {
 
 			Assert.IsNotNull(docs);
 			Assert.AreEqual(2, docs.Count);
-			Assert.AreEqual(docs.First(d => d.UniqueKey == "3007WFP").TermVector.First(f => f.Field == "includes").Term, "cable");
+            var cable = docs.First(d => d.UniqueKey == "3007WFP").TermVector.First(f => f.Field == "includes");
 
-			var cable = docs.First(d => d.UniqueKey == "3007WFP").TermVector.First(f => f.Field == "includes");
-			
-			Assert.AreEqual(cable.Tf, 1);
-			Assert.AreEqual(cable.Df, 1);
+            Assert.AreEqual("cable", cable.Term);
+            Assert.AreEqual(1, cable.Tf);
+            Assert.AreEqual(1, cable.Df);
 			Assert.AreEqual(1.0, cable.Tf_Idf);
 
 		    var positions = cable.Positions.ToList();
-			Assert.AreEqual(cable.Positions.Count, 2);
-            Assert.AreEqual(positions[0], 1);
-            Assert.AreEqual(positions[1], 10);
+            Assert.AreEqual(2, cable.Positions.Count);
+            Assert.AreEqual(1, positions[0]);
+            Assert.AreEqual(10, positions[1]);
 
 		    var offsets = cable.Offsets.ToList();
-			Assert.AreEqual(cable.Offsets.Count, 1);
-            Assert.AreEqual(offsets[0].Start, 4);
-            Assert.AreEqual(offsets[0].End, 9);
+            Assert.AreEqual(1, cable.Offsets.Count);
+            Assert.AreEqual(4, offsets[0].Start);
+            Assert.AreEqual(9, offsets[0].End);
 		}
 
         [Test]

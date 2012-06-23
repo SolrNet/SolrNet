@@ -16,32 +16,27 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using SolrNet.Utils;
 
-namespace SolrNet.Impl.ResponseParsers
-{
+namespace SolrNet.Impl.ResponseParsers {
 	/// <summary>
 	/// Parses TermVector results from a query response
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
-	public class TermVectorResultsParser<T> : ISolrResponseParser<T>
-	{
-		public void Parse(XDocument xml, AbstractSolrQueryResults<T> results)
-		{
+	public class TermVectorResultsParser<T> : ISolrResponseParser<T> {
+		public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
 			results.Switch(query: r => Parse(xml, r),
 						   moreLikeThis: F.DoNothing);
 		}
 
-		public void Parse(XDocument xml, SolrQueryResults<T> results)
-		{
+		public void Parse(XDocument xml, SolrQueryResults<T> results) {
 			var rootNode = xml.XPathSelectElement("response/lst[@name='termVectors']");
 			if (rootNode != null)
-				results.TermVectorResults = ParseDocuments(rootNode);
+				results.TermVectorResults = ParseDocuments(rootNode).ToList();
 		}
 
 		/// <summary>
@@ -49,35 +44,23 @@ namespace SolrNet.Impl.ResponseParsers
 		/// </summary>
 		/// <param name="rootNode"></param>
 		/// <returns></returns>
-		public TermVectorResults ParseDocuments(XElement rootNode)
-		{
-			var r = new TermVectorResults();
+        public IEnumerable<TermVectorDocumentResult> ParseDocuments(XElement rootNode) {
 			var docNodes = rootNode.Elements("lst");
-			foreach (var docNode in docNodes)
-			{
+
+			foreach (var docNode in docNodes) {
 				var docNodeName = docNode.Attribute("name").Value;
 
-				if (docNodeName == "warnings") 
-				{
+				if (docNodeName == "warnings") {
 					// TODO: warnings
-				}
-				if (docNodeName == "uniqueKeyFieldName")
-				{
-					//TODO: support for unique key field name
-				}
-				else 
-				{
-					var doc = ParseDoc(docNode);
-
-					r.Add(doc);
-				}
-				
+                } else if (docNodeName == "uniqueKeyFieldName") {
+                    //TODO: support for unique key field name
+                } else {
+                    yield return ParseDoc(docNode);
+                }
 			}
-			return r;
 		}
 
-		private TermVectorDocumentResult ParseDoc(XElement docNode)
-		{
+		private TermVectorDocumentResult ParseDoc(XElement docNode) {
 			var fieldNodes = docNode.Elements();
 		    var uniqueKey = fieldNodes
 		        .Where(x => x.Attribute("name").ValueOrNull() == "uniqueKey")

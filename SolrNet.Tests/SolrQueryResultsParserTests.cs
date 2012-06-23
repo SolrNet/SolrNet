@@ -509,7 +509,7 @@ namespace SolrNet.Tests {
 			var parser = new TermVectorResultsParser<Product>();
 			var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithTermVector.xml");
 			var docNode = xml.XPathSelectElement("response/lst[@name='termVectors']");
-			TermVectorResults docs = parser.ParseDocuments(docNode);
+			var docs = parser.ParseDocuments(docNode).ToList();
 
 			Assert.IsNotNull(docs);
 			Assert.AreEqual(2, docs.Count);

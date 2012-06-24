@@ -424,13 +424,11 @@ namespace SolrNet.Impl {
 		/// </summary>
 		/// <param name="options"></param>
 		/// <returns></returns>
-		public IEnumerable<KeyValuePair<string, string>> GetTermVectorQueryOptions(QueryOptions options)
-		{
+		public static IEnumerable<KeyValuePair<string, string>> GetTermVectorQueryOptions(QueryOptions options) {
 			if (options.TermVector == null || !options.TermVector.Fields.Any())
 				yield break;
 
 			yield return KV.Create("tv", "true");
-
 			yield return KV.Create("tv.fl", string.Join(",", options.TermVector.Fields.ToArray()));
 
 			if (options.TermVector.All.HasValue)
@@ -444,8 +442,6 @@ namespace SolrNet.Impl {
 
 			if (options.TermVector.Df.HasValue)
 				yield return KV.Create("tv.df", options.TermVector.Df.ToString().ToLowerInvariant());
-
-
 		}
 
         /// <summary>

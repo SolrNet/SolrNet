@@ -359,7 +359,7 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void TermVector() {
-            var p = SolrQueryExecuter<TestDocument>.GetTermsParameters(new QueryOptions {
+            var p = SolrQueryExecuter<TestDocument>.GetTermVectorQueryOptions(new QueryOptions {
 				TermVector = new TermVectorParameters("text") {
 				    All = true, Df = false, Tf = true, Tf_Idf = true
 				},

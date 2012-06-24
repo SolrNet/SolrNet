@@ -529,7 +529,7 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="Options"></param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetTermsParameters(QueryOptions Options) {
+        public static IEnumerable<KeyValuePair<string, string>> GetTermsParameters(QueryOptions Options) {
             var terms = Options.Terms;
             if (terms == null)
                 yield break;

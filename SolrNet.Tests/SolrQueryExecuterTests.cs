@@ -288,8 +288,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void TermsSingleField() {
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
-            var p = queryExecuter.GetTermsParameters(new QueryOptions {
+            var p = SolrQueryExecuter<TestDocument>.GetTermsParameters(new QueryOptions {
                 Terms = new TermsParameters("text") {
                     Limit = 10,
                     Lower = "lower",
@@ -323,8 +322,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void TermsMultipleFields() {
-            var queryExecuter = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
-            var p = queryExecuter.GetTermsParameters(new QueryOptions {
+            var p = SolrQueryExecuter<TestDocument>.GetTermsParameters(new QueryOptions {
                 Terms = new TermsParameters(new List<string> { "text", "text2", "text3" }) {
                     Limit = 10,
                     Lower = "lower",
@@ -360,14 +358,10 @@ namespace SolrNet.Tests {
 
 
 		[Test]
-		public void TermVector()
-		{
-			var queryExecuter = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
-			var p = queryExecuter.GetTermsParameters(new QueryOptions
-			{
-				TermVector = new TermVectorParameters("text")
-				{
-				All = true, Df = false, Tf = true, Tf_Idf = true
+		public void TermVector() {
+            var p = SolrQueryExecuter<TestDocument>.GetTermsParameters(new QueryOptions {
+				TermVector = new TermVectorParameters("text") {
+				    All = true, Df = false, Tf = true, Tf_Idf = true
 				},
 			}).ToList();
 			Assert.Contains(p, KV.Create("tv", "true"));
@@ -375,7 +369,6 @@ namespace SolrNet.Tests {
 			Assert.Contains(p, KV.Create("tv.tf", "true"));
 			Assert.Contains(p, KV.Create("tv.tf_idf", "true"));
 			Assert.Contains(p, KV.Create("tv.fl", "text"));
-
 		}
 
         [Test]

@@ -429,7 +429,11 @@ namespace SolrNet.Impl {
 				yield break;
 
 			yield return KV.Create("tv", "true");
-			yield return KV.Create("tv.fl", string.Join(",", options.TermVector.Fields.ToArray()));
+            if (options.TermVector.Fields != null) {
+                var fields = string.Join(",", options.TermVector.Fields.ToArray());
+                if (!string.IsNullOrEmpty(fields))
+                    yield return KV.Create("tv.fl", fields);
+            }
 
 			if (options.TermVector.All.HasValue)
 				yield return KV.Create("tv.all", options.TermVector.All.ToString().ToLowerInvariant());

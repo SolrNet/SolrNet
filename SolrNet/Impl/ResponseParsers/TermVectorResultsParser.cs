@@ -109,7 +109,10 @@ namespace SolrNet.Impl.ResponseParsers {
 		}
 
 		private IEnumerable<int> ParsePositions(XElement valueNode) {
-		    return valueNode.Elements().Select(p => int.Parse(p.Value));
+		    return from e in new[] {valueNode}
+		           where e.Attribute("name").Value == "positions"
+                   from p in e.Elements()
+		           select int.Parse(p.Value);
 		}
 
 		private IEnumerable<Offset> ParseOffsets(XElement valueNode) {

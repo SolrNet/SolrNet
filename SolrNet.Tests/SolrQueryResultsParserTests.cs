@@ -513,7 +513,10 @@ namespace SolrNet.Tests {
 
 			Assert.IsNotNull(docs);
 			Assert.AreEqual(2, docs.Count);
-            var cable = docs.First(d => d.UniqueKey == "3007WFP").TermVector.First(f => f.Field == "includes");
+            var cable = docs
+                .First(d => d.UniqueKey == "3007WFP")
+                .TermVector
+                .First(f => f.Field == "includes");
 
             Assert.AreEqual("cable", cable.Term);
             Assert.AreEqual(1, cable.Tf);

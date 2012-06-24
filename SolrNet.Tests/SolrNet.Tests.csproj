@@ -171,7 +171,7 @@
     <Compile Include="SolrFacetFieldQueryTests.cs" />
     <Compile Include="SolrHasValueQueryTests.cs" />
     <Compile Include="SolrNotQueryTests.cs" />
-	<Compile Include="SolrRequiredQueryTests.cs" />
+    <Compile Include="SolrRequiredQueryTests.cs" />
     <Compile Include="SolrQueryExecuterTests.cs" />
     <Compile Include="SolrFieldExample.cs" />
     <Compile Include="SolrMultipleCriteriaQueryTests.cs" />
@@ -285,6 +285,9 @@
     <EmbeddedResource Include="Resources\responseWithTermVector.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\collapseResponse.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

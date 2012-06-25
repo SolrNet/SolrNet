@@ -1,7 +1,44 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SolrNet.Commands.Parameters
 {
+    [Flags]
+    public enum TermVectorParameterOptions {
+        Default = 0,
+
+        /// <summary>
+        /// Returns document term frequency info per term in the document.
+        /// </summary>
+        TermFrequency = 1,
+
+        /// <summary>
+        /// Returns the Document Frequency (DF) of the term in the collection. 
+        /// This can be computationally expensive.
+        /// </summary>
+        DocumentFrequency = 2,
+
+        /// <summary>
+        /// Returns position information.
+        /// </summary>
+        Positions = 4,
+
+        /// <summary>
+        /// Returns offset information for each term in the document.
+        /// </summary>
+        Offsets = 8,
+
+        /// <summary>
+        /// Calculates TF*IDF for each term. This can be computationally expensive. 
+        /// </summary>
+        TermFrequency_InverseDocumentFrequency = 16,
+
+        /// <summary>
+        /// Term frequency, document frequency, positions, offsets, term freq * inverse doc freq.
+        /// </summary>
+        All = TermFrequency | DocumentFrequency | Positions | Offsets | TermFrequency_InverseDocumentFrequency,
+    }
+
 	/// <summary>
 	/// TermsVectorComponent parameters
 	/// </summary>
@@ -13,30 +50,6 @@ namespace SolrNet.Commands.Parameters
 		/// </summary>
 		public IEnumerable<string> Fields { get; set; }
 
-		/// <summary>
-		/// Return document term frequency info per term in the document.
-		/// (tv.tf)
-		/// </summary>
-		public bool? Tf { get; set; }
-
-		/// <summary>
-		/// Return the Document Frequency (DF) of the term in the collection. 
-		/// This can be expensive.
-		/// (tv.df)
-		/// </summary>
-		public bool? Df { get; set; }
-
-		/// <summary>
-		/// Calculates tf*idf for each term. Requires the parameters tv.tf and tv.df to be "true".
-		/// This can be expensive.
-		/// (tv.tf_idf)
-		/// </summary>
-		public bool? Tf_Idf { get; set; }
-
-		/// <summary>
-		/// If true, turn on extra information (tv.tf, tv.df, etc)
-		/// (tv.all )
-		/// </summary>
-		public bool? All { get; set; }
+        public TermVectorParameterOptions Options { get; set; }
 	}
 }

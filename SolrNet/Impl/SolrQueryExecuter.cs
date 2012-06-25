@@ -419,6 +419,26 @@ namespace SolrNet.Impl {
                 yield return KV.Create("collapse.maxdocs", options.Collapse.MaxDocs.ToString());
         }
 
+        public static IEnumerable<string> GetTermVectorParameterOptions(TermVectorParameterOptions o) {
+            if ((o & TermVectorParameterOptions.All) == TermVectorParameterOptions.All) {
+                yield return "tv.all";
+            } else {
+                if ((o & TermVectorParameterOptions.TermFrequency_InverseDocumentFrequency) == TermVectorParameterOptions.TermFrequency_InverseDocumentFrequency) {
+                    yield return "tv.tf";
+                    yield return "tv.df";
+                    yield return "tv.tf_idf";
+                }
+                if ((o & TermVectorParameterOptions.Offsets) == TermVectorParameterOptions.Offsets)
+                    yield return "tv.offsets";
+                if ((o & TermVectorParameterOptions.Positions) == TermVectorParameterOptions.Positions)
+                    yield return "tv.positions";
+                if ((o & TermVectorParameterOptions.DocumentFrequency) == TermVectorParameterOptions.DocumentFrequency)
+                    yield return "tv.df";
+                if ((o & TermVectorParameterOptions.TermFrequency) == TermVectorParameterOptions.TermFrequency)
+                    yield return "tv.tf";
+            }
+        }
+
 		/// <summary>
 		/// Gets the Solr parameters for collapse queries
 		/// </summary>
@@ -435,17 +455,8 @@ namespace SolrNet.Impl {
                     yield return KV.Create("tv.fl", fields);
             }
 
-			if (options.TermVector.All.HasValue)
-				yield return KV.Create("tv.all", options.TermVector.All.ToString().ToLowerInvariant());
-
-			if (options.TermVector.Tf_Idf.HasValue)
-				yield return KV.Create("tv.tf_idf", options.TermVector.Tf_Idf.ToString().ToLowerInvariant());
-
-			if (options.TermVector.Tf.HasValue)
-				yield return KV.Create("tv.tf", options.TermVector.Tf.ToString().ToLowerInvariant());
-
-			if (options.TermVector.Df.HasValue)
-				yield return KV.Create("tv.df", options.TermVector.Df.ToString().ToLowerInvariant());
+            foreach (var o in GetTermVectorParameterOptions(options.TermVector.Options).Distinct())
+                yield return KV.Create(o, "true");
 		}
 
         /// <summary>

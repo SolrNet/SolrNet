@@ -55,8 +55,7 @@
     <DocumentationFile>bin\Release\Ninject.Integration.SolrNet.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject, Version=2.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Ninject">
       <HintPath>..\lib\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -71,12 +70,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolrCore.cs" />
     <Compile Include="SolrNetModule.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SolrNet\SolrNet.csproj">
-      <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>
-      <Name>SolrNet</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -94,6 +87,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj">
+      <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>
+      <Name>SolrNet</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -83,8 +83,14 @@ namespace SolrNet.Impl {
             return SendAndParseExtract(cmd);
         }
 
+        public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
+        {
+            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), parameters);
+            return SendAndParseHeader(delete);
+        }
+
         public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q) {
-            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer));
+            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), null);
             return SendAndParseHeader(delete);
         }
 

@@ -61,7 +61,7 @@ namespace SolrNet {
         /// <param name="ids">document ids to delete</param>
         /// <param name="q">query to match</param>
         /// <returns></returns>
-        ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q);
+        ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters);
 
         /// <summary>
         /// Sends a custom command

@@ -28,7 +28,7 @@ namespace SolrNet.Tests {
 		    var conn = new Mocks.MSolrConnection();
 		    conn.post = conn.post
 		        .Args("/update", string.Format("<delete><id>{0}</id></delete>", id));
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null), null);
             cmd.Execute(conn);
             Assert.AreEqual(1, conn.post.Calls);
         }
@@ -39,7 +39,7 @@ namespace SolrNet.Tests {
             var conn = new Mocks.MSolrConnection();
             var xml = string.Format("<delete><id>{0}</id><id>{1}</id></delete>", ids[0], ids[1]);
             conn.post = conn.post.Args("/update", xml);
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null, null));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null, null), null);
             cmd.Execute(conn);
             Assert.AreEqual(1, conn.post.Calls);
         }
@@ -56,7 +56,7 @@ namespace SolrNet.Tests {
 		    var querySerializer = new Mocks.MSolrQuerySerializer();
 		    querySerializer.serialize += _ => queryString;
 
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q, querySerializer));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q, querySerializer), null);
             cmd.Execute(conn);
 
             Assert.AreEqual(1, conn.post.Calls);
@@ -74,7 +74,7 @@ namespace SolrNet.Tests {
             var querySerializer = new Mocks.MSolrQuerySerializer();
             querySerializer.serialize += _ => queryString;
 
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), null);
             cmd.Execute(conn);
 
             Assert.AreEqual(1, conn.post.Calls);
@@ -88,7 +88,8 @@ namespace SolrNet.Tests {
 		    var conn = new Mocks.MSolrConnection();
 		    conn.post = conn.post.Args("/update", xml);
 
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null)) {
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null), null)
+            {
                 FromCommitted = true
             };
             cmd.Execute(conn);
@@ -104,7 +105,8 @@ namespace SolrNet.Tests {
             var xml = string.Format("<delete fromPending=\"false\" fromCommitted=\"false\"><id>{0}</id></delete>", id);
 		    conn.post = conn.post.Args("/update", xml);
 
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null)) {
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null), null)
+            {
                 FromCommitted = false,
                 FromPending = false
             };
@@ -121,7 +123,8 @@ namespace SolrNet.Tests {
             var xml = string.Format("<delete fromPending=\"true\"><id>{0}</id></delete>", id);
 		    conn.post = conn.post.Args("/update", xml);
 
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null)) {
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null), null)
+            {
                 FromPending = true
             };
             cmd.Execute(conn);

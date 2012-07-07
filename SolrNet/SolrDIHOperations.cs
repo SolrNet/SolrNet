@@ -39,7 +39,7 @@ namespace SolrNet {
         /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
         public SolrDIHStatus ReloadConfig(string handlerName = DefaultHandlerName) {
-            return GetAndParse("reload-config", new DIHOptions(handlerName ?? DefaultHandlerName));
+            return GetAndParse("reload-config", new DIHOptions(handlerName));
         }
 
         /// <summary>

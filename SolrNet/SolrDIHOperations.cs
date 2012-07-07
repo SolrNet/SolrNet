@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using SolrNet.Impl;
@@ -73,7 +74,18 @@ namespace SolrNet {
         private string Get(string command, DIHOptions options) {
             return connection.Get(string.Format("/{0}", options.HandlerName ?? DefaultHandlerName), new[] {
                 KV.Create("command", command)
-            }.Concat(options.ToParameters()));
+            }.Concat(OptionsToParameters(options)));
+        }
+
+        public static IEnumerable<KeyValuePair<string, string>> OptionsToParameters(DIHOptions options) {
+            if (options.Clean.HasValue)
+                yield return KV.Create("clean", options.Clean.ToString().ToLower());
+            if (options.Commit.HasValue)
+                yield return KV.Create("commit", options.Commit.ToString().ToLower());
+            if (options.Optimize.HasValue)
+                yield return KV.Create("optimize", options.Optimize.ToString().ToLower());
+            if (options.Debug.HasValue)
+                yield return KV.Create("debug", options.Debug.ToString().ToLower());
         }
     }
 }

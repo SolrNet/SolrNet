@@ -49,16 +49,5 @@ namespace SolrNet {
         /// Default to false in Solr.
         /// </summary>
         public bool? Debug { get; set; }
-
-        public IEnumerable<KeyValuePair<string, string>> ToParameters() {
-            if (Clean.HasValue)
-                yield return KV.Create("clean", Clean.ToString().ToLower());
-            if (Commit.HasValue)
-                yield return KV.Create("commit", Commit.ToString().ToLower());
-            if (Optimize.HasValue)
-                yield return KV.Create("optimize", Optimize.ToString().ToLower());
-            if (Debug.HasValue)
-                yield return KV.Create("debug", Debug.ToString().ToLower());
-        }
     }
 }

@@ -5,8 +5,7 @@ namespace SolrNet.Tests {
     [TestFixture]
     public class SolrDIHOptionsTests {
         [Test]
-        public void DefaultValueTest()
-        {
+        public void DefaultValueTest() {
             var opt = new DIHOptions();
             Assert.AreEqual("dataimport", opt.HandlerName);
             Assert.IsFalse(opt.Clean.HasValue);
@@ -16,8 +15,7 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void HandlerNameConstructorTest()
-        {
+        public void HandlerNameConstructorTest() {
             var opt = new DIHOptions("custom-import");
             Assert.AreEqual("custom-import", opt.HandlerName);
             Assert.IsFalse(opt.Clean.HasValue);
@@ -28,13 +26,13 @@ namespace SolrNet.Tests {
 
         [Test]
         public void ToQueryParametersBasicTest() {
-            var parameters = new DIHOptions().ToParameters();
+            var parameters = SolrDIHOperations.OptionsToParameters(new DIHOptions());
             Assert.IsEmpty(parameters);
         }
 
         [Test]
         public void ToQueryParametersWithAllTrueTest() {
-            var parameters = new DIHOptions() {
+            var parameters = new DIHOptions {
                 Clean = true,
                 Commit = true,
                 Debug = true,
@@ -45,14 +43,12 @@ namespace SolrNet.Tests {
                 KV.Create("commit", "true"),
                 KV.Create("debug", "true"),
                 KV.Create("optimize", "true"),
-            }, parameters.ToParameters());
+            }, SolrDIHOperations.OptionsToParameters(parameters));
         }
 
         [Test]
-        public void ToQueryParametersWithAllFalseTest()
-        {
-            var parameters = new DIHOptions()
-                             {
+        public void ToQueryParametersWithAllFalseTest() {
+            var parameters = new DIHOptions {
                                  Clean = false,
                                  Commit = false,
                                  Debug = false,
@@ -63,7 +59,7 @@ namespace SolrNet.Tests {
                 KV.Create("commit", "false"),
                 KV.Create("debug", "false"),
                 KV.Create("optimize", "false"),
-            }, parameters.ToParameters());
+            }, SolrDIHOperations.OptionsToParameters(parameters));
         }
     }
 }

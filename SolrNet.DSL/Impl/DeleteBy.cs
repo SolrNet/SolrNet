@@ -33,17 +33,17 @@ namespace SolrNet.DSL.Impl {
         }
 
         public void ById(string id) {
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, GetQuerySerializer()));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, GetQuerySerializer()), null);
             cmd.Execute(connection);
         }
 
         public void ByIds(IEnumerable<string> ids) {
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null, GetQuerySerializer()));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null, GetQuerySerializer()), null);
             cmd.Execute(connection);
         }
        
         public void ByQuery(ISolrQuery q) {
-            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q, GetQuerySerializer()));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q, GetQuerySerializer()), null);
             cmd.Execute(connection);
         }
 

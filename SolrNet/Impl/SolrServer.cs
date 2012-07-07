@@ -170,21 +170,34 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader Delete(IEnumerable<string> ids) {
-            return basicServer.Delete(ids, null);
+            return basicServer.Delete(ids, null, null);
+        }
+
+        public ResponseHeader Delete(IEnumerable<string> ids, DeleteParameters parameters) {
+            return basicServer.Delete(ids, null, parameters);
         }
 
         public ResponseHeader Delete(T doc) {
+            return Delete(doc, null);
+        }
+
+        public ResponseHeader Delete(T doc, DeleteParameters parameters) {
             var id = GetId(doc);
-            return Delete(id.ToString());
+            return Delete(id.ToString(), parameters);
         }
 
         public ResponseHeader Delete(IEnumerable<T> docs) {
-            return basicServer.Delete(docs.Select(d => {
-                var uniqueKey = mappingManager.GetUniqueKey(typeof (T));
+            return Delete(docs, null);
+        }
+
+        public ResponseHeader Delete(IEnumerable<T> docs, DeleteParameters parameters) {
+            return basicServer.Delete(docs.Select(d =>
+            {
+                var uniqueKey = mappingManager.GetUniqueKey(typeof(T));
                 if (uniqueKey == null)
                     throw new SolrNetException(string.Format("This operation requires a unique key, but type '{0}' has no declared unique key", typeof(T)));
                 return Convert.ToString(uniqueKey.Property.GetValue(d, null));
-            }), null);
+            }), null, parameters);
         }
 
         private object GetId(T doc) {
@@ -196,15 +209,27 @@ namespace SolrNet.Impl {
         }
 
         ResponseHeader ISolrOperations<T>.Delete(ISolrQuery q) {
-            return basicServer.Delete(null, q);
+            return basicServer.Delete(null, q, null);
+        }
+
+        public ResponseHeader Delete(ISolrQuery q, DeleteParameters parameters) {
+            return basicServer.Delete(null, q, parameters);
         }
 
         public ResponseHeader Delete(string id) {
-            return basicServer.Delete(new[] {id}, null);
+            return basicServer.Delete(new[] {id}, null, null);
+        }
+
+        public ResponseHeader Delete(string id, DeleteParameters parameters) {
+            return basicServer.Delete(new[] {id}, null, parameters);
         }
 
         ResponseHeader ISolrOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q) {
-            return basicServer.Delete(ids, q);
+            return basicServer.Delete(ids, q, null);
+        }
+
+        ResponseHeader ISolrOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters){
+            return basicServer.Delete(ids, q, parameters);
         }
 
         public ResponseHeader Commit() {

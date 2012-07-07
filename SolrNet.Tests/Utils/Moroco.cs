@@ -382,5 +382,10 @@ namespace Moroco {
         public static MFunc<A,B,C> Stub<A,B,C>(this MFunc<A,B,C> f) {
             return new MFunc<A, B, C>();
         }
+
+        public static MFunc<A, B, C, D> Stub<A, B, C, D>(this MFunc<A, B, C, D> f)
+        {
+            return new MFunc<A, B, C, D>();
+        }
     }
 }

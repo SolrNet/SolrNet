@@ -124,7 +124,15 @@ namespace SolrNet.Tests.Mocks {
             throw new NotImplementedException();
         }
 
+        public ResponseHeader Delete(T doc, DeleteParameters parameters) {
+            throw new NotImplementedException();
+        }
+
         public ResponseHeader Delete(IEnumerable<T> docs) {
+            throw new NotImplementedException();
+        }
+
+        public ResponseHeader Delete(IEnumerable<T> docs, DeleteParameters parameters) {
             throw new NotImplementedException();
         }
 
@@ -132,7 +140,15 @@ namespace SolrNet.Tests.Mocks {
             throw new NotImplementedException();
         }
 
+        public ResponseHeader Delete(ISolrQuery q, DeleteParameters parameters) {
+            throw new NotImplementedException();
+        }
+
         public ResponseHeader Delete(string id) {
+            throw new NotImplementedException();
+        }
+
+        public ResponseHeader Delete(string id, DeleteParameters parameters) {
             throw new NotImplementedException();
         }
 
@@ -140,7 +156,15 @@ namespace SolrNet.Tests.Mocks {
             throw new NotImplementedException();
         }
 
+        public ResponseHeader Delete(IEnumerable<string> ids, DeleteParameters parameters) {
+            throw new NotImplementedException();
+        }
+
         public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q) {
+            throw new NotImplementedException();
+        }
+
+        public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters) {
             throw new NotImplementedException();
         }
 

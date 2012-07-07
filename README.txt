@@ -3,7 +3,7 @@ Solr client for .NET
 http://code.google.com/p/solrnet/
 
 This release is built against:
-Castle Windsor 2.5.3
+Castle Windsor 3.0.0.2230
 Ninject 2.2.1.0
 StructureMap 2.6.2
 Autofac 2.5.2

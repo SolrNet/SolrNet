@@ -27,10 +27,10 @@ namespace SolrNet.Commands {
     /// Deletes document(s), either by id or by query
     /// </summary>
 	public class DeleteCommand : ISolrCommand {
-		private readonly ISolrDeleteParam deleteParam;
+        private readonly DeleteByIdAndOrQueryParam deleteParam;
         private readonly DeleteParameters parameters;
 
-        public DeleteCommand(ISolrDeleteParam deleteParam, DeleteParameters parameters) {
+        public DeleteCommand(DeleteByIdAndOrQueryParam deleteParam, DeleteParameters parameters) {
 		    this.deleteParam = deleteParam;
 		    this.parameters = parameters;
 		}
@@ -44,10 +44,6 @@ namespace SolrNet.Commands {
         /// Deprecated in Solr 1.3
         /// </summary>
 		public bool? FromCommitted { get; set; }
-
-		public ISolrDeleteParam DeleteParam {
-			get { return deleteParam; }
-		}
 
 		public string Execute(ISolrConnection connection) {
 			var xml = new XmlDocument();

@@ -26,7 +26,7 @@ namespace SolrNet.Commands.Parameters {
     /// Parameter to delete document(s) by one or more ids
     /// and or a query parameters.
     /// </summary>
-    public class DeleteByIdAndOrQueryParam : ISolrDeleteParam {
+    public class DeleteByIdAndOrQueryParam {
         private readonly IEnumerable<string> ids;
         private readonly ISolrQuery query;
         private readonly ISolrQuerySerializer querySerializer;

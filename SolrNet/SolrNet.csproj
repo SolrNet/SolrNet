@@ -240,7 +240,6 @@
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\CommitCommand.cs" />
     <Compile Include="Commands\DeleteCommand.cs" />
-    <Compile Include="Commands\Parameters\ISolrDeleteParam.cs" />
     <Compile Include="Commands\OptimizeCommand.cs" />
     <Compile Include="Exceptions\InvalidFieldException.cs" />
     <Compile Include="Exceptions\InvalidSortOrderException.cs" />

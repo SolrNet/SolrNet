@@ -21,23 +21,20 @@ namespace SolrNet {
         /// <summary>
         ///  If the data-config is changed and you wish to reload the file without restarting Solr.
         /// </summary>
-        /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        SolrDIHStatus ReloadConfig(string handlerName = "dataimport");
+        SolrDIHStatus ReloadConfig();
 
         /// <summary>
         /// Abort an ongoing operation.
         /// </summary>
-        /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        SolrDIHStatus Abort(string handlerName = "dataimport");
+        SolrDIHStatus Abort();
 
         /// <summary>
         /// To know the status of the current command.
         /// It gives an elaborate statistics on no. of docs created, deleted, queries run, rows fetched, status etc.
         /// </summary>
-        /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        SolrDIHStatus Status(string handlerName = "dataimport");
+        SolrDIHStatus Status();
     }
 }

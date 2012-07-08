@@ -9,11 +9,15 @@ namespace SolrNet {
         private const string DefaultHandlerName = "dataimport";
         private readonly ISolrConnection connection;
         private readonly ISolrDIHStatusParser dihStatusParser;
+        private readonly string handlerName;
 
-        public SolrDIHOperations(ISolrConnection connection, ISolrDIHStatusParser dihStatusParser) {
+        public SolrDIHOperations(ISolrConnection connection, ISolrDIHStatusParser dihStatusParser, string handlerName) {
             this.connection = connection;
             this.dihStatusParser = dihStatusParser;
+            this.handlerName = handlerName;
         }
+
+        public SolrDIHOperations(ISolrConnection connection, ISolrDIHStatusParser dihStatusParser) : this(connection, dihStatusParser, DefaultHandlerName) {}
 
         /// <summary>
         /// Full Import operation
@@ -37,18 +41,16 @@ namespace SolrNet {
         /// <summary>
         ///  If the data-config is changed and you wish to reload the file without restarting Solr.
         /// </summary>
-        /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        public SolrDIHStatus ReloadConfig(string handlerName = DefaultHandlerName) {
+        public SolrDIHStatus ReloadConfig() {
             return GetAndParse("reload-config", new DIHOptions(handlerName));
         }
 
         /// <summary>
         /// Abort an ongoing operation.
         /// </summary>
-        /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        public SolrDIHStatus Abort(string handlerName = DefaultHandlerName) {
+        public SolrDIHStatus Abort() {
             return GetAndParse("abort", new DIHOptions(handlerName));
         }
 
@@ -56,10 +58,9 @@ namespace SolrNet {
         /// To know the status of the current command.
         /// It gives an elaborate statistics on no. of docs created, deleted, queries run, rows fetched, status etc.
         /// </summary>
-        /// <param name="handlerName">The name of the data import handler. default to "dataimport"</param>
         /// <returns></returns>
-        public SolrDIHStatus Status(string handlerName = DefaultHandlerName) {
-            return GetAndParse("status", new DIHOptions(handlerName ?? DefaultHandlerName));
+        public SolrDIHStatus Status() {
+            return GetAndParse("status", new DIHOptions(handlerName));
         }
 
         private SolrDIHStatus GetAndParse(string command, DIHOptions options) {

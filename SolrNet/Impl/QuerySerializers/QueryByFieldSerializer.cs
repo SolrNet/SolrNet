@@ -25,7 +25,7 @@ namespace SolrNet.Impl.QuerySerializers {
             return string.Format("{0}:({1})", q.FieldName, q.Quoted ? Quote(q.FieldValue) : q.FieldValue);
         }
 
-        public static readonly Regex SpecialCharactersRx = new Regex("(\\+|\\-|\\&\\&|\\|\\||\\!|\\{|\\}|\\[|\\]|\\^|\\(|\\)|\\\"|\\~|\\:|\\;|\\\\|\\?|\\*)", RegexOptions.Compiled);
+        public static readonly Regex SpecialCharactersRx = new Regex("(\\+|\\-|\\&\\&|\\|\\||\\!|\\{|\\}|\\[|\\]|\\^|\\(|\\)|\\\"|\\~|\\:|\\;|\\\\|\\?|\\*|\\/)", RegexOptions.Compiled);
 
         public static string Quote(string value) {
             string r = SpecialCharactersRx.Replace(value, "\\$1");

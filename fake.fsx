@@ -1,7 +1,6 @@
 ﻿#I @"lib"
 #r "FakeLib.dll"
 #r "NuGet.exe"
-#r "NuGet.Core.XmlSerializers.-872272761.dll"
 #r "System.Xml.Linq"
 
 open System
@@ -30,12 +29,12 @@ module Xml =
 module Nu =
     open NuGet
 
-    let build version name desc dependencies =
+    let build (version: string) name desc dependencies =
         let builder = 
             PackageBuilder(
                 Id = name,
                 Title = name,
-                Version = Version version,
+                Version = SemanticVersion version,
                 Description = desc,
                 LicenseUrl = Uri("http://www.apache.org/licenses/LICENSE-2.0"),
                 Language = "en-US",
@@ -52,7 +51,7 @@ module Nu =
         let deps = 
             dependencies
             |> Seq.map (fun (id,v) -> PackageDependency(id = id, versionSpec = VersionUtility.ParseVersionSpec v))
-        builder.Dependencies.AddRange deps
+        builder.DependencySets.Add(PackageDependencySet(null, deps))
         use fs = File.Create (sprintf "%s.%s%s" name version Constants.PackageExtension)
         builder.Save fs
 

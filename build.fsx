@@ -35,15 +35,14 @@ let sampleSln = slnBuild "SampleSolrApp.sln"
 
 let nuGetBuild = Nu.build version
 
-Target "Clean" (fun _ -> 
+Target "Clean" <| fun _ -> 
     mainSln "Clean"
     sampleSln "Clean"
     rm_rf buildDir
     rm_rf nugetDir
-)
 
-Target "Build" (fun _ -> mainSln "Rebuild")
-Target "BuildSample" (fun _ -> sampleSln "Rebuild")
+Target "Build" <| fun _ -> mainSln "Rebuild"
+Target "BuildSample" <| fun _ -> sampleSln "Rebuild"
 
 let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "StructureMap.SolrNetIntegration"; "AutofacContrib.SolrNet"; "Unity.SolrNetIntegration"]
 let dlls = [for l in libs -> l + ".dll"]
@@ -55,22 +54,19 @@ let onlyIntegrationTests = "Category: Integration"
 let testTargets = List.map (fun lib -> "Test." + lib) libs
 
 for lib,target in List.zip libs testTargets do
-    Target target (fun _ ->
+    Target target <| fun _ ->
         !! (lib+".Tests/bin/"+config+"/"+lib+".Tests.dll")
             |> Gallio.Run (fun p -> { p with Filters = noIntegrationTests })
-    )
 
-Target "Coverage" (fun _ ->
+Target "Coverage" <| fun _ ->
     testAssemblies |> Gallio.Run (fun p -> { p with 
                                                 Filters = noIntegrationTests
                                                 RunnerType = "NCover"
                                                 PluginDirectories = ["lib"] })
-)
 
-Target "IntegrationTest" (fun _ ->
+Target "IntegrationTest" <| fun _ ->
     use s = Solr.start()
     testAssemblies |> Gallio.Run (fun p -> { p with Filters = onlyIntegrationTests })
-)
 
 let merge libraries = 
     rm_rf buildDir
@@ -87,17 +83,15 @@ let merge libraries =
                             XmlDocs = true
                        }) output main
 
-Target "Merge" (fun _ ->
+Target "Merge" <| fun _ ->
     dlls |> Seq.skip 1 |> merge
-)
 
-Target "BasicMerge" (fun _ ->
+Target "BasicMerge" <| fun _ ->
     dlls |> Seq.skip 1 |> Seq.take 2 |> merge
-)
 
-Target "Version" (fun _ ->
+Target "Version" <| fun _ ->
     for l in libs do
-        AssemblyInfo (fun p -> { p with
+        AssemblyInfo <| fun p -> { p with
                                     OutputFileName = l @@ "Properties\\AssemblyInfo.cs"
                                     CLSCompliant = Some true
                                     AssemblyTitle = l
@@ -107,26 +101,23 @@ Target "Version" (fun _ ->
                                     AssemblyCopyright = "Copyright Mauricio Scheffer 2007-" + DateTime.Now.Year.ToString()
                                     Guid = "6688f9b4-5f2d-4fd6-aafc-3a81c84a69f1"
                                     AssemblyVersion = version
-                                    AssemblyFileVersion = version })
-)
+                                    AssemblyFileVersion = version }
 
-Target "Docs" (fun _ ->
+Target "Docs" <| fun _ ->
     rm_rf docsDir
     let r = Shell.Exec(@"tools\doxygen\doxygen.exe")
     if r <> 0 then failwith "Doxygen failed"
     rm docsFile
     Rename docsFile (docsDir @@ "html\\index.chm")
     rm_rf docsDir
-)
 
-Target "NuGet" (fun _ ->
+Target "NuGet" <| fun _ ->
     rm_rf nugetDir
     mkdir nugetDocs
     mkdir nugetLib
     cp docsFile nugetDocs
     !!(buildDir @@ "SolrNet.*") |> Copy nugetLib
     nuGetBuild "SolrNet" "Apache Solr client" ["CommonServiceLocator", "[1.0]"]
-)
 
 let nuGetSingle dir =
     rm_rf nugetDir
@@ -136,55 +127,49 @@ let nuGetSingle dir =
 
 let solrNetDep = "SolrNet", "[" + version + "]"
 
-Target "NuGet.Windsor" (fun _ ->
+Target "NuGet.Windsor" <| fun _ ->
     nuGetSingle 
         "Castle.Facilities.SolrNetIntegration" 
         "SolrNet.Windsor"
         "Windsor facility for SolrNet"
         ["Castle.Windsor", "[3.0.0.4001]"; solrNetDep]
-)
 
-Target "NuGet.Ninject" (fun _ ->
+Target "NuGet.Ninject" <| fun _ ->
     nuGetSingle 
         "Ninject.Integration.SolrNet" 
         "SolrNet.Ninject"
         "Ninject module for SolrNet"
         ["Ninject", "[2.2.0.0,2.2.1.0]"; solrNetDep]
-)
 
-Target "NuGet.NHibernate" (fun _ ->
+Target "NuGet.NHibernate" <| fun _ ->
     nuGetSingle 
         "NHibernate.SolrNet" 
         "SolrNet.NHibernate"
         "NHibernate integration for SolrNet"
         ["NHibernate", "[3.2.0.4000]"; solrNetDep]
-)
 
-Target "NuGet.StructureMap" (fun _ ->
+Target "NuGet.StructureMap" <| fun _ ->
     nuGetSingle 
         "StructureMap.SolrNetIntegration" 
         "SolrNet.StructureMap"
         "StructureMap registry for SolrNet"
         ["structuremap", "[2.6.2.0]"; solrNetDep]
-)
 
-Target "NuGet.Autofac" (fun _ ->
+Target "NuGet.Autofac" <| fun _ ->
     nuGetSingle 
         "AutofacContrib.SolrNet" 
         "SolrNet.Autofac"
         "Autofac module for SolrNet"
         ["Autofac", "[2.5.2.830]"; solrNetDep]
-)
 
-Target "NuGet.Unity" (fun _ ->
+Target "NuGet.Unity" <| fun _ ->
     nuGetSingle 
         "Unity.SolrNetIntegration" 
         "SolrNet.Unity"
         "Unity integration for SolrNet"
         ["Unity", "[2.1.505.0]"; solrNetDep]
-)
 
-Target "ReleasePackage" (fun _ -> 
+Target "ReleasePackage" <| fun _ -> 
     let outputPath = "build"
     rm_rf outputPath
     mkdir outputPath
@@ -214,9 +199,8 @@ Target "ReleasePackage" (fun _ ->
     !! (outputPath @@ "**\\*") |> Zip outputPath zipFile
 
     rm_rf outputPath
-)
 
-Target "PackageSampleApp" (fun _ ->
+Target "PackageSampleApp" <| fun _ ->
     let outputSolr = buildDir @@ solr
     cp_r solr outputSolr
     rm_rf (outputSolr @@ "solr\\data")
@@ -254,7 +238,6 @@ Target "PackageSampleApp" (fun _ ->
     
     !! (buildDir @@ "**\\*")
         |> Zip buildDir ("SolrNet-"+version+"-sample.zip")
-)
 
 
 Target "BuildAll" DoNothing

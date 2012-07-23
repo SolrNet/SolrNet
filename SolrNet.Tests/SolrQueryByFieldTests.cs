@@ -62,14 +62,14 @@ namespace SolrNet.Tests {
 
 		[Test]
 		public void ShouldQuoteSpecialChar() {
-			var q = new SolrQueryByField("id", "hello+world-bye&&q||w!e(r)t{y}[u]^i\"o~p:a\\s+d;;?*");
-            Assert.AreEqual(@"id:(hello\+world\-bye\&&q\||w\!e\(r\)t\{y\}\[u\]\^i\""o\~p\:a\\s\+d\;\;\?\*)", Serialize(q));
+			var q = new SolrQueryByField("id", "hello+world-bye&&q||w!e(r)t{y}[u]^i\"o~p:a\\s+d;;?*/");
+            Assert.AreEqual(@"id:(hello\+world\-bye\&&q\||w\!e\(r\)t\{y\}\[u\]\^i\""o\~p\:a\\s\+d\;\;\?\*\/)", Serialize(q));
 		}
 
         [Test]
         public void QuotedFalse() {
-            var q = new SolrQueryByField("id", "hello?world*") { Quoted = false };
-            Assert.AreEqual("id:(hello?world*)", Serialize(q));
+            var q = new SolrQueryByField("id", "hello?wor/ld*") { Quoted = false };
+            Assert.AreEqual("id:(hello?wor/ld*)", Serialize(q));
         }
 	}
 }

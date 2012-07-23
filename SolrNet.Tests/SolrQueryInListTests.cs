@@ -36,8 +36,8 @@ namespace SolrNet.Tests {
 
         [Test]
         public void ShouldQuoteValues() {
-            var q = new SolrQueryInList("id", new[] {"one", "two thousand"});
-            Assert.AreEqual("(id:(one) OR id:(\"two thousand\"))", Serialize(q));
+            var q = new SolrQueryInList("id", new[] {"one", "two thousand", "three/hundred"});
+            Assert.AreEqual("(id:(one) OR id:(\"two thousand\") OR id:(three\\/hundred))", Serialize(q));
         }
 
 

@@ -1,3 +1,12 @@
+- Breaking change: queries that quote values now also quote slash ('/') due to changes in Solr/Lucene 4 (https://issues.apache.org/jira/browse/LUCENE-2604)
+- Upgraded to Ninject 3
+- Added commitWithin option to Delete
+- Added support for TermVectorComponent
+- Added SolrRequiredQuery
+- Fixed milliseconds in DateTime serialization
+- Added multicore to StructureMap integration
+- Added multicore to Unity integration
+- Fixed parens in query by field expressions with spaces in value
 - Added core admin commands
 - Added multicore to Ninject module
 - Fixed commit without parameters should not send waitFlush (issue #172)

@@ -709,18 +709,6 @@
       </analyzer>
     </fieldType>
     
-    <!-- CJK bigram (see text_ja for a Japanese configuration using morphological analysis) -->
-    <fieldType name="text_cjk" class="solr.TextField" positionIncrementGap="100">
-      <analyzer>
-        <tokenizer class="solr.StandardTokenizerFactory"/>
-        <!-- normalize width before bigram, as e.g. half-width dakuten combine  -->
-        <filter class="solr.CJKWidthFilterFactory"/>
-        <!-- for any non-CJK -->
-        <filter class="solr.LowerCaseFilterFactory"/>
-        <filter class="solr.CJKBigramFilterFactory"/>
-      </analyzer>
-    </fieldType>
-
     <!-- Czech -->
     <fieldType name="text_cz" class="solr.TextField" positionIncrementGap="100">
       <analyzer> 
@@ -908,56 +896,6 @@
       </analyzer>
     </fieldType>
     
-    <!-- Japanese using morphological analysis (see text_cjk for a configuration using bigramming)
-
-         NOTE: If you want to optimize search for precision, use default operator AND in your query
-         parser config with <solrQueryParser defaultOperator="AND"/> further down in this file.  Use 
-         OR if you would like to optimize for recall (default).
-    -->
-    <fieldType name="text_ja" class="solr.TextField" positionIncrementGap="100" autoGeneratePhraseQueries="false">
-      <analyzer>
-      <!-- Kuromoji Japanese morphological analyzer/tokenizer (JapaneseTokenizer)
-
-           Kuromoji has a search mode (default) that does segmentation useful for search.  A heuristic
-           is used to segment compounds into its parts and the compound itself is kept as synonym.
-
-           Valid values for attribute mode are:
-              normal: regular segmentation
-              search: segmentation useful for search with synonyms compounds (default)
-            extended: same as search mode, but unigrams unknown words (experimental)
-
-           For some applications it might be good to use search mode for indexing and normal mode for
-           queries to reduce recall and prevent parts of compounds from being matched and highlighted.
-           Use <analyzer type="index"> and <analyzer type="query"> for this and mode normal in query.
-
-           Kuromoji also has a convenient user dictionary feature that allows overriding the statistical
-           model with your own entries for segmentation, part-of-speech tags and readings without a need
-           to specify weights.  Notice that user dictionaries have not been subject to extensive testing.
-
-           User dictionary attributes are:
-                     userDictionary: user dictionary filename
-             userDictionaryEncoding: user dictionary encoding (default is UTF-8)
-
-           See lang/userdict_ja.txt for a sample user dictionary file.
-
-           See http://wiki.apache.org/solr/JapaneseLanguageSupport for more on Japanese language support.
-        -->
-        <tokenizer class="solr.JapaneseTokenizerFactory" mode="search"/>
-        <!--<tokenizer class="solr.JapaneseTokenizerFactory" mode="search" userDictionary="lang/userdict_ja.txt"/>-->
-        <!-- Reduces inflected verbs and adjectives to their base/dictionary forms (辞書形) -->
-        <filter class="solr.JapaneseBaseFormFilterFactory"/>
-        <!-- Removes tokens with certain part-of-speech tags -->
-        <filter class="solr.JapanesePartOfSpeechStopFilterFactory" tags="lang/stoptags_ja.txt" enablePositionIncrements="true"/>
-        <!-- Normalizes full-width romaji to half-width and half-width kana to full-width (Unicode NFKC subset) -->
-        <filter class="solr.CJKWidthFilterFactory"/>
-        <!-- Removes common tokens typically not useful for search, but have a negative effect on ranking -->
-        <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_ja.txt" enablePositionIncrements="true" />
-        <!-- Normalizes common katakana spelling variations by removing any last long sound character (U+30FC) -->
-        <filter class="solr.JapaneseKatakanaStemFilterFactory" minimumLength="4"/>
-        <!-- Lower-cases romaji characters -->
-        <filter class="solr.LowerCaseFilterFactory"/>
-      </analyzer>
-    </fieldType>
     
     <!-- Latvian -->
     <fieldType name="text_lv" class="solr.TextField" positionIncrementGap="100">

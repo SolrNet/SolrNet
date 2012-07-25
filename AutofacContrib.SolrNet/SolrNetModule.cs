@@ -84,6 +84,7 @@ namespace AutofacContrib.SolrNet {
                 typeof (MappedPropertiesIsInSolrSchemaRule),
                 typeof (RequiredFieldsAreMappedRule),
                 typeof (UniqueKeyMatchesMappingRule),
+                typeof(MultivaluedMappedToCollectionRule),
             })
 			
                 builder.RegisterType(p).As<IValidationRule>();

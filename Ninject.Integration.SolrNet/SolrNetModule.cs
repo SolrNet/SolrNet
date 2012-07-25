@@ -178,6 +178,7 @@ namespace Ninject.Integration.SolrNet {
                 typeof(MappedPropertiesIsInSolrSchemaRule),
                 typeof(RequiredFieldsAreMappedRule),
                 typeof(UniqueKeyMatchesMappingRule),
+                typeof(MultivaluedMappedToCollectionRule),
             })
                 Bind<IValidationRule>().To(p);
             Bind(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>)).To(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));

@@ -44,6 +44,7 @@ namespace StructureMap.SolrNetIntegration
                                             typeof(MappedPropertiesIsInSolrSchemaRule),
                                             typeof(RequiredFieldsAreMappedRule),
                                             typeof(UniqueKeyMatchesMappingRule),
+                                            typeof(MultivaluedMappedToCollectionRule),
                                         };
             foreach (var validationRule in validationRules)
                 For(typeof (IValidationRule)).Use(validationRule);

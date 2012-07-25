@@ -95,6 +95,7 @@ namespace Castle.Facilities.SolrNetIntegration {
                 typeof(MappedPropertiesIsInSolrSchemaRule),
                 typeof(RequiredFieldsAreMappedRule),
                 typeof(UniqueKeyMatchesMappingRule),
+                typeof(MultivaluedMappedToCollectionRule),
             })
                 Kernel.Register(Component.For<IValidationRule>().ImplementedBy(validationRule));
             Kernel.Resolver.AddSubResolver(new StrictArrayResolver(Kernel));

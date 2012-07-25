@@ -42,6 +42,7 @@ namespace Unity.SolrNetIntegration {
                 typeof (MappedPropertiesIsInSolrSchemaRule),
                 typeof (RequiredFieldsAreMappedRule),
                 typeof (UniqueKeyMatchesMappingRule),
+                typeof(MultivaluedMappedToCollectionRule),
             };
 
             foreach (var validationRule in validationRules) {

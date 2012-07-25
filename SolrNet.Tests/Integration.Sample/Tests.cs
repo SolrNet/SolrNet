@@ -95,7 +95,7 @@ namespace SolrNet.Tests.Integration.Sample {
             Assert.AreEqual(guid, products[0].Guid);
             Assert.AreEqual(92m, products[0].Price);
             Assert.IsNotNull(products[0].Prices);
-            Assert.AreEqual(2, products[0].Prices.Count);
+            Assert.AreEqual(3, products[0].Prices.Count);
             Assert.AreEqual(150m, products[0].Prices["regular"]);
             Assert.AreEqual(100m, products[0].Prices["afterrebate"]);
             Assert.IsNotNull(products.Header);

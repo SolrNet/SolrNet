@@ -92,6 +92,8 @@
    -->
         
    <field name="id" type="string" indexed="true" stored="true" required="true" /> 
+   <field name="guid" type="uuid" indexed="true" stored="true"/>
+   <field name="timestamp" type="date" indexed="true" stored="true" required="true" default="NOW"/>
    <field name="sku" type="text_en_splitting_tight" indexed="true" stored="true" omitNorms="true"/>
    <field name="name" type="text_general" indexed="true" stored="true"/>
    <field name="manu" type="text_general" indexed="true" stored="true" omitNorms="true"/>
@@ -190,6 +192,7 @@
    <dynamicField name="attr_*" type="text_general" indexed="true" stored="true" multiValued="true"/>
 
    <dynamicField name="random_*" type="random" />
+   <dynamicField name="price_*" type="float" indexed="true" stored="true"/>
 
    <!-- uncomment the following to ignore any fields that don't already match an existing 
         field name or dynamic field, rather than reporting them as an error. 
@@ -634,6 +637,8 @@
     <!-- since fields of this type are by default not stored or indexed,
          any data added to them will be ignored outright.  --> 
     <fieldtype name="ignored" stored="false" indexed="false" multiValued="true" class="solr.StrField" />
+
+    <fieldType name="uuid" class="solr.UUIDField" indexed="true" />
 
     <!-- This point type indexes the coordinates as separate fields (subFields)
       If subFieldType is defined, it references a type, and a dynamic field

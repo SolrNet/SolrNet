@@ -180,7 +180,7 @@ namespace SolrNet.Tests.Integration.Sample {
         public void Highlighting() {
             Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
-            var results = solr.Query(new SolrQueryByField("features", "noise"), new QueryOptions {
+            var results = solr.Query(new SolrQueryByField("features", "fluid"), new QueryOptions {
                 Highlight = new HighlightingParameters {
                     Fields = new[] {"features"},
                 }
@@ -198,7 +198,7 @@ namespace SolrNet.Tests.Integration.Sample {
         {
             Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
-            var results = solr.Query(new SolrQueryByField("features", "noise"), new QueryOptions
+            var results = solr.Query(new SolrQueryByField("features", "fluid"), new QueryOptions
             {
                 Highlight = new HighlightingParameters
                 {

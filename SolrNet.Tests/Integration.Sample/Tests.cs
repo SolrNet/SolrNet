@@ -335,9 +335,10 @@ namespace SolrNet.Tests.Integration.Sample {
                 Rows = 0,
                 Stats = new StatsParameters {
                     Facets = new[] { "inStock" },
-                    FieldsWithFacets = new Dictionary<string, ICollection<string>> {
-                        {"popularity", new List<string> {"price"}}
-                    }
+                    // stats facet currently broken in Solr: https://issues.apache.org/jira/browse/SOLR-2976
+                    //FieldsWithFacets = new Dictionary<string, ICollection<string>> {
+                    //    {"popularity", new List<string> {"weight"}}
+                    //}
                 }
             });
             Assert.IsNotNull(results.Stats);

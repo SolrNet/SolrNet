@@ -21,4 +21,5 @@ NDependOut
 docs
 mausch.snk
 lib/TDNet
+SampleSolrApp/log*
 *~

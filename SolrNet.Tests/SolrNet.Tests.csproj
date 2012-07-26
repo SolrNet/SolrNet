@@ -154,6 +154,7 @@
     <Compile Include="UniqueKeyMatchesMappingRuleTests.cs" />
     <Compile Include="Utils\CompressionUtils.cs" />
     <Compile Include="Utils\EmbeddedResource.cs" />
+    <Compile Include="Utils\Lazy.cs" />
     <Compile Include="Utils\LoggingConnection.cs" />
     <Compile Include="Utils\Moroco.cs" />
     <Compile Include="Utils\Node.cs" />

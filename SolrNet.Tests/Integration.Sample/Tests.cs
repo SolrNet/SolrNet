@@ -28,22 +28,18 @@ using SolrNet.Impl;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests.Integration.Sample {
-    /// <summary>
-    /// These tests run against the sample schema that comes with solr
-    /// </summary>
     [TestFixture]
     [Category("Integration")]
     public class Tests {
         private static readonly string serverURL = ConfigurationManager.AppSettings["solr"];
-
-
-        [FixtureSetUp]
-        public void FixtureSetup() {
+        private static readonly Lazy<object> init = new Lazy<object>(() => {
             Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL)));
-        }
+            return null;
+        });
 
         [SetUp]
         public void Setup() {
+            var x = init.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             solr.Delete(SolrQuery.All);
             solr.Commit();

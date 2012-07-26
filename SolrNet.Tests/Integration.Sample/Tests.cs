@@ -466,12 +466,16 @@ namespace SolrNet.Tests.Integration.Sample {
 			Assert.GreaterThanOrEqualTo(results.Grouping["manu_exact"].Groups.Count,1);
 		}
 
-
-
+        private static readonly Lazy<object> initLoose = new Lazy<object>(() => {
+            Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL)));
+            return null;
+        });
+            
+            
         [Test]
         public void SemiLooseMapping() {
             Add_then_query();
-            Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL)));
+            var _ = initLoose.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<ProductLoose>>();
             var products = solr.Query(SolrQuery.All, new QueryOptions {Fields = new[] {"*", "score"}});
             Assert.AreEqual(1, products.Count);
@@ -490,6 +494,7 @@ namespace SolrNet.Tests.Integration.Sample {
             Assert.IsInstanceOfType(typeof(ICollection), product.OtherFields["features"]);
             product.OtherFields["timestamp"] = new DateTime(2010, 1, 1);
             product.OtherFields["features"] = new[] {"a", "b", "c"};
+            product.OtherFields.Remove("_version_"); // avoid optimistic locking for now https://issues.apache.org/jira/browse/SOLR-3178
             product.Score = null;
             solr.Add(product);
         }

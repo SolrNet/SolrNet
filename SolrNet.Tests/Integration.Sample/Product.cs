@@ -62,7 +62,10 @@ namespace SolrNet.Tests.Integration.Sample {
 		[SolrField("timestamp")]
 		public DateTime Timestamp { get; set; }
 
-        [SolrField("price_")]
+        [SolrField("price_c")]
+        public Money PriceMoney { get; set; }
+
+        [SolrField("value_")]
         public IDictionary<string, decimal> Prices { get; set; }
 
         [SolrField("ca")]

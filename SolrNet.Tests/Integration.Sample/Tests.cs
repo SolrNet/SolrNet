@@ -75,6 +75,7 @@ namespace SolrNet.Tests.Integration.Sample {
                     {"afterrebate", 100m},
                 },
                 Price = 92,
+                PriceMoney = new Money(92m, "USD"),
                 Popularity = 6,
                 InStock = true,
                 DynCategories = new Dictionary<string, ICollection<string>> {
@@ -120,6 +121,7 @@ namespace SolrNet.Tests.Integration.Sample {
                     {"afterrebate", 100m},
                 },
                 Price = 92,
+                PriceMoney = new Money(123.44m, "EUR"),
                 Popularity = 6,
                 InStock = false,
             },
@@ -140,6 +142,7 @@ namespace SolrNet.Tests.Integration.Sample {
                     {"afterrebate", 100m},
                 },
                 Price = 92,
+                PriceMoney = new Money(123.44m, "ARS"),
                 Popularity = 6,
                 InStock = false,
             },
@@ -160,10 +163,21 @@ namespace SolrNet.Tests.Integration.Sample {
                     {"afterrebate", 100m},
                 },
                 Price = 92,
+                PriceMoney = new Money(123.44m, "GBP"),
                 Popularity = 6,
                 InStock = false,
             }
         };
+
+        [Test]
+        public void QueryByRangeMoney() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.AddRange(products);
+            solr.Commit();
+
+            var results = solr.Query(new SolrQueryByRange<Money>("price_c", new Money(123, null), new Money(3000, "USD")));
+            Assert.AreEqual(2, results.Count);
+        }
 
         [Test]
         public void DeleteByIdAndOrQuery() {

@@ -88,6 +88,8 @@
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
     <Compile Include="Commands\Parameters\TermsSort.cs" />
     <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
+    <Compile Include="Impl\FieldParsers\MoneyFieldParser.cs" />
+    <Compile Include="Money.cs" />
     <Compile Include="ExtractField.cs" />
     <Compile Include="ExtractFormat.cs" />
     <Compile Include="ExtractParameters.cs" />
@@ -110,6 +112,7 @@
     <Compile Include="Impl\AbstractSolrQueryResults.cs" />
     <Compile Include="Impl\CoreIndexResult.cs" />
     <Compile Include="Impl\CoreResult.cs" />
+    <Compile Include="Impl\FieldSerializers\MoneyFieldSerializer.cs" />
     <Compile Include="Impl\HighlightedSnippets.cs" />
     <Compile Include="Impl\ISolrAbstractResponseParser.cs" />
     <Compile Include="Impl\ISolrStatusResponseParser.cs" />

@@ -96,6 +96,7 @@
    <field name="timestamp" type="date" indexed="true" stored="true" required="true" default="NOW"/>
    <field name="sku" type="text_en_splitting_tight" indexed="true" stored="true" omitNorms="true"/>
    <field name="name" type="text_general" indexed="true" stored="true"/>
+   <field name="alphaNameSort" type="alphaOnlySort" indexed="true" stored="false"/>
    <field name="manu" type="text_general" indexed="true" stored="true" omitNorms="true"/>
    <field name="cat" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="features" type="text_general" indexed="true" stored="true" multiValued="true"/>
@@ -245,7 +246,7 @@
    <!-- <copyField source="*_t" dest="text" maxChars="3000"/> -->
 
    <!-- copy name to alphaNameSort, a field designed for sorting by name -->
-   <!-- <copyField source="name" dest="alphaNameSort"/> -->
+   <copyField source="name" dest="alphaNameSort"/>
  
 
  <!-- Similarity is the scoring routine for each document vs. a query.

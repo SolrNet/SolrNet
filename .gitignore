@@ -14,8 +14,8 @@ build/*
 nuget/*
 tools/Sandcastle/Data/Reflection/*
 merged
-solr-*/solr/data
-solr-*/logs
+solr/solr/data
+solr/logs
 log.txt
 NDependOut
 docs

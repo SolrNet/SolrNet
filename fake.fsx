@@ -8,7 +8,7 @@ open System.IO
 open Fake
 open Fake.FileUtils
 
-let solr = "solr-1.4.0"
+let solr = "solr"
 
 // helper functions
 

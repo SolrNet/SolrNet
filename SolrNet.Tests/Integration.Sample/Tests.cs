@@ -524,8 +524,10 @@ namespace SolrNet.Tests.Integration.Sample {
 
         [Test]
         public void MoreLikeThisHandler() {
-            AddSampleDocs();
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Delete(SolrQuery.All);
+            solr.Commit();
+            AddSampleDocs();
             var mltParams = new MoreLikeThisHandlerParameters(new[] {"cat", "name"}) {
                 MatchInclude = true, 
                 MinTermFreq = 1, 
@@ -534,7 +536,7 @@ namespace SolrNet.Tests.Integration.Sample {
             };
             var q = SolrMLTQuery.FromQuery(new SolrQuery("id:UTF8TEST"));
             var results = solr.MoreLikeThis(q, new MoreLikeThisHandlerQueryOptions(mltParams));
-            Assert.AreEqual(1, results.Count);
+            Assert.AreEqual(2, results.Count);
             Assert.IsNotNull(results.Match);
             Assert.AreEqual("UTF8TEST", results.Match.Id);
             Assert.GreaterThan(results.InterestingTerms.Count, 0);

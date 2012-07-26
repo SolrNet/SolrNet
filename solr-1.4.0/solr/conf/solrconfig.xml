@@ -799,6 +799,9 @@
          <str>nameOfCustomComponent2</str>
        </arr>
       -->
+     <arr name="last-components">
+       <str>spellcheck</str>
+     </arr>
     </requestHandler>
 
   <!-- A request handler that returns indented JSON by default -->

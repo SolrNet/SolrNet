@@ -266,7 +266,7 @@ namespace SolrNet.Tests.Integration.Sample {
             Add_then_query();
             AddSampleDocs();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
-            var r = solr.Query(new SolrQuery("hell untrasharp"), new QueryOptions {
+            var r = solr.Query(new SolrQueryByField("name", "hell untrasharp"), new QueryOptions {
                 SpellCheck = new SpellCheckingParameters(),
             });
             Console.WriteLine("Products:");

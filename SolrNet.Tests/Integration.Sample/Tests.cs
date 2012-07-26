@@ -36,7 +36,11 @@ namespace SolrNet.Tests.Integration.Sample {
             Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL)));
             return null;
         });
-
+        private static readonly Lazy<object> initDict = new Lazy<object>(() => {
+            Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
+            return null;
+        });
+            
         [SetUp]
         public void Setup() {
             var x = init.Value;
@@ -391,7 +395,7 @@ namespace SolrNet.Tests.Integration.Sample {
         [Test]
         public void LooseMapping() {
             Add_then_query();
-            Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
+            var _ = initDict.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
             var results = solr.Query(SolrQuery.All);
             Assert.IsInstanceOfType<ArrayList>(results[0]["cat"]);
@@ -414,7 +418,7 @@ namespace SolrNet.Tests.Integration.Sample {
         [Test]
         [Ignore("Registering the connection in the container causes a side effect.")]
         public void LooseMappingAdd() {
-            Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
+            var _ = initDict.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
             solr.Add(new Dictionary<string, object> {
                 {"id", "id1234"},

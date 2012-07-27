@@ -90,5 +90,35 @@ namespace SolrNet.DSL.Tests {
             var q = Query.Field("name").HasAnyValue();
             Assert.AreEqual("name:[* TO *]", Serialize(q));
         }
+
+        [Test]
+        public void CompositionIgnoreNullOR() {
+            var qLeft = Query.Field("left").Is("left");
+            var qRight = Query.Field("right").Is("right");
+            Assert.AreEqual(qLeft || null, qLeft);
+            Assert.AreEqual(null || qRight, qRight);
+            AbstractSolrQuery composite = null;
+            composite |= qRight;
+            Assert.AreEqual(composite, qRight);
+            composite = qLeft || qRight;
+            Assert.AreNotEqual(composite, qLeft);
+            Assert.AreNotEqual(composite, qRight);
+        }
+
+        [Test]
+        public void CompositionIgnoreNullAND()
+        {
+            var qLeft = Query.Field("left").Is("left");
+            var qRight = Query.Field("right").Is("right");
+            Assert.AreEqual(qLeft & null, qLeft);
+            Assert.AreEqual(null & qRight, qRight);
+            AbstractSolrQuery composite = null;
+            composite &= qRight;
+            Assert.AreEqual(composite, qRight);
+            composite = qLeft & qRight;
+            Assert.AreNotEqual(composite, qLeft);
+            Assert.AreNotEqual(composite, qRight);
+        }
+
     }
 }

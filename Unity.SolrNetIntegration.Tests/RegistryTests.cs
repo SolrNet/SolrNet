@@ -36,6 +36,14 @@ namespace Unity.SolrNetIntegration.Tests {
                 Assert.IsNotNull(m);
             }
         }
+        [Test]
+        public void ResolveAllISolrAbstractResponseParser()
+        {
+            using (var container = SetupContainer()) {
+                var m = container.ResolveAll(typeof(ISolrAbstractResponseParser<RegistryTests>));
+                Assert.IsNotEmpty(m);
+            }
+        }
 
         [Test]
         public void RegistersSolrConnectionWithAppConfigServerUrl() {

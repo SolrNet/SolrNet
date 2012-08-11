@@ -29,12 +29,12 @@ namespace HttpWebAdapters {
 		}
 	}
 
-    public class SecureHttpWebRequestFactory : IHttpWebRequestFactory
+    public class BasicAuthHttpWebRequestFactory : IHttpWebRequestFactory
     {
         private string username;
         private string password;
 
-        public SecureHttpWebRequestFactory(string username, string password)
+        public BasicAuthHttpWebRequestFactory(string username, string password)
         {
             this.username = username;
             this.password = password;

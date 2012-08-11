@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Impl\BasicAuthHttpWebRequestFactory.cs" />
     <Compile Include="Impl\HttpWebRequestAdapter.cs" />
     <Compile Include="Impl\HttpWebRequestFactory.cs" />
     <Compile Include="Impl\HttpWebRequestMethod.cs" />

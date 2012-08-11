@@ -14,10 +14,7 @@ namespace HttpWebAdapters {
         }
 
         public IHttpWebRequest Create(string url) {
-            var req = (HttpWebRequest) WebRequest.Create(url);
-            var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(username + ":" + password));
-            req.Headers.Add("Authorization", "Basic " + credentials);
-            return new HttpWebRequestAdapter(req);
+            return Create(new Uri(url));
         }
 
         public IHttpWebRequest Create(Uri url) {

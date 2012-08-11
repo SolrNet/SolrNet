@@ -45,11 +45,19 @@ namespace SolrNet {
         }
 
         public static AbstractSolrQuery operator & (AbstractSolrQuery a, AbstractSolrQuery b) {
-            return new SolrMultipleCriteriaQuery(new[] {a, b}, "AND");
+            return (a == null)
+                ? b 
+                : (b == null)
+                    ? a
+                    : new SolrMultipleCriteriaQuery(new[] {a, b}, "AND");
         }
 
         public static AbstractSolrQuery operator | (AbstractSolrQuery a, AbstractSolrQuery b) {
-            return new SolrMultipleCriteriaQuery(new[] { a, b }, "OR");
+            return (a == null)
+                ? b 
+                : (b == null)
+                    ? a
+                    : new SolrMultipleCriteriaQuery(new[] { a, b }, "OR");
         }
 
         public static AbstractSolrQuery operator + (AbstractSolrQuery a, AbstractSolrQuery b) {

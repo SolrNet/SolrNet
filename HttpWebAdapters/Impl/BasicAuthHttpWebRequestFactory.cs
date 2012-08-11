@@ -1,31 +1,28 @@
 using System;
 using System.Net;
+using System.Text;
 using HttpWebAdapters.Adapters;
 
 namespace HttpWebAdapters {
-    public class BasicAuthHttpWebRequestFactory : IHttpWebRequestFactory
-    {
-        private string username;
-        private string password;
+    public class BasicAuthHttpWebRequestFactory : IHttpWebRequestFactory {
+        private readonly string username;
+        private readonly string password;
 
-        public BasicAuthHttpWebRequestFactory(string username, string password)
-        {
+        public BasicAuthHttpWebRequestFactory(string username, string password) {
             this.username = username;
             this.password = password;
         }
 
-        public IHttpWebRequest Create(string url)
-        {
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-            string credentials = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(username + ":" + password));
+        public IHttpWebRequest Create(string url) {
+            var req = (HttpWebRequest) WebRequest.Create(url);
+            var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(username + ":" + password));
             req.Headers.Add("Authorization", "Basic " + credentials);
             return new HttpWebRequestAdapter(req);
         }
 
-        public IHttpWebRequest Create(Uri url)
-        {
-            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-            string credentials = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(username + ":" + password));
+        public IHttpWebRequest Create(Uri url) {
+            var req = (HttpWebRequest) WebRequest.Create(url);
+            var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(username + ":" + password));
             req.Headers.Add("Authorization", "Basic " + credentials);
             return new HttpWebRequestAdapter(req);
         }

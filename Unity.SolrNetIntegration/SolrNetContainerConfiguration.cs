@@ -61,7 +61,8 @@ namespace Unity.SolrNetIntegration {
         private void RegisterParsers(IUnityContainer container) {
             container.RegisterType(typeof (ISolrDocumentResponseParser<>), typeof (SolrDocumentResponseParser<>));
             container.RegisterType<ISolrDocumentResponseParser<Dictionary<string, object>>, SolrDictionaryDocumentResponseParser>();
-            container.RegisterType(typeof (ISolrAbstractResponseParser<>), typeof (DefaultResponseParser<>));
+            container.RegisterType(typeof(ISolrAbstractResponseParser<>), typeof(DefaultResponseParser<>));
+            container.RegisterType(typeof(ISolrAbstractResponseParser<>), typeof(DefaultResponseParser<>),"UnityFix");
 
             container.RegisterType<ISolrHeaderResponseParser, HeaderResponseParser<string>>();
             container.RegisterType<ISolrExtractResponseParser, ExtractResponseParser>();

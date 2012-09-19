@@ -69,6 +69,7 @@ namespace Unity.SolrNetIntegration {
             container.RegisterType<ISolrFieldParser, DefaultFieldParser>();
             container.RegisterType<ISolrSchemaParser, SolrSchemaParser>();
             container.RegisterType<ISolrDIHStatusParser, SolrDIHStatusParser>();
+            container.RegisterType<ISolrCoreAdmin, SolrCoreAdmin>();
         }
 
         private void RegisterCore(SolrCore core, IUnityContainer container) {

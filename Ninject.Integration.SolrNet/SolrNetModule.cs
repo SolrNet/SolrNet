@@ -190,6 +190,8 @@ namespace Ninject.Integration.SolrNet {
 
             if (cores.Count != 0)
             {
+                Bind<ISolrCoreAdmin>().To<SolrCoreAdmin>();
+
                 foreach (var solrCore in cores)
                 {
                     RegisterCore(solrCore);

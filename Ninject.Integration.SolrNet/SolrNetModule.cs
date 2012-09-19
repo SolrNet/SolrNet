@@ -190,6 +190,7 @@ namespace Ninject.Integration.SolrNet {
 
             if (cores.Count != 0)
             {
+                Bind<ISolrStatusResponseParser>().To<SolrStatusResponseParser>();
                 Bind<ISolrCoreAdmin>().To<SolrCoreAdmin>();
 
                 foreach (var solrCore in cores)

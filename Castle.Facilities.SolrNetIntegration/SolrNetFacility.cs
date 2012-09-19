@@ -127,6 +127,9 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For<ISolrDIHStatusParser>().ImplementedBy<SolrDIHStatusParser>());
             Kernel.Register(Component.For<IMappingValidator>().ImplementedBy<MappingValidator>());
 
+            Kernel.Register(Component.For<ISolrStatusResponseParser>().ImplementedBy<SolrStatusResponseParser>());
+            Kernel.Register(Component.For<ISolrCoreAdmin>().ImplementedBy<SolrCoreAdmin>());
+
             AddCoresFromConfig();
             foreach (var core in cores) {
                 RegisterCore(core);

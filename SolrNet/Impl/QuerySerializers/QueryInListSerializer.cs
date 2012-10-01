@@ -30,7 +30,9 @@ namespace SolrNet.Impl.QuerySerializers {
         public override string Serialize(SolrQueryInList q) {
             if (string.IsNullOrEmpty(q.FieldName) || q.List == null || !q.List.Any())
                 return null;
-            return "(" + string.Join(" OR ", q.List.Select(l => serializer.Serialize(new SolrQueryByField(q.FieldName, l))).ToArray()) + ")";
+
+            var array = q.List.Select(x =>"(" + QueryByFieldSerializer.Quote(x) + ")").ToArray();
+            return "(" + serializer.Serialize(new SolrQueryByField(q.FieldName,string.Join(" OR ",array)){Quoted = false}) + ")";
         }
     }
 }

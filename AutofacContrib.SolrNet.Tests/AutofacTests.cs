@@ -15,9 +15,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using Autofac;
 using MbUnit.Framework;
 using SolrNet;
+using SolrNet.Impl;
 using SolrNet.Tests.Mocks;
 
 namespace AutofacContrib.SolrNet.Tests {
@@ -66,6 +68,69 @@ namespace AutofacContrib.SolrNet.Tests {
             Assert.AreSame(basic, basicReadonly);
         }
         
+        [Test]
+        public void DictionaryDocument_Operations()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
+            var container = builder.Build();
+            var m = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
+        }
+
+        [Test]
+        public void DictionaryDocument_ResponseParser()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
+            var container = builder.Build();
+            var parser = container.Resolve<ISolrDocumentResponseParser<Dictionary<string, object>>>();
+            Assert.IsInstanceOfType<SolrDictionaryDocumentResponseParser>(parser);
+        }
+
+        [Test]
+        public void DictionaryDocument_Serializer()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
+            var container = builder.Build();
+            var serializer = container.Resolve<ISolrDocumentSerializer<Dictionary<string, object>>>();
+            Assert.IsInstanceOfType<SolrDictionarySerializer>(serializer);
+        }
+
+        [Test]
+        [Category("Integration")]
+        public void DictionaryDocument()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
+            var container = builder.Build();
+            var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
+            var results = solr.Query(SolrQuery.All);
+            Assert.GreaterThan(results.Count, 0);
+            foreach (var d in results)
+            {
+                Assert.GreaterThan(d.Count, 0);
+                foreach (var kv in d)
+                    Console.WriteLine("{0}: {1}", kv.Key, kv.Value);
+            }
+        }
+
+        [Test]
+        [Category("Integration")]
+        public void DictionaryDocument_add()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
+            var container = builder.Build();
+            var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
+            solr.Add(new Dictionary<string, object> {
+                {"id", "ababa"},
+                {"manu", "who knows"},
+                {"popularity", 55},
+                {"timestamp", DateTime.UtcNow},
+            });
+        }
+     
         public class Entity {}
     }
 }

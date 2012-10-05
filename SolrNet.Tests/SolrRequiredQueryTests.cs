@@ -53,7 +53,7 @@ namespace SolrNet.Tests {
         public void QueryInList() {
             var q = new SolrQueryInList("desc", "samsung", "hitachi", "fujitsu");
             var requiredq = new SolrRequiredQuery(q);
-            Assert.AreEqual("+(desc:(samsung) OR desc:(hitachi) OR desc:(fujitsu))", Serialize(requiredq));
+            Assert.AreEqual("+(desc:((samsung) OR (hitachi) OR (fujitsu)))", Serialize(requiredq));
         }
 
         [Test]

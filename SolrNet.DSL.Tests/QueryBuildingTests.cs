@@ -74,7 +74,7 @@ namespace SolrNet.DSL.Tests {
         [Test]
         public void InList() {
             var q = Query.Field("price").In(10, 20, 30);
-            Assert.AreEqual("(price:(10) OR price:(20) OR price:(30))", Serialize(q));
+            Assert.AreEqual("(price:((10) OR (20) OR (30)))", Serialize(q));
         }
 
         [Test]

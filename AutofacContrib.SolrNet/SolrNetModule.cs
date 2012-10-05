@@ -17,12 +17,12 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using Autofac;
 using Autofac.Core;
 using AutofacContrib.SolrNet.Config;
 using SolrNet;
-using SolrNet.Exceptions;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -94,6 +94,8 @@ namespace AutofacContrib.SolrNet {
             builder.RegisterGeneric(typeof (SolrDocumentSerializer<>)).As(typeof (ISolrDocumentSerializer<>));
             builder.RegisterType<SolrDIHStatusParser>().As<ISolrDIHStatusParser>();
             builder.RegisterType<MappingValidator>().As<IMappingValidator>();            
+            builder.RegisterType<SolrDictionarySerializer>().As<ISolrDocumentSerializer<Dictionary<string, object>>>();
+            builder.RegisterType<SolrDictionaryDocumentResponseParser>().As<ISolrDocumentResponseParser<Dictionary<string, object>>>();
         }
 
         private void RegisterSingleCore(ContainerBuilder builder) {

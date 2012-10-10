@@ -23,7 +23,7 @@ using SolrNet.Impl;
 namespace SolrNet {
     ///<summary>
     /// Defines the level of accuracy applied for distance calculations.
-    /// Requires Solr 4.0+
+    /// Requires Solr 3.4+
     ///</summary>
     public enum CalculationAccuracy {
         ///<summary>
@@ -39,7 +39,7 @@ namespace SolrNet {
 
     ///<summary>
     /// Retrieves entries from the index based on distance from a point.
-    /// Requires Solr 4.0+
+    /// Requires Solr 3.4+
     ///</summary>
     public class SolrQueryByDistance : ISelfSerializingQuery {
         /// <summary>

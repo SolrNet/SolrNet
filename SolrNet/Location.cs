@@ -15,22 +15,28 @@ namespace SolrNet {
             return string.Format(CultureInfo.InvariantCulture, "{0},{1}", Latitude, Longitude);
         }
 
-        public override bool Equals(object obj) {
-            var other = obj as Location;
-            if (other == null)
+        public bool Equals(Location other) {
+            if (ReferenceEquals(null, other))
                 return false;
-            return Equals(other);
+            if (ReferenceEquals(this, other))
+                return true;
+            return Latitude.Equals(other.Latitude) && Longitude.Equals(other.Longitude);
+        }
+
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj))
+                return false;
+            if (ReferenceEquals(this, obj))
+                return true;
+            if (obj.GetType() != this.GetType())
+                return false;
+            return Equals((Location) obj);
         }
 
         public override int GetHashCode() {
-            return new { Latitude, Longitude }.GetHashCode();
-        }
-
-        public bool Equals(Location other) {
-            if (other == null)
-                return false;
-            return other.Latitude == Latitude &&
-                other.Longitude == Longitude;
+            unchecked {
+                return (Latitude.GetHashCode()*397) ^ Longitude.GetHashCode();
+            }
         }
     }
 }

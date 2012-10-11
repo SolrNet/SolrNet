@@ -13,6 +13,7 @@
       <str name="advancedview"/>
       <str name="basicview"/>
       <int name="id">123456</int>
+      <str name="location">51.5171,-0.1062</str>
     </doc>
   </result>
 </response>

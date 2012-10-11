@@ -254,5 +254,17 @@ namespace SolrNet.Tests {
             Console.WriteLine(fs);
         }
 
+        [Test]
+        public void Location() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithLocation>(mapper, new DefaultFieldSerializer());
+            var testDoc = new TestDocWithLocation { Loc = new Location(12.2, -12.3) };
+            string fs = ser.Serialize(testDoc, null).OuterXml;
+            var xml = new XmlDocument();
+            xml.LoadXml(fs);
+            Console.WriteLine(fs);
+            Assert.AreEqual(@"<doc><field name=""location"">12.2,-12.3</field></doc>", fs);
+        }
+
 	}
 }

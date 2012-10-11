@@ -43,6 +43,8 @@ namespace SolrNet.Tests {
         [Row(typeof(DateTime?))]
         [Row(typeof(bool))]
         [Row(typeof(bool?))]
+        [Row(typeof(Money))]
+        [Row(typeof(Location))]
         public void CanHandleType(Type t) {
             var p = new DefaultFieldParser();
             Assert.IsTrue(p.CanHandleType(t));
@@ -58,6 +60,15 @@ namespace SolrNet.Tests {
             var ii = (int?) i;
             Assert.IsTrue(ii.HasValue);
             Assert.AreEqual(31, ii.Value);
+        }
+
+        [Test]
+        public void ParseLocation() {
+            var doc = new XDocument();
+            doc.Add(new XElement("str", "31.2,-44.2"));
+            var p = new DefaultFieldParser();
+            var l = p.Parse(doc.Root, typeof(Location));
+            Assert.IsInstanceOfType<Location>(l);
         }
     }
 }

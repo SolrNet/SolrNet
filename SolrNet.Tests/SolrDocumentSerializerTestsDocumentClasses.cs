@@ -97,5 +97,10 @@ namespace SolrNet.Tests {
                 set { id = value; }
             }
         }
+
+        public class TestDocWithLocation {
+            [SolrField("location")]
+            public Location Loc { get; set; }
+        }
     }
 }

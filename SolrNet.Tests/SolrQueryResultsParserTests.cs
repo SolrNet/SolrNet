@@ -67,11 +67,11 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(123456, doc.Id);
 	    }
 
-        private SolrQueryResults<T> ParseFromResource<T>(string xmlResource) {
+        private static SolrQueryResults<T> ParseFromResource<T>(string xmlResource) {
             var docParser = GetDocumentParser<T>();
             var parser = new ResultsResponseParser<T>(docParser);
             var r = new SolrQueryResults<T>();
-            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), xmlResource);
+            var xml = EmbeddedResource.GetEmbeddedXml(typeof(SolrQueryResultsParserTests), xmlResource);
             parser.Parse(xml, r);
             return r;
         }

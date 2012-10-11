@@ -2,10 +2,25 @@
 using System.Globalization;
 
 namespace SolrNet {
-    public class Location : IEquatable<Location> {
+    /// <summary>
+    /// Represents a Latitude/Longitude as a 2 dimensional point. 
+    /// </summary>
+    public class Location : IEquatable<Location>, IFormattable {
+        /// <summary>
+        /// Latitude
+        /// </summary>
         public readonly double Latitude;
+
+        /// <summary>
+        /// Longitude
+        /// </summary>
         public readonly double Longitude;
 
+        /// <summary>
+        /// Represents a Latitude/Longitude as a 2 dimensional point. 
+        /// </summary>
+        /// <param name="latitude"></param>
+        /// <param name="longitude"></param>
         public Location(double latitude, double longitude) {
             Latitude = latitude;
             Longitude = longitude;
@@ -37,6 +52,10 @@ namespace SolrNet {
             unchecked {
                 return (Latitude.GetHashCode()*397) ^ Longitude.GetHashCode();
             }
+        }
+
+        public string ToString(string format, IFormatProvider formatProvider) {
+            return ToString();
         }
     }
 }

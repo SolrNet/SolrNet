@@ -24,6 +24,45 @@ namespace SolrNet.Tests {
                     Assert.AreEqual(x.location.Longitude, parsedLocation.Longitude);
                 });
             }
+
+            var invalidLatitudes = new[] {-100, 120};
+            foreach (var x in invalidLatitudes) {
+                var latitude = x;
+
+                yield return new TestCase("Latitude " + latitude + " is invalid", 
+                    () => Assert.IsFalse(Location.IsValidLatitude(latitude)));
+
+                yield return new TestCase("Invalid latitude throws: " + latitude, 
+                    () => Assert.Throws<ArgumentOutOfRangeException>(() => new Location(latitude, 0)));
+            }
+
+            var invalidLongitudes = new[] {-200, 999};
+            foreach (var x in invalidLongitudes) {
+                var longitude = x;
+
+                yield return new TestCase("Longitude " + longitude + " is invalid",
+                    () => Assert.IsFalse(Location.IsValidLongitude(longitude)));
+
+                yield return new TestCase("Invalid longitude throws: " + longitude,
+                    () => Assert.Throws<ArgumentOutOfRangeException>(() => new Location(0, longitude)));
+            }
+
+            yield return new TestCase("TryCreate returns null with invalid lat/long", () => {
+                foreach (var lat in invalidLatitudes)
+                    foreach (var lng in invalidLongitudes) {
+                        var loc = Location.TryCreate(lat, lng);
+                        Assert.IsNull(loc);
+                    }
+            });
+
+            yield return new TestCase("TryCreate returns non-null with valid lat/long", () => {
+                foreach (var l in locations) {
+                    var loc = l.location;
+                    var loc2 = Location.TryCreate(loc.Latitude, loc.Longitude);
+                    Assert.IsNotNull(loc2);
+                    Assert.AreEqual(loc, loc2);
+                }
+            });
         }
     }
 }

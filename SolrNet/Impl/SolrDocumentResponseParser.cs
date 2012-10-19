@@ -43,7 +43,6 @@ namespace SolrNet.Impl {
             var results = new List<T>();
             if (parentNode == null)
                 return results;
-            var allFields = mappingManager.GetFields(typeof (T));
             var nodes = parentNode.Elements("doc");
             foreach (var docNode in nodes) {
                 results.Add(ParseDocument(docNode));

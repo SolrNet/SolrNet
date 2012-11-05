@@ -90,6 +90,8 @@
     <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
     <Compile Include="Impl\FieldParsers\LocationFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\MoneyFieldParser.cs" />
+    <Compile Include="Impl\ResponseParsers\ShardInfoResponseParser.cs" />
+    <Compile Include="Impl\ShardInfoResult.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="ExtractField.cs" />

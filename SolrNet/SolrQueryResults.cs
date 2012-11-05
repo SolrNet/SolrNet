@@ -68,6 +68,11 @@ namespace SolrNet {
         public ICollection<TermVectorDocumentResult> TermVectorResults { get; set; }
 
         /// <summary>
+        /// ShardInfo Results
+        /// </summary>
+        public ICollection<ShardInfoResult> ShardInfoResults { get; set; }
+
+        /// <summary>
         /// Grouping results
         /// </summary>
         public IDictionary<string, GroupedResults<T>> Grouping { set; get; }

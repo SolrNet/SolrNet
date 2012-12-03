@@ -52,5 +52,12 @@ namespace SolrNet.Tests {
             var q = new SolrQueryInList("id", new string[0]);
             Assert.IsNull(Serialize(q));
         }
+
+        [Test]
+        public void Fieldname_with_spaces()
+        {
+            var q = new SolrQueryInList("i have spaces", new[] { "one", "two thousand" });
+            Assert.AreEqual("(i\\ have\\ spaces:((one) OR (\"two thousand\")))", Serialize(q));
+        }
 	}
 }

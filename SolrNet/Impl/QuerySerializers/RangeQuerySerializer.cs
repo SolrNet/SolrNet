@@ -36,7 +36,7 @@ namespace SolrNet.Impl.QuerySerializers {
 
         public static string BuildRange(string fieldName, string @from, string @to, bool inclusiveFrom, bool inclusiveTo) {
             return "$field:$ii$from TO $to$if"
-                            .Replace("$field", fieldName)
+                            .Replace("$field", QueryByFieldSerializer.EscapeSpaces(fieldName))
                             .Replace("$ii", inclusiveFrom ? "[" : "{")
                             .Replace("$if", inclusiveTo ? "]" : "}")
                             .Replace("$from", @from)

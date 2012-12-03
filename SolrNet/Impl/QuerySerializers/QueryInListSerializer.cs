@@ -32,7 +32,7 @@ namespace SolrNet.Impl.QuerySerializers {
                 return null;
 
             var array = q.List.Select(x =>"(" + QueryByFieldSerializer.Quote(x) + ")").ToArray();
-            return "(" + serializer.Serialize(new SolrQueryByField(q.FieldName,string.Join(" OR ",array)){Quoted = false}) + ")";
+            return "(" + serializer.Serialize(new SolrQueryByField(QueryByFieldSerializer.EscapeSpaces(q.FieldName),string.Join(" OR ",array)){Quoted = false}) + ")";
         }
     }
 }

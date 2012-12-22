@@ -221,6 +221,15 @@ namespace Castle.Facilities.SolrNetIntegration {
             }
         }
 
+        public ISolrCoreAdmin BuildCoreAdmin(string url) {
+            var conn = new SolrConnection(url);
+            return BuildCoreAdmin(conn);
+        }
+
+        public ISolrCoreAdmin BuildCoreAdmin(ISolrConnection conn) {
+            return new SolrCoreAdmin(conn, Kernel.Resolve<ISolrHeaderResponseParser>(), Kernel.Resolve<ISolrStatusResponseParser>());            
+        }
+
         private static void ValidateUrl(string s) {
             try {
                 UriValidator.ValidateHTTP(s);

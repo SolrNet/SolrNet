@@ -172,12 +172,14 @@ namespace AutofacContrib.SolrNet {
             var SolrServer = typeof (SolrServer<>).MakeGenericType(core.DocumentType);
 
             builder.RegisterType(SolrServer)
+                .Named(core.Id, ISolrOperations)
                 .As(ISolrOperations)
                 .WithParameters(new[] {
                     new ResolvedParameter((p, c) => p.Name == "basicServer", (p, c) => c.ResolveNamed(core.Id + SolrBasicServer, ISolrBasicOperations)),
                 });
 
             builder.RegisterType(SolrServer)
+                .Named(core.Id, ISolrReadOnlyOperations)
                 .As(ISolrReadOnlyOperations)
                 .WithParameters(new[] {
                     new ResolvedParameter((p, c) => p.Name == "basicServer", (p, c) => c.ResolveNamed(core.Id + SolrBasicServer, ISolrBasicOperations)),

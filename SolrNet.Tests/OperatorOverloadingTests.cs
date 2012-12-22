@@ -103,5 +103,36 @@ namespace SolrNet.Tests {
             var q = SolrQuery.All - new SolrQuery("product");
             Assert.AreEqual("(*:*  -product)", Serialize(q));
         }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullAnd_Throws() {
+            var a = SolrQuery.All && null;
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullOr_Throws() {
+            var a = SolrQuery.All || null;
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullPlus_throws() {
+            var a = SolrQuery.All + null;
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullMinus_throws() {
+            var a = SolrQuery.All - null;
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullNot_argumentnull() {
+            AbstractSolrQuery a = null;
+            var b = !a;
+        }
     }
 }

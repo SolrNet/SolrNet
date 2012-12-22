@@ -93,7 +93,9 @@ namespace AutofacContrib.SolrNet {
             builder.RegisterGeneric(typeof(SolrQueryExecuter<>)).As(typeof(ISolrQueryExecuter<>));
             builder.RegisterGeneric(typeof (SolrDocumentSerializer<>)).As(typeof (ISolrDocumentSerializer<>));
             builder.RegisterType<SolrDIHStatusParser>().As<ISolrDIHStatusParser>();
-            builder.RegisterType<MappingValidator>().As<IMappingValidator>();            
+            builder.RegisterType<MappingValidator>().As<IMappingValidator>();
+            builder.RegisterType<SolrStatusResponseParser>().As<ISolrStatusResponseParser>();
+            builder.RegisterType<SolrCoreAdmin>().As<ISolrCoreAdmin>();
             builder.RegisterType<SolrDictionarySerializer>().As<ISolrDocumentSerializer<Dictionary<string, object>>>();
             builder.RegisterType<SolrDictionaryDocumentResponseParser>().As<ISolrDocumentResponseParser<Dictionary<string, object>>>();
         }

@@ -6,7 +6,7 @@ using Unity.SolrNetIntegration.Config;
 
 namespace Unity.SolrNetIntegration.Tests {
     [TestFixture]
-    public class MultiCoreTests {
+    public class UnityMultiCoreFixture {
         private IUnityContainer container;
 
         [SetUp]

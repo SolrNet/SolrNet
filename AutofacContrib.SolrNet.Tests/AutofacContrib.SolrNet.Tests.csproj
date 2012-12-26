@@ -54,8 +54,9 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutofacMulticoreTests.cs" />
-    <Compile Include="AutofacTests.cs" />
+    <Compile Include="AutofacIntegrationFixture.cs" />
+    <Compile Include="AutofacMulticoreFixture.cs" />
+    <Compile Include="AutofacFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

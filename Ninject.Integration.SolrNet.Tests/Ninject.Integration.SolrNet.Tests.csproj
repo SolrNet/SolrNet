@@ -82,8 +82,9 @@
   <ItemGroup>
     <Compile Include="Entity.cs" />
     <Compile Include="Entity2.cs" />
-    <Compile Include="MultiCoreTests.cs" />
-    <Compile Include="Tests.cs" />
+    <Compile Include="NinjectIntegrationFixture.cs" />
+    <Compile Include="NinjectMultiCoreFixture.cs" />
+    <Compile Include="NinjectFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{26EBA068-9BBB-4FEC-B425-787D4AE99848}"
 	ProjectSection(SolutionItems) = preProject
 		build.fsx = build.fsx
@@ -40,6 +40,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.SolrNetIntegration", "Unity.SolrNetIntegration\Unity.SolrNetIntegration.csproj", "{7645E009-0ADC-420E-B00D-3745934E6AB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.SolrNetIntegration.Tests", "Unity.SolrNetIntegration.Tests\Unity.SolrNetIntegration.Tests.csproj", "{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Tests.Integration", "SolrNet.Tests.Integration\SolrNet.Tests.Integration.csproj", "{4BC966D4-2EC0-47FF-B784-B649BFAABD81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -115,6 +117,10 @@ Global
 		{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BC966D4-2EC0-47FF-B784-B649BFAABD81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BC966D4-2EC0-47FF-B784-B649BFAABD81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BC966D4-2EC0-47FF-B784-B649BFAABD81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BC966D4-2EC0-47FF-B784-B649BFAABD81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -32,7 +32,7 @@ using SolrNet.Tests.Mocks;
 
 namespace Castle.Facilities.SolrNetIntegration.Tests {
     [TestFixture]
-    public class Tests {
+    public class CastleFixture {
         [Test]
         [ExpectedException(typeof(FacilityException))]
         public void NoConfig_throws() {
@@ -60,21 +60,6 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             configuration.CreateChild("solrURL", "ftp://localhost");
             configStore.AddFacilityConfiguration(typeof(SolrNetFacility).FullName, configuration);
             new WindsorContainer(configStore);
-        }
-
-        [Test]
-        [Category("Integration")]
-        public void Ping_Query() {
-            var configStore = new DefaultConfigurationStore();
-            var configuration = new MutableConfiguration("facility");
-            configuration.Attribute("type", typeof(SolrNetFacility).AssemblyQualifiedName);
-            configuration.CreateChild("solrURL", "http://localhost:8983/solr");
-            configStore.AddFacilityConfiguration(typeof(SolrNetFacility).FullName, configuration);
-            var container = new WindsorContainer(configStore);
-
-            var solr = container.Resolve<ISolrOperations<Document>>();
-            solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
         }
 
         [Test]
@@ -174,15 +159,15 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         <solrURL>http://localhost:8983/solr/defaultCore</solrURL>
         <cores>
             <core id='core0-id'>
-                <documentType>Castle.Facilities.SolrNetIntegration.Tests.Tests+Document, Castle.Facilities.SolrNetIntegration.Tests</documentType>
+                <documentType>Castle.Facilities.SolrNetIntegration.Tests.CastleFixture+Document, Castle.Facilities.SolrNetIntegration.Tests</documentType>
                 <url>http://localhost:8983/solr/core0</url>
             </core>
             <core id='core1-id'>
-                <documentType>Castle.Facilities.SolrNetIntegration.Tests.Tests+Document, Castle.Facilities.SolrNetIntegration.Tests</documentType>
+                <documentType>Castle.Facilities.SolrNetIntegration.Tests.CastleFixture+Document, Castle.Facilities.SolrNetIntegration.Tests</documentType>
                 <url>http://localhost:8983/solr/core1</url>
             </core>
             <core id='core2-id'>
-                <documentType>Castle.Facilities.SolrNetIntegration.Tests.Tests+Core1Entity, Castle.Facilities.SolrNetIntegration.Tests</documentType>
+                <documentType>Castle.Facilities.SolrNetIntegration.Tests.CastleFixture+Core1Entity, Castle.Facilities.SolrNetIntegration.Tests</documentType>
                 <url>http://localhost:8983/solr/core1</url>
             </core>
         </cores>
@@ -210,36 +195,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             Assert.IsInstanceOfType<ISolrOperations<Core1Entity>>(container.Resolve<ISolrOperations<Core1Entity>>("core2-id"));
         }
 
-        [Test]
-        [Category("Integration")]
-        public void DictionaryDocument() {
-            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
-            var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
-            var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
-            var results = solr.Query(SolrQuery.All);
-            Assert.GreaterThan(results.Count, 0);
-            foreach (var d in results) {
-                Assert.GreaterThan(d.Count, 0);
-                foreach (var kv in d)
-                    Console.WriteLine("{0}: {1}", kv.Key, kv.Value);
-            }
-        }
 
-        [Test]
-        [Category("Integration")]
-        public void DictionaryDocument_add() {
-            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
-            var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
-            var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
-            solr.Add(new Dictionary<string, object> {
-                {"id", "ababa"},
-                {"manu", "who knows"},
-                {"popularity", 55},
-                {"timestamp", DateTime.UtcNow},
-            });
-        }
 
         [Test]
         public void DictionaryDocument_Operations() {

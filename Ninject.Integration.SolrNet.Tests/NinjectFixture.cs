@@ -20,16 +20,7 @@ using SolrNet;
 
 namespace Ninject.Integration.SolrNet.Tests {
     [TestFixture]
-    public class Tests {
-        [Test]
-        [Category("Integration")]
-        public void Ping_And_Query() {
-            var c = new StandardKernel();
-            c.Load(new SolrNetModule("http://localhost:8983/solr"));
-            var solr = c.Get<ISolrOperations<Entity>>();
-            solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
-        }
+    public class NinjectFixture {
 
         [Test]
         public void ReplaceMapper() {

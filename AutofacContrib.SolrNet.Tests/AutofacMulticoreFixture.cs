@@ -24,7 +24,7 @@ using SolrNet.Impl;
 namespace AutofacContrib.SolrNet.Tests
 {
     [TestFixture]
-    public class AutofacMulticoreTests
+    public class AutofacMulticoreFixture
     {
         [Test]
         public void ResolveSolrOperations()

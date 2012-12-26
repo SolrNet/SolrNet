@@ -78,10 +78,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity2.cs" />
-    <Compile Include="MultiCoreTests.cs" />
+    <Compile Include="StructureMapMultiCoreFixture.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegistryTests.cs" />
+    <Compile Include="StructureMapFixture.cs" />
+    <Compile Include="StructureMapIntegrationFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">

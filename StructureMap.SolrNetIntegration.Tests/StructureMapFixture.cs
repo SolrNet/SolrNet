@@ -11,7 +11,7 @@ using StructureMap.SolrNetIntegration.Config;
 namespace StructureMap.SolrNetIntegration.Tests
 {
     [TestFixture]
-    public class RegistryTests
+    public class StructureMapFixture
     {                
         [Test]
         public void ResolveSolrOperations()
@@ -29,15 +29,6 @@ namespace StructureMap.SolrNetIntegration.Tests
             var solrConnection = (SolrConnection)ObjectFactory.Container.GetInstance<ISolrConnection>(instanceKey);
 
             Assert.AreEqual("http://localhost:8983/solr/entity", solrConnection.ServerURL);
-        }
-
-        [Test, Category("Integration")]
-        public void Ping_And_Query()
-        {
-            SetupContainer();
-            var solr = ObjectFactory.GetInstance<ISolrOperations<Entity>>();
-            solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
         }
 
         [Test, ExpectedException(typeof(InvalidURLException))]
@@ -113,38 +104,6 @@ namespace StructureMap.SolrNetIntegration.Tests
             var solr1 = ObjectFactory.GetInstance<ISolrOperations<Entity>>();
             var solr2 = ObjectFactory.GetInstance<ISolrOperations<Entity2>>();
             var solrDict = ObjectFactory.GetInstance<ISolrOperations<Dictionary<string, object>>>();
-        }
-
-        [Test, Category("Integration")]
-        public void DictionaryDocument()
-        {
-            SetupContainer();
-
-            var solr = ObjectFactory.Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
-            var results = solr.Query(SolrQuery.All);
-            Assert.GreaterThan(results.Count, 0);
-            foreach (var d in results)
-            {
-                Assert.GreaterThan(d.Count, 0);
-                foreach (var kv in d)
-                    Console.WriteLine("{0}: {1}", kv.Key, kv.Value);
-            }
-        }
-
-        [Test, Category("Integration")]
-        public void DictionaryDocument_add()
-        {
-            SetupContainer();
-
-            var solr = ObjectFactory.Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();        
-
-            solr.Add(new Dictionary<string, object> 
-            {
-                {"id", "ababa"},
-                {"manu", "who knows"},
-                {"popularity", 55},
-                {"timestamp", DateTime.UtcNow},
-            });
         }
 
         [Test]

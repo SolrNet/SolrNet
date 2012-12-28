@@ -7,7 +7,7 @@ using SolrNet.Impl.ResponseParsers;
 namespace SolrNet.Tests {
     [TestFixture]
     [Category("Integration")]
-    public class SolrCoreAdminTests {
+    public class SolrCoreAdminFixture {
         /*
         CREATE
         http://localhost:8983/solr/admin/cores?action=CREATE&name=core0&instanceDir=path_to_instance_directory

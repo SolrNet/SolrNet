@@ -10,25 +10,7 @@ using Unity.SolrNetIntegration.Config;
 
 namespace Unity.SolrNetIntegration.Tests {
     [TestFixture]
-    public class RegistryTests {
-        private static readonly SolrServers testServers = new SolrServers {
-            new SolrServerElement {
-                Id = "entity",
-                DocumentType = typeof (Entity).AssemblyQualifiedName,
-                Url = "http://localhost:8983/solr/entity",
-            },
-            new SolrServerElement {
-                Id = "entity2Dict",
-                DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
-                Url = "http://localhost:8983/solr/entity2",
-            },
-            new SolrServerElement {
-                Id = "entity2",
-                DocumentType = typeof (Entity2).AssemblyQualifiedName,
-                Url = "http://localhost:8983/solr/entity2",
-            },
-        };
-
+    public class UnityFixture {
         [Test]
         public void ResolveSolrOperations() {
             using (var container = SetupContainer()) {
@@ -40,7 +22,7 @@ namespace Unity.SolrNetIntegration.Tests {
         public void ResolveAllISolrAbstractResponseParser()
         {
             using (var container = SetupContainer()) {
-                var m = container.ResolveAll(typeof(ISolrAbstractResponseParser<RegistryTests>));
+                var m = container.ResolveAll(typeof(ISolrAbstractResponseParser<UnityFixture>));
                 Assert.IsNotEmpty(m);
             }
         }
@@ -53,15 +35,6 @@ namespace Unity.SolrNetIntegration.Tests {
                 var solrConnection = (SolrConnection) container.Resolve<ISolrConnection>(instanceKey);
 
                 Assert.AreEqual("http://localhost:8983/solr/entity", solrConnection.ServerURL);
-            }
-        }
-
-        [Test, Category("Integration")]
-        public void Ping_And_Query() {
-            using (var container = SetupContainer()) {
-                var solr = container.Resolve<ISolrOperations<Entity>>();
-                solr.Ping();
-                Console.WriteLine(solr.Query(SolrQuery.All).Count);
             }
         }
 
@@ -117,32 +90,6 @@ namespace Unity.SolrNetIntegration.Tests {
             }
         }
 
-        [Test, Category("Integration")]
-        public void DictionaryDocument() {
-            using (var container = new UnityContainer()) {
-                new SolrNetContainerConfiguration().ConfigureContainer(testServers, container);
-                var solr = container.Resolve<ISolrOperations<Entity2>>();
-                var results = solr.Query(SolrQuery.All);
-                Assert.GreaterThan(results.Count, 0);
-            }
-        }
-
-        [Test, Category("Integration")]
-        public void DictionaryDocument_add() {
-            using (var container = new UnityContainer()) {
-                new SolrNetContainerConfiguration().ConfigureContainer(testServers, container);
-
-                var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
-
-                solr.Add(new Dictionary<string, object> {
-                    {"id", "5"},
-                    {"manu", "who knows"},
-                    {"popularity", 55},
-                    {"timestamp", DateTime.UtcNow},
-                });
-            }
-        }
-
         [Test]
         public void DictionaryDocument_ResponseParser() {
             using (var container = SetupContainer()) {
@@ -159,7 +106,7 @@ namespace Unity.SolrNetIntegration.Tests {
             }
         }
 
-        private static IUnityContainer SetupContainer() {
+        internal static IUnityContainer SetupContainer() {
             var solrConfig = (SolrConfigurationSection) ConfigurationManager.GetSection("solr");
             var container = new UnityContainer();
             new SolrNetContainerConfiguration().ConfigureContainer(solrConfig.SolrServers, container);

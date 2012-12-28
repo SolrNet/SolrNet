@@ -8,7 +8,7 @@ using StructureMap.SolrNetIntegration.Config;
 namespace StructureMap.SolrNetIntegration.Tests
 {
     [TestFixture]
-    public class MultiCoreTests
+    public class StructureMapMultiCoreFixture
     {
         [SetUp]
         public void SetUp()

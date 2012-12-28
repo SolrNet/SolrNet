@@ -24,18 +24,7 @@ using SolrNet.Tests.Mocks;
 
 namespace AutofacContrib.SolrNet.Tests {
     [TestFixture]
-    public class AutofacTests {
-        [Test]
-        [Category("Integration")]
-        public void Ping_And_Query() {
-            var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
-            var container = builder.Build();
-            var solr = container.Resolve<ISolrOperations<Entity>>();
-            solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
-        }
-
+    public class AutofacFixture {
         [Test]
         public void ReplaceMapper() {
             var builder = new ContainerBuilder();
@@ -97,40 +86,6 @@ namespace AutofacContrib.SolrNet.Tests {
             Assert.IsInstanceOfType<SolrDictionarySerializer>(serializer);
         }
 
-        [Test]
-        [Category("Integration")]
-        public void DictionaryDocument()
-        {
-            var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
-            var container = builder.Build();
-            var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
-            var results = solr.Query(SolrQuery.All);
-            Assert.GreaterThan(results.Count, 0);
-            foreach (var d in results)
-            {
-                Assert.GreaterThan(d.Count, 0);
-                foreach (var kv in d)
-                    Console.WriteLine("{0}: {1}", kv.Key, kv.Value);
-            }
-        }
-
-        [Test]
-        [Category("Integration")]
-        public void DictionaryDocument_add()
-        {
-            var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
-            var container = builder.Build();
-            var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
-            solr.Add(new Dictionary<string, object> {
-                {"id", "ababa"},
-                {"manu", "who knows"},
-                {"popularity", 55},
-                {"timestamp", DateTime.UtcNow},
-            });
-        }
-     
         public class Entity {}
     }
 }

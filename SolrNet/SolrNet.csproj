@@ -90,6 +90,7 @@
     <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
     <Compile Include="Impl\FieldParsers\LocationFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\MoneyFieldParser.cs" />
+    <Compile Include="Impl\QuerySerializers\QueryByFieldRegexSerializer.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Money.cs" />
     <Compile Include="ExtractField.cs" />
@@ -303,6 +304,7 @@
     <Compile Include="SolrHasValueQuery.cs" />
     <Compile Include="SolrMultipleCriteriaQuery.cs" />
     <Compile Include="SolrNotQuery.cs" />
+    <Compile Include="SolrQueryByFieldRegex.cs" />
     <Compile Include="SolrRequiredQuery.cs" />
     <Compile Include="SolrQuery.cs" />
     <Compile Include="SolrQueryBoost.cs" />

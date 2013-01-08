@@ -18,7 +18,14 @@ namespace SolrNet.Impl.QuerySerializers
                 return null;
             }
 
-            return string.Format("{0}:/{1}/", QueryByFieldSerializer.EscapeSpaces(q.FieldName), q.Expression);
+            var expression = q.Expression;
+
+            if (expression.StartsWith("/") && expression.EndsWith("/")) 
+            {
+                expression = expression.Substring(1,expression.Length-2);
+            }
+
+            return string.Format("{0}:/{1}/", QueryByFieldSerializer.EscapeSpaces(q.FieldName), expression);
         }
     }
 }

@@ -43,6 +43,13 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void Strip_slashes_creates_correctly()
+        {
+            var q = new SolrQueryByFieldRegex("id", "/11(.*?)/");
+            Assert.AreEqual("id:/11(.*?)/", Serialize(q));
+        }
+
+        [Test]
         public void FieldNameWithSpaces()
         {
             var q = new SolrQueryByFieldRegex("field with spaces", "11(.*?)");

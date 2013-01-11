@@ -20,6 +20,7 @@ using AutofacContrib.SolrNet.Config;
 using MbUnit.Framework;
 using SolrNet;
 using SolrNet.Impl;
+using System.Collections.Generic;
 
 namespace AutofacContrib.SolrNet.Tests
 {
@@ -100,6 +101,96 @@ namespace AutofacContrib.SolrNet.Tests
             // Assert
             Assert.IsTrue(solrOperations1 is SolrServer<Entity1>);
             Assert.IsTrue(solrOperations2 is SolrServer<Entity2>);
+        }
+
+        [Test]
+        public void ResolveSolrOperations_viaNamedWithMultiCore()
+        {
+            // Arrange 
+            var builder = new ContainerBuilder();
+            var cores = new SolrServers {
+                                new SolrServerElement {
+                                        Id = "entity1",
+                                        DocumentType = typeof (Entity1).AssemblyQualifiedName,
+                                        Url = "http://localhost:8983/solr/coreEntity1",
+                                    },
+                               new SolrServerElement {
+                                        Id = "entity2",
+                                        DocumentType = typeof (Entity2).AssemblyQualifiedName,
+                                        Url = "http://localhost:8983/solr/coreEntity2",
+                                },
+                            };
+
+            builder.RegisterModule(new SolrNetModule(cores));
+            var container = builder.Build();
+
+            // Act
+            var solrOperations1 = container.ResolveNamed<ISolrOperations<Entity1>>("entity1");
+            var solrOperations2 = container.ResolveNamed<ISolrOperations<Entity2>>("entity2");
+
+            // Assert
+            Assert.IsTrue(solrOperations1 is SolrServer<Entity1>);
+            Assert.IsTrue(solrOperations2 is SolrServer<Entity2>);
+        }
+
+        [Test]
+        public void ResolveSolrOperations_viaNamedWithMultiCoreForDictionary()
+        {
+            // Arrange 
+            var builder = new ContainerBuilder();
+            var cores = new SolrServers {
+                                new SolrServerElement {
+                                        Id = "dictionary1",
+                                        DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
+                                        Url = "http://localhost:8983/solr/coreDictionaryEntity1",
+                                    },
+                               new SolrServerElement {
+                                        Id = "dictionary2",
+                                        DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
+                                        Url = "http://localhost:8983/solr/coreDictionaryEntity2",
+                                },
+                            };
+
+            builder.RegisterModule(new SolrNetModule(cores));
+            var container = builder.Build();
+
+            // Act
+            var solrOperations1 = container.ResolveNamed<ISolrOperations<Dictionary<string, object>>>("dictionary1");
+            var solrOperations2 = container.ResolveNamed<ISolrOperations<Dictionary<string, object>>>("dictionary2");
+
+            // Assert
+            Assert.IsTrue(solrOperations1 is SolrServer<Dictionary<string, object>>);
+            Assert.IsTrue(solrOperations2 is SolrServer<Dictionary<string, object>>);
+        }
+
+        [Test]
+        public void ResolveSolrReadOnlyOperations_viaNamedWithMultiCoreForDictionary()
+        {
+            // Arrange 
+            var builder = new ContainerBuilder();
+            var cores = new SolrServers {
+                                new SolrServerElement {
+                                        Id = "dictionary1",
+                                        DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
+                                        Url = "http://localhost:8983/solr/coreDictionaryEntity1",
+                                    },
+                               new SolrServerElement {
+                                        Id = "dictionary2",
+                                        DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
+                                        Url = "http://localhost:8983/solr/coreDictionaryEntity2",
+                                },
+                            };
+
+            builder.RegisterModule(new SolrNetModule(cores));
+            var container = builder.Build();
+
+            // Act
+            var solrReadOnlyOperations1 = container.ResolveNamed<ISolrReadOnlyOperations<Dictionary<string, object>>>("dictionary1");
+            var solrReadOnlyOperations2 = container.ResolveNamed<ISolrReadOnlyOperations<Dictionary<string, object>>>("dictionary2");
+
+            // Assert
+            Assert.IsTrue(solrReadOnlyOperations1 is SolrServer<Dictionary<string, object>>);
+            Assert.IsTrue(solrReadOnlyOperations2 is SolrServer<Dictionary<string, object>>);
         }
 
         [Test]

@@ -45,7 +45,7 @@ Target "Clean" (fun _ ->
 Target "Build" (fun _ -> mainSln "Rebuild")
 Target "BuildSample" (fun _ -> sampleSln "Rebuild")
 
-let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "StructureMap.SolrNetIntegration"; "AutofacContrib.SolrNet"; "Unity.SolrNetIntegration"]
+let libs = ["SolrNet"; "SolrNet.LINQ"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "StructureMap.SolrNetIntegration"; "AutofacContrib.SolrNet"; "Unity.SolrNetIntegration"]
 let dlls = [for l in libs -> l + ".dll"]
 let dirs = [for l in libs -> l @@ "bin" @@ config]
 
@@ -88,6 +88,7 @@ let merge libraries =
                             Internalize = InternalizeExcept "ilmerge.exclude"
                             KeyFile = snk
                             XmlDocs = true
+                            TargetPlatform = "v4,C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319"
                        }) output main
 
 Target "Merge" (fun _ ->

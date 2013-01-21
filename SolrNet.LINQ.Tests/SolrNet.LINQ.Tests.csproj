@@ -59,7 +59,7 @@
     <Compile Include="QueryableSolrNetTester.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LINQ.SolrNet\SolrNet.LINQ.csproj">
+    <ProjectReference Include="..\SolrNet.LINQ\SolrNet.LINQ.csproj">
       <Project>{B9A5B77C-5FA1-407F-A53B-7046703AF9E3}</Project>
       <Name>SolrNet.LINQ</Name>
     </ProjectReference>

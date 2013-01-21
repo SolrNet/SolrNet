@@ -28,7 +28,6 @@ using Microsoft.Practices.ServiceLocation;
 using SampleSolrApp.Models;
 using SampleSolrApp.Models.Binders;
 using SolrNet;
-using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
 

@@ -93,7 +93,9 @@ namespace AutofacContrib.SolrNet {
             builder.RegisterGeneric(typeof(SolrQueryExecuter<>)).As(typeof(ISolrQueryExecuter<>));
             builder.RegisterGeneric(typeof (SolrDocumentSerializer<>)).As(typeof (ISolrDocumentSerializer<>));
             builder.RegisterType<SolrDIHStatusParser>().As<ISolrDIHStatusParser>();
-            builder.RegisterType<MappingValidator>().As<IMappingValidator>();            
+            builder.RegisterType<MappingValidator>().As<IMappingValidator>();
+            builder.RegisterType<SolrStatusResponseParser>().As<ISolrStatusResponseParser>();
+            builder.RegisterType<SolrCoreAdmin>().As<ISolrCoreAdmin>();
             builder.RegisterType<SolrDictionarySerializer>().As<ISolrDocumentSerializer<Dictionary<string, object>>>();
             builder.RegisterType<SolrDictionaryDocumentResponseParser>().As<ISolrDocumentResponseParser<Dictionary<string, object>>>();
         }
@@ -170,12 +172,14 @@ namespace AutofacContrib.SolrNet {
             var SolrServer = typeof (SolrServer<>).MakeGenericType(core.DocumentType);
 
             builder.RegisterType(SolrServer)
+                .Named(core.Id, ISolrOperations)
                 .As(ISolrOperations)
                 .WithParameters(new[] {
                     new ResolvedParameter((p, c) => p.Name == "basicServer", (p, c) => c.ResolveNamed(core.Id + SolrBasicServer, ISolrBasicOperations)),
                 });
 
             builder.RegisterType(SolrServer)
+                .Named(core.Id, ISolrReadOnlyOperations)
                 .As(ISolrReadOnlyOperations)
                 .WithParameters(new[] {
                     new ResolvedParameter((p, c) => p.Name == "basicServer", (p, c) => c.ResolveNamed(core.Id + SolrBasicServer, ISolrBasicOperations)),

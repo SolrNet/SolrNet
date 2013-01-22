@@ -9,6 +9,9 @@ _ReSharper.*
 *.zip
 *.chm
 *.nupkg
+*.ncrunchproject
+*.ncrunchsolution
+*.sln.dotsettings
 Help/*
 build/*
 nuget/*
@@ -22,4 +25,5 @@ docs
 mausch.snk
 lib/TDNet
 SampleSolrApp/log*
+_NCrunch*/*
 *~

@@ -127,6 +127,9 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For<ISolrDIHStatusParser>().ImplementedBy<SolrDIHStatusParser>());
             Kernel.Register(Component.For<IMappingValidator>().ImplementedBy<MappingValidator>());
 
+            Kernel.Register(Component.For<ISolrStatusResponseParser>().ImplementedBy<SolrStatusResponseParser>());
+            Kernel.Register(Component.For<ISolrCoreAdmin>().ImplementedBy<SolrCoreAdmin>());
+
             AddCoresFromConfig();
             foreach (var core in cores) {
                 RegisterCore(core);
@@ -216,6 +219,25 @@ namespace Castle.Facilities.SolrNetIntegration {
             } catch (Exception e) {
                 throw new FacilityException(string.Format("Error getting document type '{0}'", node.Value), e);
             }
+        }
+
+        /// <summary>
+        /// Builds an instance of core admin manager with the specified URL
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public ISolrCoreAdmin BuildCoreAdmin(string url) {
+            var conn = new SolrConnection(url);
+            return BuildCoreAdmin(conn);
+        }
+
+        /// <summary>
+        /// Builds an instance of core admin manager with the specified connection
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <returns></returns>
+        public ISolrCoreAdmin BuildCoreAdmin(ISolrConnection conn) {
+            return new SolrCoreAdmin(conn, Kernel.Resolve<ISolrHeaderResponseParser>(), Kernel.Resolve<ISolrStatusResponseParser>());            
         }
 
         private static void ValidateUrl(string s) {

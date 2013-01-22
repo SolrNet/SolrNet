@@ -3,7 +3,7 @@ using SolrNet.Impl;
 
 namespace SolrNet {
     ///<summary>
-    /// Contract that defines the behaviour of managing Solr Cores (multiple indexes).
+    /// Manages Solr cores.
     ///</summary>
     public interface ISolrCoreAdmin {
         /// <summary>

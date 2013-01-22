@@ -25,12 +25,13 @@ using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
+using SolrNet.Tests.Integration.Sample;
 using SolrNet.Tests.Utils;
 
-namespace SolrNet.Tests.Integration.Sample {
+namespace SolrNet.Tests.Integration {
     [TestFixture]
     [Category("Integration")]
-    public class Tests {
+    public class IntegrationFixture {
         private static readonly string serverURL = ConfigurationManager.AppSettings["solr"];
         private static readonly Lazy<object> init = new Lazy<object>(() => {
             Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL)));

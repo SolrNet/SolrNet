@@ -43,6 +43,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.SolrNetIntegration.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Tests.Integration", "SolrNet.Tests.Integration\SolrNet.Tests.Integration.csproj", "{4BC966D4-2EC0-47FF-B784-B649BFAABD81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.LINQ", "SolrNet.LINQ\SolrNet.LINQ.csproj", "{B9A5B77C-5FA1-407F-A53B-7046703AF9E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.LINQ.Tests", "SolrNet.LINQ.Tests\SolrNet.LINQ.Tests.csproj", "{C375D00C-03F5-4CED-A33C-AE29770F3E89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +125,14 @@ Global
 		{4BC966D4-2EC0-47FF-B784-B649BFAABD81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BC966D4-2EC0-47FF-B784-B649BFAABD81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BC966D4-2EC0-47FF-B784-B649BFAABD81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9A5B77C-5FA1-407F-A53B-7046703AF9E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9A5B77C-5FA1-407F-A53B-7046703AF9E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9A5B77C-5FA1-407F-A53B-7046703AF9E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9A5B77C-5FA1-407F-A53B-7046703AF9E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C375D00C-03F5-4CED-A33C-AE29770F3E89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C375D00C-03F5-4CED-A33C-AE29770F3E89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C375D00C-03F5-4CED-A33C-AE29770F3E89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C375D00C-03F5-4CED-A33C-AE29770F3E89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

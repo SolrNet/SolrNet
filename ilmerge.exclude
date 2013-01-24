@@ -1,4 +1,5 @@
 SolrNet.DSL.*
+SolrNet.LINQ.*
 Castle.Facilities.SolrNetIntegration.*
 Ninject.Integration.SolrNet.*
 NHibernate.SolrNet.*

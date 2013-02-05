@@ -10,7 +10,7 @@ namespace SolrNet.Tests {
         [Test]
         public void SinglePivotTest() {
             var q = new SolrFacetPivotQuery {
-                Fields = new[] {"manu_exact,inStock"},
+                Fields = new[] {new PivotFields("manu_exact", "inStock")},
                 MinCount = 1
             };
 
@@ -22,7 +22,7 @@ namespace SolrNet.Tests {
         [Test]
         public void SinglePivotTestWithoutMinCount() {
             var q = new SolrFacetPivotQuery {
-                Fields = new[] {"manu_exact,inStock"}
+                Fields = new[] { new PivotFields("manu_exact","inStock")}
             };
 
             var r = serializer.Serialize(q);
@@ -35,7 +35,7 @@ namespace SolrNet.Tests {
         [Test]
         public void MultiplePivotTest() {
             var q = new SolrFacetPivotQuery {
-                Fields = new[] {"manu_exact,inStock", "inStock,cat"},
+                Fields = new[] { new PivotFields("manu_exact","inStock"), new PivotFields("inStock", "cat"), },
                 MinCount = 1
             };
 

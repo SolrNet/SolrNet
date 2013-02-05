@@ -141,6 +141,7 @@
     <Compile Include="Impl\TermVectorDocumentResult.cs" />
     <Compile Include="ISolrCoreAdmin.cs" />
     <Compile Include="Pivot.cs" />
+    <Compile Include="PivotFields.cs" />
     <Compile Include="SolrMLTQuery.cs" />
     <Compile Include="PivotFacetingResult.cs" />
     <Compile Include="Impl\ResponseParsers\GroupingResponseParser.cs" />

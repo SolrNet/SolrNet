@@ -88,7 +88,6 @@ let merge libraries =
                             Internalize = InternalizeExcept "ilmerge.exclude"
                             KeyFile = snk
                             XmlDocs = true
-                            TargetPlatform = "v4,C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319"
                        }) output main
 
 Target "Merge" (fun _ ->

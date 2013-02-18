@@ -50,7 +50,7 @@ namespace SolrNet.Impl {
         public ResponseHeader Commit(CommitOptions options) {
             options = options ?? new CommitOptions();
             var cmd = new CommitCommand {
-                WaitFlush = options.WaitFlush, 
+                //WaitFlush = options.WaitFlush, 
                 WaitSearcher = options.WaitSearcher,
                 ExpungeDeletes = options.ExpungeDeletes,
                 MaxSegments = options.MaxSegments,

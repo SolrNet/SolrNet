@@ -28,7 +28,7 @@ namespace SolrNet.Commands {
 		/// Block until index changes are flushed to disk
 		/// Default is true
 		/// </summary>
-		public bool? WaitFlush { get; set; }
+		//public bool? WaitFlush { get; set; }
 
 		/// <summary>
 		/// Block until a new searcher is opened and registered as the main query searcher, making the changes visible. 
@@ -54,7 +54,7 @@ namespace SolrNet.Commands {
 
 		    var keyValuePairs = new[] {
 		        new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), 
-                new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), 
+                //new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), 
                 new KeyValuePair<bool?, string>(ExpungeDeletes, "expungeDeletes")
 		    };
 

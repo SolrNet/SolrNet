@@ -168,6 +168,7 @@ namespace Ninject.Integration.SolrNet {
             Bind<ISolrFieldParser>().To<DefaultFieldParser>();
             Bind(typeof (ISolrDocumentActivator<>)).To(typeof (SolrDocumentActivator<>));
             Bind(typeof(ISolrDocumentResponseParser<>)).To(typeof(SolrDocumentResponseParser<>));
+            Bind<ISolrDocumentResponseParser<Dictionary<string, object>>>().To<SolrDictionaryDocumentResponseParser>();
             Bind<ISolrFieldSerializer>().To<DefaultFieldSerializer>();
             Bind<ISolrQuerySerializer>().To<DefaultQuerySerializer>();
             Bind<ISolrFacetQuerySerializer>().To<DefaultFacetQuerySerializer>();
@@ -183,6 +184,7 @@ namespace Ninject.Integration.SolrNet {
                 Bind<IValidationRule>().To(p);
             Bind(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>)).To(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
             Bind(typeof(ISolrDocumentSerializer<>)).To(typeof(SolrDocumentSerializer<>));
+            Bind(typeof(ISolrDocumentSerializer<Dictionary<string, object>>)).To(typeof(SolrDictionarySerializer));
 
             Bind<ISolrSchemaParser>().To<SolrSchemaParser>();
             Bind<ISolrDIHStatusParser>().To<SolrDIHStatusParser>();

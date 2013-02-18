@@ -34,7 +34,7 @@ namespace SolrNet {
 		/// </example>
 		/// </summary>
 
-		public ICollection<string> Fields { get; set; }
+        public ICollection<PivotFields> Fields { get; set; }
 
 		/// <summary>
 		/// The minimum number of documents that need to match for the result to show up in the results. Default value is 1

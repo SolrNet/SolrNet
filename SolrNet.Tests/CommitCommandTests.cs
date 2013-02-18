@@ -28,7 +28,7 @@ namespace SolrNet.Tests {
                 Console.WriteLine(content);
                 return null;
             };
-            var cmd = new CommitCommand { WaitFlush = true, WaitSearcher = true };
+            var cmd = new CommitCommand {  WaitSearcher = true };
             cmd.Execute(conn);
             Assert.AreEqual(1, conn.post.Calls);
         }
@@ -46,7 +46,7 @@ namespace SolrNet.Tests {
             var cmd = new CommitCommand {
                 MaxSegments = 2,
                 ExpungeDeletes = true,
-                WaitFlush = true,
+                
                 WaitSearcher = true
             };
             cmd.Execute(conn);

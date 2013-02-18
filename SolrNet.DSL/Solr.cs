@@ -270,7 +270,7 @@ namespace SolrNet.DSL {
         /// <param name="waitFlush">wait for flush</param>
         /// <param name="waitSearcher">wait for new searcher</param>
         public static void Commit(bool waitFlush, bool waitSearcher) {
-            var cmd = new CommitCommand {WaitFlush = waitFlush, WaitSearcher = waitSearcher};
+            var cmd = new CommitCommand { WaitSearcher = waitSearcher};
             cmd.Execute(Connection);
         }
 
@@ -282,7 +282,7 @@ namespace SolrNet.DSL {
         /// <param name="expungeDeletes">Merge segments with deletes away</param>
         public static void Commit(bool waitFlush, bool waitSearcher, bool expungeDeletes)
         {
-            var cmd = new CommitCommand { WaitFlush = waitFlush, WaitSearcher = waitSearcher, ExpungeDeletes = expungeDeletes };
+            var cmd = new CommitCommand {  WaitSearcher = waitSearcher, ExpungeDeletes = expungeDeletes };
             cmd.Execute(Connection);
         }
 
@@ -295,7 +295,7 @@ namespace SolrNet.DSL {
         /// <param name="maxSegments">Optimizes down to, at most, this number of segments</param>
         public static void Commit(bool waitFlush, bool waitSearcher, bool expungeDeletes, int maxSegments)
         {
-            var cmd = new CommitCommand { WaitFlush = waitFlush, WaitSearcher = waitSearcher, ExpungeDeletes = expungeDeletes, MaxSegments = maxSegments };
+            var cmd = new CommitCommand {  WaitSearcher = waitSearcher, ExpungeDeletes = expungeDeletes, MaxSegments = maxSegments };
             cmd.Execute(Connection);
         }
 

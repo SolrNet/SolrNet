@@ -44,13 +44,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Gallio, Version=3.3.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
+    <Reference Include="Gallio, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Gallio.dll</HintPath>
+      <HintPath>..\packages\Gallio_MbUnit.3.4.14.0\lib\net40\Gallio.dll</HintPath>
     </Reference>
-    <Reference Include="MbUnit, Version=3.3.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
+    <Reference Include="Gallio40">
+      <HintPath>..\packages\Gallio_MbUnit.3.4.14.0\lib\net40\Gallio40.dll</HintPath>
+    </Reference>
+    <Reference Include="MbUnit, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\MbUnit.dll</HintPath>
+      <HintPath>..\packages\Gallio_MbUnit.3.4.14.0\lib\net40\MbUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="MbUnit40">
+      <HintPath>..\packages\Gallio_MbUnit.3.4.14.0\lib\net40\MbUnit40.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -77,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

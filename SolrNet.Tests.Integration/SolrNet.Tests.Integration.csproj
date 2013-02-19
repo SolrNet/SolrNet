@@ -33,11 +33,19 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gallio">
-      <HintPath>..\lib\Gallio.dll</HintPath>
+    <Reference Include="Gallio, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Gallio_MbUnit.3.4.14.0\lib\net40\Gallio.dll</HintPath>
     </Reference>
-    <Reference Include="MbUnit">
-      <HintPath>..\lib\MbUnit.dll</HintPath>
+    <Reference Include="Gallio40">
+      <HintPath>..\packages\Gallio_MbUnit.3.4.14.0\lib\net40\Gallio40.dll</HintPath>
+    </Reference>
+    <Reference Include="MbUnit, Version=3.4.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Gallio_MbUnit.3.4.14.0\lib\net40\MbUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="MbUnit40">
+      <HintPath>..\packages\Gallio_MbUnit.3.4.14.0\lib\net40\MbUnit40.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
@@ -64,6 +72,9 @@
       <Project>{ceeb8690-3e08-4440-b647-787a58e71cfa}</Project>
       <Name>SolrNet</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

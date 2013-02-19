@@ -87,8 +87,6 @@ namespace Castle.Facilities.SolrNetIntegration
         {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Kernel.Register(Component.For<IReadOnlyMappingManager>().Instance(mapper));
-            //Kernel.Register(Component.For<ISolrCache>().ImplementedBy<HttpRuntimeCache>());
-            //Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>().Parameters(Parameter.ForKey("serverURL").Eq(GetSolrUrl())));
 
             Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>().DependsOn(new Dependency[] {
                 Parameter.ForKey("serverURL").Eq(GetSolrUrl())
@@ -158,14 +156,12 @@ namespace Castle.Facilities.SolrNetIntegration
         private void RegisterCore(SolrCore core)
         {
             var coreConnectionId = core.Id + typeof(SolrConnection);
-            //Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>().Named(coreConnectionId).Parameters(Parameter.ForKey("serverURL").Eq(core.Url)));
             Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>().Named(coreConnectionId).DependsOn(new Dependency[] {
                 Parameter.ForKey("serverURL").Eq(core.Url)
             }));
 
             var iSolrQueryExecuter = typeof(ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
             var solrQueryExecuter = typeof(SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
-            //Kernel.Register(Component.For(iSolrQueryExecuter).ImplementedBy(solrQueryExecuter).Named(core.Id + solrQueryExecuter).ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId)));
             Kernel.Register(Component.For(iSolrQueryExecuter).ImplementedBy(solrQueryExecuter).Named(core.Id + solrQueryExecuter).DependsOn(new Dependency[] {
                 ServiceOverride.ForKey("connection").Eq(coreConnectionId)
             }));
@@ -173,14 +169,12 @@ namespace Castle.Facilities.SolrNetIntegration
             var solrBasicOperations = typeof(ISolrBasicOperations<>).MakeGenericType(core.DocumentType);
             var solrBasicReadOnlyOperations = typeof(ISolrBasicReadOnlyOperations<>).MakeGenericType(core.DocumentType);
             var solrBasicServer = typeof(SolrBasicServer<>).MakeGenericType(core.DocumentType);
-            //Kernel.Register(Component.For(solrBasicOperations, solrBasicReadOnlyOperations).ImplementedBy(solrBasicServer).Named(core.Id + solrBasicServer).ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId), ServiceOverride.ForKey("queryExecuter").Eq(core.Id + solrQueryExecuter)));
             Kernel.Register(Component.For(solrBasicOperations, solrBasicReadOnlyOperations).ImplementedBy(solrBasicServer).Named(core.Id + solrBasicServer).DependsOn(new Dependency[] {
                 ServiceOverride.ForKey("connection").Eq(coreConnectionId), ServiceOverride.ForKey("queryExecuter").Eq(core.Id + solrQueryExecuter)
             }));
 
             var solrOperations = typeof(ISolrOperations<>).MakeGenericType(core.DocumentType);
             var solrServer = typeof(SolrServer<>).MakeGenericType(core.DocumentType);
-            //Kernel.Register(Component.For(solrOperations).ImplementedBy(solrServer).Named(core.Id).ServiceOverrides(ServiceOverride.ForKey("basicServer").Eq(core.Id + solrBasicServer)));
             Kernel.Register(Component.For(solrOperations).ImplementedBy(solrServer).Named(core.Id).DependsOn(new Dependency[] {
                 ServiceOverride.ForKey("basicServer").Eq(core.Id + solrBasicServer)
             }));

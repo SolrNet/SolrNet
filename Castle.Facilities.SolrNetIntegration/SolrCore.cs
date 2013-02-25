@@ -15,13 +15,16 @@
 #endregion
 
 using System;
-using SolrNet;
 
-namespace Castle.Facilities.SolrNetIntegration {
+namespace Castle.Facilities.SolrNetIntegration
+{
+    using SolrNet;
+
     /// <summary>
     /// Represents a Solr core for configuration
     /// </summary>
-    internal class SolrCore {
+    internal class SolrCore
+    {
         public string Id { get; private set; }
         public Type DocumentType { get; private set; }
         public string Url { get; private set; }
@@ -32,7 +35,8 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// <param name="id">Component name for <see cref="ISolrOperations{T}"/></param>
         /// <param name="documentType">Document type</param>
         /// <param name="url">Core url</param>
-        public SolrCore(string id, Type documentType, string url) {
+        public SolrCore(string id, Type documentType, string url)
+        {
             Id = id;
             DocumentType = documentType;
             Url = url;

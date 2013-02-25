@@ -14,8 +14,8 @@
 // limitations under the License.
 #endregion
 
-using System;
 using SolrNet.Impl;
+using System;
 
 namespace SolrNet.Tests {
     public class SolrQuerySerializerStub : ISolrQuerySerializer {

@@ -14,9 +14,9 @@
 // limitations under the License.
 #endregion
 
+using SolrNet.Exceptions;
 using System;
 using System.Text.RegularExpressions;
-using SolrNet.Exceptions;
 
 namespace SolrNet {
     /// <summary>

@@ -14,13 +14,11 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
+using SolrNet.Commands.Parameters;
+using SolrNet.Utils;
 using System.Globalization;
 using System.Linq;
 using System.Xml;
-using SolrNet.Commands.Parameters;
-using SolrNet.Utils;
 
 namespace SolrNet.Commands {
     /// <summary>

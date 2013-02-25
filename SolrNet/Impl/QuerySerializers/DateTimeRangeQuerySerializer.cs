@@ -18,7 +18,6 @@
 
 using System;
 using System.Linq;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.QuerySerializers {
     public class DateTimeRangeQuerySerializer : SingleTypeQuerySerializer<SolrQueryByRange<DateTime>> {

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using MbUnit.Framework;
+﻿using MbUnit.Framework;
 using Microsoft.Practices.Unity;
 using SolrNet;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
+using System.Collections.Generic;
+using System.Configuration;
 using Unity.SolrNetIntegration.Config;
 
 namespace Unity.SolrNetIntegration.Tests {

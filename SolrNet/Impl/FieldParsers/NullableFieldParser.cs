@@ -14,10 +14,9 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Xml;
-using System.Xml.Linq;
 using SolrNet.Utils;
+using System;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.FieldParsers {
     /// <summary>

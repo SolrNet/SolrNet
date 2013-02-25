@@ -1,5 +1,5 @@
-﻿using System;
-using NHibernate.Event;
+﻿using NHibernate.Event;
+using System;
 
 namespace NHibernate.SolrNet.Tests {
     public class MPostInsertEventListener : IPostInsertEventListener {

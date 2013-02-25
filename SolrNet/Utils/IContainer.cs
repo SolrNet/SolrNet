@@ -14,8 +14,8 @@
 // limitations under the License.
 #endregion
 
-using System;
 using Microsoft.Practices.ServiceLocation;
+using System;
 
 namespace SolrNet.Utils {
     /// <summary>

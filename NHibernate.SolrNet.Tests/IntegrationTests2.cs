@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using log4net.Config;
+﻿using log4net.Config;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using NHibernate.Tool.hbm2ddl;
@@ -7,6 +6,7 @@ using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Mapping;
+using System.Collections.Generic;
 
 namespace NHibernate.SolrNet.Tests {
     /// <summary>

@@ -15,7 +15,6 @@
 #endregion
 
 using System;
-using System.Globalization;
 using System.Linq;
 
 namespace SolrNet.Impl.QuerySerializers {

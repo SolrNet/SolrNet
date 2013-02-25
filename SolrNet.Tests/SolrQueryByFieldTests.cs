@@ -17,7 +17,6 @@
 using MbUnit.Framework;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
-using System;
 
 namespace SolrNet.Tests {
 	[TestFixture]

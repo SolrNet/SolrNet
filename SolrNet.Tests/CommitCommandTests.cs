@@ -1,6 +1,6 @@
-using System;
 using MbUnit.Framework;
 using SolrNet.Commands;
+using System;
 
 namespace SolrNet.Tests {
     [TestFixture]

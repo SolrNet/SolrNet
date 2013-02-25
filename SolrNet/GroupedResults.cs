@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SolrNet.Commands.Parameters;
+﻿using SolrNet.Commands.Parameters;
+using System.Collections.Generic;
 
 namespace SolrNet {
     /// <summary>

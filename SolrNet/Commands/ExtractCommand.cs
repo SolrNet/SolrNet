@@ -16,9 +16,9 @@
 
 #endregion
 
+using SolrNet.Utils;
 using System;
 using System.Collections.Generic;
-using SolrNet.Utils;
 
 namespace SolrNet.Commands {
     /// <summary>

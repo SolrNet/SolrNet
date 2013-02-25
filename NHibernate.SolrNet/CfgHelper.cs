@@ -14,11 +14,11 @@
 // limitations under the License.
 #endregion
 
-using System;
 using Microsoft.Practices.ServiceLocation;
 using NHibernate.Cfg;
 using NHibernate.SolrNet.Impl;
 using SolrNet;
+using System;
 
 namespace NHibernate.SolrNet {
     /// <summary>

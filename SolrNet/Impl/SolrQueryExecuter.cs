@@ -16,14 +16,14 @@
 
 #endregion
 
+using SolrNet.Commands.Parameters;
+using SolrNet.Exceptions;
+using SolrNet.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
-using SolrNet.Commands.Parameters;
-using SolrNet.Exceptions;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl {
     /// <summary>

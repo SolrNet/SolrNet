@@ -1,9 +1,8 @@
-﻿using System;
+﻿using SolrNet.Impl.FieldParsers;
+using SolrNet.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using SolrNet.Impl.FieldParsers;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     public class InterestingTermsResponseParser<T> : ISolrMoreLikeThisHandlerResponseParser<T> {

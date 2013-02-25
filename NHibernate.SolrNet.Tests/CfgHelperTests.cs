@@ -14,14 +14,13 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using NHibernate.Event;
 using NHibernate.SolrNet.Impl;
 using SolrNet;
 using SolrNet.Tests.Mocks;
+using System.Collections.Generic;
 
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]

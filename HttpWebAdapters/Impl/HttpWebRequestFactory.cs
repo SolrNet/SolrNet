@@ -14,9 +14,9 @@
 // limitations under the License.
 #endregion
 
+using HttpWebAdapters.Adapters;
 using System;
 using System.Net;
-using HttpWebAdapters.Adapters;
 
 namespace HttpWebAdapters {
 	public class HttpWebRequestFactory : IHttpWebRequestFactory {

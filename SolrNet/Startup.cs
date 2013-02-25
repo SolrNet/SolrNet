@@ -14,9 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
@@ -30,6 +27,8 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SolrNet {
     /// <summary>

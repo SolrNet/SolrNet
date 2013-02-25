@@ -14,10 +14,10 @@
 // limitations under the License.
 #endregion
 
+using SolrNet.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.FieldSerializers {
     /// <summary>

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using SolrNet.Exceptions;
+using SolrNet.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using SolrNet.Exceptions;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl
 {

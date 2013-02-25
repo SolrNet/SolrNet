@@ -14,7 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System.Xml;
 using System.Xml.Linq;
 
 namespace SolrNet.Impl {

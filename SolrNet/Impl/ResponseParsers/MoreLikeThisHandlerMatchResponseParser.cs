@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using SolrNet.Utils;
+using System.Linq;
 using System.Xml.Linq;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     public class MoreLikeThisHandlerMatchResponseParser<T> : ISolrMoreLikeThisHandlerResponseParser<T> {

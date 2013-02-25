@@ -14,13 +14,12 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.XPath;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Utils;
+using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>

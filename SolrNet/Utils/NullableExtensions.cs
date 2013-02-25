@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace SolrNet.Utils {
     /// <summary>
     /// Extensions around nullable types

@@ -14,12 +14,12 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Data;
-using System.Linq.Expressions;
 using NHibernate.Engine;
 using NHibernate.Stat;
 using NHibernate.Type;
+using System;
+using System.Data;
+using System.Linq.Expressions;
 
 namespace NHibernate.SolrNet.Impl {
     public class DelegatingSession : ISession {

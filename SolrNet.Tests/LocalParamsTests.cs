@@ -16,13 +16,13 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using MbUnit.Framework;
 using SolrNet.Exceptions;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 using SolrNet.Utils;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SolrNet.Tests {
     [TestFixture]

@@ -14,9 +14,9 @@
 // limitations under the License.
 #endregion
 
+using SolrNet.Exceptions;
 using System;
 using System.Linq;
-using SolrNet.Exceptions;
 
 namespace SolrNet.Impl.QuerySerializers {
     public class AggregateQuerySerializer : ISolrQuerySerializer {

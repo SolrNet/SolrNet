@@ -18,17 +18,20 @@
 
 using System;
 
-namespace SolrNet.Schema {
+namespace SolrNet.Schema
+{
     /// <summary>
     /// Represents a Solr field type.
     /// </summary>
-    public class SolrFieldType {
+    public class SolrFieldType
+    {
         /// <summary>
         /// Represents a Solr field type.
         /// </summary>
         /// <param name="name">Solr field type name</param>
         /// <param name="type">Solr field type type (java class name)</param>
-        public SolrFieldType(string name, string type) {
+        public SolrFieldType(string name, string type)
+        {
             if (name == null)
                 throw new ArgumentNullException("name");
             if (type == null)

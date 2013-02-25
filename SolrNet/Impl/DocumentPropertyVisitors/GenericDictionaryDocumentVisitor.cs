@@ -14,13 +14,12 @@
 // limitations under the License.
 #endregion
 
+using SolrNet.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.DocumentPropertyVisitors {
     /// <summary>

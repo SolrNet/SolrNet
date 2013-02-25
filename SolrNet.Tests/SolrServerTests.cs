@@ -14,9 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using MbUnit.Framework;
 using Moroco;
 using SolrNet.Attributes;
@@ -24,6 +21,8 @@ using SolrNet.Impl;
 using SolrNet.Mapping.Validation;
 using SolrNet.Schema;
 using SolrNet.Tests.Mocks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SolrNet.Tests {
     [TestFixture]

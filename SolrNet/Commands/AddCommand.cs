@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml;
-using SolrNet.Utils;
 
 namespace SolrNet.Commands {
 	/// <summary>

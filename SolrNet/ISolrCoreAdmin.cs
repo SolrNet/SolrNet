@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SolrNet.Impl;
+﻿using SolrNet.Impl;
+using System.Collections.Generic;
 
 namespace SolrNet {
     ///<summary>

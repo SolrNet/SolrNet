@@ -14,10 +14,10 @@
 // limitations under the License.
 #endregion
 
+using SolrNet.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SolrNet.Exceptions;
 
 namespace SolrNet.Impl.FacetQuerySerializers {
     public class AggregateFacetQuerySerializer : ISolrFacetQuerySerializer {

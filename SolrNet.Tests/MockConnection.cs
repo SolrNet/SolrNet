@@ -14,11 +14,10 @@
 // limitations under the License.
 #endregion
 
-using System;
+using MbUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using MbUnit.Framework;
 
 namespace SolrNet.Tests {
     public class MockConnection : ISolrConnection {

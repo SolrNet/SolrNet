@@ -14,15 +14,15 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using NHibernate.Engine;
 using NHibernate.Engine.Query;
 using NHibernate.Impl;
 using SolrNet;
 using SolrNet.Commands.Parameters;
-using Order=NHibernate.Criterion.Order;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Order = NHibernate.Criterion.Order;
 
 namespace NHibernate.SolrNet.Impl {
     /// <summary>

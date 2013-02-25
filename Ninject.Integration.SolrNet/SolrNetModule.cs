@@ -14,9 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
 using Ninject.Integration.SolrNet.Config;
 using Ninject.Modules;
 using SolrNet;
@@ -32,6 +29,9 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
 
 namespace Ninject.Integration.SolrNet {
     /// <summary>

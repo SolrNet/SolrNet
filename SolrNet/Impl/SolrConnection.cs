@@ -14,16 +14,16 @@
 // limitations under the License.
 #endregion
 
+using HttpWebAdapters;
+using HttpWebAdapters.Adapters;
+using SolrNet.Exceptions;
+using SolrNet.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using HttpWebAdapters;
-using HttpWebAdapters.Adapters;
-using SolrNet.Exceptions;
-using SolrNet.Utils;
 using HttpUtility = SolrNet.Utils.HttpUtility;
 
 namespace SolrNet.Impl {

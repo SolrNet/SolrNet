@@ -1,5 +1,4 @@
-﻿using System;
-using MbUnit.Framework;
+﻿using MbUnit.Framework;
 using SolrNet.Exceptions;
 
 namespace SolrNet.Tests {

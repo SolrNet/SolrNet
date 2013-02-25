@@ -1,9 +1,9 @@
-﻿using System;
+﻿using SolrNet.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>

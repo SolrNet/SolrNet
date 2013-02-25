@@ -16,8 +16,8 @@
 
 using System;
 using System.Globalization;
-using System.Xml.Linq;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>

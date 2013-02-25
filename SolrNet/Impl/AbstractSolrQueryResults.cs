@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SolrNet.Utils;
+using System;
 using System.Collections.Generic;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl {
     public abstract class AbstractSolrQueryResults<T> : List<T> {

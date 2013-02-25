@@ -14,13 +14,13 @@
 // limitations under the License.
 #endregion
 
-using System;
 using MbUnit.Framework;
 using Moroco;
 using NHibernate.SolrNet.Impl;
 using NHibernate.Tool.hbm2ddl;
 using SolrNet;
 using SolrNet.Tests.Mocks;
+using System;
 
 namespace NHibernate.SolrNet.Tests {
     public class BaseNHTests {

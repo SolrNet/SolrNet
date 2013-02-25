@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using SolrNet.Utils;
+using System.Collections.Generic;
 using System.Linq;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.FacetQuerySerializers {
     /// <summary>

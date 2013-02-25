@@ -14,14 +14,14 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using Rhino.Commons;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.DSL.Impl;
 using SolrNet.Impl;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SolrNet.DSL {
     /// <summary>

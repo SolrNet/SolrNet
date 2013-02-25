@@ -14,17 +14,17 @@
 // limitations under the License.
 #endregion
 
+using HttpWebAdapters;
+using MbUnit.Framework;
+using Moroco;
+using SolrNet.Exceptions;
+using SolrNet.Impl;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using HttpWebAdapters;
-using MbUnit.Framework;
-using Moroco;
-using SolrNet.Exceptions;
-using SolrNet.Impl;
 
 namespace SolrNet.Tests {
 	[TestFixture]

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using MbUnit.Framework;
+using Microsoft.Practices.ServiceLocation;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using MbUnit.Framework;
-using Microsoft.Practices.ServiceLocation;
 
 namespace SolrNet.Tests {
     /// <summary>

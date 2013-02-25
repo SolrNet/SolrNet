@@ -14,15 +14,15 @@
 // limitations under the License.
 #endregion
 
-using System;
 using MbUnit.Framework;
+using System;
 
 namespace SolrNet.Tests {
     [TestFixture]
     public class RandomSortTests {
         [Test]
         public void Random() {
-            var r = new RandomSortOrder("random");
+            var r = new RandomSort("random");
             var rndSort = r.ToString();
             Console.WriteLine(rndSort);
             Assert.Like(rndSort, "random_\\d+ asc");
@@ -31,7 +31,7 @@ namespace SolrNet.Tests {
         [Test]
         public void RandomWithSeed() {
             const string seed = "234asd";
-            var r = new RandomSortOrder("random", seed);
+            var r = new RandomSort("random", seed);
             var rndSort = r.ToString();
             Console.WriteLine(rndSort);
             Assert.Like(rndSort, string.Format("random_{0} asc", seed));
@@ -39,7 +39,7 @@ namespace SolrNet.Tests {
 
         [Test]
         public void RandomWithOrder() {
-            var r = new RandomSortOrder("random", Order.DESC);
+            var r = new RandomSort("random", Order.DESC);
             var rndSort = r.ToString();
             Console.WriteLine(rndSort);
             Assert.Like(rndSort, "random_\\d+ desc");
@@ -48,7 +48,7 @@ namespace SolrNet.Tests {
         [Test]
         public void RandomWithSeedAndOrder() {
             const string seed = "234asd";
-            var r = new RandomSortOrder("random", seed, Order.DESC);
+            var r = new RandomSort("random", seed, Order.DESC);
             var rndSort = r.ToString();
             Console.WriteLine(rndSort);
             Assert.Like(rndSort, string.Format("random_{0} desc", seed));

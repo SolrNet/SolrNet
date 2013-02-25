@@ -1,7 +1,7 @@
-﻿using System;
-using System.Xml.Linq;
+﻿using SolrNet.Exceptions;
+using System;
 using System.Globalization;
-using SolrNet.Exceptions;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl.FieldParsers {
     public class LocationFieldParser: ISolrFieldParser {

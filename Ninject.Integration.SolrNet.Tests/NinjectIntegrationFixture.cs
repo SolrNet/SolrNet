@@ -1,9 +1,9 @@
 ﻿// 
 
-using System;
 using MbUnit.Framework;
 using Ninject.Integration.SolrNet.Config;
 using SolrNet;
+using System;
 
 namespace Ninject.Integration.SolrNet.Tests {
     [TestFixture]

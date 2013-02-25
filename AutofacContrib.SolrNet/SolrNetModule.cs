@@ -16,9 +16,6 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
 using Autofac;
 using Autofac.Core;
 using AutofacContrib.SolrNet.Config;
@@ -35,6 +32,9 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
 
 namespace AutofacContrib.SolrNet {
     /// <summary>

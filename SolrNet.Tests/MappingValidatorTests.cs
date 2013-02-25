@@ -16,15 +16,14 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
 using MbUnit.Framework;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SolrNet.Tests {
     [TestFixture]

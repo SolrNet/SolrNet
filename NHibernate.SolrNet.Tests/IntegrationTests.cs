@@ -14,8 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
-using System.Reflection;
 using log4net.Config;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
@@ -25,6 +23,8 @@ using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Mapping;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]

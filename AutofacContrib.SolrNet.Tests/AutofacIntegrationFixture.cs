@@ -1,10 +1,10 @@
 ﻿// 
 
-using System;
-using System.Collections.Generic;
 using Autofac;
 using MbUnit.Framework;
 using SolrNet;
+using System;
+using System.Collections.Generic;
 
 namespace AutofacContrib.SolrNet.Tests {
     [TestFixture]

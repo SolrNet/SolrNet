@@ -14,9 +14,9 @@
 // limitations under the License.
 #endregion
 
-using System.Linq;
 using MbUnit.Framework;
 using SolrNet.Exceptions;
+using System.Linq;
 
 namespace SolrNet.Tests {
     [TestFixture]

@@ -15,9 +15,9 @@
 #endregion
 
 using MbUnit.Framework;
-using System.Linq;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
+using System.Linq;
 
 namespace SolrNet.Tests {
 	[TestFixture]

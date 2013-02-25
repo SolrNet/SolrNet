@@ -14,7 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 
 namespace SolrNet.Impl {
     public interface ISolrQueryByRange {

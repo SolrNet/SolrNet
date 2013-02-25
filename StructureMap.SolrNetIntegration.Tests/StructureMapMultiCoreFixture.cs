@@ -1,9 +1,8 @@
-using System.Configuration;
 using MbUnit.Framework;
 using SolrNet;
 using SolrNet.Impl;
-using StructureMap.Configuration.DSL;
 using StructureMap.SolrNetIntegration.Config;
+using System.Configuration;
 
 namespace StructureMap.SolrNetIntegration.Tests
 {

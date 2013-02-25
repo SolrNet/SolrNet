@@ -1,8 +1,8 @@
-﻿using System;
-using System.Configuration;
-using MbUnit.Framework;
+﻿using MbUnit.Framework;
 using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
+using System;
+using System.Configuration;
 
 namespace SolrNet.Tests {
     [TestFixture]

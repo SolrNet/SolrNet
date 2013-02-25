@@ -16,10 +16,10 @@
 
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl.FieldSerializers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SolrNet.Tests {
     [TestFixture]

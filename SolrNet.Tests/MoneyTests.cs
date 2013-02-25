@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using MbUnit.Framework;
+﻿using MbUnit.Framework;
 using SolrNet.Impl.FieldParsers;
+using System.Collections.Generic;
 
 namespace SolrNet.Tests {
     public static class MoneyTests {

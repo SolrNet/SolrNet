@@ -1,6 +1,4 @@
 using MbUnit.Framework;
-using SolrNet.Impl.FieldSerializers;
-using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests
 {

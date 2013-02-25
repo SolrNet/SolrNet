@@ -14,13 +14,13 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SolrNet.Tests {
     [TestFixture]

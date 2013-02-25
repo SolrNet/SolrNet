@@ -14,10 +14,10 @@
 // limitations under the License.
 #endregion
 
+using SolrNet.Attributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using SolrNet.Attributes;
 
 namespace SolrNet.Tests {
     public partial class SolrQueryResultsParserTests {

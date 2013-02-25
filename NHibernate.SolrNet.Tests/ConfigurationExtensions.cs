@@ -14,12 +14,11 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
 using NHibernate.Connection;
 using NHibernate.Dialect;
 using NHibernate.Driver;
-using Environment=NHibernate.Cfg.Environment;
+using System.Collections.Generic;
+using Environment = NHibernate.Cfg.Environment;
 
 namespace NHibernate.SolrNet.Tests {
     public static class ConfigurationExtensions {

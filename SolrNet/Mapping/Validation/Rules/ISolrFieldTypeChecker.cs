@@ -16,8 +16,8 @@
 
 #endregion
 
-using System;
 using SolrNet.Schema;
+using System;
 
 namespace SolrNet.Mapping.Validation.Rules {
     /// <summary>

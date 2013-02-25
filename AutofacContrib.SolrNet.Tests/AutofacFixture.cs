@@ -14,13 +14,12 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
 using Autofac;
 using MbUnit.Framework;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Tests.Mocks;
+using System.Collections.Generic;
 
 namespace AutofacContrib.SolrNet.Tests {
     [TestFixture]

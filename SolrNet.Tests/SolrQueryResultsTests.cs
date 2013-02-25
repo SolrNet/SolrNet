@@ -15,7 +15,6 @@
 #endregion
 
 using MbUnit.Framework;
-using SolrNet.Impl;
 
 namespace SolrNet.Tests {
     [TestFixture]

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using MbUnit.Framework;
+﻿using MbUnit.Framework;
 using SolrNet;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
-using System.Reflection;
 using StructureMap.SolrNetIntegration.Config;
+using System.Collections.Generic;
+using System.Configuration;
 
 namespace StructureMap.SolrNetIntegration.Tests
 {

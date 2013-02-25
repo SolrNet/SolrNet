@@ -14,10 +14,10 @@
 // limitations under the License.
 #endregion
 
-using System.Collections;
-using System.Collections.Generic;
 using MbUnit.Framework;
 using SolrNet.Utils;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace SolrNet.Tests {
     [TestFixture]

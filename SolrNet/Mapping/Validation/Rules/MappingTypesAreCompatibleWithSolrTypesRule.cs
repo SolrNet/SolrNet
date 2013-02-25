@@ -16,9 +16,9 @@
 
 #endregion
 
+using SolrNet.Schema;
 using System;
 using System.Collections.Generic;
-using SolrNet.Schema;
 
 namespace SolrNet.Mapping.Validation.Rules {
     public class MappingTypesAreCompatibleWithSolrTypesRule : IValidationRule {

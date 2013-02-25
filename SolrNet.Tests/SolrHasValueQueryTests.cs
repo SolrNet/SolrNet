@@ -14,7 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System;
 using MbUnit.Framework;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;

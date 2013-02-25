@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-
+﻿
 namespace SolrNet.Commands.Parameters {
     /// <summary>
     /// Query options for MoreLikeThis handler

@@ -16,10 +16,10 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Schema;
+using System;
+using System.Collections.Generic;
 
 namespace SolrNet.Mapping.Validation.Rules {
     /// <summary>

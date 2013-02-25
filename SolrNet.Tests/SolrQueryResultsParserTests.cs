@@ -14,14 +14,7 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Xml.Linq;
-using System.Xml.XPath;
-using Castle.Core;
+using Castle.Facilities.SolrNetIntegration;
 using MbUnit.Framework;
 using SolrNet.Attributes;
 using SolrNet.Impl;
@@ -30,7 +23,13 @@ using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Mapping;
 using SolrNet.Tests.Utils;
-using Castle.Facilities.SolrNetIntegration;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace SolrNet.Tests {
 	[TestFixture]

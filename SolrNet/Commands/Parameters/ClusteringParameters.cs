@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace SolrNet.Commands.Parameters {
     /// <summary>
     /// Clustering algorithms.

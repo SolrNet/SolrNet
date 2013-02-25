@@ -14,7 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System.Globalization;
 
 namespace SolrNet {
     /// <summary>

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using MbUnit.Framework;
+﻿using MbUnit.Framework;
 using SolrNet;
 using StructureMap.SolrNetIntegration.Config;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
 
 namespace StructureMap.SolrNetIntegration.Tests {
     [TestFixture]

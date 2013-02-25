@@ -1,5 +1,5 @@
-﻿using System;
-using SolrNet.Exceptions;
+﻿using SolrNet.Exceptions;
+using System;
 
 namespace SolrNet.Utils {
     public static class UriValidator {

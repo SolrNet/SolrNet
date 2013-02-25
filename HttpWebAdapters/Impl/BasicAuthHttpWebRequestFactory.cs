@@ -1,7 +1,7 @@
+using HttpWebAdapters.Adapters;
 using System;
 using System.Net;
 using System.Text;
-using HttpWebAdapters.Adapters;
 
 namespace HttpWebAdapters {
     /// <summary>

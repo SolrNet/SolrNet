@@ -14,11 +14,11 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
 using Castle.Core.Configuration;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.Registration;
+using System;
+using System.Collections.Generic;
 
 namespace Castle.Facilities.SolrNetIntegration
 {

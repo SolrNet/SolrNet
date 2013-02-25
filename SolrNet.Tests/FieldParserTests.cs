@@ -14,12 +14,12 @@
 // limitations under the License.
 #endregion
 
+using MbUnit.Framework;
+using SolrNet.Impl.FieldParsers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using MbUnit.Framework;
-using SolrNet.Impl.FieldParsers;
 
 namespace SolrNet.Tests {
     [TestFixture]

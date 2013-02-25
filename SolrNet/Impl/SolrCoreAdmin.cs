@@ -1,7 +1,6 @@
-﻿using System;
+﻿using SolrNet.Commands.Cores;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using SolrNet.Commands.Cores;
 
 namespace SolrNet.Impl {
     /// <summary>

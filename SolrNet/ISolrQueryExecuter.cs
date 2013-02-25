@@ -14,7 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 

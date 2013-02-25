@@ -1,5 +1,5 @@
-﻿using System;
-using SolrNet.Utils;
+﻿using SolrNet.Utils;
+using System;
 
 namespace SolrNet {
     /// <summary>

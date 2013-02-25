@@ -14,6 +14,12 @@
 // limitations under the License.
 #endregion
 
+using MbUnit.Framework;
+using Microsoft.Practices.ServiceLocation;
+using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
+using SolrNet.Tests.Integration.Sample;
+using SolrNet.Tests.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,12 +27,6 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
-using MbUnit.Framework;
-using Microsoft.Practices.ServiceLocation;
-using SolrNet.Commands.Parameters;
-using SolrNet.Impl;
-using SolrNet.Tests.Integration.Sample;
-using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests.Integration {
     [TestFixture]
@@ -307,7 +307,7 @@ namespace SolrNet.Tests.Integration {
         public void RandomSorting() {
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = solr.Query(SolrQuery.All, new QueryOptions {
-                OrderBy = new[] {new RandomSortOrder("random")}
+                OrderBy = new[] {new RandomSort("random")}
             });
             foreach (var r in results)
                 Console.WriteLine(r.Manufacturer);

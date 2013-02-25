@@ -16,9 +16,6 @@
 
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using Moroco;
@@ -26,6 +23,9 @@ using SolrNet;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 using SolrNet.Tests.Mocks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Order = NHibernate.Criterion.Order;
 
 namespace NHibernate.SolrNet.Tests {

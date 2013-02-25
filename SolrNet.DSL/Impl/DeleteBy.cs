@@ -14,11 +14,11 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
+using System.Collections.Generic;
 
 namespace SolrNet.DSL.Impl {
     public class DeleteBy {

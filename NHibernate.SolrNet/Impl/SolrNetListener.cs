@@ -14,11 +14,11 @@
 // limitations under the License.
 #endregion
 
+using NHibernate.Event;
+using SolrNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NHibernate.Event;
-using SolrNet;
 
 namespace NHibernate.SolrNet.Impl {
     /// <summary>

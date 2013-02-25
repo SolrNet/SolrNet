@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
-using MbUnit.Framework;
+﻿using MbUnit.Framework;
 using Moroco;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Tests.Mocks;
+using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace SolrNet.Tests {
     [TestFixture]

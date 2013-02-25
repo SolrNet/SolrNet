@@ -16,10 +16,10 @@
 
 #endregion
 
+using SolrNet.Exceptions;
 using System;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using SolrNet.Exceptions;
 
 namespace SolrNet.Schema {
     /// <summary>

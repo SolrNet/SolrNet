@@ -1,7 +1,7 @@
-using System.Configuration;
 using MbUnit.Framework;
 using Microsoft.Practices.Unity;
 using SolrNet;
+using System.Configuration;
 using Unity.SolrNetIntegration.Config;
 
 namespace Unity.SolrNetIntegration.Tests {

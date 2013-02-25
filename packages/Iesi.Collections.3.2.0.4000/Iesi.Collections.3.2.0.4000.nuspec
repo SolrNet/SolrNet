@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Iesi.Collections</id>
+    <version>3.2.0.4000</version>
+    <title>Iesi.Collections</title>
+    <authors>Aidant Systems,  Jason Smith,  NHibernate community</authors>
+    <owners>Aidant Systems,  Jason Smith,  NHibernate community</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The System.Collections namespace in the .NET Framework provides a number of collection
+      types that are extremely useful for manipulating data in memory. However, there is one
+      type of collection that is conspicuously missing from System.Collections: the Set.</description>
+    <summary>The System.Collections namespace in the .NET Framework provides a number of collection       types that are extremely useful for manipulating data in memory. However, there is one       type of collection that is conspicuously missing from System.Collections: the Set.</summary>
+    <tags>Collections</tags>
+    <references>
+      <reference file="Iesi.Collections.dll" />
+    </references>
+  </metadata>
+</package>

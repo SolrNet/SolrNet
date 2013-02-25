@@ -14,10 +14,9 @@
 // limitations under the License.
 #endregion
 
-using System;
+using SolrNet.Utils;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.FacetQuerySerializers {
     public class SolrFacetFieldQuerySerializer : SingleTypeFacetQuerySerializer<SolrFacetFieldQuery> {

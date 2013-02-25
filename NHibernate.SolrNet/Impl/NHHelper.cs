@@ -1,8 +1,8 @@
-﻿using System;
+﻿using NHibernate.Cfg;
+using NHibernate.Event;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using NHibernate.Cfg;
-using NHibernate.Event;
 
 namespace NHibernate.SolrNet.Impl {
     public class NHHelper {

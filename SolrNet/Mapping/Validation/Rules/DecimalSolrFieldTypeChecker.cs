@@ -16,10 +16,10 @@
 
 #endregion
 
+using SolrNet.Schema;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using SolrNet.Schema;
 
 namespace SolrNet.Mapping.Validation.Rules {
     /// <summary>

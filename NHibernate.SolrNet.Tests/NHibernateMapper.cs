@@ -14,14 +14,14 @@
 // limitations under the License.
 #endregion
 
+using NHibernate.Cfg;
+using NHibernate.Mapping;
+using NHibernate.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NHibernate.Cfg;
-using NHibernate.Mapping;
-using NHibernate.Util;
 
 namespace NHibernate.SolrNet.Tests {
     /// <summary>

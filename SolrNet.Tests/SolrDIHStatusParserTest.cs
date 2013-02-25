@@ -1,7 +1,7 @@
-﻿using System;
+﻿using MbUnit.Framework;
 using SolrNet.Impl;
 using SolrNet.Tests.Utils;
-using MbUnit.Framework;
+using System;
 
 namespace SolrNet.Tests
 {

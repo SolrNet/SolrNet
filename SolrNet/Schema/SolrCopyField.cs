@@ -18,15 +18,24 @@
 
 using System;
 
-namespace SolrNet.Schema {
+namespace SolrNet.Schema
+{
     /// <summary>
     /// Represents a Solr copy field.
     /// </summary>
-    public class SolrCopyField {
-        public SolrCopyField(string source, string destination) {
-            if (source == null) 
+    public class SolrCopyField
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public SolrCopyField(string source, string destination)
+        {
+            if (source == null)
                 throw new ArgumentNullException("source");
-            if (destination == null) 
+            if (destination == null)
                 throw new ArgumentNullException("destination");
             Source = source;
             Destination = destination;

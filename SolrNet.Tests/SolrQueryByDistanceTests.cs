@@ -31,8 +31,8 @@ namespace SolrNet.Tests
         [Test]
         public void Basic() 
         {
-            var q = new SolrQueryByDistance("store", 45.15, -93.85, 5);
-            Assert.AreEqual("{!geofilt pt=45.15,-93.85 sfield=store d=5}",q.Query);
+            var q = new SolrQueryByDistance("store", 45.15, -93.85, 5.2);
+            Assert.AreEqual("{!geofilt pt=45.15,-93.85 sfield=store d=5.2}",q.Query);
         }
 
         [Test]

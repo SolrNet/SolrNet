@@ -17,6 +17,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using SolrNet.Impl;
 
 namespace SolrNet {
@@ -118,7 +119,7 @@ namespace SolrNet {
         public string Query {
             get {
                 var prefix = Accuracy == CalculationAccuracy.Radius ? "{!geofilt" : "{!bbox";
-                return prefix + " pt=" + Location.ToString() + " sfield=" + FieldName + " d=" + DistanceFromPoint + "}";
+                return prefix + " pt=" + Location.ToString() + " sfield=" + FieldName + " d=" + DistanceFromPoint.ToString(CultureInfo.InvariantCulture) + "}";
             }
         }
     }

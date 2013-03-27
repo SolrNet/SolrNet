@@ -31,7 +31,7 @@ namespace SolrNet.Tests {
             innerMapper.getFields += t => {
                 Assert.AreEqual(typeof (TestDocument), t);
                 return new Dictionary<string, SolrFieldModel> {
-                    {"id", new SolrFieldModel {Property = typeof (TestDocument).GetProperty("Id"), FieldName = "id"}},
+                    {"id", new SolrFieldModel (property : typeof (TestDocument).GetProperty("Id"), fieldName : "id")},
                 };
             };
             var mapper = new MemoizingMappingManager(innerMapper);
@@ -44,11 +44,9 @@ namespace SolrNet.Tests {
         public void GetUniqueKeyIsMemoized() {
             var innerMapper = new MReadOnlyMappingManager();
             innerMapper.getUniqueKey += t => {
-                Assert.AreEqual(typeof(TestDocument), t);
-                return new SolrFieldModel {
-                    Property = typeof(TestDocument).GetProperty("Id"), 
-                    FieldName = "id"
-                };
+	            Assert.AreEqual(typeof (TestDocument), t);
+	            return new SolrFieldModel(property : typeof (TestDocument).GetProperty("Id"),
+	                                      fieldName : "id");
             };
             var mapper = new MemoizingMappingManager(innerMapper);
             mapper.GetUniqueKey(typeof(TestDocument));

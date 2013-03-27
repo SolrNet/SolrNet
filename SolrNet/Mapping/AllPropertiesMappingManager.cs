@@ -30,7 +30,7 @@ namespace SolrNet.Mapping {
         public IDictionary<string,SolrFieldModel> GetFields(Type type) {
             var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
             var fldProps = props
-                .Select(prop => new SolrFieldModel { Property = prop, FieldName = prop.Name })
+                .Select(prop => new SolrFieldModel(prop, prop.Name, null))
                 .Select(m => new KeyValuePair<string, SolrFieldModel>(m.FieldName, m))
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
             return fldProps;
@@ -39,7 +39,7 @@ namespace SolrNet.Mapping {
         public SolrFieldModel GetUniqueKey(Type type) {
             try {
                 var propertyInfo = uniqueKeys[type];
-                return new SolrFieldModel { Property = propertyInfo, FieldName = propertyInfo.Name };
+	            return new SolrFieldModel(propertyInfo, propertyInfo.Name, null);
             } catch (KeyNotFoundException) {
                 return null;
             }

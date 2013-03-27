@@ -144,21 +144,25 @@ namespace SolrNet.Tests {
             Assert.AreEqual(2, inheritedEntityFields.Count);
         }
 
-        [Test]
-        [ExpectedException(typeof(SolrNetException))]
-        public void Inherited_doesnt_admit_duplicates() {
-            var mgr = new MappingManager();
-            mgr.Add(typeof(Entity).GetProperty("Id"), "id");
-            mgr.Add(typeof(InheritedEntity).GetProperty("Id"), "id2");
-        }
+		[Test]
+		public void Inherited_gets_id_property_correctly()
+		{
+			var mgr = new MappingManager();
+			mgr.Add(typeof(Entity).GetProperty("Id"), "id");
 
-        [Test]
-        [ExpectedException(typeof(SolrNetException))]
-        public void Inherited_doesnt_admit_duplicates2() {
-            var mgr = new MappingManager();
-            mgr.Add(typeof(InheritedEntity).GetProperty("Id"), "id2");
-            mgr.Add(typeof(Entity).GetProperty("Id"), "id");
-        }
+			Assert.IsTrue(mgr.GetFields(typeof(Entity)).ContainsKey("id"), "Entity contains id field");
+			Assert.IsTrue(mgr.GetFields(typeof(InheritedEntity)).ContainsKey("id"), "InheritedEntity contains id field");
+		}
+
+		[Test]
+		public void Inherited_gets_id_property_correctly2()
+		{
+			var mgr = new MappingManager();
+			mgr.Add(typeof(InheritedEntity).GetProperty("Id"), "id");
+
+			Assert.IsTrue(mgr.GetFields(typeof(InheritedEntity)).ContainsKey("id"), "InheritedEntity contains id field");
+			Assert.IsTrue(mgr.GetFields(typeof(Entity)).ContainsKey("id"), "Entity contains id field");
+		}
 
         [Test]
         public void GetRegistered() {

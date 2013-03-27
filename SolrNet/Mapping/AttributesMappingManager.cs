@@ -35,14 +35,13 @@ namespace SolrNet.Mapping {
         public IDictionary<string,SolrFieldModel> GetFields(Type type) {
             var propsAttrs = GetPropertiesWithAttribute<SolrFieldAttribute>(type);
 
-            var fields = propsAttrs
-                .Select(kv => new SolrFieldModel {
-                    Property = kv.Key,
-                    FieldName = kv.Value[0].FieldName ?? kv.Key.Name,
-                    Boost = kv.Value[0].Boost
-                })
-                .Select(m => new KeyValuePair<string, SolrFieldModel>(m.FieldName, m))
-                .ToDictionary(kv => kv.Key, kv => kv.Value);
+	        var fields = propsAttrs
+		        .Select(kv => new SolrFieldModel(
+			                      property : kv.Key,
+			                      fieldName : kv.Value[0].FieldName ?? kv.Key.Name,
+			                      boost : kv.Value[0].Boost))
+		        .Select(m => new KeyValuePair<string, SolrFieldModel>(m.FieldName, m))
+		        .ToDictionary(kv => kv.Key, kv => kv.Value);
             return fields;
         }
 
@@ -52,11 +51,12 @@ namespace SolrNet.Mapping {
 
         public SolrFieldModel GetUniqueKey(Type type) {
             var propsAttrs = GetPropertiesWithAttribute<SolrUniqueKeyAttribute>(type);
-            var fields = propsAttrs.Select(
-                                     kv => new SolrFieldModel {
-                                         Property = kv.Key, 
-                                         FieldName = kv.Value[0].FieldName ?? kv.Key.Name
-                                     });
+	        var fields = propsAttrs.Select(
+		        kv => new SolrFieldModel(
+			              property : kv.Key,
+			              fieldName : kv.Value[0].FieldName ?? kv.Key.Name,
+			              boost : null
+			              ));
             return fields.FirstOrDefault();
         }
 

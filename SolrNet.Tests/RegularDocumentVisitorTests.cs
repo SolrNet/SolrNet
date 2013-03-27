@@ -14,10 +14,9 @@ namespace SolrNet.Tests {
             var mapper = new MReadOnlyMappingManager();
             mapper.getFields += type => {
                 Assert.AreEqual(typeof (Entity), type);
-                var model = new SolrFieldModel {
-                    FieldName = "id",
-                    Property = typeof (Entity).GetProperty("Id"),
-                };
+                var model = new SolrFieldModel (
+                    fieldName : "id",
+                    property : typeof (Entity).GetProperty("Id"));
                 return new Dictionary<string, SolrFieldModel> {
                     {"Id", model}
                 };

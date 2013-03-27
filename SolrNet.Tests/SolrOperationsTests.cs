@@ -259,10 +259,9 @@ namespace SolrNet.Tests {
             var mapper = new MReadOnlyMappingManager();
             mapper.getUniqueKey += t => {
                 Assert.AreEqual(typeof(TestDocumentWithUniqueKey), t);
-                return new SolrFieldModel {
-                    Property = typeof (TestDocumentWithUniqueKey).GetProperty("id"),
-                    FieldName = "id",
-                };
+                return new SolrFieldModel (
+                    property : typeof (TestDocumentWithUniqueKey).GetProperty("id"),
+                    fieldName : "id");
             };
             var basicServer = new MSolrBasicOperations<TestDocumentWithUniqueKey>();
             basicServer.delete &= x => x.Stub();

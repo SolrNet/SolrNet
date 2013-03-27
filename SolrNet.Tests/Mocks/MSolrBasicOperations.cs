@@ -71,6 +71,11 @@ namespace SolrNet.Tests.Mocks {
 
         public MFunc<IEnumerable<string>, ISolrQuery, DeleteParameters, ResponseHeader> delete;
 
+		public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q)
+		{
+			return delete.Invoke(ids, q, null);
+		}
+
         public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters) {
             return delete.Invoke(ids, q, parameters);
         }

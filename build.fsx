@@ -132,14 +132,14 @@ Target "NuGet.Windsor" <| fun _ ->
         "Castle.Facilities.SolrNetIntegration" 
         "SolrNet.Windsor"
         "Windsor facility for SolrNet"
-        ["Castle.Windsor", "[3.0.0.4001]"; solrNetDep]
+        ["Castle.Windsor", "3.2.0"; solrNetDep]
 
 Target "NuGet.Ninject" <| fun _ ->
     nuGetSingle 
         "Ninject.Integration.SolrNet" 
         "SolrNet.Ninject"
         "Ninject module for SolrNet"
-        ["Ninject", "[2.2.0.0,2.2.1.0]"; solrNetDep]
+        ["Ninject", "3.0.1.10"; solrNetDep]
 
 Target "NuGet.NHibernate" <| fun _ ->
     nuGetSingle 
@@ -160,7 +160,7 @@ Target "NuGet.Autofac" <| fun _ ->
         "AutofacContrib.SolrNet" 
         "SolrNet.Autofac"
         "Autofac module for SolrNet"
-        ["Autofac", "[2.5.2.830]"; solrNetDep]
+        ["Autofac", "[2.6.3.862]"; solrNetDep]
 
 Target "NuGet.Unity" <| fun _ ->
     nuGetSingle 

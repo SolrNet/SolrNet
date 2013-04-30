@@ -41,6 +41,8 @@ namespace SolrNet.Tests {
         [Row(typeof(string))]
         [Row(typeof(DateTime))]
         [Row(typeof(DateTime?))]
+        [Row(typeof(DateTimeOffset))]
+        [Row(typeof(DateTimeOffset?))]
         [Row(typeof(bool))]
         [Row(typeof(bool?))]
         [Row(typeof(Money))]

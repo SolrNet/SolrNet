@@ -88,8 +88,10 @@
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
     <Compile Include="Commands\Parameters\TermsSort.cs" />
     <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
+    <Compile Include="Impl\FieldParsers\DateTimeOffsetFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\LocationFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\MoneyFieldParser.cs" />
+    <Compile Include="Impl\FieldSerializers\DateTimeOffsetFieldSerializer.cs" />
     <Compile Include="Impl\QuerySerializers\QueryByFieldRegexSerializer.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Money.cs" />

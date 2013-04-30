@@ -90,6 +90,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeOffsetFieldParserTests.cs" />
     <Compile Include="DefaultResponseParserTests.cs" />
     <Compile Include="LocationTests.cs" />
     <Compile Include="MoneyTests.cs" />

@@ -72,7 +72,7 @@ namespace SolrNet.Tests {
 
         private static readonly IEnumerable<DateTimeOffset> dateTimes =
             new[] {
-                new DateTimeOffset(new DateTime(1, 1, 1)),
+                new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
                 new DateTimeOffset(new DateTime(2004, 11, 1)),
                 new DateTimeOffset(new DateTime(2004, 11, 1, 15, 41, 23)),
                 new DateTimeOffset(new DateTime(2012, 5, 10, 14, 17, 23, 684)),

@@ -1,10 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{26EBA068-9BBB-4FEC-B425-787D4AE99848}"
 	ProjectSection(SolutionItems) = preProject
 		build.fsx = build.fsx
 		fake.fsx = fake.fsx
+		Tests.fsx = Tests.fsx
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet", "SolrNet\SolrNet.csproj", "{CEEB8690-3E08-4440-B647-787A58E71CFA}"

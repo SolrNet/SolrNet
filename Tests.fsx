@@ -7,5 +7,5 @@
 open Fuchu
 open SolrNet.Tests
 
-let test = Fuchu.MbUnit.MbUnitTestToFuchu typeof<DateTimeOffsetFieldParserTests>
+let test = Fuchu.MbUnit.MbUnitTestToFuchu typeof<SolrQueryResultsParserTests>
 run test

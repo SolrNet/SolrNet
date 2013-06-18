@@ -1,4 +1,6 @@
-﻿#region license
+﻿using System.Diagnostics;
+
+#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -533,6 +535,19 @@ namespace SolrNet.Tests {
             Assert.AreEqual(4, offsets[0].Start);
             Assert.AreEqual(9, offsets[0].End);
 		}
+
+        [Test]
+        public void ParseTermVector2() {
+            var parser = new TermVectorResultsParser<Product>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithTermVector2.xml");
+            var docNode = xml.XPathSelectElement("response/lst[@name='termVectors']");
+            var docs = parser.ParseDocuments(docNode).ToList();
+            Assert.IsNotNull(docs);
+            Assert.AreEqual(1, docs.Count);
+            Assert.AreEqual("20", docs[0].UniqueKey);
+            var vectors = docs[0].TermVector.ToList();
+            Assert.AreEqual(15, vectors.Count);
+        }
 
         [Test]
         public void ParseMoreLikeThis() {

@@ -60,26 +60,26 @@ namespace SolrNet.Impl.ResponseParsers {
 			}
 		}
 
-		private TermVectorDocumentResult ParseDoc(XElement docNode) {
+        private static TermVectorDocumentResult ParseDoc(XElement docNode) {
 			var fieldNodes = docNode.Elements();
 		    var uniqueKey = fieldNodes
 		        .Where(x => x.Attribute("name").ValueOrNull() == "uniqueKey")
 		        .Select(x => x.Value)
 		        .FirstOrDefault();
 		    var termVectorResults = fieldNodes
-		        .Where(x => x.Attribute("name").ValueOrNull() == "includes")
+		        .Where(x => x.Attribute("name").ValueOrNull() != "uniqueKey")
 		        .SelectMany(ParseField)
                 .ToList();
 
             return new TermVectorDocumentResult(uniqueKey, termVectorResults);
 		}
-		
-		private IEnumerable<TermVectorResult> ParseField(XElement fieldNode) {
+
+        private static IEnumerable<TermVectorResult> ParseField(XElement fieldNode) {
 		    return fieldNode.Elements()
 		        .Select(termNode => ParseTerm(termNode, fieldNode.Attribute("name").Value));
 		}
 
-		private TermVectorResult ParseTerm(XElement termNode, string fieldName) {
+        private static TermVectorResult ParseTerm(XElement termNode, string fieldName) {
 		    var nameValues = termNode.Elements()
                 .Select(e => new {name = e.Attribute("name").Value, value = e.Value})
                 .ToList();
@@ -108,17 +108,23 @@ namespace SolrNet.Impl.ResponseParsers {
                 offsets: offsets, positions: positions);
 		}
 
-		private IEnumerable<int> ParsePositions(XElement valueNode) {
+		private static IEnumerable<int> ParsePositions(XElement valueNode) {
 		    return from e in new[] {valueNode}
 		           where e.Attribute("name").Value == "positions"
                    from p in e.Elements()
 		           select int.Parse(p.Value);
 		}
 
-		private IEnumerable<Offset> ParseOffsets(XElement valueNode) {
-		    return from e in valueNode.Elements()
-		           where e.Attribute("name").Value == "start"
-		           select new Offset(start : int.Parse(e.Value), end : int.Parse(((XElement) e.NextNode).Value));
+        private static IEnumerable<Offset> ParseOffsets(XElement valueNode) {
+            return
+                from e in new[] { valueNode }
+                where e.Attribute("name").Value == "offsets"
+                let startEnd = e.Elements()
+                let start = startEnd.FirstOrDefault(x => x.Attribute("name").Value == "start")
+                let end = startEnd.FirstOrDefault(x => x.Attribute("name").Value == "end")
+                where start != null
+                where end != null
+                select new Offset(start: int.Parse(start.Value), end: int.Parse(end.Value));
 		}
 	}
 }

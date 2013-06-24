@@ -20,38 +20,52 @@ using System.Xml.Linq;
 using System.Linq;
 
 namespace SolrNet.Impl.ResponseParsers {
-    /// <summary>
-    /// Parses documents from a query response
-    /// </summary>
-    /// <typeparam name="T">Document type</typeparam>
-    public class ResultsResponseParser<T> : ISolrAbstractResponseParser<T>
-    {
-        private readonly ISolrDocumentResponseParser<T> docParser;
+	/// <summary>
+	/// Parses documents from a query response
+	/// </summary>
+	/// <typeparam name="T">Document type</typeparam>
+	public class ResultsResponseParser<T> : ISolrAbstractResponseParser<T>
+	{
+		private readonly ISolrDocumentResponseParser<T> docParser;
 
-        public ResultsResponseParser(ISolrDocumentResponseParser<T> docParser) {
-            this.docParser = docParser;
-        }
+		public ResultsResponseParser(ISolrDocumentResponseParser<T> docParser) {
+			this.docParser = docParser;
+		}
 
-        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
-            // IsNullOrEmpty part is needed to pass tests -- ptasz3k
-            var resultNode = xml.Element("response").Elements("result").FirstOrDefault(e => String.IsNullOrEmpty((string)e.Attribute("name")) || (string)e.Attribute("name") == "response");
+		public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
+			// IsNullOrEmpty part is needed to pass tests -- ptasz3k
+			var resultNode = xml.Element("response").Elements("result").FirstOrDefault(e => String.IsNullOrEmpty((string)e.Attribute("name")) || (string)e.Attribute("name") == "response");
 
 			//FIX BY klaas 
 			//If resultNode == null exit func
 			//		This can occur when grouped results are returned
+			//if (resultNode == null)
+			//{
+			//    return;
+			//}
+
+			//FIX by kanda
+			// result (if present) to be parsed even if grouped results are present
 			if (resultNode == null)
 			{
-				return;
+				var groupElement = xml.Element("response").Elements("lst").FirstOrDefault(e => (string)e.Attribute("name") == "grouped");
+				if (groupElement != null)
+				{
+					resultNode = groupElement.Descendants().FirstOrDefault(e => e.Name == "result");
+					if (resultNode == null) return;
+				}
+				else
+					return;
 			}
 
-            results.NumFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
-            var maxScore = resultNode.Attribute("maxScore");
-            if (maxScore != null) {
-                results.MaxScore = double.Parse(maxScore.Value, CultureInfo.InvariantCulture.NumberFormat);
-            }
+			results.NumFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
+			var maxScore = resultNode.Attribute("maxScore");
+			if (maxScore != null) {
+				results.MaxScore = double.Parse(maxScore.Value, CultureInfo.InvariantCulture.NumberFormat);
+			}
 
-            foreach (var result in docParser.ParseResults(resultNode))
-                results.Add(result);
-        }
-    }
+			foreach (var result in docParser.ParseResults(resultNode))
+				results.Add(result);
+		}
+	}
 }

@@ -34,19 +34,8 @@ namespace SolrNet.Impl.ResponseParsers {
         }
 
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
-            // IsNullOrEmpty part is needed to pass tests -- ptasz3k
             var resultNode = xml.Element("response").Elements("result").FirstOrDefault(e => String.IsNullOrEmpty((string) e.Attribute("name")) || (string) e.Attribute("name") == "response");
 
-            //FIX BY klaas 
-            //If resultNode == null exit func
-            //		This can occur when grouped results are returned
-            //if (resultNode == null)
-            //{
-            //    return;
-            //}
-
-            //FIX by kanda
-            // result (if present) to be parsed even if grouped results are present
             if (resultNode == null) {
                 var groupElement = xml.Element("response").Elements("lst").FirstOrDefault(e => (string) e.Attribute("name") == "grouped");
                 if (groupElement != null) {

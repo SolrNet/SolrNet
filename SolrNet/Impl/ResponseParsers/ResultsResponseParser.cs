@@ -33,27 +33,35 @@ namespace SolrNet.Impl.ResponseParsers {
             this.docParser = docParser;
         }
 
-        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
-            var resultNode = xml.Element("response").Elements("result").FirstOrDefault(e => String.IsNullOrEmpty((string) e.Attribute("name")) || (string) e.Attribute("name") == "response");
+        private static XElement GetMainResultNode(XDocument xml) {
+            return xml.Element("response").Elements("result")
+                .FirstOrDefault(e => {
+                    var nameAttr = e.Attribute("name");
+                    if (nameAttr == null)
+                        return true;
+                    return string.IsNullOrEmpty(nameAttr.Value) || nameAttr.Value == "response";
+                });
+        }
 
-            if (resultNode == null) {
-                var groupElement = xml.Element("response").Elements("lst").FirstOrDefault(e => (string) e.Attribute("name") == "grouped");
-                if (groupElement != null) {
-                    resultNode = groupElement.Descendants().FirstOrDefault(e => e.Name == "result");
-                    if (resultNode == null)
-                        return;
-                } else
-                    return;
-            }
+        private static XElement GetGroupResultNode(XDocument xml) {
+            var groupElement = xml.Element("response").Elements("lst")
+                .FirstOrDefault(e => e.Attribute("name").Value == "grouped");
+            if (groupElement == null)
+                return null;
+            return groupElement.Descendants().FirstOrDefault(e => e.Name == "result");
+        }
+
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
+            var resultNode = GetMainResultNode(xml) ?? GetGroupResultNode(xml);
+            if (resultNode == null)
+                return;
 
             results.NumFound = Convert.ToInt32(resultNode.Attribute("numFound").Value);
             var maxScore = resultNode.Attribute("maxScore");
-            if (maxScore != null) {
+            if (maxScore != null)
                 results.MaxScore = double.Parse(maxScore.Value, CultureInfo.InvariantCulture.NumberFormat);
-            }
 
-            foreach (var result in docParser.ParseResults(resultNode))
-                results.Add(result);
+            results.AddRange(docParser.ParseResults(resultNode));
         }
     }
 }

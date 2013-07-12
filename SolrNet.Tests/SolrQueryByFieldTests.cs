@@ -75,7 +75,7 @@ namespace SolrNet.Tests {
 		[Test]
 		public void Solr4RegexEscape() {
 			var q = new SolrQueryByField("id", "/value/a");
-			Assert.AreEqual("id:(\"value/a\")", Serialize(q));
+			Assert.AreEqual("id:(\"/value/a\")", Serialize(q));
 		}
 	}
 }

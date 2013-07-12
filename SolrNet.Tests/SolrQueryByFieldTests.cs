@@ -71,5 +71,11 @@ namespace SolrNet.Tests {
             var q = new SolrQueryByField("id", "hello?world*") { Quoted = false };
             Assert.AreEqual("id:(hello?world*)", Serialize(q));
         }
+
+		[Test]
+		public void Solr4RegexEscape() {
+			var q = new SolrQueryByField("id", "/value/a");
+			Assert.AreEqual("id:(\"value/a\")", Serialize(q));
+		}
 	}
 }

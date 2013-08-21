@@ -40,7 +40,7 @@ namespace SolrNet.Impl.QuerySerializers
         public static string Quote(string value)
         {
             string r = SpecialCharactersRx.Replace(value, "\\$1");
-            if (r.IndexOf(' ') != -1 || r == "")
+            if (r.IndexOf(' ') != -1 || r == "" || r.StartsWith("/"))
                 r = string.Format("\"{0}\"", r);
             return r;
         }

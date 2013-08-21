@@ -78,5 +78,11 @@ namespace SolrNet.Tests {
             var q = new SolrQueryByField("field with spaces", "hello");
             Assert.AreEqual(@"field\ with\ spaces:(hello)", Serialize(q));
         }
+
+		[Test]
+		public void Solr4RegexEscape() {
+			var q = new SolrQueryByField("id", "/value/a");
+			Assert.AreEqual("id:(\"/value/a\")", Serialize(q));
+		}
 	}
 }

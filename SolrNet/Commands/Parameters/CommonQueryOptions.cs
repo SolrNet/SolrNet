@@ -29,7 +29,9 @@ namespace SolrNet.Commands.Parameters {
 
         /// <summary>
         /// Maximum number of documents from the complete result set to return to the client for every request.
-        /// Default is 10
+        /// Default is 100000000.
+        /// NOTE: do not rely on this default value. In a future release the default value will be reset to the Solr default. 
+        /// Always define the number of rows you want. The high value is meant to mimic a SQL query without a TOP/LIMIT clause.
         /// </summary>
         public int? Rows { get; set; }
 

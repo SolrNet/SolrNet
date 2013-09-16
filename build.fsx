@@ -173,7 +173,7 @@ Target "ReleasePackage" <| fun _ ->
     let outputPath = "build"
     rm_rf outputPath
     mkdir outputPath
-    cp "readme.txt" outputPath
+    cp "readme.md" outputPath
     if File.Exists docsFile then
         cp docsFile outputPath
 

@@ -230,6 +230,20 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void FieldBoost() {
+            var mapper = new AttributesMappingManager();
+            ISolrDocumentSerializer<TestDocWithBoostedString> ser = new SolrDocumentSerializer<TestDocWithBoostedString>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithBoostedString {
+                Desc = "hello"
+            };
+            string fs = ser.Serialize(doc, null).OuterXml;
+            var xml = new XmlDocument();
+            xml.LoadXml(fs);
+            Console.WriteLine(fs);
+            Assert.AreEqual(@"<doc><field name=""Desc"" boost=""1.45"">hello</field></doc>", fs);
+        }
+
+        [Test]
         public void Inheritance() {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithString>(mapper, new DefaultFieldSerializer());

@@ -84,6 +84,11 @@ namespace SolrNet.Tests {
             public string Desc { get; set; }
         }
 
+        public class TestDocWithBoostedString {
+            [SolrField(Boost = 1.45f)]
+            public string Desc { get; set; }
+        }
+
         public class InheritedDoc : TestDocWithString{
             [SolrField]
             public string Desc1 { get; set; }

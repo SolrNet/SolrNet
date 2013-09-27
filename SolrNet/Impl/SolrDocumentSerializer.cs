@@ -57,7 +57,7 @@ namespace SolrNet.Impl {
 
                     if (field.Boost != null && field.Boost > 0) {
                         var boostAtt = xml.CreateAttribute("boost");
-                        boostAtt.InnerText = field.Boost.ToString();
+                        boostAtt.InnerText = field.Boost.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
                         fieldNode.Attributes.Append(boostAtt);
                     }
 

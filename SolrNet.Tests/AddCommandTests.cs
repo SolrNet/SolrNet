@@ -175,8 +175,8 @@ namespace SolrNet.Tests {
             var docs = new[] {new KeyValuePair<TestDocWithString, double?>(doc, null),  };
 		    var cmd = new AddCommand<TestDocWithString>(docs, docSerializer, null);
             var xml = cmd.ConvertToXml();
-            xml = cmd.RemoveControlCharacters(xml);
-            Console.WriteLine(xml);
+            xml = SolrDocumentSerializer<object>.RemoveControlCharacters(xml);
+            //Console.WriteLine(xml);
             Assert.DoesNotContain(xml, "&#x7;");
             Assert.DoesNotContain(xml, "&#x1;");
             Assert.DoesNotContain(xml, "&#x1F;");
@@ -185,16 +185,8 @@ namespace SolrNet.Tests {
 
         [Test]
         public void RemoveControlCharacters() {
-            var docs = new[] {
-                new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), null), 
-            };
-            var cmd = new AddCommand<TestDocWithString>(docs, null, null);
-            var xml = cmd.RemoveControlCharacters("control &#x7; &#x1; &#x9; &#x1F; &#xFFFE;");
-            Assert.DoesNotContain(xml, "&#x7;");
-            Assert.DoesNotContain(xml, "&#x1;");
-            Assert.DoesNotContain(xml, "&#x1F;");
-            Assert.DoesNotContain(xml, "&#xFFFE;");
-            Assert.Contains(xml, "&#x9;");
+            var xml = SolrDocumentSerializer<object>.RemoveControlCharacters("control " + (char)1);
+            Assert.DoesNotContain(xml, (char)1);
         }
 	}
 }

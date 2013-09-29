@@ -20,7 +20,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace SolrNet.Tests.Utils {
@@ -85,10 +84,9 @@ namespace SolrNet.Tests.Utils {
         /// <param name="fileName">The name of the resource</param>
         /// <returns>An XmlDocument with the contents of the embedded resource.</returns>
         public static XDocument GetEmbeddedXml(Type type, string fileName) {
-			using (Stream str = GetEmbeddedFile(type, fileName)) {
-				var tr = new XmlTextReader(str);
-				return XDocument.Load(tr);
-			}
+			using (Stream str = GetEmbeddedFile(type, fileName))
+			using (var sr = new StreamReader(str))
+			    return XDocument.Load(sr);
         }
     }
 }

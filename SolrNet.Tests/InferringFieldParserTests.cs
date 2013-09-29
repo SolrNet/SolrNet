@@ -15,7 +15,6 @@
 #endregion
 
 using System.Collections;
-using System.Xml;
 using System.Xml.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl.FieldParsers;

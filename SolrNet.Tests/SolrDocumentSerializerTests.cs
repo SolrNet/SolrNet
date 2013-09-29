@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
+using System.Xml.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl;
 using SolrNet.Impl.FieldSerializers;
@@ -30,9 +30,7 @@ namespace SolrNet.Tests {
 		    var mapper = new AttributesMappingManager();
 			var ser = new SolrDocumentSerializer<SampleDoc>(mapper, new DefaultFieldSerializer());
 			var doc = new SampleDoc {Id = "id", Dd = 23.5m};
-			string fs = ser.Serialize(doc, null).OuterXml;
-			var xml = new XmlDocument();
-			xml.LoadXml(fs);
+			string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
 			Assert.AreEqual("<doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc>", fs);
 		}
 
@@ -41,9 +39,7 @@ namespace SolrNet.Tests {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithCollections>(mapper, new DefaultFieldSerializer());
 			var doc = new TestDocWithCollections();
-			string fs = ser.Serialize(doc, null).OuterXml;
-			var xml = new XmlDocument();
-			xml.LoadXml(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
 			Assert.AreEqual("<doc><field name=\"coll\">one</field><field name=\"coll\">two</field></doc>", fs);
 		}
 
@@ -52,10 +48,7 @@ namespace SolrNet.Tests {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<SampleDoc>(mapper, new DefaultFieldSerializer());
 			var doc = new SampleDoc {Id = "<quote\""};
-            string fs = ser.Serialize(doc, null).OuterXml;
-			Console.WriteLine(fs);
-			var xml = new XmlDocument();
-			xml.LoadXml(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual("<doc><field name=\"Id\">&lt;quote\"</field><field name=\"Flower\">0</field></doc>", fs);
 		}
 
@@ -64,10 +57,7 @@ namespace SolrNet.Tests {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<SampleDoc>(mapper, new DefaultFieldSerializer());
 			var doc = new SampleDoc {Id = null};
-            string fs = ser.Serialize(doc, null).OuterXml;
-			Console.WriteLine(fs);
-			var xml = new XmlDocument();
-			xml.LoadXml(fs);
+            ser.Serialize(doc, null).ToString();
 		}
 
 		/// <summary>
@@ -78,9 +68,7 @@ namespace SolrNet.Tests {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithDate>(mapper, new DefaultFieldSerializer());
 			var doc = new TestDocWithDate {Date = new DateTime(2001, 1, 2, 3, 4, 5)};
-            string fs = ser.Serialize(doc, null).OuterXml;
-			var xml = new XmlDocument();
-			xml.LoadXml(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
 			Assert.AreEqual("<doc><field name=\"Date\">2001-01-02T03:04:05Z</field></doc>", fs);
 		}
 
@@ -89,9 +77,7 @@ namespace SolrNet.Tests {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithBool>(mapper, new DefaultFieldSerializer());
 			var doc = new TestDocWithBool {B = true};
-            string fs = ser.Serialize(doc, null).OuterXml;
-			var xml = new XmlDocument();
-			xml.LoadXml(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
 			Assert.AreEqual("<doc><field name=\"B\">true</field></doc>", fs);
 		}
 
@@ -100,9 +86,7 @@ namespace SolrNet.Tests {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithBool>(mapper, new DefaultFieldSerializer());
 			var doc = new TestDocWithBool {B = false};
-            string fs = ser.Serialize(doc, null).OuterXml;
-			var xml = new XmlDocument();
-			xml.LoadXml(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
 			Assert.AreEqual("<doc><field name=\"B\">false</field></doc>", fs);
 		}
 
@@ -111,10 +95,7 @@ namespace SolrNet.Tests {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithGuid>(mapper, new DefaultFieldSerializer());
             var doc = new TestDocWithGuid {Key = Guid.NewGuid()};
-            string fs = ser.Serialize(doc, null).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual("<doc><field name=\"Key\">"+doc.Key+"</field></doc>", fs);
         }
 
@@ -126,10 +107,7 @@ namespace SolrNet.Tests {
                 Id = 5,
                 Dict = new Dictionary<string, string>(),
             };
-            string fs = ser.Serialize(doc, null).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual("<doc><field name=\"Id\">" + doc.Id + "</field></doc>", fs);
         }
 
@@ -144,10 +122,7 @@ namespace SolrNet.Tests {
                     {"two", "2"},
                 },
             };
-            string fs = ser.Serialize(doc, null).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual("<doc><field name=\"Id\">" + doc.Id + "</field><field name=\"Dictone\">1</field><field name=\"Dicttwo\">2</field></doc>", fs);
         }
 
@@ -162,10 +137,7 @@ namespace SolrNet.Tests {
                     {"two", 2},
                 },
             };
-            string fs = ser.Serialize(doc, null).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual("<doc><field name=\"Id\">" + doc.Id + "</field><field name=\"Dictone\">1</field><field name=\"Dicttwo\">2</field></doc>", fs);
         }
 
@@ -182,10 +154,7 @@ namespace SolrNet.Tests {
                     {"SomeCollection", new[] {"a", "b", "c"}},
                 },
             };
-            string fs = ser.Serialize(doc, null).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual("<doc><field name=\"Id\">5</field><field name=\"one\">1</field><field name=\"two\">2</field><field name=\"fecha\">2010-01-01T00:00:00Z</field><field name=\"SomeCollection\">a</field><field name=\"SomeCollection\">b</field><field name=\"SomeCollection\">c</field></doc>", fs);
         }
 
@@ -194,10 +163,7 @@ namespace SolrNet.Tests {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithNullableDate>(mapper, new DefaultFieldSerializer());
             var doc = new TestDocWithNullableDate();
-            string fs = ser.Serialize(doc, null).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual("<doc />", fs);
         }
 
@@ -208,10 +174,7 @@ namespace SolrNet.Tests {
             var doc = new TestDocWithString {
                 Desc = @"ÚóÁ⌠╒"""
             };
-            string fs = ser.Serialize(doc, null).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual(@"<doc><field name=""Desc"">ÚóÁ⌠╒""</field></doc>", fs);
         }
 
@@ -222,10 +185,7 @@ namespace SolrNet.Tests {
             var doc = new TestDocWithString {
                 Desc = "hello"
             };
-            string fs = ser.Serialize(doc, 2.1).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(doc, 2.1).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual(@"<doc boost=""2.1""><field name=""Desc"">hello</field></doc>", fs);            
         }
 
@@ -236,10 +196,7 @@ namespace SolrNet.Tests {
             var doc = new TestDocWithBoostedString {
                 Desc = "hello"
             };
-            string fs = ser.Serialize(doc, null).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual(@"<doc><field name=""Desc"" boost=""1.45"">hello</field></doc>", fs);
         }
 
@@ -251,10 +208,7 @@ namespace SolrNet.Tests {
                 Desc = "Description",
                 Desc1 = "Description1"
             };
-            string fs = ser.Serialize(doc, null).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual(@"<doc><field name=""Desc1"">Description1</field><field name=""Desc"">Description</field></doc>", fs);
         }
 
@@ -262,10 +216,7 @@ namespace SolrNet.Tests {
         public void PropertyWithoutGetter() {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithoutGetter>(mapper, new DefaultFieldSerializer());
-            string fs = ser.Serialize(new TestDocWithoutGetter(), null).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(new TestDocWithoutGetter(), null).ToString();
         }
 
         [Test]
@@ -273,10 +224,7 @@ namespace SolrNet.Tests {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithLocation>(mapper, new DefaultFieldSerializer());
             var testDoc = new TestDocWithLocation { Loc = new Location(12.2, -12.3) };
-            string fs = ser.Serialize(testDoc, null).OuterXml;
-            var xml = new XmlDocument();
-            xml.LoadXml(fs);
-            Console.WriteLine(fs);
+            string fs = ser.Serialize(testDoc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual(@"<doc><field name=""location"">12.2,-12.3</field></doc>", fs);
         }
 

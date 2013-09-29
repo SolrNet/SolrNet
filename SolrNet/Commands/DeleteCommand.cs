@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Xml;
+using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
 using SolrNet.Utils;
 
@@ -46,13 +46,11 @@ namespace SolrNet.Commands {
 		public bool? FromCommitted { get; set; }
 
 		public string Execute(ISolrConnection connection) {
-			var xml = new XmlDocument();
-			var deleteNode = xml.CreateElement("delete");
+			var deleteNode = new XElement("delete");
             if (parameters != null) {
                 if (parameters.CommitWithin.HasValue) {
-                    var attr = xml.CreateAttribute("commitWithin");
-                    attr.Value = parameters.CommitWithin.Value.ToString(CultureInfo.InvariantCulture);
-                    deleteNode.Attributes.Append(attr);
+                    var attr = new XAttribute("commitWithin", parameters.CommitWithin.Value.ToString(CultureInfo.InvariantCulture));
+                    deleteNode.Add(attr);
                 }
             }
 		    var param = new[] {
@@ -61,13 +59,12 @@ namespace SolrNet.Commands {
 		    };
 		    foreach (var p in param) {
 				if (p.Key.HasValue) {
-					var att = xml.CreateAttribute(p.Value);
-					att.InnerText = p.Key.Value.ToString().ToLower();
-					deleteNode.Attributes.Append(att);
+                    var att = new XAttribute(p.Value, p.Key.Value.ToString().ToLower());
+					deleteNode.Add(att);
 				}
 			}
-			deleteNode.InnerXml = string.Join("", deleteParam.ToXmlNode().Select(n => n.OuterXml).ToArray());
-			return connection.Post("/update", deleteNode.OuterXml);
+            deleteNode.Add(deleteParam.ToXmlNode().ToArray());
+			return connection.Post("/update", deleteNode.ToString(SaveOptions.DisableFormatting));
 		}
 	}
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
-using System.Xml.XPath;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
@@ -19,7 +18,7 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <param name="xml"></param>
         /// <param name="results"></param>
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
-            var clusterNode = xml.XPathSelectElement("response/arr[@name='clusters']");
+            var clusterNode = xml.Element("response").Elements("arr").FirstOrDefault(x => x.Attribute("name").ValueOrNull() == "clusters");
             if (clusterNode != null)
                 results.Clusters = ParseClusterNode(clusterNode);
         }

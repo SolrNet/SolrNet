@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-#region license
+﻿#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +21,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Castle.Core;
 using MbUnit.Framework;
 using SolrNet.Attributes;
 using SolrNet.Impl;
@@ -219,7 +216,7 @@ namespace SolrNet.Tests {
             var results = ParseFromResource<TestDocWithGuid>("Resources.responseWithGuid.xml");
             Assert.AreEqual(1, results.Count);
             var doc = results[0];
-            Console.WriteLine(doc.Key);
+            //Console.WriteLine(doc.Key);
         }
 
         [Test]
@@ -227,7 +224,7 @@ namespace SolrNet.Tests {
             var results = ParseFromResource<TestDocWithEnum>("Resources.responseWithEnumAsInt.xml");
             Assert.AreEqual(1, results.Count);
             var doc = results[0];
-            Console.WriteLine(doc.En);
+            //Console.WriteLine(doc.En);
         }
 
         [Test]
@@ -235,7 +232,7 @@ namespace SolrNet.Tests {
             var results = ParseFromResource<TestDocWithEnum>("Resources.responseWithEnumAsString.xml");
             Assert.AreEqual(1, results.Count);
             var doc = results[0];
-            Console.WriteLine(doc.En);
+            //Console.WriteLine(doc.En);
         }
 
         [Test]
@@ -348,8 +345,8 @@ namespace SolrNet.Tests {
                     orderby kv.total descending
                     select kv;
 
-            foreach (var i in q)
-                Console.WriteLine("{0} {1}: {2} executions, {3}ms", i.method.DeclaringType, i.method, i.count, i.total);
+            //foreach (var i in q)
+            //    Console.WriteLine("{0} {1}: {2} executions, {3}ms", i.method.DeclaringType, i.method, i.count, i.total);
 
         }
 
@@ -376,14 +373,14 @@ namespace SolrNet.Tests {
 		    var r = new SolrQueryResults<TestDocumentWithArrays>();
 		    parser.Parse(xml, r);
 			Assert.IsNotNull(r.FacetFields);
-			Console.WriteLine(r.FacetFields.Count);
+			//Console.WriteLine(r.FacetFields.Count);
 			Assert.IsTrue(r.FacetFields.ContainsKey("cat"));
 			Assert.IsTrue(r.FacetFields.ContainsKey("inStock"));
 			Assert.AreEqual(2, r.FacetFields["cat"].First(q => q.Key == "connector").Value);
             Assert.AreEqual(2, r.FacetFields["cat"].First(q => q.Key == "").Value); // facet.missing as empty string
 
 			Assert.IsNotNull(r.FacetQueries);
-			Console.WriteLine(r.FacetQueries.Count);
+			//Console.WriteLine(r.FacetQueries.Count);
 			Assert.AreEqual(1, r.FacetQueries.Count);
 		}
 
@@ -446,8 +443,8 @@ namespace SolrNet.Tests {
         public void ParseHighlighting2() {
             var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting2.xml"));
             var first = highlights.First();
-            first.Value.Keys.ToList().ForEach(Console.WriteLine);
-            first.Value["source_en"].ToList().ForEach(Console.WriteLine);
+            //first.Value.Keys.ToList().ForEach(Console.WriteLine);
+            //first.Value["source_en"].ToList().ForEach(Console.WriteLine);
             Assert.AreEqual(3, first.Value["source_en"].Count);
         }
 
@@ -456,10 +453,10 @@ namespace SolrNet.Tests {
         {
             var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting2.xml"));
             var first = highlights.First();
-            foreach (var i in first.Value.Snippets.Keys)
-                Console.WriteLine(i);
-            foreach (var i in first.Value.Snippets["source_en"])
-                Console.WriteLine(i);
+            //foreach (var i in first.Value.Snippets.Keys)
+            //    Console.WriteLine(i);
+            //foreach (var i in first.Value.Snippets["source_en"])
+            //    Console.WriteLine(i);
             Assert.AreEqual(3, first.Value.Snippets["source_en"].Count);
         }
         
@@ -567,7 +564,7 @@ namespace SolrNet.Tests {
             Assert.IsTrue(mlt.ContainsKey(product2.Id));
             Assert.AreEqual(1, mlt[product1.Id].Count);
             Assert.AreEqual(1, mlt[product2.Id].Count);
-            Console.WriteLine(mlt[product1.Id][0].Id);
+            //Console.WriteLine(mlt[product1.Id][0].Id);
         }
 
         [Test]
@@ -666,14 +663,14 @@ namespace SolrNet.Tests {
 		    var r = new SolrQueryResults<Product>();
 		    parser.Parse(xml, r);
 			Assert.IsNotNull(r.FacetPivots);
-			Console.WriteLine(r.FacetPivots.Count);
+			//Console.WriteLine(r.FacetPivots.Count);
 			Assert.IsTrue(r.FacetPivots.ContainsKey("inStock,manu"));
 
 			Assert.AreEqual(2, r.FacetPivots["inStock,manu"].Count);
 			Assert.AreEqual("inStock", r.FacetPivots["inStock,manu"][0].Field);
 			Assert.AreEqual(10, r.FacetPivots["inStock,manu"][0].ChildPivots.Count); 
 
-		}
+		} 
 
         [Test]
         public void PropertyWithoutSetter() {

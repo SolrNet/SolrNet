@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace SolrNet.Impl.FieldParsers {

@@ -16,7 +16,6 @@
 
 #endregion
 
-using System.Xml;
 using MbUnit.Framework;
 using SolrNet.Schema;
 using SolrNet.Tests.Utils;

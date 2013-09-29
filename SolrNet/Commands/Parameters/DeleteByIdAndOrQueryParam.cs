@@ -18,7 +18,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
+using System.Xml.Linq;
 using SolrNet.Impl;
 
 namespace SolrNet.Commands.Parameters {
@@ -37,19 +37,13 @@ namespace SolrNet.Commands.Parameters {
             this.querySerializer = querySerializer;
         }
 
-        public IEnumerable<XmlNode> ToXmlNode() {
-            var xml = new XmlDocument();
-            if (ids != null) {
-                foreach (var i in ids) {
-                    var node = xml.CreateElement("id");
-                    node.InnerText = i;
-                    yield return node;
-                }
-            }
+        public IEnumerable<XElement> ToXmlNode() {
+            if (ids != null)
+                foreach (var i in ids)
+                    yield return new XElement("id", i);
             if (query != null) {
-                var queryNode = xml.CreateElement("query");
-                queryNode.InnerText = querySerializer.Serialize(query);
-                yield return queryNode;
+                var value = querySerializer.Serialize(query);
+                yield return new XElement("query", value);
             }
         }
     }

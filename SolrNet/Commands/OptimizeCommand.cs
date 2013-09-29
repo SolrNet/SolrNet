@@ -15,7 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -54,26 +54,28 @@ namespace SolrNet.Commands {
         /// <param name="connection"></param>
         /// <returns></returns>
 		public string Execute(ISolrConnection connection) {
-			var xml = new XmlDocument();
-			var node = xml.CreateElement("optimize");
+			var node = new XElement("optimize");
 
-            foreach (var p in new[] { new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), new KeyValuePair<bool?, string>(ExpungeDeletes, "expungeDeletes") })
+            var ps = new[] {
+                new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), 
+                new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), 
+                new KeyValuePair<bool?, string>(ExpungeDeletes, "expungeDeletes")
+            };
+
+            foreach (var p in ps)
             {
                 if (!p.Key.HasValue) continue;
 
-                var att = xml.CreateAttribute(p.Value);
-                att.InnerText = p.Key.Value.ToString().ToLower();
-                node.Attributes.Append(att);
+                var att = new XAttribute(p.Value, p.Key.Value.ToString().ToLower());
+                node.Add(att);
             }
 
-            if (MaxSegments.HasValue)
-            {
-                var att = xml.CreateAttribute("maxSegments");
-                att.InnerText = MaxSegments.ToString();
-                node.Attributes.Append(att);
+            if (MaxSegments.HasValue) {
+                var att = new XAttribute("maxSegments", MaxSegments.ToString());
+                node.Add(att);
             }
 
-			return connection.Post("/update", node.OuterXml);
+			return connection.Post("/update", node.ToString(SaveOptions.DisableFormatting));
 		}
 	}
 }

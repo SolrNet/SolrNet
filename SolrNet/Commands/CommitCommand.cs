@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -49,8 +49,7 @@ namespace SolrNet.Commands {
         public int? MaxSegments { get; set; }
 
 		public string Execute(ISolrConnection connection) {
-			var xml = new XmlDocument();
-			var node = xml.CreateElement("commit");
+			var node = new XElement("commit");
 
 		    var keyValuePairs = new[] {
 		        new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), 
@@ -62,18 +61,16 @@ namespace SolrNet.Commands {
                 if (!p.Key.HasValue) 
                     continue;
 
-                var att = xml.CreateAttribute(p.Value);
-                att.InnerText = p.Key.Value.ToString().ToLower();
-                node.Attributes.Append(att);
+                var att = new XAttribute(p.Value, p.Key.Value.ToString().ToLower());
+                node.Add(att);
             }
 
             if (MaxSegments.HasValue) {
-                var att = xml.CreateAttribute("maxSegments");
-                att.InnerText = MaxSegments.ToString();
-                node.Attributes.Append(att);    
+                var att = new XAttribute("maxSegments", MaxSegments.ToString());
+                node.Add(att);
             }
 
-			return connection.Post("/update", node.OuterXml);
+			return connection.Post("/update", node.ToString(SaveOptions.DisableFormatting));
 		}
 	}
 }

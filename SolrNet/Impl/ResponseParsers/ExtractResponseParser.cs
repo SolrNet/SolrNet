@@ -46,13 +46,8 @@ namespace SolrNet.Impl.ResponseParsers
 
             var metadataElements = response.Element("response")
                 .Elements("lst")
-                .Where(x => x.Attribute("name").ValueOrNull() == "null_metadata")
+                .Where(X.AttrEq("name", "null_metadata"))
                 .SelectMany(x => x.Elements("att"));
-
-            if (metadataElements == null)
-            {
-                return new List<ExtractField>();
-            }
 
             var metadata = new List<ExtractField>(metadataElements.Count());
             foreach (var node in metadataElements)

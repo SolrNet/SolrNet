@@ -335,7 +335,7 @@
     <Compile Include="Utils\TypeHelper.cs" />
     <Compile Include="Utils\Unit.cs" />
     <Compile Include="Utils\UriValidator.cs" />
-    <Compile Include="Utils\XAttributeExtensions.cs" />
+    <Compile Include="Utils\X.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">

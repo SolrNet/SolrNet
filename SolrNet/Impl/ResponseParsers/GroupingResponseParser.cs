@@ -27,7 +27,9 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <param name="xml"></param>
         /// <param name="results"></param>
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
-            var mainGroupingNode = xml.Element("response").Elements("lst").FirstOrDefault(x => x.Attribute("name").ValueOrNull() == "grouped");
+            var mainGroupingNode = xml.Element("response")
+                .Elements("lst")
+                .FirstOrDefault(X.AttrEq("name", "grouped"));
             if (mainGroupingNode == null)
                 return;
 
@@ -47,8 +49,8 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <returns></returns>
         public GroupedResults<T> ParseGroupedResults(XElement groupNode) {
 
-            var ngroupNode = groupNode.Elements("int").FirstOrDefault(x => x.Attribute("name").ValueOrNull() == "ngroups");
-            var matchesValue = int.Parse(groupNode.Elements("int").First(x => x.Attribute("name").ValueOrNull() == "matches").Value);
+            var ngroupNode = groupNode.Elements("int").FirstOrDefault(X.AttrEq("name", "ngroups"));
+            var matchesValue = int.Parse(groupNode.Elements("int").First(X.AttrEq("name", "matches")).Value);
 
             return new GroupedResults<T> {
                 Groups = ParseGroup(groupNode).ToList(),
@@ -64,14 +66,14 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <returns></returns>
         public IEnumerable<Group<T>> ParseGroup(XElement node) {
             return
-                from docNode in node.Elements("arr").Where(x => x.Attribute("name").ValueOrNull() == "groups").Elements()
-                let groupValueNode = docNode.Elements().FirstOrDefault(x => x.Attribute("name").ValueOrNull() == "groupValue")
+                from docNode in node.Elements("arr").Where(X.AttrEq("name", "groups")).Elements()
+                let groupValueNode = docNode.Elements().FirstOrDefault(X.AttrEq("name", "groupValue"))
                 where groupValueNode != null
                 let groupValue = groupValueNode.Name == "null"
                                      ? "UNMATCHED"
                                      : //These are the results that do not match the grouping
                                  groupValueNode.Value
-                let resultNode = docNode.Elements("result").First(x => x.Attribute("name").ValueOrNull() == "doclist")
+                let resultNode = docNode.Elements("result").First(X.AttrEq("name", "doclist"))
                 let numFound = Convert.ToInt32(resultNode.Attribute("numFound").Value)
                 let docs = docParser.ParseResults(resultNode).ToList()
                 select new Group<T> {

@@ -63,11 +63,11 @@ namespace SolrNet.Impl.ResponseParsers {
         private static TermVectorDocumentResult ParseDoc(XElement docNode) {
 			var fieldNodes = docNode.Elements();
 		    var uniqueKey = fieldNodes
-		        .Where(x => x.Attribute("name").ValueOrNull() == "uniqueKey")
+		        .Where(X.AttrEq("name", "uniqueKey"))
 		        .Select(x => x.Value)
 		        .FirstOrDefault();
 		    var termVectorResults = fieldNodes
-		        .Where(x => x.Attribute("name").ValueOrNull() != "uniqueKey")
+		        .Where(x => !X.AttrEq("name", "uniqueKey")(x))
 		        .SelectMany(ParseField)
                 .ToList();
 

@@ -28,7 +28,9 @@ namespace SolrNet.Impl.ResponseParsers {
     /// <typeparam name="T">Document type</typeparam>
     public class FacetsResponseParser<T> : ISolrAbstractResponseParser<T> {
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
-            var mainFacetNode = xml.Element("response").Elements("lst").FirstOrDefault(x => x.Attribute("name").ValueOrNull() == "facet_counts");
+            var mainFacetNode = xml.Element("response")
+                .Elements("lst")
+                .FirstOrDefault(X.AttrEq("name", "facet_counts"));
             if (mainFacetNode != null) {
                 results.FacetQueries = ParseFacetQueries(mainFacetNode);
                 results.FacetFields = ParseFacetFields(mainFacetNode);
@@ -45,7 +47,7 @@ namespace SolrNet.Impl.ResponseParsers {
         public IDictionary<string, int> ParseFacetQueries(XElement node) {
             var d = new Dictionary<string, int>();
             var facetQueries = node.Elements("lst")
-                .Where(x => x.Attribute("name").ValueOrNull() == "facet_queries")
+                .Where(X.AttrEq("name", "facet_queries"))
                 .Elements();
             foreach (var fieldNode in facetQueries) {
                 var key = fieldNode.Attribute("name").Value;
@@ -63,7 +65,7 @@ namespace SolrNet.Impl.ResponseParsers {
         public IDictionary<string, ICollection<KeyValuePair<string, int>>> ParseFacetFields(XElement node) {
             var d = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
             var facetFields = node.Elements("lst")
-                .Where(x => x.Attribute("name").ValueOrNull() == "facet_fields")
+                .Where(X.AttrEq("name", "facet_fields"))
                 .SelectMany(x => x.Elements());
             foreach (var fieldNode in facetFields) {
                 var field = fieldNode.Attribute("name").Value;
@@ -86,7 +88,8 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <returns></returns>
         public IDictionary<string, DateFacetingResult> ParseFacetDates(XElement node) {
             var d = new Dictionary<string, DateFacetingResult>();
-            var facetDateNode = node.Elements("lst").Where(x => x.Attribute("name").ValueOrNull() == "facet_dates");
+            var facetDateNode = node.Elements("lst")
+                .Where(X.AttrEq("name", "facet_dates"));
             if (facetDateNode != null) {
                 foreach (var fieldNode in facetDateNode.Elements()) {
                     var name = fieldNode.Attribute("name").Value;
@@ -139,7 +142,8 @@ namespace SolrNet.Impl.ResponseParsers {
 		public IDictionary<string, IList<Pivot>> ParseFacetPivots(XElement node)
 		{
 			var d = new Dictionary<string, IList<Pivot>>();
-            var facetPivotNode = node.Elements("lst").Where(x => x.Attribute("name").ValueOrNull() == "facet_pivot");
+            var facetPivotNode = node.Elements("lst")
+                .Where(X.AttrEq("name", "facet_pivot"));
             foreach (var fieldNode in facetPivotNode.Elements()) {
                 var name = fieldNode.Attribute("name").Value;
                 d[name] = fieldNode.Elements("lst").Select(ParsePivotNode).ToArray();
@@ -151,11 +155,11 @@ namespace SolrNet.Impl.ResponseParsers {
 		{
 			Pivot pivot = new Pivot();
 
-            pivot.Field = node.Elements("str").First(x => x.Attribute("name").ValueOrNull() == "field").Value;
-            pivot.Value = node.Elements().First(x => x.Attribute("name").ValueOrNull() == "value").Value;
-            pivot.Count = int.Parse(node.Elements("int").First(x => x.Attribute("name").ValueOrNull() == "count").Value);
+            pivot.Field = node.Elements("str").First(X.AttrEq("name", "field")).Value;
+            pivot.Value = node.Elements().First(X.AttrEq("name", "value")).Value;
+            pivot.Count = int.Parse(node.Elements("int").First(X.AttrEq("name", "count")).Value);
 
-            var childPivotNodes = node.Elements("arr").Where(x => x.Attribute("name").ValueOrNull() == "pivot").ToList();
+            var childPivotNodes = node.Elements("arr").Where(X.AttrEq("name", "pivot")).ToList();
 			if (childPivotNodes.Count > 0)
 			{
 				pivot.HasChildPivots = true;

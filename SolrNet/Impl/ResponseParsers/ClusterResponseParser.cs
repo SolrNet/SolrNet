@@ -18,7 +18,9 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <param name="xml"></param>
         /// <param name="results"></param>
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
-            var clusterNode = xml.Element("response").Elements("arr").FirstOrDefault(x => x.Attribute("name").ValueOrNull() == "clusters");
+            var clusterNode = xml.Element("response")
+                .Elements("arr")
+                .FirstOrDefault(X.AttrEq("name", "clusters"));
             if (clusterNode != null)
                 results.Clusters = ParseClusterNode(clusterNode);
         }

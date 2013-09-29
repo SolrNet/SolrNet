@@ -34,9 +34,11 @@ namespace SolrNet.Impl.ResponseParsers {
         }
 
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
-            var mainCollapseNode = xml.Element("response").Elements("lst").FirstOrDefault(x => x.Attribute("name").ValueOrNull() == "collapse_counts");
+            var mainCollapseNode = xml.Element("response")
+                .Elements("lst")
+                .FirstOrDefault(X.AttrEq("name", "collapse_counts"));
             if (mainCollapseNode != null) {
-                var value = mainCollapseNode.Elements("str").First(x => x.Attribute("name").ValueOrNull() == "field").Value;
+                var value = mainCollapseNode.Elements("str").First(X.AttrEq("name", "field")).Value;
                 results.Collapsing = new CollapseResults {
                     CollapsedDocuments = ParseCollapsedResults(mainCollapseNode).ToArray(),
                     Field = value,
@@ -51,15 +53,15 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <returns></returns>
         public static IEnumerable<CollapsedDocument> ParseCollapsedResults(XElement node) {
             var results = node.Elements("lst")
-                .Where(x => x.Attribute("name").ValueOrNull() == "results")
+                .Where(X.AttrEq("name", "results"))
                 .Elements();
             return
                 results.Select(docNode => {
                     string fieldValue = docNode.Elements("str")
-                        .First(x => x.Attribute("name").ValueOrNull() == "fieldValue")
+                        .First(X.AttrEq("name", "fieldValue"))
                         .Value;
                     var collapseCountRaw = docNode.Elements("int")
-                        .First(x => x.Attribute("name").ValueOrNull() == "collapseCount")
+                        .First(X.AttrEq("name", "collapseCount"))
                         .Value;
                     int collapseCount = int.Parse(collapseCountRaw);
                     return new CollapsedDocument {

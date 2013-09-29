@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
@@ -27,6 +28,7 @@ namespace SolrNet.DSL {
     /// <summary>
     /// Solr DSL Entry point
     /// </summary>
+    [Obsolete("Deprecated. Use ISolrOperations instead")]
     public static class Solr {
         public static DeleteBy Delete {
             get { return new DeleteBy(Connection); }

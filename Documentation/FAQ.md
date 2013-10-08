@@ -12,6 +12,10 @@ It's very uncommon for Solr to make breaking changes in core functionality betwe
 
 You're probably using an outdated version. [Upgrade to a recent build](README.md#downloads)
 
+#### I'm getting an error "'SolrConnection' already registered in container"
+
+Make sure you call `Startup.Init` [only once per document type in your application](Initialization.md).
+
 #### I created my SolrNet document type, but when I add an instance to Solr I get an 'unknown field' error.
 
 You need to edit the schema.xml in Solr to reflect the fields mapped in your .NET document type.

@@ -52,6 +52,7 @@ In a nutshell:
  * Don't worry about code formatting, styles, etc.
  * Tests are a must. Without tests, changes will not be merged, except for very specific cases.
  * Whenever possible, favor immutable classes and pure code.
+ * If you're adding a new feature or making a breaking change, update the corresponding documentation.
 
 You can also contribute by donating a few bucks:
 

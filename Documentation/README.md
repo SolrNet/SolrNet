@@ -36,6 +36,7 @@ Otherwise, NuGet packages (currently outdated) are available:
  * [Accessing multiple Solr cores / instances](Multi-core-instance.md)
  * [Mapping validation](Schema-Mapping-validation.md)
  * [Sample web application](Sample-application.md)
+ * [FAQ](FAQ.md)
  * [Websites, products and companies using SolrNet](Powered-by-SolrNet.md)
 
 ### Mailing list

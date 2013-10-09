@@ -25,7 +25,7 @@ There's also `AddWithBoost()` (also with single-document and `IEnumerable` overl
 `Add()` supports the `commitWithin` and `overwrite` parameters. See the [Solr wiki](http://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22add.22) for more information about them.
 
 ### Retrieve
-See Querying
+See [Querying](Querying.md)
 
 ### Delete
 The ISolrOperations<T> interface has several `Delete()` overloads:

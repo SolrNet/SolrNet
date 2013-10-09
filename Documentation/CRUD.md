@@ -64,6 +64,5 @@ solr.Optimize();
 Additional information on committing and optimization considerations can be found [here](http://stackoverflow.com/a/3737972/21239)
 
 ### Rollback
-(SolrNet 0.4.0)
 
 `Rollback()` rollbacks all add/deletes made to the index since the last commit. Note that this is nothing like the rollback of relational databases. See the [Solr wiki](http://wiki.apache.org/solr/UpdateXmlMessages#A.22rollback.22) for more information.

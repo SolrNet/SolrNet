@@ -33,7 +33,7 @@ Date facet queries create facets from date ranges. Sample code:
 
 ```C#
 ISolrOperations<Product> solr = ...
-ISolrQueryResults<Product> results = solr.Query(SolrQuery.All, new QueryOptions {
+var results = solr.Query(SolrQuery.All, new QueryOptions {
     Facet = new FacetParameters {
         Queries = new[] {
             new SolrFacetDateQuery("timestamp", new DateTime(2001, 1, 1).AddDays(-1) /* range start */, new DateTime(2001, 1, 1).AddMonths(1) /* range end */, "+1DAY" /* gap */) {

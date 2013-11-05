@@ -16,6 +16,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl;
@@ -226,6 +228,38 @@ namespace SolrNet.Tests {
             var testDoc = new TestDocWithLocation { Loc = new Location(12.2, -12.3) };
             string fs = ser.Serialize(testDoc, null).ToString(SaveOptions.DisableFormatting);
             Assert.AreEqual(@"<doc><field name=""location"">12.2,-12.3</field></doc>", fs);
+        }
+
+        [Test]
+        public void SerializeSolrDocument() {
+            var serializer = new SolrDocumentSerializer();
+            var field = new Func<string, string, SolrField>((n,v) => new SolrField(n,v, null));
+            var idField = new Func<int, SolrField>(id => field("id", id.ToString()));
+
+            var doc = new SolrDocument(new[] {
+                SolrDocumentOrField.Field(idField(10)),
+                SolrDocumentOrField.Field(field("type_s", "parent")),
+                SolrDocumentOrField.Field(field("BRAND_s", "Nike")),
+                SolrDocumentOrField.Document(new SolrDocument(new[] {
+                    idField(11),
+                    field("COLOR_s", "Red"),
+                    field("SIZE_s", "XL"),
+                }.Select(SolrDocumentOrField.Field), null)),
+            }, null);
+            var xml = serializer.Serialize(doc, null);
+            var expected = XElement.Parse(@"<doc>
+  <field name=""id"">10</field>
+  <field name=""type_s"">parent</field>
+  <field name=""BRAND_s"">Nike</field>
+  <doc>
+    <field name=""id"">11</field>
+    <field name=""COLOR_s"">Red</field>
+    <field name=""SIZE_s"">XL</field>
+  </doc>
+</doc>");
+
+            if (!XNode.DeepEquals(xml, expected))
+                Assert.Fail("Expected {0}, was {1}", expected.ToString(), xml.ToString());
         }
 
 	}

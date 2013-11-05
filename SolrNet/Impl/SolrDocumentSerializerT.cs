@@ -16,8 +16,6 @@
 
 using System;
 using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Web.UI;
 using System.Xml.Linq;
 
 namespace SolrNet.Impl {
@@ -32,16 +30,6 @@ namespace SolrNet.Impl {
         public SolrDocumentSerializer(IReadOnlyMappingManager mappingManager, ISolrFieldSerializer fieldSerializer) {
             this.mappingManager = mappingManager;
             this.fieldSerializer = fieldSerializer;
-        }
-
-        private static readonly Regex ControlCharacters =
-            new Regex(@"[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD\u10000-u10FFFF]", RegexOptions.Compiled);
-
-        // http://stackoverflow.com/a/14323524/21239
-        public static string RemoveControlCharacters(string xml) {
-            if (xml == null)
-                return null;
-            return ControlCharacters.Replace(xml, "");
         }
 
         public XElement Serialize(T doc, double? boost) {
@@ -69,7 +57,7 @@ namespace SolrNet.Impl {
                         fieldNode.Add(boostAtt);
                     }
 
-                    fieldNode.Value = RemoveControlCharacters(n.FieldValue);
+                    fieldNode.Value = SolrDocumentSerializer.RemoveControlCharacters(n.FieldValue);
                     docNode.Add(fieldNode);
                 }
             }

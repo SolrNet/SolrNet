@@ -41,7 +41,7 @@ namespace SolrNet.Impl {
             foreach (var kv in doc) {
                 var nodes = serializer.Serialize(kv.Value);
                 foreach (var n in nodes) {
-                    var value = SolrDocumentSerializer<object>.RemoveControlCharacters(n.FieldValue);
+                    var value = SolrDocumentSerializer.RemoveControlCharacters(n.FieldValue);
                     var fieldNode = new XElement("field", new XAttribute("name", kv.Key), value);
                     docNode.Add(fieldNode);
                 }

@@ -276,7 +276,7 @@
     <Compile Include="Order.cs" />
     <Compile Include="RandomSortOrder.cs" />
     <Compile Include="ResponseHeader.cs" />
-    <Compile Include="Impl\SolrDocumentSerializer.cs" />
+    <Compile Include="Impl\SolrDocumentSerializerT.cs" />
     <Compile Include="Mapping\Validation\IMappingValidator.cs" />
     <Compile Include="Mapping\Validation\Rules\BoolSolrFieldTypeChecker.cs" />
     <Compile Include="Mapping\Validation\Rules\DateTimeSolrFieldTypeChecker.cs" />

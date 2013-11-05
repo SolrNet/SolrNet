@@ -38,7 +38,7 @@ namespace SolrNet.Mapping.Validation.Rules {
         /// </returns>
         public IEnumerable<ValidationResult> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
 
-            foreach (SolrField solrField in solrSchema.SolrFields) {
+            foreach (var solrField in solrSchema.SolrFields) {
                 if (solrField.IsRequired) {
                     bool fieldFoundInMappingOrCopyFields = mappingManager.GetFields(documentType).ContainsKey(solrField.Name);
 

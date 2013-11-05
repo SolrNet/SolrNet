@@ -98,7 +98,7 @@ namespace SolrNet.Tests {
             mapper.Add(typeof(SchemaMappingTestDocument).GetProperty("DynamicMapped"), "ma_*");
             var schema = new SolrSchema();
             var fieldType = new SolrFieldType("string", "solr.StrField");
-            schema.SolrFields.Add(new SolrField("ma_uaua", fieldType));
+            schema.SolrFields.Add(new Schema.SolrField("ma_uaua", fieldType));
             var results = rule.Validate(typeof(SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
             Assert.AreEqual(0, results.Count);
         }

@@ -42,26 +42,31 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public SpellCheckResults ParseSpellChecking(XElement node) {
+        public SpellCheckResults ParseSpellChecking(XElement node){
             var r = new SpellCheckResults();
             var suggestionsNode = node.XPathSelectElement("lst[@name='suggestions']");
-            var collationNode = suggestionsNode.XPathSelectElement("str[@name='collation']");
-            if (collationNode != null)
-                r.Collation = collationNode.Value;
+            var collationNode = suggestionsNode.XPathSelectElement("lst[@name='collation']");
+            if (collationNode != null){
+                r.Collation = collationNode.XPathSelectElement("str[@name='collationQuery']").Value;
+            }
             var spellChecks = suggestionsNode.Elements("lst");
-            foreach (var c in spellChecks) {
-                var result = new SpellCheckResult();
-                result.Query = c.Attribute("name").Value;
-                result.NumFound = Convert.ToInt32(c.XPathSelectElement("int[@name='numFound']").Value);
-                result.EndOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='endOffset']").Value);
-                result.StartOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='startOffset']").Value);
-                var suggestions = new List<string>();
-                var suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/str");
-                foreach (var suggestionNode in suggestionNodes) {
-                    suggestions.Add(suggestionNode.Value);
+            foreach (var c in spellChecks){
+                try{
+                    var result = new SpellCheckResult();
+                    result.Query = c.Attribute("name").Value;
+                    result.NumFound = Convert.ToInt32(c.XPathSelectElement("int[@name='numFound']").Value);
+                    result.EndOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='endOffset']").Value);
+                    result.StartOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='startOffset']").Value);
+                    var suggestions = new List<string>();
+                    var suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']");
+                    var suggestions_lst = suggestionNodes.Elements("lst");
+                    foreach (var suggestionNode in suggestions_lst){
+                        suggestions.Add(suggestionNode.XPathSelectElement("str[@name='word']").Value);
+                    }
+                    result.Suggestions = suggestions;
+                    r.Add(result);
                 }
-                result.Suggestions = suggestions;
-                r.Add(result);
+                catch (Exception e) { }
             }
             return r;
         }

@@ -6,7 +6,7 @@ If you're not familiar with Solr, take your time to follow the [Solr tutorial](h
 
 ### Downloads
 
-It's currently recommended to get the latest binaries directly from the [build server](http://teamcity.codebetter.com/viewType.html?buildTypeId=bt290&tab=buildTypeHistoryList) (see "Artifacts").  
+It's currently recommended to get the latest binaries directly from the [build server](http://teamcity.codebetter.com/viewType.html?buildTypeId=bt290&tab=buildTypeHistoryList&guest=1) (see "Artifacts").  
 Otherwise, NuGet packages (currently outdated) are available:
 
  * [SolrNet](https://www.nuget.org/packages/SolrNet/) (core library)

@@ -11,6 +11,7 @@ var mapper = new MappingManager();
 var container = new Container(Startup.Container);
 container.RemoveAll<IReadOnlyMappingManager>();
 container.Register<IReadOnlyMappingManager>(c => mapper);
+ServiceLocator.SetLocatorProvider(() => container);
 Startup.Init<Document>("http://localhost:8983/solr");
 ```
 

@@ -262,7 +262,11 @@ namespace SolrNet.Impl {
         }
 
         public SolrSchema GetSchema() {
-            return basicServer.GetSchema();
+            return basicServer.GetSchema("schema.xml");
+        }
+
+        public SolrSchema GetSchema(string schemaFileName) {
+            return basicServer.GetSchema(schemaFileName);
         }
 
         public IEnumerable<ValidationResult> EnumerateValidationResults() {

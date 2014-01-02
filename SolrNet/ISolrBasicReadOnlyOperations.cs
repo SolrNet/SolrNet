@@ -51,8 +51,9 @@ namespace SolrNet {
         /// <summary>
         /// Gets the schema.
         /// </summary>
-        /// <returns>Solr schema</returns>
-        SolrSchema GetSchema();
+        /// <param name="schemaFileName">Name of the schema file.</param>
+        /// <returns> Solr schema </returns>
+        SolrSchema GetSchema(string schemaFileName);
 
         /// <summary>
         /// Gets the current status of the DataImportHandler.

@@ -118,8 +118,8 @@ namespace SolrNet.Impl {
             return SendAndParseHeader(new PingCommand());
         }
 
-        public SolrSchema GetSchema() {
-            string schemaXml = new GetSchemaCommand().Execute(connection);
+        public SolrSchema GetSchema(string schemaFileName) {
+            string schemaXml = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
             var schema = XDocument.Parse(schemaXml);
             return schemaParser.Parse(schema);
         }

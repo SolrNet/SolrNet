@@ -14,28 +14,47 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace SolrNet {
+    public abstract class StatsResultValues {
+        public abstract T Match<T>(Func<StatsResultTypedValues<double>, T> ifDouble, Func<StatsResultTypedValues<string>, T> ifString, Func<StatsResultTypedValues<DateTimeOffset>, T> ifDate);
+    }
+
+    public abstract class StatsResultTypedValues<T> : StatsResultValues {
+        public T Min { get; set; }
+        public T Max { get; set; }
+        public T Sum { get; set; }
+        public T Mean { get; set; }
+
+        private StatsResultTypedValues() { }
+
+        public class StatsResultTypedValuesDouble : StatsResultTypedValues<double> {
+            public override T Match<T>(Func<StatsResultTypedValues<double>, T> ifDouble, Func<StatsResultTypedValues<string>, T> ifString, Func<StatsResultTypedValues<DateTimeOffset>, T> ifDate) {
+                return ifDouble(this);
+            }
+        }
+
+        public class StatsResultTypedValuesString : StatsResultTypedValues<string> {
+            public override T Match<T>(Func<StatsResultTypedValues<double>, T> ifDouble, Func<StatsResultTypedValues<string>, T> ifString, Func<StatsResultTypedValues<DateTimeOffset>, T> ifDate) {
+                return ifString(this);
+            }
+        }
+
+        public class StatsResultTypedValuesDate : StatsResultTypedValues<DateTimeOffset> {
+            public override T Match<T>(Func<StatsResultTypedValues<double>, T> ifDouble, Func<StatsResultTypedValues<string>, T> ifString, Func<StatsResultTypedValues<DateTimeOffset>, T> ifDate) {
+                return ifDate(this);
+            }
+        }
+    }
+
     /// <summary>
     /// Stats results
     /// <see href="http://wiki.apache.org/solr/StatsComponent"/>
     /// </summary>
-    public class StatsResult {
-        /// <summary>
-        /// Minimum value
-        /// </summary>
-        public double Min { get; set; }
-
-        /// <summary>
-        /// Maximum value
-        /// </summary>
-        public double Max { get; set; }
-
-        /// <summary>
-        /// Sum of all values
-        /// </summary>
-        public double Sum { get; set; }
+    public sealed class StatsResult {
+        public StatsResultValues Values { get; set; }
 
         /// <summary>
         /// How many (non-null) values
@@ -51,11 +70,6 @@ namespace SolrNet {
         /// Sum of all values squared (useful for stddev)
         /// </summary>
         public double SumOfSquares { get; set; }
-
-        /// <summary>
-        /// The average (v1+v2...+vN)/N
-        /// </summary>
-        public double Mean { get; set; }
 
         /// <summary>
         /// Standard deviation

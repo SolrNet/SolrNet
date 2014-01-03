@@ -131,6 +131,8 @@ namespace SolrNet {
         private static ISolrDocumentSerializer<T> ChooseDocumentSerializer<T>(IServiceLocator c) {
             if (typeof(T) == typeof(Dictionary<string, object>))
                 return (ISolrDocumentSerializer<T>) new SolrDictionarySerializer(c.GetInstance<ISolrFieldSerializer>());
+            if (typeof(T) == typeof(SolrDocument))
+                return (ISolrDocumentSerializer<T>) new SolrDocumentSerializer();
             return new SolrDocumentSerializer<T>(c.GetInstance<IReadOnlyMappingManager>(), c.GetInstance<ISolrFieldSerializer>());
         }
 

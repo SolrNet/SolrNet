@@ -23,7 +23,7 @@ namespace SolrNet.Tests.Mocks {
 
         public MFunc<SolrSchema> getSchema;
 
-        public SolrSchema GetSchema() {
+        public SolrSchema GetSchema(string schemaFileName) {
             return getSchema.Invoke();
         }
 

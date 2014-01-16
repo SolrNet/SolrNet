@@ -37,7 +37,7 @@ namespace SolrNet.Schema
                 throw new ArgumentNullException("type");
             Name = name;
             Type = type;
-        }
+        } 
 
         /// <summary>
         /// Field name

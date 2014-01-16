@@ -22,6 +22,10 @@ namespace SampleSolrApp.Tests {
             throw new NotImplementedException();
         }
 
+        public SolrSchema GetSchema(string filename) {
+            throw new NotImplementedException();
+        }
+
         public SolrSchema GetSchema() {
             throw new NotImplementedException();
         }

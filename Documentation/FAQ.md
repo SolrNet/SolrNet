@@ -12,6 +12,10 @@ It's very uncommon for Solr to make breaking changes in core functionality betwe
 
 You're probably using an outdated version. [Upgrade to a recent build](README.md#downloads)
 
+#### I'm getting a 404 (not found) response from Solr when doing any operation with SolrNet
+
+You're probably missing the core name in the URL you're passing to Startup.Init
+
 #### I'm getting an error "'SolrConnection' already registered in container"
 
 Make sure you call `Startup.Init` [only once per document type in your application](Initialization.md).

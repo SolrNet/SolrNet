@@ -20,7 +20,7 @@ namespace SolrNet.Tests.Mocks {
             throw new NotImplementedException();
         }
 
-        public SolrSchema GetSchema() {
+        public SolrSchema GetSchema(string schemaFileName) {
             throw new NotImplementedException();
         }
 

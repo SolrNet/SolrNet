@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using SolrNet.Commands.Cores;
 using SolrNet.Impl;
 
 namespace SolrNet {
@@ -103,7 +105,19 @@ namespace SolrNet {
         /// <param name="coreName">The name of the core to be to be removed. If the persistent
         /// attribute of &lt;solr&gt; is set to "true", the &lt;core&gt; element
         /// with this "name" attribute will be removed from solr.xml.</param>
-        /// <param name="deleteIndex"></param>
+        /// <param name="deleteIndex">If set to <c>true</c> deletes the index once the core is unloaded.  (Only available in 3.3 and above).</param>
+        [Obsolete("Use Unload(string coreName, UnloadCommand.Delete delete) instead")]
         ResponseHeader Unload(string coreName, bool deleteIndex);
+
+        /// <summary>
+        /// The UNLOAD action removes a core from Solr. Active requests will
+        /// continue to be processed, but no new requests will be sent to the named core.
+        /// If a core is registered under more than one name, only the given name is removed.
+        /// </summary>
+        /// <param name="coreName">The name of the core to be to be removed. If the persistent
+        /// attribute of &lt;solr&gt; is set to "true", the &lt;core&gt; element
+        /// with this "name" attribute will be removed from solr.xml.</param>
+        /// <param name="delete">If not null, deletes the index once the core is unloaded.  (Only available in 3.3 and above).</param>
+        ResponseHeader Unload(string coreName, UnloadCommand.Delete delete);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using MbUnit.Framework;
+using SolrNet.Commands.Cores;
 using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
 
@@ -122,10 +123,10 @@ namespace SolrNet.Tests {
         public void Unload() {
             var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
-            var swapUnloadResponseHeader = solrCoreAdmin.Unload("core-swap", true);
+            var swapUnloadResponseHeader = solrCoreAdmin.Unload("core-swap", UnloadCommand.Delete.Index);
             Assert.AreEqual(swapUnloadResponseHeader.Status, 0);
 
-            var newUnloadResponseHeader = solrCoreAdmin.Unload("core-new", true);
+            var newUnloadResponseHeader = solrCoreAdmin.Unload("core-new", UnloadCommand.Delete.Index);
             Assert.AreEqual(newUnloadResponseHeader.Status, 0);
         }
     }

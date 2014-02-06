@@ -155,6 +155,28 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
+        /// Merge indexes using their core names to identify them.
+        /// Requires Solr 3.3+
+        /// </summary>
+        /// <param name="destinationCore"></param>
+        /// <param name="srcCore"></param>
+        /// <param name="srcCores"></param>
+        public ResponseHeader Merge(string destinationCore, MergeCommand.SrcCore srcCore, params MergeCommand.SrcCore[] srcCores) {
+            return SendAndParseHeader(new MergeCommand(destinationCore, srcCore, srcCores));
+        }
+
+        /// <summary>
+        /// Merge indexes using their path to identify them.
+        /// Requires Solr 1.4+
+        /// </summary>
+        /// <param name="destinationCore"></param>
+        /// <param name="indexDir"></param>
+        /// <param name="indexDirs"></param>
+        public ResponseHeader Merge(string destinationCore, MergeCommand.IndexDir indexDir, params MergeCommand.IndexDir[] indexDirs) {
+            return SendAndParseHeader(new MergeCommand(destinationCore, indexDir, indexDirs));
+        }
+
+        /// <summary>
         /// Sends a command and parses the ResponseHeader.
         /// </summary>
         /// <param name="cmd">The CMD.</param>

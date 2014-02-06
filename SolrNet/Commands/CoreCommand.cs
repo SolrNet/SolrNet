@@ -24,5 +24,9 @@ namespace SolrNet.Commands {
         protected void AddParameter(string key, string value) {
             Parameters.Add(new KeyValuePair<string, string>(key, value));
         }
+
+        public IEnumerable<KeyValuePair<string, string>> GetParameters() {
+            return Parameters;
+        }
     }
 }

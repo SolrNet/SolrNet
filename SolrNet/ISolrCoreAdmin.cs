@@ -115,9 +115,27 @@ namespace SolrNet {
         /// If a core is registered under more than one name, only the given name is removed.
         /// </summary>
         /// <param name="coreName">The name of the core to be to be removed. If the persistent
-        /// attribute of &lt;solr&gt; is set to "true", the &lt;core&gt; element
+        /// attribute of &lt;solr&gt; is set to "true", the &lt;core         &gt; element
         /// with this "name" attribute will be removed from solr.xml.</param>
         /// <param name="delete">If not null, deletes the index once the core is unloaded.  (Only available in 3.3 and above).</param>
         ResponseHeader Unload(string coreName, UnloadCommand.Delete delete);
+
+        /// <summary>
+        /// Merge indexes using their core names to identify them.
+        /// Requires Solr 3.3+
+        /// </summary>
+        /// <param name="destinationCore"></param>
+        /// <param name="srcCore"></param>
+        /// <param name="srcCores"></param>
+        ResponseHeader Merge(string destinationCore, MergeCommand.SrcCore srcCore, params MergeCommand.SrcCore[] srcCores);
+
+        /// <summary>
+        /// Merge indexes using their path to identify them.
+        /// Requires Solr 1.4+
+        /// </summary>
+        /// <param name="destinationCore"></param>
+        /// <param name="indexDir"></param>
+        /// <param name="indexDirs"></param>
+        ResponseHeader Merge(string destinationCore, MergeCommand.IndexDir indexDir, params MergeCommand.IndexDir[] indexDirs);
     }
 }

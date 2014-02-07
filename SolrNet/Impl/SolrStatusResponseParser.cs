@@ -5,6 +5,9 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 
 namespace SolrNet.Impl {
+    /// <summary>
+    /// Parses the results of a Core Status command.
+    /// </summary>
     public class SolrStatusResponseParser : ISolrStatusResponseParser {
         /// <summary>
         /// Parses the results of a Core Status command.

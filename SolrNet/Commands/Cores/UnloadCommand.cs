@@ -21,7 +21,7 @@ namespace SolrNet.Commands.Cores {
             AddParameter("action", "UNLOAD");
             AddParameter("core", coreName);
             if (delete != null) {
-                var deleteKey = delete.Match(
+                var deleteKey = delete.Match<string>(
                     index: () => "deleteIndex",
                     data: () => "deleteDataDir",
                     instance: () => "deleteInstanceDir");

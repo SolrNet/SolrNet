@@ -28,7 +28,7 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="node">The node to inspect.</param>
         /// <returns>The parsed <see cref="CoreResult"/>.</returns>
-        public CoreResult ParseCore(XElement node) {
+        private static CoreResult ParseCore(XElement node) {
             var core = new CoreResult();
 
             foreach (var propNode in node.Elements()) {
@@ -70,7 +70,7 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="node">The node to parse.</param>
         /// <returns>The <see cref="CoreIndexResult"/> that was parsed.</returns>
-        public CoreIndexResult ParseCoreIndex(XElement node) {
+        private static CoreIndexResult ParseCoreIndex(XElement node) {
             var coreIndex = new CoreIndexResult();
 
             foreach (var indexNode in node.Elements()) {

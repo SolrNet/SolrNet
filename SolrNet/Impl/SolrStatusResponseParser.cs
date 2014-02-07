@@ -16,13 +16,9 @@ namespace SolrNet.Impl {
             if (statusNode == null || !statusNode.HasElements)
                 return results;
 
-            try {
-                var nodes = statusNode.Elements();
-                foreach (var node in nodes) {
-                    results.Add(ParseCore(node));
-                }
-            } catch (Exception parseEx) {
-                // Location to allow any exceptions to be caught and handled.
+            var nodes = statusNode.Elements();
+            foreach (var node in nodes) {
+                results.Add(ParseCore(node));
             }
 
             return results;

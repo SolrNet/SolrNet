@@ -34,7 +34,7 @@ let testWithCultures (cultures: #seq<CultureInfo>) =
 
 
 let test = 
-    Fuchu.MbUnit.MbUnitTestToFuchu typeof<MergeCommandTests>
+    Fuchu.MbUnit.MbUnitTestToFuchu typeof<SolrStatusResponseParserTests>
     //|> Test.filter (fun s -> s.Contains "ParseResultsWithGroups")
     //|> testWithCultures [CultureInfo "en-US"; CultureInfo "fr-FR"]
 run test

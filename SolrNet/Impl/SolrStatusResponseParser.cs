@@ -39,6 +39,9 @@ namespace SolrNet.Impl {
                         if (!string.IsNullOrEmpty(nodeValue))
                             core.Name = nodeValue;
                         break;
+                    case "isdefaultcore":
+                        core.IsDefaultCore = bool.Parse(nodeValue);
+                        break;
                     case "instancedir":
                         if (!string.IsNullOrEmpty(nodeValue))
                             core.InstanceDir = nodeValue;

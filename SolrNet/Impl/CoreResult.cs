@@ -8,6 +8,13 @@ namespace SolrNet.Impl {
         public string Name { get; set; }
 
         /// <summary>
+        /// True if this is the default core. Otherwise false.
+        /// Note that this is only available on Solr 4+.
+        /// For older versions this will always be false.
+        /// </summary>
+        public bool IsDefaultCore { get; set; }
+
+        /// <summary>
         /// The directory the Solr instance is located at.
         /// </summary>
         public string InstanceDir { get; set; }

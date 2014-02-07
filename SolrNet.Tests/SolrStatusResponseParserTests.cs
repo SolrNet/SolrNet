@@ -106,5 +106,13 @@ namespace SolrNet.Tests {
             Assert.AreEqual(@"org.apache.lucene.store.SimpleFSDirectory:org.apache.lucene.store.SimpleFSDirectory@C:\Projects\FDO\Main\Common\solr\core0\data\index", coreIndex.Directory);
             Assert.AreEqual(DateTime.Parse("2010-06-10T13:30:30Z"), coreIndex.LastModified);
         }
+
+        [Test]
+        public void IsDefaultCore() {
+            var r = ParseFromResults("Resources.responseWithStatus2.xml");
+            Assert.AreEqual(1, r.Count);
+            var core = r[0];
+            Assert.IsTrue(core.IsDefaultCore);
+        }
     }
 }

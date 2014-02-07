@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -11,16 +12,11 @@ namespace SolrNet.Impl {
         /// <param name="xml">The XML Document to parse.</param>
         /// <returns></returns>
         public List<CoreResult> Parse(XDocument xml) {
-            var results = new List<CoreResult>();
             var statusNode = xml.XPathSelectElement("response/lst[@name='status']");
             if (statusNode == null || !statusNode.HasElements)
-                return results;
+                return new List<CoreResult>();
 
-            var nodes = statusNode.Elements();
-            foreach (var node in nodes) {
-                results.Add(ParseCore(node));
-            }
-
+            var results = statusNode.Elements().Select(ParseCore).ToList();
             return results;
         }
 

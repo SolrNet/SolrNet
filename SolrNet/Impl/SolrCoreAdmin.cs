@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using SolrNet.Commands.Cores;
 
@@ -99,8 +100,8 @@ namespace SolrNet.Impl {
         /// The STATUS action returns the status of the named core.
         /// </summary>
         /// <param name="coreName">The name of a core, as listed in the "name" attribute of a &lt;core&gt; element in solr.xml.</param>
-        public List<CoreResult> Status(string coreName) {
-            return ParseStatusResponse(Send(new StatusCommand(coreName)));
+        public CoreResult Status(string coreName) {
+            return ParseStatusResponse(Send(new StatusCommand(coreName))).FirstOrDefault();
         }
 
         /// <summary>

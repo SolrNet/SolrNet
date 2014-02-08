@@ -74,8 +74,8 @@ namespace SolrNet {
         /// The STATUS action returns the status of the named core.
         /// </summary>
         /// <param name="coreName">The name of a core, as listed in the "name" attribute of a &lt;core&gt; element in solr.xml.</param>
-        /// <returns>A list of Core Results.</returns>
-        List<CoreResult> Status(string coreName);
+        /// <returns>Core result.</returns>
+        CoreResult Status(string coreName);
 
         /// <summary>
         /// SWAP atomically swaps the names used to access two existing cores.

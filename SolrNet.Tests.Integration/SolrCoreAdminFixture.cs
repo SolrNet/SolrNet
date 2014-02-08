@@ -64,10 +64,10 @@ namespace SolrNet.Tests {
                 Assert.AreEqual(createResponseHeader.Status, 0);
             }
 
-            var results = solrCoreAdmin.Status(coreName);
-            Assert.IsNotEmpty(results);
-            Assert.IsNotEmpty(results[0].Name);
-            Assert.AreEqual(coreName, results[0].Name);
+            var result = solrCoreAdmin.Status(coreName);
+            Assert.IsNotNull(result);
+            Assert.IsNotEmpty(result.Name);
+            Assert.AreEqual(coreName, result.Name);
         }
 
         [Test]
@@ -75,9 +75,9 @@ namespace SolrNet.Tests {
             var coreName = "core-new";
             var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl), GetHeaderParser(), GetStatusResponseParser());
 
-            var results = solrCoreAdmin.Status(coreName);
-            Assert.IsNotEmpty(results[0].Name);
-            Assert.AreEqual(coreName, results[0].Name);
+            var result = solrCoreAdmin.Status(coreName);
+            Assert.IsNotEmpty(result.Name);
+            Assert.AreEqual(coreName, result.Name);
         }
 
         [Test]
@@ -105,10 +105,10 @@ namespace SolrNet.Tests {
 
             var createResponseHeader = solrCoreAdmin.Create(coreName, instanceDir);
             Assert.AreEqual(createResponseHeader.Status, 0);
-            var results = solrCoreAdmin.Status(coreName);
-            Assert.IsNotEmpty(results);
-            Assert.IsNotEmpty(results[0].Name);
-            Assert.AreEqual(coreName, results[0].Name);
+            var result = solrCoreAdmin.Status(coreName);
+            Assert.IsNotNull(result);
+            Assert.IsNotEmpty(result.Name);
+            Assert.AreEqual(coreName, result.Name);
         }
 
         [Test]

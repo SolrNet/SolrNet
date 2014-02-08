@@ -11,7 +11,7 @@ var statusParser = ServiceLocator.Current.GetInstance<ISolrStatusResponseParser>
 ISolrCoreAdmin solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl), headerParser, statusParser);
 ```
 
-`ISolrCoreAdmin` has the following core admin commands:
+`ISolrCoreAdmin` can execute the following core admin commands:
 
 ## Status
 
@@ -23,3 +23,26 @@ IList<CoreResult> coreStatus = solrCoreAdmin.Status();
 var coreStatus = solrCoreAdmin.Status("core1");
 ```
 
+## Create
+
+```
+solrCoreAdmin.Create(coreName: "items", instanceDir: "items");
+```
+
+## Reload
+
+```
+solrCoreAdmin.Reload("core1");
+```
+
+## Rename
+
+```
+solrCoreAdmin.Rename("core1", "newCoreName");
+```
+
+## Swap
+
+```
+solrCoreAdmin.Swap("core0", "core1");
+```

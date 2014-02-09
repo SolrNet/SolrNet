@@ -30,6 +30,7 @@ Otherwise, NuGet packages (currently outdated) are available:
  * [Spell checking](Spell-checking.md)
  * [Stats](Stats.md)
  * [Field collapsing / grouping](Field-collapsing.md)
+ * [Core admin](Core-admin.md)
  * [Fluent API](Fluent-API.md)
  * [Overriding the default mapper](Overriding-mapper.md)
  * [NHibernate integration](NHibernate-integration.md)

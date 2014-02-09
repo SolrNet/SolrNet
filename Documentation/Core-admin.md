@@ -1,6 +1,6 @@
 # Core admin
 
-SolrNet offers some facilities to execute [Solr core admin commands](https://wiki.apache.org/solr/CoreAdmin).
+SolrNet offers some facilities to execute [Solr core admin commands](https://wiki.apache.org/solr/CoreAdmin). See the Solr wiki for detailed explanations of these commands.
 
 First, build an instance of `ISolrCoreAdmin`:
 
@@ -45,4 +45,22 @@ solrCoreAdmin.Rename("core1", "newCoreName");
 
 ```
 solrCoreAdmin.Swap("core0", "core1");
+```
+
+## Unload
+
+```
+solrCoreAdmin.Swap("core0", UnloadCommand.Delete.Data);
+```
+
+## Merge
+
+```
+solrCoreAdmin.Merge("destinationCore", new MergeCommand.SrcCore("sourceCore0"), new MergeCommand.SrcCore("sourceCore1"));
+```
+
+## Alias
+
+```
+solrCoreAdmin.Alias("existingCore", "alias");
 ```

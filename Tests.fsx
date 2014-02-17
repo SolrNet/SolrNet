@@ -1,14 +1,17 @@
 ﻿#I "lib"
+#r "System.Configuration"
 #r @"gallio.dll"
 #r @"MbUnit.dll"
 #r @"packages\Fuchu.0.3.0.1\lib\net40-client\Fuchu.dll"
 #r @"SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"
+#r @"SolrNet.Tests.Integration\bin\Debug\SolrNet.Tests.Integration.dll"
 
 open System
 open System.Globalization
 open System.Threading
 open Fuchu
 open SolrNet.Tests
+open SolrNet.Tests.Integration
 
 
 let withCulture culture f x = 
@@ -32,9 +35,11 @@ let testWithCultures (cultures: #seq<CultureInfo>) =
 //    |> Seq.map Fuchu.MbUnit.MbUnitTestToFuchu
 //    |> TestList
 
+let solrUrl = "http://localhost:8983/solr"
+System.Configuration.ConfigurationManager.AppSettings.["solr"] <- solrUrl
 
 let test = 
-    Fuchu.MbUnit.MbUnitTestToFuchu typeof<SolrStatusResponseParserTests>
-    //|> Test.filter (fun s -> s.Contains "ParseResultsWithGroups")
+    Fuchu.MbUnit.MbUnitTestToFuchu typeof<IntegrationFixture>
+    |> Test.filter (fun s -> s.Contains "Highlighting")
     //|> testWithCultures [CultureInfo "en-US"; CultureInfo "fr-FR"]
 run test

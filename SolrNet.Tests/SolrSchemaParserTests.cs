@@ -46,10 +46,23 @@ namespace SolrNet.Tests
 
             Assert.AreEqual(4, schemaDoc.SolrFields.Count);
             Assert.AreEqual("id", schemaDoc.SolrFields[0].Name);
+            
             Assert.IsTrue(schemaDoc.SolrFields[0].IsRequired);
             Assert.IsFalse(schemaDoc.SolrFields[2].IsRequired);
+
             Assert.IsTrue(schemaDoc.SolrFields[3].IsMultiValued);
             Assert.IsFalse(schemaDoc.SolrFields[0].IsMultiValued);
+
+            Assert.IsTrue(schemaDoc.SolrFields[2].IsIndexed);
+            Assert.IsFalse(schemaDoc.SolrFields[3].IsIndexed);
+
+            Assert.IsTrue(schemaDoc.SolrFields[0].IsStored);
+            Assert.IsFalse(schemaDoc.SolrFields[3].IsStored);
+
+            Assert.IsFalse(schemaDoc.SolrFields[1].IsDocValues);
+            Assert.IsFalse(schemaDoc.SolrFields[2].IsDocValues);
+            Assert.IsTrue(schemaDoc.SolrFields[3].IsDocValues);
+
             Assert.AreEqual("string", schemaDoc.SolrFields[0].Type.Name);
         }
 

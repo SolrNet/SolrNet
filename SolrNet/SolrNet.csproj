@@ -32,6 +32,14 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +62,13 @@
     <DocumentationFile>bin\Release\SolrNet.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -69,6 +84,15 @@
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
     <Compile Include="ClusterResults.cs" />
+    <Compile Include="Commands\ReplicationCommand.cs" />
+    <Compile Include="Commands\Replication\AbortFetchCommand.cs" />
+    <Compile Include="Commands\Replication\DetailsCommand.cs" />
+    <Compile Include="Commands\Replication\FetchIndexCommand.cs" />
+    <Compile Include="Commands\Replication\DisablePollCommand.cs" />
+    <Compile Include="Commands\Replication\EnablePollCommand.cs" />
+    <Compile Include="Commands\Replication\EnableReplicationCommand.cs" />
+    <Compile Include="Commands\Replication\DisableReplicationCommand.cs" />
+    <Compile Include="Commands\Replication\IndexVersionCommand.cs" />
     <Compile Include="Commands\CoreCommand.cs" />
     <Compile Include="Commands\Cores\AliasCommand.cs" />
     <Compile Include="Commands\Cores\CreateCommand.cs" />
@@ -88,6 +112,17 @@
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
     <Compile Include="Commands\Parameters\TermsSort.cs" />
     <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
+    <Compile Include="Impl\ReplicationDetailsResponse.cs" />
+    <Compile Include="Impl\ISolrReplicationDetailsResponseParser.cs" />
+    <Compile Include="Impl\ISolrReplicationIndexVersionResponseParser.cs" />
+    <Compile Include="Impl\ISolrReplicationStatusResponseParser.cs" />
+    <Compile Include="Impl\ReplicationStatusResponse.cs" />
+    <Compile Include="Impl\ReplicationIndexVersionResponse.cs" />
+    <Compile Include="Impl\ResponseParsers\ReplicationDetailsResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\ReplicationIndexVersionResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\ReplicationStatusResponseParser.cs" />
+    <Compile Include="ISolrCoreReplication.cs" />
+    <Compile Include="Impl\SolrCoreReplication.cs" />
     <Compile Include="Impl\FieldParsers\DateTimeOffsetFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\LocationFieldParser.cs" />
     <Compile Include="Impl\FieldParsers\MoneyFieldParser.cs" />

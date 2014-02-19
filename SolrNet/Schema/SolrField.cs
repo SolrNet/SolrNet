@@ -62,6 +62,22 @@ namespace SolrNet.Schema
         public bool IsMultiValued { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is stored.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is stored; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsStored { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is indexed.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is indexed; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsIndexed { get; set; }
+
+        /// <summary>
         /// Field type
         /// </summary>
         /// <value>The type.</value>

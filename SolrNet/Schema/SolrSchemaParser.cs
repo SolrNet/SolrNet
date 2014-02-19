@@ -52,6 +52,10 @@ namespace SolrNet.Schema {
                 var field = new SolrField(fieldNode.Attribute("name").Value, fieldType);
                 field.IsRequired = fieldNode.Attribute("required") != null ? fieldNode.Attribute("required").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
                 field.IsMultiValued = fieldNode.Attribute("multiValued") != null ? fieldNode.Attribute("multiValued").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
+                field.IsStored = fieldNode.Attribute("stored") != null ? fieldNode.Attribute("stored").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
+                field.IsIndexed = fieldNode.Attribute("indexed") != null ? fieldNode.Attribute("indexed").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
+                field.IsDocValues = fieldNode.Attribute("docValues") != null ? fieldNode.Attribute("docValues").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false; 
+
                 result.SolrFields.Add(field);
             }
 

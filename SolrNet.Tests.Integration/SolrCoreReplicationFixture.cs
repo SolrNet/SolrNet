@@ -12,32 +12,32 @@ namespace SolrNet.Tests
         /*
 
         EnableReplication
-        http://localhost:8983/solr/RegisterSlave/replication?command=enablereplication
+        http://localhost:8983/solr/collection1/replication?command=enablereplication
 
         DisableReplication
-        http://localhost:8983/solr/RegisterSlave/replication?command=disablereplication
+        http://localhost:8983/solr/collection1/replication?command=disablereplication
          
         IndexVersion
-        http://localhost:8983/solr/RegisterSlave/replication?command=indexversion
+        http://localhost:8983/solr/collection1/replication?command=indexversion
          
         Details
-        http://172.18.20.145:8983/solr/RegisterSlave/replication?command=details
+        http://localhost:8983/solr/collection1/replication?command=details
 
         AbortFetch
-        http://172.18.20.145:8983/solr/RegisterSlave/replication?command=abortfetch
+        http://localhost:8983/solr/collection1/replication?command=abortfetch
          
         FetchIndex
-        http://172.18.20.145:8983/solr/RegisterSlave/replication?command=fetchindex         
+        http://localhost:8983/solr/collection1/replication?command=fetchindex         
          
         EnablePoll
-        http://172.18.20.145:8983/solr/RegisterSlave/replication?command=enablepoll
+        http://localhost:8983/solr/collection1/replication?command=enablepoll
          
         DisablePoll
-        http://172.18.20.145:8983/solr/RegisterSlave/replication?command=disablepoll
+        http://localhost:8983/solr/collection1/replication?command=disablepoll
 
         */
 
-        private static readonly string solrUrl = "http://172.18.20.145:8983/solr/Eui1"; //"http://localhost:8983/solr/collection1";
+        private static readonly string solrUrl = "http://localhost:8983/solr/collection1";
         private static readonly string solrMasterUrl = "http://localhost:8983/solr/collection1";
 
         [Test]
@@ -65,7 +65,7 @@ namespace SolrNet.Tests
             var rh = scr.IndexVersion();
 
             Assert.AreEqual(rh.indexversion, 0);
-            Assert.AreEqual(rh.generation, 1);
+            Assert.AreEqual(rh.generation, 0);
         }
 
         [Test]
@@ -86,7 +86,8 @@ namespace SolrNet.Tests
             SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
             var rh = scr.EnablePoll();
 
-            Assert.AreEqual(rh.status, "OK");
+            Assert.AreEqual(rh.status, "ERROR");
+            Assert.AreEqual(rh.message, "No slave configured");
         }
 
         [Test]
@@ -95,7 +96,8 @@ namespace SolrNet.Tests
             SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
             var rh = scr.DisablePoll();
 
-            Assert.AreEqual(rh.status, "OK");
+            Assert.AreEqual(rh.status, "ERROR");
+            Assert.AreEqual(rh.message, "No slave configured");
         }
 
         [Test]
@@ -126,8 +128,8 @@ namespace SolrNet.Tests
             SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
             var rh = scr.AbortFetch();
 
-            Assert.AreEqual(rh.status, "ERROR");
-            Assert.AreEqual(rh.message, "No slave configured");
+            Assert.AreEqual(rh.status, "OK");
+            Assert.AreEqual(rh.message, null);
         }
     }
 }

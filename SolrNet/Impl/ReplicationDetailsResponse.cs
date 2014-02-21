@@ -1,6 +1,10 @@
 ﻿using System;
 
-namespace SolrNet.Impl {
+namespace SolrNet.Impl 
+{
+    /// <summary>
+    /// ReplicationDetailsResponse class
+    /// </summary>
     public class ReplicationDetailsResponse
     {
         /// <summary>

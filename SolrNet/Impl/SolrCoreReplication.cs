@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using SolrNet.Commands.Replication;
 
-namespace SolrNet.Impl {
+namespace SolrNet.Impl 
+{
     /// <summary>
-    /// Solr core administration commands.
+    /// Solr core replication commands.
     /// </summary>
-    /// <seealso href="http://wiki.apache.org/solr/CoreAdmin"/>
+    /// <seealso href="http://wiki.apache.org/solr/SolrReplication"/>
+    /// <seealso href="https://cwiki.apache.org/confluence/display/solr/Index+Replication"/>
     public class SolrCoreReplication : ISolrCoreReplication 
     {
         private readonly ISolrConnection connection;

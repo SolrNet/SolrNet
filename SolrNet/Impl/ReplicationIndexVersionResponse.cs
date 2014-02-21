@@ -1,6 +1,10 @@
 ﻿using System;
 
-namespace SolrNet.Impl {
+namespace SolrNet.Impl 
+{
+    /// <summary>
+    /// ReplicationIndexVersionResponse class
+    /// </summary>
     public class ReplicationIndexVersionResponse
     {
         /// <summary>

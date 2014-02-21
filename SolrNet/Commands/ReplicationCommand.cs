@@ -1,7 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace SolrNet.Commands {
-    public class ReplicationCommand : ISolrCommand {
+namespace SolrNet.Commands 
+{
+    /// <summary>
+    /// Replication command
+    /// http://wiki.apache.org/solr/SolrReplication
+    /// https://cwiki.apache.org/confluence/display/solr/Index+Replication
+    /// </summary>
+    public class ReplicationCommand : ISolrCommand 
+    {
         /// <summary>
         /// List of Parameters that will be sent to the /replication handler.
         /// </summary>
@@ -12,7 +19,8 @@ namespace SolrNet.Commands {
         /// </summary>
         /// <param name="connection">The SolrConnection to use.</param>
         /// <returns>The results of the Command.</returns>
-        public string Execute(ISolrConnection connection) {
+        public string Execute(ISolrConnection connection) 
+        {
             return connection.Get("/replication", Parameters.ToArray());
         }
 
@@ -21,7 +29,8 @@ namespace SolrNet.Commands {
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="value">The value.</param>
-        protected void AddParameter(string key, string value) {
+        protected void AddParameter(string key, string value) 
+        {
             Parameters.Add(new KeyValuePair<string, string>(key, value));
         }
     }

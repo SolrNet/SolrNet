@@ -31,7 +31,7 @@ namespace SolrNet.Commands.Replication
         /// <summary>
         /// Forces the specified slave to fetch a copy of the index from its master. If you like, you 
         /// can pass an extra attribute such as masterUrl or compression (or any other parameter which 
-        /// is specified in the <lst name="slave"> tag) to do a one time replication from a master. 
+        /// is specified in the <lst name="slave" /> tag) to do a one time replication from a master. 
         /// This obviates the need for hard-coding the master in the slave. 
         /// </summary>
         public FetchIndexCommand()
@@ -42,7 +42,7 @@ namespace SolrNet.Commands.Replication
         /// <summary>
         /// Forces the specified slave to fetch a copy of the index from its master. If you like, you 
         /// can pass an extra attribute such as masterUrl or compression (or any other parameter which 
-        /// is specified in the <lst name="slave"> tag) to do a one time replication from a master. 
+        /// is specified in the <lst name="slave" /> tag) to do a one time replication from a master. 
         /// This obviates the need for hard-coding the master in the slave. 
         /// </summary>
         /// <param name="paramseters">Optional parameters</param>

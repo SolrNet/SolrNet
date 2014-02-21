@@ -8,12 +8,12 @@ namespace SolrNet.Impl
     public interface ISolrReplicationStatusResponseParser 
     {
         /// <summary>
-        /// Parses the Status propery from the response returned.
+        /// 
         /// </summary>
         /// <param name="xml">The XML Document to parse.</param>
         /// <returns>
         /// Status.
         /// </returns>
-        ReplicationStatusResponse Parse(XDocument response);
+        ReplicationStatusResponse Parse(XDocument xml);
     }
 }

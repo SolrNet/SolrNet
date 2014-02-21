@@ -64,6 +64,14 @@
       <Name>SolrNet</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseReplicationDetailsMaster.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationDetailsSlaveIsReplicating.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationDetailsSlaveNotReplicating.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationIndexVersion.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationStatusError.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationStatusOk.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

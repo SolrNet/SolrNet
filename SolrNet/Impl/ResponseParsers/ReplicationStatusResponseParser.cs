@@ -20,9 +20,10 @@ using System.Globalization;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace SolrNet.Impl.ResponseParsers {
+namespace SolrNet.Impl.ResponseParsers 
+{
     /// <summary>
-    /// Parses header (status, QTime, etc) and Status from a response
+    /// Parses header (status, QTime, etc) and status from a response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class ReplicationStatusResponseParser<T> : ISolrAbstractResponseParser<T>, ISolrReplicationStatusResponseParser
@@ -72,14 +73,15 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <summary>
         /// Parses response header
         /// </summary>
-        /// <param name="node"></param>
-        /// <returns></returns>
+        /// <param name="node">XML</param>
+        /// <returns>ResponseHeader</returns>
         public ResponseHeader ParseHeader(XElement node)
         {
             var r = new ResponseHeader();
             r.Status = int.Parse(node.XPathSelectElement("int[@name='status']").Value, CultureInfo.InvariantCulture.NumberFormat);
             r.QTime = int.Parse(node.XPathSelectElement("int[@name='QTime']").Value, CultureInfo.InvariantCulture.NumberFormat);
             r.Params = new Dictionary<string, string>();
+
             var paramNodes = node.XPathSelectElements("lst[@name='params']/str");
             foreach (var n in paramNodes)
             {

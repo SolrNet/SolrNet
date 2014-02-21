@@ -1,8 +1,9 @@
+using System.Linq;
 using System.Collections.Generic;
-using System.Configuration;
 using MbUnit.Framework;
 using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
+using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests 
 {
@@ -37,99 +38,101 @@ namespace SolrNet.Tests
 
         */
 
-        private static readonly string solrUrl = "http://localhost:8983/solr/collection1";
-        private static readonly string solrMasterUrl = "http://localhost:8983/solr/collection1";
-
         [Test]
-        public void ExecuteEnableReplication()
+        public void ReplicationStatusOk()
         {
-            SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
-            var rh = scr.EnableReplication();
+            var parser = new ReplicationStatusResponseParser<string>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationStatusOk.xml");
+            var results = parser.Parse(xml);
 
-            Assert.AreEqual(rh.status, "OK");
+            Assert.IsNotNull(results.responseHeader);
+            Assert.AreEqual("OK", results.status);
+            Assert.IsNull(results.message);         
         }
 
         [Test]
-        public void ExecuteDisableReplication()
+        public void ReplicationStatusError()
         {
-            SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
-            var rh = scr.DisableReplication();
+            var parser = new ReplicationStatusResponseParser<string>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationStatusError.xml");
+            var results = parser.Parse(xml);
 
-            Assert.AreEqual(rh.status, "OK");
+            Assert.IsNotNull(results.responseHeader);
+            Assert.AreEqual("ERROR", results.status);
+            Assert.IsNotNull(results.message);
+            Assert.AreEqual("No slave configured or no 'masterUrl' Specified", results.message);
         }
 
         [Test]
-        public void ExecuteIndexVersion()
+        public void ReplicationIndexVersion()
         {
-            SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
-            var rh = scr.IndexVersion();
+            var parser = new ReplicationIndexVersionResponseParser<string>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationIndexVersion.xml");
+            var results = parser.Parse(xml);
 
-            Assert.AreEqual(rh.indexversion, 0);
-            Assert.AreEqual(rh.generation, 0);
+            Assert.IsNotNull(results.responseHeader);
+            Assert.AreEqual(0, results.indexversion);
+            Assert.AreEqual(1, results.generation);
         }
 
         [Test]
-        public void ExecuteDetails()
+        public void ReplicationDetailsMaster()
         {
-            SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
-            var rh = scr.Details();
+            var parser = new ReplicationDetailsResponseParser<string>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationDetailsMaster.xml");
+            var results = new ReplicationDetailsResponse();
+            results = parser.Parse(xml);
 
-            Assert.AreEqual(rh.indexversion, 0);
-            Assert.AreEqual(rh.generation, 1);
-            Assert.AreEqual(rh.isMaster, "true");
-            Assert.AreEqual(rh.isSlave, "false");
+            Assert.IsNotNull(results.responseHeader);
+            Assert.AreEqual(1391678354779, results.indexversion);
+            Assert.AreEqual(3821, results.generation);
+            Assert.AreEqual("914.55 MB", results.indexSize);
+            Assert.AreEqual("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);
+            Assert.AreEqual("true", results.isMaster);
+            Assert.AreEqual("false", results.isSlave);
+            Assert.IsNull(results.isReplicating);            
+            Assert.IsNull(results.timeRemaining);
+            Assert.IsNull(results.totalPercent);
         }
 
         [Test]
-        public void ExecuteEnablePoll()
+        public void ReplicationDetailsSlaveNotReplicating()
         {
-            SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
-            var rh = scr.EnablePoll();
+            var parser = new ReplicationDetailsResponseParser<string>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationDetailsSlaveNotReplicating.xml");
+            var results = new ReplicationDetailsResponse();
+            results = parser.Parse(xml);
 
-            Assert.AreEqual(rh.status, "ERROR");
-            Assert.AreEqual(rh.message, "No slave configured");
+            Assert.IsNotNull(results.responseHeader);
+            Assert.AreEqual(1391591222457, results.indexversion);
+            Assert.AreEqual(3820, results.generation);
+            Assert.AreEqual("94 bytes", results.indexSize);
+            Assert.AreEqual("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);
+            Assert.AreEqual("false", results.isMaster);
+            Assert.AreEqual("true", results.isSlave);
+            Assert.AreEqual("false", results.isReplicating);
+            Assert.IsNull(results.timeRemaining);
+            Assert.IsNull(results.totalPercent);
         }
 
         [Test]
-        public void ExecuteDisablePoll()
+        public void ReplicationDetailsSlaveIsReplicating()
         {
-            SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
-            var rh = scr.DisablePoll();
+            var parser = new ReplicationDetailsResponseParser<string>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationDetailsSlaveIsReplicating.xml");
+            var results = new ReplicationDetailsResponse();
+            results = parser.Parse(xml);
 
-            Assert.AreEqual(rh.status, "ERROR");
-            Assert.AreEqual(rh.message, "No slave configured");
-        }
-
-        [Test]
-        public void ExecuteFetchIndex()
-        {
-            SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
-            var rh = scr.FetchIndex();
-
-            Assert.AreEqual(rh.status, "ERROR");
-            Assert.AreEqual(rh.message, "No slave configured or no 'masterUrl' Specified");
-        }
-
-        [Test]
-        public void ExecuteFetchIndexWithParameter()
-        {
-            SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
-            Dictionary<string, string> dParams = new Dictionary<string, string>();
-            dParams.Add("masterUrl", solrMasterUrl);
-            var rh = scr.FetchIndex(dParams);
-
-            Assert.AreEqual(rh.status, "OK");
-            Assert.AreEqual(rh.message, null);
-        }
-
-        [Test]
-        public void ExecuteAbortFetch()
-        {
-            SolrCoreReplication scr = new Impl.SolrCoreReplication(new SolrConnection(solrUrl), new ReplicationStatusResponseParser<string>(), new ReplicationIndexVersionResponseParser<string>(), new ReplicationDetailsResponseParser<string>());
-            var rh = scr.AbortFetch();
-
-            Assert.AreEqual(rh.status, "OK");
-            Assert.AreEqual(rh.message, null);
+            Assert.IsNotNull(results.responseHeader);
+            Assert.AreEqual(1391591222457, results.indexversion);
+            Assert.AreEqual(3820, results.generation);
+            Assert.AreEqual("94 bytes", results.indexSize);
+            Assert.AreEqual("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);
+            Assert.AreEqual("false", results.isMaster);
+            Assert.AreEqual("true", results.isSlave);
+            Assert.AreEqual("true", results.isReplicating);
+            Assert.AreEqual("8s", results.timeRemaining);
+            Assert.AreEqual("37.0", results.totalPercent);
         }
     }
 }

@@ -145,6 +145,7 @@
     <Compile Include="RegularDocumentVisitorTests.cs" />
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
     <Compile Include="ServiceLocatorTestCase.cs" />
+    <Compile Include="SolrCoreReplicationTests.cs" />
     <Compile Include="SolrDIHStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
@@ -304,6 +305,14 @@
     <EmbeddedResource Include="Resources\responseWithResultAndGroup.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseReplicationDetailsMaster.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationDetailsSlaveIsReplicating.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationDetailsSlaveNotReplicating.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationIndexVersion.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationStatusError.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationStatusOk.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

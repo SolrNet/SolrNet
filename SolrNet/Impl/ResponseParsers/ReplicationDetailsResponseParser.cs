@@ -47,67 +47,73 @@ namespace SolrNet.Impl.ResponseParsers
         /// <returns>ReplicationDetailsResponse class</returns>
         public ReplicationDetailsResponse Parse(XDocument response)
         {
-            ReplicationDetailsResponse rivr = new ReplicationDetailsResponse();
+            ResponseHeader responseHeader = new ResponseHeader();
+            string indexSize = string.Empty;
+            string indexPath = string.Empty;
+            string isMaster = string.Empty;
+            string isSlave = string.Empty;
+            long indexVersion = -1;
+            long generation = -1;
+            string isReplicating = null;
+            string totalPercent = null;
+            string timeRemaining = null;
+
             var responseHeaderNode = response.XPathSelectElement("response/lst[@name='responseHeader']");
             if (responseHeaderNode != null)
-                rivr.responseHeader = ParseHeader(responseHeaderNode);
+                responseHeader = ParseHeader(responseHeaderNode);
             else
                 return null;
 
             var responseIndexSizeNode = response.XPathSelectElement("response/lst[@name='details']/str[@name='indexSize']");
             if (responseIndexSizeNode != null)
-                rivr.indexSize = responseIndexSizeNode.Value;
+                indexSize = responseIndexSizeNode.Value;
             else
-                return null;
+                indexSize = string.Empty;
 
             var responseIndexPathNode = response.XPathSelectElement("response/lst[@name='details']/str[@name='indexPath']");
             if (responseIndexPathNode != null)
-                rivr.indexPath = responseIndexPathNode.Value;
+                indexPath = responseIndexPathNode.Value;
             else
-                return null;
+                indexPath = string.Empty;
 
             var responseIsMasterNode = response.XPathSelectElement("response/lst[@name='details']/str[@name='isMaster']");
             if (responseIsMasterNode != null)
-                rivr.isMaster = responseIsMasterNode.Value;
+                isMaster = responseIsMasterNode.Value;
             else
-                return null;
+                isMaster = string.Empty;
 
             var responseIsSlaveNode = response.XPathSelectElement("response/lst[@name='details']/str[@name='isSlave']");
             if (responseIsSlaveNode != null)
-                rivr.isSlave = responseIsSlaveNode.Value;
+                isSlave = responseIsSlaveNode.Value;
             else
-                return null;
+                isSlave = string.Empty;
 
             var responseIndexVersionNode = response.XPathSelectElement("response/lst[@name='details']/long[@name='indexVersion']");
             if (responseIndexVersionNode != null)
-                rivr.indexversion = long.Parse(responseIndexVersionNode.Value, CultureInfo.InvariantCulture.NumberFormat);
-            else
-                return null;
+                indexVersion = long.Parse(responseIndexVersionNode.Value, CultureInfo.InvariantCulture.NumberFormat);
 
             var responseGenerationNode = response.XPathSelectElement("response/lst[@name='details']/long[@name='generation']");
             if (responseGenerationNode != null)
-                rivr.generation = long.Parse(responseGenerationNode.Value, CultureInfo.InvariantCulture.NumberFormat);
-            else
-                return null;
+                generation = long.Parse(responseGenerationNode.Value, CultureInfo.InvariantCulture.NumberFormat);
 
             //slave node
             var responseSlaveNode = response.XPathSelectElement("response/lst[@name='details']/lst[@name='slave']");
             if (responseSlaveNode != null)
             {
-                var isReplicating = responseSlaveNode.XPathSelectElement("str[@name='isReplicating']");
-                rivr.isReplicating = isReplicating == null ? null : isReplicating.Value;
+                var isReplicatingTemp = responseSlaveNode.XPathSelectElement("str[@name='isReplicating']");
+                isReplicating = isReplicatingTemp == null ? null : isReplicatingTemp.Value;
 
-                if (rivr.isReplicating != null && rivr.isReplicating.ToLower() == "true")
+                if (isReplicating != null && isReplicating.ToLower() == "true")
                 {
-                     var totalPercent = responseSlaveNode.XPathSelectElement("str[@name='totalPercent']");
-                    rivr.totalPercent = totalPercent == null ? null : totalPercent.Value;
+                    var totalPercentTemp = responseSlaveNode.XPathSelectElement("str[@name='totalPercent']");
+                    totalPercent = totalPercentTemp == null ? null : totalPercentTemp.Value;
 
-                    var timeRemaining = responseSlaveNode.XPathSelectElement("str[@name='timeRemaining']");
-                    rivr.timeRemaining = timeRemaining == null ? null : timeRemaining.Value;
+                    var timeRemainingTemp = responseSlaveNode.XPathSelectElement("str[@name='timeRemaining']");
+                    timeRemaining = timeRemainingTemp == null ? null : timeRemainingTemp.Value;
                 }
             }
 
-            return rivr;
+            return new ReplicationDetailsResponse(responseHeader, indexSize, indexPath, isMaster, isSlave, indexVersion, generation, isReplicating, totalPercent, timeRemaining);
         }
 
         /// <summary>

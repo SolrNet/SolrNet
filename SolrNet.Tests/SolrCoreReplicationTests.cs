@@ -8,7 +8,7 @@ using SolrNet.Tests.Utils;
 namespace SolrNet.Tests 
 {
     [TestFixture]
-    public class SolrCoreReplicationFixture 
+    public class SolrCoreReplicationTests 
     {
         /*
 
@@ -80,11 +80,10 @@ namespace SolrNet.Tests
         {
             var parser = new ReplicationDetailsResponseParser<string>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationDetailsMaster.xml");
-            var results = new ReplicationDetailsResponse();
-            results = parser.Parse(xml);
+            var results = parser.Parse(xml);
 
             Assert.IsNotNull(results.responseHeader);
-            Assert.AreEqual(1391678354779, results.indexversion);
+            Assert.AreEqual(1391678354779, results.indexVersion);
             Assert.AreEqual(3821, results.generation);
             Assert.AreEqual("914.55 MB", results.indexSize);
             Assert.AreEqual("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);
@@ -100,11 +99,10 @@ namespace SolrNet.Tests
         {
             var parser = new ReplicationDetailsResponseParser<string>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationDetailsSlaveNotReplicating.xml");
-            var results = new ReplicationDetailsResponse();
-            results = parser.Parse(xml);
+            var results = parser.Parse(xml);
 
             Assert.IsNotNull(results.responseHeader);
-            Assert.AreEqual(1391591222457, results.indexversion);
+            Assert.AreEqual(1391591222457, results.indexVersion);
             Assert.AreEqual(3820, results.generation);
             Assert.AreEqual("94 bytes", results.indexSize);
             Assert.AreEqual("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);
@@ -120,11 +118,10 @@ namespace SolrNet.Tests
         {
             var parser = new ReplicationDetailsResponseParser<string>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationDetailsSlaveIsReplicating.xml");
-            var results = new ReplicationDetailsResponse();
-            results = parser.Parse(xml);
+            var results = parser.Parse(xml);
 
             Assert.IsNotNull(results.responseHeader);
-            Assert.AreEqual(1391591222457, results.indexversion);
+            Assert.AreEqual(1391591222457, results.indexVersion);
             Assert.AreEqual(3820, results.generation);
             Assert.AreEqual("94 bytes", results.indexSize);
             Assert.AreEqual("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);

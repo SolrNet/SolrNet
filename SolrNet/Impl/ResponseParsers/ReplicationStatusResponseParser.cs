@@ -47,27 +47,29 @@ namespace SolrNet.Impl.ResponseParsers
         /// <returns>ReplicationStatusResponse class</returns>
         public ReplicationStatusResponse Parse(XDocument response)
         {
-            ReplicationStatusResponse rrh = new ReplicationStatusResponse();
+            ResponseHeader responseHeader = new ResponseHeader();
+            string status = string.Empty;
+            string message = string.Empty;
 
             var responseHeaderNode = response.XPathSelectElement("response/lst[@name='responseHeader']");
             if (responseHeaderNode != null)
-                rrh.responseHeader = ParseHeader(responseHeaderNode);
+                responseHeader = ParseHeader(responseHeaderNode);
             else
                 return null;
 
             var responseStatusNode = response.XPathSelectElement("response/str[@name='status']");
             if (responseStatusNode != null)
-                rrh.status = responseStatusNode.Value;
+                status = responseStatusNode.Value;
             else
-                rrh.status = null;
+                status = null;
 
             var responseMessageNode = response.XPathSelectElement("response/str[@name='message']");
             if (responseMessageNode != null)
-                rrh.message = responseMessageNode.Value;
+                message = responseMessageNode.Value;
             else
-                rrh.message = null;
+                message = null;
 
-            return rrh;
+            return new ReplicationStatusResponse(responseHeader, status, message);
         }
 
         /// <summary>

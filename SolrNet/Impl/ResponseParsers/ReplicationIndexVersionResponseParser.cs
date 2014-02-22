@@ -47,26 +47,25 @@ namespace SolrNet.Impl.ResponseParsers
         /// <returns>ReplicationIndexVersionResponse class</returns>
         public ReplicationIndexVersionResponse Parse(XDocument response)
         {
-            ReplicationIndexVersionResponse rivr = new ReplicationIndexVersionResponse();
+            ResponseHeader responseHeader = new ResponseHeader();
+            long indexVersion = -1;
+            long generation = -1;
+
             var responseHeaderNode = response.XPathSelectElement("response/lst[@name='responseHeader']");
             if (responseHeaderNode != null)
-                rivr.responseHeader = ParseHeader(responseHeaderNode);
+                responseHeader = ParseHeader(responseHeaderNode);
             else
                 return null;
 
             var responseStatusNode = response.XPathSelectElement("response/long[@name='indexversion']");
             if (responseStatusNode != null)
-                rivr.indexversion = long.Parse(responseStatusNode.Value, CultureInfo.InvariantCulture.NumberFormat);
-            else
-                return null;
+                indexVersion = long.Parse(responseStatusNode.Value, CultureInfo.InvariantCulture.NumberFormat);
 
             var responseGenerationNode = response.XPathSelectElement("response/long[@name='generation']");
             if (responseGenerationNode != null)
-                rivr.generation = long.Parse(responseGenerationNode.Value, CultureInfo.InvariantCulture.NumberFormat);
-            else
-                return null;
+                generation = long.Parse(responseGenerationNode.Value, CultureInfo.InvariantCulture.NumberFormat);
 
-            return rivr;
+            return new ReplicationIndexVersionResponse(responseHeader, indexVersion, generation);
         }
 
         /// <summary>

@@ -20,11 +20,11 @@ namespace SolrNet.Impl
         /// <summary>
         /// Initializes a new instance of the <see cref="SolrCoreReplication"/> class.
         /// </summary>
-        public SolrCoreReplication(ISolrConnection connection, ISolrReplicationStatusResponseParser statusParser, ISolrReplicationIndexVersionResponseParser indexversiopnParser, ISolrReplicationDetailsResponseParser detailsParser)
+        public SolrCoreReplication(ISolrConnection connection, ISolrReplicationStatusResponseParser statusParser, ISolrReplicationIndexVersionResponseParser indexversionParser, ISolrReplicationDetailsResponseParser detailsParser)
         {
             this.connection = connection;
             this.statusParser = statusParser;
-            this.indexversionParser = indexversiopnParser;
+            this.indexversionParser = indexversionParser;
             this.detailsParser = detailsParser;
         }
 

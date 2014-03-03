@@ -15,14 +15,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
-using SolrNet.Commands.Parameters;
 
 namespace SolrNet.Commands.Replication
 {
     /// <summary>
-    /// Replication command
+    /// Get version number of the index.
     /// http://wiki.apache.org/solr/SolrReplication
     /// https://cwiki.apache.org/confluence/display/solr/Index+Replication
     /// </summary>

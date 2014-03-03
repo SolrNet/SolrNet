@@ -16,13 +16,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
-using SolrNet.Commands.Parameters;
 
 namespace SolrNet.Commands.Replication
 {
     /// <summary>
-    /// Replication command
+    /// Force a fetchindex on slave from master command
     /// http://wiki.apache.org/solr/SolrReplication
     /// https://cwiki.apache.org/confluence/display/solr/Index+Replication
     /// </summary>

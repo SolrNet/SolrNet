@@ -90,7 +90,7 @@ namespace SolrNet.Impl
         /// </summary>
         public ReplicationStatusResponse FetchIndex()
         {
-            return SendAndParseStatus(new FetchIndexCommand());
+            return FetchIndex(null);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace SolrNet.Impl
         /// This obviates the need for hard-coding the master in the slave. 
         /// </summary>
         /// <param name="parameters">Optional parameters</param>
-        public ReplicationStatusResponse FetchIndex(Dictionary<string, string> parameters)
+        public ReplicationStatusResponse FetchIndex(IEnumerable<KeyValuePair<string, string>> parameters)
         {
             return SendAndParseStatus(new FetchIndexCommand(parameters));
         }

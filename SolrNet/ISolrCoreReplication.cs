@@ -58,7 +58,7 @@ namespace SolrNet {
         /// This obviates the need for hard-coding the master in the slave. 
         /// </summary>
         /// <param name="parameters">Optional parameters</param>
-        ReplicationStatusResponse FetchIndex(Dictionary<string, string> parameters);
+        ReplicationStatusResponse FetchIndex(IEnumerable<KeyValuePair<string, string>> parameters);
 
         /// <summary>
         /// Aborts copying an index from a master to the specified slave.

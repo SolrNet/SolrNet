@@ -32,27 +32,14 @@ namespace SolrNet.Commands.Replication
         /// is specified in the <lst name="slave" /> tag) to do a one time replication from a master. 
         /// This obviates the need for hard-coding the master in the slave. 
         /// </summary>
-        public FetchIndexCommand()
-        {
-            AddParameter("command", "fetchindex");
-        }
-
-        /// <summary>
-        /// Forces the specified slave to fetch a copy of the index from its master. If you like, you 
-        /// can pass an extra attribute such as masterUrl or compression (or any other parameter which 
-        /// is specified in the <lst name="slave" /> tag) to do a one time replication from a master. 
-        /// This obviates the need for hard-coding the master in the slave. 
-        /// </summary>
         /// <param name="parameters">Optional parameters</param>
-        public FetchIndexCommand(Dictionary<string, string> parameters)
+        public FetchIndexCommand(IEnumerable<KeyValuePair<string, string>> parameters)
         {
-            if (parameters == null || parameters.Count == 0)
-                throw new ArgumentException("Parameters must be specified.", "parameters");
-
             AddParameter("command", "fetchindex");
 
-            foreach (string key in parameters.Keys)
-                AddParameter(key, parameters[key]);
+            if (parameters != null)
+                foreach (var kv in parameters)
+                    AddParameter(kv.Key, kv.Value);
         }
 	}
 }

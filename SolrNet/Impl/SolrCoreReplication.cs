@@ -99,10 +99,10 @@ namespace SolrNet.Impl
         /// is specified in the <lst name="slave"> tag) to do a one time replication from a master. 
         /// This obviates the need for hard-coding the master in the slave. 
         /// </summary>
-        /// <param name="paramseters">Optional parameters</param>
-        public ReplicationStatusResponse FetchIndex(Dictionary<string, string> paramseters)
+        /// <param name="parameters">Optional parameters</param>
+        public ReplicationStatusResponse FetchIndex(Dictionary<string, string> parameters)
         {
-            return SendAndParseStatus(new FetchIndexCommand(paramseters));
+            return SendAndParseStatus(new FetchIndexCommand(parameters));
         }
 
         /// <summary>

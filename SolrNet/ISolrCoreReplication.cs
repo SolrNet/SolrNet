@@ -57,8 +57,8 @@ namespace SolrNet {
         /// is specified in the <lst name="slave"> tag) to do a one time replication from a master. 
         /// This obviates the need for hard-coding the master in the slave. 
         /// </summary>
-        /// <param name="paramseters">Optional parameters</param>
-        ReplicationStatusResponse FetchIndex(Dictionary<string, string> paramseters);
+        /// <param name="parameters">Optional parameters</param>
+        ReplicationStatusResponse FetchIndex(Dictionary<string, string> parameters);
 
         /// <summary>
         /// Aborts copying an index from a master to the specified slave.

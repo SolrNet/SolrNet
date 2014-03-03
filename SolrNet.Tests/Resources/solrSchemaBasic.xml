@@ -6,8 +6,8 @@
   <fields>
     <field name="id" type="string" indexed="true" stored="true" required="true" />
     <field name="name" type="string" indexed="true" stored="false" required="true" />
-    <field name="nameSort" type="string" indexed="true" stored="false"/>
-    <field name="features" type="string" indexed="true" stored="false" multiValued="true"/>
+    <field name="nameSort" type="string" indexed="true" stored="false" 	docValues="false"/>
+    <field name="features" type="string" indexed="false" stored="false" multiValued="true" 	docValues="true"/>
     <dynamicField name="*_s"  type="string"  indexed="true"  stored="true"/>
   </fields>
   <uniqueKey>id</uniqueKey>

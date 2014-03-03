@@ -43,16 +43,16 @@ namespace SolrNet.Commands.Replication
         /// is specified in the <lst name="slave" /> tag) to do a one time replication from a master. 
         /// This obviates the need for hard-coding the master in the slave. 
         /// </summary>
-        /// <param name="paramseters">Optional parameters</param>
-        public FetchIndexCommand(Dictionary<string, string> paramseters)
+        /// <param name="parameters">Optional parameters</param>
+        public FetchIndexCommand(Dictionary<string, string> parameters)
         {
-            if (paramseters == null || paramseters.Count == 0)
-                throw new ArgumentException("Paramseters must be specified.", "paramseters");
+            if (parameters == null || parameters.Count == 0)
+                throw new ArgumentException("Parameters must be specified.", "parameters");
 
             AddParameter("command", "fetchindex");
 
-            foreach (string key in paramseters.Keys)
-                AddParameter(key, paramseters[key]);
+            foreach (string key in parameters.Keys)
+                AddParameter(key, parameters[key]);
         }
 	}
 }

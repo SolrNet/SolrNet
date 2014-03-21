@@ -64,6 +64,10 @@
       <Project>{931CEB14-556F-4893-A8D9-C7C6DACA444F}</Project>
       <Name>AutofacContrib.SolrNet</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">
+      <Project>{AE7D2A46-3F67-4986-B04B-7DCE79A549A5}</Project>
+      <Name>HttpWebAdapters</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SolrNet.Tests\SolrNet.Tests.csproj">
       <Project>{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}</Project>
       <Name>SolrNet.Tests</Name>

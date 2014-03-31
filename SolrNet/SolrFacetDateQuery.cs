@@ -45,6 +45,7 @@ namespace SolrNet {
             this.end = end;
             this.gap = gap;
             Other = new List<FacetDateOther>();
+            Include = new List<FacetDateInclude>();
         }
 
         /// <summary>
@@ -59,6 +60,13 @@ namespace SolrNet {
         /// Indicates that in addition to the counts for each date range constraint between start and end, counts should also be computed for other
         /// </summary>
         public ICollection<FacetDateOther> Other { get; set; }
+        
+           /// <summary>
+        /// By default, the ranges used to compute date faceting between facet.date.start and facet.date.end are all inclusive of both endpoints, while the the "before" and "after" ranges are not inclusive. This behavior can be modified by 
+        /// the facet.date.include param, which can be any combination of the following options...
+        /// </summary>
+        public ICollection<FacetDateInclude> Include { get; set; }
+     
 
         public string Field {
             get { return field; }

@@ -16,11 +16,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text;
 using Autofac;
+using HttpWebAdapters;
 using MbUnit.Framework;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Tests.Mocks;
+using Mocks = SolrNet.Tests.Mocks;
 
 namespace AutofacContrib.SolrNet.Tests {
     [TestFixture]
@@ -33,6 +38,38 @@ namespace AutofacContrib.SolrNet.Tests {
             var container = builder.Build();
             var m = container.Resolve<IReadOnlyMappingManager>();
             Assert.AreSame(mapper, m);
+        }
+
+        [Test]
+        public void ReplaceHttpWebRequestFactory()
+        {
+            var builder = new ContainerBuilder();
+            var getResponseCalls = 0;
+            var response = new Mocks.HttpWebResponse
+            {
+                dispose = () => { },
+                headers = () => new WebHeaderCollection {
+                    {HttpResponseHeader.ETag, "123"},
+                },
+                getResponseStream = () => 
+                    // If we don't give back at least the basic XML, we get an XmlParseException
+                    new MemoryStream(Encoding.UTF8.GetBytes("<?xml version=\"1.0\" encoding=\"UTF-8\"?><response />")),
+            };
+            IHttpWebRequestFactory factory = new Mocks.HttpWebRequestFactory {
+                create = _ => new Mocks.HttpWebRequest {
+                    getResponse = () => {
+                        getResponseCalls++;
+                        return response;
+                    },
+                    Headers = new WebHeaderCollection(),
+                },
+            };
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr") { HttpWebRequestFactory = factory });
+            var container = builder.Build();
+            var operations = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
+            var results = operations.Query(new SolrQuery("q:*"));
+            Assert.IsNotNull(results);
+            Assert.AreEqual(1, getResponseCalls);
         }
 
         [Test]

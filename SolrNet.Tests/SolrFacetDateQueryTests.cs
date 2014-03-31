@@ -31,6 +31,7 @@ namespace SolrNet.Tests {
             var q = new SolrFacetDateQuery("timestamp", new DateTime(2009,1,1), new DateTime(2009,2,2), "+1DAY") {
                 HardEnd = true,
                 Other = new[] {FacetDateOther.After},
+                Include = new[] { FacetDateInclude.Lower },
             };
             var r = Serialize(q);
             Assert.Contains(r, KV.Create("facet.date", "timestamp"));
@@ -39,6 +40,7 @@ namespace SolrNet.Tests {
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.gap", "+1DAY"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.hardend", "true"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.other", "after"));
+            Assert.Contains(r, KV.Create("f.timestamp.facet.date.include", "lower"));
         }
         
         [Test]
@@ -46,6 +48,7 @@ namespace SolrNet.Tests {
             var q = new SolrFacetDateQuery(new LocalParams { { "ex", "cat" } } + "timestamp", new DateTime(2009, 1, 1), new DateTime(2009, 2, 2), "+1DAY") {
                 HardEnd = true,
                 Other = new[] { FacetDateOther.After },
+                Include = new[] { FacetDateInclude.Lower },
             };
             var r = Serialize(q);
             Assert.Contains(r, KV.Create("facet.date", "{!ex=cat}timestamp"));
@@ -54,6 +57,7 @@ namespace SolrNet.Tests {
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.gap", "+1DAY"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.hardend", "true"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.other", "after"));
+            Assert.Contains(r, KV.Create("f.timestamp.facet.date.include", "lower"));
         }
 
         private static IList<KeyValuePair<string, string>> Serialize(object o) {

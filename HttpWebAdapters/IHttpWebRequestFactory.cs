@@ -17,6 +17,18 @@
 using System;
 
 namespace HttpWebAdapters {
+        IWebProxy Proxy
+        {
+            get;
+            set;
+        }
+
+        string UserAgent
+        {
+            get;
+            set;
+        }
+
 	public interface IHttpWebRequestFactory {
 		IHttpWebRequest Create(Uri url);
 	}

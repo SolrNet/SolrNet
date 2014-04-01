@@ -8,6 +8,20 @@ namespace HttpWebAdapters {
     /// Creates a web request that does basic auth
     /// </summary>
     public class BasicAuthHttpWebRequestFactory : IHttpWebRequestFactory {
+        static private IWebProxy proxy;
+        public IWebProxy Proxy
+        {
+            get { return proxy; }
+            set { proxy = value; }
+        }
+
+        static private string userAgent = null;
+        public string UserAgent
+        {
+            get { return userAgent; }
+            set { userAgent = value; }
+        }
+
         private readonly string username;
         private readonly string password;
 
@@ -29,6 +43,12 @@ namespace HttpWebAdapters {
             var req = (HttpWebRequest) WebRequest.Create(url);
             var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(username + ":" + password));
             req.Headers.Add("Authorization", "Basic " + credentials);
+            if (this.Proxy != null) {
+                req.Proxy = this.Proxy;
+            }
+            if (this.UserAgent != null) {
+                req.UserAgent = this.UserAgent;
+            }
             return new HttpWebRequestAdapter(req);
         }
     }

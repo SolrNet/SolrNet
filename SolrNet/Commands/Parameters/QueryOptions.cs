@@ -28,6 +28,11 @@ namespace SolrNet.Commands.Parameters {
 		/// </summary>
 		public ICollection<SortOrder> OrderBy { get; set; }
 
+ 	/// <summary>
+        /// Collection parameters
+        /// </summary>
+        public CollectionParameters Collection { get; set; }
+
 		/// <summary>
 		/// Highlighting parameters
 		/// </summary>

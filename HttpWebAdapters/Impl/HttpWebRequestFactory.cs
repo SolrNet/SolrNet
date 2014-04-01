@@ -20,12 +20,33 @@ using HttpWebAdapters.Adapters;
 
 namespace HttpWebAdapters {
 	public class HttpWebRequestFactory : IHttpWebRequestFactory {
+	        static private IWebProxy proxy = null;
+	        public IWebProxy Proxy
+	        {
+	            get { return proxy; }
+	            set { proxy = value; }
+	        }
+	
+	        static private string userAgent = null;
+	        public string UserAgent
+	        {
+	            get { return userAgent; }
+	            set { userAgent = value; }
+	        }
+
 		public IHttpWebRequest Create(string url) {
-			return new HttpWebRequestAdapter((HttpWebRequest) WebRequest.Create(url));
+			return this.Create(new Uri(url));
 		}
 
 		public IHttpWebRequest Create(Uri url) {
-			return new HttpWebRequestAdapter((HttpWebRequest) WebRequest.Create(url));
+			var request = new HttpWebRequestAdapter((HttpWebRequest) WebRequest.Create(url));
+		        if (this.Proxy != null) {
+		                request.Proxy = this.Proxy;
+		        }
+		        if (this.UserAgent != null) {
+		                request.UserAgent = this.UserAgent;
+		        }
+		        return request;
 		}
 	}
 }

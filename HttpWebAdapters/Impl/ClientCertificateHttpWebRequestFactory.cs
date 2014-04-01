@@ -10,6 +10,20 @@ namespace HttpWebAdapters {
     public class ClientCertificateHttpWebRequestFactory : IHttpWebRequestFactory {
         private readonly X509Certificate2 certificate;
 
+	    static private IWebProxy proxy = null;
+	    public IWebProxy Proxy
+	    {
+	        get { return proxy; }
+	        set { proxy = value; }
+	    }
+
+	    static private string userAgent = null;
+	    public string UserAgent
+	    {
+	        get { return userAgent; }
+	        set { userAgent = value; }
+	    }
+	        
         /// <summary>
         ///     Creates a web request that uses 509 Client Certificates
         /// </summary>
@@ -21,6 +35,12 @@ namespace HttpWebAdapters {
         public IHttpWebRequest Create(Uri url) {
             var req = (HttpWebRequest) WebRequest.Create(url);
             req.ClientCertificates.Add(certificate);
+            if (this.Proxy != null) {
+		            req.Proxy = this.Proxy;
+		    }
+		    if (this.UserAgent != null) {
+		            req.UserAgent = this.UserAgent;
+		    }
             return new HttpWebRequestAdapter(req);
         }
 

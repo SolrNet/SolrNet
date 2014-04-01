@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,21 +15,16 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
-namespace HttpWebAdapters {
-        IWebProxy Proxy
-        {
-            get;
-            set;
-        }
-
-        string UserAgent
-        {
-            get;
-            set;
-        }
-
-	public interface IHttpWebRequestFactory {
-		IHttpWebRequest Create(Uri url);
-	}
+namespace SolrNet.Commands.Parameters {
+    /// <summary>
+    /// Collection parameters
+    /// </summary>
+    public class CollectionParameters {
+		    /// <summary>
+		    /// The collection name to search in.
+		    /// </summary>
+		    public string Name { get; set; }
+	  }
 }

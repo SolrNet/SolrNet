@@ -132,6 +132,9 @@ namespace SolrNet.Impl {
             if (options.OrderBy != null && options.OrderBy.Count > 0)
                 yield return KV.Create("sort", string.Join(",", options.OrderBy.Select(x => x.ToString()).ToArray()));
 
+            foreach (var p in GetCollectionParameters(options))
+                yield return p;
+
             foreach (var p in GetHighlightingParameters(options))
                 yield return p;
 
@@ -275,6 +278,18 @@ namespace SolrNet.Impl {
             foreach (var fq in filterQueries) {
                 yield return new KeyValuePair<string, string>("fq", querySerializer.Serialize(fq));
             }
+        }
+        
+        /// <summary>
+        /// Gets Solr parameters for defined collection
+        /// </summary>
+        public IDictionary<string, string> GetCollectionParameters(QueryOptions Options) {
+            var param = new Dictionary<string, string>();
+            if (Options.Collection != null) {
+                var c = Options.Collection;
+                param["collectionName"] = c.Name;
+            }
+            return param;
         }
 
         /// <summary>

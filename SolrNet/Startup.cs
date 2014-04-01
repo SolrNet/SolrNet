@@ -89,8 +89,10 @@ namespace SolrNet {
         /// </summary>
         /// <typeparam name="T">Document type</typeparam>
         /// <param name="serverURL">Solr URL (i.e. "http://localhost:8983/solr")</param>
-        public static void Init<T>(string serverURL) {
-            var connection = new SolrConnection(serverURL) {
+        /// <param name="proxy">Proxy to use for network connections</param>
+        /// <param name="userAgent">User-Agent to use for network connections</param>
+        public static void Init<T>(string serverURL, IWebProxy proxy = null, string userAgent = null) {
+            var connection = new SolrConnection(serverURL, proxy, userAgent) {
                 //Cache = Container.GetInstance<ISolrCache>(),
             };
 

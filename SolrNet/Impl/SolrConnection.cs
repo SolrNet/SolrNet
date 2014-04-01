@@ -48,11 +48,17 @@ namespace SolrNet.Impl {
         /// Manages HTTP connection with Solr
         /// </summary>
         /// <param name="serverURL">URL to Solr</param>
-        public SolrConnection(string serverURL) {
+        public SolrConnection(string serverURL, IWebProxy proxy = null, string userAgent = null) {
             ServerURL = serverURL;
             Timeout = -1;
             Cache = new NullCache();
             HttpWebRequestFactory = new HttpWebRequestFactory();
+            if (proxy != null) {
+                HttpWebRequestFactory.Proxy = proxy;
+            }
+            if (userAgent != null) {
+                HttpWebRequestFactory.UserAgent = userAgent;
+            }
         }
 
         /// <summary>

@@ -406,11 +406,10 @@ namespace SolrNet.Tests {
         }
 
         private static IDictionary<string, HighlightedSnippets> ParseHighlightingResults(string rawXml) {
-            var parser = new HighlightingResponseParser<Product>();
             var xml = XDocument.Parse(rawXml);
             var docNode = xml.XPathSelectElement("response/lst[@name='highlighting']");
             var item = new Product { Id = "SP2514N" };
-            return parser.ParseHighlighting(new SolrQueryResults<Product> { item }, docNode);
+            return HighlightingResponseParser<Product>.ParseHighlighting(new SolrQueryResults<Product> { item }, docNode);
         }
 
         [Test]
@@ -458,6 +457,15 @@ namespace SolrNet.Tests {
             //foreach (var i in first.Value.Snippets["source_en"])
             //    Console.WriteLine(i);
             Assert.AreEqual(3, first.Value.Snippets["source_en"].Count);
+        }
+
+        [Test]
+        public void ParseHighlighting3() {
+            var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting3.xml"));
+            Assert.AreEqual(0, highlights["e4420cc2"].Count);
+            Assert.AreEqual(1, highlights["e442c4cd"].Count);
+            Assert.AreEqual(1, highlights["e442c4cd"]["bodytext"].Count);
+            Assert.Contains(highlights["e442c4cd"]["bodytext"].First(), "Garia lancerer");
         }
         
         [Test]

@@ -24,6 +24,7 @@ namespace NHibernate.SolrNet {
     /// <summary>
     /// NHibernate <see cref="ISession"/> with SolrNet extensions for querying
     /// </summary>
+    [Obsolete("Deprecated. Replace with your own integration.")]
     public class SolrSession : DelegatingSession, ISolrSession {
         private readonly ISession session;
         private readonly IServiceProvider provider;

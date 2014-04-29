@@ -44,16 +44,16 @@ Target "Clean" <| fun _ ->
 Target "Build" <| fun _ -> mainSln "Rebuild"
 Target "BuildSample" <| fun _ -> sampleSln "Rebuild"
 
-let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "NHibernate.SolrNet"; "StructureMap.SolrNetIntegration"; "AutofacContrib.SolrNet"; "Unity.SolrNetIntegration"]
+let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "StructureMap.SolrNetIntegration"; "AutofacContrib.SolrNet"; "Unity.SolrNetIntegration"; "NHibernate.SolrNet"]
 let dlls = [for l in libs -> l + ".dll"]
 let dirs = [for l in libs -> l @@ "bin" @@ config]
 
 let testAssemblies = !! ("**/bin/"+config+"/*Tests.dll") |> Seq.distinctBy (fun p -> p.Split [|'/';'\\'|] |> System.Linq.Enumerable.Last)
 let noIntegrationTests = "exclude Category: Integration"
 let onlyIntegrationTests = "Category: Integration"
-let testTargets = List.map (fun lib -> "Test." + lib) libs
+let testTargets = List.map (fun lib -> "Test." + lib) libs |> List.filter (fun l -> not (l.Contains "NHibernate"))
 
-for lib,target in List.zip libs testTargets do
+for lib,target in Seq.zip libs testTargets do
     Target target <| fun _ ->
         !! (lib+".Tests/bin/"+config+"/"+lib+".Tests.dll")
             |> Gallio.Run (fun p -> { p with Filters = noIntegrationTests })

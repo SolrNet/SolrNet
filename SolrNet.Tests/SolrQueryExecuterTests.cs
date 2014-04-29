@@ -222,6 +222,35 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void HighlightingWithoutFieldsOutputsPrePost() {
+            const string afterTerm = "after";
+            const string beforeTerm = "before";
+
+            var q = new Dictionary<string, string>();
+            q["q"] = "";
+            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["hl"] = "true";
+            q["hl.tag.pre"] = beforeTerm;
+            q["hl.tag.post"] = afterTerm;
+            q["hl.useFastVectorHighlighter"] = "true";
+
+            var conn = new MockConnection(q);
+            var querySerializer = new SolrQuerySerializerStub("");
+
+            var parser = new MSolrAbstractResponseParser<TestDocument>();
+            parser.parse &= x => x.Stub();
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null, null);
+            queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
+                Highlight = new HighlightingParameters {
+                    AfterTerm = afterTerm,
+                    BeforeTerm = beforeTerm,
+                    UseFastVectorHighlighter = true,
+                }
+            });
+        }
+
+
+        [Test]
         public void HighlightingWithFastVectorHighlighter() {
             var e = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
             var p = e.GetHighlightingParameters(new QueryOptions {

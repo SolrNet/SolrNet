@@ -287,55 +287,55 @@ namespace SolrNet.Impl {
                 param["hl"] = "true";
                 if (h.Fields != null) {
                     param["hl.fl"] = string.Join(",", h.Fields.ToArray());
-
-                    if (h.Snippets.HasValue)
-                        param["hl.snippets"] = h.Snippets.Value.ToString();
-
-                    if (h.Fragsize.HasValue)
-                        param["hl.fragsize"] = h.Fragsize.Value.ToString();
-
-                    if (h.RequireFieldMatch.HasValue)
-                        param["hl.requireFieldMatch"] = h.RequireFieldMatch.Value.ToString().ToLowerInvariant();
-
-                    if (h.AlternateField != null)
-                        param["hl.alternateField"] = h.AlternateField;
-
-                    if (h.BeforeTerm != null)
-                        param[h.UseFastVectorHighlighter == true ? "hl.tag.pre" : "hl.simple.pre"] = h.BeforeTerm;
-
-                    if (h.AfterTerm != null)
-                        param[h.UseFastVectorHighlighter == true ? "hl.tag.post" : "hl.simple.post"] = h.AfterTerm;
-
-                    if (h.RegexSlop.HasValue)
-                        param["hl.regex.slop"] = Convert.ToString(h.RegexSlop.Value, CultureInfo.InvariantCulture);
-
-                    if (h.RegexPattern != null)
-                        param["hl.regex.pattern"] = h.RegexPattern;
-
-                    if (h.RegexMaxAnalyzedChars.HasValue)
-                        param["hl.regex.maxAnalyzedChars"] = h.RegexMaxAnalyzedChars.Value.ToString();
-
-                    if (h.UsePhraseHighlighter.HasValue)
-                        param["hl.usePhraseHighlighter"] = h.UsePhraseHighlighter.Value.ToString().ToLowerInvariant();
-
-                    if (h.UseFastVectorHighlighter.HasValue)
-                        param["hl.useFastVectorHighlighter"] = h.UseFastVectorHighlighter.Value.ToString().ToLowerInvariant();
-
-                    if (h.HighlightMultiTerm.HasValue)
-                        param["hl.highlightMultiTerm"] = h.HighlightMultiTerm.Value.ToString().ToLowerInvariant();
-
-                    if (h.MergeContiguous.HasValue)
-                        param["hl.mergeContiguous"] = h.MergeContiguous.Value.ToString().ToLowerInvariant();
-
-                    if (h.MaxAnalyzedChars.HasValue)
-                        param["hl.maxAnalyzedChars"] = h.MaxAnalyzedChars.Value.ToString();
-
-                    if (h.MaxAlternateFieldLength.HasValue)
-                        param["hl.maxAlternateFieldLength"] = h.MaxAlternateFieldLength.Value.ToString();
-
-                    if (h.Fragmenter.HasValue)
-                        param["hl.fragmenter"] = h.Fragmenter.Value == SolrHighlightFragmenter.Regex ? "regex" : "gap";
                 }
+
+                if (h.Snippets.HasValue)
+                    param["hl.snippets"] = h.Snippets.Value.ToString();
+
+                if (h.Fragsize.HasValue)
+                    param["hl.fragsize"] = h.Fragsize.Value.ToString();
+
+                if (h.RequireFieldMatch.HasValue)
+                    param["hl.requireFieldMatch"] = h.RequireFieldMatch.Value.ToString().ToLowerInvariant();
+
+                if (h.AlternateField != null)
+                    param["hl.alternateField"] = h.AlternateField;
+
+                if (h.BeforeTerm != null)
+                    param[h.UseFastVectorHighlighter == true ? "hl.tag.pre" : "hl.simple.pre"] = h.BeforeTerm;
+
+                if (h.AfterTerm != null)
+                    param[h.UseFastVectorHighlighter == true ? "hl.tag.post" : "hl.simple.post"] = h.AfterTerm;
+
+                if (h.RegexSlop.HasValue)
+                    param["hl.regex.slop"] = Convert.ToString(h.RegexSlop.Value, CultureInfo.InvariantCulture);
+
+                if (h.RegexPattern != null)
+                    param["hl.regex.pattern"] = h.RegexPattern;
+
+                if (h.RegexMaxAnalyzedChars.HasValue)
+                    param["hl.regex.maxAnalyzedChars"] = h.RegexMaxAnalyzedChars.Value.ToString();
+
+                if (h.UsePhraseHighlighter.HasValue)
+                    param["hl.usePhraseHighlighter"] = h.UsePhraseHighlighter.Value.ToString().ToLowerInvariant();
+
+                if (h.UseFastVectorHighlighter.HasValue)
+                    param["hl.useFastVectorHighlighter"] = h.UseFastVectorHighlighter.Value.ToString().ToLowerInvariant();
+
+                if (h.HighlightMultiTerm.HasValue)
+                    param["hl.highlightMultiTerm"] = h.HighlightMultiTerm.Value.ToString().ToLowerInvariant();
+
+                if (h.MergeContiguous.HasValue)
+                    param["hl.mergeContiguous"] = h.MergeContiguous.Value.ToString().ToLowerInvariant();
+
+                if (h.MaxAnalyzedChars.HasValue)
+                    param["hl.maxAnalyzedChars"] = h.MaxAnalyzedChars.Value.ToString();
+
+                if (h.MaxAlternateFieldLength.HasValue)
+                    param["hl.maxAlternateFieldLength"] = h.MaxAlternateFieldLength.Value.ToString();
+
+                if (h.Fragmenter.HasValue)
+                    param["hl.fragmenter"] = h.Fragmenter.Value == SolrHighlightFragmenter.Regex ? "regex" : "gap";
             }
             return param;
         }

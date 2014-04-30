@@ -67,6 +67,11 @@ namespace SolrNet.Commands.Parameters {
 		/// </summary>
 		public string AfterTerm { get; set; }
 
+        /// <summary>
+        /// Set a query request to be highlighted for additional highlighing
+        /// </summary>
+        public string HighligtQuery { get; set; }
+
 		/// <summary>
 		/// Factor by which the regex fragmenter can stray from the ideal fragment size (given by hl.fragsize) to accomodate the regular expression. 
 		/// For instance, a slop of 0.2 with fragsize of 100 should yield fragments between 80 and 120 characters in length. 
@@ -129,6 +134,8 @@ namespace SolrNet.Commands.Parameters {
         /// The default value is "gap".
         /// </summary>
         public SolrHighlightFragmenter? Fragmenter { get; set; }
+
+
 
 
 	}

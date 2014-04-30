@@ -170,10 +170,12 @@ namespace SolrNet.Tests {
             const int snippets = 3;
             const string alt = "alt";
             const int fragsize = 7;
+            const string highlightQuery = "mausch";
             var q = new Dictionary<string, string>();
             q["q"] = "";
             q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
             q["hl"] = "true";
+            q["hl.q"] = highlightQuery;
             q["hl.fl"] = highlightedField;
             q["hl.snippets"] = snippets.ToString();
             q["hl.fragsize"] = fragsize.ToString();
@@ -203,6 +205,7 @@ namespace SolrNet.Tests {
                     Fields = new[] { highlightedField },
                     AfterTerm = afterTerm,
                     BeforeTerm = beforeTerm,
+                    HighligtQuery = highlightQuery,
                     Snippets = snippets,
                     AlternateField = alt,
                     Fragsize = fragsize,

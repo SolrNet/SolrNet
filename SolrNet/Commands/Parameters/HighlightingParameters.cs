@@ -68,9 +68,10 @@ namespace SolrNet.Commands.Parameters {
 		public string AfterTerm { get; set; }
 
         /// <summary>
-        /// Set a query request to be highlighted for additional highlighing
+        /// Set a query request to be highlighted. It overrides q parameter for highlighting. 
+        /// Requires Solr 3.5+".
         /// </summary>
-        public string HighligtQuery { get; set; }
+        public SolrQuery Query { get; set; }
 
 		/// <summary>
 		/// Factor by which the regex fragmenter can stray from the ideal fragment size (given by hl.fragsize) to accomodate the regular expression. 

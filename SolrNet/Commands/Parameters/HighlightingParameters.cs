@@ -71,7 +71,7 @@ namespace SolrNet.Commands.Parameters {
         /// Set a query request to be highlighted. It overrides q parameter for highlighting. 
         /// Requires Solr 3.5+".
         /// </summary>
-        public SolrQuery Query { get; set; }
+        public ISolrQuery Query { get; set; }
 
 		/// <summary>
 		/// Factor by which the regex fragmenter can stray from the ideal fragment size (given by hl.fragsize) to accomodate the regular expression. 

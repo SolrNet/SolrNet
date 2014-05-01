@@ -307,8 +307,8 @@ namespace SolrNet.Impl {
                 if (h.AfterTerm != null)
                     param[h.UseFastVectorHighlighter == true ? "hl.tag.post" : "hl.simple.post"] = h.AfterTerm;
 
-                if (h.Query != null && !string.IsNullOrEmpty(h.Query.Query))
-                    param["hl.q"] = h.Query.Query;
+                if (h.Query != null)
+                    param["hl.q"] = querySerializer.Serialize(h.Query);
 
                 if (h.RegexSlop.HasValue)
                     param["hl.regex.slop"] = Convert.ToString(h.RegexSlop.Value, CultureInfo.InvariantCulture);

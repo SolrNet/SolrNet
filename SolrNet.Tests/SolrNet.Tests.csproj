@@ -94,6 +94,7 @@
     <Compile Include="DefaultResponseParserTests.cs" />
     <Compile Include="LocationTests.cs" />
     <Compile Include="MergeCommandTests.cs" />
+    <Compile Include="Mocks\MSolrFieldSerializer.cs" />
     <Compile Include="MoneyTests.cs" />
     <Compile Include="ExtractCommandTests.cs" />
     <Compile Include="AddCommandTests.cs" />

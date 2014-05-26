@@ -170,12 +170,13 @@ namespace SolrNet.Tests {
             const int snippets = 3;
             const string alt = "alt";
             const int fragsize = 7;
-            var highlightQuery = new SolrQuery("mausch");
+            const string query = "mausch";
+            var highlightQuery = new SolrQuery(query);
             var q = new Dictionary<string, string>();
             q["q"] = "";
             q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
             q["hl"] = "true";
-            q["hl.q"] = highlightQuery.Query;
+            q["hl.q"] = query;
             q["hl.fl"] = highlightedField;
             q["hl.snippets"] = snippets.ToString();
             q["hl.fragsize"] = fragsize.ToString();
@@ -195,7 +196,7 @@ namespace SolrNet.Tests {
             q["hl.fragmenter"] = "regex";
 
             var conn = new MockConnection(q);
-            var querySerializer = new SolrQuerySerializerStub("");
+            var querySerializer = new DefaultQuerySerializer(new MSolrFieldSerializer());
 
             var parser = new MSolrAbstractResponseParser<TestDocument>();
             parser.parse &= x => x.Stub();

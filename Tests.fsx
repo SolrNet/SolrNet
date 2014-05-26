@@ -2,7 +2,7 @@
 #r "System.Configuration"
 #r @"gallio.dll"
 #r @"MbUnit.dll"
-#r @"packages\Fuchu.0.3.0.1\lib\net40-client\Fuchu.dll"
+#r @"packages\Fuchu.0.4.0.0\lib\Fuchu.dll"
 #r @"SolrNet.Tests\bin\Debug\SolrNet.Tests.dll"
 #r @"SolrNet.Tests.Integration\bin\Debug\SolrNet.Tests.Integration.dll"
 

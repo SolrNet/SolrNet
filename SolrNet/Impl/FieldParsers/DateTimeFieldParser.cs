@@ -47,7 +47,12 @@ namespace SolrNet.Impl.FieldParsers {
             {
                 result = DateTime.Parse(s, CultureInfo.InvariantCulture);
             }
-            
+
+            if (result.Kind == DateTimeKind.Unspecified)
+            {
+                result = DateTime.SpecifyKind(result, DateTimeKind.Utc);
+            }
+
             return result;
         }
     }

@@ -29,18 +29,22 @@ namespace SolrNet.Tests {
         public static IEnumerable<Test> ParseYears() {
             return parsedDates.Select(pd => {
                 var name = "ParseYears " + pd.Key;
-                Test t = new TestCase(name, () => Assert.AreEqual(pd.Value, DateTimeFieldParser.ParseDate(pd.Key)));
+                Test t = new TestCase(name, () => {
+                    var value = DateTimeFieldParser.ParseDate(pd.Key);
+                    Assert.AreEqual(pd.Value, value);
+                    Assert.AreEqual(pd.Value.Kind, value.Kind);
+                });
                 return t;
             });
         }
 
         private static readonly IEnumerable<KeyValuePair<string, DateTime>> parsedDates =
             new[] {
-                KV.Create("1-01-01T00:00:00Z", new DateTime(1, 1, 1)),
-                KV.Create("2004-11-01T00:00:00Z", new DateTime(2004, 11, 1)),
-                KV.Create("2012-05-10T14:17:23.684Z", new DateTime(2012, 5, 10, 14, 17, 23, 684)),
-                KV.Create("2012-05-10T14:17:23.68Z", new DateTime(2012, 5, 10, 14, 17, 23, 680)),
-                KV.Create("2012-05-10T14:17:23.6Z", new DateTime(2012, 5, 10, 14, 17, 23, 600)),
+                KV.Create("1-01-01T00:00:00Z", new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
+                KV.Create("2004-11-01T00:00:00Z", new DateTime(2004, 11, 1, 0, 0, 0, DateTimeKind.Utc)),
+                KV.Create("2012-05-10T14:17:23.684Z", new DateTime(2012, 5, 10, 14, 17, 23, 684, DateTimeKind.Utc)),
+                KV.Create("2012-05-10T14:17:23.68Z", new DateTime(2012, 5, 10, 14, 17, 23, 680, DateTimeKind.Utc)),
+                KV.Create("2012-05-10T14:17:23.6Z", new DateTime(2012, 5, 10, 14, 17, 23, 600, DateTimeKind.Utc)),
             };
 
         [StaticTestFactory]
@@ -49,6 +53,7 @@ namespace SolrNet.Tests {
                 Test t = new TestCase("RoundTrip " + dt, () => {
                     var value = DateTimeFieldParser.ParseDate(DateTimeFieldSerializer.SerializeDate(dt));
                     Assert.AreEqual(dt, value);
+                    Assert.AreEqual(dt.Kind, value.Kind);
                 });
                 return t;
             });
@@ -65,6 +70,7 @@ namespace SolrNet.Tests {
                     xml.Add(new XElement("date", s));
                     var value = (DateTime?) parser.Parse(xml.Root, typeof (DateTime?));
                     Assert.AreEqual(dt, value);
+                    Assert.AreEqual(dt.Kind, value.Value.Kind);
                 });
                 return t;
             });
@@ -72,11 +78,11 @@ namespace SolrNet.Tests {
 
         private static readonly IEnumerable<DateTime> dateTimes =
             new[] {
-                new DateTime(1, 1, 1),
-                new DateTime(2004, 11, 1),
-                new DateTime(2004, 11, 1, 15, 41, 23),
-                new DateTime(2012, 5, 10, 14, 17, 23, 684),
-                new DateTime(2008, 5, 6, 14, 21, 23, 0, DateTimeKind.Local),
+                new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                new DateTime(2004, 11, 1, 0, 0, 0, DateTimeKind.Utc),
+                new DateTime(2004, 11, 1, 15, 41, 23, DateTimeKind.Utc),
+                new DateTime(2012, 5, 10, 14, 17, 23, 684, DateTimeKind.Utc),
+                new DateTime(2008, 5, 6, 14, 21, 23, 0, DateTimeKind.Utc),
             };
     }
 }

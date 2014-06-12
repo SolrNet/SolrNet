@@ -31,7 +31,7 @@ using SolrNet.Tests.Utils;
 namespace SolrNet.Tests.Integration {
     [TestFixture]
     [Category("Integration")]
-    public class FieldGroupingIntegrationFixture
+    public class IntegrationFixture
     {
         private static readonly string serverURL = ConfigurationManager.AppSettings["solr"];
         private static readonly Lazy<object> init = new Lazy<object>(() => {

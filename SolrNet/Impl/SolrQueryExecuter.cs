@@ -487,8 +487,13 @@ namespace SolrNet.Impl {
             if (options.Grouping.Main.HasValue)
                 yield return KV.Create("group.main", options.Grouping.Main.ToString().ToLowerInvariant());
 
-            if (!string.IsNullOrEmpty(options.Grouping.Query))
-                yield return KV.Create("group.query", options.Grouping.Query);
+            if (options.Grouping.Query.Count > 0)
+            {
+                foreach (var query in options.Grouping.Query.Where(query => query != null))
+                {
+                    yield return KV.Create("group.query", querySerializer.Serialize(query));
+                }
+            }
 
             if (!string.IsNullOrEmpty(options.Grouping.Func))
                 yield return KV.Create("group.func", options.Grouping.Func);

@@ -31,7 +31,8 @@ using SolrNet.Tests.Utils;
 namespace SolrNet.Tests.Integration {
     [TestFixture]
     [Category("Integration")]
-    public class IntegrationFixture {
+    public class FieldGroupingIntegrationFixture
+    {
         private static readonly string serverURL = ConfigurationManager.AppSettings["solr"];
         private static readonly Lazy<object> init = new Lazy<object>(() => {
             Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL)));
@@ -480,6 +481,28 @@ namespace SolrNet.Tests.Integration {
 			Assert.AreEqual(true, results.Grouping.ContainsKey("manu_exact"));
 			Assert.GreaterThanOrEqualTo(results.Grouping["manu_exact"].Groups.Count,1);
 		}
+
+        [Test]
+        public void QueryGrouping()
+        {
+            var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
+            var results = solr.Query(SolrQuery.All, new QueryOptions
+            {
+                Grouping = new GroupingParameters()
+                {
+                    Query = new[] { new SolrQuery("manu_exact"), new SolrQuery("name") },
+                    Format = GroupingFormat.Grouped,
+                    Limit = 1,
+                }
+            });
+
+            Console.WriteLine("Group.Count {0}", results.Grouping.Count);
+            Assert.AreEqual(2, results.Grouping.Count);
+            Assert.AreEqual(true, results.Grouping.ContainsKey("manu_exact"));
+            Assert.AreEqual(true, results.Grouping.ContainsKey("name"));
+            Assert.GreaterThanOrEqualTo(results.Grouping["manu_exact"].Groups.Count, 1);
+            Assert.GreaterThanOrEqualTo(results.Grouping["name"].Groups.Count, 1);
+        }
 
         private static readonly Lazy<object> initLoose = new Lazy<object>(() => {
             Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL)));

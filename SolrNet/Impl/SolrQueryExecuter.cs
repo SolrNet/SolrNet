@@ -468,16 +468,21 @@ namespace SolrNet.Impl {
         /// <param name="options"></param>
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetGroupingQueryOptions(QueryOptions options) {
-            if (options.Grouping == null || options.Grouping.Fields.Count == 0)
+            if (options.Grouping == null)
                 yield break;
 
             yield return KV.Create("group", true.ToString().ToLowerInvariant());
 
-            foreach (var groupfield in options.Grouping.Fields) {
-                if (string.IsNullOrEmpty(groupfield))
-                    continue;
-                yield return KV.Create("group.field", groupfield);
+            if (options.Grouping.Fields != null)
+            {
+                foreach (var groupfield in options.Grouping.Fields)
+                {
+                    if (string.IsNullOrEmpty(groupfield))
+                        continue;
+                    yield return KV.Create("group.field", groupfield);
+                }
             }
+
             if (options.Grouping.Limit.HasValue)
                 yield return KV.Create("group.limit", options.Grouping.Limit.ToString());
 
@@ -487,8 +492,13 @@ namespace SolrNet.Impl {
             if (options.Grouping.Main.HasValue)
                 yield return KV.Create("group.main", options.Grouping.Main.ToString().ToLowerInvariant());
 
-            if (!string.IsNullOrEmpty(options.Grouping.Query))
-                yield return KV.Create("group.query", options.Grouping.Query);
+            if (options.Grouping.Query != null)
+            {
+                foreach (var query in options.Grouping.Query.Where(query => query != null))
+                {
+                    yield return KV.Create("group.query", querySerializer.Serialize(query));
+                }
+            }
 
             if (!string.IsNullOrEmpty(options.Grouping.Func))
                 yield return KV.Create("group.func", options.Grouping.Func);

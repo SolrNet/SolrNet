@@ -66,7 +66,7 @@ namespace SolrNet.Commands.Parameters
 		/// <summary>
 		/// Return a single group of documents that also match the given query.
 		/// </summary>
-		public string Query { get; set; }
+		public ICollection<ISolrQuery> Query { get; set; }
 
 		/// <summary>
 		/// Group based on the unique values of a function query.

@@ -354,7 +354,9 @@ namespace SolrNet.Tests.Integration {
             var results = solr.Query(SolrQuery.All, new QueryOptions {
                 Rows = 0,
                 Stats = new StatsParameters {
+                    Distinct = true,
                     Facets = new[] { "inStock" },
+                    Fields = new List<string> { "Textfield", "numericfield" },
                     // stats facet currently broken in Solr: https://issues.apache.org/jira/browse/SOLR-2976
                     //FieldsWithFacets = new Dictionary<string, ICollection<string>> {
                     //    {"popularity", new List<string> {"weight"}}
@@ -362,6 +364,14 @@ namespace SolrNet.Tests.Integration {
                 }
             });
             Assert.IsNotNull(results.Stats);
+            Assert.AreEqual(2, results.Grouping.Count);
+            Assert.AreEqual(true, results.Stats.ContainsKey("Textfield"));
+            Assert.AreEqual(true, results.Stats.ContainsKey("numericfield"));
+            Assert.GreaterThanOrEqualTo(results.Stats["Textfield"].DistinctValues.Count, 1);
+            Assert.GreaterThanOrEqualTo(results.Stats["numericfield"].DistinctValues.Count, 1);
+            Assert.GreaterThanOrEqualTo(results.Stats["Textfield"].CountDistinct, 1);
+            Assert.GreaterThanOrEqualTo(results.Stats["numericfield"].CountDistinct, 1);
+
             foreach (var kv in results.Stats) {
                 Console.WriteLine("Field {0}: ", kv.Key);
                 DumpStats(kv.Value, 1);

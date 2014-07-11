@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using SolrNet.Utils;
@@ -68,30 +69,38 @@ namespace SolrNet.Impl.ResponseParsers {
             var r = new StatsResult();
             foreach (var statNode in node.Elements()) {
                 var name = statNode.Attribute("name").Value;
+                double dnumber;
+                long lnumber;
                 switch (name) {
                     case "min":
-						r.Min = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Min = Double.TryParse(statNode.Value, out dnumber) ? dnumber : Double.NaN;
                         break;
                     case "max":
-						r.Max = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Max = Double.TryParse(statNode.Value, out dnumber) ? dnumber : Double.NaN;
                         break;
                     case "sum":
-						r.Sum = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Sum = Double.TryParse(statNode.Value, out dnumber) ? dnumber : Double.NaN;
                         break;
                     case "sumOfSquares":
-						r.SumOfSquares = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.SumOfSquares = Double.TryParse(statNode.Value, out dnumber) ? dnumber : Double.NaN;
                         break;
                     case "mean":
-						r.Mean = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Mean = Double.TryParse(statNode.Value, out dnumber) ? dnumber : Double.NaN;
                         break;
                     case "stddev":
-						r.StdDev = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.StdDev = Double.TryParse(statNode.Value, out dnumber) ? dnumber : Double.NaN;
                         break;
                     case "count":
-						r.Count = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Count = Int64.TryParse(statNode.Value, out lnumber) ? lnumber : Int64.MinValue;
                         break;
                     case "missing":
-						r.Missing = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Missing = Int64.TryParse(statNode.Value, out lnumber) ? lnumber : Int64.MinValue;
+                        break;
+                    case "distinctValues":
+                        r.DistinctValues = statNode.Elements().Select(getnode => getnode.Value).ToList();
+                        break;
+                    case "countDistinct":
+                        r.CountDistinct = Int64.TryParse(statNode.Value, out lnumber) ? lnumber : Int64.MinValue;
                         break;
                     default:
                         r.FacetResults = ParseFacetNode(statNode);

@@ -32,6 +32,17 @@ namespace SolrNet.Commands.Parameters {
         /// Global facets: get these facets' stats for all fields requested in <see cref="FieldsWithFacets"/>
         /// </summary>
         public ICollection<string> Facets { get; set; }
+        
+        /// <summary>
+        /// Specifies a field for which statistics should be generated. 
+        /// </summary>
+        public List<string> Fields { get; set; }
+
+        /// <summary>
+        /// Supported in 4.10. https://cwiki.apache.org/confluence/display/solr/The+Stats+Component
+        /// If true, distinct values will be calculated and returned as "countDistinct" and "distinctValues" in the response.
+        /// </summary>
+        public bool Distinct { get; set; }
 
         /// <summary>
         /// Adds a facet to the <see cref="Facets"/> collection
@@ -92,6 +103,8 @@ namespace SolrNet.Commands.Parameters {
         public StatsParameters AddFieldWithFacets(string field, params string[] facets) {
             return AddFieldWithFacets(field, (IEnumerable<string>)facets);
         }
+
+
 
         /// <summary>
         /// Parameters to query stats

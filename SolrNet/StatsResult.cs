@@ -77,6 +77,17 @@ namespace SolrNet {
         public IDictionary<string, Dictionary<string, StatsResult>> FacetResults { get; set; }
 
         /// <summary>
+        /// Count of distinct values
+        /// </summary>
+        public long CountDistinct { get; set; }
+
+        /// <summary>
+        /// Fetches Distinct Values for the fields
+        /// </summary>
+        public List<string> DistinctValues { get; set; }
+
+        
+        /// <summary>
         /// Stats results
         /// </summary>
         public StatsResult() {

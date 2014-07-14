@@ -46,5 +46,21 @@ namespace SolrNet.Tests {
             QueryOptions o = new QueryOptions().AddFacets(new SolrFacetFieldQuery("f1"), new SolrFacetQuery(new SolrQuery("q")));
             Assert.AreEqual(2, o.Facet.Queries.Count);
         }
+
+        [Test]
+        public void SetDefaultCursorMark()
+        {
+            var o = new QueryOptions();
+            o.CursorMarkOption = new CursorMarkOption();
+            Assert.AreEqual("*", o.CursorMarkOption.CursorMark);
+        }
+
+        [Test]
+        public void SetCustomCursorMark()
+        {
+            var o = new QueryOptions();
+            o.CursorMarkOption = new CursorMarkOption("AoEoZTQ3YmY0NDM=");
+            Assert.AreEqual("AoEoZTQ3YmY0NDM=", o.CursorMarkOption.CursorMark);
+        }
     }
 }

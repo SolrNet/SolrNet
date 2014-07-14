@@ -81,6 +81,13 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(1, r.NumFound);
 		}
 
+        [Test]
+        public void CanParseNextCursormark()
+        {
+            var r = ParseFromResource<TestDocument>("Resources.response.xml");
+            Assert.AreEqual("AoEoZTQ3YmY0NDM=", r.NextCursorMark);
+        }
+
 		[Test]
 		public void Parse() {
 		    var results = ParseFromResource<TestDocument>("Resources.response.xml");

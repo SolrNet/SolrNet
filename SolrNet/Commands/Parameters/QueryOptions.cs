@@ -73,6 +73,14 @@ namespace SolrNet.Commands.Parameters {
 		/// </summary>
 		public GroupingParameters Grouping { get; set; }
 
+        /// <summary>
+        ///     (only SOLR 4.7 and above)
+        ///     This option can be used to do deep pagination much more effeciently than the normal
+        ///     pagesize paging by providing a cursor token for faster retrieval of data in a queryset.
+        ///     IMPORTANT: It does require <see cref="SolrNet.Commands.Parameters.Start" /> to be = 0
+        ///     <seealso href="https://cwiki.apache.org/confluence/display/solr/Pagination+of+Results" />
+        /// </summary>
+        public CursorMarkOption CursorMarkOption { get; set; }
 
         /// <summary>
         /// This parmeter can be used to group query results into clusters based on document similarity 

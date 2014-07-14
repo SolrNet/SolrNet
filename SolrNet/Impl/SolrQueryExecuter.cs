@@ -160,7 +160,11 @@ namespace SolrNet.Impl {
 
             foreach (var p in GetClusteringParameters(options))
                 yield return p;
+            foreach (var o in GetCursorMarkOption(options))
+                yield return o;
         }
+
+
 
         /// <summary>
         /// Serializes all More Like This handler parameters
@@ -276,6 +280,19 @@ namespace SolrNet.Impl {
                 yield return new KeyValuePair<string, string>("fq", querySerializer.Serialize(fq));
             }
         }
+
+        /// <summary>
+        /// Serializes the CursorMark to its SOLR query representation
+        /// </summary>
+        /// <param name="cmo"></param>
+        /// <returns></returns>
+        public IEnumerable<KeyValuePair<string, string>> GetCursorMarkOption(QueryOptions cmo)
+        {
+            if (cmo.CursorMarkOption == null)
+                yield break;
+            yield return KV.Create("cursorMark", cmo.CursorMarkOption.CursorMark);
+        } 
+
 
         /// <summary>
         /// Gets Solr parameters for defined highlightings

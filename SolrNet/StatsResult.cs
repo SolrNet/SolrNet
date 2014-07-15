@@ -25,42 +25,42 @@ namespace SolrNet {
         /// <summary>
         /// Minimum value
         /// </summary>
-        public double Min { get; set; }
+        public double? Min { get; set; }
 
         /// <summary>
         /// Maximum value
         /// </summary>
-        public double Max { get; set; }
+        public double? Max { get; set; }
 
         /// <summary>
         /// Sum of all values
         /// </summary>
-        public double Sum { get; set; }
+        public double? Sum { get; set; }
 
         /// <summary>
         /// How many (non-null) values
         /// </summary>
-        public long Count { get; set; }
+        public long? Count { get; set; }
 
         /// <summary>
         /// How many null values
         /// </summary>
-        public long Missing { get; set; }
+        public long? Missing { get; set; }
 
         /// <summary>
         /// Sum of all values squared (useful for stddev)
         /// </summary>
-        public double SumOfSquares { get; set; }
+        public double? SumOfSquares { get; set; }
 
         /// <summary>
         /// The average (v1+v2...+vN)/N
         /// </summary>
-        public double Mean { get; set; }
+        public double? Mean { get; set; }
 
         /// <summary>
         /// Standard deviation
         /// </summary>
-        public double StdDev { get; set; }
+        public double? StdDev { get; set; }
 
         /// <summary>
         /// Facet results.

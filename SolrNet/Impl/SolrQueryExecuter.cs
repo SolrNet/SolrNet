@@ -377,7 +377,7 @@ namespace SolrNet.Impl {
             if (options.Stats == null)
                 yield break;
 
-            yield return KV.Create("stats", true.ToString().ToLowerInvariant());
+            yield return KV.Create("stats", "true");
 
             if (options.Stats.Distinct)
             {

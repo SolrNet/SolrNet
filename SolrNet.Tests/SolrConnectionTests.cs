@@ -78,7 +78,7 @@ namespace SolrNet.Tests {
                 HttpWebRequestFactory = reqFactory,
             };
 		    var r = conn.Get("", new Dictionary<string, string>());
-            Assert.AreEqual("hello world", r);
+            Assert.AreEqual("hello world", r.Response);
 		}
 
 		[Test]

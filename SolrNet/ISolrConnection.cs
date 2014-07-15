@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using SolrNet.Impl;
 
 namespace SolrNet {
     /// <summary>
@@ -28,7 +29,7 @@ namespace SolrNet {
         /// <param name="relativeUrl">Path to post to</param>
         /// <param name="s">POST content</param>
         /// <returns></returns>
-        string Post(string relativeUrl, string s);
+        ISolrQueryResponse Post(string relativeUrl, string s);
 
         /// <summary>
         /// POSTs binary to Solr
@@ -38,7 +39,7 @@ namespace SolrNet {
         /// <param name="content">Binary content</param>
         /// <param name="getParameters">extra parameters to pass in query string</param>
         /// <returns></returns>
-        string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters);
+        ISolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters);
 
         /// <summary>
         /// GETs from Solr
@@ -46,6 +47,6 @@ namespace SolrNet {
         /// <param name="relativeUrl">Path to get from</param>
         /// <param name="parameters">Query string parameters</param>
         /// <returns></returns>
-        string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters);
+        ISolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters);
     }
 }

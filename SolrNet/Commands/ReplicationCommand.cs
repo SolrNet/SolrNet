@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SolrNet.Impl;
 
 namespace SolrNet.Commands 
 {
@@ -19,7 +20,7 @@ namespace SolrNet.Commands
         /// </summary>
         /// <param name="connection">The SolrConnection to use.</param>
         /// <returns>The results of the Command.</returns>
-        public string Execute(ISolrConnection connection) 
+        public ISolrQueryResponse Execute(ISolrConnection connection) 
         {
             return connection.Get("/replication", Parameters.ToArray());
         }

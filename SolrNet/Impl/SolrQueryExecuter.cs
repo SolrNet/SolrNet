@@ -597,8 +597,9 @@ namespace SolrNet.Impl {
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
             var r = connection.Get(Handler, param);
-            var xml = XDocument.Parse(r);
+            var xml = XDocument.Parse(r.Response);
             resultParser.Parse(xml, results);
+            results.SolrResponseMetaData = r.MetaData;
             return results;
         }
 
@@ -611,7 +612,7 @@ namespace SolrNet.Impl {
         public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options) {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
             var r = connection.Get(MoreLikeThisHandler, param);
-            var qr = mlthResultParser.Parse(r);
+            var qr = mlthResultParser.Parse(r.Response);
             return qr;
         }
     }

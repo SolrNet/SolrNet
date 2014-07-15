@@ -15,13 +15,15 @@
 #endregion
 
 using System;
+using SolrNet.Impl;
 
 namespace SolrNet.Commands {
     /// <summary>
     /// Rollbacks all add/deletes made to the index since the last commit.
     /// </summary>
     public class RollbackCommand : ISolrCommand {
-        public string Execute(ISolrConnection connection) {
+        public ISolrQueryResponse Execute(ISolrConnection connection)
+        {
             return connection.Post("/update", "<rollback/>");
         }
     }

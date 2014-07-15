@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
+using SolrNet.Impl;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -53,7 +54,8 @@ namespace SolrNet.Commands {
         /// </summary>
         /// <param name="connection"></param>
         /// <returns></returns>
-		public string Execute(ISolrConnection connection) {
+        public ISolrQueryResponse Execute(ISolrConnection connection)
+        {
 			var node = new XElement("optimize");
 
             var ps = new[] {

@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 
 namespace SolrNet {
     /// <summary>
@@ -68,7 +69,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="cmd">command to send</param>
         /// <returns>solr response</returns>
-        string Send(ISolrCommand cmd);
+        ISolrQueryResponse Send(ISolrCommand cmd);
 
         /// <summary>
         /// Sends a custom command, returns parsed header from xml response

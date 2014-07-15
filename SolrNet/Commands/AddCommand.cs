@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using SolrNet.Impl;
 using SolrNet.Utils;
 
 namespace SolrNet.Commands {
@@ -71,7 +72,8 @@ namespace SolrNet.Commands {
             return addElement.ToString(SaveOptions.DisableFormatting);
         }
 
-	    public string Execute(ISolrConnection connection) {
+        public ISolrQueryResponse Execute(ISolrConnection connection)
+        {
 	        var xml = ConvertToXml();
 			return connection.Post("/update", xml);
 		}

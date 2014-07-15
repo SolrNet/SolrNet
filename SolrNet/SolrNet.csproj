@@ -113,6 +113,7 @@
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
     <Compile Include="Commands\Parameters\TermsSort.cs" />
     <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
+    <Compile Include="Impl\ISolrQueryResponse.cs" />
     <Compile Include="Impl\ReplicationDetailsResponse.cs" />
     <Compile Include="Impl\ISolrReplicationDetailsResponseParser.cs" />
     <Compile Include="Impl\ISolrReplicationIndexVersionResponseParser.cs" />
@@ -122,6 +123,8 @@
     <Compile Include="Impl\ResponseParsers\ReplicationDetailsResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\ReplicationIndexVersionResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\ReplicationStatusResponseParser.cs" />
+    <Compile Include="Impl\SolrQueryResponse.cs" />
+    <Compile Include="Impl\SolrResponseMetaData.cs" />
     <Compile Include="ISolrCoreReplication.cs" />
     <Compile Include="Impl\SolrCoreReplication.cs" />
     <Compile Include="Impl\FieldParsers\DateTimeOffsetFieldParser.cs" />

@@ -20,6 +20,7 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 using SolrNet.Utils;
 
 namespace SolrNet.Commands {
@@ -45,7 +46,8 @@ namespace SolrNet.Commands {
         /// </summary>
 		public bool? FromCommitted { get; set; }
 
-		public string Execute(ISolrConnection connection) {
+        public ISolrQueryResponse Execute(ISolrConnection connection)
+        {
 			var deleteNode = new XElement("delete");
             if (parameters != null) {
                 if (parameters.CommitWithin.HasValue) {

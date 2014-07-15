@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SolrNet.Impl;
 
 namespace SolrNet.Tests.Utils {
     public class LoggingConnection : ISolrConnection {
@@ -26,17 +27,20 @@ namespace SolrNet.Tests.Utils {
             this.conn = conn;
         }
 
-        public string Post(string relativeUrl, string s) {
+        public ISolrQueryResponse Post(string relativeUrl, string s)
+        {
             Console.WriteLine("Posting {0}", s);
             return conn.Post(relativeUrl, s);
         }
 
-        public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public ISolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
             Console.WriteLine("Posting Binary");
             return conn.PostStream(relativeUrl, contentType, content, parameters);
         }
 
-        public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public ISolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
             Console.WriteLine("Getting");
             var r = conn.Get(relativeUrl, parameters);
             Console.WriteLine("Result is:\n" + r);

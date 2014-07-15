@@ -98,19 +98,19 @@ namespace SolrNet.Impl {
             return queryExecuter.Execute(query, options);
         }
 
-        public string Send(ISolrCommand cmd) {
+        public ISolrQueryResponse Send(ISolrCommand cmd) {
             return cmd.Execute(connection);
         }
 
         public ExtractResponse SendAndParseExtract(ISolrCommand cmd) {
             var r = Send(cmd);
-            var xml = XDocument.Parse(r);
+            var xml = XDocument.Parse(r.Response);
             return extractResponseParser.Parse(xml);
         }
 
         public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
             var r = Send(cmd);
-            var xml = XDocument.Parse(r);
+            var xml = XDocument.Parse(r.Response);
             return headerParser.Parse(xml);
         }
 
@@ -119,14 +119,14 @@ namespace SolrNet.Impl {
         }
 
         public SolrSchema GetSchema(string schemaFileName) {
-            string schemaXml = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
-            var schema = XDocument.Parse(schemaXml);
+            ISolrQueryResponse r = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
+            var schema = XDocument.Parse(r.Response);
             return schemaParser.Parse(schema);
         }
 
         public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options) {
-            var response = connection.Get("/dataimport", null);
-            var dihstatus = XDocument.Parse(response);
+            var qr = connection.Get("/dataimport", null);
+            var dihstatus = XDocument.Parse(qr.Response);
             return dihStatusParser.Parse(dihstatus);
         }
 

@@ -93,7 +93,7 @@ namespace SolrNet.Impl {
         /// The STATUS action returns the status of all running cores.
         /// </summary>
         public List<CoreResult> Status() {
-            return ParseStatusResponse(Send(new StatusCommand()));
+            return ParseStatusResponse(Send(new StatusCommand()).Response);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="coreName">The name of a core, as listed in the "name" attribute of a &lt;core&gt; element in solr.xml.</param>
         public CoreResult Status(string coreName) {
-            return ParseStatusResponse(Send(new StatusCommand(coreName))).FirstOrDefault();
+            return ParseStatusResponse(Send(new StatusCommand(coreName)).Response).FirstOrDefault();
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace SolrNet.Impl {
         /// <returns></returns>
         public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
             var r = Send(cmd);
-            var xml = XDocument.Parse(r);
+            var xml = XDocument.Parse(r.Response);
             return headerParser.Parse(xml);
         }
 
@@ -193,7 +193,8 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="command">The Command to send.</param>
         /// <returns></returns>
-        public string Send(ISolrCommand command) {
+        public ISolrQueryResponse Send(ISolrCommand command)
+        {
             return command.Execute(connection);
         }
 

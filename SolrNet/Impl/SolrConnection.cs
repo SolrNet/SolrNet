@@ -78,13 +78,13 @@ namespace SolrNet.Impl {
         /// </summary>
         public int Timeout { get; set; }
 
-        public string Post(string relativeUrl, string s) {
+        public ISolrQueryResponse Post(string relativeUrl, string s) {
             var bytes = Encoding.UTF8.GetBytes(s);
             using (var content = new MemoryStream(bytes))
                 return PostStream(relativeUrl, "text/xml; charset=utf-8", content, null);
         }
 
-        public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public ISolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
             u.Query = GetQuery(parameters);
@@ -108,7 +108,11 @@ namespace SolrNet.Impl {
                 using (var postStream = request.GetRequestStream()) {
                     CopyTo(content, postStream);
                 }
-                return GetResponse(request).Data;
+				{
+					var solrResponse = new SolrQueryResponse(GetResponse(request).Data);
+					solrResponse.MetaData.OriginalQuery = u.Query;
+					return solrResponse;
+				}
             } catch (WebException e) {
                 var msg = e.Message;
                 if (e.Response != null) {
@@ -127,7 +131,7 @@ namespace SolrNet.Impl {
                 output.Write(buffer, 0, read);
         }
 
-        public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public ISolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
             u.Query = GetQuery(parameters);
@@ -149,13 +153,18 @@ namespace SolrNet.Impl {
                 var response = GetResponse(request);
                 if (response.ETag != null)
                     Cache.Add(new SolrCacheEntity(u.Uri.ToString(), response.ETag, response.Data));
-                return response.Data;
+					var solrResponse = new SolrQueryResponse(response.Data);
+				solrResponse.MetaData.OriginalQuery = u.Query;
+				return solrResponse;
+
             } catch (WebException e) {
                 if (e.Response != null) {
                     using (e.Response) {
                         var r = new HttpWebResponseAdapter(e.Response);
                         if (r.StatusCode == HttpStatusCode.NotModified) {
-                            return cached.Data;
+                            var solrResponse = new SolrQueryResponse(cached.Data);
+							solrResponse.MetaData.OriginalQuery = u.Query;
+							return solrResponse;
                         }
                         using (var s = e.Response.GetResponseStream())
                         using (var sr = new StreamReader(s)) {

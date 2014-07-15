@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using SolrNet.Impl;
 using SolrNet.Utils;
 
 namespace SolrNet.Commands {
@@ -31,7 +32,8 @@ namespace SolrNet.Commands {
             this.parameters = parameters;
         }
 
-        public string Execute(ISolrConnection connection) {
+        public ISolrQueryResponse Execute(ISolrConnection connection)
+        {
             var queryParameters = ConvertToQueryParameters();
             return connection.PostStream("/update/extract", parameters.StreamType, parameters.Content, queryParameters);
         }

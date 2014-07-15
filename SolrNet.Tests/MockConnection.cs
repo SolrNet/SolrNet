@@ -1,4 +1,5 @@
 ﻿#region license
+
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,17 +13,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using MbUnit.Framework;
+using SolrNet.Impl;
 
 namespace SolrNet.Tests {
     public class MockConnection : ISolrConnection {
         private readonly ICollection<KeyValuePair<string, string>> expectations;
+
         private const string response =
             @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
@@ -42,12 +45,12 @@ namespace SolrNet.Tests {
 
         public virtual Encoding XmlEncoding { get; set; }
 
-        public virtual string Post(string relativeUrl, string s) {
-            return string.Empty;
+        public virtual ISolrQueryResponse Post(string relativeUrl, string s) {
+            return new SolrQueryResponse(string.Empty);
         }
 
-        public virtual string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
-            return string.Empty;
+        public virtual ISolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+            return new SolrQueryResponse(string.Empty);
         }
 
         public string DumpParams(List<KeyValuePair<string, string>> parameters) {
@@ -58,12 +61,13 @@ namespace SolrNet.Tests {
             return DumpParams(new List<KeyValuePair<string, string>>(parameters));
         }
 
-        public virtual string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public virtual ISolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
             var param = new List<KeyValuePair<string, string>>(parameters);
             Assert.AreEqual(expectations.Count, param.Count, "Expected {0} parameters but found {1}.\nActual parameters:\n {2}", expectations.Count, param.Count, DumpParams(param));
             foreach (var p in param)
                 Assert.IsTrue(expectations.Contains(p), "Parameter {0}={1}, not found in expectations.\nCurrent expectations are:\n {2}", p.Key, p.Value, DumpParams(expectations));
-            return response;
+            return new SolrQueryResponse(response);
         }
     }
 }

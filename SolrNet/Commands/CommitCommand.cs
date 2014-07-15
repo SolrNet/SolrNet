@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using SolrNet.Impl;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -48,7 +49,8 @@ namespace SolrNet.Commands {
         /// </summary>
         public int? MaxSegments { get; set; }
 
-		public string Execute(ISolrConnection connection) {
+        public ISolrQueryResponse Execute(ISolrConnection connection)
+        {
 			var node = new XElement("commit");
 
 		    var keyValuePairs = new[] {

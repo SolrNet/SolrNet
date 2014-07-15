@@ -651,7 +651,60 @@ namespace SolrNet.Tests {
             Assert.AreEqual(0, other[FacetDateOther.Between]);
         }
 
-		[Test]
+        #region Range Facets
+        [Test]
+        public void ParseFacetRangeResults() {
+            //These are the expected results from the xml
+            var rangeFacetResults = new List<KeyValuePair<int, int>> {
+                new KeyValuePair<int, int>(40, 7),
+                new KeyValuePair<int, int>(50, 1),
+                new KeyValuePair<int, int>(60, 4),
+            };
+
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithRangeFacet.xml");
+            var p = new FacetsResponseParser<Product>();
+            var results = p.ParseFacetRanges(xml.Root);
+            Assert.AreEqual(1, results.Count);
+            var result = results.First();
+            Assert.AreEqual("wordcount", result.Key);
+            Assert.AreEqual(10, result.Value.Gap);
+            Assert.AreEqual(40, result.Value.Start);
+            Assert.AreEqual(1000, result.Value.End);
+            Assert.AreEqual(3,result.Value.RangeResults.Count);
+
+            //Assert the range counts
+            for (int i = 0; i < 3; i++) {
+               Assert.AreEqual(rangeFacetResults[i].Key,result.Value.RangeResults[i].Key);
+               Assert.AreEqual(rangeFacetResults[i].Value,result.Value.RangeResults[i].Value);
+            }
+
+            Assert.IsFalse(result.Value.OtherResults.Any());
+        }
+
+        [Test]
+        public void ParseFacetRangeResultsWithOther()
+        {
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithRangeFacetAndOther.xml");
+            var p = new FacetsResponseParser<Product>();
+            var results = p.ParseFacetRanges(xml.Root);
+            Assert.AreEqual(1, results.Count);
+            var result = results.First();
+            Assert.AreEqual("wordcount", result.Key);
+            Assert.AreEqual(10, result.Value.Gap);
+            Assert.AreEqual(40, result.Value.Start);
+            Assert.AreEqual(1000, result.Value.End);
+            Assert.AreEqual(3, result.Value.RangeResults.Count);
+
+            var other = result.Value.OtherResults;
+            Assert.AreEqual(3,other.Count);
+            Assert.AreEqual(2, other[FacetRangeOther.Before]);
+            Assert.AreEqual(4, other[FacetRangeOther.After]);
+            Assert.AreEqual(40, other[FacetRangeOther.Between]);
+        }
+
+        #endregion
+
+        [Test]
 		public void ParseResultsWithGroups() {
 			var mapper = new AttributesMappingManager();
 			var parser = new GroupingResponseParser<Product>(new SolrDocumentResponseParser<Product>(mapper, new DefaultDocumentVisitor(mapper, new DefaultFieldParser()), new SolrDocumentActivator<Product>()));

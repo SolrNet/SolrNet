@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <lst name="facet_ranges">
+    <lst name="wordcount">
+      <lst name="counts">
+        <int name="40">7</int>
+        <int name="50">1</int>
+        <int name="60">4</int>
+      </lst>
+      <long name="gap">10</long>
+      <long name="start">40</long>
+      <long name="end">1000</long>
+      <int name="before">2</int>
+      <int name="after">4</int>
+      <int name="between">40</int>
+    </lst>
+  </lst>
+</root>

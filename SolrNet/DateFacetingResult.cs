@@ -34,6 +34,10 @@ namespace SolrNet {
         public DateTime End { get; set; }
 
 		/// <summary>
+        /// Minimum value
+        /// </summary>
+        public DateTime Start { get; set; }
+		/// <summary>
 		/// The date faceting results.
 		/// </summary>
 		public IList<KeyValuePair<DateTime, int>> DateResults { get; set; }

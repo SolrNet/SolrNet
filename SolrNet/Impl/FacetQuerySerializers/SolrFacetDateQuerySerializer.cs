@@ -49,6 +49,8 @@ namespace SolrNet.Impl.FacetQuerySerializers {
             if (q.Include != null && q.Include.Count > 0)
                 foreach (var i in q.Include)
                     yield return KV.Create(string.Format("f.{0}.facet.date.include", fieldWithoutLocalParams), i.ToString());
+			 if (q.MinCount.HasValue)
+                yield return KV.Create(string.Format("f.{0}.facet.mincount", fieldWithoutLocalParams), q.MinCount.ToString());
         }
     }
 }

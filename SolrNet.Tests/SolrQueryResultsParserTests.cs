@@ -627,6 +627,7 @@ namespace SolrNet.Tests {
             var result = results.First();
             Assert.AreEqual("timestamp", result.Key);
             Assert.AreEqual("+1DAY", result.Value.Gap);
+            Assert.AreEqual(new DateTime(2008, 8, 10, 0, 33, 46, 578), result.Value.Start);
             Assert.AreEqual(new DateTime(2009, 8, 10, 0, 33, 46, 578), result.Value.End);
             var dateResults = result.Value.DateResults;
             Assert.AreEqual(1, dateResults.Count);
@@ -643,6 +644,7 @@ namespace SolrNet.Tests {
             var result = results.First();
             Assert.AreEqual("timestamp", result.Key);
             Assert.AreEqual("+1DAY", result.Value.Gap);
+            Assert.AreEqual(new DateTime(2008, 8, 10, 0, 46, 29), result.Value.Start);
             Assert.AreEqual(new DateTime(2009, 8, 10, 0, 46, 29), result.Value.End);
             Assert.AreEqual(new DateTime(2009, 8, 9, 22, 46, 29), result.Value.DateResults[0].Key);
             var other = result.Value.OtherResults;
@@ -651,6 +653,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual(0, other[FacetDateOther.Between]);
         }
 
+      
 		[Test]
 		public void ParseResultsWithGroups() {
 			var mapper = new AttributesMappingManager();

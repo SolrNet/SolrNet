@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using SolrNet.Impl.FieldSerializers;
+using SolrNet.Commands.Parameters;
 
 namespace SolrNet {
     /// <summary>
@@ -83,5 +83,13 @@ namespace SolrNet {
         public string Gap {
             get { return gap; }
         }
+		
+        /// <summary>
+        /// This param indicates the minimum counts for facet fields should be included in the response.
+        /// Solr wil default to 0 if not set
+        /// This value is set on a field basis and takes presedence 
+        /// over <see cref="FacetParameters.MinCount"/>
+        /// </summary>
+        public int? MinCount { get; set; }
     }
 }

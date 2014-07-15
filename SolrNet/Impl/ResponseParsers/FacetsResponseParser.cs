@@ -107,6 +107,9 @@ namespace SolrNet.Impl.ResponseParsers {
                 switch (name) {
                     case "gap":
                         r.Gap = dateFacetingNode.Value;
+						 break;
+                    case "start":
+                        r.Start = DateTimeFieldParser.ParseDate(dateFacetingNode.Value);
                         break;
                     case "end":
                         r.End = DateTimeFieldParser.ParseDate(dateFacetingNode.Value);

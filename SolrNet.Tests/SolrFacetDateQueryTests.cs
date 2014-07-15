@@ -30,6 +30,7 @@ namespace SolrNet.Tests {
         public void Serialize() {
             var q = new SolrFacetDateQuery("timestamp", new DateTime(2009,1,1), new DateTime(2009,2,2), "+1DAY") {
                 HardEnd = true,
+                MinCount = 2,
                 Other = new[] {FacetDateOther.After},
                 Include = new[] { FacetDateInclude.Lower },
             };
@@ -39,6 +40,7 @@ namespace SolrNet.Tests {
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.gap", "+1DAY"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.hardend", "true"));
+            Assert.Contains(r, KV.Create("f.timestamp.facet.mincount", "2"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.other", "after"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.include", "lower"));
         }
@@ -47,6 +49,7 @@ namespace SolrNet.Tests {
         public void IgnoresLocalParams() {
             var q = new SolrFacetDateQuery(new LocalParams { { "ex", "cat" } } + "timestamp", new DateTime(2009, 1, 1), new DateTime(2009, 2, 2), "+1DAY") {
                 HardEnd = true,
+                MinCount = 2,
                 Other = new[] { FacetDateOther.After },
                 Include = new[] { FacetDateInclude.Lower },
             };
@@ -56,6 +59,7 @@ namespace SolrNet.Tests {
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.gap", "+1DAY"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.hardend", "true"));
+            Assert.Contains(r, KV.Create("f.timestamp.facet.mincount", "2"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.other", "after"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.include", "lower"));
         }

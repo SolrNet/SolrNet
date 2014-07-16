@@ -80,7 +80,7 @@ namespace SolrNet.Commands.Parameters {
         ///     IMPORTANT: It does require <see cref="SolrNet.Commands.Parameters.Start" /> to be = 0
         ///     <seealso href="https://cwiki.apache.org/confluence/display/solr/Pagination+of+Results" />
         /// </summary>
-        public CursorMarkOption CursorMarkOption { get; set; }
+        public CursorMark CursorMark { get; set; }
 
         /// <summary>
         /// This parmeter can be used to group query results into clusters based on document similarity 

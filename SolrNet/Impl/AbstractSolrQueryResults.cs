@@ -8,7 +8,7 @@ namespace SolrNet.Impl {
         /// cursormark token returned for deep pagination.
         /// Only present if explicitely requested
         /// </summary>
-        public string NextCursorMark { get; set; }
+        public CursorMark NextCursorMark { get; set; }
 
         /// <summary>
         /// Total documents found

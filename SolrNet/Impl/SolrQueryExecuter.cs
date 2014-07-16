@@ -288,9 +288,9 @@ namespace SolrNet.Impl {
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetCursorMarkOption(QueryOptions cmo)
         {
-            if (cmo.CursorMarkOption == null)
+            if (cmo.CursorMark == null)
                 yield break;
-            yield return KV.Create("cursorMark", cmo.CursorMarkOption.CursorMark);
+            yield return KV.Create("cursorMark", cmo.CursorMark.ToString());
         } 
 
 

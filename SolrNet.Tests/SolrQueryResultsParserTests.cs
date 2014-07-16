@@ -619,6 +619,28 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void ParseStatsResults2() {
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithStats.xml");
+            var parser = new StatsResponseParser<Product>();
+            var stats = parser.ParseStats(xml.Root, "stats_fields");
+
+            Assert.IsNotNull(stats);
+            Assert.Contains(stats.Keys, "instock_prices");
+            Assert.Contains(stats.Keys, "all_prices");
+
+            var instock = stats["instock_prices"];
+            Assert.AreEqual(0, instock.Min);
+            Assert.AreEqual(2199, instock.Max);
+            Assert.AreEqual(16, instock.Count);
+            Assert.AreEqual(16, instock.Missing);
+            Assert.AreEqual(5251.270030975342, instock.Sum);
+
+            var all = stats["all_prices"];
+            Assert.AreEqual(4089.880027770996, all.Sum);
+            Assert.AreEqual(2199, all.Max);
+        }
+
+        [Test]
         public void ParseFacetDateResults() {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithDateFacet.xml");
             var p = new FacetsResponseParser<Product>();

@@ -46,7 +46,7 @@ namespace SolrNet.Commands {
         /// </summary>
 		public bool? FromCommitted { get; set; }
 
-        public ISolrQueryResponse Execute(ISolrConnection connection)
+        public SolrQueryResponse Execute(ISolrConnection connection)
         {
 			var deleteNode = new XElement("delete");
             if (parameters != null) {

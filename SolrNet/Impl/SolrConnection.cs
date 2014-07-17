@@ -78,13 +78,13 @@ namespace SolrNet.Impl {
         /// </summary>
         public int Timeout { get; set; }
 
-        public ISolrQueryResponse Post(string relativeUrl, string s) {
+        public SolrQueryResponse Post(string relativeUrl, string s) {
             var bytes = Encoding.UTF8.GetBytes(s);
             using (var content = new MemoryStream(bytes))
                 return PostStream(relativeUrl, "text/xml; charset=utf-8", content, null);
         }
 
-        public ISolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public SolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
             u.Query = GetQuery(parameters);
@@ -131,7 +131,7 @@ namespace SolrNet.Impl {
                 output.Write(buffer, 0, read);
         }
 
-        public ISolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public SolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
             u.Query = GetQuery(parameters);

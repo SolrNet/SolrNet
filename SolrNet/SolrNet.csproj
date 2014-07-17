@@ -113,7 +113,6 @@
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
     <Compile Include="Commands\Parameters\TermsSort.cs" />
     <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
-    <Compile Include="Impl\ISolrQueryResponse.cs" />
     <Compile Include="Impl\ReplicationDetailsResponse.cs" />
     <Compile Include="Impl\ISolrReplicationDetailsResponseParser.cs" />
     <Compile Include="Impl\ISolrReplicationIndexVersionResponseParser.cs" />

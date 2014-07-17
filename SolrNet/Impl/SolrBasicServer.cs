@@ -98,7 +98,7 @@ namespace SolrNet.Impl {
             return queryExecuter.Execute(query, options);
         }
 
-        public ISolrQueryResponse Send(ISolrCommand cmd) {
+        public SolrQueryResponse Send(ISolrCommand cmd) {
             return cmd.Execute(connection);
         }
 
@@ -119,7 +119,7 @@ namespace SolrNet.Impl {
         }
 
         public SolrSchema GetSchema(string schemaFileName) {
-            ISolrQueryResponse r = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
+            SolrQueryResponse r = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
             var schema = XDocument.Parse(r.Response);
             return schemaParser.Parse(schema);
         }

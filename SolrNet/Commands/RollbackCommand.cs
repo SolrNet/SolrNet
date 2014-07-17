@@ -22,7 +22,7 @@ namespace SolrNet.Commands {
     /// Rollbacks all add/deletes made to the index since the last commit.
     /// </summary>
     public class RollbackCommand : ISolrCommand {
-        public ISolrQueryResponse Execute(ISolrConnection connection)
+        public SolrQueryResponse Execute(ISolrConnection connection)
         {
             return connection.Post("/update", "<rollback/>");
         }

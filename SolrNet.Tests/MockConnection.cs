@@ -45,11 +45,11 @@ namespace SolrNet.Tests {
 
         public virtual Encoding XmlEncoding { get; set; }
 
-        public virtual ISolrQueryResponse Post(string relativeUrl, string s) {
+        public virtual SolrQueryResponse Post(string relativeUrl, string s) {
             return new SolrQueryResponse(string.Empty);
         }
 
-        public virtual ISolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public virtual SolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
             return new SolrQueryResponse(string.Empty);
         }
 
@@ -61,7 +61,7 @@ namespace SolrNet.Tests {
             return DumpParams(new List<KeyValuePair<string, string>>(parameters));
         }
 
-        public virtual ISolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        public virtual SolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             var param = new List<KeyValuePair<string, string>>(parameters);
             Assert.AreEqual(expectations.Count, param.Count, "Expected {0} parameters but found {1}.\nActual parameters:\n {2}", expectations.Count, param.Count, DumpParams(param));

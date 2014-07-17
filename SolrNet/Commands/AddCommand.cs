@@ -72,7 +72,7 @@ namespace SolrNet.Commands {
             return addElement.ToString(SaveOptions.DisableFormatting);
         }
 
-        public ISolrQueryResponse Execute(ISolrConnection connection)
+        public SolrQueryResponse Execute(ISolrConnection connection)
         {
 	        var xml = ConvertToXml();
 			return connection.Post("/update", xml);

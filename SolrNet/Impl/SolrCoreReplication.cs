@@ -154,7 +154,7 @@ namespace SolrNet.Impl
         /// </summary>
         /// <param name="command">The Command to send.</param>
         /// <returns></returns>
-        public ISolrQueryResponse Send(ISolrCommand command)
+        public SolrQueryResponse Send(ISolrCommand command)
         {
             return command.Execute(connection);
         }

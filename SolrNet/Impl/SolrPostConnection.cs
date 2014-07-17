@@ -23,12 +23,12 @@ namespace SolrNet.Impl
 			this.serverUrl = serverUrl;
 		}
 
-        public ISolrQueryResponse Post(string relativeUrl, string s)
+        public SolrQueryResponse Post(string relativeUrl, string s)
 		{
 			return conn.Post(relativeUrl, s);
 		}
 
-     public ISolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+     public SolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
 		{
 			var u = new UriBuilder(serverUrl);
 			u.Path += relativeUrl;
@@ -61,7 +61,7 @@ namespace SolrNet.Impl
 			}
 		}
 
-     public ISolrQueryResponse PostStream(string relativeUrl, string contentType, System.IO.Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
+     public SolrQueryResponse PostStream(string relativeUrl, string contentType, System.IO.Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
      {
 			return conn.PostStream(relativeUrl, contentType, content, getParameters);
 		}

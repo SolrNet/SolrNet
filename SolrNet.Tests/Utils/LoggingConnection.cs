@@ -27,19 +27,19 @@ namespace SolrNet.Tests.Utils {
             this.conn = conn;
         }
 
-        public ISolrQueryResponse Post(string relativeUrl, string s)
+        public SolrQueryResponse Post(string relativeUrl, string s)
         {
             Console.WriteLine("Posting {0}", s);
             return conn.Post(relativeUrl, s);
         }
 
-        public ISolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
+        public SolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             Console.WriteLine("Posting Binary");
             return conn.PostStream(relativeUrl, contentType, content, parameters);
         }
 
-        public ISolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        public SolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             Console.WriteLine("Getting");
             var r = conn.Get(relativeUrl, parameters);

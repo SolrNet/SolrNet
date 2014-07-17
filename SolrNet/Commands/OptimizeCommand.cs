@@ -54,7 +54,7 @@ namespace SolrNet.Commands {
         /// </summary>
         /// <param name="connection"></param>
         /// <returns></returns>
-        public ISolrQueryResponse Execute(ISolrConnection connection)
+        public SolrQueryResponse Execute(ISolrConnection connection)
         {
 			var node = new XElement("optimize");
 

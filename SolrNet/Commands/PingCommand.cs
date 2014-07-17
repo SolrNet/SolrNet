@@ -24,7 +24,7 @@ namespace SolrNet.Commands {
     /// </summary>
     /// <seealso href="http://wiki.apache.org/solr/SolrConfigXml"/>
 	public class PingCommand : ISolrCommand {
-        public ISolrQueryResponse Execute(ISolrConnection connection)
+        public SolrQueryResponse Execute(ISolrConnection connection)
         {
 			return connection.Get("/admin/ping", new Dictionary<string, string>());
 		}

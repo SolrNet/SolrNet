@@ -20,7 +20,7 @@ namespace SolrNet.Commands
         /// </summary>
         /// <param name="connection">The SolrConnection to use.</param>
         /// <returns>The results of the Command.</returns>
-        public ISolrQueryResponse Execute(ISolrConnection connection) 
+        public SolrQueryResponse Execute(ISolrConnection connection) 
         {
             return connection.Get("/replication", Parameters.ToArray());
         }

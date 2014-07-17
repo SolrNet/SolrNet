@@ -69,7 +69,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="cmd">command to send</param>
         /// <returns>solr response</returns>
-        ISolrQueryResponse Send(ISolrCommand cmd);
+        SolrQueryResponse Send(ISolrCommand cmd);
 
         /// <summary>
         /// Sends a custom command, returns parsed header from xml response

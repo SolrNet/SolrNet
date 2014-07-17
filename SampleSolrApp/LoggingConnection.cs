@@ -20,6 +20,7 @@ using System.IO;
 using System.Linq;
 using log4net;
 using SolrNet;
+using SolrNet.Impl;
 
 namespace SampleSolrApp {
     public class LoggingConnection: ISolrConnection {
@@ -29,17 +30,20 @@ namespace SampleSolrApp {
             this.connection = connection;
         }
 
-        public string Post(string relativeUrl, string s) {
+        public SolrQueryResponse Post(string relativeUrl, string s)
+        {
             logger.DebugFormat("POSTing '{0}' to '{1}'", s, relativeUrl);
             return connection.Post(relativeUrl, s);
         }
 
-        public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters) {
+        public SolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
+        {
             logger.DebugFormat("POSTing to '{0}'", relativeUrl);
             return connection.PostStream(relativeUrl, contentType, content, getParameters);
         }
 
-        public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public SolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
             var stringParams = string.Join(", ", parameters.Select(p => string.Format("{0}={1}", p.Key, p.Value)).ToArray());
             logger.DebugFormat("GETting '{0}' from '{1}'", stringParams, relativeUrl);
             return connection.Get(relativeUrl, parameters);

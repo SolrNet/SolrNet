@@ -32,7 +32,7 @@ namespace SolrNet.Commands {
             this.parameters = parameters;
         }
 
-        public ISolrQueryResponse Execute(ISolrConnection connection)
+        public SolrQueryResponse Execute(ISolrConnection connection)
         {
             var queryParameters = ConvertToQueryParameters();
             return connection.PostStream("/update/extract", parameters.StreamType, parameters.Content, queryParameters);

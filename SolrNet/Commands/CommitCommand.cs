@@ -49,7 +49,7 @@ namespace SolrNet.Commands {
         /// </summary>
         public int? MaxSegments { get; set; }
 
-        public ISolrQueryResponse Execute(ISolrConnection connection)
+        public SolrQueryResponse Execute(ISolrConnection connection)
         {
 			var node = new XElement("commit");
 

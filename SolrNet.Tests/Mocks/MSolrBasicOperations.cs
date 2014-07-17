@@ -57,7 +57,7 @@ namespace SolrNet.Tests.Mocks {
             throw new NotImplementedException();
         }
 
-        public ISolrQueryResponse Send(ISolrCommand cmd)
+        public SolrQueryResponse Send(ISolrCommand cmd)
         {
             throw new NotImplementedException();
         }

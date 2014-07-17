@@ -26,6 +26,6 @@ namespace SolrNet {
         /// </summary>
         /// <param name="connection"></param>
         /// <returns></returns>
-        ISolrQueryResponse Execute(ISolrConnection connection);
+        SolrQueryResponse Execute(ISolrConnection connection);
 	}
 }

@@ -5,8 +5,8 @@ using SolrNet.Utils;
 namespace SolrNet.Impl {
     public abstract class AbstractSolrQueryResults<T> : List<T> {
         /// <summary>
-        /// cursormark token returned for deep pagination.
-        /// Only present if explicitely requested
+        /// CursorMark token returned for deep pagination.
+        /// Only present if explicitly requested through <see cref="SolrNet.Commands.Parameters.QueryOptions.CursorMark"/>
         /// </summary>
         public CursorMark NextCursorMark { get; set; }
 

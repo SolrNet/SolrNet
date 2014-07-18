@@ -39,7 +39,7 @@ let solrUrl = "http://localhost:8983/solr"
 System.Configuration.ConfigurationManager.AppSettings.["solr"] <- solrUrl
 
 let test = 
-    Fuchu.MbUnit.MbUnitTestToFuchu typeof<SolrQueryExecuterTests>
+    Fuchu.MbUnit.MbUnitTestToFuchu typeof<SolrQueryResultsParserTests>
     //|> Test.filter (fun s -> s.Contains "Highlighting")
     |> testWithCultures [CultureInfo "en-US"; CultureInfo "fr-FR"]
 run test

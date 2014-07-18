@@ -51,13 +51,13 @@ namespace SolrNet.Impl.ResponseParsers {
             return groupElement.Descendants().FirstOrDefault(e => e.Name == "result");
         }
 
-        private static CursorMark GetNextCursorMark(XDocument xml)
+        private static StartOrCursor.Cursor GetNextCursorMark(XDocument xml)
         {
             var nextCursorMarkElement = xml.Element("response").Elements("str")
                 .FirstOrDefault(e => e.Attribute("name").Value == "nextCursorMark");
             if (nextCursorMarkElement == null)
                 return null;
-            return new CursorMark(nextCursorMarkElement.Value);
+            return new StartOrCursor.Cursor(nextCursorMarkElement.Value);
         }
 
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {

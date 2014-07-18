@@ -84,7 +84,6 @@
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
     <Compile Include="ClusterResults.cs" />
-    <Compile Include="CursorMark.cs" />
     <Compile Include="Commands\ReplicationCommand.cs" />
     <Compile Include="Commands\Replication\AbortFetchCommand.cs" />
     <Compile Include="Commands\Replication\DetailsCommand.cs" />

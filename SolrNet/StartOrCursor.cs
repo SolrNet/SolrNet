@@ -63,15 +63,12 @@ namespace SolrNet {
         /// </summary>
         [Serializable]
         public sealed class Cursor : StartOrCursor, IEquatable<Cursor> {
-            private readonly CursorMark mark;
+            private readonly string mark;
 
-            public CursorMark Mark {
-                get {
-                    return mark;
-                }
-            }
-
-            public static readonly Cursor Start = new Cursor(CursorMark.Start);
+            /// <summary>
+            /// Starting point cursor.
+            /// </summary>
+            public static readonly Cursor Start = new Cursor("*");
 
             /// <summary>
             /// Cursor mark for pagination.
@@ -79,7 +76,7 @@ namespace SolrNet {
             /// Requires Solr 4.7+
             /// </summary>
             /// <param name="mark"></param>
-            public Cursor(CursorMark mark) {
+            internal Cursor(string mark) {
                 if (mark == null)
                     throw new ArgumentNullException("mark");
                 this.mark = mark;
@@ -91,7 +88,7 @@ namespace SolrNet {
 
             public bool Equals(Cursor other) {
                 if (other == null) return false;
-                return other.Mark.Equals(Mark);
+                return other.mark.Equals(mark);
             }
 
             public override bool Equals(object obj) {
@@ -100,6 +97,10 @@ namespace SolrNet {
 
             public override int GetHashCode() {
                 return mark.GetHashCode();
+            }
+
+            public override string ToString() {
+                return mark;
             }
         }
     }

@@ -85,7 +85,7 @@ namespace SolrNet.Tests {
         public void CanParseNextCursormark()
         {
             var r = ParseFromResource<TestDocument>("Resources.response.xml");
-            Assert.AreEqual(new CursorMark("AoEoZTQ3YmY0NDM="), r.NextCursorMark);
+            Assert.AreEqual(new StartOrCursor.Cursor("AoEoZTQ3YmY0NDM="), r.NextCursorMark);
         }
 
 		[Test]

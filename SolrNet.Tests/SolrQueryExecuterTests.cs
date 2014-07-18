@@ -719,7 +719,7 @@ namespace SolrNet.Tests {
         {
             var e = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
             var p = e.GetCommonParameters(new QueryOptions {
-                StartOrCursor = new StartOrCursor.Cursor(new CursorMark("AoEoZTQ3YmY0NDM="))
+                StartOrCursor = new StartOrCursor.Cursor("AoEoZTQ3YmY0NDM=")
             });
 
             Assert.AreEqual("cursorMark", p.First().Key);

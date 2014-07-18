@@ -95,8 +95,13 @@ namespace SolrNet.Impl {
             if (options == null)
                 yield break;
 
-            if (options.Start.HasValue)
+            if (options.StartOrCursor != null) {
+                yield return options.StartOrCursor.Switch(
+                                    start => KV.Create("start", start.Row.ToString()),
+                                    cursor => KV.Create("cursorMark", cursor.ToString()));
+            } else if (options.Start.HasValue) {
                 yield return KV.Create("start", options.Start.ToString());
+            }
 
             var rows = options.Rows.HasValue ? options.Rows.Value : DefaultRows;
             yield return KV.Create("rows", rows.ToString());

@@ -701,5 +701,29 @@ namespace SolrNet.Tests {
             Assert.Contains(p, KV.Create("carrot.outputSubClusters", "false"));
             Assert.Contains(p, KV.Create("carrot.lexicalResourcesDir", "fakedir"));
         }
+
+        [Test]
+        public void GetCursormarkWithDefaultSetup()
+        {
+            var e = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
+            var p = e.GetCommonParameters(new QueryOptions {
+                StartOrCursor = StartOrCursor.Cursor.Start
+            });
+
+            Assert.AreEqual("cursorMark", p.First().Key);
+            Assert.AreEqual("*", p.First().Value);
+        }
+
+        [Test]
+        public void GetCursormarkWithMarkSet()
+        {
+            var e = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
+            var p = e.GetCommonParameters(new QueryOptions {
+                StartOrCursor = new StartOrCursor.Cursor("AoEoZTQ3YmY0NDM=")
+            });
+
+            Assert.AreEqual("cursorMark", p.First().Key);
+            Assert.AreEqual("AoEoZTQ3YmY0NDM=", p.First().Value);
+        }
     }
 }

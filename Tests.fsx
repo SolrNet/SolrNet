@@ -40,6 +40,6 @@ System.Configuration.ConfigurationManager.AppSettings.["solr"] <- solrUrl
 
 let test = 
     Fuchu.MbUnit.MbUnitTestToFuchu typeof<SolrQueryResultsParserTests>
-    |> Test.filter (fun s -> s.Contains "Stats")
-    //|> testWithCultures [CultureInfo "en-US"; CultureInfo "fr-FR"]
+    //|> Test.filter (fun s -> s.Contains "Highlighting")
+    |> testWithCultures [CultureInfo "en-US"; CultureInfo "fr-FR"]
 run test

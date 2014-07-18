@@ -706,9 +706,8 @@ namespace SolrNet.Tests {
         public void GetCursormarkWithDefaultSetup()
         {
             var e = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
-            var p = e.GetCursorMarkOption(new QueryOptions()
-            {
-                CursorMark = CursorMark.Start,
+            var p = e.GetCommonParameters(new QueryOptions {
+                StartOrCursor = StartOrCursor.Cursor.Start
             });
 
             Assert.AreEqual("cursorMark", p.First().Key);
@@ -719,9 +718,8 @@ namespace SolrNet.Tests {
         public void GetCursormarkWithMarkSet()
         {
             var e = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
-            var p = e.GetCursorMarkOption(new QueryOptions()
-            {
-                CursorMark = new CursorMark("AoEoZTQ3YmY0NDM=")
+            var p = e.GetCommonParameters(new QueryOptions {
+                StartOrCursor = new StartOrCursor.Cursor(new CursorMark("AoEoZTQ3YmY0NDM="))
             });
 
             Assert.AreEqual("cursorMark", p.First().Key);

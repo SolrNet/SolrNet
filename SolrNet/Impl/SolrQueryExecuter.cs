@@ -95,8 +95,13 @@ namespace SolrNet.Impl {
             if (options == null)
                 yield break;
 
-            if (options.Start.HasValue)
+            if (options.StartOrCursor != null) {
+                yield return options.StartOrCursor.Switch(
+                                    start => KV.Create("start", start.Row.ToString()),
+                                    cursor => KV.Create("cursorMark", cursor.Mark.ToString()));
+            } else if (options.Start.HasValue) {
                 yield return KV.Create("start", options.Start.ToString());
+            }
 
             var rows = options.Rows.HasValue ? options.Rows.Value : DefaultRows;
             yield return KV.Create("rows", rows.ToString());
@@ -160,11 +165,7 @@ namespace SolrNet.Impl {
 
             foreach (var p in GetClusteringParameters(options))
                 yield return p;
-            foreach (var o in GetCursorMarkOption(options))
-                yield return o;
         }
-
-
 
         /// <summary>
         /// Serializes all More Like This handler parameters
@@ -280,19 +281,6 @@ namespace SolrNet.Impl {
                 yield return new KeyValuePair<string, string>("fq", querySerializer.Serialize(fq));
             }
         }
-
-        /// <summary>
-        /// Serializes the CursorMark to its SOLR query representation
-        /// </summary>
-        /// <param name="cmo"></param>
-        /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetCursorMarkOption(QueryOptions cmo)
-        {
-            if (cmo.CursorMark == null)
-                yield break;
-            yield return KV.Create("cursorMark", cmo.CursorMark.ToString());
-        } 
-
 
         /// <summary>
         /// Gets Solr parameters for defined highlightings

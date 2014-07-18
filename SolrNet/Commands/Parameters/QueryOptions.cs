@@ -74,15 +74,6 @@ namespace SolrNet.Commands.Parameters {
 		public GroupingParameters Grouping { get; set; }
 
         /// <summary>
-        /// Use deep pagination via CursorMark.
-        /// <see cref="SolrNet.Commands.Parameters.CommonQueryOptions.Start" /> must have a value of 0.
-        /// <see cref="SolrNet.Commands.Parameters.QueryOptions.OrderBy" /> must contain at least one unique field
-        /// and optionally any other fields.
-        /// Requires Solr 4.7+
-        /// </summary>
-        public CursorMark CursorMark { get; set; }
-
-        /// <summary>
         /// This parmeter can be used to group query results into clusters based on document similarity 
         /// </summary>
         public ClusteringParameters Clustering { get; set; }

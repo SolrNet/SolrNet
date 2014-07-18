@@ -50,6 +50,27 @@ foreach (KeyValuePair<DateTime, int> dr in dateFacetResult.DateResults) {
 }
 ```
 
+### Range facets
+See: [Solr Range Facets](https://wiki.apache.org/solr/SimpleFacetParameters#Facet_by_Range)
+
+Range facet queries create facets from ranges and uses Solr's native range facet functionality. Sample code:
+
+```C#
+ISolrOperations<Product> solr = ...
+var facetRangeQuery = new SolrFacetRangeQuery("wordcount",40,1000,10){
+    Other = new[] {FacetRangeOther.After, FacetRangeOther.Before}
+}
+var r = solr.Query(SolrQuery.All, new QueryOptions {
+    Rows = 0,
+    Facet = new FacetParameters {
+        Queries = new[] {facetRangeQuery}
+    }
+});
+foreach (var facet in r.FacetRanges) {
+    Console.WriteLine("{0}: {1}", facet.Key, facet.Value);
+}
+```
+
 ### Arbitrary facet queries
 Arbitrary facet queries are handled by the `SolrFacetQuery` class. Results are available through the `FacetQueries` property.
 

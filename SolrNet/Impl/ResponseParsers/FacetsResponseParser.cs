@@ -80,6 +80,38 @@ namespace SolrNet.Impl.ResponseParsers {
             }
             return d;
         }
+        
+        /// <summary>
+        /// Parses facet fields results
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public IDictionary<string, RangeFacetingResult> ParseFacetRanges(XElement node)
+        {
+            var d = new Dictionary<string, RangeFacetingResult>();
+            var facetFields = node.Elements("lst")
+                .Where(X.AttrEq("name", "facet_ranges"))
+                .SelectMany(x => x.Elements());
+            foreach (var fieldNode in facetFields) {
+                var range = new RangeFacetingResult();
+                var field = fieldNode.Attribute("name").Value;
+                var c = new List<KeyValuePair<string, int>>();
+                foreach (var facetNode in fieldNode.Elements("lst").Where(X.AttrEq("name", "counts")).SelectMany(x => x.Elements()))
+                {
+                    var nameAttr = facetNode.Attribute("name");
+                    var key = nameAttr == null ? "" : nameAttr.Value;
+                    var value = Convert.ToInt32(facetNode.Value);
+                    c.Add(new KeyValuePair<string, int>(key, value));
+                }
+                range.RangeResults = c;
+                range.Gap = Convert.ToInt32(fieldNode.Elements("int").First(X.AttrEq("name", "gap")).Value);
+                range.Strart = Convert.ToInt32(fieldNode.Elements("int").First(X.AttrEq("name", "start")).Value);
+                range.End = Convert.ToInt32(fieldNode.Elements("int").First(X.AttrEq("name", "end")).Value);
+
+                d[field] = range;
+            }
+            return d;
+        }
 
         /// <summary>
         /// Parses facet dates results

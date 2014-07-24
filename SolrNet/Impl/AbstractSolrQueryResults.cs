@@ -55,6 +55,7 @@ namespace SolrNet.Impl {
             FacetFields = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
             FacetDates = new Dictionary<string, DateFacetingResult>();
             FacetPivots = new Dictionary<string, IList<Pivot>>();
+            FacetRanges=new Dictionary<string, RangeFacetingResult>();
         }
 
         /// <summary>

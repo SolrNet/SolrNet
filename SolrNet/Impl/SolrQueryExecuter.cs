@@ -163,6 +163,9 @@ namespace SolrNet.Impl {
             foreach (var p in GetGroupingQueryOptions(options))
                 yield return p;
 
+            foreach (var p in GetCollapseExpandQueryOptions(options))
+                yield return p;
+
             foreach (var p in GetClusteringParameters(options))
                 yield return p;
         }
@@ -515,6 +518,28 @@ namespace SolrNet.Impl {
                 yield return KV.Create("group.ngroups", options.Grouping.Ngroups.ToString().ToLowerInvariant());
 
             yield return KV.Create("group.format", options.Grouping.Format.ToString().ToLowerInvariant());
+        }
+
+        /// <summary>
+        /// Gets the solr parameters for collapse-expand queries
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public IEnumerable<KeyValuePair<string, string>> GetCollapseExpandQueryOptions(QueryOptions options)
+        {
+            if (options.CollapseExpand == null || string.IsNullOrEmpty(options.CollapseExpand.Field))
+                yield break;
+
+            yield return KV.Create("fq", string.Format("{{!collapse field={0}}}", options.CollapseExpand.Field));
+
+            if (options.CollapseExpand.Expand)
+                yield return KV.Create("expand", options.CollapseExpand.Expand.ToString().ToLowerInvariant());
+            if (options.CollapseExpand.OrderBy != null)
+            {
+                yield return KV.Create("expand.sort", options.CollapseExpand.OrderBy.ToString());
+            }
+
+            yield return KV.Create("expand.rows", "1");
         }
 
         /// <summary>

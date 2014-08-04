@@ -53,6 +53,11 @@ namespace SolrNet {
         public CollapseResults Collapsing { get; set; }
 
         /// <summary>
+        /// CollapseExpand results
+        /// </summary>
+        public CollapseExpandResults<T> CollapseExpand { set; get; }
+
+        /// <summary>
         /// Clustering results
         /// </summary>
         public ClusterResults Clusters { get; set; }
@@ -78,6 +83,7 @@ namespace SolrNet {
             Stats = new Dictionary<string, StatsResult>();
             Collapsing = new CollapseResults();
             Grouping = new Dictionary<string, GroupedResults<T>>();
+            CollapseExpand = new CollapseExpandResults<T>();
             Terms = new TermsResults();
         }
 

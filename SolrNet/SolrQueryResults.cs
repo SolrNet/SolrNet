@@ -72,6 +72,11 @@ namespace SolrNet {
         /// </summary>
         public IDictionary<string, GroupedResults<T>> Grouping { set; get; }
 
+        /// <summary>
+        /// Debug results
+        /// </summary>
+        public DebugResults Debug { set; get; }
+
         public SolrQueryResults() {
             SpellChecking = new SpellCheckResults();
             SimilarResults = new Dictionary<string, IList<T>>();
@@ -79,6 +84,7 @@ namespace SolrNet {
             Collapsing = new CollapseResults();
             Grouping = new Dictionary<string, GroupedResults<T>>();
             Terms = new TermsResults();
+            Debug = new DebugResults();
         }
 
         public override R Switch<R>(Func<SolrQueryResults<T>, R> query, Func<SolrMoreLikeThisHandlerResults<T>, R> moreLikeThis) {

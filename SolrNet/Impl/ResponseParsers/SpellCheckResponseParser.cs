@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +14,11 @@
 // limitations under the License.
 #endregion
 
+using SolrNet.Utils;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -49,21 +49,67 @@ namespace SolrNet.Impl.ResponseParsers {
             if (collationNode != null)
                 r.Collation = collationNode.Value;
             var spellChecks = suggestionsNode.Elements("lst");
-            foreach (var c in spellChecks) {
-                var result = new SpellCheckResult();
-                result.Query = c.Attribute("name").Value;
-                result.NumFound = Convert.ToInt32(c.XPathSelectElement("int[@name='numFound']").Value);
-                result.EndOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='endOffset']").Value);
-                result.StartOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='startOffset']").Value);
-                var suggestions = new List<string>();
-                var suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/str");
-                foreach (var suggestionNode in suggestionNodes) {
-                    suggestions.Add(suggestionNode.Value);
+            foreach (var spellCheck in spellChecks)
+            {
+                var query = spellCheck.Attribute("name").Value;
+                if (query.Equals("collation", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    ParseCollationNode(spellCheck,r);
                 }
-                result.Suggestions = suggestions;
-                r.Add(result);
+                else
+                    ParseSpellCheckingNode(spellCheck,r);
             }
+            if (r.Collations == null ||
+                !r.Collations.Any(c => c.MisspellingsAndCorrections != null && c.MisspellingsAndCorrections.Any()))
+                return r;
+            var collationResult = r.Collations.FirstOrDefault();
+            if (collationResult != null)
+                r.Collations.Query = collationResult.MisspellingsAndCorrections.FirstOrDefault();
             return r;
+        }
+
+        /// <summary>
+        /// Parses spell-checking node and adds to SpellCheckResults entity
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="spellCheckResults"></param>
+        /// <returns></returns>
+        private void ParseSpellCheckingNode(XElement node, SpellCheckResults spellCheckResults)
+        {
+            var result = new SpellCheckResult
+            {
+                Query = node.Attribute("name").Value,
+                NumFound = Convert.ToInt32(node.XPathSelectElement("int[@name='numFound']").Value),
+                EndOffset = Convert.ToInt32(node.XPathSelectElement("int[@name='endOffset']").Value),
+                StartOffset = Convert.ToInt32(node.XPathSelectElement("int[@name='startOffset']").Value)
+            };
+            var suggestionNodes = node.XPathSelectElements("arr[@name='suggestion']/str");
+            var suggestions = suggestionNodes.Select(suggestionNode => suggestionNode.Value).ToList();
+            result.Suggestions = suggestions;
+            spellCheckResults.Add(result);
+        }
+
+        /// <summary>
+        /// Parses collation node in spell-checking node to CollationResults entity
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="spellCheckResults"></param>
+        /// <returns></returns>
+        private void ParseCollationNode(XElement node, SpellCheckResults spellCheckResults)
+        {
+            if(spellCheckResults.Collations==null)
+                spellCheckResults.Collations=new CollationResults();
+            var result = new CollationResult
+            {
+                Query = node.XPathSelectElement("str[@name='collationQuery']").Value,
+                Hits = Convert.ToInt32(node.XPathSelectElement("int[@name='hits']").Value)
+            };
+            var misspellingsAndCorrectionNodes = node.XPathSelectElements("arr[@name='misspellingsAndCorrections']/str").ToList();
+            if (!misspellingsAndCorrectionNodes.Any())
+                misspellingsAndCorrectionNodes = node.XPathSelectElements("lst[@name='misspellingsAndCorrections']/str").ToList();
+            var misspellingsAndCorrections = misspellingsAndCorrectionNodes.Select(misspellingsAndCorrectionNode => misspellingsAndCorrectionNode.Value).ToList();
+            result.MisspellingsAndCorrections = misspellingsAndCorrections;
+            spellCheckResults.Collations.Add(result);
         }
     }
 }

@@ -46,11 +46,9 @@ namespace SolrNet.Impl.ResponseParsers
         public CollapseExpandResults<T> ParseGroupedResults(XElement expandElement)
         {
             var resultElements = expandElement.Elements();
+            var groups = ParseGroup(resultElements);
 
-            return new CollapseExpandResults<T>()
-            {
-                Groups = ParseGroup(resultElements)
-            };
+            return new CollapseExpandResults<T>(groups);
         }
 
         /// <summary>

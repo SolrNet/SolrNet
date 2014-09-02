@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
@@ -20,8 +20,7 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.collapseWithoutExpandResponse.xml");
             var results = new SolrQueryResults<Doc>();
             parser.Parse(xml, results);
-            Assert.IsNotNull(results.CollapseExpand);
-            Assert.AreEqual(results.CollapseExpand.Groups.Count, 0);
+            Assert.IsNull(results.CollapseExpand);
         }
 
         [Test]

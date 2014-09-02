@@ -83,7 +83,6 @@ namespace SolrNet {
             Stats = new Dictionary<string, StatsResult>();
             Collapsing = new CollapseResults();
             Grouping = new Dictionary<string, GroupedResults<T>>();
-            CollapseExpand = new CollapseExpandResults<T>();
             Terms = new TermsResults();
         }
 

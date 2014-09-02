@@ -3,21 +3,26 @@
 namespace SolrNet
 {
     /// <summary>
-    /// TODO: Update summary.
+    /// Collapse/expand results model
     /// </summary>
-    public class CollapseExpandResults<T>
+    public class CollapseExpandResults<T> 
     {
+        private readonly ICollection<Group<T>> groups;
+
         /// <summary>
         /// Grouped documents 
         /// </summary>
-        public ICollection<Group<T>> Groups { get; set; }
+        public ICollection<Group<T>> Groups 
+        {
+            get { return groups; }
+        }
 
         /// <summary>
         /// Constructor for CollapseExpandResults
         /// </summary>
-        public CollapseExpandResults()
+        public CollapseExpandResults(ICollection<Group<T>> groups) 
         {
-            Groups = new List<Group<T>>();
+            this.groups = groups;
         }
     }
 }

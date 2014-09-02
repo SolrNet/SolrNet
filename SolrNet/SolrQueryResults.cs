@@ -84,7 +84,6 @@ namespace SolrNet {
             Collapsing = new CollapseResults();
             Grouping = new Dictionary<string, GroupedResults<T>>();
             Terms = new TermsResults();
-            Debug = new DebugResults();
         }
 
         public override R Switch<R>(Func<SolrQueryResults<T>, R> query, Func<SolrMoreLikeThisHandlerResults<T>, R> moreLikeThis) {

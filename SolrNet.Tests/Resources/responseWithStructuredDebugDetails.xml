@@ -10,7 +10,6 @@
       <str name="qf">id title^2</str>
       <str name="wt">xml</str>
       <str name="defType">edismax</str>
-      <str name="debug.explain.structured">true</str>
     </lst>
   </lst>
   <lst name="debug">
@@ -28,6 +27,13 @@
             <bool name="match">true</bool>
             <float name="value">1.0</float>
             <str name="description">queryNorm</str>
+            <arr name="details">
+              <lst>
+                <bool name="match">true</bool>
+                <float name="value">1.0</float>
+                <str name="description">queryNorm</str>
+              </lst>
+            </arr>
           </lst>
         </arr>
       </lst>

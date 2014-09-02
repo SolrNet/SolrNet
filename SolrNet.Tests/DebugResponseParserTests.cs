@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using MbUnit.Framework;
+﻿using MbUnit.Framework;
+using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Tests.Utils;
 
@@ -17,6 +17,7 @@ namespace SolrNet.Tests
             parser.Parse(xml, results);
 
             Assert.AreEqual(0, results.Count);
+            Assert.IsTrue(results.Debug is DebugResults.PlainDebugResults);
             Assert.IsNotNull(results.Debug.Timing);
             Assert.AreEqual(15, results.Debug.Timing.TotalTime);
             Assert.AreEqual(7, results.Debug.Timing.Prepare.Count);
@@ -32,10 +33,9 @@ namespace SolrNet.Tests
             parser.Parse(xml, results);
 
             Assert.AreEqual(0, results.Count);
-            Assert.IsNotNull(results.Debug.Explain);
-            Assert.IsNotNull(results.Debug.ExplainStructured);
-            Assert.AreEqual(2, results.Debug.Explain.Count);
-            Assert.AreEqual(0, results.Debug.ExplainStructured.Count());
+            Assert.IsTrue(results.Debug is DebugResults.PlainDebugResults);
+            Assert.IsNotNull(results.Debug.Explanation);
+            Assert.AreEqual(2, results.Debug.Explanation.Count);
         }
 
         [Test]
@@ -45,12 +45,15 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithStructuredDebugDetails.xml");
             var results = new SolrQueryResults<object>();
             parser.Parse(xml, results);
+            var debugData = results.Debug;
 
             Assert.AreEqual(0, results.Count);
-            Assert.IsNotNull(results.Debug.Explain);
-            Assert.IsNotNull(results.Debug.ExplainStructured);
-            Assert.AreEqual(0, results.Debug.Explain.Count);
-            Assert.AreEqual(2, results.Debug.ExplainStructured.Count());
+            Assert.IsNotNull(results.Debug.Explanation);
+            Assert.IsTrue(results.Debug is DebugResults.StructuredDebugResults);
+
+            var structuredDebugData = debugData as DebugResults.StructuredDebugResults;
+            Assert.IsNotNull(structuredDebugData);
+            Assert.AreEqual(2, structuredDebugData.ExplanationStructured.Count);
         }
     }
 }

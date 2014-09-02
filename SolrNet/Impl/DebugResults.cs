@@ -1,47 +1,100 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace SolrNet.Impl
 {
     /// <summary>
     /// Debug results model
     /// </summary>
-    public class DebugResults
+    public abstract class DebugResults
     {
+        #region Private fields
+
+        private TimingResults timing;
+        private string parsedQuery;
+        private string parsedQueryString;
+        private IDictionary<string, string> explanation; 
+
+        #endregion
+
         /// <summary>
         /// Timing results
         /// </summary>
-        public TimingResults Timing;
+        public TimingResults Timing
+        {
+            get { return timing; }
+        }
 
         /// <summary>
-        /// Explain results
+        /// Explanation results (plain or structured)
         /// </summary>
-        public IDictionary<string, string> Explain;
-
-        /// <summary>
-        /// Structured explain results
-        /// </summary>
-        public IEnumerable<ExplainationResult> ExplainStructured;
+        public IDictionary<string, string> Explanation
+        {
+            get { return explanation; }
+        }
 
         /// <summary>
         /// Parsed query
         /// </summary>
-        public string ParsedQuery;
+        public string ParsedQuery
+        {
+            get { return parsedQuery; }
+        }
 
         /// <summary>
         /// Parsed query string
         /// </summary>
-        public string ParsedQueryString;
+        public string ParsedQueryString
+        {
+            get { return parsedQueryString; }
+        }
+
+        private DebugResults() {}
 
         /// <summary>
-        /// DebugResults initializer
+        /// Plain debug results model
         /// </summary>
-        public DebugResults()
+        public sealed class PlainDebugResults : DebugResults
         {
-            Timing = new TimingResults();
-            Explain = new Dictionary<string, string>();
-            ParsedQuery = string.Empty;
-            ParsedQueryString = string.Empty;
-            ExplainStructured = new List<ExplainationResult>();
+            /// <summary>
+            /// Plain debug results initializer
+            /// </summary>
+            public PlainDebugResults(TimingResults timing, string parsedQuery, string parsedQueryString, IDictionary<string, string> plainExplanation) 
+            {
+                this.timing = timing;
+                this.parsedQuery = parsedQuery;
+                this.parsedQueryString = parsedQueryString;
+                this.explanation = plainExplanation;
+            }
+        }
+
+        /// <summary>
+        /// Structured debug results model
+        /// </summary>
+        public sealed class StructuredDebugResults : DebugResults 
+        {
+            private readonly IDictionary<string, ExplanationModel> structuredExplanation;
+
+            /// <summary>
+            /// Structured explanation
+            /// </summary>
+            public IDictionary<string, ExplanationModel> ExplanationStructured 
+            {
+                get { return structuredExplanation; }
+            }
+
+            /// <summary>
+            /// Structured debug results initializer
+            /// </summary>
+            public StructuredDebugResults(TimingResults timing, string parsedQuery, string parsedQueryString, IDictionary<string, ExplanationModel> structuredExplanation) 
+            {
+                this.timing = timing;
+                this.parsedQuery = parsedQuery;
+                this.parsedQueryString = parsedQueryString;
+                this.structuredExplanation = structuredExplanation;
+                this.explanation = structuredExplanation.ToDictionary(x => x.Key, y => y.Value.ToString());
+            }
         }
     }
 
@@ -50,78 +103,119 @@ namespace SolrNet.Impl
     /// </summary>
     public class TimingResults
     {
+        #region Private fields
+
+        private readonly double totalTime;
+        private readonly IDictionary<string, double> prepare;
+        private readonly IDictionary<string, double> process;
+
+        #endregion
+
         /// <summary>
         /// Elapsed time
         /// </summary>
-        public double TotalTime;
+        public double TotalTime
+        {
+            get { return totalTime; }
+        }
 
         /// <summary>
         /// Time results for preparing stage
         /// </summary>
-        public IDictionary<string, double> Prepare;
+        public IDictionary<string, double> Prepare 
+        {
+            get { return prepare; }
+        }
 
         /// <summary>
         /// Time results for processing stage
         /// </summary>
-        public IDictionary<string, double> Process;
+        public IDictionary<string, double> Process
+        {
+            get { return process; }
+        }
 
         /// <summary>
         /// TimingResults initializer
         /// </summary>
-        public TimingResults()
+        public TimingResults(double totalTime, IDictionary<string, double> prepare, IDictionary<string, double> process) 
         {
-            Prepare = new Dictionary<string, double>();
-            Process = new Dictionary<string, double>();
+            this.totalTime = totalTime;
+            this.prepare = prepare;
+            this.process = process;
         }
     }
 
     /// <summary>
-    /// Explaination results model
+    /// Explanation details model
     /// </summary>
-    public class ExplainationResult
+    public class ExplanationModel
     {
-        /// <summary>
-        /// Explaination key
-        /// </summary>
-        public string Key { get; set; }
+        #region Private fields
+
+        private readonly bool match;
+        private readonly double value;
+        private readonly string description;
+        private readonly ICollection<ExplanationModel> details;
+
+        #endregion
 
         /// <summary>
-        /// Explaination details
+        /// Explanation "match" flag
         /// </summary>
-        public ExplainationModel Explaination { get; set; }
-    }
-
-    /// <summary>
-    /// Explaination details model
-    /// </summary>
-    public class ExplainationModel
-    {
-        /// <summary>
-        /// Explaination "match" flag
-        /// </summary>
-        public bool Match { get; set; }
-
-        /// <summary>
-        /// Explaination "value" field
-        /// </summary>
-        public double Value { get; set; }
-
-        /// <summary>
-        /// Explaination description
-        /// </summary>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Explaination details collection
-        /// </summary>
-        public ICollection<ExplainationModel> Details { get; set; }
-
-        /// <summary>
-        /// ExplainationModel initializer
-        /// </summary>
-        public ExplainationModel()
+        public bool Match 
         {
-            Details = new List<ExplainationModel>();
+            get { return match; }
+        }
+
+        /// <summary>
+        /// Explanation "value" field
+        /// </summary>
+        public double Value 
+        {
+            get { return value; }
+        }
+
+        /// <summary>
+        /// Explanation description
+        /// </summary>
+        public string Description 
+        {
+            get { return description; }
+        }
+
+        /// <summary>
+        /// Explanation details collection
+        /// </summary>
+        public ICollection<ExplanationModel> Details 
+        {
+            get { return details; }
+        }
+
+        /// <summary>
+        /// ExplanationModel initializer
+        /// </summary>
+        public ExplanationModel(bool match, double value, string description, ICollection<ExplanationModel> details ) {
+            this.match = match;
+            this.value = value;
+            this.description = description;
+            this.details = details;
+        }
+
+        public override string ToString() {
+            var sb = new StringBuilder();
+
+            sb.AppendLine(string.Format("Match:{0}", Match));
+            sb.AppendLine(string.Format("Value:{0}", Value));
+            sb.AppendLine(string.Format("Description:{0}", Description));
+            sb.AppendLine(string.Format("Details:"));
+
+            foreach (var explanationModel in Details) 
+            {
+                sb.AppendLine(explanationModel.ToString());
+            }
+
+            return sb.ToString();
         }
     }
 }

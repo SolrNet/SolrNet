@@ -74,6 +74,11 @@ namespace SolrNet.Commands.Parameters {
         public int? EnumCacheMinDf { get; set; }
 
         /// <summary>
+        /// Indicate number of threads to spawn when calculating facets, 
+        /// </summary>
+        public int? Threads { get; set; }
+
+        /// <summary>
         /// Faceting parameters
         /// </summary>
         public FacetParameters() {

@@ -514,6 +514,12 @@ namespace SolrNet.Impl {
             if (options.Grouping.Ngroups.HasValue)
                 yield return KV.Create("group.ngroups", options.Grouping.Ngroups.ToString().ToLowerInvariant());
 
+            if (options.Grouping.Truncate.HasValue)
+                yield return KV.Create("group.truncate", options.Grouping.Truncate.ToString().ToLowerInvariant());
+
+            if (options.Grouping.CachePercent.HasValue)
+                yield return KV.Create("group.cache.percent", options.Grouping.CachePercent.ToString());
+
             yield return KV.Create("group.format", options.Grouping.Format.ToString().ToLowerInvariant());
         }
 

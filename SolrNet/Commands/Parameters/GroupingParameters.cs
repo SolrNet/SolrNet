@@ -85,7 +85,8 @@ namespace SolrNet.Commands.Parameters
 		public GroupingFormat Format { get; set; }
 
         /// <summary>
-        /// If true, facet counts are based on the most relevant document of each group matching the query. Same applies for StatsComponent. Default is false. <!> Solr3.4 Supported from Solr 3.4 and up.
+        /// If true, facet counts are based on the most relevant document of each group matching the query. Same applies for StatsComponent. Default is false. 
+        /// Requires Solr 3.4+
         /// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
         /// </summary>
         public bool? Truncate { get; set; }

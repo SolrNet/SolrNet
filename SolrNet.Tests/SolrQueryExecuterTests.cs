@@ -622,6 +622,7 @@ namespace SolrNet.Tests {
                     Missing = true,
                     Offset = 55,
                     Sort = true,
+                    Threads = 5
                 }).ToDictionary(x => x.Key, x => x.Value);
             Assert.AreEqual("pref", facetOptions["facet.prefix"]);
             Assert.AreEqual("123", facetOptions["facet.enum.cache.minDf"]);
@@ -630,6 +631,7 @@ namespace SolrNet.Tests {
             Assert.AreEqual("true", facetOptions["facet.missing"]);
             Assert.AreEqual("55", facetOptions["facet.offset"]);
             Assert.AreEqual("true", facetOptions["facet.sort"]);
+            Assert.AreEqual("5", facetOptions["facet.threads"]);
         }
 
         [Test]

@@ -221,6 +221,8 @@ namespace SolrNet.Impl {
                 yield return KV.Create("facet.offset", fp.Offset.ToString());
             if (fp.Sort.HasValue)
                 yield return KV.Create("facet.sort", fp.Sort.ToString().ToLowerInvariant());
+            if (fp.Threads.HasValue)
+                yield return KV.Create("facet.threads", fp.Threads.ToString().ToLowerInvariant());
         }
 
         /// <summary>

@@ -27,6 +27,7 @@
 
         /// <summary>
         /// How to sort documents within a single group.
+        /// Default: score desc
         /// </summary>
         public SortOrder OrderBy 
         {
@@ -36,6 +37,9 @@
         /// <summary>
         /// CollapseExplandParameters initializer
         /// </summary>
+        /// <param name="field">Field to group results by</param>
+        /// <param name="expand">Used to expand the results</param>
+        /// <param name="orderBy">How to sort documents within a single group.</param>
         public CollapseExpandParameters(string field, bool expand, SortOrder orderBy) 
         {
             this.field = field;

@@ -61,10 +61,10 @@ namespace SolrNet.Commands.Parameters {
         public CollapseParameters Collapse { get; set; }
 
         /// <summary>
-        /// (only SOLR 4.8)
-        /// This parameter can be used to collapse - or group - documents by the unique values of a specified field. Included in the results are the number of
-        /// records by document key and by field value
+        /// The collapsing query parser and the expand component combine to form an approach to grouping documents for field collapsing in search results.
+        /// The expand component requires Solr 4.8+
         /// </summary>
+        /// <see href="https://cwiki.apache.org/confluence/display/solr/Collapse+and+Expand+Results"/>
         public CollapseExpandParameters CollapseExpand { get; set; }
 
 		/// <summary>

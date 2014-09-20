@@ -16,6 +16,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MbUnit.Framework;
@@ -708,7 +709,7 @@ namespace SolrNet.Tests {
         public void GetCursormarkWithDefaultSetup()
         {
             var e = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
-            var p = e.GetCommonParameters(new QueryOptions {
+            var p = e.GetCommonParameters(new CommonQueryOptions {
                 StartOrCursor = StartOrCursor.Cursor.Start
             });
 
@@ -720,12 +721,56 @@ namespace SolrNet.Tests {
         public void GetCursormarkWithMarkSet()
         {
             var e = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
-            var p = e.GetCommonParameters(new QueryOptions {
+            var p = e.GetCommonParameters(new CommonQueryOptions {
                 StartOrCursor = new StartOrCursor.Cursor("AoEoZTQ3YmY0NDM=")
             });
 
             Assert.AreEqual("cursorMark", p.First().Key);
             Assert.AreEqual("AoEoZTQ3YmY0NDM=", p.First().Value);
+        }
+
+        [Test]
+        public void GetCollapseExpandParameters() {
+            var querySerializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
+            var e = new SolrQueryExecuter<TestDocument>(null, null, querySerializer, null, null);
+            var p = e.GetAllParameters(SolrQuery.All, new QueryOptions {
+                Rows = 1,
+                CollapseExpand = new CollapseExpandParameters("somefield", null, null, null),
+            }).ToList();
+            Assert.Contains(p, KV.Create("fq", "{!collapse field=somefield}"));
+        }
+
+        [Test]
+        public void GetCollapseExpandParameters_min_policy() {
+            var querySerializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
+            var e = new SolrQueryExecuter<TestDocument>(null, null, querySerializer, null, null);
+            var max = new CollapseExpandParameters.MinOrMax.Max("maxfield");
+            var policy = CollapseExpandParameters.NullPolicyType.Collapse;
+            var p = e.GetAllParameters(SolrQuery.All, new QueryOptions {
+                Rows = 1,
+                CollapseExpand = new CollapseExpandParameters("somefield", null, max, policy),
+            }).ToList();
+            Assert.Contains(p, KV.Create("fq", "{!collapse field=somefield nullPolicy=collapse max=maxfield}"));
+        }
+
+        [Test]
+        public void GetCollapseExpandParameters_Expand() {
+            var querySerializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
+            var e = new SolrQueryExecuter<TestDocument>(null, null, querySerializer, null, null);
+            var expand = new ExpandParameters(
+                sort: new SortOrder("sortField", Order.ASC),
+                rows: 100,
+                query: new SolrQuery("aquery"),
+                filterQuery: null);
+
+            var p = e.GetAllParameters(SolrQuery.All, new QueryOptions {
+                Rows = 1,
+                CollapseExpand = new CollapseExpandParameters("somefield", expand, null, null),
+            }).ToList();
+            Assert.Contains(p, KV.Create("fq", "{!collapse field=somefield}"));
+            Assert.Contains(p, KV.Create("expand.sort", "sortField asc"));
+            Assert.Contains(p, KV.Create("expand.rows", "100"));
+            Assert.Contains(p, KV.Create("expand.q", "aquery"));
         }
     }
 }

@@ -84,6 +84,8 @@
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
     <Compile Include="ClusterResults.cs" />
+    <Compile Include="CollapseExpandResults.cs" />
+    <Compile Include="Commands\Parameters\CollapseExpandParameters.cs" />
     <Compile Include="Commands\ReplicationCommand.cs" />
     <Compile Include="Commands\Replication\AbortFetchCommand.cs" />
     <Compile Include="Commands\Replication\DetailsCommand.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Impl\ISolrReplicationStatusResponseParser.cs" />
     <Compile Include="Impl\ReplicationStatusResponse.cs" />
     <Compile Include="Impl\ReplicationIndexVersionResponse.cs" />
+    <Compile Include="Impl\ResponseParsers\CollapseExpandResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\ReplicationDetailsResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\ReplicationIndexVersionResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\ReplicationStatusResponseParser.cs" />

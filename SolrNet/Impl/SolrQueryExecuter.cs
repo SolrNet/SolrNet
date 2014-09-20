@@ -163,6 +163,9 @@ namespace SolrNet.Impl {
             foreach (var p in GetGroupingQueryOptions(options))
                 yield return p;
 
+            foreach (var p in GetCollapseExpandOptions(options.CollapseExpand, querySerializer.Serialize))
+                yield return p;
+
             foreach (var p in GetClusteringParameters(options))
                 yield return p;
         }
@@ -523,6 +526,60 @@ namespace SolrNet.Impl {
                 yield return KV.Create("group.cache.percent", options.Grouping.CachePercent.ToString());
 
             yield return KV.Create("group.format", options.Grouping.Format.ToString().ToLowerInvariant());
+        }
+
+        public static IEnumerable<KeyValuePair<string, string>> GetCollapseOptions(CollapseExpandParameters options) {
+            if (options == null)
+                throw new ArgumentNullException("options");
+
+            yield return KV.Create("field", options.Field);
+
+            if (options.NullPolicy != null)
+                yield return KV.Create("nullPolicy", options.NullPolicy.Policy);
+
+            if (options.MinOrMaxField != null)
+                yield return options.MinOrMaxField.Switch(
+                    min: x => KV.Create("min", x.Field),
+                    max: x => KV.Create("max", x.Field));
+        }
+
+        public static IEnumerable<KeyValuePair<string, string>> GetExpandOptions(ExpandParameters parameters, Func<ISolrQuery, string> serializer) {
+            if (parameters == null)
+                yield break;
+
+            yield return KV.Create("expand", "true");
+
+            if (parameters.Rows.HasValue)
+                yield return KV.Create("expand.rows", parameters.Rows.Value.ToString());
+
+            if (parameters.Sort != null)
+                yield return KV.Create("expand.sort", parameters.Sort.ToString());
+
+            if (serializer == null)
+                throw new ArgumentNullException("serializer");
+
+            if (parameters.Query != null)
+                yield return KV.Create("expand.q", serializer(parameters.Query));
+
+            if (parameters.FilterQuery != null)
+                yield return KV.Create("expand.fq", serializer(parameters.FilterQuery));
+        }
+
+        /// <summary>
+        /// Gets the solr parameters for collapse-expand queries
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static IEnumerable<KeyValuePair<string, string>> GetCollapseExpandOptions(CollapseExpandParameters options, Func<ISolrQuery, string> serializer)
+        {
+            if (options == null)
+                yield break;
+
+            var collapseValues = GetCollapseOptions(options).Select(x => x.Key + "=" + x.Value).ToArray();
+            yield return KV.Create("fq", "{!collapse " + string.Join(" ", collapseValues) + "}");
+
+            foreach (var kv in GetExpandOptions(options.Expand, serializer))
+                yield return kv;
         }
 
         /// <summary>

@@ -538,7 +538,7 @@ namespace SolrNet.Impl {
                 yield return KV.Create("nullPolicy", options.NullPolicy.Policy);
 
             if (options.MinOrMaxField != null)
-                yield return options.MinOrMaxField.Switch(
+                yield return options.MinOrMaxField.Switch<KeyValuePair<string, string>>(
                     min: x => KV.Create("min", x.Field),
                     max: x => KV.Create("max", x.Field));
         }

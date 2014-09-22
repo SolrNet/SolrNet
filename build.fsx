@@ -115,7 +115,8 @@ Target "NuGet" <| fun _ ->
     rm_rf nugetDir
     mkdir nugetDocs
     mkdir nugetLib
-    cp docsFile nugetDocs
+    if (File.Exists docsFile) then
+        cp docsFile nugetDocs
     !!(buildDir @@ "SolrNet.*") |> Copy nugetLib
     nuGetBuild "SolrNet" "Apache Solr client" ["CommonServiceLocator", "[1.0]"]
 

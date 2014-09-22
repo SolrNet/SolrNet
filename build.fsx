@@ -107,15 +107,16 @@ Target "Docs" <| fun _ ->
     rm_rf docsDir
     let r = Shell.Exec(@"tools\doxygen\doxygen.exe")
     if r <> 0 then failwith "Doxygen failed"
-    rm docsFile
-    Rename docsFile (docsDir @@ "html\\index.chm")
+    if File.Exists docsFile then
+        rm docsFile
+        Rename docsFile (docsDir @@ "html\\index.chm")
     rm_rf docsDir
 
 Target "NuGet" <| fun _ ->
     rm_rf nugetDir
     mkdir nugetDocs
     mkdir nugetLib
-    if (File.Exists docsFile) then
+    if File.Exists docsFile then
         cp docsFile nugetDocs
     !!(buildDir @@ "SolrNet.*") |> Copy nugetLib
     nuGetBuild "SolrNet" "Apache Solr client" ["CommonServiceLocator", "[1.0]"]

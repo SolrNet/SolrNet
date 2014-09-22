@@ -245,6 +245,7 @@ Target "BuildAndRelease" DoNothing
 Target "NuGet.All" DoNothing
 Target "All" DoNothing
 Target "Test" DoNothing
+Target "TestAndNuGet" DoNothing
 
 "Test" <== ["BuildAll"] @ testTargets
 "BuildAll" <== ["Build";"Merge";"BuildSample"]
@@ -252,6 +253,7 @@ Target "Test" DoNothing
 "TestAndRelease" <== ["Clean";"Version";"Test";"ReleasePackage"]
 "NuGet" <== ["Clean";"Build";"BasicMerge";"Docs"]
 "NuGet.All" <== (getAllTargetsNames() |> List.filter ((<*) "NuGet") |> List.filter ((<>) "NuGet.All") |> List.sort)
+"TestAndNuGet" <== ["Clean";"Version"; "Test"; "NuGet.All"]
 "All" <== ["BuildAndRelease";"PackageSampleApp";"NuGet.All"]
 
 Run target

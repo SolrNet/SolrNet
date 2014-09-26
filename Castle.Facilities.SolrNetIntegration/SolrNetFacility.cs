@@ -16,9 +16,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Castle.Core.Configuration;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.Registration;
+using Castle.Windsor;
 using SolrNet;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
@@ -42,7 +44,21 @@ namespace Castle.Facilities.SolrNetIntegration {
         private readonly string solrURL;
         private bool _addedToSolr;
 
+        /// <summary>
+        /// Fetches an existing facility from windsor or adds a new one if none exists yet.
+        /// </summary>
+        /// <param name="container"></param>
+        /// <returns></returns>
+        public static SolrNetFacility GetFromOrAddToContainer(IWindsorContainer container) {
+            var existingFacility = container.Kernel.GetFacilities().OfType<SolrNetFacility>().SingleOrDefault();
+            if (existingFacility != null) {
+                return existingFacility;
+            }
 
+            var facility = new SolrNetFacility();
+            container.AddFacility(facility);
+            return facility;
+        }
 
         /// <summary>
         /// Default mapper override

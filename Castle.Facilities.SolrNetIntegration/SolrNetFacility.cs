@@ -40,6 +40,7 @@ namespace Castle.Facilities.SolrNetIntegration {
     /// </summary>
     public class SolrNetFacility : AbstractFacility {
         private readonly string solrURL;
+        private bool _addedToSolr;
 
         /// <summary>
         /// Default mapper override
@@ -73,7 +74,7 @@ namespace Castle.Facilities.SolrNetIntegration {
             return url;
         }
 
-        protected override void Init() {
+        protected override void Init() {            
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Kernel.Register(Component.For<IReadOnlyMappingManager>().Instance(mapper));
             //Kernel.Register(Component.For<ISolrCache>().ImplementedBy<HttpRuntimeCache>());
@@ -134,7 +135,8 @@ namespace Castle.Facilities.SolrNetIntegration {
             foreach (var core in cores) {
                 RegisterCore(core);
             }
-        }
+            _addedToSolr = true;
+        }        
 
         /// <summary>
         /// Registers a new core in the container.
@@ -186,7 +188,11 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// <param name="coreUrl"></param>
         public void AddCore(string coreId, Type documentType, string coreUrl) {
             ValidateUrl(coreUrl);
-            cores.Add(new SolrCore(coreId, documentType, coreUrl));
+            var solrCore = new SolrCore(coreId, documentType, coreUrl);
+            cores.Add(solrCore);
+            if (_addedToSolr) {
+                RegisterCore(solrCore);
+            }
         }
 
         private void AddCoresFromConfig() {
@@ -248,6 +254,6 @@ namespace Castle.Facilities.SolrNetIntegration {
             }
         }
 
-        private readonly List<SolrCore> cores = new List<SolrCore>();
+        private readonly List<SolrCore> cores = new List<SolrCore>();        
     }
 }

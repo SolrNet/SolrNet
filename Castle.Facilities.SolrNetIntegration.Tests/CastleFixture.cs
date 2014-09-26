@@ -152,6 +152,24 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         }
 
         [Test]
+        public void RegisterCoreAfterFacilityIsAddedToWindsor()
+        {
+            const string core0url = "http://localhost:8983/solr/core0";
+            const string core1url = "http://localhost:8983/solr/core1";
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr/defaultCore");
+            var container = new WindsorContainer();
+
+            solrFacility.AddCore("core0-id", typeof(Document), core0url);
+
+            container.AddFacility("solr", solrFacility);
+
+            solrFacility.AddCore("core1-id", typeof(Document), core1url);
+            solrFacility.AddCore("core2-id", typeof(Core1Entity), core1url);
+
+            TestCores(container);
+        }
+
+        [Test]
         public void AddCoreFromXML() {
             var container = new WindsorContainer(new XmlInterpreter(new StaticContentResource(@"<castle>
 <facilities>

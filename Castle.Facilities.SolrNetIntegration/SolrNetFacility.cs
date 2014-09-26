@@ -42,6 +42,8 @@ namespace Castle.Facilities.SolrNetIntegration {
         private readonly string solrURL;
         private bool _addedToSolr;
 
+
+
         /// <summary>
         /// Default mapper override
         /// </summary>
@@ -64,11 +66,14 @@ namespace Castle.Facilities.SolrNetIntegration {
         private string GetSolrUrl() {
             if (solrURL != null)
                 return solrURL;
+
             if (FacilityConfig == null)
-                throw new FacilityException("Please add solrURL to the SolrNetFacility configuration");
+                return null;
+
             var configNode = FacilityConfig.Children["solrURL"];
             if (configNode == null)
-                throw new FacilityException("Please add solrURL to the SolrNetFacility configuration");
+                return null;
+
             var url = configNode.Value;
             ValidateUrl(url);
             return url;
@@ -78,8 +83,11 @@ namespace Castle.Facilities.SolrNetIntegration {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Kernel.Register(Component.For<IReadOnlyMappingManager>().Instance(mapper));
             //Kernel.Register(Component.For<ISolrCache>().ImplementedBy<HttpRuntimeCache>());
-            Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
-                                .Parameters(Parameter.ForKey("serverURL").Eq(GetSolrUrl())));
+            var solrUrl = GetSolrUrl();
+            if (solrURL != null) {
+                Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
+                    .Parameters(Parameter.ForKey("serverURL").Eq(solrUrl)));
+            }
 
             Kernel.Register(Component.For(typeof (ISolrDocumentActivator<>)).ImplementedBy(typeof(SolrDocumentActivator<>)));
 

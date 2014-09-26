@@ -34,7 +34,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
     [TestFixture]
     public class CastleFixture {
         [Test]
-        [ExpectedException(typeof(FacilityException))]
+        [ExpectedException(typeof(FacilityException)), Ignore("Why would we want this. Its perfectly reasonable to only setup url for cores. A default url does not really make sense to me when we use multi core configurations")]
         public void NoConfig_throws() {
             var container = new WindsorContainer();
             container.AddFacility<SolrNetFacility>();

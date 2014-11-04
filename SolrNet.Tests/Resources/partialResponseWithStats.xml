@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- https://cwiki.apache.org/confluence/display/solr/The+Stats+Component#TheStatsComponent-Example.1 -->
+<lst name="stats">
+  <lst name="stats_fields">
+    <lst name="instock_prices">
+      <double name="min">0.0</double>
+      <double name="max">2199.0</double>
+      <long name="count">16</long>
+      <long name="missing">16</long>
+      <double name="sum">5251.270030975342</double>
+      <double name="sumOfSquares">6038619.175900028</double>
+      <double name="mean">328.20437693595886</double>
+      <double name="stddev">536.3536996709846</double>
+      <lst name="facets"/>
+    </lst>
+    <lst name="all_prices">
+      <double name="min">0.0</double>
+      <double name="max">2199.0</double>
+      <long name="count">12</long>
+      <long name="missing">5</long>
+      <double name="sum">4089.880027770996</double>
+      <double name="sumOfSquares">5385249.921747174</double>
+      <double name="mean">340.823335647583</double>
+      <double name="stddev">602.3683083752779</double>
+      <lst name="facets"/>
+    </lst>
+  </lst>
+</lst>

@@ -53,6 +53,11 @@ namespace SolrNet {
         public CollapseResults Collapsing { get; set; }
 
         /// <summary>
+        /// CollapseExpand results
+        /// </summary>
+        public CollapseExpandResults<T> CollapseExpand { set; get; }
+
+        /// <summary>
         /// Clustering results
         /// </summary>
         public ClusterResults Clusters { get; set; }

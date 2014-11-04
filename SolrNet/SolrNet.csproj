@@ -84,6 +84,8 @@
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
     <Compile Include="ClusterResults.cs" />
+    <Compile Include="CollapseExpandResults.cs" />
+    <Compile Include="Commands\Parameters\CollapseExpandParameters.cs" />
     <Compile Include="Commands\ReplicationCommand.cs" />
     <Compile Include="Commands\Replication\AbortFetchCommand.cs" />
     <Compile Include="Commands\Replication\DetailsCommand.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Impl\ISolrReplicationStatusResponseParser.cs" />
     <Compile Include="Impl\ReplicationStatusResponse.cs" />
     <Compile Include="Impl\ReplicationIndexVersionResponse.cs" />
+    <Compile Include="Impl\ResponseParsers\CollapseExpandResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\ReplicationDetailsResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\ReplicationIndexVersionResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\ReplicationStatusResponseParser.cs" />
@@ -355,12 +358,14 @@
     <Compile Include="Attributes\SolrUniqueKeyAttribute.cs" />
     <Compile Include="Impl\SolrServer.cs" />
     <Compile Include="SortOrder.cs" />
+    <Compile Include="StartOrCursor.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="StatsResult.cs" />
     <Compile Include="Utils\Container.cs" />
     <Compile Include="Exceptions\InvalidURLException.cs" />
     <Compile Include="ISolrConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo2.cs" />
     <Compile Include="Impl\SolrConnection.cs" />
     <Compile Include="Exceptions\SolrNetException.cs" />
     <Compile Include="Utils\HttpEncoder.cs" />

@@ -5,6 +5,12 @@ using SolrNet.Utils;
 namespace SolrNet.Impl {
     public abstract class AbstractSolrQueryResults<T> : List<T> {
         /// <summary>
+        /// CursorMark token returned for deep pagination.
+        /// Only present if explicitly requested through <see cref="SolrNet.Commands.Parameters.CommonQueryOptions.StartOrCursor"/>
+        /// </summary>
+        public StartOrCursor.Cursor NextCursorMark { get; set; }
+
+        /// <summary>
         /// Total documents found
         /// </summary>
         public int NumFound { get; set; }

@@ -51,7 +51,6 @@ namespace SolrNet.Commands.Parameters
 		/// </summary>
 		public int? Offset { get; set; }
 
-
 		/// <summary>
 		/// How to sort documents within a single group. Defaults to the same value as the sort parameter.
 		/// </summary>
@@ -84,6 +83,19 @@ namespace SolrNet.Commands.Parameters
 		/// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
 		/// </summary>
 		public GroupingFormat Format { get; set; }
+
+        /// <summary>
+        /// If true, facet counts are based on the most relevant document of each group matching the query. Same applies for StatsComponent. Default is false. 
+        /// Requires Solr 3.4+
+        /// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
+        /// </summary>
+        public bool? Truncate { get; set; }
+
+        /// <summary>
+        /// If > 0 enables grouping cache. Grouping is executed actual two searches. This option caches the second search. A value of 0 disables grouping caching. Default is 0. 
+        /// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
+        /// </summary>
+        public int? CachePercent { get; set; }
 
 		/// <summary>
 		/// Constructor for GroupingParameters

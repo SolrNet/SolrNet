@@ -16,6 +16,7 @@ namespace SolrNet.Impl.ResponseParsers {
                 new StatsResponseParser<T>(),
                 new CollapseResponseParser<T>(),
                 new GroupingResponseParser<T>(docParser),
+                new CollapseExpandResponseParser<T>(docParser),
                 new ClusterResponseParser<T>(),
                 new TermsResponseParser<T>(),
                 new MoreLikeThisHandlerMatchResponseParser<T>(docParser),

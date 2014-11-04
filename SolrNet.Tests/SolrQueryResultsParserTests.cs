@@ -81,6 +81,13 @@ namespace SolrNet.Tests {
 			Assert.AreEqual(1, r.NumFound);
 		}
 
+        [Test]
+        public void CanParseNextCursormark()
+        {
+            var r = ParseFromResource<TestDocument>("Resources.response.xml");
+            Assert.AreEqual(new StartOrCursor.Cursor("AoEoZTQ3YmY0NDM="), r.NextCursorMark);
+        }
+
 		[Test]
 		public void Parse() {
 		    var results = ParseFromResource<TestDocument>("Resources.response.xml");
@@ -616,6 +623,28 @@ namespace SolrNet.Tests {
             Assert.AreEqual(5385249.905200001, priceInStockTrueStats.SumOfSquares);
             Assert.AreEqual(371.8072727272727, priceInStockTrueStats.Mean);
             Assert.AreEqual(621.6592938755265, priceInStockTrueStats.StdDev);
+        }
+
+        [Test]
+        public void ParseStatsResults2() {
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithStats.xml");
+            var parser = new StatsResponseParser<Product>();
+            var stats = parser.ParseStats(xml.Root, "stats_fields");
+
+            Assert.IsNotNull(stats);
+            Assert.Contains(stats.Keys, "instock_prices");
+            Assert.Contains(stats.Keys, "all_prices");
+
+            var instock = stats["instock_prices"];
+            Assert.AreEqual(0, instock.Min);
+            Assert.AreEqual(2199, instock.Max);
+            Assert.AreEqual(16, instock.Count);
+            Assert.AreEqual(16, instock.Missing);
+            Assert.AreEqual(5251.270030975342, instock.Sum);
+
+            var all = stats["all_prices"];
+            Assert.AreEqual(4089.880027770996, all.Sum);
+            Assert.AreEqual(2199, all.Max);
         }
 
         [Test]

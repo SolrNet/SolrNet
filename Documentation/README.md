@@ -6,8 +6,9 @@ If you're not familiar with Solr, take your time to follow the [Solr tutorial](h
 
 ### Downloads
 
-It's currently recommended to get the latest binaries directly from the [build server](http://teamcity.codebetter.com/viewType.html?buildTypeId=bt290&tab=buildTypeHistoryList&guest=1) (see "Artifacts").  
-Otherwise, NuGet packages (currently outdated) are available:
+It's currently recommended to get the latest binaries directly from the build server. [![Build status](https://ci.appveyor.com/api/projects/status/lwb0ma5su83pu0lr)](https://ci.appveyor.com/project/mausch/solrnet). The build server also has a NuGet feed with these nightly builds: https://ci.appveyor.com/nuget/solrnet-022x5w7kmuba
+
+Otherwise, NuGet packages at nuget.org (currently outdated due to lack of documentation) are available:
 
  * [SolrNet](https://www.nuget.org/packages/SolrNet/) (core library)
  * [SolrNet.Windsor](https://www.nuget.org/packages/SolrNet.Windsor/)

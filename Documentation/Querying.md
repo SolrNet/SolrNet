@@ -185,12 +185,14 @@ In Solr you can't retrieve all your documents in single query. However, by defau
 ```
 ISolrOperations<Product> solr = ...
 solr.Query("somequery", new QueryOptions{
-  Start = 10,
+  StartOrCursor = new StartOrCursor.Start(10),
   Rows = 25
 });
 ```
 
 This will fetch at most 25 documents, starting from the 10th document in the total result set.
+
+If you're planning to paginate beyond the first few pages of results, take a look at [CursorMark](CursorMark.md) instead.
 
 ### Additional parameters
 Solr has lots of features that aren't directly mapped in SolrNet, but you can enable and use most of them with the `ExtraParams` dictionary. Parameters defined in `ExtraParams` are directly passed to the Solr querystring. For example you can [restrict the maximum time allowed for a query](http://wiki.apache.org/solr/CommonQueryParameters#timeAllowed):

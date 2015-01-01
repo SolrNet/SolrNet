@@ -20,3 +20,8 @@ log.txt
 NDependOut
 docs
 mausch.snk
+solr/solr/*
+packages/*
+*.sln.ide
+*/log.txt*
+.nuget/*.exe

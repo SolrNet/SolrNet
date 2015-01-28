@@ -21,9 +21,9 @@ namespace SolrNet.Tests {
 	[TestFixture]
 	public class SortOrderTests {
 		[Test]
-		[ExpectedException(typeof (InvalidSortOrderException))]
-		public void Constructor_ShouldntAcceptSpaces() {
-			var o = new SortOrder("uno dos");
+		public void Constructor_ShouldAcceptSpaces() {
+            var o = new SortOrder("dist(2, point1, point2)", Order.DESC);
+            Assert.AreEqual("dist(2, point1, point2) desc", o.ToString());
 		}
 
 		[Test]

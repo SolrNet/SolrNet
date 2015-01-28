@@ -14,10 +14,12 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
-using System.Xml;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -25,6 +27,11 @@ namespace SolrNet.Impl.ResponseParsers {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class HighlightingResponseParser<T> : ISolrResponseParser<T> {
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
+            results.Switch(query: r => Parse(xml, r),
+                           moreLikeThis: F.DoNothing);
+        }
+
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
             var highlightingNode = xml.XPathSelectElement("response/lst[@name='highlighting']");
             if (highlightingNode != null)
@@ -37,30 +44,31 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <param name="results"></param>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IDictionary<string, IDictionary<string, ICollection<string>>> ParseHighlighting(IEnumerable<T> results, XElement node) {
-            var r = new Dictionary<string, IDictionary<string, ICollection<string>>>();
+        public static IDictionary<string, HighlightedSnippets> ParseHighlighting(IEnumerable<T> results, XElement node) {
+            var highlights = new Dictionary<string, HighlightedSnippets>();
             var docRefs = node.Elements("lst");
             foreach (var docRef in docRefs) {
                 var docRefKey = docRef.Attribute("name").Value;
-                r[docRefKey] = ParseHighlightingFields(docRef.Elements());
+                highlights.Add(docRefKey, ParseHighlightingFields(docRef.Elements()));                    
             }
-            return r;
+            return highlights;
         }
 
         /// <summary>
-        /// Parses highlighting results
+        /// Parse highlighting snippets for each field.
         /// </summary>
         /// <param name="nodes"></param>
         /// <returns></returns>
-        public IDictionary<string, ICollection<string>> ParseHighlightingFields(IEnumerable<XElement> nodes) {
-            var fields = new Dictionary<string, ICollection<string>>();
+        public static HighlightedSnippets ParseHighlightingFields(IEnumerable<XElement> nodes) {
+            var fields = new HighlightedSnippets();
             foreach (var field in nodes) {
                 var fieldName = field.Attribute("name").Value;
-                var snippets = new List<string>();
-                foreach (var str in field.Elements("str")) {
-                    snippets.Add(str.Value);
-                }
-                fields[fieldName] = snippets;
+                ICollection<string> snippets = field.Elements("str")
+                    .Select(str => str.Value)
+                    .ToList();
+                if (snippets.Count == 0 && !string.IsNullOrEmpty(field.Value))
+                    snippets = new[] { field.Value };
+                fields.Add(fieldName, snippets);
             }
             return fields;
         }

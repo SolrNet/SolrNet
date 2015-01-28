@@ -14,10 +14,13 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 namespace SolrNet {
     /// <summary>
     /// Field collapsing result
     /// </summary>
+    [Obsolete("Use result grouping instead")]
     public class CollapsedDocument {
         ///<summary>
         /// Document ID

@@ -14,7 +14,6 @@
 // limitations under the License.
 #endregion
 
-using System.Xml;
 using System.Xml.Linq;
 
 namespace SolrNet.Impl {
@@ -22,7 +21,7 @@ namespace SolrNet.Impl {
     /// Parses a chunk of a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public interface ISolrResponseParser<T> {
+    public interface ISolrResponseParser<T> : ISolrAbstractResponseParser<T> {
         /// <summary>
         /// Parses a chunk of a query response into the results object
         /// </summary>

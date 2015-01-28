@@ -28,8 +28,6 @@ namespace SolrNet {
         private readonly DateTime start;
         private readonly DateTime end;
         private readonly string gap;
-        private readonly DateTimeFieldSerializer dateSerializer = new DateTimeFieldSerializer();
-        private readonly BoolFieldSerializer boolSerializer = new BoolFieldSerializer();
 
         /// <summary>
         /// Creates a date facet query
@@ -47,6 +45,7 @@ namespace SolrNet {
             this.end = end;
             this.gap = gap;
             Other = new List<FacetDateOther>();
+            Include = new List<FacetDateInclude>();
         }
 
         /// <summary>
@@ -61,10 +60,13 @@ namespace SolrNet {
         /// Indicates that in addition to the counts for each date range constraint between start and end, counts should also be computed for other
         /// </summary>
         public ICollection<FacetDateOther> Other { get; set; }
-
-        private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
-            return new KeyValuePair<K, V>(key, value);
-        }
+        
+           /// <summary>
+        /// By default, the ranges used to compute date faceting between facet.date.start and facet.date.end are all inclusive of both endpoints, while the the "before" and "after" ranges are not inclusive. This behavior can be modified by 
+        /// the facet.date.include param, which can be any combination of the following options...
+        /// </summary>
+        public ICollection<FacetDateInclude> Include { get; set; }
+     
 
         public string Field {
             get { return field; }
@@ -80,20 +82,6 @@ namespace SolrNet {
 
         public string Gap {
             get { return gap; }
-        }
-
-        public IEnumerable<KeyValuePair<string, string>> Query {
-            get {
-                yield return KV("facet.date", field);
-                yield return KV(string.Format("f.{0}.facet.date.start", field), dateSerializer.SerializeDate(start));
-                yield return KV(string.Format("f.{0}.facet.date.end", field), dateSerializer.SerializeDate(end));
-                yield return KV(string.Format("f.{0}.facet.date.gap", field), gap);
-                if (HardEnd.HasValue)
-                    yield return KV(string.Format("f.{0}.facet.date.hardend", field), boolSerializer.SerializeBool(HardEnd.Value));
-                if (Other != null && Other.Count > 0)
-                    foreach (var o in Other)
-                        yield return KV(string.Format("f.{0}.facet.date.other", field), o.ToString());
-            }
         }
     }
 }

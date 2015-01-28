@@ -19,9 +19,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.XPath;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -29,12 +28,20 @@ namespace SolrNet.Impl.ResponseParsers {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class CollapseResponseParser<T> : ISolrResponseParser<T> {
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
+            if (results is SolrQueryResults<T>)
+                Parse(xml, (SolrQueryResults<T>) results);
+        }
+
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
-            var mainCollapseNode = xml.XPathSelectElement("response/lst[@name='collapse_counts']");
+            var mainCollapseNode = xml.Element("response")
+                .Elements("lst")
+                .FirstOrDefault(X.AttrEq("name", "collapse_counts"));
             if (mainCollapseNode != null) {
+                var value = mainCollapseNode.Elements("str").First(X.AttrEq("name", "field")).Value;
                 results.Collapsing = new CollapseResults {
                     CollapsedDocuments = ParseCollapsedResults(mainCollapseNode).ToArray(),
-                    Field = mainCollapseNode.XPathSelectElement("str[@name='field']").Value
+                    Field = value,
                 };
             }
         }
@@ -44,14 +51,25 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IEnumerable<CollapsedDocument> ParseCollapsedResults(XElement node) {
-            foreach (var docNode in node.XPathSelectElement("lst[@name='results']").Elements()) {
-                yield return new CollapsedDocument {
-                    Id = docNode.Attribute("name").Value,
-                    FieldValue = docNode.XPathSelectElement("str[@name='fieldValue']").Value,
-                    CollapseCount = Convert.ToInt32(docNode.XPathSelectElement("int[@name='collapseCount']").Value)
-                };
-            }
+        public static IEnumerable<CollapsedDocument> ParseCollapsedResults(XElement node) {
+            var results = node.Elements("lst")
+                .Where(X.AttrEq("name", "results"))
+                .Elements();
+            return
+                results.Select(docNode => {
+                    string fieldValue = docNode.Elements("str")
+                        .First(X.AttrEq("name", "fieldValue"))
+                        .Value;
+                    var collapseCountRaw = docNode.Elements("int")
+                        .First(X.AttrEq("name", "collapseCount"))
+                        .Value;
+                    int collapseCount = int.Parse(collapseCountRaw);
+                    return new CollapsedDocument {
+                        Id = docNode.Attribute("name").Value,
+                        FieldValue = fieldValue,
+                        CollapseCount = collapseCount,
+                    };
+                });
         }
     }
 }

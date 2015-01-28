@@ -1,3 +1,46 @@
+- Breaking change: queries that quote values now also quote slash ('/') due to changes in Solr/Lucene 4 (https://issues.apache.org/jira/browse/LUCENE-2604)
+- Upgraded to Ninject 3
+- Added commitWithin option to Delete
+- Added support for TermVectorComponent
+- Added SolrRequiredQuery
+- Fixed milliseconds in DateTime serialization
+- Added multicore to StructureMap integration
+- Added multicore to Unity integration
+- Fixed parens in query by field expressions with spaces in value
+- Added core admin commands
+- Added multicore to Ninject module
+- Fixed commit without parameters should not send waitFlush (issue #172)
+- Fixed MappingManager with class hierarchy (issue #37)
+
+0.4.0b2 (2011-12-29)
+===
+
+- Upgraded to Windsor 3.0
+- Fixed cache injection in Structuremap integration
+- Fixed response parser registrations in built-in container
+
+0.4.0b1 (2011-12-04)
+===
+
+- Upgraded to NHibernate 3.2.0
+- Added support for MoreLikeThis handler
+- Fixed intermitent bug in NHibernate integration
+- Breaking change: removed query result interfaces (ISolrQueryResults)
+- Friendlier highlighting results (issue #96)
+- Added Terms component support (issue #122)
+- Added Clustering component support (issue #121)
+- Fixed issue #159 : ignore LocalParams for facet date parameters
+- Added option to disable quoting in SolrQueryByField
+- Added ngroups for grouping
+- Fixed bug with fastVectorHighlighter
+- Fixed bug when using SolrNet in Application_Start in IIS 7+
+- Upgraded to Autofac 2.5.2
+- Added support for multicore in Autofac module
+- Obsoleted Add(IEnumerable<T>). Use AddRange() instead.
+
+0.4.0a1 (2011-06-19)
+===
+
 - Upgraded to StructureMap 2.6.2
 - Added mixed exclusive/inclusive range queries (for Solr 4.0) (issue #142)
 - Breaking change for IReadOnlyMappingManager implementors: it now indexes fields by name to speed up lookup

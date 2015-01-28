@@ -21,7 +21,6 @@ using MbUnit.Framework;
 using Microsoft.Practices.ServiceLocation;
 using NHibernate.SolrNet.Impl;
 using NHibernate.Tool.hbm2ddl;
-using NHibernate.Util;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
@@ -60,7 +59,7 @@ namespace NHibernate.SolrNet.Tests {
             }
             var listener = cfg.EventListeners.PostInsertEventListeners[0];
             var addField = typeof (SolrNetListener<Entity>).GetField("entitiesToAdd", BindingFlags.NonPublic | BindingFlags.Instance);
-            var addDict = (WeakHashtable)addField.GetValue(listener);
+            var addDict = (IDictionary<ITransaction, List<Entity>>)addField.GetValue(listener);
             Assert.AreEqual(0, addDict.Count);
         }
 

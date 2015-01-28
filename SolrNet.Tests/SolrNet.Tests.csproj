@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -32,6 +32,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -53,13 +55,11 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Castle.Core.dll</HintPath>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.2.0\lib\net35\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Windsor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Castle.Windsor.dll</HintPath>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.2.0\lib\net35\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="Gallio, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -78,19 +78,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\lib\Rhino.Mocks.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollapseExpandResponseParserTests.cs" />
+    <Compile Include="DateTimeOffsetFieldParserTests.cs" />
+    <Compile Include="DefaultResponseParserTests.cs" />
+    <Compile Include="LocationTests.cs" />
+    <Compile Include="MergeCommandTests.cs" />
+    <Compile Include="Mocks\MSolrFieldSerializer.cs" />
+    <Compile Include="MoneyTests.cs" />
     <Compile Include="ExtractCommandTests.cs" />
     <Compile Include="AddCommandTests.cs" />
     <Compile Include="AllPropertiesMappingManagerTests.cs" />
@@ -101,17 +107,14 @@
     <Compile Include="CommonServiceLocatorTests.cs" />
     <Compile Include="DateTimeFieldParserTests.cs" />
     <Compile Include="GenericDictionaryFieldSerializerTests.cs" />
-    <Compile Include="GetSchemaCommandTests.cs" />
     <Compile Include="InferringFieldParserTests.cs" />
     <Compile Include="DefaultFieldParserTests.cs" />
     <Compile Include="DeleteCommandTests.cs" />
     <Compile Include="ExceptionTests.cs" />
     <Compile Include="FieldParserTests.cs" />
-    <Compile Include="FilterQueryTests.cs" />
     <Compile Include="HttpTests.cs" />
     <Compile Include="Integration.Sample\Product.cs" />
     <Compile Include="Integration.Sample\ProductLoose.cs" />
-    <Compile Include="Integration.Sample\Tests.cs" />
     <Compile Include="IntegrationTests.cs" />
     <Compile Include="LocalParamsTests.cs" />
     <Compile Include="MappedPropertiesIsInSolrSchemaRuleTests.cs" />
@@ -119,23 +122,49 @@
     <Compile Include="MappingTypesAreCompatibleWithSolrTypesRuleTests.cs" />
     <Compile Include="MemoizingMappingManagerTests.cs" />
     <Compile Include="MockConnection.cs" />
+    <Compile Include="Mocks\HttpWebRequest.cs" />
+    <Compile Include="Mocks\HttpWebRequestFactory.cs" />
+    <Compile Include="Mocks\HttpWebResponse.cs" />
+    <Compile Include="Mocks\MMappingValidator.cs" />
+    <Compile Include="Mocks\MServiceLocator.cs" />
+    <Compile Include="Mocks\MServiceProvider.cs" />
+    <Compile Include="Mocks\MSolrMoreLikeThisHandlerQueryResultsParser.cs" />
+    <Compile Include="Mocks\MSolrOperations.cs" />
+    <Compile Include="Mocks\MReadOnlyMappingManager.cs" />
+    <Compile Include="Mocks\MSolrAbstractResponseParser.cs" />
+    <Compile Include="Mocks\MSolrBasicOperations.cs" />
+    <Compile Include="Mocks\MSolrCache.cs" />
+    <Compile Include="Mocks\MSolrConnection.cs" />
+    <Compile Include="Mocks\MSolrDocumentSerializer.cs" />
+    <Compile Include="Mocks\MSolrExtractResponseParser.cs" />
+    <Compile Include="Mocks\MSolrFieldParser.cs" />
+    <Compile Include="Mocks\MSolrHeaderResponseParser.cs" />
+    <Compile Include="Mocks\MSolrQuerySerializer.cs" />
+    <Compile Include="MoreLikeThisHandlerMatchResponseParserTests.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="MultivaluedMappedToCollectionRuleTests.cs" />
     <Compile Include="OperatorOverloadingTests.cs" />
     <Compile Include="OptimizeCommandTests.cs" />
+    <Compile Include="RegularDocumentVisitorTests.cs" />
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
     <Compile Include="ServiceLocatorTestCase.cs" />
+    <Compile Include="SolrCoreReplicationTests.cs" />
     <Compile Include="SolrDIHStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
     <Compile Include="SolrFacetPivotQueryTest.cs" />
+    <Compile Include="SolrMoreLikeThisHandlerStreamUrlQueryTests.cs" />
     <Compile Include="SolrQueryByDistanceTests.cs" />
+    <Compile Include="SolrQueryByFieldRegexTests.cs" />
     <Compile Include="SolrQuerySerializerStub.cs" />
     <Compile Include="SolrSchemaParserTests.cs" />
+    <Compile Include="SolrStatusResponseParserTests.cs" />
     <Compile Include="UniqueKeyMatchesMappingRuleTests.cs" />
     <Compile Include="Utils\CompressionUtils.cs" />
     <Compile Include="Utils\EmbeddedResource.cs" />
+    <Compile Include="Utils\Lazy.cs" />
     <Compile Include="Utils\LoggingConnection.cs" />
+    <Compile Include="Utils\Moroco.cs" />
     <Compile Include="Utils\Node.cs" />
     <Compile Include="Utils\ProfilerFacility.cs" />
     <Compile Include="Utils\ProfilerTests.cs" />
@@ -151,6 +180,7 @@
     <Compile Include="SolrFacetFieldQueryTests.cs" />
     <Compile Include="SolrHasValueQueryTests.cs" />
     <Compile Include="SolrNotQueryTests.cs" />
+    <Compile Include="SolrRequiredQueryTests.cs" />
     <Compile Include="SolrQueryExecuterTests.cs" />
     <Compile Include="SolrFieldExample.cs" />
     <Compile Include="SolrMultipleCriteriaQueryTests.cs" />
@@ -161,7 +191,6 @@
     <Compile Include="SolrQueryResultsParserTests.cs" />
     <Compile Include="SolrQueryResultsParserTestsDocumentClasses.cs" />
     <Compile Include="SolrQueryResultsTests.cs" />
-    <Compile Include="SolrQueryTests.cs" />
     <Compile Include="SolrServerTests.cs" />
     <Compile Include="SortOrderTests.cs" />
     <Compile Include="ThreadHelper.cs" />
@@ -188,6 +217,7 @@
     <EmbeddedResource Include="Resources\responseWithExtractContent.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\solrSchemaBasic.xml" />
@@ -214,10 +244,7 @@
     <EmbeddedResource Include="Resources\partialResponseWithDateFacet.xml" />
     <EmbeddedResource Include="Resources\partialResponseWithDateFacetAndOther.xml" />
     <EmbeddedResource Include="Resources\responseWithGroupingOnInstock.xml" />
-	<EmbeddedResource Include="Resources\responseWithFacetPivoting.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\collapseResponse.xml" />
+    <EmbeddedResource Include="Resources\responseWithFacetPivoting.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\collapseResponse2.xml" />
@@ -242,7 +269,73 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\solrDIHStatusBasic.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithClustering.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithTerms.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithInterestingTermsList.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithInterestingTermsDetails.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithMLTHandlerMatch.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithStatus.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithTermVector.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\collapseResponse.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithTermVector2.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithResultAndGroup.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithStatus2.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseReplicationDetailsMaster.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationDetailsSlaveIsReplicating.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationDetailsSlaveNotReplicating.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationIndexVersion.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationStatusError.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationStatusOk.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithHighlighting3.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\partialResponseWithStats.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\collapseWithExpandResponse.xml" />
+    <EmbeddedResource Include="Resources\collapseWithoutExpandResponse.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

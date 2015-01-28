@@ -32,6 +32,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,14 +63,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MbUnit.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject, Version=2.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\lib\Rhino.Mocks.dll</HintPath>
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net35\Ninject.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -82,13 +82,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tests.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="Entity2.cs" />
+    <Compile Include="NinjectIntegrationFixture.cs" />
+    <Compile Include="NinjectMultiCoreFixture.cs" />
+    <Compile Include="NinjectFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ninject.Integration.SolrNet\Ninject.Integration.SolrNet.csproj">
       <Project>{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}</Project>
       <Name>Ninject.Integration.SolrNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet.Tests\SolrNet.Tests.csproj">
+      <Project>{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}</Project>
+      <Name>SolrNet.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">
       <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>
@@ -99,6 +107,7 @@
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -118,6 +127,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

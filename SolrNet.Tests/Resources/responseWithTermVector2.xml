@@ -1,0 +1,160 @@
+﻿<response>
+  <lst name="termVectors">
+    <str name="uniqueKeyFieldName">markupId</str>
+    <lst name="20">
+      <str name="uniqueKey">20</str>
+      <lst name="text">
+        <lst name="40">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">12</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">86</int>
+            <int name="end">88</int>
+          </lst>
+        </lst>
+        <lst name="after">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">11</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">80</int>
+            <int name="end">85</int>
+          </lst>
+        </lst>
+        <lst name="confirm">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">7</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">55</int>
+            <int name="end">62</int>
+          </lst>
+        </lst>
+        <lst name="dai">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">13</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">89</int>
+            <int name="end">93</int>
+          </lst>
+        </lst>
+        <lst name="existenti">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">19</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">120</int>
+            <int name="end">131</int>
+          </lst>
+        </lst>
+        <lst name="it">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">22</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">148</int>
+            <int name="end">150</int>
+          </lst>
+        </lst>
+        <lst name="medic">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">4</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">34</int>
+            <int name="end">41</int>
+          </lst>
+        </lst>
+        <lst name="onli">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">10</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">75</int>
+            <int name="end">79</int>
+          </lst>
+        </lst>
+        <lst name="pranam">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">1</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">13</int>
+            <int name="end">20</int>
+          </lst>
+        </lst>
+        <lst name="pregnanc">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">9</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">65</int>
+            <int name="end">74</int>
+          </lst>
+        </lst>
+        <lst name="question">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">0</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">0</int>
+            <int name="end">10</int>
+          </lst>
+        </lst>
+        <lst name="sadhguru">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">2</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">21</int>
+            <int name="end">29</int>
+          </lst>
+        </lst>
+        <lst name="scienc">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">5</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">42</int>
+            <int name="end">49</int>
+          </lst>
+        </lst>
+        <lst name="scientif">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">17</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">106</int>
+            <int name="end">116</int>
+          </lst>
+        </lst>
+        <lst name="signific">
+          <int name="tf">1</int>
+          <lst name="positions">
+            <int name="position">20</int>
+          </lst>
+          <lst name="offsets">
+            <int name="start">132</int>
+            <int name="end">144</int>
+          </lst>
+        </lst>
+      </lst>
+    </lst>
+  </lst>
+</response>

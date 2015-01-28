@@ -55,10 +55,10 @@
             <a href="<%= Url.RemoveParameters("sort") %>">Best match</a>
             <% } %>
             |
-            <% if (Model.Search.Sort == "nameSort") { %>
+            <% if (Model.Search.Sort == "alphaNameSort") { %>
             <strong>Name</strong>
             <% } else { %>
-            <a href="<%= Url.SetParameter("sort", "nameSort") %>">Name</a>
+            <a href="<%= Url.SetParameter("sort", "alphaNameSort") %>">Name</a>
             <% } %>
             |
             <% if (Model.Search.Sort == "price") { %>

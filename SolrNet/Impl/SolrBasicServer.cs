@@ -83,12 +83,18 @@ namespace SolrNet.Impl {
             return SendAndParseExtract(cmd);
         }
 
-        public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q) {
-            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer));
+        public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
+        {
+            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), parameters);
             return SendAndParseHeader(delete);
         }
 
-        public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
+        public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q) {
+            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), null);
+            return SendAndParseHeader(delete);
+        }
+
+        public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
             return queryExecuter.Execute(query, options);
         }
 
@@ -112,8 +118,8 @@ namespace SolrNet.Impl {
             return SendAndParseHeader(new PingCommand());
         }
 
-        public SolrSchema GetSchema() {
-            string schemaXml = new GetSchemaCommand().Execute(connection);
+        public SolrSchema GetSchema(string schemaFileName) {
+            string schemaXml = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
             var schema = XDocument.Parse(schemaXml);
             return schemaParser.Parse(schema);
         }
@@ -122,6 +128,11 @@ namespace SolrNet.Impl {
             var response = connection.Get("/dataimport", null);
             var dihstatus = XDocument.Parse(response);
             return dihStatusParser.Parse(dihstatus);
+        }
+
+        public SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
+        {
+            return this.queryExecuter.Execute(query, options);
         }
     }
 }

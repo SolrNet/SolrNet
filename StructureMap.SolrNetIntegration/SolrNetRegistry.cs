@@ -14,6 +14,7 @@ using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
+using SolrNet.Utils;
 using StructureMap.SolrNetIntegration.Config;
 
 namespace StructureMap.SolrNetIntegration
@@ -28,6 +29,7 @@ namespace StructureMap.SolrNetIntegration
             For(typeof(ISolrQueryExecuter<>)).Use(typeof(SolrQueryExecuter<>));
             For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();
             For<IMappingValidator>().Use<MappingValidator>();
+            For<ISolrCache>().Use<NullCache>();
 
             RegisterParsers();
             RegisterValidationRules();
@@ -42,6 +44,7 @@ namespace StructureMap.SolrNetIntegration
                                             typeof(MappedPropertiesIsInSolrSchemaRule),
                                             typeof(RequiredFieldsAreMappedRule),
                                             typeof(UniqueKeyMatchesMappingRule),
+                                            typeof(MultivaluedMappedToCollectionRule),
                                         };
             foreach (var validationRule in validationRules)
                 For(typeof (IValidationRule)).Use(validationRule);
@@ -68,29 +71,16 @@ namespace StructureMap.SolrNetIntegration
             For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
                 .Use<SolrDictionaryDocumentResponseParser>();
 
-            var parsers = new[] {
-                                    typeof(ResultsResponseParser<>),
-                                    typeof(HeaderResponseParser<>),
-                                    typeof(FacetsResponseParser<>),
-                                    typeof(HighlightingResponseParser<>),
-                                    typeof(MoreLikeThisResponseParser<>),
-                                    typeof(SpellCheckResponseParser<>),
-                                    typeof(StatsResponseParser<>),
-                                    typeof(CollapseResponseParser<>),
-                                    typeof(GroupingResponseParser<>)
-                                };
-
-            foreach (var p in parsers)
-            {
-                For(typeof(ISolrResponseParser<>)).Use(p);
-            }
+            For(typeof (ISolrAbstractResponseParser<>)).Use(typeof (DefaultResponseParser<>));
 
             For<ISolrHeaderResponseParser>().Use<HeaderResponseParser<string>>();
             For<ISolrExtractResponseParser>().Use<ExtractResponseParser>();
-            For(typeof(ISolrQueryResultParser<>)).Use(typeof(SolrQueryResultParser<>));
+            For(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>)).Use(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
             For<ISolrFieldParser>().Use<DefaultFieldParser>();
             For<ISolrSchemaParser>().Use<SolrSchemaParser>();
             For<ISolrDIHStatusParser>().Use<SolrDIHStatusParser>();
+            For<ISolrStatusResponseParser>().Use<SolrStatusResponseParser>();
+            For<ISolrCoreAdmin>().Use<SolrCoreAdmin>();
         }
 
         /// <summary>
@@ -101,7 +91,10 @@ namespace StructureMap.SolrNetIntegration
         private void RegisterCore(SolrCore core) {
             var coreConnectionId = core.Id + typeof(SolrConnection);
 
-            For<ISolrConnection>().Add<SolrConnection>().Named(coreConnectionId).Ctor<string>("serverURL").Is(core.Url);
+            For<ISolrConnection>().Add<SolrConnection>()
+                .Named(coreConnectionId)
+                .Ctor<string>("serverURL").Is(core.Url)
+                .Setter(c => c.Cache).IsTheDefault();
 
             var ISolrQueryExecuter = typeof(ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
             var SolrQueryExecuter = typeof(SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
@@ -149,7 +142,7 @@ namespace StructureMap.SolrNetIntegration
             var id = server.Id ?? Guid.NewGuid().ToString();
             var documentType = GetCoreDocumentType(server);
             var coreUrl = GetCoreUrl(server);
-            ValidateUrl(coreUrl);
+            UriValidator.ValidateHTTP(coreUrl);
             return new SolrCore(id, documentType, coreUrl);
         }
 
@@ -183,24 +176,6 @@ namespace StructureMap.SolrNetIntegration
                 throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType));
             
             return type;
-        }
-
-        private static void ValidateUrl(string url)
-        {
-            try
-            {
-                var u = new Uri(url);
-                if (u.Scheme != Uri.UriSchemeHttp && u.Scheme != Uri.UriSchemeHttps)
-                    throw new InvalidURLException("Only HTTP or HTTPS protocols are supported");
-            }
-            catch (ArgumentException e)
-            {
-                throw new InvalidURLException(string.Format("Invalid URL '{0}'", url), e);
-            }
-            catch (UriFormatException e)
-            {
-                throw new InvalidURLException(string.Format("Invalid URL '{0}'", url), e);
-            }
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿#I @"lib"
 #r "FakeLib.dll"
 #r "NuGet.exe"
-#r "NuGet.Core.XmlSerializers.-872272761.dll"
 #r "System.Xml.Linq"
 
 open System
@@ -9,7 +8,7 @@ open System.IO
 open Fake
 open Fake.FileUtils
 
-let solr = "solr-1.4.0"
+let solr = "solr"
 
 // helper functions
 
@@ -30,12 +29,12 @@ module Xml =
 module Nu =
     open NuGet
 
-    let build version name desc dependencies =
+    let build (version: string) name desc dependencies =
         let builder = 
             PackageBuilder(
                 Id = name,
                 Title = name,
-                Version = Version version,
+                Version = SemanticVersion version,
                 Description = desc,
                 LicenseUrl = Uri("http://www.apache.org/licenses/LICENSE-2.0"),
                 Language = "en-US",
@@ -52,7 +51,7 @@ module Nu =
         let deps = 
             dependencies
             |> Seq.map (fun (id,v) -> PackageDependency(id = id, versionSpec = VersionUtility.ParseVersionSpec v))
-        builder.Dependencies.AddRange deps
+        builder.DependencySets.Add(PackageDependencySet(null, deps))
         use fs = File.Create (sprintf "%s.%s%s" name version Constants.PackageExtension)
         builder.Save fs
 
@@ -65,8 +64,9 @@ module Solr =
             if watch.Elapsed > (TimeSpan.FromSeconds 10.)
                 then failwith "Solr test instance didn't work"
             System.Threading.Thread.Sleep 500
-    let stop() =
-        Shell.Exec("java", cmdline + " --stop", dir = solr) |> ignore
+        { new IDisposable with
+            member x.Dispose() =
+                Shell.Exec("java", cmdline + " --stop", dir = solr) |> ignore }
 
 module Git =
     let sha1() = 

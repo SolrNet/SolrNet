@@ -23,10 +23,12 @@ namespace SolrNet.Impl.QuerySerializers {
         public DefaultQuerySerializer(ISolrFieldSerializer fieldSerializer) {
             serializer = new AggregateQuerySerializer(new ISolrQuerySerializer[] {
                 new QueryByFieldSerializer(),
+                new QueryByFieldRegexSerializer(),
                 new LocalParamsSerializer(this),
                 new BoostQuerySerializer(this),
                 new HasValueQuerySerializer(this),
                 new NotQuerySerializer(this),
+                new RequiredQuerySerializer(this),
                 new QueryInListSerializer(this),
                 new NullableDateTimeRangeQuerySerializer(fieldSerializer),
                 new DateTimeRangeQuerySerializer(fieldSerializer),

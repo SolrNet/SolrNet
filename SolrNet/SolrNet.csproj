@@ -32,6 +32,14 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,12 +62,20 @@
     <DocumentationFile>bin\Release\SolrNet.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -67,12 +83,63 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
+    <Compile Include="ClusterResults.cs" />
+    <Compile Include="CollapseExpandResults.cs" />
+    <Compile Include="Commands\Parameters\CollapseExpandParameters.cs" />
+    <Compile Include="Commands\ReplicationCommand.cs" />
+    <Compile Include="Commands\Replication\AbortFetchCommand.cs" />
+    <Compile Include="Commands\Replication\DetailsCommand.cs" />
+    <Compile Include="Commands\Replication\FetchIndexCommand.cs" />
+    <Compile Include="Commands\Replication\DisablePollCommand.cs" />
+    <Compile Include="Commands\Replication\EnablePollCommand.cs" />
+    <Compile Include="Commands\Replication\EnableReplicationCommand.cs" />
+    <Compile Include="Commands\Replication\DisableReplicationCommand.cs" />
+    <Compile Include="Commands\Replication\IndexVersionCommand.cs" />
+    <Compile Include="Commands\CoreCommand.cs" />
+    <Compile Include="Commands\Cores\AliasCommand.cs" />
+    <Compile Include="Commands\Cores\CreateCommand.cs" />
+    <Compile Include="Commands\Cores\LoadCommand.cs" />
+    <Compile Include="Commands\Cores\MergeCommand.cs" />
+    <Compile Include="Commands\Cores\ReloadCommand.cs" />
+    <Compile Include="Commands\Cores\RenameCommand.cs" />
+    <Compile Include="Commands\Cores\StatusCommand.cs" />
+    <Compile Include="Commands\Cores\SwapCommand.cs" />
+    <Compile Include="Commands\Cores\UnloadCommand.cs" />
+    <Compile Include="Commands\Parameters\CommonQueryOptions.cs" />
+    <Compile Include="Commands\Parameters\ClusteringParameters.cs" />
+    <Compile Include="Commands\Parameters\InterestingTerms.cs" />
+    <Compile Include="Commands\Parameters\MoreLikeThisHandlerParameters.cs" />
+    <Compile Include="Commands\Parameters\MoreLikeThisHandlerQueryOptions.cs" />
+    <Compile Include="Commands\Parameters\RegexFlag.cs" />
+    <Compile Include="Commands\Parameters\TermsParameters.cs" />
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
+    <Compile Include="Commands\Parameters\TermsSort.cs" />
+    <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
+    <Compile Include="Impl\ReplicationDetailsResponse.cs" />
+    <Compile Include="Impl\ISolrReplicationDetailsResponseParser.cs" />
+    <Compile Include="Impl\ISolrReplicationIndexVersionResponseParser.cs" />
+    <Compile Include="Impl\ISolrReplicationStatusResponseParser.cs" />
+    <Compile Include="Impl\ReplicationStatusResponse.cs" />
+    <Compile Include="Impl\ReplicationIndexVersionResponse.cs" />
+    <Compile Include="Impl\ResponseParsers\CollapseExpandResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\ReplicationDetailsResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\ReplicationIndexVersionResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\ReplicationStatusResponseParser.cs" />
+    <Compile Include="ISolrCoreReplication.cs" />
+    <Compile Include="Impl\SolrCoreReplication.cs" />
+    <Compile Include="Impl\FieldParsers\DateTimeOffsetFieldParser.cs" />
+    <Compile Include="Impl\FieldParsers\LocationFieldParser.cs" />
+    <Compile Include="Impl\FieldParsers\MoneyFieldParser.cs" />
+    <Compile Include="Impl\FieldSerializers\DateTimeOffsetFieldSerializer.cs" />
+    <Compile Include="Impl\QuerySerializers\QueryByFieldRegexSerializer.cs" />
+    <Compile Include="Location.cs" />
+    <Compile Include="Money.cs" />
+    <Compile Include="ExtractField.cs" />
+    <Compile Include="ExtractFormat.cs" />
     <Compile Include="ExtractParameters.cs" />
     <Compile Include="AddParameters.cs" />
     <Compile Include="CollapsedDocument.cs" />
     <Compile Include="Commands\ExtractCommand.cs" />
-    <Compile Include="Commands\GetSchemaCommand.cs" />
     <Compile Include="Commands\Parameters\CollapseParameters.cs" />
     <Compile Include="Commands\Parameters\DeleteByIdAndOrQueryParam.cs" />
     <Compile Include="Commands\Parameters\FacetParameters.cs" />
@@ -83,18 +150,52 @@
     <Compile Include="CollapseResults.cs" />
     <Compile Include="Commands\RollbackCommand.cs" />
     <Compile Include="DateFacetingResult.cs" />
+    <Compile Include="Group.cs" />
     <Compile Include="GroupedResults.cs" />
+    <Compile Include="Impl\AbstractSolrQueryResults.cs" />
+    <Compile Include="Impl\CoreIndexResult.cs" />
+    <Compile Include="Impl\CoreResult.cs" />
+    <Compile Include="Impl\FieldSerializers\MoneyFieldSerializer.cs" />
+    <Compile Include="Impl\HighlightedSnippets.cs" />
+    <Compile Include="Impl\ISolrAbstractResponseParser.cs" />
+    <Compile Include="Impl\ISolrStatusResponseParser.cs" />
+    <Compile Include="Impl\ISolrMoreLikeThisHandlerQueryResultsParser.cs" />
+    <Compile Include="Impl\ISolrMoreLikeThisHandlerResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\AggregateResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\CoreStatusResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\DefaultResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\TermVectorResultsParser.cs" />
+    <Compile Include="Impl\SolrCoreAdmin.cs" />
+    <Compile Include="Impl\SolrPostConnection.cs" />
+    <Compile Include="Impl\SolrStatusResponseParser.cs" />
+    <Compile Include="Impl\SolrMoreLikeThisHandlerResults.cs" />
+    <Compile Include="Impl\ResponseParsers\InterestingTermsResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\MoreLikeThisHandlerMatchResponseParser.cs" />
+    <Compile Include="Impl\SolrMoreLikeThisHandlerQueryResultsParser.cs" />
+    <Compile Include="Impl\TermsResults.cs" />
+    <Compile Include="Impl\TermsResult.cs" />
     <Compile Include="Impl\FacetQuerySerializers\SolrFacetPivotQuerySerializer.cs" />
     <Compile Include="Impl\ISolrDIHStatusParser.cs" />
+    <Compile Include="Impl\ResponseParsers\ClusterResponseParser.cs" />
+    <Compile Include="Impl\ResponseParsers\TermsResponseParser.cs" />
+    <Compile Include="Impl\TermVectorDocumentResult.cs" />
+    <Compile Include="ISolrCoreAdmin.cs" />
+    <Compile Include="Pivot.cs" />
+    <Compile Include="PivotFields.cs" />
+    <Compile Include="SolrMLTQuery.cs" />
     <Compile Include="PivotFacetingResult.cs" />
     <Compile Include="Impl\ResponseParsers\GroupingResponseParser.cs" />
     <Compile Include="SolrFacetPivotQuery.cs" />
+    <Compile Include="SolrMoreLikeThisHandlerQuery.cs" />
+    <Compile Include="SolrMoreLikeThisHandlerStreamBodyQuery.cs" />
+    <Compile Include="SolrMoreLikeThisHandlerStreamUrlQuery.cs" />
     <Compile Include="SolrQueryByDistance.cs" />
     <Compile Include="SolrDIHStatus.cs" />
     <Compile Include="Impl\SolrDIHStatusParser.cs" />
     <Compile Include="Exceptions\TypeNotSupportedException.cs" />
     <Compile Include="ExtractResponse.cs" />
     <Compile Include="FacetDateOther.cs" />
+    <Compile Include="FacetDateInclude.cs" />
     <Compile Include="Impl\DocumentPropertyVisitors\AggregateDocumentVisitor.cs" />
     <Compile Include="Impl\DocumentPropertyVisitors\DefaultDocumentVisitor.cs" />
     <Compile Include="Impl\DocumentPropertyVisitors\GenericDictionaryDocumentVisitor.cs" />
@@ -157,6 +258,7 @@
     <Compile Include="Impl\QuerySerializers\QueryByFieldSerializer.cs" />
     <Compile Include="Impl\QuerySerializers\QueryInListSerializer.cs" />
     <Compile Include="Impl\QuerySerializers\RangeQuerySerializer.cs" />
+    <Compile Include="Impl\QuerySerializers\RequiredQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\SelfSerializingQuerySerializer.cs" />
     <Compile Include="Impl\QuerySerializers\SingleTypeQuerySerializer.cs" />
     <Compile Include="Impl\ResponseParsers\ExtractResponseParser.cs" />
@@ -186,7 +288,6 @@
     <Compile Include="Commands\AddCommand.cs" />
     <Compile Include="Commands\CommitCommand.cs" />
     <Compile Include="Commands\DeleteCommand.cs" />
-    <Compile Include="Commands\Parameters\ISolrDeleteParam.cs" />
     <Compile Include="Commands\OptimizeCommand.cs" />
     <Compile Include="Exceptions\InvalidFieldException.cs" />
     <Compile Include="Exceptions\InvalidSortOrderException.cs" />
@@ -201,8 +302,6 @@
     <Compile Include="ISolrQueryExecuter.cs" />
     <Compile Include="ISolrOperations.cs" />
     <Compile Include="ISolrQuery.cs" />
-    <Compile Include="ISolrQueryResultParser.cs" />
-    <Compile Include="ISolrQueryResults.cs" />
     <Compile Include="ISolrReadOnlyOperations.cs" />
     <Compile Include="Mapping\MappingManager.cs" />
     <Compile Include="Mapping\MemoizingMappingManager.cs" />
@@ -247,28 +346,37 @@
     <Compile Include="SolrHasValueQuery.cs" />
     <Compile Include="SolrMultipleCriteriaQuery.cs" />
     <Compile Include="SolrNotQuery.cs" />
+    <Compile Include="SolrQueryByFieldRegex.cs" />
+    <Compile Include="SolrRequiredQuery.cs" />
     <Compile Include="SolrQuery.cs" />
     <Compile Include="SolrQueryBoost.cs" />
     <Compile Include="SolrQueryByField.cs" />
     <Compile Include="SolrQueryByRange.cs" />
     <Compile Include="SolrQueryInList.cs" />
-    <Compile Include="Impl\SolrQueryResultParser.cs" />
-    <Compile Include="Impl\SolrQueryResults.cs" />
+    <Compile Include="SolrQueryResults.cs" />
     <Compile Include="Impl\SolrBasicServer.cs" />
     <Compile Include="Attributes\SolrUniqueKeyAttribute.cs" />
     <Compile Include="Impl\SolrServer.cs" />
     <Compile Include="SortOrder.cs" />
+    <Compile Include="StartOrCursor.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="StatsResult.cs" />
     <Compile Include="Utils\Container.cs" />
     <Compile Include="Exceptions\InvalidURLException.cs" />
     <Compile Include="ISolrConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo2.cs" />
     <Compile Include="Impl\SolrConnection.cs" />
     <Compile Include="Exceptions\SolrNetException.cs" />
+    <Compile Include="Utils\HttpEncoder.cs" />
+    <Compile Include="Utils\HttpUtility.cs" />
     <Compile Include="Utils\IContainer.cs" />
+    <Compile Include="Utils\KV.cs" />
     <Compile Include="Utils\Memoizer.cs" />
     <Compile Include="Utils\TypeHelper.cs" />
+    <Compile Include="Utils\Unit.cs" />
+    <Compile Include="Utils\UriValidator.cs" />
+    <Compile Include="Utils\X.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">

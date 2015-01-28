@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using SolrNet.Exceptions;
 
 namespace SolrNet {
     /// <summary>
@@ -34,9 +33,13 @@ namespace SolrNet {
         /// Gets unique key for the type
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
+        /// <returns>Null if type has no unique key defined</returns>
         SolrFieldModel GetUniqueKey(Type type);
 
+        /// <summary>
+        /// Gets all registered document types in this mapping manager
+        /// </summary>
+        /// <returns></returns>
         ICollection<Type> GetRegisteredTypes();
     }
 }

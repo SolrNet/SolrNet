@@ -78,7 +78,10 @@ namespace SolrNet {
             Container.Register<IValidationRule>(typeof(MappedPropertiesIsInSolrSchemaRule).FullName, c => new MappedPropertiesIsInSolrSchemaRule());
             Container.Register<IValidationRule>(typeof(RequiredFieldsAreMappedRule).FullName, c => new RequiredFieldsAreMappedRule());
             Container.Register<IValidationRule>(typeof(UniqueKeyMatchesMappingRule).FullName, c => new UniqueKeyMatchesMappingRule());
+            Container.Register<IValidationRule>(typeof(MultivaluedMappedToCollectionRule).FullName, c => new MultivaluedMappedToCollectionRule());
             Container.Register<IMappingValidator>(c => new MappingValidator(c.GetInstance<IReadOnlyMappingManager>(), c.GetAllInstances<IValidationRule>().ToArray()));
+
+            Container.Register<ISolrStatusResponseParser>(c => new SolrStatusResponseParser());
         }
 
         /// <summary>
@@ -108,20 +111,10 @@ namespace SolrNet {
 
             Container.Register(ChooseDocumentResponseParser<T>);
 
-            Container.Register<ISolrResponseParser<T>>(typeof(ResultsResponseParser<T>).FullName, c => new ResultsResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
-            Container.Register<ISolrResponseParser<T>>(typeof (HeaderResponseParser<T>).FullName, c => new HeaderResponseParser<T>());
-            Container.Register<ISolrResponseParser<T>>(typeof(FacetsResponseParser<T>).FullName, c => new FacetsResponseParser<T>());
-            Container.Register<ISolrResponseParser<T>>(typeof(HighlightingResponseParser<T>).FullName, c => new HighlightingResponseParser<T>());
-            Container.Register<ISolrResponseParser<T>>(typeof(MoreLikeThisResponseParser<T>).FullName, c => new MoreLikeThisResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
-            Container.Register<ISolrResponseParser<T>>(typeof(SpellCheckResponseParser<T>).FullName, c => new SpellCheckResponseParser<T>());
-            Container.Register<ISolrResponseParser<T>>(typeof(StatsResponseParser<T>).FullName, c => new StatsResponseParser<T>());
-            Container.Register<ISolrResponseParser<T>>(typeof(CollapseResponseParser<T>).FullName, c => new CollapseResponseParser<T>());
+            Container.Register<ISolrAbstractResponseParser<T>>(c => new DefaultResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
 
-
-			Container.Register<ISolrResponseParser<T>>(typeof(GroupingResponseParser<T>).FullName, c => new GroupingResponseParser<T>(c.GetInstance<ISolrDocumentResponseParser<T>>()));
-
-            Container.Register<ISolrQueryResultParser<T>>(c => new SolrQueryResultParser<T>(c.GetAllInstances<ISolrResponseParser<T>>().ToArray()));
-            Container.Register<ISolrQueryExecuter<T>>(c => new SolrQueryExecuter<T>(c.GetInstance<ISolrQueryResultParser<T>>(), connection, c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrFacetQuerySerializer>()));
+            Container.Register<ISolrMoreLikeThisHandlerQueryResultsParser<T>>(c => new SolrMoreLikeThisHandlerQueryResultsParser<T>(c.GetAllInstances<ISolrAbstractResponseParser<T>>().ToArray()));
+            Container.Register<ISolrQueryExecuter<T>>(c => new SolrQueryExecuter<T>(c.GetInstance<ISolrAbstractResponseParser<T>>(), connection, c.GetInstance<ISolrQuerySerializer>(), c.GetInstance<ISolrFacetQuerySerializer>(), c.GetInstance<ISolrMoreLikeThisHandlerQueryResultsParser<T>>()));
 
             Container.Register(ChooseDocumentSerializer<T>);
 
@@ -130,6 +123,9 @@ namespace SolrNet {
 
             Container.Register<ISolrOperations<T>>(c => new SolrServer<T>(c.GetInstance<ISolrBasicOperations<T>>(), Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>()));
             Container.Register<ISolrReadOnlyOperations<T>>(c => new SolrServer<T>(c.GetInstance<ISolrBasicOperations<T>>(), Container.GetInstance<IReadOnlyMappingManager>(), Container.GetInstance<IMappingValidator>()));
+
+            var coreAdminKey = typeof(ISolrCoreAdmin).Name + connectionKey;
+            Container.Register<ISolrCoreAdmin>(coreAdminKey, c => new SolrCoreAdmin(connection, c.GetInstance<ISolrHeaderResponseParser>(), c.GetInstance<ISolrStatusResponseParser>()));
         }
 
         private static ISolrDocumentSerializer<T> ChooseDocumentSerializer<T>(IServiceLocator c) {

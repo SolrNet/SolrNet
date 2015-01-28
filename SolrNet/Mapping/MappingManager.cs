@@ -25,84 +25,105 @@ namespace SolrNet.Mapping {
     /// </summary>
     public class MappingManager : IMappingManager {
         private readonly IDictionary<Type, Dictionary<string,SolrFieldModel>> mappings = new Dictionary<Type, Dictionary<string,SolrFieldModel>>();
-        private readonly IDictionary<Type, PropertyInfo> uniqueKeys = new Dictionary<Type, PropertyInfo>();
+		private readonly IDictionary<Type, SolrFieldModel> uniqueKeys = new Dictionary<Type, SolrFieldModel>();
 
         public void Add(PropertyInfo property) {
             if (property == null)
                 throw new ArgumentNullException("property");
+
             Add(property, property.Name);
         }
 
-        public void Add(PropertyInfo property, string fieldName)
-        {
+        public void Add(PropertyInfo property, string fieldName) {
             if (property == null)
                 throw new ArgumentNullException("property");
             if (fieldName == null)
                 throw new ArgumentNullException("fieldName");
+
             Add(property, fieldName, null);
         }
 
-        public void Add(PropertyInfo property, string fieldName, float? boost) {
-            if (property == null)
-                throw new ArgumentNullException("property");
-            if (fieldName == null)
-                throw new ArgumentNullException("fieldName");
+	    public void Add(PropertyInfo property, string fieldName, float? boost) {
+		    if (property == null)
+			    throw new ArgumentNullException("property");
+		    if (fieldName == null)
+			    throw new ArgumentNullException("fieldName");
 
-            var fld = new SolrFieldModel {Property = property, FieldName = fieldName, Boost = boost};
+			var declaringType = property.DeclaringType ?? property.ReflectedType;
 
-            var t = property.ReflectedType;
+			// create or find the SolrFieldModel dictionary...
+		    Dictionary<string, SolrFieldModel> solrFieldDict;
+			if (!mappings.ContainsKey(declaringType))
+			{
+			    solrFieldDict = new Dictionary<string, SolrFieldModel>();
+				mappings[declaringType] = solrFieldDict;
+		    } else {
+				solrFieldDict = mappings[declaringType];
+		    }
 
-            if (!mappings.ContainsKey(t)) {
-                mappings[t] = new Dictionary<string,SolrFieldModel>();
-            }
+			// see if the property is already there...
+			var m = solrFieldDict.FirstOrDefault(k => k.Value.Property == property);
+		    if (m.Key != null) {
+				// it is, so remove it
+				solrFieldDict.Remove(m.Key);
+		    }
 
-            var m = mappings[t].FirstOrDefault(k => k.Value.Property == property);
-            if (m.Key != null) {
-                mappings[t].Remove(m.Key);
-            }
+			// and add the SolrFieldModel to the dictionary by fieldName
+		    var fld = new SolrFieldModel(property, fieldName, boost);
+			solrFieldDict[fieldName] = fld;
+	    }
 
-
-            mappings[t][fieldName] = fld;
-        }
-
-        /// <summary>
-        /// Gets fields mapped for this type
+	    /// <summary>
+        /// Gets all the SolrFieldModels mapped for this type
         /// </summary>
         /// <param name="type">Document type</param>
         /// <returns>Null if <paramref name="type"/> is not mapped</returns>
         public IDictionary<string,SolrFieldModel> GetFields(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
-            if (!mappings.ContainsKey(type))
-                return new Dictionary<string, SolrFieldModel>();
-            return mappings[type];
-        }
+
+		    return mappings
+			    .Where(m => m.Key.IsAssignableFrom(type))
+			    .SelectMany(kvp => kvp.Value)
+			    .ToDictionary(pair => pair.Key, pair => pair.Value);
+	    }
 
         public void SetUniqueKey(PropertyInfo property) {
             if (property == null)
                 throw new ArgumentNullException("property");
-            var t = property.ReflectedType;
-            if (!mappings.ContainsKey(t))
-                throw new ArgumentException(string.Format("Property '{0}.{1}' not mapped. Please use Add() to map it first", t, property.Name));
-            uniqueKeys[t] = property;
+
+            var declaringType = property.DeclaringType ?? property.ReflectedType;
+
+            if (!mappings.ContainsKey(declaringType))
+				throw new ArgumentException(string.Format("Property '{0}.{1}' not mapped. Please use Add() to map it first", declaringType, property.Name));
+
+			var solrFieldDict = mappings[declaringType];
+
+	        var theSolrFieldModel = solrFieldDict
+				.Where(kvp => kvp.Value.Property == property)
+				.Select(kvp => kvp.Value)
+				.FirstOrDefault();
+
+			if (theSolrFieldModel == null)
+				throw new ArgumentException(string.Format("Property '{0}.{1}' not mapped. Please use Add() to map it first", declaringType, property.Name));
+
+			uniqueKeys[declaringType] = theSolrFieldModel;
         }
 
         public SolrFieldModel GetUniqueKey(Type type) {
             if (type == null)
                 throw new ArgumentNullException("type");
-            try {
-                var prop = uniqueKeys[type];
-                var unique = mappings[type].First(kv => kv.Value.Property == prop);
-                return unique.Value;
-            } catch (KeyNotFoundException) {
-                return null;
-            } catch (InvalidOperationException) {
-                return null;
-            }
+
+	        var prop = uniqueKeys
+		        .Where(k => k.Key.IsAssignableFrom(type))
+		        .Select(x => x.Value)
+		        .FirstOrDefault();
+
+	        return prop;
         }
 
         public ICollection<Type> GetRegisteredTypes() {
-            return mappings.Select(k => k.Key).Distinct().ToList();
+            return mappings.Select(k => k.Key).ToList();
         }
     }
 }

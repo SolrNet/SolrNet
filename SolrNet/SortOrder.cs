@@ -33,8 +33,6 @@ namespace SolrNet {
 		///<param name="fieldName">The name of the field to sort by.</param>
 		///<exception cref="InvalidSortOrderException">Thrown if field name contains spaces.</exception>
 		public SortOrder(string fieldName) {
-			if (fieldName.IndexOf(' ') >= 0)
-				throw new InvalidSortOrderException(string.Format("Field name ({0}) cannot contain spaces.", fieldName));
 			this.fieldName = fieldName;
 		}
 
@@ -47,10 +45,16 @@ namespace SolrNet {
 			this.order = order;
 		}
 
+        /// <summary>
+        /// Sort field
+        /// </summary>
         public string FieldName {
             get { return fieldName; }
         }
 
+        /// <summary>
+        /// Sort order
+        /// </summary>
         public Order Order {
             get { return order; }
         }
@@ -59,6 +63,12 @@ namespace SolrNet {
 			return string.Format("{0} {1}", FieldName, Order.ToString().ToLower());
 		}
 
+        /// <summary>
+        /// Parses a sort order in format "field (ASC | DESC)".
+        /// E.g. "name desc"
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
 		public static SortOrder Parse(string s) {
             if (string.IsNullOrEmpty(s))
                 return null;
@@ -75,40 +85,31 @@ namespace SolrNet {
 			}
 		}
 
-        public bool Equals(SortOrder other)
-        {
-            if (ReferenceEquals(null, other))
-            {
+        public bool Equals(SortOrder other) {
+            if (ReferenceEquals(null, other)) {
                 return false;
             }
-            if (ReferenceEquals(this, other))
-            {
+            if (ReferenceEquals(this, other)) {
                 return true;
             }
             return Equals(other.fieldName, fieldName) && Equals(other.order, order);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj)) {
                 return false;
             }
-            if (ReferenceEquals(this, obj))
-            {
+            if (ReferenceEquals(this, obj)) {
                 return true;
             }
-            if (obj.GetType() != typeof (SortOrder))
-            {
+            if (obj.GetType() != typeof (SortOrder)) {
                 return false;
             }
             return Equals((SortOrder) obj);
         }
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
+        public override int GetHashCode() {
+            unchecked {
                 return ((fieldName != null ? fieldName.GetHashCode() : 0)*397) ^ order.GetHashCode();
             }
         }

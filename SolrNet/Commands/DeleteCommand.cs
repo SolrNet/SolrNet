@@ -16,19 +16,23 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Xml;
+using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
+using SolrNet.Utils;
 
 namespace SolrNet.Commands {
     /// <summary>
     /// Deletes document(s), either by id or by query
     /// </summary>
 	public class DeleteCommand : ISolrCommand {
-		private readonly ISolrDeleteParam deleteParam;
+        private readonly DeleteByIdAndOrQueryParam deleteParam;
+        private readonly DeleteParameters parameters;
 
-		public DeleteCommand(ISolrDeleteParam deleteParam) {
-			this.deleteParam = deleteParam;
+        public DeleteCommand(DeleteByIdAndOrQueryParam deleteParam, DeleteParameters parameters) {
+		    this.deleteParam = deleteParam;
+		    this.parameters = parameters;
 		}
 
         /// <summary>
@@ -41,30 +45,26 @@ namespace SolrNet.Commands {
         /// </summary>
 		public bool? FromCommitted { get; set; }
 
-		public ISolrDeleteParam DeleteParam {
-			get { return deleteParam; }
-		}
-
-        private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
-            return new KeyValuePair<K, V>(key, value);
-        }
-
 		public string Execute(ISolrConnection connection) {
-			var xml = new XmlDocument();
-			var deleteNode = xml.CreateElement("delete");
+			var deleteNode = new XElement("delete");
+            if (parameters != null) {
+                if (parameters.CommitWithin.HasValue) {
+                    var attr = new XAttribute("commitWithin", parameters.CommitWithin.Value.ToString(CultureInfo.InvariantCulture));
+                    deleteNode.Add(attr);
+                }
+            }
 		    var param = new[] {
-		        KV(FromPending, "fromPending"), 
-                KV(FromCommitted, "fromCommitted")
+		        KV.Create(FromPending, "fromPending"), 
+                KV.Create(FromCommitted, "fromCommitted")
 		    };
 		    foreach (var p in param) {
 				if (p.Key.HasValue) {
-					var att = xml.CreateAttribute(p.Value);
-					att.InnerText = p.Key.Value.ToString().ToLower();
-					deleteNode.Attributes.Append(att);
+                    var att = new XAttribute(p.Value, p.Key.Value.ToString().ToLower());
+					deleteNode.Add(att);
 				}
 			}
-			deleteNode.InnerXml = string.Join("", deleteParam.ToXmlNode().Select(n => n.OuterXml).ToArray());
-			return connection.Post("/update", deleteNode.OuterXml);
+            deleteNode.Add(deleteParam.ToXmlNode().ToArray());
+			return connection.Post("/update", deleteNode.ToString(SaveOptions.DisableFormatting));
 		}
 	}
 }

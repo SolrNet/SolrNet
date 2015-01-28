@@ -16,7 +16,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
+using System.Linq;
+using System.Xml.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl;
 using SolrNet.Impl.FieldSerializers;
@@ -35,8 +36,7 @@ namespace SolrNet.Tests {
         public void Serialize_empty() {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object>(), null);
-            var docNode = xml.SelectSingleNode("doc");
-            Assert.AreEqual(docNode.ChildNodes.Count, 0);
+            Assert.AreEqual(xml.Nodes().Count(), 0);
         }
 
         [Test]
@@ -48,13 +48,12 @@ namespace SolrNet.Tests {
             AssertSerializedField(xml, "uno");
         }
 
-        private void AssertSerializedField(XmlNode xml, string value) {
-            var docNode = xml.SelectSingleNode("doc");
-            Assert.AreEqual(docNode.ChildNodes.Count, 1);
-            var fieldNode = docNode.SelectSingleNode("field");
+        private static void AssertSerializedField(XElement docNode, string value) {
+            Assert.AreEqual(docNode.Nodes().Count(), 1);
+            var fieldNode = docNode.Element("field");
             Assert.IsNotNull(fieldNode);
-            Assert.AreEqual("one", fieldNode.Attributes["name"].Value);
-            Assert.AreEqual(value, fieldNode.InnerText);
+            Assert.AreEqual("one", fieldNode.Attribute("name").Value);
+            Assert.AreEqual(value, fieldNode.Value);
         }
 
         [Test]
@@ -105,29 +104,27 @@ namespace SolrNet.Tests {
         [Test]
         public void Serialize_Array() {
             var serializer = GetSerializer();
-            var xml = serializer.Serialize(new Dictionary<string, object> {
+            var docNode = serializer.Serialize(new Dictionary<string, object> {
                 {"one", new[] {1,2,3}}
             }, null);
-            var docNode = xml.SelectSingleNode("doc");
-            Assert.AreEqual(docNode.ChildNodes.Count, 3);
-            var fieldNodes = docNode.SelectNodes("field");
-            Assert.AreEqual("1", fieldNodes[0].InnerText);
-            Assert.AreEqual("2", fieldNodes[1].InnerText);
-            Assert.AreEqual("3", fieldNodes[2].InnerText);
+            Assert.AreEqual(docNode.Nodes().Count(), 3);
+            var fieldNodes = docNode.Elements("field").ToList();
+            Assert.AreEqual("1", fieldNodes[0].Value);
+            Assert.AreEqual("2", fieldNodes[1].Value);
+            Assert.AreEqual("3", fieldNodes[2].Value);
         }
 
         [Test]
         public void Serialize_List() {
             var serializer = GetSerializer();
-            var xml = serializer.Serialize(new Dictionary<string, object> {
+            var docNode = serializer.Serialize(new Dictionary<string, object> {
                 {"one", new List<string> {"a", "b", "c"}}
             }, null);
-            var docNode = xml.SelectSingleNode("doc");
-            Assert.AreEqual(docNode.ChildNodes.Count, 3);
-            var fieldNodes = docNode.SelectNodes("field");
-            Assert.AreEqual("a", fieldNodes[0].InnerText);
-            Assert.AreEqual("b", fieldNodes[1].InnerText);
-            Assert.AreEqual("c", fieldNodes[2].InnerText);
+            Assert.AreEqual(docNode.Nodes().Count(), 3);
+            var fieldNodes = docNode.Elements("field").ToList();
+            Assert.AreEqual("a", fieldNodes[0].Value);
+            Assert.AreEqual("b", fieldNodes[1].Value);
+            Assert.AreEqual("c", fieldNodes[2].Value);
         }
 
         [Test]

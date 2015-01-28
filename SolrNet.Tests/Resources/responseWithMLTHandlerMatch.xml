@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <lst name="responseHeader">
+    <int name="status">0</int>
+    <int name="QTime">2</int>
+  </lst>
+  <result name="match" numFound="1" start="0">
+    <doc>
+      <arr name="cat">
+        <str>software</str>
+        <str>search</str>
+      </arr>
+      <arr name="features">
+        <str>No accents here</str>
+        <str>This is an e acute: é</str>
+        <str>eaiou with circumflexes: êâîôû</str>
+        <str>eaiou with umlauts: ëäïöü</str>
+        <str>tag with escaped chars: &lt;nicetag/&gt;</str>
+        <str>escaped ampersand: Bonnie &amp; Clyde</str>
+      </arr>
+      <str name="id">UTF8TEST</str>
+      <bool name="inStock">true</bool>
+      <str name="manu">Apache Software Foundation</str>
+      <str name="name">Test with some UTF-8 encoded characters</str>
+      <float name="price">0.0</float>
+      <date name="timestamp">2011-12-02T00:17:13.898Z</date>
+    </doc>
+  </result>
+  <result name="response" numFound="4" start="0">
+    <doc>
+      <arr name="cat">
+        <str>software</str>
+        <str>search</str>
+      </arr>
+      <arr name="features">
+        <str>Advanced Full-Text Search Capabilities using Lucene</str>
+        <str>Optimized for High Volume Web Traffic</str>
+        <str>Standards Based Open Interfaces - XML and HTTP</str>
+        <str>Comprehensive HTML Administration Interfaces</str>
+        <str>Scalability - Efficient Replication to other Solr Search Servers</str>
+        <str>Flexible and Adaptable with XML configuration and Schema</str>
+        <str>Good unicode support: héllo (hello with an accent over the e)</str>
+      </arr>
+      <str name="id">SOLR1000</str>
+      <bool name="inStock">true</bool>
+      <date name="incubationdate_dt">2006-01-17T00:00:00Z</date>
+      <str name="manu">Apache Software Foundation</str>
+      <str name="name">Solr, the Enterprise Search Server</str>
+      <int name="popularity">10</int>
+      <float name="price">0.0</float>
+      <date name="timestamp">2011-12-02T00:17:13.895Z</date>
+    </doc>
+    <doc>
+      <arr name="cat">
+        <str>electronics</str>
+        <str>test products</str>
+      </arr>
+      <arr name="features">
+        <str>feature 1</str>
+        <str>feature 2</str>
+      </arr>
+      <str name="guid">00000000-0000-0000-0000-000000000000</str>
+      <str name="id">DEL12345</str>
+      <bool name="inStock">false</bool>
+      <str name="manu">Acme ltd</str>
+      <str name="name">Delete test product 1</str>
+      <int name="popularity">6</int>
+      <float name="price">92.0</float>
+      <float name="price_afterrebate">100.0</float>
+      <float name="price_regular">150.0</float>
+      <date name="timestamp">1-01-01T00:00:00Z</date>
+      <float name="weight">0.0</float>
+    </doc>
+    <doc>
+      <arr name="cat">
+        <str>electronics</str>
+        <str>test products</str>
+      </arr>
+      <arr name="features">
+        <str>feature 1</str>
+        <str>feature 3</str>
+      </arr>
+      <str name="guid">00000000-0000-0000-0000-000000000000</str>
+      <str name="id">DEL12346</str>
+      <bool name="inStock">false</bool>
+      <str name="manu">Acme ltd</str>
+      <str name="name">Delete test product 2</str>
+      <int name="popularity">6</int>
+      <float name="price">92.0</float>
+      <float name="price_afterrebate">100.0</float>
+      <float name="price_regular">150.0</float>
+      <date name="timestamp">1-01-01T00:00:00Z</date>
+      <float name="weight">0.0</float>
+    </doc>
+    <doc>
+      <arr name="cat">
+        <str>electronics</str>
+        <str>test products</str>
+      </arr>
+      <arr name="features">
+        <str>feature 1</str>
+        <str>feature 3</str>
+      </arr>
+      <str name="guid">00000000-0000-0000-0000-000000000000</str>
+      <str name="id">DEL12347</str>
+      <bool name="inStock">false</bool>
+      <str name="manu">Acme ltd</str>
+      <str name="name">Delete test product 3</str>
+      <int name="popularity">6</int>
+      <float name="price">92.0</float>
+      <float name="price_afterrebate">100.0</float>
+      <float name="price_regular">150.0</float>
+      <date name="timestamp">1-01-01T00:00:00Z</date>
+      <float name="weight">0.0</float>
+    </doc>
+  </result>
+</response>

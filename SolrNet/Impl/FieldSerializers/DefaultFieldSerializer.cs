@@ -30,6 +30,8 @@ namespace SolrNet.Impl.FieldSerializers {
                 new GenericDictionaryFieldSerializer(this),
                 new NullableFieldSerializer(new BoolFieldSerializer()),
                 new NullableFieldSerializer(new DateTimeFieldSerializer()),
+                new NullableFieldSerializer(new DateTimeOffsetFieldSerializer()),
+                new MoneyFieldSerializer(),
                 new FormattableFieldSerializer(),
                 new TypeConvertingFieldSerializer(),
             });

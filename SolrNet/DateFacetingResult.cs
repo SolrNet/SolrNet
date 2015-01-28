@@ -24,7 +24,7 @@ namespace SolrNet {
     public class DateFacetingResult {
 
 		/// <summary>
-		/// The gap.
+		/// Date range gap (e.g. "+1DAY")
 		/// </summary>
         public string Gap { get; set; }
 

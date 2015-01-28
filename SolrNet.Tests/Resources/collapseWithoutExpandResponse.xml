@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <result name="response" numFound="4" start="0">
+    <doc>
+      <str name="fieldKey">First</str>
+      <str name="fieldValue">First value</str>
+    </doc>
+    <doc>
+      <str name="fieldKey">Second</str>
+      <str name="fieldValue">Second value</str>
+    </doc>
+    <doc>
+      <str name="fieldKey">Third</str>
+      <str name="fieldValue">Third value</str>
+    </doc>
+    <doc>
+      <str name="fieldKey">Fourth</str>
+      <str name="fieldValue">Fourth value</str>
+    </doc>
+  </result> 
+</response>

@@ -4,7 +4,7 @@
         xmlns="http://www.gallio.org/">
   <traits>
     <name>NCover Integration Plugin</name>
-    <version>3.2.0.0</version>
+    <version>3.3.0.0</version>
     <description>Provides support for running tests with NCover code coverage.</description>
 	<icon>plugin://Gallio.NCoverIntegration/Resources/ncover.ico</icon>
   </traits>
@@ -49,7 +49,7 @@
   </files>
 
   <assemblies>
-    <assembly fullName="Gallio.NCoverIntegration, Version=3.2.0.0, Culture=neutral, PublicKeyToken=null"
+    <assembly fullName="Gallio.NCoverIntegration, Version=3.3.0.0, Culture=neutral, PublicKeyToken=null"
               codeBase="Gallio.NCoverIntegration.dll"
               qualifyPartialName="true" />
   </assemblies>

@@ -45,15 +45,17 @@ namespace SolrNet.Impl {
         /// <param name="query"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public ISolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
+        public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
             return basicServer.Query(query, options);
         }
+
+        
 
         public ResponseHeader Ping() {
             return basicServer.Ping();
         }
 
-        public ISolrQueryResults<T> Query(string q) {
+        public SolrQueryResults<T> Query(string q) {
             return Query(new SolrQuery(q));
         }
 
@@ -63,7 +65,7 @@ namespace SolrNet.Impl {
         /// <param name="q"></param>
         /// <param name="orders"></param>
         /// <returns></returns>
-        public ISolrQueryResults<T> Query(string q, ICollection<SortOrder> orders) {
+        public SolrQueryResults<T> Query(string q, ICollection<SortOrder> orders) {
             return Query(new SolrQuery(q), orders);
         }
 
@@ -73,7 +75,7 @@ namespace SolrNet.Impl {
         /// <param name="q"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public ISolrQueryResults<T> Query(string q, QueryOptions options) {
+        public SolrQueryResults<T> Query(string q, QueryOptions options) {
             return basicServer.Query(new SolrQuery(q), options);
         }
 
@@ -82,7 +84,7 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="q"></param>
         /// <returns></returns>
-        public ISolrQueryResults<T> Query(ISolrQuery q) {
+        public SolrQueryResults<T> Query(ISolrQuery q) {
             return Query(q, new QueryOptions());
         }
 
@@ -92,7 +94,7 @@ namespace SolrNet.Impl {
         /// <param name="query"></param>
         /// <param name="orders"></param>
         /// <returns></returns>
-        public ISolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders) {
+        public SolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders) {
             return Query(query, new QueryOptions { OrderBy = orders });
         }
 
@@ -124,45 +126,78 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader AddWithBoost(T doc, double boost, AddParameters parameters) {
-            return ((ISolrOperations<T>)this).AddWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) }, parameters);
+            return ((ISolrOperations<T>)this).AddRangeWithBoost(new[] { new KeyValuePair<T, double?>(doc, boost) }, parameters);
         }
 
         public ExtractResponse Extract(ExtractParameters parameters) {
             return basicServer.Extract(parameters);
         }
 
+        [Obsolete("Use AddRange instead")]
         public ResponseHeader Add(IEnumerable<T> docs) {
             return Add(docs, null);
         }
 
+        public ResponseHeader AddRange(IEnumerable<T> docs) {
+            return AddRange(docs, null);
+        }
+
+        [Obsolete("Use AddRange instead")]
         public ResponseHeader Add(IEnumerable<T> docs, AddParameters parameters) {
             return basicServer.AddWithBoost(docs.Select(d => new KeyValuePair<T, double?>(d, null)), parameters);
         }
 
+        public ResponseHeader AddRange(IEnumerable<T> docs, AddParameters parameters) {
+            return basicServer.AddWithBoost(docs.Select(d => new KeyValuePair<T, double?>(d, null)), parameters);
+        }
+
+        [Obsolete("Use AddRangeWithBoost instead")]
         ResponseHeader ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
             return ((ISolrOperations<T>)this).AddWithBoost(docs, null);
         }
 
+        public ResponseHeader AddRangeWithBoost(IEnumerable<KeyValuePair<T, double?>> docs) {
+            return ((ISolrOperations<T>)this).AddRangeWithBoost(docs, null);
+        }
+
+        [Obsolete("Use AddRangeWithBoost instead")]
         ResponseHeader ISolrOperations<T>.AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters) {
             return basicServer.AddWithBoost(docs, parameters);
         }
 
+        public ResponseHeader AddRangeWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters) {
+            return basicServer.AddWithBoost(docs, parameters);
+        }
+
         public ResponseHeader Delete(IEnumerable<string> ids) {
-            return basicServer.Delete(ids, null);
+            return basicServer.Delete(ids, null, null);
+        }
+
+        public ResponseHeader Delete(IEnumerable<string> ids, DeleteParameters parameters) {
+            return basicServer.Delete(ids, null, parameters);
         }
 
         public ResponseHeader Delete(T doc) {
+            return Delete(doc, null);
+        }
+
+        public ResponseHeader Delete(T doc, DeleteParameters parameters) {
             var id = GetId(doc);
-            return Delete(id.ToString());
+            return Delete(id.ToString(), parameters);
         }
 
         public ResponseHeader Delete(IEnumerable<T> docs) {
-            return basicServer.Delete(docs.Select(d => {
-                var uniqueKey = mappingManager.GetUniqueKey(typeof (T));
+            return Delete(docs, null);
+        }
+
+        public ResponseHeader Delete(IEnumerable<T> docs, DeleteParameters parameters) {
+            return basicServer.Delete(docs.Select(d =>
+            {
+                var uniqueKey = mappingManager.GetUniqueKey(typeof(T));
                 if (uniqueKey == null)
                     throw new SolrNetException(string.Format("This operation requires a unique key, but type '{0}' has no declared unique key", typeof(T)));
                 return Convert.ToString(uniqueKey.Property.GetValue(d, null));
-            }), null);
+            }), null, parameters);
         }
 
         private object GetId(T doc) {
@@ -174,15 +209,27 @@ namespace SolrNet.Impl {
         }
 
         ResponseHeader ISolrOperations<T>.Delete(ISolrQuery q) {
-            return basicServer.Delete(null, q);
+            return basicServer.Delete(null, q, null);
+        }
+
+        public ResponseHeader Delete(ISolrQuery q, DeleteParameters parameters) {
+            return basicServer.Delete(null, q, parameters);
         }
 
         public ResponseHeader Delete(string id) {
-            return basicServer.Delete(new[] {id}, null);
+            return basicServer.Delete(new[] {id}, null, null);
+        }
+
+        public ResponseHeader Delete(string id, DeleteParameters parameters) {
+            return basicServer.Delete(new[] {id}, null, parameters);
         }
 
         ResponseHeader ISolrOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q) {
-            return basicServer.Delete(ids, q);
+            return basicServer.Delete(ids, q, null);
+        }
+
+        ResponseHeader ISolrOperations<T>.Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters){
+            return basicServer.Delete(ids, q, parameters);
         }
 
         public ResponseHeader Commit() {
@@ -211,11 +258,15 @@ namespace SolrNet.Impl {
         }
 
         public ResponseHeader Add(T doc, AddParameters parameters) {
-            return Add(new[] { doc }, parameters);
+            return AddRange(new[] { doc }, parameters);
         }
 
         public SolrSchema GetSchema() {
-            return basicServer.GetSchema();
+            return basicServer.GetSchema("schema.xml");
+        }
+
+        public SolrSchema GetSchema(string schemaFileName) {
+            return basicServer.GetSchema(schemaFileName);
         }
 
         public IEnumerable<ValidationResult> EnumerateValidationResults() {
@@ -228,9 +279,12 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="options">command options</param>
         /// <returns>A XmlDocument containing the DIH Status XML.</returns>
-        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options)
-        {
+        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options) {
             return basicServer.GetDIHStatus(options);
+        }
+
+        public SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
+            return basicServer.MoreLikeThis(query, options);
         }
     }
 }

@@ -21,13 +21,15 @@ using System.Linq;
 using System.Reflection;
 using Castle.Core;
 using Castle.MicroKernel.Facilities;
+using Castle.MicroKernel.Registration;
+using SolrNet.Utils;
 using IInterceptor = Castle.DynamicProxy.IInterceptor;
 using IInvocation = Castle.DynamicProxy.IInvocation;
 
 namespace SolrNet.Tests.Utils {
     public class ProfilerFacility : AbstractFacility {
         protected override void Init() {
-            Kernel.AddComponent<ProfilingInterceptor>(LifestyleType.Thread);
+            Kernel.Register(Component.For<ProfilingInterceptor>().LifeStyle.PerThread);
             Kernel.ComponentModelCreated += model => {
                 if (model.Implementation != typeof(ProfilingInterceptor))
                     model.Interceptors.AddFirst(InterceptorReference.ForType<ProfilingInterceptor>());
@@ -43,10 +45,6 @@ namespace SolrNet.Tests.Utils {
         }
 
         private class ProfilingInterceptor: IInterceptor {
-            private static KeyValuePair<K, V> KV<K, V>(K key, V value) {
-                return new KeyValuePair<K, V>(key, value);
-            }
-
             private Node<KeyValuePair<MethodInfo, Stopwatch>> currentElement;
 
             public Node<KeyValuePair<MethodInfo, TimeSpan>> GetProfile() {
@@ -56,7 +54,7 @@ namespace SolrNet.Tests.Utils {
             }
 
             private Node<KeyValuePair<MethodInfo, TimeSpan>> GetProfile(Node<KeyValuePair<MethodInfo, Stopwatch>> n, Node<KeyValuePair<MethodInfo, TimeSpan>> parent) {
-                var node = new Node<KeyValuePair<MethodInfo, TimeSpan>>(parent, KV(n.Value.Key, n.Value.Value.Elapsed));
+                var node = new Node<KeyValuePair<MethodInfo, TimeSpan>>(parent, KV.Create(n.Value.Key, n.Value.Value.Elapsed));
                 node.Children.AddRange(n.Children.Select(c => GetProfile(c, node)));
                 return node;
             }
@@ -73,7 +71,7 @@ namespace SolrNet.Tests.Utils {
                 if (currentElement.Value.Value != null)
                     currentElement.Value.Value.Stop();
                 var sw = new Stopwatch();
-                var newChild = currentElement.AddChild(KV(invocation.MethodInvocationTarget, sw));
+                var newChild = currentElement.AddChild(KV.Create(invocation.MethodInvocationTarget, sw));
                 currentElement = newChild;
                 sw.Start();
                 try {

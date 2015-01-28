@@ -15,10 +15,9 @@
 #endregion
 
 using MbUnit.Framework;
-using Rhino.Mocks;
+using Moroco;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
-using SolrNet.Impl;
 
 namespace SolrNet.Tests {
 	[TestFixture]
@@ -26,126 +25,111 @@ namespace SolrNet.Tests {
 		[Test]
 		public void DeleteById() {
 			const string id = "123123";
-			var mocks = new MockRepository();
-			var conn = mocks.StrictMock<ISolrConnection>();
-			With.Mocks(mocks).Expecting(() => {
-				Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id></delete>", id)))
-                    .Repeat.Once()
-                    .Return("");
-            }).Verify(() => {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] {id}, null, null));
-				cmd.Execute(conn);
-			});
-		}
+		    var conn = new Mocks.MSolrConnection();
+		    conn.post = conn.post
+		        .Args("/update", string.Format("<delete><id>{0}</id></delete>", id));
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null), null);
+            cmd.Execute(conn);
+            Assert.AreEqual(1, conn.post.Calls);
+        }
 
         [Test]
         public void DeleteByMultipleId() {
             var ids = new[] {"123", "456"};
-            var mocks = new MockRepository();
-            var conn = mocks.StrictMock<ISolrConnection>();
-            With.Mocks(mocks).Expecting(delegate {
-                Expect.Call(conn.Post("/update", string.Format("<delete><id>{0}</id><id>{1}</id></delete>", ids[0], ids[1]))).Repeat.Once().Return("");
-            }).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null, null));
-                cmd.Execute(conn);
-            });            
+            var conn = new Mocks.MSolrConnection();
+            var xml = string.Format("<delete><id>{0}</id><id>{1}</id></delete>", ids[0], ids[1]);
+            conn.post = conn.post.Args("/update", xml);
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null, null), null);
+            cmd.Execute(conn);
+            Assert.AreEqual(1, conn.post.Calls);
         }
 
 		[Test]
 		public void DeleteByQuery() {
-			var mocks = new MockRepository();
-			var conn = mocks.StrictMock<ISolrConnection>();
-			var q = mocks.StrictMock<ISolrQuery>();
-		    var querySerializer = mocks.StrictMock<ISolrQuerySerializer>();
-			With.Mocks(mocks).Expecting(delegate {
-				const string queryString = "someQuery";
-				Expect.On(conn)
-                    .Call(conn.Post("/update", string.Format("<delete><query>{0}</query></delete>", queryString)))
-                    .Repeat.Once()
-                    .Return("");
-			    Expect.On(querySerializer)
-			        .Call(querySerializer.Serialize(null))
-			        .IgnoreArguments()
-                    .Return(queryString);
-			}).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q, querySerializer));
-				cmd.Execute(conn);
-			});
+            const string queryString = "someQuery";
+		    var q = new SolrQuery(queryString);
+            var xml = string.Format("<delete><query>{0}</query></delete>", queryString);
+
+		    var conn = new Mocks.MSolrConnection();
+		    conn.post = conn.post.Args("/update", xml);
+
+		    var querySerializer = new Mocks.MSolrQuerySerializer();
+		    querySerializer.serialize += _ => queryString;
+
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q, querySerializer), null);
+            cmd.Execute(conn);
+
+            Assert.AreEqual(1, conn.post.Calls);
 		}
 
         [Test]
         public void DeleteByIdAndQuery() {
             var ids = new[] { "123", "456" };
-            var mocks = new MockRepository();
-            var conn = mocks.StrictMock<ISolrConnection>();
-            var q = mocks.StrictMock<ISolrQuery>();
-            var querySerializer = mocks.StrictMock<ISolrQuerySerializer>();
-            With.Mocks(mocks).Expecting(delegate {
-                const string queryString = "someQuery";
-                Expect.On(querySerializer)
-                    .Call(querySerializer.Serialize(null))
-                    .IgnoreArguments()
-                    .Return(queryString);
-                Expect.On(conn)
-                    .Call(conn.Post("/update", string.Format("<delete><id>{0}</id><id>{1}</id><query>{2}</query></delete>", ids[0], ids[1], queryString)))
-                    .Repeat.Once()
-                    .Return("");
-            }).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer));
-                cmd.Execute(conn);
-            });
+            const string queryString = "someQuery";
+            var xml = string.Format("<delete><id>{0}</id><id>{1}</id><query>{2}</query></delete>", ids[0], ids[1], queryString);
+            var conn = new Mocks.MSolrConnection();
+            conn.post = conn.post.Args("/update", xml);
+
+            var q = new SolrQuery(queryString);
+            var querySerializer = new Mocks.MSolrQuerySerializer();
+            querySerializer.serialize += _ => queryString;
+
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), null);
+            cmd.Execute(conn);
+
+            Assert.AreEqual(1, conn.post.Calls);
+
         }
 
 		[Test]
 		public void DeleteFromCommitted() {
 			const string id = "123123";
-			var mocks = new MockRepository();
-			var conn = mocks.StrictMock<ISolrConnection>();
-			With.Mocks(mocks).Expecting(delegate {
-				Expect.On(conn).Call(conn.Post("/update", string.Format("<delete fromCommitted=\"true\"><id>{0}</id></delete>", id)))
-                    .Repeat.Once()
-                    .Return("");
-			}).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null)) {
-                    FromCommitted = true
-                };
-				cmd.Execute(conn);
-			});
+            var xml = string.Format("<delete fromCommitted=\"true\"><id>{0}</id></delete>", id);
+		    var conn = new Mocks.MSolrConnection();
+		    conn.post = conn.post.Args("/update", xml);
+
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null), null)
+            {
+                FromCommitted = true
+            };
+            cmd.Execute(conn);
+
+            Assert.AreEqual(1, conn.post.Calls);
 		}
 
 		[Test]
 		public void DeleteFromCommittedAndFromPending() {
 			const string id = "123123";
-			var mocks = new MockRepository();
-			var conn = mocks.StrictMock<ISolrConnection>();
-			With.Mocks(mocks).Expecting(delegate {
-				Expect.On(conn).Call(conn.Post("/update", string.Format("<delete fromPending=\"false\" fromCommitted=\"false\"><id>{0}</id></delete>", id)))
-                    .Repeat.Once()
-                    .Return("");
-			}).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null)) {
-                    FromCommitted = false, 
-                    FromPending = false
-                };
-				cmd.Execute(conn);
-			});
+
+		    var conn = new Mocks.MSolrConnection();
+            var xml = string.Format("<delete fromPending=\"false\" fromCommitted=\"false\"><id>{0}</id></delete>", id);
+		    conn.post = conn.post.Args("/update", xml);
+
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null), null)
+            {
+                FromCommitted = false,
+                FromPending = false
+            };
+            cmd.Execute(conn);
+
+            Assert.AreEqual(1, conn.post.Calls);
 		}
 
 		[Test]
 		public void DeleteFromPending() {
 			const string id = "123123";
-			var mocks = new MockRepository();
-			var conn = mocks.StrictMock<ISolrConnection>();
-			With.Mocks(mocks).Expecting(delegate {
-				Expect.On(conn).Call(conn.Post("/update", string.Format("<delete fromPending=\"true\"><id>{0}</id></delete>", id)))
-                    .Repeat.Once()
-                    .Return("");
-			}).Verify(delegate {
-                var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null)) {
-                    FromPending = true
-                };
-				cmd.Execute(conn);
-			});
+
+		    var conn = new Mocks.MSolrConnection();
+            var xml = string.Format("<delete fromPending=\"true\"><id>{0}</id></delete>", id);
+		    conn.post = conn.post.Args("/update", xml);
+
+            var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null), null)
+            {
+                FromPending = true
+            };
+            cmd.Execute(conn);
+
+            Assert.AreEqual(1, conn.post.Calls);
 		}
 	}
 }

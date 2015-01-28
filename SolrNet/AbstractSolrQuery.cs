@@ -14,6 +14,8 @@
 // limitations under the License.
 #endregion
 
+using System;
+
 namespace SolrNet {
     /// <summary>
     /// Abstract Solr query, used to define operator overloading
@@ -28,6 +30,14 @@ namespace SolrNet {
         }
 
         /// <summary>
+        /// Negates this query
+        /// </summary>
+        /// <returns></returns>
+        public AbstractSolrQuery Required() {
+            return new SolrRequiredQuery(this);
+        }
+
+        /// <summary>
         /// Boosts this query
         /// </summary>
         /// <param name="factor"></param>
@@ -37,18 +47,34 @@ namespace SolrNet {
         }
 
         public static AbstractSolrQuery operator & (AbstractSolrQuery a, AbstractSolrQuery b) {
+            if (a == null)
+                throw new ArgumentNullException("a");
+            if (b == null)
+                throw new ArgumentNullException("b");
             return new SolrMultipleCriteriaQuery(new[] {a, b}, "AND");
         }
 
         public static AbstractSolrQuery operator | (AbstractSolrQuery a, AbstractSolrQuery b) {
+            if (a == null)
+                throw new ArgumentNullException("a");
+            if (b == null)
+                throw new ArgumentNullException("b");
             return new SolrMultipleCriteriaQuery(new[] { a, b }, "OR");
         }
 
         public static AbstractSolrQuery operator + (AbstractSolrQuery a, AbstractSolrQuery b) {
-            return new SolrMultipleCriteriaQuery(new[] {a, b});
+            if (a == null)
+                throw new ArgumentNullException("a");
+            if (b == null)
+                throw new ArgumentNullException("b");
+            return new SolrMultipleCriteriaQuery(new[] { a, b });
         }
 
         public static AbstractSolrQuery operator - (AbstractSolrQuery a, AbstractSolrQuery b) {
+            if (a == null)
+                throw new ArgumentNullException("a");
+            if (b == null)
+                throw new ArgumentNullException("b");
             return new SolrMultipleCriteriaQuery(new[] { a, b.Not() });
         }
 
@@ -61,6 +87,8 @@ namespace SolrNet {
         }
 
         public static AbstractSolrQuery operator !(AbstractSolrQuery a) {
+            if (a == null)
+                throw new ArgumentNullException("a");
             return a.Not();
         }
     }

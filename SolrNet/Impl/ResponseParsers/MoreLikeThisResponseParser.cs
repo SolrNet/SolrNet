@@ -15,9 +15,9 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     /// <summary>
@@ -26,6 +26,11 @@ namespace SolrNet.Impl.ResponseParsers {
     /// <typeparam name="T"></typeparam>
     public class MoreLikeThisResponseParser<T> : ISolrResponseParser<T> {
         private readonly ISolrDocumentResponseParser<T> docParser;
+
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
+            results.Switch(query: r => Parse(xml, r), 
+                           moreLikeThis: F.DoNothing);
+        }
 
         public MoreLikeThisResponseParser(ISolrDocumentResponseParser<T> docParser) {
             this.docParser = docParser;

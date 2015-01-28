@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using Castle.MicroKernel.Registration;
 using MbUnit.Framework;
 
 namespace SolrNet.Tests.Utils {
@@ -39,7 +40,7 @@ namespace SolrNet.Tests.Utils {
         [Test]
         public void NonProxyableComponent() {
             var container = new ProfilingContainer();
-            container.AddComponent<NonProxyable>();
+            container.Register(Component.For<NonProxyable>());
             container.Resolve<NonProxyable>().LongOperation();
             var profile = container.GetProfile();
             Assert.AreEqual(0, profile.Children.Count);
@@ -62,7 +63,7 @@ namespace SolrNet.Tests.Utils {
         [Test]
         public void ProxyableComponent() {
             var container = new ProfilingContainer();
-            container.AddComponent<Proxyable>();
+            container.Register(Component.For<Proxyable>());
             container.Resolve<Proxyable>().LongOperation();
             var profile = container.GetProfile();
             Assert.AreEqual(1, profile.Children.Count);

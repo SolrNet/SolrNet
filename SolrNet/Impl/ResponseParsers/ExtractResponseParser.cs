@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
-using System.Xml.XPath;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers
 {
@@ -18,7 +17,7 @@ namespace SolrNet.Impl.ResponseParsers
         public ExtractResponse Parse(XDocument response) {
             var responseHeader = headerResponseParser.Parse(response);
 
-            var contentNode = response.XPathSelectElement("response/str");
+            var contentNode = response.Element("response").Element("str");
             var extractResponse = new ExtractResponse(responseHeader) {
                 Content = contentNode != null ? contentNode.Value : null
             };
@@ -45,12 +44,10 @@ namespace SolrNet.Impl.ResponseParsers
         private List<ExtractField> ParseMetadata(XDocument response)
         {
 
-            var metadataElements = response.XPathSelectElements("response/lst[@name='null_metadata']/arr");
-
-            if (metadataElements == null)
-            {
-                return new List<ExtractField>();
-            }
+            var metadataElements = response.Element("response")
+                .Elements("lst")
+                .Where(X.AttrEq("name", "null_metadata"))
+                .SelectMany(x => x.Elements("att"));
 
             var metadata = new List<ExtractField>(metadataElements.Count());
             foreach (var node in metadataElements)

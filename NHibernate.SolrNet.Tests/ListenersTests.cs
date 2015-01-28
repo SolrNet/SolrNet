@@ -15,7 +15,7 @@
 #endregion
 
 using MbUnit.Framework;
-using Rhino.Mocks;
+using Moroco;
 
 namespace NHibernate.SolrNet.Tests {
     [TestFixture]
@@ -24,61 +24,71 @@ namespace NHibernate.SolrNet.Tests {
         [Test]
         public void PostInsert_manual_flush_adds_to_solr() {
             var entity = new Entity {Description = "pepe"};
+            mockSolr.addDocParams += (e, p) => {
+                Assert.AreSame(entity, e);
+                Assert.IsNull(p);
+                return null;
+            };
             using (var session = sessionFactory.OpenSession()) {
                 session.FlushMode = FlushMode.Never;
                 session.Save(entity);
                 session.Flush();
             }
-            mockSolr.AssertWasCalled(x => x.Add(entity, null), o => o.Repeat.Once().Return(null));
         }
 
         [Test]
         public void PostInsert_manual_flush_without_flush_doesnt_add_to_solr() {
             var entity = new Entity {Description = "pepe"};
+            mockSolr.addDocParams &= x => x.Expect(0);
             using (var session = sessionFactory.OpenSession()) {
                 session.FlushMode = FlushMode.Never;
                 session.Save(entity);
             }
-            mockSolr.AssertWasNotCalled(x => x.Add(entity, null));
         }
 
         [Test]
         public void PostInsert_autoflush_without_flush_adds_to_solr() {
             var entity = new Entity {Description = "pepe"};
+            mockSolr.addDocParams += (e, p) => {
+                Assert.AreSame(entity, e);
+                Assert.IsNull(p);
+                return null;
+            };
+            mockSolr.addDocParams &= x => x.Expect(1);
             using (var session = sessionFactory.OpenSession()) {
                 session.Save(entity);
             }
-            mockSolr.AssertWasCalled(x => x.Add(entity, null), o => o.Repeat.Once().Return(null));
         }
 
         [Test]
         public void PostInsert_without_commit_doesnt_add_to_solr() {
             var entity = new Entity();
+            mockSolr.addDocParams &= x => x.Expect(0);
             using (var session = sessionFactory.OpenSession()) {
                 using (var tx = session.BeginTransaction()) {
                     session.Save(entity);
                     tx.Rollback();
                 }
             }
-            mockSolr.AssertWasNotCalled(x => x.Add(entity, null));
         }
 
         [Test]
         public void PostInsert_with_commit_adds_to_solr() {
             var entity = new Entity();
+            mockSolr.addDocParams &= x => x.Expect(1);
             using (var session = sessionFactory.OpenSession()) {
                 using (var tx = session.BeginTransaction()) {
                     session.Save(entity);
                     tx.Commit();
                 }
             }
-            mockSolr.AssertWasCalled(x => x.Add(entity, null), o => o.Repeat.Once().Return(null));
         } 
 
         [Test]
         [Ignore("Session dispose should follow transaction rollback. See http://www.nhforge.org/doc/nh/en/index.html#manipulatingdata-endingsession-commit")]
         public void Insert_with_multiple_transactions() {
             var entity = new Entity();
+            mockSolr.addDocParams &= x => x.Expect(1);
             using (var session = sessionFactory.OpenSession()) {
                 session.FlushMode = FlushMode.Commit;
                 using (var tx = session.BeginTransaction()) {
@@ -90,12 +100,12 @@ namespace NHibernate.SolrNet.Tests {
                     tx.Commit();
                 }
             }
-            mockSolr.AssertWasCalled(x => x.Add(entity, null), o => o.Repeat.Once().Return(null));
         }
 
         [Test]
         public void Insert_with_multiple_transactions2() {
             var entity = new Entity();
+            mockSolr.addDocParams &= x => x.Expect(1);
             using (var session = sessionFactory.OpenSession()) {
                 session.FlushMode = FlushMode.Commit;
                 using (var tx = session.BeginTransaction()) {
@@ -107,7 +117,6 @@ namespace NHibernate.SolrNet.Tests {
                     tx.Rollback();
                 }
             }
-            mockSolr.AssertWasCalled(x => x.Add(entity, null), o => o.Repeat.Once().Return(null));
         }
 
     }

@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using MbUnit.Framework;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
@@ -42,31 +43,40 @@ namespace SolrNet.Tests {
         [Test]
         public void MultipleAnd() {
             var q = new SolrQuery("solr") && new SolrQuery("name:desc") && new SolrQueryByField("id", "123456");
-            Assert.AreEqual("((solr AND name:desc) AND id:123456)", Serialize(q));
+            Assert.AreEqual("((solr AND name:desc) AND id:(123456))", Serialize(q));
         }
 
         [Test]
         public void MultipleOr() {
             var q = new SolrQuery("solr") || new SolrQuery("name:desc") || new SolrQueryByField("id", "123456");
-            Assert.AreEqual("((solr OR name:desc) OR id:123456)", Serialize(q));
+            Assert.AreEqual("((solr OR name:desc) OR id:(123456))", Serialize(q));
         }
 
         [Test]
         public void MixedAndOrs_obeys_operator_precedence() {
             var q = new SolrQuery("solr") || new SolrQuery("name:desc") && new SolrQueryByField("id", "123456");
-            Assert.AreEqual("(solr OR (name:desc AND id:123456))", Serialize(q));
+            Assert.AreEqual("(solr OR (name:desc AND id:(123456)))", Serialize(q));
         }
 
         [Test]
         public void MixedAndOrs_with_parentheses_obeys_precedence() {
             var q = (new SolrQuery("solr") || new SolrQuery("name:desc")) && new SolrQueryByField("id", "123456");
-            Assert.AreEqual("((solr OR name:desc) AND id:123456)", Serialize(q));
+            Assert.AreEqual("((solr OR name:desc) AND id:(123456))", Serialize(q));
         }
 
         [Test]
         public void Add() {
             var q = new SolrQuery("solr") + new SolrQuery("name:desc");
             Assert.AreEqual("(solr  name:desc)", Serialize(q));
+        }
+
+        [Test]
+        public void PlusEqualMany() {
+            AbstractSolrQuery q = new SolrQuery("first");
+            foreach (var _ in Enumerable.Range(0, 10)) {
+                q += new SolrQuery("others");
+            }
+            Assert.AreEqual("((((((((((first  others)  others)  others)  others)  others)  others)  others)  others)  others)  others)", Serialize(q));
         }
 
         [Test]
@@ -86,6 +96,43 @@ namespace SolrNet.Tests {
         public void Minus() {
             var q = new SolrQuery("solr") - new SolrQuery("name:desc");
             Assert.AreEqual("(solr  -name:desc)", Serialize(q));
+        }
+
+        [Test]
+        public void AllMinus() {
+            var q = SolrQuery.All - new SolrQuery("product");
+            Assert.AreEqual("(*:*  -product)", Serialize(q));
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullAnd_Throws() {
+            var a = SolrQuery.All && null;
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullOr_Throws() {
+            var a = SolrQuery.All || null;
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullPlus_throws() {
+            var a = SolrQuery.All + null;
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullMinus_throws() {
+            var a = SolrQuery.All - null;
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullNot_argumentnull() {
+            AbstractSolrQuery a = null;
+            var b = !a;
         }
     }
 }

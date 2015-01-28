@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Xml;
+using System.Xml.Linq;
 using SolrNet.Utils;
 
 namespace SolrNet.Commands {
@@ -30,6 +30,12 @@ namespace SolrNet.Commands {
 	    private readonly ISolrDocumentSerializer<T> documentSerializer;
 	    private readonly AddParameters parameters;
 
+        /// <summary>
+        /// Adds / updates documents to solr
+        /// </summary>
+        /// <param name="documents"></param>
+        /// <param name="serializer"></param>
+        /// <param name="parameters"></param>
 	    public AddCommand(IEnumerable<KeyValuePair<T, double?>> documents, ISolrDocumentSerializer<T> serializer, AddParameters parameters) {
             this.documents = documents;
             documentSerializer = serializer;
@@ -42,36 +48,31 @@ namespace SolrNet.Commands {
         /// <param name="xml"></param>
         /// <returns></returns>
         /// <seealso href="http://cse-mjmcl.cse.bris.ac.uk/blog/2007/02/14/1171465494443.html#comment1221120563572"/>
-        public string RemoveControlCharacters(string xml) {
-            return Regex.Replace(xml, "&\\#x(0?[0-8BCEF]|1[0-9A-F]|FFF[E-F]);", "");
-        }
-
+        /// <summary>
+        /// Serializes command to Solr XML
+        /// </summary>
+        /// <returns></returns>
         public string ConvertToXml() {
-            var xml = new XmlDocument();
-            var addElement = xml.CreateElement("add");
+            var addElement = new XElement("add");
             if (parameters != null) {
                 if (parameters.CommitWithin.HasValue) {
-                    var attr = xml.CreateAttribute("commitWithin");
-                    attr.Value = parameters.CommitWithin.Value.ToString(CultureInfo.InvariantCulture);
-                    addElement.Attributes.Append(attr);
+                    var commit = new XAttribute("commitWithin", parameters.CommitWithin.Value.ToString(CultureInfo.InvariantCulture));
+                    addElement.Add(commit);
                 }
                 if (parameters.Overwrite.HasValue) {
-                    var attr = xml.CreateAttribute("overwrite");
-                    attr.Value = parameters.Overwrite.Value.ToString().ToLowerInvariant();
-                    addElement.Attributes.Append(attr);
+                    var overwrite = new XAttribute("overwrite", parameters.Overwrite.Value.ToString().ToLowerInvariant());
+                    addElement.Add(overwrite);
                 }
             }
             foreach (var docWithBoost in documents) {
                 var xmlDoc = documentSerializer.Serialize(docWithBoost.Key, docWithBoost.Value);
-                addElement.AppendChild(xml.ImportNode(xmlDoc.DocumentElement, true));
+                addElement.Add(xmlDoc);
             }
-            xml.AppendChild(addElement);
-            return xml.OuterXml;
+            return addElement.ToString(SaveOptions.DisableFormatting);
         }
 
 	    public string Execute(ISolrConnection connection) {
 	        var xml = ConvertToXml();
-	        xml = RemoveControlCharacters(xml);
 			return connection.Post("/update", xml);
 		}
 	}

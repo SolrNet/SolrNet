@@ -32,7 +32,13 @@ namespace SolrNet {
         public SolrQueryByField(string fieldName, string fieldValue) {
             this.fieldName = fieldName;
             this.fieldValue = fieldValue;
+            Quoted = true;
         }
+
+        /// <summary>
+        /// If true (default), special characters (e.g. '?', '*') in the value are quoted.
+        /// </summary>
+        public bool Quoted { get; set; }
 
         public string FieldName {
             get { return fieldName; }

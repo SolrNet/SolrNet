@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+	<lst name="responseHeader">
+		<int name="status">0</int>
+		<int name="QTime">12</int>
+	</lst>
+	<str name="status">OK</str>
+</response>

@@ -4,7 +4,7 @@
         xmlns="http://www.gallio.org/">
   <traits>
     <name>MbUnit v3</name>
-    <version>3.2.0.0</version>
+    <version>3.3.0.0</version>
     <description>Provides support for running MbUnit v3 tests.</description>
     <icon>plugin://MbUnit/Resources/MbUnit.ico</icon>
   </traits>
@@ -20,11 +20,14 @@
     <file path="MbUnit.pdb" />
     <file path="MbUnit.xml" />
 
+    <file path="NHamcrest.dll" />
+	<file path="NHamcrest.pdb" />
+    
     <file path="Resources\MbUnit.ico" />
   </files>
 
   <assemblies>
-    <assembly fullName="MbUnit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
+    <assembly fullName="MbUnit, Version=3.3.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
               codeBase="MbUnit.dll"
               qualifyPartialName="true" />
   </assemblies>
@@ -35,9 +38,9 @@
                componentType="MbUnit.Core.MbUnitTestFramework, MbUnit">
       <traits>
         <name>MbUnit v3</name>
-        <frameworkAssemblies>MbUnit, Version=3.2.0.0</frameworkAssemblies>
+        <frameworkAssemblies>MbUnit, Version=3.3.0.0</frameworkAssemblies>
         <icon>plugin://MbUnit/Resources/MbUnit.ico</icon>
-        <version>3.2.0.0</version>
+        <version>3.3.0.0</version>
         <fileTypes>Assembly</fileTypes>
       </traits>
     </component>

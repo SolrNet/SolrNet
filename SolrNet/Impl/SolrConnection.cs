@@ -17,15 +17,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Web;
 using HttpWebAdapters;
 using HttpWebAdapters.Adapters;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
+using HttpUtility = SolrNet.Utils.HttpUtility;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -45,6 +44,10 @@ namespace SolrNet.Impl {
         /// </summary>
         public IHttpWebRequestFactory HttpWebRequestFactory { get; set; }
 
+        /// <summary>
+        /// Manages HTTP connection with Solr
+        /// </summary>
+        /// <param name="serverURL">URL to Solr</param>
         public SolrConnection(string serverURL) {
             ServerURL = serverURL;
             Timeout = -1;
@@ -52,19 +55,13 @@ namespace SolrNet.Impl {
             HttpWebRequestFactory = new HttpWebRequestFactory();
         }
 
+        /// <summary>
+        /// URL to Solr
+        /// </summary>
         public string ServerURL {
             get { return serverURL; }
             set {
-                try {
-                    var u = new Uri(value);
-                    if (u.Scheme != Uri.UriSchemeHttp && u.Scheme != Uri.UriSchemeHttps)
-                        throw new InvalidURLException("Only HTTP or HTTPS protocols are supported");
-                } catch (ArgumentException e) {
-                    throw new InvalidURLException(e);
-                } catch (UriFormatException e) {
-                    throw new InvalidURLException(e);
-                }
-                serverURL = value;
+                serverURL = UriValidator.ValidateHTTP(value);
             }
         }
 
@@ -95,6 +92,7 @@ namespace SolrNet.Impl {
             var request = HttpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.POST;
             request.KeepAlive = true;
+            request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
 
             if (Timeout > 0) {
                 request.ReadWriteTimeout = Timeout;
@@ -118,7 +116,7 @@ namespace SolrNet.Impl {
                     using (var sr = new StreamReader(s))
                         msg = sr.ReadToEnd();
                 }
-                throw new SolrConnectionException(msg, e);
+                throw new SolrConnectionException(msg, e, request.RequestUri.ToString());
             }
         }
 
@@ -129,10 +127,6 @@ namespace SolrNet.Impl {
                 output.Write(buffer, 0, read);
         }
 
-        public KeyValuePair<T1, T2> KVP<T1, T2>(T1 a, T2 b) {
-            return new KeyValuePair<T1, T2>(a, b);
-        }
-
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
@@ -141,9 +135,7 @@ namespace SolrNet.Impl {
             var request = HttpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.GET;
             request.KeepAlive = true;
-
-            //Issue request headers to say we can accept a compressed response
-            request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip,deflate");
+            request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
 
             var cached = Cache[u.Uri.ToString()];
             if (cached != null) {
@@ -185,9 +177,9 @@ namespace SolrNet.Impl {
             if (parameters != null)
                 param.AddRange(parameters);
 
-            param.Add(KVP("version", version));
+            param.Add(KV.Create("version", version));
             return string.Join("&", param
-                .Select(kv => KVP(HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
+                .Select(kv => KV.Create(HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
                 .Select(kv => string.Format("{0}={1}", kv.Key, kv.Value))
                 .ToArray());
         }
@@ -204,32 +196,22 @@ namespace SolrNet.Impl {
                 if (cacheControl != null && cacheControl.Contains("no-cache"))
                     etag = null; // avoid caching things marked as no-cache
 
-                return new SolrResponse(etag, UncompressResponse(response));
+                return new SolrResponse(etag, ReadResponseToString(response));
             }
         }
 
         /// <summary>
-        /// Attempts to deflate response stream if compressed in any way.
+        /// Reads the full stream from the response and returns the content as stream,
+        /// using the correct encoding.
         /// </summary>
-        /// <see cref="http://west-wind.com/weblog/posts/102969.aspx"/>
         /// <param name="response">Web response from request to Solr</param>
         /// <returns></returns>
-        private string UncompressResponse(IHttpWebResponse response) {
+        private string ReadResponseToString(IHttpWebResponse response)
+        {
             using (var responseStream = response.GetResponseStream())
-            using (var compressedStream = GetWrappedCompressionStream(response, responseStream)) {
-                var reader = new StreamReader(compressedStream, TryGetEncoding(response));
-                return reader.ReadToEnd();
+				using (var reader = new StreamReader(responseStream, TryGetEncoding(response))) {
+					return reader.ReadToEnd();
             }
-        }
-
-        private Stream GetWrappedCompressionStream(IHttpWebResponse response, Stream responseStream) {
-            if (response.ContentEncoding == null)
-                return responseStream;
-            if (response.ContentEncoding.ToLower().Contains("gzip"))
-                return new GZipStream(responseStream, CompressionMode.Decompress);
-            if (response.ContentEncoding.ToLower().Contains("deflate"))
-                return new DeflateStream(responseStream, CompressionMode.Decompress);
-            return responseStream;
         }
 
         private struct SolrResponse {

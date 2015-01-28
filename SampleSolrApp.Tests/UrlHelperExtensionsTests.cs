@@ -16,10 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
-using System.Web.Routing;
 using MbUnit.Framework;
-using Rhino.Mocks;
 using SampleSolrApp.Helpers;
 
 namespace SampleSolrApp.Tests {

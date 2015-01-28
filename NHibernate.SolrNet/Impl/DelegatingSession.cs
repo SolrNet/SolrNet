@@ -15,7 +15,6 @@
 #endregion
 
 using System;
-using System.Collections;
 using System.Data;
 using System.Linq.Expressions;
 using NHibernate.Engine;
@@ -160,6 +159,14 @@ namespace NHibernate.SolrNet.Impl {
             return session.Merge(entityName, obj);
         }
 
+        public T Merge<T>(T entity) where T : class {
+            return session.Merge(entity);
+        }
+
+        public T Merge<T>(string entityName, T entity) where T : class {
+            return session.Merge(entityName, entity);
+        }
+
         public void Persist(object obj) {
             session.Persist(obj);
         }
@@ -254,6 +261,14 @@ namespace NHibernate.SolrNet.Impl {
 
         public IQueryOver<T, T> QueryOver<T>(Expression<Func<T>> alias) where T : class {
             return session.QueryOver<T>(alias);
+        }
+
+        public IQueryOver<T, T> QueryOver<T>(string entityName) where T : class {
+            return session.QueryOver<T>(entityName);
+        }
+
+        public IQueryOver<T, T> QueryOver<T>(string entityName, Expression<Func<T>> alias) where T : class {
+            return session.QueryOver<T>(entityName, alias);
         }
 
         public IQuery CreateQuery(string queryString) {

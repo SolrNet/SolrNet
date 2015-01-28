@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using MbUnit.Framework;
+using SolrNet.Exceptions;
 using SolrNet.Mapping;
 
 namespace SolrNet.Tests {
@@ -54,6 +55,20 @@ namespace SolrNet.Tests {
             mgr.Add(property, "id");
             mgr.SetUniqueKey(property);
             var key = mgr.GetUniqueKey(typeof (Entity));
+
+            Assert.AreEqual(property, key.Property);
+            Assert.AreEqual("id", key.FieldName);
+        }
+
+        [Test]
+        public void UniqueKey_Set_and_get_for_inherited_classes()
+        {
+            var mgr = new MappingManager();
+            var property = typeof(Entity).GetProperty("Id");
+            mgr.Add(property, "id");
+            mgr.SetUniqueKey(property);
+            var key = mgr.GetUniqueKey(typeof(InheritedEntity));
+
             Assert.AreEqual(property, key.Property);
             Assert.AreEqual("id", key.FieldName);
         }
@@ -119,16 +134,35 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        [Ignore("Fails, see issue #37")]
         public void Inherited() {
             var mgr = new MappingManager();
             mgr.Add(typeof(Entity).GetProperty("Id"), "id");
             mgr.Add(typeof(InheritedEntity).GetProperty("Description"), "desc");
-            var entityFields = mgr.GetFields(typeof (Entity));
+            var entityFields = mgr.GetFields(typeof(Entity));
             Assert.AreEqual(1, entityFields.Count);
             var inheritedEntityFields = mgr.GetFields(typeof(InheritedEntity));
             Assert.AreEqual(2, inheritedEntityFields.Count);
         }
+
+		[Test]
+		public void Inherited_gets_id_property_correctly()
+		{
+			var mgr = new MappingManager();
+			mgr.Add(typeof(Entity).GetProperty("Id"), "id");
+
+			Assert.IsTrue(mgr.GetFields(typeof(Entity)).ContainsKey("id"), "Entity contains id field");
+			Assert.IsTrue(mgr.GetFields(typeof(InheritedEntity)).ContainsKey("id"), "InheritedEntity contains id field");
+		}
+
+		[Test]
+		public void Inherited_gets_id_property_correctly2()
+		{
+			var mgr = new MappingManager();
+			mgr.Add(typeof(InheritedEntity).GetProperty("Id"), "id");
+
+			Assert.IsTrue(mgr.GetFields(typeof(InheritedEntity)).ContainsKey("id"), "InheritedEntity contains id field");
+			Assert.IsTrue(mgr.GetFields(typeof(Entity)).ContainsKey("id"), "Entity contains id field");
+		}
 
         [Test]
         public void GetRegistered() {

@@ -4,7 +4,7 @@
         xmlns="http://www.gallio.org/">
   <traits>
     <name>Gallio MSBuild Tasks</name>
-    <version>3.2.0.0</version>
+    <version>3.3.0.0</version>
     <description>Provides MSBuild tasks for running tests with Gallio.</description>
   </traits>
 

@@ -4,7 +4,7 @@
         xmlns="http://www.gallio.org/">
   <traits>
     <name>Gallio</name>
-    <version>3.2.0.0</version>
+    <version>3.3.0.0</version>
     <description>The heart of Gallio.</description>
     <icon>plugin://Gallio/Resources/Gallio.ico</icon>
   </traits>
@@ -37,7 +37,7 @@
   </files>
 
   <assemblies>
-    <assembly fullName="Gallio, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
+    <assembly fullName="Gallio, Version=3.3.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e"
               codeBase="Gallio.dll"
               qualifyPartialName="true" />
   </assemblies>
@@ -430,6 +430,10 @@
                serviceId="Gallio.FormattingRule"
                componentType="Gallio.Runtime.Formatting.TypeFormattingRule, Gallio" />
 
+    <component componentId="Gallio.MemberInfoFormattingRule"
+               serviceId="Gallio.FormattingRule"
+               componentType="Gallio.Runtime.Formatting.MemberInfoFormattingRule, Gallio" />
+
     <component componentId="Gallio.XPathNavigableFormattingRule"
                serviceId="Gallio.FormattingRule"
                componentType="Gallio.Runtime.Formatting.XPathNavigableFormattingRule, Gallio" />
@@ -449,7 +453,7 @@
       <traits>
         <id>Project</id>
         <description>A Gallio project file.</description>
-        <fileNameRegex>.*\.gallio</fileNameRegex>
+        <fileNameRegex>.*\.gallio$</fileNameRegex>
       </traits>
     </component>
 
@@ -458,7 +462,7 @@
       <traits>
         <id>Executable</id>
         <description>A library or program file.</description>
-        <fileNameRegex>.*\.(dll|exe)</fileNameRegex>
+        <fileNameRegex>.*\.(dll|exe)$</fileNameRegex>
       </traits>
     </component>
 
@@ -514,12 +518,13 @@
       <traits>
         <name>FormatReport</name>
         <description>Formats an existing XML test report. The command must be used with the following syntax: 
-		"FormatReport {file} /ReportType:{type} [/ReportNameFormat:{format} /ReportOutput:{dir} /ReportArchive]"
+		"FormatReport {file} /ReportType:{type} [/ReportNameFormat:{format} /ReportOutput:{dir} /ReportArchive /ReportFormatterProperty:{property}]"
 		- {file} is the relative or absolute path of the existing XML test report.
-		- ReportType (short form: /rt) specifies the type of the output report ('txt', 'txt-common', 'txt-condensed', 'html', 'html+xhtml', 'html-condensed', 'xhtml', 'xhtml-condensed', 'ccnet-details', or 'ccnet-details-condensed')
+		- ReportType (short form: /rt) specifies the type of the output report ('txt', 'txt-common', 'txt-condensed', 'html', 'html+xhtml', 'html-condensed', 'xhtml', 'xhtml-condensed'')
 		- ReportNameFormat (short form: /rnf) specifies the format of the output report (optional; if not specified, the same name is kept). The tags '{0}' and '{1}' are replaced respectively by the date and the time of the test run, or by the curent date/time if not applicable.
 		- ReportOutput (short form: /ro) specifies the output directory (optional; if not specified the current directory is used).
-		- ReportArchive (short form: /ra) compresses the output report in a file archive (zip).</description>
+		- ReportArchive (short form: /ra) compresses the output report in a file archive (zip).
+    - ReportFormatterProperty (short form: /rfp) specifies one or several key/value properties to report formatter (optional).</description>
       </traits>
     </component>
 	
@@ -532,6 +537,23 @@
       </traits>
     </component>
 
+    <component componentId="Gallio.MergeReportsUtilityCommand"
+               serviceId="Gallio.UtilityCommand"
+               componentType="Gallio.Runtime.UtilityCommands.MergeReportsUtilityCommand, Gallio">
+      <traits>
+        <name>MergeReports</name>
+        <description>
+          Merge several XML test reports. The command must be used with the following syntax:
+          "MergeReports {file1}[,{file2},{file3}...] [/ReportNameFormat:{format} /ReportType:{type} /ReportOutput:{dir} /ReportArchive /ReportFormatterProperty:{property}]"
+          - {fileN} is the relative or absolute path of the existing XML test reports to be merged together.
+          - ReportNameFormat (short form: /rnf) specifies the format of the output report (optional; if not specified, a default name is used). The tags '{0}' and '{1}' are replaced respectively by the date and the time of the test run, or by the curent date/time if not applicable.
+          - ReportOutput (short form: /ro) specifies the output directory (optional; if not specified the current directory is used).
+          - ReportType (short form: /rt) specifies the type of the output report ('txt', 'txt-common', 'txt-condensed', 'html', 'html+xhtml', 'html-condensed', 'xhtml', 'xhtml-condensed')
+          - ReportArchive (short form: /ra) compresses the output report in a file archive (zip).
+          - ReportFormatterProperty (short form: /rfp) specifies one or several key/value properties to report formatter (optional).</description>
+      </traits>
+    </component>
+	
     <component componentId="Gallio.SetupUtilityCommand"
                serviceId="Gallio.UtilityCommand"
                componentType="Gallio.Runtime.Installer.SetupUtilityCommand, Gallio">

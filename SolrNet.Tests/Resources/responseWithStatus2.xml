@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <lst name="responseHeader">
+    <int name="status">0</int>
+    <int name="QTime">1</int>
+  </lst>
+  <str name="defaultCoreName">items</str>
+  <lst name="initFailures"/>
+  <lst name="status">
+    <lst name="items">
+      <str name="name">items</str>
+      <bool name="isDefaultCore">true</bool>
+      <str name="instanceDir">solr\items\</str>
+      <str name="dataDir">G:\prg\CroCMSLib\solr\solr\items\data\</str>
+      <str name="config">solrconfig.xml</str>
+      <str name="schema">schema.xml</str>
+      <date name="startTime">2014-02-07T02:27:22.501Z</date>
+      <long name="uptime">139652</long>
+      <lst name="index">
+        <int name="numDocs">0</int>
+        <int name="maxDoc">0</int>
+        <int name="deletedDocs">0</int>
+        <long name="indexHeapUsageBytes">0</long>
+        <long name="version">1</long>
+        <int name="segmentCount">0</int>
+        <bool name="current">true</bool>
+        <bool name="hasDeletions">false</bool>
+        <str name="directory">org.apache.lucene.store.MMapDirectory:org.apache.lucene.store.MMapDirectory@G:\prg\CroCMSLib\solr\solr\items\data\index lockFactory=org.apache.lucene.store.NativeFSLockFactory@1d16eaf2</str>
+        <lst name="userData"/>
+        <long name="sizeInBytes">65</long>
+        <str name="size">65 bytes</str>
+      </lst>
+    </lst>
+  </lst>
+</response>

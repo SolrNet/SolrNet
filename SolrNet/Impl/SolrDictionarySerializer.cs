@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Xml;
+using System.Xml.Linq;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -30,29 +30,23 @@ namespace SolrNet.Impl {
             this.serializer = serializer;
         }
 
-        public XmlDocument Serialize(Dictionary<string, object> doc, double? boost) {
+        public XElement Serialize(Dictionary<string, object> doc, double? boost) {
             if (doc == null)
                 throw new ArgumentNullException("doc");
-            var xml = new XmlDocument();
-            var docNode = xml.CreateElement("doc");
+            var docNode = new XElement("doc");
             if (boost.HasValue) {
-                var boostAttr = xml.CreateAttribute("boost");
-                boostAttr.Value = boost.Value.ToString(CultureInfo.InvariantCulture.NumberFormat);
-                docNode.Attributes.Append(boostAttr);
+                var boostAttr = new XAttribute("boost", boost.Value.ToString(CultureInfo.InvariantCulture.NumberFormat));
+                docNode.Add(boostAttr);
             }
             foreach (var kv in doc) {
                 var nodes = serializer.Serialize(kv.Value);
                 foreach (var n in nodes) {
-                    var name = xml.CreateAttribute("name");
-                    name.Value = kv.Key;
-                    var fieldNode = xml.CreateElement("field");
-                    fieldNode.Attributes.Append(name);
-                    fieldNode.InnerText = n.FieldValue;
-                    docNode.AppendChild(fieldNode);
+                    var value = SolrDocumentSerializer<object>.RemoveControlCharacters(n.FieldValue);
+                    var fieldNode = new XElement("field", new XAttribute("name", kv.Key), value);
+                    docNode.Add(fieldNode);
                 }
             }
-            xml.AppendChild(docNode);
-            return xml;
+            return docNode;
         }
     }
 }

@@ -18,12 +18,12 @@ using System;
 
 namespace SolrNet.Attributes {
     /// <summary>
-    /// Marks a property as unique key. By default the field name is the property name.
+    /// Marks a property as unique key. By default the Solr field name is the property name.
     /// </summary>
 	[AttributeUsage(AttributeTargets.Property)]   
 	public class SolrUniqueKeyAttribute : SolrFieldAttribute {
         /// <summary>
-        /// Marks a property as unique key. By default the field name is the property name.
+        /// Marks a property as unique key. By default the Solr field name is the property name.
         /// </summary>
 		public SolrUniqueKeyAttribute() {}
 

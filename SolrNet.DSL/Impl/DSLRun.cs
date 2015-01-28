@@ -47,13 +47,14 @@ namespace SolrNet.DSL.Impl {
 
         private ISolrQueryExecuter<T> NewQueryExecuter() {
             return new SolrQueryExecuter<T>(
-                ServiceLocator.Current.GetInstance<ISolrQueryResultParser<T>>(),
+                ServiceLocator.Current.GetInstance<ISolrAbstractResponseParser<T>>(),
                 connection,
                 ServiceLocator.Current.GetInstance<ISolrQuerySerializer>(),
-                ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>());
+                ServiceLocator.Current.GetInstance<ISolrFacetQuerySerializer>(),
+                ServiceLocator.Current.GetInstance<ISolrMoreLikeThisHandlerQueryResultsParser<T>>());
         }
 
-        public ISolrQueryResults<T> Run() {
+        public SolrQueryResults<T> Run() {
             var exe = NewQueryExecuter();
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,
@@ -64,7 +65,7 @@ namespace SolrNet.DSL.Impl {
             });
         }
 
-        public ISolrQueryResults<T> Run(int start, int rows) {
+        public SolrQueryResults<T> Run(int start, int rows) {
             var exe = NewQueryExecuter(); 
             return exe.Execute(query, new QueryOptions {
                 OrderBy = order,

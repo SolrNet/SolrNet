@@ -61,8 +61,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\MbUnit.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\lib\Rhino.Mocks.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

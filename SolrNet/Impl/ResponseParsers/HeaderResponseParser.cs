@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -26,8 +25,9 @@ namespace SolrNet.Impl.ResponseParsers {
     /// Parses header (status, QTime, etc) from a query response
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class HeaderResponseParser<T> : ISolrResponseParser<T>, ISolrHeaderResponseParser {
-        public void Parse(XDocument xml, SolrQueryResults<T> results) {
+    public class HeaderResponseParser<T> : ISolrAbstractResponseParser<T>, ISolrHeaderResponseParser
+    {
+        public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             var header = Parse(xml);
             if (header != null)
                 results.Header = header;

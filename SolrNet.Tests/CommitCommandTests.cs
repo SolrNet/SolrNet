@@ -1,82 +1,56 @@
 using System;
 using MbUnit.Framework;
-using Rhino.Mocks;
 using SolrNet.Commands;
 
-namespace SolrNet.Tests
-{
+namespace SolrNet.Tests {
     [TestFixture]
-    public class CommitCommandTests
-    {
-        public delegate string Writer(string ignored, string s);
-
+    public class CommitCommandTests {
         [Test]
-        public void ExecuteBasic()
-        {
-            var mocks = new MockRepository();
-            var conn = mocks.StrictMock<ISolrConnection>();
-
-            With.Mocks(mocks).Expecting(() =>
-            {
-                conn.Post("/update", "<commit />");
-                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s)
-                {
-                    Console.WriteLine(s);
-                    return null;
-                }));
-            }).Verify(() =>
-            {
-                var cmd = new CommitCommand();
-                cmd.Execute(conn);
-            });
+        public void ExecuteBasic() {
+            var conn = new Mocks.MSolrConnection();
+            conn.post += (url, content) => {
+                Assert.AreEqual("/update", url);
+                Assert.AreEqual("<commit />", content);
+                Console.WriteLine(content);
+                return null;
+            };
+            var cmd = new CommitCommand();
+            cmd.Execute(conn);
+            Assert.AreEqual(1, conn.post.Calls);
         }
 
         [Test]
-        public void ExecuteWithBasicOptions()
-        {
-            var mocks = new MockRepository();
-            var conn = mocks.StrictMock<ISolrConnection>();
-
-            With.Mocks(mocks).Expecting(() =>
-            {
-                conn.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />");
-                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s)
-                {
-                    Console.WriteLine(s);
-                    return null;
-                }));
-            }).Verify(() =>
-            {
-                var cmd = new CommitCommand { WaitFlush = true, WaitSearcher = true };
-                cmd.Execute(conn);
-            });
+        public void ExecuteWithBasicOptions() {
+            var conn = new Mocks.MSolrConnection();
+            conn.post += (url, content) => {
+                Assert.AreEqual("/update", url);
+                Assert.AreEqual("<commit waitSearcher=\"true\" waitFlush=\"true\" />", content);
+                Console.WriteLine(content);
+                return null;
+            };
+            var cmd = new CommitCommand { WaitFlush = true, WaitSearcher = true };
+            cmd.Execute(conn);
+            Assert.AreEqual(1, conn.post.Calls);
         }
 
         [Test]
-        public void ExecuteWithAllOptions()
-        {
-            var mocks = new MockRepository();
-            var conn = mocks.StrictMock<ISolrConnection>();
+        public void ExecuteWithAllOptions() {
+            var conn = new Mocks.MSolrConnection();
+            conn.post += (url, content) => {
+                Assert.AreEqual("/update", url);
+                Assert.AreEqual("<commit waitSearcher=\"true\" waitFlush=\"true\" expungeDeletes=\"true\" maxSegments=\"2\" />", content);
+                Console.WriteLine(content);
+                return null;
+            };
 
-            With.Mocks(mocks).Expecting(() =>
-            {
-                conn.Post("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" expungeDeletes=\"true\" maxSegments=\"2\" />");
-                LastCall.On(conn).Repeat.Once().Do(new Writer(delegate(string ignored, string s)
-                {
-                    Console.WriteLine(s);
-                    return null;
-                }));
-            }).Verify(() =>
-            {
-                var cmd = new CommitCommand
-                              {
-                                  MaxSegments = 2,
-                                  ExpungeDeletes = true,
-                                  WaitFlush = true,
-                                  WaitSearcher = true
-                              };
-                cmd.Execute(conn);
-            });
-        }    
+            var cmd = new CommitCommand {
+                MaxSegments = 2,
+                ExpungeDeletes = true,
+                WaitFlush = true,
+                WaitSearcher = true
+            };
+            cmd.Execute(conn);
+            Assert.AreEqual(1, conn.post.Calls);
+        }
     }
 }

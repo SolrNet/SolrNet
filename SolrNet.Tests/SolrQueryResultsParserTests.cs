@@ -680,6 +680,49 @@ namespace SolrNet.Tests {
             Assert.AreEqual(0, other[FacetDateOther.Between]);
         }
 
+        [Test]
+        public void ParseFacetRangeResults()
+        {
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithRangeFacet.xml");
+            var p = new FacetsResponseParser<Product>();
+            var results = p.ParseFacetRanges(xml.Root);
+            Assert.AreEqual(1, results.Count);
+            var result = results.First();
+            Assert.AreEqual("solrnumericfield", result.Key);
+            Assert.AreEqual("2.0", result.Value.Gap);
+            Assert.AreEqual("0.0", result.Value.Start);
+            Assert.AreEqual("8.0", result.Value.End);
+            var rangeResults = result.Value.RangeResults;
+            Assert.AreEqual(3, rangeResults.Count);
+            Assert.AreEqual(225505, rangeResults[0].Value);
+            Assert.AreEqual("0.0", rangeResults[0].Key);
+            Assert.AreEqual(17037, rangeResults[1].Value);
+            Assert.AreEqual("2.0", rangeResults[1].Key);
+            Assert.AreEqual(25773, rangeResults[2].Value);
+            Assert.AreEqual("4.0", rangeResults[2].Key);
+        }
+
+        [Test]
+        public void ParseFacetRangeResultsWithOther()
+        {
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithRangeFacetAndOther.xml");
+            var p = new FacetsResponseParser<Product>();
+            var results = p.ParseFacetRanges(xml.Root);
+            Assert.AreEqual(1, results.Count);
+
+            var result = results.First();
+            Assert.AreEqual("solrnumericfield", result.Key);
+            Assert.AreEqual("2.0", result.Value.Gap);
+            Assert.AreEqual("0.0", result.Value.Start);
+            Assert.AreEqual("8.0", result.Value.End);
+            
+            var other = result.Value.OtherResults;
+            Assert.AreEqual(1, other[FacetRangeOther.Before]);
+            Assert.AreEqual(2, other[FacetRangeOther.After]);
+            Assert.AreEqual(4, other[FacetRangeOther.Between]);
+        }
+
+
 		[Test]
 		public void ParseResultsWithGroups() {
 			var mapper = new AttributesMappingManager();

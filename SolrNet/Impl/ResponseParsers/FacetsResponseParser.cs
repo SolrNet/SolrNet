@@ -36,6 +36,7 @@ namespace SolrNet.Impl.ResponseParsers {
                 results.FacetFields = ParseFacetFields(mainFacetNode);
                 results.FacetDates = ParseFacetDates(mainFacetNode);
 				results.FacetPivots = ParseFacetPivots(mainFacetNode);
+                results.FacetRanges = ParseFacetRanges(mainFacetNode);
             }
         }
 
@@ -175,5 +176,81 @@ namespace SolrNet.Impl.ResponseParsers {
 			return pivot;
 		}
 
+        /// <summary>
+        /// Parse Facet ranges results
+        /// </summary>
+        public IDictionary<string, RangeFacetingResult> ParseFacetRanges(XElement node)
+        {
+            var d = new Dictionary<string, RangeFacetingResult>();
+
+            var facetRangesNode = node.Elements("lst")
+                                      .Where(X.AttrEq("name", "facet_ranges"))
+                                      .ToList();
+
+            if (facetRangesNode.Any())
+            {
+                foreach (var fieldNode in facetRangesNode.Elements())
+                {
+                    var name = fieldNode.Attribute("name").Value;
+                    d[name] = ParseRangeFacetingNode(fieldNode);
+                }
+            }
+            return d;
+        }
+
+        public RangeFacetingResult ParseRangeFacetingNode(XElement node)
+        {
+            var r = new RangeFacetingResult();
+            var intParser = new IntFieldParser();
+
+            foreach (var rangeFacetingNode in node.Elements())
+            {
+                var name = rangeFacetingNode.Attribute("name").Value;
+
+                switch (name)
+                {
+                    case "counts":
+                        var countsElements = rangeFacetingNode.Elements().ToList();
+                        foreach (var countNode in countsElements)
+                        {
+                            var rangeName = countNode.Attribute("name").Value;
+                            var rangeValue = (int)intParser.Parse(countNode, typeof(int));
+                            r.RangeResults.Add(new KeyValuePair<string, int>(rangeName, rangeValue));
+                        }
+                        break;
+
+                    case "gap":
+                        r.Gap = rangeFacetingNode.Value;
+                        break;
+
+                    case "start":
+                        r.Start = rangeFacetingNode.Value;
+                        break;
+
+                    case "end":
+                        r.End = rangeFacetingNode.Value;
+                        break;
+
+                    default:
+                        if (rangeFacetingNode.Name != "int")
+                            break;
+
+                        var count = (int)intParser.Parse(rangeFacetingNode, typeof(int));
+
+                        if (name == FacetRangeOther.After.ToString())
+                            r.OtherResults[FacetRangeOther.After] = count;
+
+                        else if (name == FacetRangeOther.Before.ToString())
+                            r.OtherResults[FacetRangeOther.Before] = count;
+
+                        else if (name == FacetRangeOther.Between.ToString())
+                            r.OtherResults[FacetRangeOther.Between] = count;
+
+                        break;
+                }
+            }
+
+            return r;
+        }
     }
 }

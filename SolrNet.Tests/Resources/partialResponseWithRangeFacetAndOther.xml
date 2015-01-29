@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <lst name="facet_ranges">
+    <lst name="solrnumericfield">
+      <lst name="counts">
+        <int name="0.0">225505</int>
+        <int name="2.0">17037</int>
+        <int name="4.0">25773</int>
+      </lst>
+      <double name="gap">2.0</double>
+      <double name="start">0.0</double>
+      <double name="end">8.0</double>
+      <int name="before">1</int>
+      <int name="after">2</int>
+      <int name="between">4</int>
+    </lst>
+  </lst>
+</root>

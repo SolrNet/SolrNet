@@ -36,6 +36,7 @@ namespace SolrNet.Impl.ResponseParsers {
                 results.FacetFields = ParseFacetFields(mainFacetNode);
                 results.FacetDates = ParseFacetDates(mainFacetNode);
 				results.FacetPivots = ParseFacetPivots(mainFacetNode);
+				results.FacetRanges = ParseFacetRanges(mainFacetNode);
             }
         }
 
@@ -81,6 +82,69 @@ namespace SolrNet.Impl.ResponseParsers {
             return d;
         }
 
+		#region Range Facets
+         /// <summary>
+        /// Parses facet dates results
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public IDictionary<string, RangeFacetingResult> ParseFacetRanges(XElement node) {
+            var d = new Dictionary<string, RangeFacetingResult>();
+            var facetDateNode = node.Elements("lst")
+                .Where(X.AttrEq("name", "facet_ranges"));
+            if (facetDateNode != null) {
+                foreach (var fieldNode in facetDateNode.Elements()) {
+                    var name = fieldNode.Attribute("name").Value;
+                    d[name] = ParseRangeFacetingNode(fieldNode);
+                }
+            }
+            return d;
+        }
+
+        public RangeFacetingResult ParseRangeFacetingNode(XElement node) {
+            var r = new RangeFacetingResult();
+            var intParser = new IntFieldParser();
+            foreach (var rangeFacetingNode in node.Elements()) {
+                var name = rangeFacetingNode.Attribute("name").Value;
+                switch (name) {
+                    case "gap":
+                        r.Gap = (int) intParser.Parse(rangeFacetingNode, typeof(int));
+                        break;
+                    case "start":
+                        r.Start = (int)intParser.Parse(rangeFacetingNode, typeof(int));
+                        break;
+                    case "end":
+                        r.End = (int)intParser.Parse(rangeFacetingNode, typeof(int));
+                        break;
+                    case "counts":
+                        var resultsNode = rangeFacetingNode.Elements();
+                        foreach (var xElement in resultsNode)
+                        {
+                            var n = int.Parse(xElement.Attribute("name").Value);
+                            var val = int.Parse(xElement.Value);
+                            r.RangeResults.Add(KV.Create(n,val));
+                        }
+
+                        break;
+                    default:
+                       if (rangeFacetingNode.Name != "int")
+                            break;
+                            
+                        //Handle OTHER results.
+                        var count = (int) intParser.Parse(rangeFacetingNode, typeof (int));
+                        if (name == FacetRangeOther.After.ToString())
+                            r.OtherResults[FacetRangeOther.After] = count;
+                        else if (name == FacetRangeOther.Before.ToString())
+                            r.OtherResults[FacetRangeOther.Before] = count;
+                        else if (name == FacetRangeOther.Between.ToString())
+                            r.OtherResults[FacetRangeOther.Between] = count;
+                       
+                        break;
+                }
+            }
+            return r;
+        }
+        #endregion
         /// <summary>
         /// Parses facet dates results
         /// </summary>

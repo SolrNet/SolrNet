@@ -40,6 +40,11 @@ namespace SolrNet.Impl {
         /// </summary>
         public IDictionary<string, DateFacetingResult> FacetDates { get; set; }
 
+ 		/// <summary>
+        /// Facet Range results
+        /// </summary>
+        public IDictionary<string, RangeFacetingResult> FacetRanges { get; set; }
+
         /// <summary>
         /// Facet pivot results
         /// </summary>
@@ -50,6 +55,7 @@ namespace SolrNet.Impl {
             FacetFields = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
             FacetDates = new Dictionary<string, DateFacetingResult>();
             FacetPivots = new Dictionary<string, IList<Pivot>>();
+			FacetRanges = new Dictionary<string, RangeFacetingResult>();
         }
 
         /// <summary>

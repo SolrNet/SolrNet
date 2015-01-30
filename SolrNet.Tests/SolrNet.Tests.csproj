@@ -152,6 +152,7 @@
     <Compile Include="SolrDIHStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
+    <Compile Include="SolrFacetRangeQueryTests.cs" />
     <Compile Include="SolrFacetPivotQueryTest.cs" />
     <Compile Include="SolrMoreLikeThisHandlerStreamUrlQueryTests.cs" />
     <Compile Include="SolrQueryByDistanceTests.cs" />
@@ -328,10 +329,12 @@
     <EmbeddedResource Include="Resources\responseWithHighlighting3.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\partialResponseWithRangeFacet.xml" />
     <EmbeddedResource Include="Resources\partialResponseWithStats.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\collapseWithExpandResponse.xml" />
+    <EmbeddedResource Include="Resources\partialResponseWithRangeFacetAndOther.xml" />
     <EmbeddedResource Include="Resources\collapseWithoutExpandResponse.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

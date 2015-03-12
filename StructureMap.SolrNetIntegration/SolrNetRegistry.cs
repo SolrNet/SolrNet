@@ -15,6 +15,7 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
+using StructureMap.Pipeline;
 using StructureMap.SolrNetIntegration.Config;
 
 namespace StructureMap.SolrNetIntegration
@@ -107,19 +108,17 @@ namespace StructureMap.SolrNetIntegration
             var SolrBasicServer = typeof(SolrBasicServer<>).MakeGenericType(core.DocumentType);
 
             For(ISolrBasicOperations).Add(SolrBasicServer).Named(core.Id + SolrBasicServer)
-                .Ctor<ISolrConnection>("connection").IsNamedInstance(coreConnectionId);
-                // Don't think this is necessary because of line 102 which will inject it
-                // In my tests, searches worked without this configuration:
-                //.Child("queryExecuter").IsNamedInstance(core.Id + SolrQueryExecuter);
+                .Ctor<ISolrConnection>("connection").IsNamedInstance(coreConnectionId)
+                .Dependencies.Add("queryExecuter", new ReferencedInstance(core.Id + SolrQueryExecuter));
 
             For(ISolrBasicReadOnlyOperations).Add(SolrBasicServer).Named(core.Id + SolrBasicServer)
-                .Ctor<ISolrConnection>("connection").IsNamedInstance(coreConnectionId);
-                //.Child("queryExecuter").IsNamedInstance(core.Id + SolrQueryExecuter);
+                .Ctor<ISolrConnection>("connection").IsNamedInstance(coreConnectionId)
+                .Dependencies.Add("queryExecuter", new ReferencedInstance(core.Id + SolrQueryExecuter));
 
             var ISolrOperations = typeof(ISolrOperations<>).MakeGenericType(core.DocumentType);
             var SolrServer = typeof(SolrServer<>).MakeGenericType(core.DocumentType);
-            For(ISolrOperations).Add(SolrServer).Named(core.Id);
-                //.Child("basicServer").IsNamedInstance(core.Id + SolrBasicServer);
+            For(ISolrOperations).Add(SolrServer).Named(core.Id)
+                .Dependencies.Add("basicServer", new ReferencedInstance(core.Id + SolrBasicServer));
         }
 
         private void AddCoresFromConfig(SolrServers solrServers)

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SolrNet.Tests.Integration</RootNamespace>
     <AssemblyName>SolrNet.Tests.Integration</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -47,13 +47,25 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="ZooKeeperNet">
+      <HintPath>..\packages\ZooKeeperNet.1.0.0.0\lib\net40\ZooKeeperNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Playground.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IntegrationFixture.cs" />
     <Compile Include="SolrCoreAdminFixture.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SolrNet.Cloud.Unity\SolrNet.Cloud.Unity.csproj">
+      <Project>{63538cf2-62c5-4f5a-99b2-9f14896afb98}</Project>
+      <Name>SolrNet.Cloud.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj">
+      <Project>{bda98c34-3b00-4b1f-b850-9c776fede8e3}</Project>
+      <Name>SolrNet.Cloud</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SolrNet.Tests\SolrNet.Tests.csproj">
       <Project>{f3fe6ef5-cf5c-4461-8691-4a498a463fd5}</Project>
       <Name>SolrNet.Tests</Name>
@@ -62,6 +74,16 @@
       <Project>{ceeb8690-3e08-4440-b647-787a58e71cfa}</Project>
       <Name>SolrNet</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj">
+      <Project>{7b507754-c877-4de7-ae2a-19cf5191c95e}</Project>
+      <Name>Unity.SolrNetCloudIntegration</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

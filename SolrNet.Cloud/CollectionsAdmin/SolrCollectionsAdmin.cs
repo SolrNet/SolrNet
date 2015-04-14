@@ -57,7 +57,7 @@ namespace SolrNet.Cloud.CollectionsAdmin {
         public SolrCloudState GetClusterStatus(string collection, string shard = null) {
             var json = SendRaw(AdminHandler, new SolrParams()
                 .AddRequired("wt", "json")
-                .AddRequired("action", "clustertsate")
+                .AddRequired("action", "clusterstate")
                 .AddOptional("shard", shard));
 
             var status = SolrCloudStateParser.Parse(json);

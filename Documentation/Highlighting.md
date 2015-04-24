@@ -1,6 +1,6 @@
 # Highlighting
 
-This feature will "highlight" (typically with markup) the terms that matched the query, including a snippet of the text around the matched term.
+This feature will "highlight" (typically with markup and commonly with an emphasis tag:<em>) the terms that matched the query, including a snippet of the text around the matched term. Highlighting is applied for each one of the fields where the highlighting has been requested.
 
 Sample code:
 
@@ -19,5 +19,7 @@ would print for example:
 ```
 features: <em>Noise</em>Guard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor
 ```
+
+
 
 Solr reference documentation: http://wiki.apache.org/solr/HighlightingParameters

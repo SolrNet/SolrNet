@@ -9,14 +9,10 @@ namespace SolrNet.Impl
     /// </summary>
     public abstract class DebugResults
     {
-        #region Private fields
-
-        private TimingResults timing;
-        private string parsedQuery;
-        private string parsedQueryString;
-        private IDictionary<string, string> explanation; 
-
-        #endregion
+        private readonly TimingResults timing;
+        private readonly string parsedQuery;
+        private readonly string parsedQueryString;
+        private readonly IDictionary<string, string> explanation; 
 
         /// <summary>
         /// Timing results
@@ -50,7 +46,12 @@ namespace SolrNet.Impl
             get { return parsedQueryString; }
         }
 
-        private DebugResults() {}
+        private DebugResults(TimingResults timing, string parsedQuery, string parsedQueryString, IDictionary<string, string> explanation) {
+            this.timing = timing;
+            this.parsedQuery = parsedQuery;
+            this.parsedQueryString = parsedQueryString;
+            this.explanation = explanation;
+        }
 
         /// <summary>
         /// Plain debug results model
@@ -60,13 +61,7 @@ namespace SolrNet.Impl
             /// <summary>
             /// Plain debug results initializer
             /// </summary>
-            public PlainDebugResults(TimingResults timing, string parsedQuery, string parsedQueryString, IDictionary<string, string> plainExplanation) 
-            {
-                this.timing = timing;
-                this.parsedQuery = parsedQuery;
-                this.parsedQueryString = parsedQueryString;
-                this.explanation = plainExplanation;
-            }
+            public PlainDebugResults(TimingResults timing, string parsedQuery, string parsedQueryString, IDictionary<string, string> explanation) : base(timing, parsedQuery, parsedQueryString, explanation) { }
         }
 
         /// <summary>
@@ -87,13 +82,9 @@ namespace SolrNet.Impl
             /// <summary>
             /// Structured debug results initializer
             /// </summary>
-            public StructuredDebugResults(TimingResults timing, string parsedQuery, string parsedQueryString, IDictionary<string, ExplanationModel> structuredExplanation) 
-            {
-                this.timing = timing;
-                this.parsedQuery = parsedQuery;
-                this.parsedQueryString = parsedQueryString;
+            public StructuredDebugResults(TimingResults timing, string parsedQuery, string parsedQueryString, IDictionary<string, ExplanationModel> structuredExplanation) : 
+                base(timing, parsedQuery, parsedQueryString, structuredExplanation.ToDictionary(x => x.Key, y => y.Value.ToString())) {
                 this.structuredExplanation = structuredExplanation;
-                this.explanation = structuredExplanation.ToDictionary(x => x.Key, y => y.Value.ToString());
             }
         }
     }
@@ -103,13 +94,9 @@ namespace SolrNet.Impl
     /// </summary>
     public class TimingResults
     {
-        #region Private fields
-
         private readonly double totalTime;
         private readonly IDictionary<string, double> prepare;
         private readonly IDictionary<string, double> process;
-
-        #endregion
 
         /// <summary>
         /// Elapsed time
@@ -151,14 +138,10 @@ namespace SolrNet.Impl
     /// </summary>
     public class ExplanationModel
     {
-        #region Private fields
-
         private readonly bool match;
         private readonly double value;
         private readonly string description;
         private readonly ICollection<ExplanationModel> details;
-
-        #endregion
 
         /// <summary>
         /// Explanation "match" flag

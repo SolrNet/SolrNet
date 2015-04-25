@@ -80,7 +80,7 @@ namespace SolrNet.Impl.ResponseParsers
         /// </summary>
         /// <param name="rootNode">Explanation root node</param>
         /// <returns>Parsed simple explanations</returns>
-        private IDictionary<string, string> ParseSimpleExplanations(XElement rootNode)
+        private static IDictionary<string, string> ParseSimpleExplanations(XElement rootNode)
         {
             var explainResult = from no in rootNode.Elements()
                                 select new { Key = no.Attribute("name").Value, no.Value };
@@ -93,7 +93,7 @@ namespace SolrNet.Impl.ResponseParsers
         /// </summary>
         /// <param name="rootNode">Explanation root node</param>
         /// <returns>Parsed structured explanations</returns>
-        private IDictionary<string, ExplanationModel> TryParseStructuredExplanations(XElement rootNode)
+        private static IDictionary<string, ExplanationModel> TryParseStructuredExplanations(XElement rootNode)
         {
             var desc = rootNode.XPathSelectElements("lst");
 
@@ -117,7 +117,7 @@ namespace SolrNet.Impl.ResponseParsers
         /// </summary>
         /// <param name="item">Explanation node</param>
         /// <returns>Parsed explanation model</returns>
-        private ExplanationModel ParseExplanationModel(XElement item)
+        private static ExplanationModel ParseExplanationModel(XElement item)
         {
             var detailsResult = new List<ExplanationModel>();
             var detailsItems = item.XPathSelectElements("arr[@name='details']/lst");
@@ -138,7 +138,7 @@ namespace SolrNet.Impl.ResponseParsers
         /// </summary>
         /// <param name="item">Explanation node</param>
         /// <param name="details">Explanation details</param>
-        private ExplanationModel CreateExplanationModel(XElement item, ICollection<ExplanationModel> details)
+        private static ExplanationModel CreateExplanationModel(XElement item, ICollection<ExplanationModel> details)
         {
             var match = bool.Parse(item.XPathSelectElement("bool[@name='match']").Value);
             var description = item.XPathSelectElement("str[@name='description']").Value;
@@ -152,7 +152,7 @@ namespace SolrNet.Impl.ResponseParsers
         /// </summary>
         /// <param name="rootNode"></param>
         /// <returns>Parsed documents</returns>
-        private IDictionary<string, double> ParseDocuments(XElement rootNode)
+        private static IDictionary<string, double> ParseDocuments(XElement rootNode)
         {
             var docNodes = rootNode.Elements("lst");
 
@@ -173,7 +173,7 @@ namespace SolrNet.Impl.ResponseParsers
         /// </summary>
         /// <param name="docNode">Xml item</param>
         /// <returns>Parsed double</returns>
-        private double GetValue(XElement docNode)
+        private static double GetValue(XElement docNode)
         {
             var value = double.Parse(docNode.Value, CultureInfo.InvariantCulture.NumberFormat);
             return value;

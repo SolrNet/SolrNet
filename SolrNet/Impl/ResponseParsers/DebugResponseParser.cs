@@ -76,10 +76,10 @@ namespace SolrNet.Impl.ResponseParsers
         }
 
         /// <summary>
-        /// Parses simple explainations from a query response
+        /// Parses simple explanations from a query response
         /// </summary>
         /// <param name="rootNode">Explanation root node</param>
-        /// <returns>Parsed simple explainations</returns>
+        /// <returns>Parsed simple explanations</returns>
         private IDictionary<string, string> ParseSimpleExplanations(XElement rootNode)
         {
             var explainResult = from no in rootNode.Elements()
@@ -89,10 +89,10 @@ namespace SolrNet.Impl.ResponseParsers
         }
 
         /// <summary>
-        /// Parses structured explainations from a query response
+        /// Parses structured explanations from a query response
         /// </summary>
         /// <param name="rootNode">Explanation root node</param>
-        /// <returns>Parsed structured explainations</returns>
+        /// <returns>Parsed structured explanations</returns>
         private IDictionary<string, ExplanationModel> TryParseStructuredExplanations(XElement rootNode)
         {
             var desc = rootNode.XPathSelectElements("lst");
@@ -105,41 +105,30 @@ namespace SolrNet.Impl.ResponseParsers
             foreach (var item in desc)
             {
                 var key = item.FirstAttribute.Value;
-                var explanationModel = ParseExplainationModel(item);
+                var explanationModel = ParseExplanationModel(item);
                 result.Add(key, explanationModel);
             }
 
             return result;
         }
 
-        /*/// <summary>
-        /// Parses each explainations from a query response
-        /// </summary>
-        /// <param name="item">Explanation node</param>
-        /// <returns>Parsed explaination result</returns>
-        private ExplanationResult ParseExplainationResult(XElement item) {
-            
-
-            return new ExplanationResult(key, explanationModel);
-        }*/
-
         /// <summary>
         /// Recursively parses each explaination node from a query response
         /// </summary>
         /// <param name="item">Explanation node</param>
-        /// <returns>Parsed explaination model</returns>
-        private ExplanationModel ParseExplainationModel(XElement item)
+        /// <returns>Parsed explanation model</returns>
+        private ExplanationModel ParseExplanationModel(XElement item)
         {
             var detailsResult = new List<ExplanationModel>();
             var detailsItems = item.XPathSelectElements("arr[@name='details']/lst");
 
             foreach (var detailsItem in detailsItems)
             {
-                var innerModel = ParseExplainationModel(detailsItem);
+                var innerModel = ParseExplanationModel(detailsItem);
                 detailsResult.Add(innerModel);
             }
 
-            var result = CreateExplainationModel(item, detailsResult);
+            var result = CreateExplanationModel(item, detailsResult);
 
             return result;
         }
@@ -149,7 +138,7 @@ namespace SolrNet.Impl.ResponseParsers
         /// </summary>
         /// <param name="item">Explanation node</param>
         /// <param name="details">Explanation details</param>
-        private ExplanationModel CreateExplainationModel(XElement item, ICollection<ExplanationModel> details)
+        private ExplanationModel CreateExplanationModel(XElement item, ICollection<ExplanationModel> details)
         {
             var match = bool.Parse(item.XPathSelectElement("bool[@name='match']").Value);
             var description = item.XPathSelectElement("str[@name='description']").Value;

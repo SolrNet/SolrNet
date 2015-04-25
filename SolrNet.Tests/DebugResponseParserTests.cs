@@ -25,7 +25,7 @@ namespace SolrNet.Tests
         }
 
         [Test]
-        public void ParseResponseWithSimpleDebugExplaination()
+        public void ParseResponseWithSimpleDebugExplanation()
         {
             var parser = new DebugResponseParser<object>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSimpleDebugDetails.xml");
@@ -39,7 +39,7 @@ namespace SolrNet.Tests
         }
 
         [Test]
-        public void ParseResponseWithStructuredDebugExplaination()
+        public void ParseResponseWithStructuredDebugExplanation()
         {
             var parser = new DebugResponseParser<object>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithStructuredDebugDetails.xml");

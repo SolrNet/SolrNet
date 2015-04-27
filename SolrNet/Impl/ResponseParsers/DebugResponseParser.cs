@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
@@ -33,25 +34,22 @@ namespace SolrNet.Impl.ResponseParsers
         /// <param name="results">Solr query results</param>
         public void Parse(XDocument xml, SolrQueryResults<T> results)
         {
+            results.Debug = ParseDebugResults(xml);
+        }
+
+        private static DebugResults ParseDebugResults(XDocument xml) {
             var debugNode = xml.XPathSelectElement("response/lst[@name='debug']");
             if (debugNode == null)
-                return;
-
-            double totalTime = 0;
-            IDictionary<string, double> processingTime = null;
-            IDictionary<string, double> preparingTime = null;
+                return null;
 
             var totalTimeNode = xml.XPathSelectElement("response/lst[@name='debug']/lst[@name='timing']/double[@name='time']");
-            if (totalTimeNode != null)
-                totalTime = GetValue(totalTimeNode);
+            var totalTime = GetValue(totalTimeNode);
 
             var processNode = xml.XPathSelectElement("response/lst[@name='debug']/lst[@name='timing']/lst[@name='process']");
-            if (processNode != null)
-                processingTime = ParseDocuments(processNode);
+            var processingTime = ParseDocuments(processNode);
 
             var prepareNode = xml.XPathSelectElement("response/lst[@name='debug']/lst[@name='timing']/lst[@name='prepare']");
-            if (prepareNode != null)
-                preparingTime = ParseDocuments(prepareNode);
+            var preparingTime = ParseDocuments(prepareNode);
 
             var parsedQuery = xml.XPathSelectElement("response/lst[@name='debug']/str[@name='parsedquery']").Value;
             var parsedQueryString = xml.XPathSelectElement("response/lst[@name='debug']/str[@name='parsedquery_toString']").Value;
@@ -59,20 +57,16 @@ namespace SolrNet.Impl.ResponseParsers
 
             var explainNode = xml.XPathSelectElement("response/lst[@name='debug']/lst[@name='explain']");
 
-            DebugResults debugResults;
-
-            var structuredExplanation = TryParseStructuredExplanations(explainNode);
-            if (structuredExplanation != null) 
-            {
-                debugResults = new DebugResults.StructuredDebugResults(timing, parsedQuery, parsedQueryString, structuredExplanation);
-            } 
-            else 
-            {
+            var debugResults = F.Func<DebugResults>(() => {
+                var structuredExplanation = TryParseStructuredExplanations(explainNode);
+                if (structuredExplanation != null) {
+                    return new DebugResults.StructuredDebugResults(timing, parsedQuery, parsedQueryString, structuredExplanation);
+                }
                 var plainExplanation = ParseSimpleExplanations(explainNode);
-                debugResults = new DebugResults.PlainDebugResults(timing, parsedQuery, parsedQueryString, plainExplanation);
-            }
+                return new DebugResults.PlainDebugResults(timing, parsedQuery, parsedQueryString, plainExplanation);
+            })();
 
-            results.Debug = debugResults;
+            return debugResults;
         }
 
         /// <summary>
@@ -82,10 +76,7 @@ namespace SolrNet.Impl.ResponseParsers
         /// <returns>Parsed simple explanations</returns>
         private static IDictionary<string, string> ParseSimpleExplanations(XElement rootNode)
         {
-            var explainResult = from no in rootNode.Elements()
-                                select new { Key = no.Attribute("name").Value, no.Value };
-
-            return explainResult.ToDictionary(i => i.Key, i => i.Value);
+            return rootNode.Elements().ToDictionary(x => x.Attribute("name").Value, x => x.Value);
         }
 
         /// <summary>
@@ -95,19 +86,17 @@ namespace SolrNet.Impl.ResponseParsers
         /// <returns>Parsed structured explanations</returns>
         private static IDictionary<string, ExplanationModel> TryParseStructuredExplanations(XElement rootNode)
         {
+            if (rootNode == null)
+                return null;
+
             var desc = rootNode.XPathSelectElements("lst");
 
             if (!desc.Any())
                 return null;
 
-            var result = new Dictionary<string, ExplanationModel>();
-
-            foreach (var item in desc)
-            {
-                var key = item.FirstAttribute.Value;
-                var explanationModel = ParseExplanationModel(item);
-                result.Add(key, explanationModel);
-            }
+            var result = desc.ToDictionary(
+                keySelector: x => x.FirstAttribute.Value,
+                elementSelector: ParseExplanationModel);
 
             return result;
         }
@@ -119,17 +108,9 @@ namespace SolrNet.Impl.ResponseParsers
         /// <returns>Parsed explanation model</returns>
         private static ExplanationModel ParseExplanationModel(XElement item)
         {
-            var detailsResult = new List<ExplanationModel>();
             var detailsItems = item.XPathSelectElements("arr[@name='details']/lst");
-
-            foreach (var detailsItem in detailsItems)
-            {
-                var innerModel = ParseExplanationModel(detailsItem);
-                detailsResult.Add(innerModel);
-            }
-
+            var detailsResult = detailsItems.Select(ParseExplanationModel).ToList();
             var result = CreateExplanationModel(item, detailsResult);
-
             return result;
         }
 
@@ -142,7 +123,7 @@ namespace SolrNet.Impl.ResponseParsers
         {
             var match = bool.Parse(item.XPathSelectElement("bool[@name='match']").Value);
             var description = item.XPathSelectElement("str[@name='description']").Value;
-            var value = double.Parse(item.XPathSelectElement("float[@name='value']").Value, CultureInfo.InvariantCulture.NumberFormat);
+            var value = double.Parse(item.XPathSelectElement("float[@name='value']").Value, CultureInfo.InvariantCulture);
 
             return new ExplanationModel(match, value, description, details);
         }
@@ -154,18 +135,14 @@ namespace SolrNet.Impl.ResponseParsers
         /// <returns>Parsed documents</returns>
         private static IDictionary<string, double> ParseDocuments(XElement rootNode)
         {
+            if (rootNode == null)
+                return new Dictionary<string, double>();
+
             var docNodes = rootNode.Elements("lst");
 
-            var dic = new Dictionary<string, double>();
-            foreach (var docNode in docNodes)
-            {
-                var value = GetValue(docNode.Elements().FirstOrDefault());
-
-                var docNodeName = docNode.Attribute("name").Value;
-                dic.Add(docNodeName, value);
-            }
-
-            return dic;
+            return docNodes.ToDictionary(
+                keySelector: docNode => docNode.Attribute("name").Value,
+                elementSelector: docNode => GetValue(docNode.Elements().FirstOrDefault()));
         }
 
         /// <summary>
@@ -175,7 +152,9 @@ namespace SolrNet.Impl.ResponseParsers
         /// <returns>Parsed double</returns>
         private static double GetValue(XElement docNode)
         {
-            var value = double.Parse(docNode.Value, CultureInfo.InvariantCulture.NumberFormat);
+            if (docNode == null)
+                return 0;
+            var value = double.Parse(docNode.Value, CultureInfo.InvariantCulture);
             return value;
         }
     }

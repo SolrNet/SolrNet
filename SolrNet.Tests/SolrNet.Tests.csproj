@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="CollapseExpandResponseParserTests.cs" />
     <Compile Include="DateTimeOffsetFieldParserTests.cs" />
+    <Compile Include="DebugResponseParserTests.cs" />
     <Compile Include="DefaultResponseParserTests.cs" />
     <Compile Include="LocationTests.cs" />
     <Compile Include="MergeCommandTests.cs" />
@@ -333,6 +334,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\collapseWithExpandResponse.xml" />
     <EmbeddedResource Include="Resources\collapseWithoutExpandResponse.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithStructuredDebugDetails.xml" />
+    <EmbeddedResource Include="Resources\responseWithSimpleDebugDetails.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

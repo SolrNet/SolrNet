@@ -20,4 +20,4 @@ would print for example:
 features: <em>Noise</em>Guard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor
 ```
 
-Solr reference documentation: http://wiki.apache.org/solr/HighlightingParameters
+For more details about this feature, see the [Solr wiki](http://wiki.apache.org/solr/HighlightingParameters) and the [reference guide](https://cwiki.apache.org/confluence/display/solr/Highlighting).

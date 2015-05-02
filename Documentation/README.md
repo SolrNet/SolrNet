@@ -37,6 +37,7 @@ Otherwise, NuGet packages at nuget.org (currently outdated due to lack of docume
  * [NHibernate integration](NHibernate-integration.md)
  * [Accessing multiple Solr cores / instances](Multi-core-instance.md)
  * [Mapping validation](Schema-Mapping-validation.md)
+ * [Binary document upload](Extract.md)
  * [Sample web application](Sample-application.md)
  * [FAQ](FAQ.md)
  * [Websites, products and companies using SolrNet](Powered-by-SolrNet.md)

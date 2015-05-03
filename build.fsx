@@ -127,6 +127,7 @@ Target "NuGet" (fun _ ->
     mkdir nugetDocs
     mkdir nugetLib
     cp docsFile nugetDocs
+    cp "changelog.txt" nugetDocs
     !!(buildDir @@ "SolrNet.*") |> Copy nugetLib
     nuGetBuild "SolrNet" "Apache Solr client" ["CommonServiceLocator", "[1.0]"]
 )

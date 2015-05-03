@@ -4,6 +4,8 @@ SolrNet does not attempt to abstract much over Solr, it's assumed that you know 
 
 If you're not familiar with Solr, take your time to follow the [Solr tutorial](http://lucene.apache.org/solr/tutorial.html), see the [FAQ](http://wiki.apache.org/solr/FAQ) and the [docs](http://wiki.apache.org/solr/FrontPage ). Consider getting a [book](http://lucene.apache.org/solr/books.html).
 
+This page documents SolrNet features in the master branch. For version-specific documentation, see the Documentation directory on the corresponding version branch. For example https://github.com/mausch/SolrNet/blob/0.4.x/Documentation/README.md
+
 ### Downloads
 
 It's currently recommended to get the latest binaries directly from the build server. [![Build status](https://ci.appveyor.com/api/projects/status/lwb0ma5su83pu0lr)](https://ci.appveyor.com/project/mausch/solrnet). The build server also has a NuGet feed with these nightly builds: https://ci.appveyor.com/nuget/solrnet-022x5w7kmuba

@@ -11,6 +11,7 @@ open Fake
 open Fake.FileUtils
 
 let version = "0.5.0.1001"
+let nugetVersion = "0.5.0-alpha1"
 let buildDir = "merged"
 let nugetDir = "nuget"
 let nugetDocs = nugetDir @@ "content"
@@ -33,7 +34,7 @@ let slnBuild sln x =
 let mainSln = slnBuild "solrnet.sln"
 let sampleSln = slnBuild "SampleSolrApp.sln"
 
-let nuGetBuild = Nu.build version
+let nuGetBuild = Nu.build nugetVersion
 
 Target "Clean" <| fun _ -> 
     mainSln "Clean"

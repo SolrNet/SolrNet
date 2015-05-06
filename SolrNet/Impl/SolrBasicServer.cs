@@ -20,6 +20,7 @@ using System.Xml.Linq;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 using SolrNet.Schema;
+using System.Threading.Tasks;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -96,6 +97,11 @@ namespace SolrNet.Impl {
 
         public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
             return queryExecuter.Execute(query, options);
+        }
+
+        public async Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options)
+        {
+            return await queryExecuter.ExecuteAsync(query, options);
         }
 
         public string Send(ISolrCommand cmd) {

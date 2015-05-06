@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace SolrNet {
     /// <summary>
@@ -28,6 +29,7 @@ namespace SolrNet {
         /// <param name="relativeUrl">Path to post to</param>
         /// <param name="s">POST content</param>
         /// <returns></returns>
+        Task<string> PostAsync(string relativeUrl, string s);
         string Post(string relativeUrl, string s);
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace SolrNet {
         /// <param name="getParameters">extra parameters to pass in query string</param>
         /// <returns></returns>
         string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters);
+        Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters);
 
         /// <summary>
         /// GETs from Solr
@@ -47,5 +50,6 @@ namespace SolrNet {
         /// <param name="parameters">Query string parameters</param>
         /// <returns></returns>
         string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters);
+        Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters);
     }
 }

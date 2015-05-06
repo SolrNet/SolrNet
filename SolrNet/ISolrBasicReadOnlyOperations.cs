@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 using SolrNet.Schema;
+using System.Threading.Tasks;
 
 namespace SolrNet {
     /// <summary>
@@ -32,6 +33,7 @@ namespace SolrNet {
         /// <param name="options"></param>
         /// <returns></returns>
         SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options);
+        Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options);
 
         /// <summary>
         /// Executes a MoreLikeThisHandler query

@@ -4,6 +4,7 @@ using Moroco;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 using SolrNet.Schema;
+using System.Threading.Tasks;
 
 namespace SolrNet.Tests.Mocks {
     public class MSolrBasicOperations<T> : ISolrBasicOperations<T> {
@@ -12,6 +13,10 @@ namespace SolrNet.Tests.Mocks {
         }
 
         public SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options) {
             throw new NotImplementedException();
         }
 

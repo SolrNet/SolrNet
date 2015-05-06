@@ -43,7 +43,7 @@ namespace System.Threading {
     }
 }
 
-namespace System
+namespace SolrNet.Tests.Utils
 {
 	[SerializableAttribute]
 	[ComVisibleAttribute(false)]

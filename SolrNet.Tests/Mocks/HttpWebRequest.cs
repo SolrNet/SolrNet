@@ -3,9 +3,15 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using HttpWebAdapters;
+using System.Threading.Tasks;
+using HttpWebAdapters.Adapters;
 
 namespace SolrNet.Tests.Mocks {
     public class HttpWebRequest : IHttpWebRequest {
+        public async Task<IHttpWebResponse> GetResponseAsync() {
+            throw new NotImplementedException();
+        }
+
         public HttpWebRequestMethod Method { get; set; }
 
         public Func<IHttpWebResponse> getResponse;

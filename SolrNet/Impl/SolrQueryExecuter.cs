@@ -24,6 +24,7 @@ using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
+using System.Threading.Tasks;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -666,7 +667,17 @@ namespace SolrNet.Impl {
         /// Executes the query and returns results
         /// </summary>
         /// <returns>query results</returns>
-        public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
+        public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options) {
+            var param = GetAllParameters(q, options);
+            var results = new SolrQueryResults<T>();
+            var r = await connection.GetAsync(Handler, param);
+            var xml = XDocument.Parse(r);
+            resultParser.Parse(xml, results);
+            return results;
+        }
+
+        public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options)
+        {
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
             var r = connection.Get(Handler, param);

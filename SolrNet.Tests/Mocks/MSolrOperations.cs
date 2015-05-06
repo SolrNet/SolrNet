@@ -5,6 +5,7 @@ using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 using SolrNet.Mapping.Validation;
 using SolrNet.Schema;
+using System.Threading.Tasks;
 
 namespace SolrNet.Tests.Mocks {
     public class MSolrOperations<T> : ISolrOperations<T> {
@@ -13,6 +14,10 @@ namespace SolrNet.Tests.Mocks {
         }
 
         public SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options) {
             throw new NotImplementedException();
         }
 

@@ -71,8 +71,78 @@ foreach (var facet in r.FacetQueries) {
 ```
 
 ### Pivot faceting
+Pivot faceting allows creating multidimensional facets. You can create a pivot facet with a main category and group by sub-categories. 
+
+In this example I will show you how to create a pivot facet that separates items by inStock but grouping them by in category.
+
+Please look at the example below:
+```
+//Create a facet Pivot Query
+var facetPivotQuery = new SolrFacetPivotQuery()
+    {
+        //Define 1 pivot, grouping cat by inStock
+        //Multiple can be defined as well
+        Fields = new[] { new PivotFields("inStock", "cat") },
+
+        //Set the minCount to 1
+        MinCount = 1
+    };
+
+//Create the facet parameters
+//Note that you can use pivotQueries together with other facets queries
+var facetParams = new FacetParameters()
+{
+    Queries = new[] { facetPivotQuery },
+
+    //Limit the amounts of pivotRows to 15
+    Limit = 15
+};
+
+var queryOptions = new QueryOptions();
+queryOptions.Facet = facetParams;
+queryOptions.Rows = 0;
+
+var results = solr.Query("*:*", queryOptions);
+if (results.FacetPivots.Count > 0)
+{
+    foreach (var pivotTable in results.FacetPivots)
+    {
+        System.Diagnostics.Debug.WriteLine("Pivot table for " + pivotTable.Key);
+        foreach (var pivot in pivotTable.Value)
+        {
+            System.Diagnostics.Debug.WriteLine("  Pivot: " + pivot.Field + " with value " + pivot.Value + ". Child Pivots:");
+            foreach (var pivotChild in pivot.ChildPivots)
+            {
+                System.Diagnostics.Debug.WriteLine("    - " + pivotChild.Value + " (" + pivotChild.Count + ")");
+            }
+        }
+    }
+}
+```
+
+This sample will create two main categories by inStock(true or false) and then broken down by cat (category). It will print out the following:
+```
+  Pivot: inStock with value true. Child Pivots:
+    - electronics (10)
+    - memory (3)
+    - hard drive (2)
+    - monitor (2)
+    - search (2)
+    - software (2)
+    - camera (1)
+    - copier (1)
+    - multifunction printer (1)
+    - music (1)
+    - printer (1)
+    - scanner (1)
+  Pivot: inStock with value false. Child Pivots:
+    - electronics (4)
+    - connector (2)
+    - graphics card (2)
+    ```
+
+Additional information to be found in:
 http://wiki.apache.org/solr/HierarchicalFaceting#Pivot_Facets
 
 http://wiki.apache.org/solr/SimpleFacetParameters#Pivot_.28ie_Decision_Tree.29_Faceting
 
-(to be documented)

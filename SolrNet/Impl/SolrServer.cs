@@ -148,6 +148,11 @@ namespace SolrNet.Impl {
             return AddRange(docs, null);
         }
 
+        public async Task<ResponseHeader> AddRangeAsync(IEnumerable<T> docs)
+        {
+            return await AddRangeAsync(docs, null);
+        }
+
         [Obsolete("Use AddRange instead")]
         public ResponseHeader Add(IEnumerable<T> docs, AddParameters parameters) {
             return basicServer.AddWithBoost(docs.Select(d => new KeyValuePair<T, double?>(d, null)), parameters);
@@ -155,6 +160,11 @@ namespace SolrNet.Impl {
 
         public ResponseHeader AddRange(IEnumerable<T> docs, AddParameters parameters) {
             return basicServer.AddWithBoost(docs.Select(d => new KeyValuePair<T, double?>(d, null)), parameters);
+        }
+
+        public async Task<ResponseHeader> AddRangeAsync(IEnumerable<T> docs, AddParameters parameters)
+        {
+            return await basicServer.AddWithBoostAsync(docs.Select(d => new KeyValuePair<T, double?>(d, null)), parameters);
         }
 
         [Obsolete("Use AddRangeWithBoost instead")]

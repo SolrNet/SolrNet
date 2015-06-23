@@ -79,6 +79,11 @@ namespace SolrNet.Impl {
             return SendAndParseHeader(cmd);
         }
 
+        public async Task<ResponseHeader> AddWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters) {
+            var cmd = new AddCommand<T>(docs, documentSerializer, parameters);
+            return await SendAndParseHeaderAsync(cmd);
+        }
+
         public ExtractResponse Extract(ExtractParameters parameters) {
             var cmd = new ExtractCommand(parameters);
             return SendAndParseExtract(cmd);
@@ -108,6 +113,11 @@ namespace SolrNet.Impl {
             return cmd.Execute(connection);
         }
 
+        public async Task<string> SendAsync(ISolrCommand cmd)
+        {
+            return await cmd.ExecuteAsync(connection);
+        }
+
         public ExtractResponse SendAndParseExtract(ISolrCommand cmd) {
             var r = Send(cmd);
             var xml = XDocument.Parse(r);
@@ -116,6 +126,13 @@ namespace SolrNet.Impl {
 
         public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
             var r = Send(cmd);
+            var xml = XDocument.Parse(r);
+            return headerParser.Parse(xml);
+        }
+
+        public async Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)
+        {
+            var r = await SendAsync(cmd);
             var xml = XDocument.Parse(r);
             return headerParser.Parse(xml);
         }

@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet {
@@ -47,6 +48,8 @@ namespace SolrNet {
         /// <param name="parameters"></param>
         /// <returns></returns>
         ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters);
+
+        Task<ResponseHeader> AddWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters);
 
         /// <summary>
         /// Adds / updates the extracted contents of a richdocument

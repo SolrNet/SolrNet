@@ -85,5 +85,9 @@ namespace SolrNet.Tests.Mocks {
             return delete.Invoke(ids, q, parameters);
         }
 
+        public Task<ResponseHeader> AddWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

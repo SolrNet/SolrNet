@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace SolrNet.Commands {
@@ -77,5 +78,32 @@ namespace SolrNet.Commands {
 
 			return connection.Post("/update", node.ToString(SaveOptions.DisableFormatting));
 		}
+
+        public async Task<string> ExecuteAsync(ISolrConnection connection)
+        {
+            var node = new XElement("optimize");
+
+            var ps = new[] {
+                new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), 
+                new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), 
+                new KeyValuePair<bool?, string>(ExpungeDeletes, "expungeDeletes")
+            };
+
+            foreach (var p in ps)
+            {
+                if (!p.Key.HasValue) continue;
+
+                var att = new XAttribute(p.Value, p.Key.Value.ToString().ToLower());
+                node.Add(att);
+            }
+
+            if (MaxSegments.HasValue)
+            {
+                var att = new XAttribute("maxSegments", MaxSegments.ToString());
+                node.Add(att);
+            }
+
+            return await connection.PostAsync("/update", node.ToString(SaveOptions.DisableFormatting));
+        }
 	}
 }

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
 using SolrNet.Utils;
@@ -44,6 +45,33 @@ namespace SolrNet.Commands {
         /// Deprecated in Solr 1.3
         /// </summary>
 		public bool? FromCommitted { get; set; }
+
+        public async Task<string> ExecuteAsync(ISolrConnection connection)
+        {
+            var deleteNode = new XElement("delete");
+            if (parameters != null)
+            {
+                if (parameters.CommitWithin.HasValue)
+                {
+                    var attr = new XAttribute("commitWithin", parameters.CommitWithin.Value.ToString(CultureInfo.InvariantCulture));
+                    deleteNode.Add(attr);
+                }
+            }
+            var param = new[] {
+		        KV.Create(FromPending, "fromPending"), 
+                KV.Create(FromCommitted, "fromCommitted")
+		    };
+            foreach (var p in param)
+            {
+                if (p.Key.HasValue)
+                {
+                    var att = new XAttribute(p.Value, p.Key.Value.ToString().ToLower());
+                    deleteNode.Add(att);
+                }
+            }
+            deleteNode.Add(deleteParam.ToXmlNode().ToArray());
+            return await connection.PostAsync("/update", deleteNode.ToString(SaveOptions.DisableFormatting));
+        }
 
 		public string Execute(ISolrConnection connection) {
 			var deleteNode = new XElement("delete");

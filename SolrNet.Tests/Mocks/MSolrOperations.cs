@@ -180,5 +180,10 @@ namespace SolrNet.Tests.Mocks {
         public IEnumerable<ValidationResult> EnumerateValidationResults() {
             throw new NotImplementedException();
         }
+
+        public Task<ResponseHeader> AddRangeAsync(IEnumerable<T> docs)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

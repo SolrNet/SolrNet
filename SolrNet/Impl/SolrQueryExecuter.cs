@@ -387,25 +387,48 @@ namespace SolrNet.Impl {
         /// <param name="options"></param>
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetStatsQueryOptions(QueryOptions options) {
-            if (options.Stats == null || options.Stats.FieldsWithFacets.Count == 0)
+            if (options.Stats == null)
                 yield break;
 
             yield return KV.Create("stats", "true");
 
-            foreach (var fieldAndFacet in options.Stats.FieldsWithFacets) {
-                var field = fieldAndFacet.Key;
-                if (string.IsNullOrEmpty(field))
-                    continue;
-                var facets = fieldAndFacet.Value;
-                yield return KV.Create("stats.field", field);
-                if (facets != null && facets.Count > 0) {
-                    foreach (var facet in facets) {
-                        if (string.IsNullOrEmpty(facet))
-                            continue;
-                        yield return KV.Create(string.Format("f.{0}.stats.facet", field), facet);
+            if (options.Stats.Distinct)
+            {
+                yield return KV.Create("stats.calcdistinct", "true");
+            }
+
+            if (options.Stats.Fields != null)
+            {
+                foreach (var field in options.Stats.Fields)
+                {
+                    if (string.IsNullOrEmpty(field))
+                        continue;
+                    yield return KV.Create("stats.field", field);
+                }
+
+            }
+
+            if (options.Stats.FieldsWithFacets != null)
+            {
+                foreach (var fieldAndFacet in options.Stats.FieldsWithFacets)
+                {
+                    var field = fieldAndFacet.Key;
+                    if (string.IsNullOrEmpty(field))
+                        continue;
+                    var facets = fieldAndFacet.Value;
+                    yield return KV.Create("stats.field", field);
+                    if (facets != null && facets.Count > 0)
+                    {
+                        foreach (var facet in facets)
+                        {
+                            if (string.IsNullOrEmpty(facet))
+                                continue;
+                            yield return KV.Create(string.Format("f.{0}.stats.facet", field), facet);
+                        }
                     }
                 }
             }
+
 
             if (options.Stats.Facets == null || options.Stats.Facets.Count == 0)
                 yield break;
@@ -415,6 +438,7 @@ namespace SolrNet.Impl {
                     continue;
                 yield return KV.Create("stats.facet", facet);
             }
+
         }
 
         /// <summary>

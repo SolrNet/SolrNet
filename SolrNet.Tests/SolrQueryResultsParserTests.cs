@@ -588,7 +588,7 @@ namespace SolrNet.Tests {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithStats.xml");
             var docNode = xml.XPathSelectElement("response/lst[@name='stats']");
             var stats = parser.ParseStats(docNode, "stats_fields");
-            Assert.AreEqual(1, stats.Count);
+            Assert.AreEqual(2, stats.Count);
             Assert.IsTrue(stats.ContainsKey("price"));
             var priceStats = stats["price"];
             Assert.AreEqual(0.0, priceStats.Min);
@@ -623,6 +623,16 @@ namespace SolrNet.Tests {
             Assert.AreEqual(5385249.905200001, priceInStockTrueStats.SumOfSquares);
             Assert.AreEqual(371.8072727272727, priceInStockTrueStats.Mean);
             Assert.AreEqual(621.6592938755265, priceInStockTrueStats.StdDev);
+
+            var zeroResultsStats = stats["zeroResults"];
+            Assert.AreEqual(double.NaN, zeroResultsStats.Min);
+            Assert.AreEqual(double.NaN, zeroResultsStats.Max);
+            Assert.AreEqual(0, zeroResultsStats.Count);
+            Assert.AreEqual(0, zeroResultsStats.Missing);
+            Assert.AreEqual(0.0, zeroResultsStats.Sum);
+            Assert.AreEqual(0.0, zeroResultsStats.SumOfSquares);
+            Assert.AreEqual(double.NaN, zeroResultsStats.Mean);
+            Assert.AreEqual(0.0, zeroResultsStats.StdDev);
         }
 
         [Test]

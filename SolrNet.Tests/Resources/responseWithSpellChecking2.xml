@@ -24,6 +24,8 @@
           <str>ultrasharps</str>
         </arr>
       </lst>
+    </lst>
+    <lst name="collations">
       <str name="collation">dell ultrasharp</str>
       <str name="collation">dell ultrasharps</str>
     </lst>

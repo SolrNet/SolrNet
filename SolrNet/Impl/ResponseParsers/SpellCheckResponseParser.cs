@@ -44,10 +44,20 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <returns></returns>
         public SpellCheckResults ParseSpellChecking(XElement node) {
             var r = new SpellCheckResults();
-            var suggestionsNode = node.XPathSelectElement("lst[@name='suggestions']");
-            var collationNode = suggestionsNode.XPathSelectElement("str[@name='collation']");
-            if (collationNode != null)
-                r.Collation = collationNode.Value;
+            var suggestionsNode = node.XPathSelectElement("lst[@name='suggestions']");            
+            IEnumerable<XElement> collationNodes;
+
+            // Solr 5.0+
+            var collationsNode = node.XPathSelectElement("lst[@name='collations']");
+            if (collationsNode != null)    
+                collationNodes = collationsNode.XPathSelectElements("str[@name='collation']");
+            // Solr 4.x and lower
+            else
+                collationNodes = suggestionsNode.XPathSelectElements("str[@name='collation']");            
+
+            foreach (var cn in collationNodes)
+                r.Collations.Add(cn.Value);
+
             var spellChecks = suggestionsNode.Elements("lst");
             foreach (var c in spellChecks) {
                 var result = new SpellCheckResult();

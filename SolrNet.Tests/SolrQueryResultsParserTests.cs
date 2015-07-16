@@ -482,8 +482,24 @@ namespace SolrNet.Tests {
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             var spellChecking = parser.ParseSpellChecking(docNode);
             Assert.IsNotNull(spellChecking);
-            Assert.AreEqual("dell ultrasharp", spellChecking.Collation);
             Assert.AreEqual(2, spellChecking.Count);
+            Assert.AreEqual("dell ultrasharp", spellChecking.Collations.ElementAt(0));
+            Assert.AreEqual("dell ultrasharps", spellChecking.Collations.ElementAt(1));
+            Assert.AreEqual(2, spellChecking.Collations.Count);
+        }
+
+        [Test]
+        public void ParseSpellChecking2()
+        {
+            var parser = new SpellCheckResponseParser<Product>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellChecking2.xml");
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
+            var spellChecking = parser.ParseSpellChecking(docNode);
+            Assert.IsNotNull(spellChecking);
+            Assert.AreEqual(2, spellChecking.Count);
+            Assert.AreEqual("dell ultrasharp", spellChecking.Collations.ElementAt(0));
+            Assert.AreEqual("dell ultrasharps", spellChecking.Collations.ElementAt(1));
+            Assert.AreEqual(2, spellChecking.Collations.Count);
         }
 
         [Test]

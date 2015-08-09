@@ -42,7 +42,7 @@ double? Score { get; set; }
 
 You're hitting the GET request limit of the Solr web container (i.e. Jetty or Tomcat). You can either:
  * edit this limit in the web container configuration, or 
- * make SolrNet use POST instead of GET. You can do this by installing the SolrNet.Impl.PostSolrConnection decorator ([here's an example](http://stackoverflow.com/a/7584526/21239))
+ * make SolrNet use POST instead of GET. You can do this by installing the [SolrNet.Impl.SolrPostConnection](../SolrNet/Impl/SolrPostConnection.cs) decorator ([here's an example](http://stackoverflow.com/a/7584526/21239))
 
 #### What's the difference between `LocalParams` and `ExtraParams`?
 

@@ -30,3 +30,4 @@ _NCrunch*/*
 packages/*
 .nuget/*.exe
 *.sln.ide
+.vs/*

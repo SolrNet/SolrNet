@@ -2,6 +2,6 @@
 
 [See documentation here](Documentation/README.md).
 
-Special thanks to JetBrains for providing this project with a license for [ReSharper](https://www.jetbrains.com/resharper/)!
+Special thanks to [JetBrains](https://www.jetbrains.com/) for providing this project with a license for [ReSharper](https://www.jetbrains.com/resharper/)!
 
 ![JetBrains](http://blog.jetbrains.com/webide/files/2012/12/logo_JB_tagline-300x108.png)

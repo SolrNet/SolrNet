@@ -1,3 +1,9 @@
+- Fix handling of NaN in stats
+- Handle multi-value field containing one or more nulls
+
+0.5.0a1 (2015-05-04)
+===
+
 - Breaking change: queries that quote values now also quote slash ('/') due to changes in Solr/Lucene 4 (https://issues.apache.org/jira/browse/LUCENE-2604)
 - Upgraded to Ninject 3
 - Added commitWithin option to Delete

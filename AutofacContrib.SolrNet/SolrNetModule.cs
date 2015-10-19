@@ -142,7 +142,7 @@ namespace AutofacContrib.SolrNet {
         ///   Registers a new core in the container.
         ///   This method is meant to be used after the facility initialization
         /// </summary>
-        private static void RegisterCore(SolrCore core, ContainerBuilder builder) {
+        private static void RegisterCore(SolrCore core, ContainerBuilder builder, string handler) {
             var coreConnectionId = core.Id + typeof (SolrConnection);
 
             builder.RegisterType(typeof (SolrConnection))
@@ -154,11 +154,14 @@ namespace AutofacContrib.SolrNet {
             var ISolrQueryExecuter = typeof (ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
             var SolrQueryExecuter = typeof (SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
 
-            builder.RegisterType(SolrQueryExecuter)
+            var queryExecuterBuilder = builder.RegisterType(SolrQueryExecuter)
                 .Named(core.Id + SolrQueryExecuter, ISolrQueryExecuter)
                 .WithParameters(new[] {
                     new ResolvedParameter((p, c) => p.Name == "connection", (p, c) => c.ResolveNamed(coreConnectionId, typeof (ISolrConnection))),
                 });
+							
+            if(!string.IsNullOrEmpty(handler))
+                queryExecuterBuilder.WithProperty("Handler", string.Format("/{0}", handler));
 
             var ISolrBasicOperations = typeof (ISolrBasicOperations<>).MakeGenericType(core.DocumentType);
             var ISolrBasicReadOnlyOperations = typeof (ISolrBasicReadOnlyOperations<>).MakeGenericType(core.DocumentType);
@@ -203,7 +206,7 @@ namespace AutofacContrib.SolrNet {
 
             foreach (SolrServerElement server in solrServers) {
                 var solrCore = GetCoreFrom(server);
-                RegisterCore(solrCore, builder);
+                RegisterCore(solrCore, builder, server.Handler);
             }
         }
 

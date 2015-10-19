@@ -8,6 +8,7 @@ namespace AutofacContrib.SolrNet.Config {
         private const string ID = "id";
         private const string URL = "url";
         private const string DOCUMENT_TYPE = "documentType";
+        private const string HANDLER = "handler";
 
         /// <summary>
         /// Core / instance ID
@@ -18,6 +19,13 @@ namespace AutofacContrib.SolrNet.Config {
             set { base[ID] = value; }
         }
 
+		[ConfigurationProperty(HANDLER, IsKey = true, IsRequired = false)]
+        public string Handler
+        {
+            get { return base[HANDLER].ToString(); }
+            set { base[HANDLER] = value; }
+        }
+		
         /// <summary>
         /// Core / instance URL
         /// </summary>

@@ -118,6 +118,9 @@ namespace SolrNet.Impl {
             if (options.ExtraParams != null)
                 foreach (var p in options.ExtraParams)
                     yield return p;
+
+            if (options.Debug) 
+                yield return KV.Create("debugQuery", "true");
         }
 
         /// <summary>

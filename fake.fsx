@@ -36,9 +36,9 @@ module Nu =
                 Title = name,
                 Version = SemanticVersion version,
                 Description = desc,
-                LicenseUrl = Uri("http://www.apache.org/licenses/LICENSE-2.0"),
+                LicenseUrl = Uri "https://raw.githubusercontent.com/mausch/SolrNet/master/license.txt",
                 Language = "en-US",
-                ProjectUrl = Uri("http://code.google.com/p/solrnet")
+                ProjectUrl = Uri "https://github.com/mausch/SolrNet"
             )
         builder.Authors.Add "Mauricio Scheffer and contributors" |> ignore
         builder.Owners.Add "Mauricio Scheffer" |> ignore

@@ -10,8 +10,8 @@ open System.Xml.Linq
 open Fake
 open Fake.FileUtils
 
-let version = "0.5.0.1001"
-let nugetVersion = "0.5.0-alpha1"
+let version = "0.5.0.1002"
+let nugetVersion = "0.5.0-alpha2"
 let buildDir = "merged"
 let nugetDir = "nuget"
 let nugetDocs = nugetDir @@ "content"
@@ -128,7 +128,7 @@ let nuGetSingle dir =
     !!(dir @@ "bin" @@ config @@ (dir + ".*")) |> Copy nugetLib
     nuGetBuild 
 
-let solrNetDep = "SolrNet", "[" + version + "]"
+let solrNetDep = "SolrNet", "[" + nugetVersion + "]"
 
 Target "NuGet.Windsor" <| fun _ ->
     nuGetSingle 

@@ -77,8 +77,8 @@ namespace SampleSolrApp {
                 }
                 solr.Commit();
                 solr.BuildSpellCheckDictionary();                
-            } catch (SolrConnectionException) {
-                throw new Exception(string.Format("Couldn't connect to Solr. Please make sure that Solr is running on '{0}' or change the address in your web.config, then restart the application.", solrURL));
+            } catch (SolrConnectionException e) {
+                throw new Exception(string.Format("Couldn't connect to Solr. Please make sure that Solr is running on '{0}' or change the address in your web.config, then restart the application.", solrURL), e);
             }
         }
 

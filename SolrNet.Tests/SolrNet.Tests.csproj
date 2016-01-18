@@ -94,6 +94,7 @@
     <Compile Include="DateTimeOffsetFieldParserTests.cs" />
     <Compile Include="DebugResponseParserTests.cs" />
     <Compile Include="DefaultResponseParserTests.cs" />
+    <Compile Include="GenericDictionaryDocumentVisitorTests.cs" />
     <Compile Include="LocationTests.cs" />
     <Compile Include="MergeCommandTests.cs" />
     <Compile Include="Mocks\MSolrFieldSerializer.cs" />
@@ -338,6 +339,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\responseWithStructuredDebugDetails.xml" />
     <EmbeddedResource Include="Resources\responseWithSimpleDebugDetails.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\docWithDynamicFields.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

@@ -128,6 +128,28 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void Serialize_SparseList() {
+            var serializer = GetSerializer();
+            var docNode = serializer.Serialize(new Dictionary<string, object> {
+                {"one", new List<string> {"a", null, "b", "c"}}
+            }, null);
+            Assert.AreEqual(docNode.Nodes().Count(), 3);
+            var fieldNodes = docNode.Elements("field").ToList();
+            Assert.AreEqual("a", fieldNodes[0].Value);
+            Assert.AreEqual("b", fieldNodes[1].Value);
+            Assert.AreEqual("c", fieldNodes[2].Value);
+        }
+
+        [Test]
+        public void Serialize_EmptyList() {
+            var serializer = GetSerializer();
+            var docNode = serializer.Serialize(new Dictionary<string, object> {
+                {"one", new List<string> {null, null}}
+            }, null);
+            Assert.AreEqual(docNode.Nodes().Count(), 0);
+        }
+
+        [Test]
         public void Serialize_KeyValuePair() {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object> {

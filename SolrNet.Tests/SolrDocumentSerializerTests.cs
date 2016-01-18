@@ -60,6 +60,24 @@ namespace SolrNet.Tests {
             ser.Serialize(doc, null).ToString();
 		}
 
+		[Test]
+		public void AcceptsSparseCollections() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithCollections>(mapper, new DefaultFieldSerializer());
+			var doc = new TestDocWithCollections { coll = new[] { "one", null, "two" } };
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
+			Assert.AreEqual("<doc><field name=\"coll\">one</field><field name=\"coll\">two</field></doc>", fs);
+		}
+
+		[Test]
+		public void AcceptsEmptyCollections() {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithCollections>(mapper, new DefaultFieldSerializer());
+			var doc = new TestDocWithCollections { coll = new string[] { null, null } };
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
+			Assert.AreEqual("<doc />", fs);
+		}
+
 		/// <summary>
 		/// Support according to http://lucene.apache.org/solr/api/org/apache/solr/schema/DateField.html
 		/// </summary>

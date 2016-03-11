@@ -1,0 +1,3 @@
+#Debug Explain
+Solr provides info for debugging purposes...
+include a line for pull req demo purposes

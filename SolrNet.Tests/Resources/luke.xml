@@ -1,35 +1,46 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <response>
   <lst name="responseHeader">
     <int name="status">0</int>
-    <int name="QTime">32</int>
+    <int name="QTime">3</int>
   </lst>
   <lst name="index">
-    <int name="numDocs">88</int>
-    <int name="maxDoc">200</int>
-    <int name="deletedDocs">112</int>
+    <int name="numDocs">596</int>
+    <int name="maxDoc">616</int>
+    <int name="deletedDocs">20</int>
     <long name="indexHeapUsageBytes">-1</long>
-    <long name="version">7</long>
+    <long name="version">82</long>
     <int name="segmentCount">1</int>
     <bool name="current">true</bool>
     <bool name="hasDeletions">true</bool>
-    <str name="directory">org.apache.lucene.store.MMapDirectory:MMapDirectory@D:\solr\solr-home\data\index lockFactory=org.apache.lucene.store.NativeFSLockFactory@4acbb296</str>
+    <str name="directory">d.TEST</str>
     <lst name="userData">
-      <str name="commitTimeMSec">1454412006671</str>
+      <str name="commitTimeMSec">1457709167865</str>
     </lst>
-    <date name="lastModified">2016-02-02T11:20:06.671Z</date>
+    <date name="lastModified">2016-03-11T15:12:47.865Z</date>
   </lst>
   <lst name="fields">
-    <lst name="id">
-      <str name="type">string</str>
-      <str name="schema">I-S------OF------</str>
-      <int name="docs">143</int>
+    <lst name="foo_result">
+      <str name="type">type_1</str>
+      <str name="schema">ITS-M------------</str>
+      <str name="dynamicBase">*_result</str>
+      <int name="docs">6</int>
     </lst>
-    <lst name="name">
-      <str name="type">string</str>
+    <lst name="bar_result">
+      <str name="type">type_1</str>
+      <str name="schema">ITS-M------------</str>
+      <str name="dynamicBase">*_result</str>
+      <int name="docs">51</int>
+    </lst>
+    <lst name="id">
+      <str name="type">int</str>
       <str name="schema">I-S------OF------</str>
-      <str name="index">-TS--------------</str>
-      <int name="docs">200</int>
+      <int name="docs">616</int>
+    </lst>
+    <lst name="baz">
+      <str name="type">type_2</str>
+      <str name="schema">ITS-M------------</str>
+      <int name="docs">10</int>
     </lst>
   </lst>
   <lst name="info">
@@ -45,12 +56,15 @@
       <str name="y">Store Payloads With TermVector</str>
       <str name="O">Omit Norms</str>
       <str name="F">Omit Term Frequencies &amp; Positions</str>
-      <str name="P">Omit Positions</str><str name="H">Store Offsets with Positions</str>
+      <str name="P">Omit Positions</str>
+      <str name="H">Store Offsets with Positions</str>
       <str name="L">Lazy</str>
       <str name="B">Binary</str>
       <str name="f">Sort Missing First</str>
       <str name="l">Sort Missing Last</str>
     </lst>
-    <str name="NOTE">Document Frequency (df) is not updated when a document is marked for deletion.  df values include deleted documents.</str>
+    <str name="NOTE">
+      Document Frequency (df) is not updated when a document is marked for deletion. df values include deleted documents.
+    </str>
   </lst>
 </response>

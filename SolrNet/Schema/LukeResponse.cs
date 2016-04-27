@@ -9,6 +9,10 @@ namespace SolrNet.Schema
     /// </summary>
     public class LukeResponse 
     {
+        public LukeResponse()
+        {
+            SolrFields = new List<SolrField>();
+        }
 
         /// <summary>
         /// Gets or sets the solr fields.

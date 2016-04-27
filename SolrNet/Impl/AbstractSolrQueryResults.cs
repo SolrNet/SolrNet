@@ -16,6 +16,11 @@ namespace SolrNet.Impl {
         public int NumFound { get; set; }
 
         /// <summary>
+        /// Start of the results
+        /// </summary>
+        public int Start { get; set; }
+
+        /// <summary>
         /// Max score in these results
         /// </summary>
         public double? MaxScore { get; set; }

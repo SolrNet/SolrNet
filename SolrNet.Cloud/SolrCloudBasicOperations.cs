@@ -7,9 +7,13 @@ namespace SolrNet.Cloud
 {
     public class SolrCloudBasicOperations<T> : SolrCloudOperationsBase<T>, ISolrBasicOperations<T>
     {
+        public SolrCloudBasicOperations(ISolrCloudStateProvider cloudStateProvider, ISolrOperationsProvider operationsProvider)
+            : base(cloudStateProvider, operationsProvider, isPostConnection: false) { }
         public SolrCloudBasicOperations(ISolrCloudStateProvider cloudStateProvider, ISolrOperationsProvider operationsProvider, bool isPostConnection = false)
             : base(cloudStateProvider, operationsProvider, isPostConnection) { }
 
+        public SolrCloudBasicOperations(ISolrCloudStateProvider cloudStateProvider, ISolrOperationsProvider operationsProvider, string collectionName)
+            : base(cloudStateProvider, operationsProvider, isPostConnection: false, collectionName: collectionName) { }
         public SolrCloudBasicOperations(ISolrCloudStateProvider cloudStateProvider, ISolrOperationsProvider operationsProvider, string collectionName, bool isPostConnection = false) 
             : base(cloudStateProvider, operationsProvider, isPostConnection, collectionName) { }
 

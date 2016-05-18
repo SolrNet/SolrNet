@@ -9,12 +9,14 @@ namespace SolrNet.Cloud.Tests
 {
     [TestFixture]
     public class CollectionsAdminTests
-    {
-        public SolrConnection solrconnection;
-        public SolrCollectionsAdmin collections;
-        private const string name = "test";
-        private const string confName = "data";
+    {        
+        private const string COLLECTION_NAME = "test";
+        private const string CONFIG_NAME = "data";
+        private const string SHARD_NAMES = "shard1,shard2";
+        private const string ROUTER_NAME = "implicit";
 
+        private SolrConnection solrconnection;
+        private SolrCollectionsAdmin collections;
 
         [TestFixtureSetUp]
         public void Setup() {
@@ -28,62 +30,66 @@ namespace SolrNet.Cloud.Tests
         }
 
         [Test]
-        public void ToDelete() 
-        {
-            collections.CreateShard("hosts", "shard2");
-            // Assert shard is created, check via cluster state
-            collections.DeleteShard("hosts", "shard2");    
-        }
-
-        [Test]
         public void ReloadColection() {
-            var res = collections.ReloadCollection(confName);
+            CreateCollectionIfNotExists(collections, COLLECTION_NAME);
+            var res = collections.ReloadCollection(COLLECTION_NAME);
             Assert.That(res.Status == 0);
         }
 
         [Test]
         public void CreateRemoveCollectionExcplicitRouter()
         {
-            var res = collections.CreateCollection(name, configName: confName, numShards: 1);
+            var res = collections.CreateCollection(COLLECTION_NAME, configName: CONFIG_NAME, numShards: 1);
             Assert.That(res.Status == 0);
 
-            res = collections.DeleteCollection(name);
+            res = collections.DeleteCollection(COLLECTION_NAME);
             Assert.That(res.Status == 0);
         }
 
         [Test]
         public void CreateRemoveCollectionImplicitRouter()
         {
-            var res = collections.CreateCollection(name, configName: confName, routerName: "implicit", shards: "shard1, shard2", maxShardsPerNode:10);
+            var res = collections.CreateCollection(COLLECTION_NAME, configName: CONFIG_NAME, routerName: ROUTER_NAME, shards: SHARD_NAMES, maxShardsPerNode:10);
             Assert.That(res.Status == 0);
 
-            res = collections.DeleteCollection(name);
+            res = collections.DeleteCollection(COLLECTION_NAME);
             Assert.That(res.Status == 0);
         }
 
         [Test]
         public void AddRemoveShard()
         {
-            RemoveCollectionIfExists(collections, name);
+            RemoveCollectionIfExists(collections, COLLECTION_NAME);
             try {
-                var res = collections.CreateCollection(name, configName: confName, routerName: "implicit", shards: "shard1, shard2", maxShardsPerNode: 10);
+                var res = collections.CreateCollection(COLLECTION_NAME, configName: CONFIG_NAME, routerName: ROUTER_NAME, shards: SHARD_NAMES, maxShardsPerNode: 10);
                 Assert.That(res.Status == 0);
 
-                collections.CreateShard(name, "shard3");
+                collections.CreateShard(COLLECTION_NAME, "shard3");
                 // Assert shard is created, check via cluster state
-                collections.DeleteShard(name, "shard3");
+                collections.DeleteShard(COLLECTION_NAME, "shard3");
             } catch (Exception e) {
                 Assert.Fail(e.ToString());
             } finally {
-                var res = collections.DeleteCollection(name);
+                var res = collections.DeleteCollection(COLLECTION_NAME);
                 Assert.That(res.Status == 0);
+            }
+        }
+
+        private void CreateCollectionIfNotExists(ISolrCollectionsAdmin solr, string collectionName)
+        {
+            var list = solr.ListCollections();
+            if (!list.Contains(collectionName))
+            {
+                solr.CreateCollection(collectionName, routerName: ROUTER_NAME, shards: SHARD_NAMES);
             }
         }
 
         private void RemoveCollectionIfExists(ISolrCollectionsAdmin solr, string colName) {
             var list = solr.ListCollections();
             if (list.Contains(colName))
+            {
                 solr.DeleteCollection(colName);
+            }
         }
     }
 }

@@ -6,9 +6,13 @@ using SolrNet.Schema;
 
 namespace SolrNet.Cloud {
     public class SolrCloudOperations<T> : SolrCloudOperationsBase<T>, ISolrOperations<T> {
+        public SolrCloudOperations(ISolrCloudStateProvider cloudStateProvider, ISolrOperationsProvider operationsProvider)
+            : base(cloudStateProvider, operationsProvider, isPostConnection: false) { }
         public SolrCloudOperations(ISolrCloudStateProvider cloudStateProvider, ISolrOperationsProvider operationsProvider, bool isPostConnection = false)
             : base(cloudStateProvider, operationsProvider, isPostConnection) { }
 
+        public SolrCloudOperations(ISolrCloudStateProvider cloudStateProvider, ISolrOperationsProvider operationsProvider, string collectionName)
+            : base(cloudStateProvider, operationsProvider, isPostConnection: false, collectionName: collectionName) { }
         public SolrCloudOperations(ISolrCloudStateProvider cloudStateProvider, ISolrOperationsProvider operationsProvider, string collectionName, bool isPostConnection = false) 
             : base(cloudStateProvider, operationsProvider, isPostConnection, collectionName) { }
 

@@ -69,12 +69,18 @@ namespace SolrNet.Cloud.ZooKeeperClient
 
         public void Init()
         {
+            if (isInitialized)
+            {
+                return;
+            }
             lock (syncLock)
+            {
                 if (!isInitialized)
                 {
                     Update();
                     isInitialized = true;
                 }
+            }
         }
 
         public SolrCloudState GetCloudState()
@@ -84,44 +90,61 @@ namespace SolrNet.Cloud.ZooKeeperClient
 
         public void Dispose()
         {
+            if (isDisposed)
+            {
+                return;
+            }
             lock (syncLock)
+            {
                 if (!isDisposed)
                 {
                     zooKeeper.Dispose();
                     isDisposed = true;
                 }
+            }
         }
 
         void IWatcher.Process(WatchedEvent @event)
         {
             if (@event.Type == EventType.NodeDataChanged)
-                lock (syncLock)
-                    try
-                    {
-                        Update();
-                    } catch (Exception ex) {
-                        // log exceptions here
-                    }
+            {
+                SynchronizedUpdate();
+            }
             else if (@event.Type == EventType.None && @event.State == KeeperState.Disconnected)
             {
-                lock (syncLock)
-                    try
-                    {
-                        zooKeeper = null;
-                        Update();
-                    } catch (Exception ex) {
-                        // log exceptions here
-                    }
+                SynchronizedUpdate(cleanZookeeperConnection: true);
+            }
+        }
+
+        /// <summary>
+        /// Synchronized updates of zookeeper connection and actual cloud state
+        /// </summary>
+        /// <param name="cleanZookeeperConnection">whether to clean zookeeper connection and create new one</param>
+        private void SynchronizedUpdate(bool cleanZookeeperConnection = false)
+        {
+            lock (syncLock)
+            {                
+                try
+                {
+                    Update(cleanZookeeperConnection);
+                }
+                catch (Exception ex)
+                {
+                    // log exceptions here
+                }
             }
         }
 
         /// <summary>
         /// Updates zookeeper connection and actual cloud state
         /// </summary>
-        private void Update()
+        /// <param name="cleanZookeeperConnection">whether to clean zookeeper connection and create new one</param>
+        private void Update(bool cleanZookeeperConnection = false)
         {
-            if (zooKeeper == null)
+            if (zooKeeper == null || cleanZookeeperConnection)
+            {
                 zooKeeper = new ZooKeeper(zooKeeperConnection, TimeSpan.FromSeconds(10), this);
+            }
 
             state = GetInternalCollectionsState().Merge(GetExternalCollectionsState());
         }

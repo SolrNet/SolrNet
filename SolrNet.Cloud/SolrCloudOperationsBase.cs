@@ -83,6 +83,14 @@ namespace SolrNet.Cloud {
         /// </summary>
         private IList<SolrCloudReplica> SelectReplicas(bool leaders) {
             var state = cloudStateProvider.GetCloudState();
+            if (state == null || state.Collections == null || state.Collections.Count == 0)
+            {
+                throw new ApplicationException("Didn't get any collection's state from zookeeper.");
+            }
+            if (collectionName != null && !state.Collections.ContainsKey(collectionName))
+            {
+                throw new ApplicationException(string.Format("Didn't get '{0}' collection state from zookeeper.", collectionName));
+            }
             var collection = collectionName == null
                 ? state.Collections.Values.First()
                 : state.Collections[collectionName];
@@ -92,7 +100,9 @@ namespace SolrNet.Cloud {
                 .Where(replica => replica.IsActive && (!leaders || replica.IsLeader))
                 .ToList();
             if (replicas.Count == 0)
+            {
                 throw new ApplicationException("No appropriate node was selected to perform the operation.");
+            }
             return replicas;
         }
     }

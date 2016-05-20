@@ -12,12 +12,12 @@ namespace SolrNet.Cloud {
         public string Name { get; private set; }
 
         /// <summary>
-        /// Collectioin router type
+        /// Collection router type
         /// </summary>
         public SolrCloudRouter Router { get; set; }
 
         /// <summary>
-        /// Collectiom shards
+        /// Collection shards
         /// </summary>
         public IDictionary<string, SolrCloudShard> Shards { get; set; }
 

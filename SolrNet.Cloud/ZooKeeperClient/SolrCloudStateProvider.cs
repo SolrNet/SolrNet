@@ -67,6 +67,9 @@ namespace SolrNet.Cloud.ZooKeeperClient
             Key = zooKeeperConnection;
         }
 
+        /// <summary>
+        /// Initialize cloud state
+        /// </summary>
         public void Init()
         {
             if (isInitialized)
@@ -83,9 +86,25 @@ namespace SolrNet.Cloud.ZooKeeperClient
             }
         }
 
+        /// <summary>
+        /// Get cloud state
+        /// </summary>
+        /// <returns>Solr Cloud State</returns>
         public SolrCloudState GetCloudState()
         {
             return state;
+        }
+
+        /// <summary>
+        /// Reinitialize connection and get fresh cloud state.
+        /// Not included in ISolrCloudStateProvider interface due to the testing purpose only 
+        /// (causes reloading all cloud data and too slow to use in production)
+        /// </summary>
+        /// <returns>Solr Cloud State</returns>
+        public SolrCloudState GetFreshCloudState()
+        {
+            SynchronizedUpdate(cleanZookeeperConnection: true);
+            return GetCloudState();
         }
 
         public void Dispose()
@@ -98,17 +117,24 @@ namespace SolrNet.Cloud.ZooKeeperClient
             {
                 if (!isDisposed)
                 {
-                    zooKeeper.Dispose();
+                    if (zooKeeper != null)
+                    {
+                        zooKeeper.Dispose();
+                    }
                     isDisposed = true;
                 }
             }
         }
 
+        /// <summary>
+        /// Watcher for zookeeper events
+        /// </summary>
+        /// <param name="event">zookeeper event</param>
         void IWatcher.Process(WatchedEvent @event)
         {
-            if (@event.Type == EventType.NodeDataChanged)
+            if (@event.Type != EventType.None && !string.IsNullOrEmpty(@event.Path))
             {
-                SynchronizedUpdate();
+                SynchronizedUpdate();                
             }
             else if (@event.Type == EventType.None && @event.State == KeeperState.Disconnected)
             {
@@ -119,7 +145,7 @@ namespace SolrNet.Cloud.ZooKeeperClient
         /// <summary>
         /// Synchronized updates of zookeeper connection and actual cloud state
         /// </summary>
-        /// <param name="cleanZookeeperConnection">whether to clean zookeeper connection and create new one</param>
+        /// <param name="cleanZookeeperConnection">clean zookeeper connection and create new one</param>
         private void SynchronizedUpdate(bool cleanZookeeperConnection = false)
         {
             lock (syncLock)
@@ -138,11 +164,15 @@ namespace SolrNet.Cloud.ZooKeeperClient
         /// <summary>
         /// Updates zookeeper connection and actual cloud state
         /// </summary>
-        /// <param name="cleanZookeeperConnection">whether to clean zookeeper connection and create new one</param>
+        /// <param name="cleanZookeeperConnection">clean zookeeper connection and create new one</param>
         private void Update(bool cleanZookeeperConnection = false)
         {
             if (zooKeeper == null || cleanZookeeperConnection)
             {
+                if (zooKeeper != null)
+                {
+                    zooKeeper.Dispose();
+                }
                 zooKeeper = new ZooKeeper(zooKeeperConnection, TimeSpan.FromSeconds(10), this);
             }
 

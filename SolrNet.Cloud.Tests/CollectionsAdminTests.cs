@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using SolrNet.Cloud.CollectionsAdmin;
 using SolrNet.Impl;
@@ -16,6 +17,10 @@ namespace SolrNet.Cloud.Tests
         private readonly string[] SHARD_NAMES = new string[] { "shard1", "shard2" };
         private const string ROUTER_NAME = "implicit";
         private const int NUM_SHARDS = 1;
+        private const string PROPERTY_NAME = "preferredLeader";
+        private const string NODE_ROLE_NAME = "overseer";
+        private const string CLUSTER_PROPERTY_NAME = "autoAddReplicas";
+        private const string COLLECTION_ALIAS = "test_alias";
 
         private string SOLR_CONNECTION_URL = "http://localhost:8983/solr";
         private SolrConnection solrconnection;
@@ -66,7 +71,7 @@ namespace SolrNet.Cloud.Tests
             Assert.IsNotNull(state);
             Assert.IsTrue(state.Collections == null || !state.Collections.ContainsKey(COLLECTION_NAME));
 
-            var res = collections.CreateCollection(COLLECTION_NAME, configName: CONFIG_NAME, numShards: NUM_SHARDS);
+            var res = collections.CreateCollection(COLLECTION_NAME, numShards: NUM_SHARDS);
             Assert.That(res.Status == 0);
 
             Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);            
@@ -88,7 +93,7 @@ namespace SolrNet.Cloud.Tests
         {
             RemoveCollectionIfExists(collections, COLLECTION_NAME);
             var shardNamesString = string.Join(",", SHARD_NAMES);
-            var res = collections.CreateCollection(COLLECTION_NAME, configName: CONFIG_NAME, routerName: ROUTER_NAME, shards: shardNamesString, maxShardsPerNode: 10);
+            var res = collections.CreateCollection(COLLECTION_NAME, routerName: ROUTER_NAME, shards: shardNamesString, maxShardsPerNode: 10);
             Assert.That(res.Status == 0);
 
             Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
@@ -117,7 +122,7 @@ namespace SolrNet.Cloud.Tests
             RemoveCollectionIfExists(collections, COLLECTION_NAME);
             try {
                 var shardNamesString = string.Join(",", SHARD_NAMES);
-                var res = collections.CreateCollection(COLLECTION_NAME, configName: CONFIG_NAME, routerName: ROUTER_NAME, shards: shardNamesString, maxShardsPerNode: 10);
+                var res = collections.CreateCollection(COLLECTION_NAME, routerName: ROUTER_NAME, shards: shardNamesString, maxShardsPerNode: 10);
                 Assert.That(res.Status == 0);
 
                 Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
@@ -152,17 +157,162 @@ namespace SolrNet.Cloud.Tests
             }
         }
 
-        private void CreateCollectionIfNotExists(ISolrCollectionsAdmin solr, string collectionName)
+        [Test]
+        public void ModifyCollection()
+        {
+            RemoveCollectionIfExists(collections, COLLECTION_NAME);
+            AssertAddCollectionAndGetFirstShard(COLLECTION_NAME);
+            var response = collections.ModifyCollection(COLLECTION_NAME, maxShardsPerNode: 3, replicationFactor: 2, autoAddReplicas: true);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+        }
+
+        //[Test]
+        // causes internal server error (one shard, two shards - doesn't matter)
+        public void SplitShard()
+        {
+            RemoveCollectionIfExists(collections, COLLECTION_NAME);
+            var shard_names = new[] { "shard1" };
+            var shard = AssertAddCollectionAndGetFirstShard(COLLECTION_NAME, shard_names);
+            var response = collections.SplitShard(COLLECTION_NAME, shard.Name);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+        }
+
+        [Test]
+        public void CreateAlias()
+        {
+            AssertCreateAlias();
+        }
+
+        [Test]
+        public void DeleteAlias()
+        {
+            AssertCreateAlias();
+            var response = collections.DeleteAlias(COLLECTION_ALIAS);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+        }
+
+        [Test]
+        public void AddReplica()
+        {
+            AssertAddReplica();
+        }
+
+        [Test]
+        public void DeleteReplica()
+        {
+            var shard = AssertAddReplica();
+            var replica = shard.Replicas.Values.Last();
+            var response = collections.DeleteReplica(COLLECTION_NAME, shard: shard.Name, replica: replica.Name);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+        }
+
+        [Test]
+        public void ClusterPropertySetDelete()
+        {
+            var response = collections.ClusterPropertySetDelete(CLUSTER_PROPERTY_NAME, "true");
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+
+            response = collections.ClusterPropertySetDelete(CLUSTER_PROPERTY_NAME);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+        }
+
+        [Test]
+        public void Migrate()
+        {
+            RemoveCollectionIfExists(collections, "test1");
+            RemoveCollectionIfExists(collections, "test2");
+            var response_collection1 = collections.CreateCollection("test1", numShards: 1);
+            var response_collection2 = collections.CreateCollection("test2", numShards: 1);
+            var response = collections.Migrate("test1", "test2", "a!");
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+        }
+
+        [Test]
+        public void AddRole()
+        {
+            AssertAddRole();
+        }
+
+        [Test]
+        public void RemoveRole()
+        {
+            var node = AssertAddRole();
+            var response = collections.RemoveRole(NODE_ROLE_NAME, node);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+        }
+
+        [Test]
+        public void AddReplicaProperty()
+        {
+            AssertAddReplicaProperty();
+        }
+
+        [Test]
+        public void DeleteReplicaProperty()
+        {
+            var shardReplicaNames = AssertAddReplicaProperty();
+            var response = collections.DeleteReplicaProperty(COLLECTION_NAME, shard: shardReplicaNames.Item1, replica: shardReplicaNames.Item2, property: PROPERTY_NAME);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+        }
+
+        [Test]
+        public void BalanceShardUnique()
+        {
+            CreateCollectionIfNotExists(collections, COLLECTION_NAME);
+            var response = collections.BalanceShardUnique(COLLECTION_NAME, PROPERTY_NAME);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+        }
+
+        [Test]
+        public void RebalanceLeaders()
+        {
+            CreateCollectionIfNotExists(collections, COLLECTION_NAME);
+            var response = collections.RebalanceLeaders(COLLECTION_NAME);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+        }
+
+        [Test]
+        public void OverseerStatus()
+        {
+            var overseerStatus = collections.OverseerStatus();
+            Assert.IsNotNull(overseerStatus);
+            Assert.IsNotNull(overseerStatus.ResponseHeader);
+            Assert.IsTrue(overseerStatus.ResponseHeader.QTime > 0);
+            Assert.IsNotNullOrEmpty(overseerStatus.Leader);
+            Assert.IsNotNull(overseerStatus.CollectionOperations);
+            Assert.IsNotNull(overseerStatus.CollectionQueue);
+            Assert.IsNotNull(overseerStatus.OverseerInternalQueue);
+            Assert.IsNotNull(overseerStatus.OverseerOperations);
+            Assert.IsNotNull(overseerStatus.OverseerQueue);
+
+            var operation = overseerStatus.OverseerQueue.Values.FirstOrDefault();
+            Assert.IsNotNull(operation);
+        }
+
+        private void CreateCollectionIfNotExists(ISolrCollectionsAdmin solr, string collectionName, string routerName = ROUTER_NAME, string[] shard_names = null, int replicationFactor = 1)
         {
             var list = solr.ListCollections();
             if (!list.Contains(collectionName))
             {
-                var shardNamesString = string.Join(",", SHARD_NAMES);
-                solr.CreateCollection(collectionName, routerName: ROUTER_NAME, shards: shardNamesString);
+                var finalShardNames = shard_names ?? SHARD_NAMES;
+                var shardNamesString = string.Join(",", finalShardNames);
+                solr.CreateCollection(collectionName, routerName: routerName, shards: shardNamesString, replicationFactor: replicationFactor, maxShardsPerNode: finalShardNames.Length + 1);
             }
         }
 
-        private void RemoveCollectionIfExists(ISolrCollectionsAdmin solr, string colName) {
+        private void RemoveCollectionIfExists(ISolrCollectionsAdmin solr, string colName)
+        {
             var list = solr.ListCollections();
             if (list.Contains(colName))
             {
@@ -187,6 +337,62 @@ namespace SolrNet.Cloud.Tests
             Assert.IsNotNull(collectionState);
             Assert.IsTrue(collectionState.Name == collectionName);
             return collectionState;
+        }
+
+        private SolrCloudShard AssertAddCollectionAndGetFirstShard(string collectionName = COLLECTION_NAME, string[] shard_names = null)
+        {
+            var finalShardNames = shard_names ?? SHARD_NAMES;
+            Assert.IsNotNull(finalShardNames);
+            Assert.IsTrue(finalShardNames.Length > 0);
+            CreateCollectionIfNotExists(collections, collectionName, shard_names: finalShardNames);
+            var collectionState = AssertCollectionPresenceByCloudState(collectionName);
+            Assert.IsNotNull(collectionState.Shards);
+            Assert.IsTrue(collectionState.Shards.ContainsKey(finalShardNames[0]));
+            var shard = collectionState.Shards[finalShardNames[0]];
+            Assert.IsNotNull(shard);
+            Assert.IsNotNull(shard.Replicas);
+            Assert.IsTrue(shard.Replicas.Count > 0);
+            return shard;
+        }
+
+        private Tuple<string, string> AssertAddReplicaProperty()
+        {            
+            var shard = AssertAddCollectionAndGetFirstShard();            
+            var replica = shard.Replicas.Values.First();
+            Assert.IsNotNull(replica);
+            var response = collections.AddReplicaProperty(COLLECTION_NAME, shard: shard.Name, replica: replica.Name, property: PROPERTY_NAME, propertyValue: "true");
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+            return new Tuple<string, string>(shard.Name, replica.Name);
+        }
+
+        private string AssertAddRole()
+        {
+            CreateCollectionIfNotExists(collections, COLLECTION_NAME);
+            var collectionState = AssertCollectionPresenceByCloudState(COLLECTION_NAME);
+            var node = collectionState.Shards.Values.First().Replicas.Values.First().Url;
+            var response = collections.AddRole(NODE_ROLE_NAME, node);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+            return node;
+        }
+
+        private SolrCloudShard AssertAddReplica()
+        {
+            RemoveCollectionIfExists(collections, COLLECTION_NAME);
+            var shard = AssertAddCollectionAndGetFirstShard();
+            var response = collections.AddReplica(COLLECTION_NAME, shard: shard.Name);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
+            return shard;
+        }
+
+        private void AssertCreateAlias()
+        {
+            CreateCollectionIfNotExists(collections, COLLECTION_NAME);
+            var response = collections.CreateAlias(COLLECTION_NAME, COLLECTION_ALIAS);
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Status == 0);
         }
     }
 }

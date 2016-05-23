@@ -188,6 +188,31 @@ namespace SolrNet.Impl {
 
     public class SolrParams : List<KeyValuePair<string, string>>
     {
+        public SolrParams AddOptional(string keyPrefix, IDictionary<string, string> values)
+        {
+            if (values == null || values.Count == 0)
+            {
+                return this;
+            }
+            
+            foreach (var valueKV in values)
+            {
+                var key = !string.IsNullOrEmpty(keyPrefix) ? keyPrefix + valueKV.Key : valueKV.Key;
+                var value = valueKV.Value;
+                AddOptional(key, value);
+            }
+            return this;
+        }
+
+        public SolrParams AddOptional(string key, object value)
+        {
+            if (value == null)
+            {
+                return this;
+            }
+            return AddOptional(key, value.ToString());
+        }
+
         public SolrParams AddOptional(string key, string value)
         {
             if (!string.IsNullOrEmpty(value))

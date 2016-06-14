@@ -124,6 +124,22 @@ namespace SolrNet.Impl {
             return schemaParser.Parse(schema);
         }
 
+        public LukeResponse GetLuke() {
+            string lukeXml = connection.Get("/admin/luke", null);
+            var lukeResponse = XDocument.Parse(lukeXml);
+            return new LukeResponseParser().Parse(lukeResponse);
+        }
+
+        public LukeResponse GetLuke(string schemaFileName)
+        {
+            string schemaXml = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
+            var schema = XDocument.Parse(schemaXml);
+            var solrSchema = schemaParser.Parse(schema);
+            string lukeXml = connection.Get("/admin/luke", null);
+            var lukeResponse = XDocument.Parse(lukeXml);
+            return new LukeResponseParser().Parse(lukeResponse, solrSchema);
+        }
+
         public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options) {
             var response = connection.Get("/dataimport", null);
             var dihstatus = XDocument.Parse(response);

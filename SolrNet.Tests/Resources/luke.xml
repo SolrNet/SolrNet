@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <lst name="responseHeader">
+    <int name="status">0</int>
+    <int name="QTime">3</int>
+  </lst>
+  <lst name="index">
+    <int name="numDocs">596</int>
+    <int name="maxDoc">616</int>
+    <int name="deletedDocs">20</int>
+    <long name="indexHeapUsageBytes">-1</long>
+    <long name="version">82</long>
+    <int name="segmentCount">1</int>
+    <bool name="current">true</bool>
+    <bool name="hasDeletions">true</bool>
+    <str name="directory">d.TEST</str>
+    <lst name="userData">
+      <str name="commitTimeMSec">1457709167865</str>
+    </lst>
+    <date name="lastModified">2016-03-11T15:12:47.865Z</date>
+  </lst>
+  <lst name="fields">
+    <lst name="foo_result">
+      <str name="type">type_1</str>
+      <str name="schema">ITS-M------------</str>
+      <str name="dynamicBase">*_result</str>
+      <int name="docs">6</int>
+    </lst>
+    <lst name="bar_result">
+      <str name="type">type_1</str>
+      <str name="schema">ITS-M------------</str>
+      <str name="dynamicBase">*_result</str>
+      <int name="docs">51</int>
+    </lst>
+    <lst name="id">
+      <str name="type">int</str>
+      <str name="schema">I-S------OF------</str>
+      <int name="docs">616</int>
+    </lst>
+    <lst name="baz">
+      <str name="type">type_2</str>
+      <str name="schema">ITS-M------------</str>
+      <int name="docs">10</int>
+    </lst>
+  </lst>
+  <lst name="info">
+    <lst name="key">
+      <str name="I">Indexed</str>
+      <str name="T">Tokenized</str>
+      <str name="S">Stored</str>
+      <str name="D">DocValues</str>
+      <str name="M">Multivalued</str>
+      <str name="V">TermVector Stored</str>
+      <str name="o">Store Offset With TermVector</str>
+      <str name="p">Store Position With TermVector</str>
+      <str name="y">Store Payloads With TermVector</str>
+      <str name="O">Omit Norms</str>
+      <str name="F">Omit Term Frequencies &amp; Positions</str>
+      <str name="P">Omit Positions</str>
+      <str name="H">Store Offsets with Positions</str>
+      <str name="L">Lazy</str>
+      <str name="B">Binary</str>
+      <str name="f">Sort Missing First</str>
+      <str name="l">Sort Missing Last</str>
+    </lst>
+    <str name="NOTE">
+      Document Frequency (df) is not updated when a document is marked for deletion. df values include deleted documents.
+    </str>
+  </lst>
+</response>

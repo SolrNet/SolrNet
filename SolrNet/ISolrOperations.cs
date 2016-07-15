@@ -255,5 +255,39 @@ namespace SolrNet {
         /// A collection of <see cref="ValidationResult"/> objects containing warnings and error found validating
         /// the type's mapping against the Solr schema if any.</returns>
         IEnumerable<ValidationResult> EnumerateValidationResults();
+
+        /// <summary>
+        /// Updates a document according to the supplied specification.
+        /// </summary>
+        /// <param name="doc">The document to update</param>
+        /// <param name="updateSpecs">The specification that defines the update</param>
+        /// <returns></returns>
+        ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs);
+
+        /// <summary>
+        /// Updates the document with the supplied ID according to the supplied specification.
+        /// </summary>
+        /// <param name="id">The ID of the document to update</param>
+        /// <param name="updateSpecs">The specification that defines the update</param>
+        /// <returns></returns>
+        ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs);
+
+        /// <summary>
+        /// Updates a document according to the supplied specification.
+        /// </summary>
+        /// <param name="doc">The document to update</param>
+        /// <param name="updateSpecs">The specification that defines the update</param>
+        /// <param name="parameters">The atomic update parameters</param>
+        /// <returns></returns>
+        ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
+
+        /// <summary>
+        /// Updates the document with the supplied ID according to the supplied specification.
+        /// </summary>
+        /// <param name="id">The ID of the document to update</param>
+        /// <param name="updateSpecs">The specification that defines the update</param>
+        /// <param name="parameters">The atomic update parameters</param>
+        /// <returns></returns>
+        ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
     }
 }

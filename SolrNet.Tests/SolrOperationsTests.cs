@@ -527,5 +527,45 @@ namespace SolrNet.Tests {
             var results = new SolrQueryResults<string>();
             Assert.IsInstanceOfType(typeof(IEnumerable<string>), results);
         }
+
+        [Test]
+        public void AtomicUpdate()
+        {
+            var xml = EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml");
+            var connection = new MSolrConnection();
+            connection.post += (url, content) => {
+                Assert.AreEqual("/update", url);
+                Assert.AreEqual("<add commitWithin=\"4343\" overwrite=\"true\"><doc><field name=\"id\">0</field><field name=\"animal\" update=\"set\">squirrel</field><field name=\"food\" update=\"add\">nuts</field><field name=\"count\" update=\"inc\">3</field></doc></add>", content);
+                return xml;
+            };
+            var headerParser = new MSolrHeaderResponseParser();
+            headerParser.parse += _ => null;
+            var basic = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, null, null, null, headerParser, null, null, null);
+            var ops = new SolrServer<TestDocumentWithUniqueKey>(basic, new AttributesMappingManager(), null);
+            var parameters = new AtomicUpdateParameters { CommitWithin = 4343 };
+            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, "squirrel"), new AtomicUpdateSpec("food", AtomicUpdateType.Add, "nuts"), new AtomicUpdateSpec("count", AtomicUpdateType.Inc, "3") };
+            ops.AtomicUpdate(new TestDocumentWithUniqueKey(), updateSpecs, parameters);
+            Assert.AreEqual(1, connection.post.Calls);
+        }
+
+        [Test]
+        public void AtomicUpdateSetNull()
+        {
+            var xml = EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml");
+            var connection = new MSolrConnection();
+            connection.post += (url, content) => {
+                Assert.AreEqual("/update", url);
+                Assert.AreEqual("<add commitWithin=\"4343\" overwrite=\"true\"><doc><field name=\"id\">0</field><field name=\"animal\" null=\"true\" /></doc></add>", content);
+                return xml;
+            };
+            var headerParser = new MSolrHeaderResponseParser();
+            headerParser.parse += _ => null;
+            var basic = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, null, null, null, headerParser, null, null, null);
+            var ops = new SolrServer<TestDocumentWithUniqueKey>(basic, new AttributesMappingManager(), null);
+            var parameters = new AtomicUpdateParameters { CommitWithin = 4343 };
+            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, null) };
+            ops.AtomicUpdate(new TestDocumentWithUniqueKey(), updateSpecs, parameters);
+            Assert.AreEqual(1, connection.post.Calls);
+        }
     }
 }

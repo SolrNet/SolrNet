@@ -500,6 +500,8 @@ namespace SolrNet.Tests {
             Assert.IsNotNull(spellChecking);
             Assert.AreEqual("dell ultrasharp", spellChecking.Collation);
             Assert.AreEqual(2, spellChecking.Count);
+            Assert.AreEqual("dell ultrasharp", spellChecking.Collations.First());
+            Assert.AreEqual(true, spellChecking.CorrectlySpelled);
         }
 
         [Test]

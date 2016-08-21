@@ -46,9 +46,6 @@ namespace SolrNet.Impl.ResponseParsers {
         public SpellCheckResults ParseSpellChecking(XElement node) {
             var r = new SpellCheckResults();
             var suggestionsNode = node.XPathSelectElement("lst[@name='suggestions']");
-            var collationNode = suggestionsNode.XPathSelectElement("str[@name='collation']");
-            if (collationNode != null)
-                r.Collation = collationNode.Value;
             var spellChecks = suggestionsNode.Elements("lst");
             foreach (var c in spellChecks) {
                 var result = new SpellCheckResult();
@@ -69,7 +66,10 @@ namespace SolrNet.Impl.ResponseParsers {
             r.ExtendedCollations = extendedCollationNodes
                 .Select(ToExtendedCollationResult).ToList();
             
-            r.Collation = r.Collation ?? r.ExtendedCollations.FirstOrDefault()?.CollationQuery;
+            var collationNodes = node.XPathSelectElements("lst[@name='collations']/str[@name='collation']");
+            r.Collations = collationNodes.Select(n => n.Value).ToArray();
+
+            r.Collation = r.Collations.FirstOrDefault() ?? r.ExtendedCollations.FirstOrDefault()?.CollationQuery;
 
             var correctlySpelledNode = node.XPathSelectElement("bool[@name='correctlySpelled']");
             if(correctlySpelledNode != null)

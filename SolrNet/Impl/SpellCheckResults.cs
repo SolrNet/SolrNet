@@ -14,8 +14,10 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.PerformanceData;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -23,7 +25,8 @@ namespace SolrNet.Impl {
     /// </summary>
     public class SpellCheckResults : ICollection<SpellCheckResult> {
         /// <summary>
-        /// Suggestion query from spell-checking
+        /// First founs suggestion query from spell-checking
+        /// Works if request was for extended and non-extended collation results
         /// </summary>
         public string Collation { get; set; }
 
@@ -31,6 +34,11 @@ namespace SolrNet.Impl {
         /// Extended collated suggestions from spell-checking
         /// </summary>
         public ICollection<ExtendedSpellCheckCollationResult> ExtendedCollations = new List<ExtendedSpellCheckCollationResult>();
+
+        /// <summary>
+        /// Collated query suggestions from spell-checking
+        /// </summary>
+        public ICollection<string> Collations = new List<string>();
 
         /// <summary>
         /// Whether the original query was correctly spelled

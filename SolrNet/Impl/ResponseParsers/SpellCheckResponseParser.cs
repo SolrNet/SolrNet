@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using SolrNet.Utils;
@@ -63,7 +64,28 @@ namespace SolrNet.Impl.ResponseParsers {
                 result.Suggestions = suggestions;
                 r.Add(result);
             }
+
+            var extendedCollationNodes = node.XPathSelectElements("lst[@name='collations']/lst[@name='collation']");
+            r.ExtendedCollations = extendedCollationNodes
+                .Select(ToExtendedCollationResult).ToList();
+            
+            r.Collation = r.Collation ?? r.ExtendedCollations.FirstOrDefault()?.CollationQuery;
+
+            var correctlySpelledNode = node.XPathSelectElement("bool[@name='correctlySpelled']");
+            if(correctlySpelledNode != null)
+                r.CorrectlySpelled = Convert.ToBoolean(correctlySpelledNode.Value);
+
             return r;
+        }
+
+        private ExtendedSpellCheckCollationResult ToExtendedCollationResult(XElement node) {
+            return new ExtendedSpellCheckCollationResult {
+                CollationQuery = node.XPathSelectElement("str[@name='collationQuery']").Value,
+                Hits = Convert.ToInt32(node.XPathSelectElement("int[@name='hits']").Value),
+                MisspellingsAndCorrections = node.XPathSelectElements("lst[@name='misspellingsAndCorrections']/str")
+                    .Select(mis => new KeyValuePair<string, string>(mis.Attribute("name").Value, mis.Value))
+                    .ToArray()
+            };
         }
     }
 }

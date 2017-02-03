@@ -55,6 +55,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{648832
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleInjector.Integration.SolrNet", "SimpleInjector.Integration.SolrNet\SimpleInjector.Integration.SolrNet.csproj", "{F48AE8B2-ECA3-4213-AA64-3A85FCB9E854}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleInjector.Integration.SolrNet.Tests", "SimpleInjector.Integration.SolrNet.Tests\SimpleInjector.Integration.SolrNet.Tests.csproj", "{CEC17214-73C5-4532-B157-30D4467E2F7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,10 @@ Global
 		{F48AE8B2-ECA3-4213-AA64-3A85FCB9E854}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F48AE8B2-ECA3-4213-AA64-3A85FCB9E854}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F48AE8B2-ECA3-4213-AA64-3A85FCB9E854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEC17214-73C5-4532-B157-30D4467E2F7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEC17214-73C5-4532-B157-30D4467E2F7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEC17214-73C5-4532-B157-30D4467E2F7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEC17214-73C5-4532-B157-30D4467E2F7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

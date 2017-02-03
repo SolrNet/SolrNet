@@ -77,5 +77,47 @@ container = new UnityContainer();
 new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container);
 ```
 
+### Simple Injector
+(SolrNet 0.4.0)
+
+```C#
+var container = new Container();
+
+var config = new SolrNetConfiguration(_Container);
+config.ConfigureContainer();
+config.RegisterCore<Entity>("http://localhost:8893/solr/entity");
+config.RegisterCore<Entity2>("http://localhost:8893/solr/entity");
+
+var operation = container.GetInstance<ISolrOperations<Entity>>();
+```
+
+You can also make it easier by implementing a connection builder:
+
+```C#
+class EntityConnectionBuilder : IConnectionBuilder
+{
+    private string host = "http://localhost:8920/solr/";
+
+    public string Build(Type entityType)
+    {
+        return host + entityType.Name.ToLower() + "s";
+    }
+
+    public string Build<TEntity>()
+    {
+        return Build(typeof(TEntity));
+    }
+}
+
+var container = new Container();
+
+var config = new SolrNetConfiguration(_Container);
+config.ConfigureContainer();
+config.RegisterCores<EntityConnectionBuilder>();
+
+var operation = container.GetInstance<ISolrOperations<Entity>>();
+var operation = container.GetInstance<ISolrOperations<Entity2>>();
+```
+
 ### Multi-core mapping
 If you need to map multiple Solr cores/instances, see [this page](Multi-core-instance.md).

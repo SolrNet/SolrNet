@@ -4,7 +4,6 @@ SolrNet supports [faceted searching](http://cwiki.apache.org/solr/SolrFacetingOv
 
 There are basically three kinds of facet queries:
 
- 1. querying by field
  1.que vaina es esta?
  1. date facets
  1. arbitrary facet queries

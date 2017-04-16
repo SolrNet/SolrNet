@@ -1,6 +1,6 @@
 # Faceting
 
-Hello :D XoXo
+Hello
 
 SolrNet supports [faceted searching](http://cwiki.apache.org/solr/SolrFacetingOverview).
 

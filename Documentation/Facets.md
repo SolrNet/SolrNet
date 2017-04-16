@@ -1,6 +1,6 @@
 # Faceting
 
-Hello conflict, are you there?
+Hello conflict, are you there? for beyond XD
 
 SolrNet supports [faceted searching](http://cwiki.apache.org/solr/SolrFacetingOverview).
 

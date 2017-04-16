@@ -1,7 +1,7 @@
 # Faceting
-Hello Juan
+
 SolrNet supports [faceted searching](http://cwiki.apache.org/solr/SolrFacetingOverview).
-Jello juano
+
 There are basically three kinds of facet queries:
 
  1.que vaina es esta?

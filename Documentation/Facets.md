@@ -1,6 +1,7 @@
 # Faceting
 
-Hello :D
+Hello :D XoXo
+
 SolrNet supports [faceted searching](http://cwiki.apache.org/solr/SolrFacetingOverview).
 
 There are basically three kinds of facet queries:

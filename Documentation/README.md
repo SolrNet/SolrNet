@@ -58,6 +58,7 @@ In a nutshell:
  * Tests are a must. Without tests, changes will not be merged, except for very specific cases.
  * Whenever possible, favor immutable classes and pure code.
  * If you're adding a new feature or making a breaking change, update the corresponding documentation.
+ * SolrNet has recently adopted using [Gitflow workflow](http://nvie.com/posts/a-successful-git-branching-model/) as its branching strategy, whenever you contribute please from your fork create a pull request with a branch that is up to date. Once confirmed, it will be merged and a new version will be released.
 
 You can also contribute by donating a few bucks:
 

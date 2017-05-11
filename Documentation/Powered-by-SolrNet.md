@@ -17,3 +17,4 @@
  * [Sitecore](http://www.dansolovay.com/2013/05/setting-up-solr-with-sitecore-7.html)
  * http://www.libris.no/
  * [nopCommerce Search Plugin](http://shop.dev-partner.biz/nopcommerce-search-solr-plugin) (by [Dev-Partner.biz Team](http://dev-partner.biz/))
+ * [UsadosCR](http://www.usados.cr) 

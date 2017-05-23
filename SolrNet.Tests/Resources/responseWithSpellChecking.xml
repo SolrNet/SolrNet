@@ -12,7 +12,9 @@
         <int name="startOffset">0</int>
         <int name="endOffset">4</int>
         <arr name="suggestion">
-          <str>dell</str>
+          <lst>
+            <str>dell</str>
+          </lst>
         </arr>
       </lst>
       <lst name="ultrashar">
@@ -20,7 +22,9 @@
         <int name="startOffset">5</int>
         <int name="endOffset">14</int>
         <arr name="suggestion">
-          <str>ultrasharp</str>
+          <lst>
+            <str>ultrasharp</str>
+          </lst>
         </arr>
       </lst>
       <str name="collation">dell ultrasharp</str>

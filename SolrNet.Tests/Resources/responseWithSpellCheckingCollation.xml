@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <result name="response" numFound="0" start="0">
+  </result>
+  <lst name="spellcheck">
+    <lst name="suggestions">
+      <lst name="produtc">
+        <int name="numFound">1</int>
+        <int name="startOffset">0</int>
+        <int name="endOffset">7</int>
+        <arr name="suggestion">
+          <str>product</str>
+        </arr>
+      </lst>
+      <lst name="collation">
+        <str name="collationQuery">product</str>
+        <int name="hits">1000</int>
+        <lst name="misspellingsAndCorrections">
+          <str name="produtc">product</str>
+        </lst>
+      </lst>
+    </lst>
+  </lst>
+</response>

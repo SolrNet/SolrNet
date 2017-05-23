@@ -8,6 +8,9 @@ This page documents SolrNet features in the master branch. For version-specific 
 
 ### Downloads
 
+`There is currently an issue with Gallio tests and Visual Studio 2015+. 
+Working to resolve, however tests pass with Visual Studio 2013.`
+
 It's currently recommended to get the latest binaries directly from the build server. [![Build status](https://ci.appveyor.com/api/projects/status/lwb0ma5su83pu0lr)](https://ci.appveyor.com/project/mausch/solrnet). The build server also has a NuGet feed with these nightly builds: https://ci.appveyor.com/nuget/solrnet-022x5w7kmuba
 
 Otherwise, NuGet packages at nuget.org (currently outdated due to lack of documentation) are available:

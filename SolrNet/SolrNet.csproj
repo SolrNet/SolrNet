@@ -127,6 +127,7 @@
     <Compile Include="Impl\ResponseParsers\ReplicationDetailsResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\ReplicationIndexVersionResponseParser.cs" />
     <Compile Include="Impl\ResponseParsers\ReplicationStatusResponseParser.cs" />
+    <Compile Include="Impl\ExtendedSpellCheckCollationResult.cs" />
     <Compile Include="ISolrCoreReplication.cs" />
     <Compile Include="Impl\SolrCoreReplication.cs" />
     <Compile Include="Impl\FieldParsers\DateTimeOffsetFieldParser.cs" />

@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using SolrNet.Utils;
@@ -45,9 +46,6 @@ namespace SolrNet.Impl.ResponseParsers {
         public SpellCheckResults ParseSpellChecking(XElement node) {
             var r = new SpellCheckResults();
             var suggestionsNode = node.XPathSelectElement("lst[@name='suggestions']");
-            var collationNode = suggestionsNode.XPathSelectElement("str[@name='collation']");
-            if (collationNode != null)
-                r.Collation = collationNode.Value;
             var spellChecks = suggestionsNode.Elements("lst");
             foreach (var c in spellChecks) {
                 var result = new SpellCheckResult();
@@ -63,7 +61,31 @@ namespace SolrNet.Impl.ResponseParsers {
                 result.Suggestions = suggestions;
                 r.Add(result);
             }
+
+            var extendedCollationNodes = node.XPathSelectElements("lst[@name='collations']/lst[@name='collation']");
+            r.ExtendedCollations = extendedCollationNodes
+                .Select(ToExtendedCollationResult).ToList();
+            
+            var collationNodes = node.XPathSelectElements("lst[@name='collations']/str[@name='collation']");
+            r.Collations = collationNodes.Select(n => n.Value).ToArray();
+
+            r.Collation = r.Collations.FirstOrDefault() ?? r.ExtendedCollations.FirstOrDefault()?.CollationQuery;
+
+            var correctlySpelledNode = node.XPathSelectElement("bool[@name='correctlySpelled']");
+            if(correctlySpelledNode != null)
+                r.CorrectlySpelled = Convert.ToBoolean(correctlySpelledNode.Value);
+
             return r;
+        }
+
+        private ExtendedSpellCheckCollationResult ToExtendedCollationResult(XElement node) {
+            return new ExtendedSpellCheckCollationResult {
+                CollationQuery = node.XPathSelectElement("str[@name='collationQuery']").Value,
+                Hits = Convert.ToInt32(node.XPathSelectElement("int[@name='hits']").Value),
+                MisspellingsAndCorrections = node.XPathSelectElements("lst[@name='misspellingsAndCorrections']/str")
+                    .Select(mis => new KeyValuePair<string, string>(mis.Attribute("name").Value, mis.Value))
+                    .ToArray()
+            };
         }
     }
 }

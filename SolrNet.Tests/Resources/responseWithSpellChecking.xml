@@ -23,6 +23,9 @@
           <str>ultrasharp</str>
         </arr>
       </lst>
+    </lst>
+    <bool name="correctlySpelled">true</bool>
+    <lst name="collations">
       <str name="collation">dell ultrasharp</str>
     </lst>
   </lst>

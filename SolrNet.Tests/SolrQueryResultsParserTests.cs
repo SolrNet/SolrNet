@@ -476,7 +476,23 @@ namespace SolrNet.Tests {
         }
         
         [Test]
-        public void ParseSpellChecking() {
+        public void ParseExtendedSpellChecking() {
+            var parser = new SpellCheckResponseParser<Product>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithExtendedSpellChecking.xml");
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
+            var spellChecking = parser.ParseSpellChecking(docNode);
+            Assert.IsNotNull(spellChecking);
+            Assert.AreEqual("dell ultrasharp", spellChecking.Collation);
+            Assert.AreEqual(2, spellChecking.Count);
+            Assert.AreEqual("dell ultrasharp", spellChecking.ExtendedCollations.First().CollationQuery);
+            Assert.AreEqual(1, spellChecking.ExtendedCollations.First().Hits);
+            Assert.AreEqual(new KeyValuePair<string, string>("delll", "dell"), spellChecking.ExtendedCollations.First().MisspellingsAndCorrections.First());
+            Assert.AreEqual(false, spellChecking.CorrectlySpelled);
+        }
+
+        [Test]
+        public void ParseSpellChecking()
+        {
             var parser = new SpellCheckResponseParser<Product>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellChecking.xml");
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
@@ -484,6 +500,8 @@ namespace SolrNet.Tests {
             Assert.IsNotNull(spellChecking);
             Assert.AreEqual("dell ultrasharp", spellChecking.Collation);
             Assert.AreEqual(2, spellChecking.Count);
+            Assert.AreEqual("dell ultrasharp", spellChecking.Collations.First());
+            Assert.AreEqual(true, spellChecking.CorrectlySpelled);
         }
 
         [Test]

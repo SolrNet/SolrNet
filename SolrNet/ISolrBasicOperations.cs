@@ -55,11 +55,20 @@ namespace SolrNet {
         /// <returns></returns>
         ExtractResponse Extract(ExtractParameters parameters);
 
+		/// <summary>
+		/// Deletes all documents that match the given id's or the query
+		/// </summary>
+		/// <param name="ids">document ids to delete</param>
+		/// <param name="q">query to match</param>
+		/// <returns></returns>
+		ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q);
+
         /// <summary>
         /// Deletes all documents that match the given id's or the query
         /// </summary>
         /// <param name="ids">document ids to delete</param>
         /// <param name="q">query to match</param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
         ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters);
 

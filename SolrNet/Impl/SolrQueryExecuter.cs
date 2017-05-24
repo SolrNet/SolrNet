@@ -669,7 +669,9 @@ namespace SolrNet.Impl {
         public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
-            var r = connection.Get(Handler, param);
+            var handler = GetRequestHandlerOverrideOrUseDefault(options, Handler);
+
+            var r = connection.Get(handler, param);
             var xml = XDocument.Parse(r);
             resultParser.Parse(xml, results);
             return results;
@@ -683,9 +685,35 @@ namespace SolrNet.Impl {
         /// <returns></returns>
         public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options) {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
-            var r = connection.Get(MoreLikeThisHandler, param);
+            var handler = GetRequestHandlerOverrideOrUseDefault(options, MoreLikeThisHandler);            
+
+            var r = connection.Get(handler, param);
             var qr = mlthResultParser.Parse(r);
             return qr;
         }
+
+
+        /// <summary>
+        /// Checks if the <see cref="CommonQueryOptions.ExtraParams"/> contains a "qt"-parameter (overriding the default request handler). 
+        /// If specified, returns the value of the qt-parameter. Otherwise the value of <paramref name="defaultHandler"/> is returned.
+        /// </summary>
+        /// <param name="options">The options.</param>
+        /// <param name="defaultHandler">The default handler.</param>
+        /// <returns>The name of the request handler to use.</returns>
+        private string GetRequestHandlerOverrideOrUseDefault(CommonQueryOptions options, string defaultHandler = null)
+        {
+            // Add support for overriding the default handler using the qt parameter:
+            var handler = defaultHandler ?? Handler;
+            if (options == null || options.ExtraParams == null) 
+                return handler;
+            var qt = options.ExtraParams.SingleOrDefault(x => x.Key == "qt");
+            
+            if (!string.IsNullOrEmpty(qt.Value)) 
+                handler = qt.Value;
+            
+            return handler;
+        }
+
+
     }
 }

@@ -487,10 +487,24 @@ namespace SolrNet.Tests {
         }
 
         [Test]
-        public void ParseSpellCheckingCollateTrue()
+        public void ParseSpellCheckingCollateTrueInSuggestions()
         {
+            // Multiple collation nodes are included in suggestions in Solr 4.x, included for backward compatibility
             var parser = new SpellCheckResponseParser<Product>();
-            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingCollation.xml");
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingCollationInSuggestions.xml");
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
+            var spellChecking = parser.ParseSpellChecking(docNode);
+            Assert.IsNotNull(spellChecking);
+            Assert.AreEqual("audit", spellChecking.Collation);
+            Assert.AreEqual(2, spellChecking.Count);
+        }
+
+        [Test]
+        public void ParseSpellCheckingCollateTrueInCollations()
+        {
+            //Collations node now separates from collation nodes from suggestions
+            var parser = new SpellCheckResponseParser<Product>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingCollationInCollations.xml");
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             var spellChecking = parser.ParseSpellChecking(docNode);
             Assert.IsNotNull(spellChecking);

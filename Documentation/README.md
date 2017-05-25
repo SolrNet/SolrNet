@@ -8,6 +8,9 @@ This page documents SolrNet features in the master branch. For version-specific 
 
 ### Downloads
 
+`There is currently an issue with Gallio tests and Visual Studio 2015+. 
+Working to resolve, however tests pass with Visual Studio 2013.`
+
 It's currently recommended to get the latest binaries directly from the build server. [![Build status](https://ci.appveyor.com/api/projects/status/lwb0ma5su83pu0lr)](https://ci.appveyor.com/project/mausch/solrnet). The build server also has a NuGet feed with these nightly builds: https://ci.appveyor.com/nuget/solrnet-022x5w7kmuba
 
 Otherwise, NuGet packages at nuget.org (currently outdated due to lack of documentation) are available:
@@ -58,6 +61,7 @@ In a nutshell:
  * Tests are a must. Without tests, changes will not be merged, except for very specific cases.
  * Whenever possible, favor immutable classes and pure code.
  * If you're adding a new feature or making a breaking change, update the corresponding documentation.
+ * SolrNet has recently adopted using [Gitflow workflow](http://nvie.com/posts/a-successful-git-branching-model/) as its branching strategy, whenever you contribute please from your fork create a pull request with a branch that is up to date. Once confirmed, it will be merged and a new version will be released.
 
 You can also contribute by donating a few bucks:
 

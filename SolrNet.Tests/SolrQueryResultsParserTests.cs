@@ -497,6 +497,7 @@ namespace SolrNet.Tests {
             Assert.IsNotNull(spellChecking);
             Assert.AreEqual("audit", spellChecking.Collation);
             Assert.AreEqual(2, spellChecking.Count);
+            Assert.AreEqual(2, spellChecking.Collations.Count);
         }
 
         [Test]
@@ -508,8 +509,9 @@ namespace SolrNet.Tests {
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             var spellChecking = parser.ParseSpellChecking(docNode);
             Assert.IsNotNull(spellChecking);
-            Assert.AreEqual("audit", spellChecking.Collation);
+            Assert.AreEqual("dell ultrasharp", spellChecking.Collation);
             Assert.AreEqual(2, spellChecking.Count);
+            Assert.AreEqual(1, spellChecking.Collations.Count);
         }
 
         [Test]

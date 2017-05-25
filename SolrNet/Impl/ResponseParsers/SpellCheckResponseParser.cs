@@ -51,22 +51,36 @@ namespace SolrNet.Impl.ResponseParsers
             var r = new SpellCheckResults();
             var suggestionsNode = node.XPathSelectElement("lst[@name='suggestions']");
 
-            //var collationNode = suggestionsNode.XPathSelectElement("str[@name='collation']");
-            //if (collationNode != null)
-            //    r.Collation = collationNode.Value;
+            var collationNode = suggestionsNode.XPathSelectElement("str[@name='collation']");
+            if (collationNode != null)
+            {
+                r.Collation = collationNode.Value;
+            }
 
             IEnumerable<XElement> collationNodes;
-
-            // Solr 5.0+
             var collationsNode = node.XPathSelectElement("lst[@name='collations']");
             if (collationsNode != null)
-                collationNodes = collationsNode.XPathSelectElements("str[@name='collation']");
-            // Solr 4.x and lower
+            {
+                // Solr 5.0+
+                collationNodes = collationsNode.XPathSelectElements("lst[@name='collation']");
+            }
             else
-                collationNodes = suggestionsNode.XPathSelectElements("str[@name='collation']");
+            {
+                // Solr 4.x and lower
+                collationNodes = suggestionsNode.XPathSelectElements("lst[@name='collation']");
+            }
 
             foreach (var cn in collationNodes)
-                r.Collations.Add(cn.Value);
+            {
+                if (cn.XPathSelectElement("str[@name='collationQuery']") != null)
+                {
+                    r.Collations.Add(cn.XPathSelectElement("str[@name='collationQuery']").Value);
+                    if (string.IsNullOrEmpty(r.Collation))
+                    {
+                        r.Collation = cn.XPathSelectElement("str[@name='collationQuery']").Value;
+                    }
+                }
+            }
 
             var spellChecks = suggestionsNode.Elements("lst");
             foreach (var c in spellChecks)
@@ -88,17 +102,7 @@ namespace SolrNet.Impl.ResponseParsers
                     result.Suggestions = suggestions;
                     r.Add(result);
                 }
-                else if (c.Attribute("name").Value == "collation" && c.XPathSelectElement("str[@name='collationQuery']") != null)
-                {
-                    //Adds first collationQuery found only if no collationNode found
-                    if (r.Collation == null)
-                    {
-                        r.Collation = c.XPathSelectElement("str[@name='collationQuery']").Value;
-                    }
-                }
             }
-
-
 
             return r;
         }

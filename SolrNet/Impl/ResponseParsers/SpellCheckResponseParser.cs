@@ -40,8 +40,8 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <summary>
         /// Parses spell-checking results
         /// </summary>
-        /// <param name="node"></param>
-        /// <returns></returns>
+        /// <param name="node">SpellCheck node</param>
+        /// <returns>List of suggestions and collations</returns>
         public SpellCheckResults ParseSpellChecking(XElement node) {
             var r = new SpellCheckResults();
             var suggestionsNode = node.XPathSelectElement("lst[@name='suggestions']");
@@ -50,18 +50,31 @@ namespace SolrNet.Impl.ResponseParsers {
                 r.Collation = collationNode.Value;
             var spellChecks = suggestionsNode.Elements("lst");
             foreach (var c in spellChecks) {
-                var result = new SpellCheckResult();
-                result.Query = c.Attribute("name").Value;
-                result.NumFound = Convert.ToInt32(c.XPathSelectElement("int[@name='numFound']").Value);
-                result.EndOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='endOffset']").Value);
-                result.StartOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='startOffset']").Value);
-                var suggestions = new List<string>();
-                var suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/str");
-                foreach (var suggestionNode in suggestionNodes) {
-                    suggestions.Add(suggestionNode.Value);
+                if (c.Attribute("name").Value != "collation" || c.XPathSelectElement("int[@name='numFound']") != null)
+                {
+                    //Spelling suggestions are added, required to check if 'collation' is a search term or indicates collation node
+                    var result = new SpellCheckResult();
+                    result.Query = c.Attribute("name").Value;
+                    result.NumFound = Convert.ToInt32(c.XPathSelectElement("int[@name='numFound']").Value);
+                    result.EndOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='endOffset']").Value);
+                    result.StartOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='startOffset']").Value);
+                    var suggestions = new List<string>();
+                    var suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/str");
+                    foreach (var suggestionNode in suggestionNodes)
+                    {
+                        suggestions.Add(suggestionNode.Value);
+                    }
+                    result.Suggestions = suggestions;
+                    r.Add(result);
                 }
-                result.Suggestions = suggestions;
-                r.Add(result);
+                else if (c.Attribute("name").Value == "collation" && c.XPathSelectElement("str[@name='collationQuery']") != null)
+                {
+                    //Adds first collationQuery found only if no collationNode found
+                    if (r.Collation == null)
+                    {
+                        r.Collation = c.XPathSelectElement("str[@name='collationQuery']").Value;
+                    }
+                }
             }
             return r;
         }

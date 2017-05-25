@@ -149,6 +149,9 @@
     <Compile Include="OptimizeCommandTests.cs" />
     <Compile Include="RegularDocumentVisitorTests.cs" />
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingCollation.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Compile Include="ServiceLocatorTestCase.cs" />
     <Compile Include="SolrCoreReplicationTests.cs" />
     <Compile Include="SolrDIHStatusParserTest.cs" />
@@ -240,7 +243,9 @@
     <EmbeddedResource Include="Resources\responseWithEnumAsString.xml" />
     <EmbeddedResource Include="Resources\responseWithDict.xml" />
     <EmbeddedResource Include="Resources\responseWithDictFloat.xml" />
-    <EmbeddedResource Include="Resources\responseWithSpellChecking.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellChecking.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\responseWithMoreLikeThis.xml" />
     <EmbeddedResource Include="Resources\responseWithStats.xml" />
     <EmbeddedResource Include="Resources\partialResponseWithDateFacet.xml" />

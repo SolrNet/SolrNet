@@ -487,6 +487,18 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void ParseSpellCheckingCollateTrue()
+        {
+            var parser = new SpellCheckResponseParser<Product>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingCollation.xml");
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
+            var spellChecking = parser.ParseSpellChecking(docNode);
+            Assert.IsNotNull(spellChecking);
+            Assert.AreEqual("audit", spellChecking.Collation);
+            Assert.AreEqual(2, spellChecking.Count);
+        }
+
+        [Test]
         public void ParseClustering() {
             var parser = new ClusterResponseParser<Product>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithClustering.xml");

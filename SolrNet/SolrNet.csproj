@@ -184,6 +184,8 @@
     <Compile Include="ISolrCoreAdmin.cs" />
     <Compile Include="Pivot.cs" />
     <Compile Include="PivotFields.cs" />
+    <Compile Include="Schema\LukeResponse.cs" />
+    <Compile Include="Schema\LukeResponseParser.cs" />
     <Compile Include="SolrMLTQuery.cs" />
     <Compile Include="PivotFacetingResult.cs" />
     <Compile Include="Impl\ResponseParsers\GroupingResponseParser.cs" />

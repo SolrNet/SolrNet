@@ -19,7 +19,7 @@ namespace AutofacContrib.SolrNet.Config {
 
         protected override object GetElementKey(ConfigurationElement element) {
             var solrServerElement = (SolrServerElement) element;
-            return solrServerElement.Url + solrServerElement.DocumentType;
+            return solrServerElement.Id;
         }
 
         public override ConfigurationElementCollectionType CollectionType {

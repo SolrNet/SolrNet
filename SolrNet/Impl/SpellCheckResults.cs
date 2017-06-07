@@ -27,6 +27,11 @@ namespace SolrNet.Impl {
         /// </summary>
         public string Collation { get; set; }
 
+        /// <summary>
+        /// Multiple collations returned
+        /// </summary>
+        public ICollection<string> Collations = new List<string>();
+
         private readonly ICollection<SpellCheckResult> SpellChecks = new List<SpellCheckResult>();
 
         public IEnumerator<SpellCheckResult> GetEnumerator() {

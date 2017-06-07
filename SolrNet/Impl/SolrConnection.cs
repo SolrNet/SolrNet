@@ -25,6 +25,7 @@ using HttpWebAdapters.Adapters;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
 using HttpUtility = SolrNet.Utils.HttpUtility;
+using System.Threading.Tasks;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -78,13 +79,20 @@ namespace SolrNet.Impl {
         /// </summary>
         public int Timeout { get; set; }
 
-        public string Post(string relativeUrl, string s) {
+        public async Task<string> PostAsync(string relativeUrl, string s) {
+            var bytes = Encoding.UTF8.GetBytes(s);
+            using (var content = new MemoryStream(bytes))
+                return await PostStreamAsync(relativeUrl, "text/xml; charset=utf-8", content, null);
+        }
+
+        public string Post(string relativeUrl, string s)
+        {
             var bytes = Encoding.UTF8.GetBytes(s);
             using (var content = new MemoryStream(bytes))
                 return PostStream(relativeUrl, "text/xml; charset=utf-8", content, null);
         }
 
-        public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public async Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
             u.Query = GetQuery(parameters);
@@ -108,7 +116,7 @@ namespace SolrNet.Impl {
                 using (var postStream = request.GetRequestStream()) {
                     CopyTo(content, postStream);
                 }
-                return GetResponse(request).Data;
+                return (await GetResponseAsync(request)).Data;
             } catch (WebException e) {
                 var msg = e.Message;
                 if (e.Response != null) {
@@ -120,6 +128,50 @@ namespace SolrNet.Impl {
             }
         }
 
+        public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
+            var u = new UriBuilder(serverURL);
+            u.Path += relativeUrl;
+            u.Query = GetQuery(parameters);
+
+            var request = HttpWebRequestFactory.Create(u.Uri);
+            request.Method = HttpWebRequestMethod.POST;
+            request.KeepAlive = true;
+            request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+
+            if (Timeout > 0)
+            {
+                request.ReadWriteTimeout = Timeout;
+                request.Timeout = Timeout;
+            }
+            if (contentType != null)
+                request.ContentType = contentType;
+
+            request.ContentLength = content.Length;
+            request.ProtocolVersion = HttpVersion.Version11;
+
+            try
+            {
+                using (var postStream = request.GetRequestStream())
+                {
+                    CopyTo(content, postStream);
+                }
+                return (GetResponse(request)).Data;
+            }
+            catch (WebException e)
+            {
+                var msg = e.Message;
+                if (e.Response != null)
+                {
+                    using (var s = e.Response.GetResponseStream())
+                    using (var sr = new StreamReader(s))
+                        msg = sr.ReadToEnd();
+                }
+                throw new SolrConnectionException(msg, e, request.RequestUri.ToString());
+            }
+        }
+
+
         private static void CopyTo(Stream input, Stream output) {
             byte[] buffer = new byte[0x1000];
             int read;
@@ -127,7 +179,57 @@ namespace SolrNet.Impl {
                 output.Write(buffer, 0, read);
         }
 
-        public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
+            var u = new UriBuilder(serverURL);
+            u.Path += relativeUrl;
+            u.Query = GetQuery(parameters);
+
+            var request = HttpWebRequestFactory.Create(u.Uri);
+            request.Method = HttpWebRequestMethod.GET;
+            request.KeepAlive = true;
+            request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+
+            var cached = Cache[u.Uri.ToString()];
+            if (cached != null)
+            {
+                request.Headers.Add(HttpRequestHeader.IfNoneMatch, cached.ETag);
+            }
+            if (Timeout > 0)
+            {
+                request.ReadWriteTimeout = Timeout;
+                request.Timeout = Timeout;
+            }
+            try
+            {
+                var response = GetResponse(request);
+                if (response.ETag != null)
+                    Cache.Add(new SolrCacheEntity(u.Uri.ToString(), response.ETag, response.Data));
+                return response.Data;
+            }
+            catch (WebException e)
+            {
+                if (e.Response != null)
+                {
+                    using (e.Response)
+                    {
+                        var r = new HttpWebResponseAdapter(e.Response);
+                        if (r.StatusCode == HttpStatusCode.NotModified)
+                        {
+                            return cached.Data;
+                        }
+                        using (var s = e.Response.GetResponseStream())
+                        using (var sr = new StreamReader(s))
+                        {
+                            throw new SolrConnectionException(sr.ReadToEnd(), e, u.Uri.ToString());
+                        }
+                    }
+                }
+                throw new SolrConnectionException(e, u.Uri.ToString());
+            }
+        }
+
+        public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
             u.Query = GetQuery(parameters);
@@ -146,7 +248,7 @@ namespace SolrNet.Impl {
                 request.Timeout = Timeout;                
             }
             try {
-                var response = GetResponse(request);
+                var response = await GetResponseAsync(request);
                 if (response.ETag != null)
                     Cache.Add(new SolrCacheEntity(u.Uri.ToString(), response.ETag, response.Data));
                 return response.Data;
@@ -189,8 +291,21 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        private SolrResponse GetResponse(IHttpWebRequest request) {
-            using (var response = request.GetResponse()) {
+        private async Task<SolrResponse> GetResponseAsync(IHttpWebRequest request) {
+            using (var response = await request.GetResponseAsync()) {
+                var etag = response.Headers[HttpResponseHeader.ETag];
+                var cacheControl = response.Headers[HttpResponseHeader.CacheControl];
+                if (cacheControl != null && cacheControl.Contains("no-cache"))
+                    etag = null; // avoid caching things marked as no-cache
+
+                return new SolrResponse(etag, ReadResponseToString(response));
+            }
+        }
+
+        private SolrResponse GetResponse(IHttpWebRequest request)
+        {
+            using (var response = request.GetResponse())
+            {
                 var etag = response.Headers[HttpResponseHeader.ETag];
                 var cacheControl = response.Headers[HttpResponseHeader.CacheControl];
                 if (cacheControl != null && cacheControl.Contains("no-cache"))

@@ -18,6 +18,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SolrNet.Utils;
 
 namespace SolrNet.Commands {
@@ -34,6 +35,12 @@ namespace SolrNet.Commands {
         public string Execute(ISolrConnection connection) {
             var queryParameters = ConvertToQueryParameters();
             return connection.PostStream("/update/extract", parameters.StreamType, parameters.Content, queryParameters);
+        }
+
+        public async Task<string> ExecuteAsync(ISolrConnection connection)
+        {
+            var queryParameters = ConvertToQueryParameters();
+            return await connection.PostStreamAsync("/update/extract", parameters.StreamType, parameters.Content, queryParameters);
         }
 
         private IEnumerable<KeyValuePair<string, string>> ConvertToQueryParameters() {

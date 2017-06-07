@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace HttpWebAdapters.Adapters {
 	public class HttpWebRequestAdapter : IHttpWebRequest {
@@ -587,5 +588,11 @@ namespace HttpWebAdapters.Adapters {
 			get { return request.IfModifiedSince; }
 			set { request.IfModifiedSince = value; }
 		}
-	}
+
+
+        public async Task<IHttpWebResponse> GetResponseAsync()
+        {
+            return new HttpWebResponseAdapter(await request.GetResponseAsync());
+        }
+    }
 }

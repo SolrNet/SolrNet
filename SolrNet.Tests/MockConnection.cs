@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using MbUnit.Framework;
+using System.Threading.Tasks;
 
 namespace SolrNet.Tests {
     public class MockConnection : ISolrConnection {
@@ -64,6 +65,18 @@ namespace SolrNet.Tests {
             foreach (var p in param)
                 Assert.IsTrue(expectations.Contains(p), "Parameter {0}={1}, not found in expectations.\nCurrent expectations are:\n {2}", p.Key, p.Value, DumpParams(expectations));
             return response;
+        }
+
+        public Task<string> PostAsync(string relativeUrl, string s) {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters) {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
+            throw new NotImplementedException();
         }
     }
 }

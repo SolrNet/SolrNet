@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using SolrNet.Exceptions;
 using SolrNet.Mapping.Validation;
 
@@ -98,6 +99,8 @@ namespace SolrNet {
         /// <param name="docs">documents to add/update</param>
         /// <returns></returns>
         ResponseHeader AddRange(IEnumerable<T> docs);
+
+        Task<ResponseHeader> AddRangeAsync(IEnumerable<T> docs);
 
         /// <summary>
         /// Adds / updates several documents at once

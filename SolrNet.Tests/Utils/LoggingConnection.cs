@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace SolrNet.Tests.Utils {
     public class LoggingConnection : ISolrConnection {
@@ -41,6 +42,18 @@ namespace SolrNet.Tests.Utils {
             var r = conn.Get(relativeUrl, parameters);
             Console.WriteLine("Result is:\n" + r);
             return r;
+        }
+
+        public Task<string> PostAsync(string relativeUrl, string s) {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters) {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
+            throw new NotImplementedException();
         }
     }
 }

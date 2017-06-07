@@ -18,12 +18,19 @@ using System;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace HttpWebAdapters {
 	public interface IHttpWebRequest {
 		HttpWebRequestMethod Method { get; set; }
 
 		IHttpWebResponse GetResponse();
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Task<IHttpWebResponse> GetResponseAsync();
 
 		/// <summary>
 		/// Gets a <see cref="Stream"></see> object to use to write request data.

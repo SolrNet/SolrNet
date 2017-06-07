@@ -116,6 +116,7 @@
     <Compile Include="Commands\Parameters\TermsSort.cs" />
     <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
     <Compile Include="Impl\DebugResults.cs" />
+    <Compile Include="Impl\FacetQuerySerializers\SolrFacetDateRangeQuerySerializer.cs" />
     <Compile Include="Impl\ReplicationDetailsResponse.cs" />
     <Compile Include="Impl\ISolrReplicationDetailsResponseParser.cs" />
     <Compile Include="Impl\ISolrReplicationIndexVersionResponseParser.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="ISolrCoreAdmin.cs" />
     <Compile Include="Pivot.cs" />
     <Compile Include="PivotFields.cs" />
+    <Compile Include="SolrFacetDateRangeQuery.cs" />
     <Compile Include="SolrMLTQuery.cs" />
     <Compile Include="PivotFacetingResult.cs" />
     <Compile Include="Impl\ResponseParsers\GroupingResponseParser.cs" />

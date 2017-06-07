@@ -4,14 +4,11 @@ SolrNet does not attempt to abstract much over Solr, it's assumed that you know 
 
 If you're not familiar with Solr, take your time to follow the [Solr tutorial](http://lucene.apache.org/solr/tutorial.html), see the [FAQ](http://wiki.apache.org/solr/FAQ) and the [docs](http://wiki.apache.org/solr/FrontPage ). Consider getting a [book](http://lucene.apache.org/solr/books.html).
 
-This page documents SolrNet features in the master branch. For version-specific documentation, see the Documentation directory on the corresponding version branch. For example https://github.com/mausch/SolrNet/blob/0.4.x/Documentation/README.md
+<!-- This page documents SolrNet features in the master branch. For version-specific documentation, see the Documentation directory on the corresponding version branch. For example https://github.com/mausch/SolrNet/blob/0.4.x/Documentation/README.md -->
 
 ### Downloads
 
-`There is currently an issue with Gallio tests and Visual Studio 2015+. 
-Working to resolve, however tests pass with Visual Studio 2013.`
-
-It's currently recommended to get the latest binaries directly from the build server. [![Build status](https://ci.appveyor.com/api/projects/status/0oj6vqpnoyw08jtq?svg=true)](https://ci.appveyor.com/project/XavierMorera/solrnet-crl26). The build server also has a NuGet feed with these nightly builds: https://ci.appveyor.com/nuget/solrnet-022x5w7kmuba
+It's currently recommended to get the latest binaries directly from the build server. [![Build status](https://ci.appveyor.com/api/projects/status/0oj6vqpnoyw08jtq?svg=true)](https://ci.appveyor.com/project/XavierMorera/solrnet-crl26). <!--The build server also has a NuGet feed with these nightly builds: https://ci.appveyor.com/nuget/solrnet-022x5w7kmuba -->
 
 Otherwise, NuGet packages at nuget.org (currently outdated due to lack of documentation) are available:
 
@@ -77,3 +74,4 @@ You can also contribute by donating a few bucks:
  * [0.3.0](http://bugsquash.blogspot.com/2010/06/solr-030-beta1.html)
  * [0.3.1](http://bugsquash.blogspot.com/2011/03/solrnet-031-released.html)
  * [0.4.0a1](http://bugsquash.blogspot.com/2011/06/solrnet-040-alpha-1-released.html)
+ * [0.5.1] Includes spellchecker parser issue

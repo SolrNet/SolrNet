@@ -81,5 +81,13 @@ namespace SolrNet {
 		/// </summary>
 		public int? EnumCacheMinDf { get; set; }
 
+        /// <summary>
+        /// This param will cause loading the underlying fields used in faceting to be executed in parallel with the number of threads specified. Specify as facet.threads=# where # is the maximum
+        /// number of threads used. Omitting this parameter or specifying the thread count as 0 will not spawn any threads just as before. Specifying a negative number of threads will spin up to 
+        /// Integer.MAX_VALUE threads.
+        /// Currently this is limited to the fields, range and query facets are not yet supported.
+        /// </summary>
+        public int? Threads { get; set; }
+
 	}
 }

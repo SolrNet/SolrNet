@@ -40,6 +40,8 @@ namespace SolrNet.Impl.FacetQuerySerializers {
                 yield return KV.Create(string.Format("f.{0}.facet.missing", fieldWithoutLocalParams), q.Missing.ToString().ToLowerInvariant());
             if (q.EnumCacheMinDf.HasValue)
                 yield return KV.Create(string.Format("f.{0}.facet.enum.cache.minDf", fieldWithoutLocalParams), q.EnumCacheMinDf.ToString());
+            if (q.Threads.HasValue)
+                yield return KV.Create(string.Format("f.{0}.facet.threads", fieldWithoutLocalParams), q.Threads.ToString());
         }
     }
 }

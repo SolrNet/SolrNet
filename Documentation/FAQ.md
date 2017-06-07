@@ -1,5 +1,7 @@
 ## Frequently asked questions about SolrNet
-
+Hello World
+test document
+### testing how commit works
 #### Is SolrNet a .NET port of Solr?
 
 No, SolrNet is a HTTP client so you can talk to Solr from your .NET application. If you want to run Solr on .NET, take a look at this [blog post](http://bugsquash.blogspot.com/2011/02/running-solr-on-net.html).
@@ -10,6 +12,7 @@ It's very uncommon for Solr to make breaking changes in core functionality betwe
 
 #### I'm getting a Bad Request error when calling `Commit()`
 
+#### testing how commit works
 You're probably using an outdated version. [Upgrade to a recent build](README.md#downloads)
 
 #### I'm getting a 404 (not found) response from Solr when doing any operation with SolrNet

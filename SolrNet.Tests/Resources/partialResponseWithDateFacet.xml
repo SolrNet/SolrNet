@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <root>
-<lst name="facet_dates">
+<lst name="facet_ranges">
   <lst name="timestamp">
     <int name="2009-08-09T00:33:46.578Z">16</int>
     <str name="gap">+1DAY</str>

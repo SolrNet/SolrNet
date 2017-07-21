@@ -104,6 +104,42 @@ namespace SolrNet.Tests {
         }
 
         [Test]
+        public void ExecuteSubDoc()
+        {
+            var conn = new Mocks.MSolrConnection();
+            conn.post += (url, content) =>
+            {
+                Assert.AreEqual("/update", url);
+                Assert.AreEqual("<add><doc><field name=\"Id\">rootId</field><field name=\"Name\">MyName</field><doc>" +
+                                "<field name=\"sud root Id\">sub root id</field><field name=\"sud root Name\">sub MyName</field></doc></doc></add>", content);
+                Console.WriteLine(content);
+                return null;
+            };
+
+            var model = new Dictionary<string, object>
+            {
+                {"Id", "rootId"},
+                {"Name", "MyName"},
+                {"doc", new[]
+                { new Dictionary<string, object>
+                            {
+                                { "sud root Id", "sub root id"},
+                                { "sud root Name", "sub MyName"}
+                            }}
+                }
+            };
+
+            var docSerializer = new SolrDictionarySerializer(new DefaultFieldSerializer());
+            var docs = new[] {
+                new KeyValuePair<Dictionary<string, object>, double?>(model, null),
+            };
+
+            var cmd = new AddCommand<Dictionary<string, object>>(docs, docSerializer, null);
+            cmd.Execute(conn);
+            Assert.AreEqual(1, conn.post.Calls);
+        }
+
+        [Test]
         public void DocumentAddParametersCommitWithinSpecified() {
             var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
             var conn = new Mocks.MSolrConnection();

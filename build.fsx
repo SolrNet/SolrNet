@@ -79,6 +79,7 @@ let merge libraries =
                             ToolPath = "lib\\ilmerge.exe"
                             Libraries = libraries
                             SearchDirectories = dirs
+                            TargetPlatform = @"v4,c:\Windows\Microsoft.NET\Framework\v4.0.30319"
                             Internalize = InternalizeExcept "ilmerge.exclude"
                             KeyFile = snk
                             XmlDocs = true

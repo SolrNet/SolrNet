@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SolrNet.Commands 
 {
@@ -22,6 +23,11 @@ namespace SolrNet.Commands
         public string Execute(ISolrConnection connection) 
         {
             return connection.Get("/replication", Parameters.ToArray());
+        }
+
+        public Task<string> ExecuteAsync(ISolrConnection connection)
+        {
+            return connection.GetAsync("/replication", Parameters.ToArray());
         }
 
         /// <summary>

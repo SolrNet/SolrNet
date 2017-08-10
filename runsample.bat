@@ -2,8 +2,8 @@
 cd solr
 md logs
 start java -jar start.jar
-cd ..
-start tools\cassini\cassini.exe "%cd%\SampleSolrApp" 8082
+cd..
+start "" "%programfiles%\iis express\iisexpress.exe" "/path:%cd%\SampleSolrApp" "/port:8082"
 cscript /nologo pingsolr.js
 start http://localhost:8082/
 exit

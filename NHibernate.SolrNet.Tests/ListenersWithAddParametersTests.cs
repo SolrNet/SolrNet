@@ -20,7 +20,8 @@ using NHibernate.SolrNet.Impl;
 using SolrNet;
 
 namespace NHibernate.SolrNet.Tests {
-    
+
+    [Trait("Category", "Outdated")]
     public class ListenersWithAddParametersTests : BaseNHTests {
         readonly AddParameters addParameters = new AddParameters { CommitWithin = 4343 };
 

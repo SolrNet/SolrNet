@@ -16,7 +16,7 @@ namespace NHibernate.SolrNet.Tests {
     /// Instead, the object model should be flattened.
     /// Do not use as reference.
     /// </summary>
-    
+    [Trait("Category", "Outdated")]
     [Trait("Category","Integration")]
     public class IntegrationTests2 : IDisposable {
         private const string _httpSolrTest = "http://localhost:8983/solr";

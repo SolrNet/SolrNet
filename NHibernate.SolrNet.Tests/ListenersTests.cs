@@ -19,7 +19,8 @@ using Moroco;
 using sn = SolrNet;
 
 namespace NHibernate.SolrNet.Tests {
-    
+
+    [Trait("Category", "Outdated")]
     public class ListenersTests: BaseNHTests {
 
         [Fact]

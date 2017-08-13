@@ -29,7 +29,9 @@ using System;
 
 namespace NHibernate.SolrNet.Tests {
     
+    [Trait("Category", "Outdated")]
     [Trait("Category","Integration")]
+    
     public class IntegrationTests : IDisposable {
 
         public IntegrationTests()

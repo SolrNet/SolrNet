@@ -29,7 +29,8 @@ using SolrNet.Tests.Mocks;
 using Order = NHibernate.Criterion.Order;
 
 namespace NHibernate.SolrNet.Tests {
-    
+
+    [Trait("Category", "Outdated")]
     public class SolrSessionTests : BaseNHTests {
         public delegate SolrQueryResults<Entity> SQuery(string q, QueryOptions options);
 

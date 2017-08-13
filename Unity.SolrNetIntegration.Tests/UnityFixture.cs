@@ -47,8 +47,7 @@ namespace Unity.SolrNetIntegration.Tests {
                 }
             };
             using (var container = new UnityContainer()) {
-                new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container);
-       Assert.Throws<InvalidURLException>(()=>         container.Resolve<ISolrConnection>());
+                Assert.Throws<InvalidURLException>(() => new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container));
             }
         }
 
@@ -62,8 +61,7 @@ namespace Unity.SolrNetIntegration.Tests {
                 }
             };
             using (var container = new UnityContainer()) {
-                new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container);
-                Assert.Throws<InvalidURLException>(() => container.Resolve<ISolrConnection>());
+                Assert.Throws<InvalidURLException>(() => new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container));
             }
         }
 

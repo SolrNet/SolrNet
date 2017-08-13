@@ -3,14 +3,13 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using MbUnit.Framework;
+using Xunit;
 using Microsoft.Practices.Unity;
 using SolrNet;
 using Unity.SolrNetIntegration.Config;
 
 namespace Unity.SolrNetIntegration.Tests {
-    [TestFixture]
-    [Category("Integration")]
+    [Trait("Category","Integration")]
     public class UnityIntegrationFixture {
         internal static readonly SolrServers TestServers = new SolrServers {
             new SolrServerElement {
@@ -30,7 +29,7 @@ namespace Unity.SolrNetIntegration.Tests {
             },
         };
 
-        [Test]
+        [Fact]
         public void Ping_And_Query()
         {
             using (var container = UnityFixture.SetupContainer())
@@ -41,7 +40,7 @@ namespace Unity.SolrNetIntegration.Tests {
             }
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument()
         {
             using (var container = new UnityContainer())
@@ -49,11 +48,11 @@ namespace Unity.SolrNetIntegration.Tests {
                 new SolrNetContainerConfiguration().ConfigureContainer(TestServers, container);
                 var solr = container.Resolve<ISolrOperations<Entity2>>();
                 var results = solr.Query(SolrQuery.All);
-                Assert.GreaterThan(results.Count, 0);
+                Assert.True(results.Count> 0);
             }
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument_add()
         {
             using (var container = new UnityContainer())

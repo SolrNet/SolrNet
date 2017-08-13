@@ -18,65 +18,61 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Utils;
 
-namespace SolrNet.Tests {
-    public class DateTimeOffsetFieldParserTests {
-        [StaticTestFactory]
-        public static IEnumerable<Test> ParseYears() {
-            return parsedDates.Select(pd => {
-                var name = "ParseYears " + pd.Key;
-                Test t = new TestCase(name, () => Assert.AreEqual(pd.Value, DateTimeOffsetFieldParser.Parse(pd.Key)));
-                return t;
-            });
+namespace SolrNet.Tests
+{
+    public class DateTimeOffsetFieldParserTests
+    {
+        [Theory]
+        [MemberData(nameof(parsedDates))]
+        public static void ParseYears(KeyValuePair<string, DateTimeOffset> pd)
+        {
+            var name = "ParseYears " + pd.Key;
+            Assert.Equal(pd.Value, DateTimeOffsetFieldParser.Parse(pd.Key));
         }
 
-        private static readonly IEnumerable<KeyValuePair<string, DateTimeOffset>> parsedDates =
+        public static readonly IEnumerable<object[]> parsedDates =
             new[] {
-                KV.Create("1-01-01T00:00:00Z", new DateTimeOffset(new DateTime(1, 1, 1), TimeSpan.Zero)),
-                KV.Create("2004-11-01T00:00:00Z", new DateTimeOffset(new DateTime(2004, 11, 1), TimeSpan.Zero)),
-                KV.Create("2012-05-10T14:17:23.684Z", new DateTimeOffset(new DateTime(2012, 5, 10, 14, 17, 23, 684), TimeSpan.Zero)),
-                KV.Create("2012-05-10T14:17:23.68Z", new DateTimeOffset(new DateTime(2012, 5, 10, 14, 17, 23, 680), TimeSpan.Zero)),
-                KV.Create("2012-05-10T14:17:23.6Z", new DateTimeOffset(new DateTime(2012, 5, 10, 14, 17, 23, 600), TimeSpan.Zero)),
+            new object[] {    KV.Create("1-01-01T00:00:00Z", new DateTimeOffset(new DateTime(1, 1, 1), TimeSpan.Zero)) },
+            new object[] {    KV.Create("2004-11-01T00:00:00Z", new DateTimeOffset(new DateTime(2004, 11, 1), TimeSpan.Zero)) },
+                new object[] {KV.Create("2012-05-10T14:17:23.684Z", new DateTimeOffset(new DateTime(2012, 5, 10, 14, 17, 23, 684), TimeSpan.Zero)) },
+                new object[] {KV.Create("2012-05-10T14:17:23.68Z", new DateTimeOffset(new DateTime(2012, 5, 10, 14, 17, 23, 680), TimeSpan.Zero)) },
+                new object[] {KV.Create("2012-05-10T14:17:23.6Z", new DateTimeOffset(new DateTime(2012, 5, 10, 14, 17, 23, 600), TimeSpan.Zero)) },
             };
 
-        [StaticTestFactory]
-        public static IEnumerable<Test> RoundTrip() {
-            return dateTimes.Select(dt => {
-                Test t = new TestCase("RoundTrip " + dt, () => {
-                    var value = DateTimeOffsetFieldParser.Parse(DateTimeOffsetFieldSerializer.Serialize(dt));
-                    Assert.AreEqual(dt, value);
-                });
-                return t;
-            });
+        [Fact]
+        public static void RoundTrip(DateTimeOffset dt)
+        {
+
+            var value = DateTimeOffsetFieldParser.Parse(DateTimeOffsetFieldSerializer.Serialize(dt));
+            Assert.Equal(dt, value);
+
         }
 
-        [StaticTestFactory]
-        public static IEnumerable<Test> NullableRoundTrips() {
+        [Theory]
+        [MemberData(nameof(dateTimes))]
+        public static void NullableRoundTrips(DateTimeOffset dt)
+        {
             var parser = new NullableFieldParser(new DateTimeOffsetFieldParser());
             var serializer = new NullableFieldSerializer(new DateTimeOffsetFieldSerializer());
-            return dateTimes.Select(dt => {
-                Test t = new TestCase("NullableRoundTrips " + dt, () => {
-                    var s = serializer.Serialize(dt).First().FieldValue;
-                    var xml = new XDocument();
-                    xml.Add(new XElement("date", s));
-                    var value = (DateTimeOffset?)parser.Parse(xml.Root, typeof(DateTimeOffset?));
-                    Assert.AreEqual(dt, value);
-                });
-                return t;
-            });
+            var s = serializer.Serialize(dt).First().FieldValue;
+            var xml = new XDocument();
+            xml.Add(new XElement("date", s));
+            var value = (DateTimeOffset?)parser.Parse(xml.Root, typeof(DateTimeOffset?));
+            Assert.Equal(dt, value);
         }
 
-        private static readonly IEnumerable<DateTimeOffset> dateTimes =
+        public static readonly IEnumerable<object[]> dateTimes =
             new[] {
-                new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc)),
-                new DateTimeOffset(new DateTime(2004, 11, 1)),
-                new DateTimeOffset(new DateTime(2004, 11, 1, 15, 41, 23)),
-                new DateTimeOffset(new DateTime(2012, 5, 10, 14, 17, 23, 684)),
-                new DateTimeOffset(new DateTime(2008, 5, 6, 14, 21, 23, 0, DateTimeKind.Local)),
+              new object[] {  new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc)) },
+                new object[] {new DateTimeOffset(new DateTime(2004, 11, 1)) },
+                new object[] {new DateTimeOffset(new DateTime(2004, 11, 1, 15, 41, 23)) },
+                new object[] {new DateTimeOffset(new DateTime(2012, 5, 10, 14, 17, 23, 684)) },
+                new object[] {new DateTimeOffset(new DateTime(2008, 5, 6, 14, 21, 23, 0, DateTimeKind.Local)) },
             };
     }
 }

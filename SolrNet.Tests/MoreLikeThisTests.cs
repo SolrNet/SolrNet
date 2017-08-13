@@ -14,10 +14,10 @@
 // limitations under the License.
 #endregion
 
-using MbUnit.Framework;
+using Xunit;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class MoreLikeThisTests {
         public void tt() {
             

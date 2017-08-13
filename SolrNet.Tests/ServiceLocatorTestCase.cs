@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using Xunit;
 using Microsoft.Practices.ServiceLocation;
 
 namespace SolrNet.Tests {
@@ -11,6 +11,11 @@ namespace SolrNet.Tests {
     /// </summary>
     public abstract class ServiceLocatorTestCase {
         private IServiceLocator locator;
+
+        public ServiceLocatorTestCase()
+        {
+            locator = CreateServiceLocator();
+        }
 
         public interface ILogger {
             void Log(string msg);
@@ -29,100 +34,91 @@ namespace SolrNet.Tests {
         }
 
 
-        [SetUp]
-        public void SetUp() {
-            locator = CreateServiceLocator();
-        }
-
         protected abstract IServiceLocator CreateServiceLocator();
 
-        [Test]
+        [Fact]
         public void GetInstance() {
             var instance = locator.GetInstance<ILogger>();
-            Assert.IsNotNull(instance, "instance should not be null");
+            Assert.NotNull(instance);
         }
 
-        [Test]
-        [ExpectedException(typeof (ActivationException))]
+        [Fact]
+        
         public void AskingForInvalidComponentShouldRaiseActivationException() {
-            locator.GetInstance<IDictionary>();
+          Assert.Throws<ActivationException> ( () => locator.GetInstance<IDictionary>());
         }
 
-        [Test]
+        [Fact]
         public void GetNamedInstance() {
             var instance = locator.GetInstance<ILogger>(typeof (AdvancedLogger).FullName);
-            Assert.IsInstanceOfType(typeof (AdvancedLogger), instance, "Should be an advanced logger");
+            Assert.IsType(typeof (AdvancedLogger), instance);
         }
 
-        [Test]
+        [Fact]
         public void GetNamedInstance2() {
             var instance = locator.GetInstance<ILogger>(typeof (SimpleLogger).FullName);
-            Assert.IsInstanceOfType(typeof (SimpleLogger), instance, "Should be a simple logger");
+            Assert.IsType(typeof (SimpleLogger), instance);
         }
 
-        [Test]
-        [ExpectedException(typeof (ActivationException))]
+        [Fact]
+    
         public void GetNamedInstance_WithZeroLenName() {
-            locator.GetInstance<ILogger>("");
+            Assert.Throws<ActivationException>(() => locator.GetInstance<ILogger>(""));
         }
 
-        [Test]
-        [ExpectedException(typeof (ActivationException))]
+        [Fact]
+        
         public void GetUnknownInstance2() {
-            locator.GetInstance<ILogger>("test");
+            Assert.Throws<ActivationException>(() => locator.GetInstance<ILogger>("test"));
         }
 
-        [Test]
+        [Fact]
         public void GetAllInstances() {
             IEnumerable<ILogger> instances = locator.GetAllInstances<ILogger>();
             IList<ILogger> list = new List<ILogger>(instances);
-            Assert.AreEqual(2, list.Count);
+            Assert.Equal(2, list.Count);
         }
 
-        [Test]
+        [Fact]
         public void GetlAllInstance_ForUnknownType_ReturnEmptyEnumerable() {
             IEnumerable<IDictionary> instances = locator.GetAllInstances<IDictionary>();
             IList<IDictionary> list = new List<IDictionary>(instances);
-            Assert.AreEqual(0, list.Count);
+            Assert.Equal(0, list.Count);
         }
 
-        [Test]
+        [Fact]
         public void GenericOverload_GetInstance() {
-            Assert.AreEqual(
+            Assert.Equal(
                 locator.GetInstance<ILogger>().GetType(),
-                locator.GetInstance(typeof (ILogger), null).GetType(),
-                "should get the same type"
+                locator.GetInstance(typeof (ILogger), null).GetType()
                 );
         }
 
-        [Test]
+        [Fact]
         public void GenericOverload_GetInstance_WithName() {
-            Assert.AreEqual(
+            Assert.Equal(
                 locator.GetInstance<ILogger>(typeof (AdvancedLogger).FullName).GetType(),
-                locator.GetInstance(typeof (ILogger), typeof (AdvancedLogger).FullName).GetType(),
-                "should get the same type"
+                locator.GetInstance(typeof (ILogger), typeof (AdvancedLogger).FullName).GetType()
                 );
         }
 
-        [Test]
+        [Fact]
         public void Overload_GetInstance_NoName_And_NullName() {
-            Assert.AreEqual(
+            Assert.Equal(
                 locator.GetInstance<ILogger>().GetType(),
-                locator.GetInstance<ILogger>(null).GetType(),
-                "should get the same type"
+                locator.GetInstance<ILogger>(null).GetType()
                 );
         }
 
-        [Test]
+        [Fact]
         public void GenericOverload_GetAllInstances() {
             var genericLoggers = new List<ILogger>(locator.GetAllInstances<ILogger>());
             var plainLoggers = new List<object>(locator.GetAllInstances(typeof (ILogger)));
-            Assert.AreEqual(genericLoggers.Count, plainLoggers.Count);
+            Assert.Equal(genericLoggers.Count, plainLoggers.Count);
             for (int i = 0; i < genericLoggers.Count; i++) {
-                Assert.AreEqual(
+                Assert.Equal(
                     genericLoggers[i].GetType(),
-                    plainLoggers[i].GetType(),
-                    "instances (" + i + ") should give the same type");
+                    plainLoggers[i].GetType());
             }
         }
     }

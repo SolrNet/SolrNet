@@ -44,7 +44,8 @@ namespace SolrNet.Tests
                 new object[] {KV.Create("2012-05-10T14:17:23.6Z", new DateTimeOffset(new DateTime(2012, 5, 10, 14, 17, 23, 600), TimeSpan.Zero)) },
             };
 
-        [Fact]
+        [Theory]
+        [MemberData(nameof(dateTimes))]
         public static void RoundTrip(DateTimeOffset dt)
         {
 

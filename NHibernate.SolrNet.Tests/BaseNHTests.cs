@@ -27,9 +27,11 @@ namespace NHibernate.SolrNet.Tests {
 
         protected ISessionFactory sessionFactory;
         protected MSolrOperations<Entity> mockSolr;
+        private readonly string testdbfilename;
 
         public BaseNHTests() {
-            var nhConfig = ConfigurationExtensions.GetNhConfig();
+            testdbfilename = $"{ Guid.NewGuid()}.db";
+            var nhConfig = ConfigurationExtensions.GetNhConfig(testdbfilename);
             mockSolr = new MSolrOperations<Entity>();
             var mapper = new MReadOnlyMappingManager();
             var provider = new MServiceProvider();
@@ -52,6 +54,7 @@ namespace NHibernate.SolrNet.Tests {
         {
             mockSolr.VerifyAll();
             sessionFactory.Dispose();
+            System.IO.File.Delete(testdbfilename);
         }
     }
 }

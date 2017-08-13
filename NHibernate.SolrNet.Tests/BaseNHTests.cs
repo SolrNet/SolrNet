@@ -15,7 +15,7 @@
 #endregion
 
 using System;
-using MbUnit.Framework;
+using Xunit;
 using Moroco;
 using NHibernate.SolrNet.Impl;
 using NHibernate.Tool.hbm2ddl;
@@ -23,13 +23,12 @@ using SolrNet;
 using SolrNet.Tests.Mocks;
 
 namespace NHibernate.SolrNet.Tests {
-    public class BaseNHTests {
+    public class BaseNHTests : IDisposable {
 
         protected ISessionFactory sessionFactory;
         protected MSolrOperations<Entity> mockSolr;
 
-        [SetUp]
-        public void FixtureSetup() {
+        public BaseNHTests() {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
             mockSolr = new MSolrOperations<Entity>();
             var mapper = new MReadOnlyMappingManager();
@@ -48,8 +47,9 @@ namespace NHibernate.SolrNet.Tests {
             return new SolrNetListener<Entity>(solr);
         }
 
-        [TearDown]
-        public void FixtureTeardown() {
+
+        public void Dispose()
+        {
             mockSolr.VerifyAll();
             sessionFactory.Dispose();
         }

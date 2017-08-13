@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using Microsoft.Practices.ServiceLocation;
 using Moroco;
 using SolrNet;
@@ -29,11 +29,11 @@ using SolrNet.Tests.Mocks;
 using Order = NHibernate.Criterion.Order;
 
 namespace NHibernate.SolrNet.Tests {
-    [TestFixture]
+    
     public class SolrSessionTests : BaseNHTests {
         public delegate SolrQueryResults<Entity> SQuery(string q, QueryOptions options);
 
-        [Test]
+        [Fact]
         public void QueryAll() {
             var serviceLocator = new MServiceLocator();
             serviceLocator.getService += t => {
@@ -43,7 +43,7 @@ namespace NHibernate.SolrNet.Tests {
             };
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
             mockSolr.queryStringOptions += (q, opt) => {
-                Assert.AreEqual("*:*", q);
+                Assert.Equal("*:*", q);
                 return new SolrQueryResults<Entity>();
             };
             mockSolr.queryStringOptions &= x => x.Expect(1);
@@ -52,7 +52,7 @@ namespace NHibernate.SolrNet.Tests {
             }
         }
 
-        [Test]
+        [Fact]
         public void QueryAll_with_pagination() {
 
             var querySerializer = new MSolrQuerySerializer();
@@ -67,11 +67,11 @@ namespace NHibernate.SolrNet.Tests {
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
 
             mockSolr.queryStringOptions += (s, o) => {
-                Assert.AreEqual("id:123456", s);
-                Assert.AreEqual(5, o.Rows);
-                Assert.AreEqual(3, o.Start);
-                Assert.AreEqual(1, o.OrderBy.Count);
-                Assert.AreEqual("pepe asc", o.OrderBy.First().ToString());
+                Assert.Equal("id:123456", s);
+                Assert.Equal(5, o.Rows);
+                Assert.Equal(3, o.Start);
+                Assert.Equal(1, o.OrderBy.Count);
+                Assert.Equal("pepe asc", o.OrderBy.First().ToString());
                 return new SolrQueryResults<Entity>();
             };
             mockSolr.queryStringOptions &= x => x.Expect(1);

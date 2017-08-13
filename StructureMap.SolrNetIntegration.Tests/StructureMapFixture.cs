@@ -42,8 +42,7 @@ namespace StructureMap.SolrNetIntegration.Tests
                     DocumentType = typeof(Entity2).AssemblyQualifiedName,
                 }
             };
-            ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers)));
-            Assert.Throws<InvalidURLException>(() => ObjectFactory.GetInstance<SolrConnection>());
+            Assert.Throws<InvalidURLException>(() => ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers))));
         }
 
         [Fact]
@@ -56,8 +55,8 @@ namespace StructureMap.SolrNetIntegration.Tests
                     DocumentType = typeof(Entity2).AssemblyQualifiedName,
                 }
             };
-            ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers)));
-          Assert.Throws<InvalidURLException>(()=>  ObjectFactory.GetInstance<SolrConnection>());
+
+            Assert.Throws<InvalidURLException>(() => ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers))));
         }
 
         [Fact]

@@ -92,11 +92,11 @@ namespace SolrNet.Impl
                 return PostStream(relativeUrl, "text/xml; charset=utf-8", content, null);
         }
 
-        public Task<string> PostAsync(string relativeUrl, string s)
+        public async Task<string> PostAsync(string relativeUrl, string s)
         {
             var bytes = Encoding.UTF8.GetBytes(s);
             using (var content = new MemoryStream(bytes))
-                return PostStreamAsync(relativeUrl, "text/xml; charset=utf-8", content, null);
+                return await PostStreamAsync(relativeUrl, "text/xml; charset=utf-8", content, null);
         }
         private IHttpWebRequest PreparePostStreamWebRequest(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
         {
@@ -333,12 +333,12 @@ namespace SolrNet.Impl
             }
         }
 
-        private Task<string> ReadResponseToStringAsync(IHttpWebResponse response)
+        private async Task<string> ReadResponseToStringAsync(IHttpWebResponse response)
         {
             using (var responseStream = response.GetResponseStream())
             using (var reader = new StreamReader(responseStream, TryGetEncoding(response)))
             {
-                return reader.ReadToEndAsync();
+                return await reader.ReadToEndAsync();
             }
         }
 

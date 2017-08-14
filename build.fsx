@@ -32,18 +32,18 @@ let slnBuild sln x =
                                 Properties = ["Configuration",config] @ strongName })
 
 let mainSln = slnBuild "solrnet.sln"
-let sampleSln = slnBuild "SampleSolrApp.sln"
+//let sampleSln = slnBuild "SampleSolrApp.sln"
 
 let nuGetBuild = Nu.build nugetVersion
 
 Target "Clean" <| fun _ -> 
     mainSln "Clean"
-    sampleSln "Clean"
+//    sampleSln "Clean"
     rm_rf buildDir
     rm_rf nugetDir
 
 Target "Build" <| fun _ -> mainSln "Rebuild"
-Target "BuildSample" <| fun _ -> sampleSln "Rebuild"
+//Target "BuildSample" <| fun _ -> sampleSln "Rebuild"
 
 let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "StructureMap.SolrNetIntegration"; "AutofacContrib.SolrNet"; "Unity.SolrNetIntegration"; "NHibernate.SolrNet"]
 let dlls = [for l in libs -> l + ".dll"]
@@ -252,7 +252,7 @@ Target "Test" DoNothing
 Target "TestAndNuGet" DoNothing
 
 "Test" <== ["BuildAll"] @ testTargets
-"BuildAll" <== ["Build";"Merge";"BuildSample"]
+"BuildAll" <== ["Build";"Merge"] //;"BuildSample"
 "BuildAndRelease" <== ["Clean";"Version";"BuildAll";"Docs";"ReleasePackage"]
 "TestAndRelease" <== ["Clean";"Version";"Test";"ReleasePackage"]
 "NuGet" <== ["Clean";"Build";"BasicMerge";"Docs"]

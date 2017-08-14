@@ -29,7 +29,7 @@ namespace StructureMap.SolrNetIntegration.Tests
 
             var solrConnection = (SolrConnection)ObjectFactory.Container.GetInstance<ISolrConnection>(instanceKey);
 
-            Assert.Equal("http://localhost:8983/solr/entity", solrConnection.ServerURL);
+            Assert.Equal("http://localhost:8983/solr/collection0", solrConnection.ServerURL);
         }
 
         [Fact]

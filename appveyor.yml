@@ -1,0 +1,12 @@
+version: 0.5.1.{build}
+image: Visual Studio 2017
+before_build:
+- cmd: nuget restore solrnet.sln
+build:
+  project: solrnet.sln
+  verbosity: minimal
+test:
+  categories:
+    except:
+    - Integration
+    - OutDated

@@ -15,12 +15,12 @@ namespace Unity.SolrNetIntegration.Tests {
             new SolrServerElement {
                 Id = "entity",
                 DocumentType = typeof (Entity).AssemblyQualifiedName,
-                Url = "http://localhost:8983/solr/entity",
+                Url = "http://localhost:8983/solr/core0",
             },
             new SolrServerElement {
                 Id = "entity2Dict",
                 DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
-                Url = "http://localhost:8983/solr/entity2",
+                Url = "http://localhost:8983/solr/core1",
             },
             new SolrServerElement {
                 Id = "entity2",

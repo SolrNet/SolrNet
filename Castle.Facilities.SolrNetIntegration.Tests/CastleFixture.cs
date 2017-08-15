@@ -45,7 +45,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void InvalidUrl_throws() {
             var configStore = new DefaultConfigurationStore();
             var configuration = new MutableConfiguration("facility");
-            configuration.Attributes.Add("type", typeof(SolrNetFacility).AssemblyQualifiedName);
+            configuration.Attributes.Add("type", typeof(SolrNetFacility).FullName);
             configuration.CreateChild("solrURL", "123");
             configStore.AddFacilityConfiguration(typeof(SolrNetFacility).FullName, configuration);
             new WindsorContainer(configStore);

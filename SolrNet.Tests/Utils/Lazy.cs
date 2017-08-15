@@ -49,7 +49,7 @@ namespace System
 	[ComVisibleAttribute(false)]
 	[HostProtectionAttribute(SecurityAction.LinkDemand, Synchronization = true, ExternalThreading = true)]
 	[DebuggerDisplay ("ThreadSafetyMode={Mode}, IsValueCreated={IsValueCreated}, IsValueFaulted={IsValueFaulted}, Value={ValueForDebugDisplay}")]
-	public class LazyClass<T> 
+	public class Lazy<T> 
 	{
 		T value;
 		Func<T> factory;
@@ -58,34 +58,34 @@ namespace System
 		LazyThreadSafetyMode mode;
 		bool inited;
 
-		public LazyClass ()
+		public Lazy ()
 			: this (LazyThreadSafetyMode.ExecutionAndPublication)
 		{
 		}
 
-		public LazyClass (Func<T> valueFactory)
+		public Lazy (Func<T> valueFactory)
 			: this (valueFactory, LazyThreadSafetyMode.ExecutionAndPublication)
 		{
 		}
 
-		public LazyClass (bool isThreadSafe)
+		public Lazy (bool isThreadSafe)
 			: this (() => Activator.CreateInstance<T> (), isThreadSafe ? LazyThreadSafetyMode.ExecutionAndPublication : LazyThreadSafetyMode.None)
 		{
 		}
 		
-		public LazyClass (Func<T> valueFactory, bool isThreadSafe)
+		public Lazy (Func<T> valueFactory, bool isThreadSafe)
 			: this (valueFactory, isThreadSafe ? LazyThreadSafetyMode.ExecutionAndPublication : LazyThreadSafetyMode.None)
 		{
 		}
 
-		public LazyClass (LazyThreadSafetyMode mode)
+		public Lazy (LazyThreadSafetyMode mode)
 			: this (() => Activator.CreateInstance<T> (), mode)
 		{
 		}
 
 		
 
-		public LazyClass (Func<T> valueFactory, LazyThreadSafetyMode mode)
+		public Lazy (Func<T> valueFactory, LazyThreadSafetyMode mode)
 		{
 			if (valueFactory == null)
 				throw new ArgumentNullException ("valueFactory");

@@ -26,7 +26,6 @@ using Microsoft.Practices.ServiceLocation;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 using SolrNet.Tests.Integration.Sample;
-using SolrNet.Tests;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests.Integration {
@@ -35,11 +34,11 @@ namespace SolrNet.Tests.Integration {
     public class IntegrationFixture
     {
         private static readonly string serverURL = ConfigurationManager.AppSettings["solr"];
-        private static readonly System.Lazy<object> init = new System.Lazy<object>(() => {
+        private static readonly Lazy<object> init = new Lazy<object>(() => {
             Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL)));
             return null;
         });
-        private static readonly System.Lazy<object> initDict = new System.Lazy<object>(() => {
+        private static readonly Lazy<object> initDict = new Lazy<object>(() => {
             Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
             return null;
         });

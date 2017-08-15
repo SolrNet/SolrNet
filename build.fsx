@@ -32,18 +32,18 @@ let slnBuild sln x =
                                 Properties = ["Configuration",config] @ strongName })
 
 let mainSln = slnBuild "solrnet.sln"
-//let sampleSln = slnBuild "SampleSolrApp.sln"
+let sampleSln = slnBuild "SampleSolrApp.sln"
 
 let nuGetBuild = Nu.build nugetVersion
 
 Target "Clean" <| fun _ -> 
     mainSln "Clean"
-//    sampleSln "Clean"
+    sampleSln "Clean"
     rm_rf buildDir
     rm_rf nugetDir
 
 Target "Build" <| fun _ -> mainSln "Rebuild"
-//Target "BuildSample" <| fun _ -> sampleSln "Rebuild"
+Target "BuildSample" <| fun _ -> sampleSln "Rebuild"
 
 let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "StructureMap.SolrNetIntegration"; "AutofacContrib.SolrNet"; "Unity.SolrNetIntegration"; "NHibernate.SolrNet"]
 let dlls = [for l in libs -> l + ".dll"]
@@ -79,7 +79,6 @@ let merge libraries =
                             ToolPath = "lib\\ilmerge.exe"
                             Libraries = libraries
                             SearchDirectories = dirs
-                            TargetPlatform = @"v4,c:\Windows\Microsoft.NET\Framework\v4.0.30319"
                             Internalize = InternalizeExcept "ilmerge.exclude"
                             KeyFile = snk
                             XmlDocs = true
@@ -203,6 +202,46 @@ Target "ReleasePackage" <| fun _ ->
 
     rm_rf outputPath
 
+Target "PackageSampleApp" <| fun _ ->
+    let outputSolr = buildDir @@ solr
+    cp_r solr outputSolr
+    rm_rf (outputSolr @@ "solr\\data")
+    let logs = outputSolr @@ "logs"
+    rm_rf logs
+    mkdir logs
+
+    cp_r "tools\\Cassini" (buildDir @@ "tools\\Cassini")
+
+    let sampleApp = "SampleSolrApp"
+    let outputSampleApp = buildDir @@ sampleApp
+    cp_r sampleApp outputSampleApp
+    rm_rf (outputSampleApp @@ "obj")
+    rm_rf (outputSampleApp @@ "log.txt")
+    rm_rf (outputSampleApp @@ "SampleSolrApp.sln.cache")
+    mkdir (outputSampleApp @@ "lib")
+
+    !+ (outputSampleApp @@ "bin\\*") 
+        -- "**\\SampleSolrApp.*" -- "**\\SolrNet.*"
+        |> Scan
+        |> Copy (outputSampleApp @@ "lib")
+   
+    ["pingsolr.js"; "license.txt"; "runsample.bat"] |> Copy buildDir
+
+    let csproj = outputSampleApp @@ "SampleSolrApp.csproj"
+    let xml = XDocument.Load csproj
+    let refs = xml.Elements() .> "ItemGroup" .> "Reference" .> "HintPath"
+    refs
+    |> Seq.filter (startsWith @"..\lib")
+    |> Seq.iter (replaceValue @"..\" "")
+    refs
+    |> Seq.filter (contains "SolrNet.dll")
+    |> Seq.iter (setValue @"..\SolrNet.dll")
+    xml.Save csproj
+    
+    !! (buildDir @@ "**\\*")
+        |> Zip buildDir ("SolrNet-"+version+"-sample.zip")
+
+
 Target "BuildAll" DoNothing
 Target "TestAndRelease" DoNothing
 Target "BuildAndRelease" DoNothing
@@ -212,12 +251,12 @@ Target "Test" DoNothing
 Target "TestAndNuGet" DoNothing
 
 "Test" <== ["BuildAll"] @ testTargets
-"BuildAll" <== ["Build";"Merge"] //;"BuildSample"
+"BuildAll" <== ["Build";"Merge";"BuildSample"]
 "BuildAndRelease" <== ["Clean";"Version";"BuildAll";"Docs";"ReleasePackage"]
 "TestAndRelease" <== ["Clean";"Version";"Test";"ReleasePackage"]
 "NuGet" <== ["Clean";"Build";"BasicMerge";"Docs"]
 "NuGet.All" <== (getAllTargetsNames() |> List.filter ((<*) "NuGet") |> List.filter ((<>) "NuGet.All") |> List.sort)
 "TestAndNuGet" <== ["Clean";"Version"; "Test"; "NuGet.All"]
-"All" <== ["BuildAndRelease";"NuGet.All"] //"PackageSampleApp";
+"All" <== ["BuildAndRelease";"PackageSampleApp";"NuGet.All"]
 
 Run target

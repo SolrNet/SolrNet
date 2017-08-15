@@ -182,46 +182,6 @@ Target "ReleasePackage" <| fun _ ->
 
     rm_rf outputPath
 
-Target "PackageSampleApp" <| fun _ ->
-    let outputSolr = buildDir @@ solr
-    cp_r solr outputSolr
-    rm_rf (outputSolr @@ "solr\\data")
-    let logs = outputSolr @@ "logs"
-    rm_rf logs
-    mkdir logs
-
-    cp_r "tools\\Cassini" (buildDir @@ "tools\\Cassini")
-
-    let sampleApp = "SampleSolrApp"
-    let outputSampleApp = buildDir @@ sampleApp
-    cp_r sampleApp outputSampleApp
-    rm_rf (outputSampleApp @@ "obj")
-    rm_rf (outputSampleApp @@ "log.txt")
-    rm_rf (outputSampleApp @@ "SampleSolrApp.sln.cache")
-    mkdir (outputSampleApp @@ "lib")
-
-    !+ (outputSampleApp @@ "bin\\*") 
-        -- "**\\SampleSolrApp.*" -- "**\\SolrNet.*"
-        |> Scan
-        |> Copy (outputSampleApp @@ "lib")
-   
-    ["pingsolr.js"; "license.txt"; "runsample.bat"] |> Copy buildDir
-
-    let csproj = outputSampleApp @@ "SampleSolrApp.csproj"
-    let xml = XDocument.Load csproj
-    let refs = xml.Elements() .> "ItemGroup" .> "Reference" .> "HintPath"
-    refs
-    |> Seq.filter (startsWith @"..\lib")
-    |> Seq.iter (replaceValue @"..\" "")
-    refs
-    |> Seq.filter (contains "SolrNet.dll")
-    |> Seq.iter (setValue @"..\SolrNet.dll")
-    xml.Save csproj
-    
-    !! (buildDir @@ "**\\*")
-        |> Zip buildDir ("SolrNet-"+version+"-sample.zip")
-
-
 Target "BuildAll" DoNothing
 Target "BuildAndRelease" DoNothing
 Target "NuGet.All" DoNothing
@@ -231,6 +191,7 @@ Target "All" DoNothing
 "BuildAndRelease" <== ["Clean";"Version";"BuildAll";"Docs";"ReleasePackage"]
 "NuGet" <== ["Clean";"Build";"BasicMerge";"Docs"]
 "NuGet.All" <== (getAllTargetsNames() |> List.filter ((<*) "NuGet") |> List.filter ((<>) "NuGet.All") |> List.sort)
-"All" <== ["BuildAndRelease";"PackageSampleApp";"NuGet.All"]
+"TestAndNuGet" <== ["Clean";"Version"; "Test"; "NuGet.All"]
+"All" <== ["BuildAndRelease";"NuGet.All"] //"PackageSampleApp";
 
 Run target

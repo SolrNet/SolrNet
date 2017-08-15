@@ -581,7 +581,24 @@ namespace SolrNet.Tests.Integration {
             foreach (var t in results.InterestingTerms) {
                 Console.WriteLine("Interesting term: {0} ({1})", t.Key, t.Value);
             }
-            
+        }
+
+        [Test]
+        public void AtomicUpdate()
+        {
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+
+            solr.AddRange(products);
+            solr.Commit();
+
+            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("features", AtomicUpdateType.Add, "Feature 3"), new AtomicUpdateSpec("price", AtomicUpdateType.Inc, "1"), new AtomicUpdateSpec("manu", AtomicUpdateType.Set, "MyCo") };
+            solr.AtomicUpdate("DEL12345", updateSpecs);
+            solr.Commit();
+
+            Product productAfterUpdate = solr.Query("id:DEL12345")[0];
+            Assert.AreEqual(3, productAfterUpdate.Features.Count);
+            Assert.AreEqual("MyCo", productAfterUpdate.Manufacturer);
+            Assert.AreEqual(93, productAfterUpdate.Price);
         }
     }
 }

@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractSolrQuery.cs" />
+    <Compile Include="AtomicUpdateSpec.cs" />
     <Compile Include="ClusterResults.cs" />
     <Compile Include="CollapseExpandResults.cs" />
     <Compile Include="Commands\Parameters\CollapseExpandParameters.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
     <Compile Include="Commands\Parameters\TermsSort.cs" />
     <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
+    <Compile Include="Commands\AtomicUpdateCommand.cs" />
     <Compile Include="Impl\DebugResults.cs" />
     <Compile Include="Impl\ReplicationDetailsResponse.cs" />
     <Compile Include="Impl\ISolrReplicationDetailsResponseParser.cs" />

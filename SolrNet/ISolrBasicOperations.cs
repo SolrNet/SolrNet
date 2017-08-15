@@ -83,5 +83,15 @@ namespace SolrNet {
         /// <param name="cmd"></param>
         /// <returns></returns>
         ExtractResponse SendAndParseExtract(ISolrCommand cmd);
+
+        /// <summary>
+        /// Updates the document with the provided ID
+        /// </summary>
+        /// <param name="uniqueKey">name of the unique key field</param>
+        /// <param name="id">ID of the document to update</param>
+        /// <param name="updateSpecs">specifications for the updates</param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
     }
 }

@@ -134,5 +134,11 @@ namespace SolrNet.Impl {
         {
             return this.queryExecuter.Execute(query, options);
         }
+
+        public ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            var atomicUpdate = new AtomicUpdateCommand(uniqueKey, id, updateSpecs, parameters);
+            return SendAndParseHeader(atomicUpdate);
+        }
     }
 }

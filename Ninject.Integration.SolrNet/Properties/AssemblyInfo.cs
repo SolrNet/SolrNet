@@ -20,8 +20,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Ninject.Integration.SolrNet")]
 [assembly: AssemblyProduct("Ninject.Integration.SolrNet")]
 [assembly: AssemblyCopyright("Copyright Mauricio Scheffer 2007-2017")]
-[assembly: AssemblyVersion("0.5.1.1001")]
-[assembly: AssemblyFileVersion("0.5.1.1001")]
+[assembly: AssemblyVersion("0.6.1.1001")]
+[assembly: AssemblyFileVersion("0.6.1.1001")]
 [assembly: AssemblyInformationalVersion("4758ae1c6550363fb060857db120ff3aed438052")]
 [assembly: AssemblyDelaySign(false)]
 

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl.ResponseParsers;
 using SolrNet.Schema;
 
 namespace SolrNet.Impl {
@@ -26,23 +27,20 @@ namespace SolrNet.Impl {
     /// Implements the basic Solr operations
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class SolrBasicServer<T> : ISolrBasicOperations<T> {
-        private readonly ISolrConnection connection;
+    public class SolrBasicServer<T> : LowLevelSolr, ISolrBasicOperations<T> {
         private readonly ISolrQueryExecuter<T> queryExecuter;
         private readonly ISolrDocumentSerializer<T> documentSerializer;
         private readonly ISolrSchemaParser schemaParser;
-        private readonly ISolrHeaderResponseParser headerParser;
         private readonly ISolrQuerySerializer querySerializer;
         private readonly ISolrDIHStatusParser dihStatusParser;
         private readonly ISolrExtractResponseParser extractResponseParser;
 
-        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDIHStatusParser dihStatusParser, ISolrExtractResponseParser extractResponseParser) {
-            this.connection = connection;
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDIHStatusParser dihStatusParser, ISolrExtractResponseParser extractResponseParser) 
+            : base(connection, headerParser) {
             this.extractResponseParser = extractResponseParser;
             this.queryExecuter = queryExecuter;
             this.documentSerializer = documentSerializer;
             this.schemaParser = schemaParser;
-            this.headerParser = headerParser;
             this.querySerializer = querySerializer;
             this.dihStatusParser = dihStatusParser;
         }
@@ -89,6 +87,14 @@ namespace SolrNet.Impl {
             return SendAndParseHeader(delete);
         }
 
+        public string Send(ISolrCommand cmd) {
+            return((LowLevelSolr)this).Send(cmd);
+        }
+
+        public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
+            return ((LowLevelSolr)this).SendAndParseHeader(cmd);
+        }
+
         public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q) {
             var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), null);
             return SendAndParseHeader(delete);
@@ -97,21 +103,11 @@ namespace SolrNet.Impl {
         public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
             return queryExecuter.Execute(query, options);
         }
-
-        public string Send(ISolrCommand cmd) {
-            return cmd.Execute(connection);
-        }
-
+        
         public ExtractResponse SendAndParseExtract(ISolrCommand cmd) {
             var r = Send(cmd);
             var xml = XDocument.Parse(r);
             return extractResponseParser.Parse(xml);
-        }
-
-        public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
-            var r = Send(cmd);
-            var xml = XDocument.Parse(r);
-            return headerParser.Parse(xml);
         }
 
         public ResponseHeader Ping() {
@@ -133,6 +129,47 @@ namespace SolrNet.Impl {
         public SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
         {
             return this.queryExecuter.Execute(query, options);
+        }
+    }
+
+    public class LowLevelSolr {
+        protected readonly ISolrHeaderResponseParser headerParser;
+        protected readonly ISolrConnection connection;
+
+        public LowLevelSolr(ISolrConnection connection, ISolrHeaderResponseParser parser) {
+            this.headerParser = parser ?? new HeaderResponseParser();
+            this.connection = connection;
+        }
+
+        public ResponseHeader SendAndParseHeader(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
+        {
+            var r = connection.Get(handler, solrParams);
+            var xml = XDocument.Parse(r);
+            return headerParser.Parse(xml);
+        }
+
+        public XDocument Send(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
+        {
+            var r = SendRaw(handler, solrParams);
+            return XDocument.Parse(r);
+        }
+
+        public ResponseHeader SendAndParseHeader(ISolrCommand cmd)
+        {
+            var r = Send(cmd);
+            var xml = XDocument.Parse(r);
+            return headerParser.Parse(xml);
+        }
+
+        public string SendRaw(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
+        {
+            var r = connection.Get(handler, solrParams);
+            return r;
+        }
+
+        public string Send(ISolrCommand cmd)
+        {
+            return cmd.Execute(connection);
         }
     }
 }

@@ -34,11 +34,11 @@ namespace SolrNet.Tests.Integration {
     public class IntegrationFixture
     {
         private static readonly string serverURL = ConfigurationManager.AppSettings["solr"];
-        private static readonly Lazy<object> init = new Lazy<object>(() => {
+        private static readonly Gallio.Common.Lazy<object> init = new Gallio.Common.Lazy<object>(() => {
             Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL)));
             return null;
         });
-        private static readonly Lazy<object> initDict = new Lazy<object>(() => {
+        private static readonly Gallio.Common.Lazy<object> initDict = new Gallio.Common.Lazy<object>(() => {
             Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
             return null;
         });
@@ -504,7 +504,7 @@ namespace SolrNet.Tests.Integration {
             Assert.GreaterThanOrEqualTo(results.Grouping["name"].Groups.Count, 1);
         }
 
-        private static readonly Lazy<object> initLoose = new Lazy<object>(() => {
+        private static readonly Gallio.Common.Lazy<object> initLoose = new Gallio.Common.Lazy<object>(() => {
             Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL)));
             return null;
         });

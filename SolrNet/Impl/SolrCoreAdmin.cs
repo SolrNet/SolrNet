@@ -9,17 +9,15 @@ namespace SolrNet.Impl {
     /// Solr core administration commands.
     /// </summary>
     /// <seealso href="http://wiki.apache.org/solr/CoreAdmin"/>
-    public class SolrCoreAdmin : ISolrCoreAdmin {
-        private readonly ISolrConnection connection;
-        private readonly ISolrHeaderResponseParser headerParser;
+    public class SolrCoreAdmin : LowLevelSolr, ISolrCoreAdmin {
         private readonly ISolrStatusResponseParser resultParser;
 
+        private const string coreHandler = "/admin/cores";
         /// <summary>
         /// Initializes a new instance of the <see cref="SolrCoreAdmin"/> class.
         /// </summary>
-        public SolrCoreAdmin(ISolrConnection connection, ISolrHeaderResponseParser headerParser, ISolrStatusResponseParser resultParser) {
-            this.connection = connection;
-            this.headerParser = headerParser;
+        public SolrCoreAdmin(ISolrConnection connection, ISolrHeaderResponseParser headerParser, ISolrStatusResponseParser resultParser)
+        :base (connection, headerParser) {
             this.resultParser = resultParser;
         }
 
@@ -178,26 +176,6 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
-        /// Sends a command and parses the ResponseHeader.
-        /// </summary>
-        /// <param name="cmd">The CMD.</param>
-        /// <returns></returns>
-        public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
-            var r = Send(cmd);
-            var xml = XDocument.Parse(r);
-            return headerParser.Parse(xml);
-        }
-
-        /// <summary>
-        /// Sends the specified Command to Solr.
-        /// </summary>
-        /// <param name="command">The Command to send.</param>
-        /// <returns></returns>
-        public string Send(ISolrCommand command) {
-            return command.Execute(connection);
-        }
-
-        /// <summary>
         /// Parses the status response.
         /// </summary>
         /// <param name="responseXml">The response XML.</param>
@@ -205,6 +183,52 @@ namespace SolrNet.Impl {
         protected List<CoreResult> ParseStatusResponse(string responseXml) {
             var xml = XDocument.Parse( responseXml );
             return resultParser.Parse( xml );
+        }
+    }
+
+    public class SolrParams : List<KeyValuePair<string, string>>
+    {
+        public SolrParams AddOptional(string keyPrefix, IDictionary<string, string> values)
+        {
+            if (values == null || values.Count == 0)
+            {
+                return this;
+            }
+            
+            foreach (var valueKV in values)
+            {
+                var key = !string.IsNullOrEmpty(keyPrefix) ? keyPrefix + valueKV.Key : valueKV.Key;
+                var value = valueKV.Value;
+                AddOptional(key, value);
+            }
+            return this;
+        }
+
+        public SolrParams AddOptional(string key, object value)
+        {
+            if (value == null)
+            {
+                return this;
+            }
+            return AddOptional(key, value.ToString());
+        }
+
+        public SolrParams AddOptional(string key, string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+                Add(new KeyValuePair<string, string>(key, value));
+
+            return this;
+        }
+
+        public SolrParams AddRequired(string key, string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+                Add(new KeyValuePair<string, string>(key, value));
+            else
+                throw new Exception("Parameter " + key + " is required");
+
+            return this;
         }
     }
 }

@@ -1,0 +1,47 @@
+{
+    "core": {
+        "shards": {
+            "shard_1": {
+                "range": "80000000-ffffffff",
+                "state": "active",
+                "parent": null,
+                "replicas": {
+                    "replica_1": {
+                        "state": "active",
+                        "core": "core",
+                        "node_name": "shard_1_replica_1",
+                        "base_url": "http://host/solr_1/replica_1",
+                        "leader": "true"
+                    },
+                    "replica_2": {
+                        "state": "down",
+                        "core": "core",
+                        "node_name": "shard_1_replica_2",
+                        "base_url": "http://host/solr_1/replica_2"
+                    }
+                }
+            },
+            "shard_2": {
+                "range": "0-7fffffff",
+                "state": "active",
+                "parent": null,
+                "replicas": {
+                    "replica_1": {
+                        "state": "active",
+                        "core": "core",
+                        "node_name": "shard_2_replica_1",
+                        "base_url": "http://host/solr_2/replica_1",
+                        "leader": "true"
+                    },
+                    "replica_2": {
+                        "state": "down",
+                        "core": "core",
+                        "node_name": "shard_2_replica_1",
+                        "base_url": "http://host/solr_2/replica_2"
+                    }
+                }
+            }
+        },
+        "router": { "name": "implicit" }
+    }
+}

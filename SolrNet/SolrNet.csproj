@@ -191,6 +191,7 @@
     <Compile Include="SolrMoreLikeThisHandlerQuery.cs" />
     <Compile Include="SolrMoreLikeThisHandlerStreamBodyQuery.cs" />
     <Compile Include="SolrMoreLikeThisHandlerStreamUrlQuery.cs" />
+    <Compile Include="SolrNet.cs" />
     <Compile Include="SolrQueryByDistance.cs" />
     <Compile Include="SolrDIHStatus.cs" />
     <Compile Include="Impl\SolrDIHStatusParser.cs" />

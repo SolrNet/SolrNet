@@ -16,13 +16,13 @@
 
 using System.Collections;
 using System.Xml.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldParsers;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class InferringFieldParserTests {
-        [Test]
+        [Fact]
         public void Collection() {
             var doc = new XDocument();
             var node = new XElement("arr");
@@ -31,7 +31,7 @@ namespace SolrNet.Tests {
             doc.Add(node);
             var parser = new InferringFieldParser(new DefaultFieldParser());
             var value = parser.Parse(node, typeof (object));
-            Assert.IsInstanceOfType<ArrayList>(value);
+            Assert.IsType<ArrayList>(value);
         }
     }
 }

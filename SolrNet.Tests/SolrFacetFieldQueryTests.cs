@@ -17,13 +17,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class SolrFacetFieldQueryTests {
         public IList<KeyValuePair<string, string>> Serialize(object o) {
             var fieldSerializer = new DefaultFieldSerializer();
@@ -31,102 +31,102 @@ namespace SolrNet.Tests {
             return serializer.Serialize(o).ToList();
         }
             
-        [Test]
+        [Fact]
         public void FieldOnly() {
             var fq = new SolrFacetFieldQuery("pepe");
             var q = Serialize(fq);
-            Assert.AreEqual(1, q.Count);
+            Assert.Equal(1, q.Count);
             Console.WriteLine(q[0]);
-            Assert.AreEqual("facet.field", q[0].Key);
-            Assert.AreEqual("pepe", q[0].Value);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
         }
 
-        [Test]
+        [Fact]
         public void Prefix() {
             var fq = new SolrFacetFieldQuery("pepe") {Prefix = "pre"};
             var q = Serialize(fq);
-            Assert.AreEqual(2, q.Count);
-            Assert.AreEqual("facet.field", q[0].Key);
-            Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("f.pepe.facet.prefix", q[1].Key);
-            Assert.AreEqual("pre", q[1].Value);
+            Assert.Equal(2, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
+            Assert.Equal("f.pepe.facet.prefix", q[1].Key);
+            Assert.Equal("pre", q[1].Value);
         }
 
-        [Test]
+        [Fact]
         public void Sort() {
             var fq = new SolrFacetFieldQuery("pepe") {Sort = true};
             var q = Serialize(fq);
-            Assert.AreEqual(2, q.Count);
-            Assert.AreEqual("facet.field", q[0].Key);
-            Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("f.pepe.facet.sort", q[1].Key);
-            Assert.AreEqual("true", q[1].Value);
+            Assert.Equal(2, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
+            Assert.Equal("f.pepe.facet.sort", q[1].Key);
+            Assert.Equal("true", q[1].Value);
         }
 
-        [Test]
+        [Fact]
         public void Limit() {
             var fq = new SolrFacetFieldQuery("pepe") {Limit = 5};
             var q = Serialize(fq);
-            Assert.AreEqual(2, q.Count);
-            Assert.AreEqual("facet.field", q[0].Key);
-            Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("f.pepe.facet.limit", q[1].Key);
-            Assert.AreEqual("5", q[1].Value);
+            Assert.Equal(2, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
+            Assert.Equal("f.pepe.facet.limit", q[1].Key);
+            Assert.Equal("5", q[1].Value);
         }
 
-        [Test]
+        [Fact]
         public void Offset() {
             var fq = new SolrFacetFieldQuery("pepe") {Offset = 5};
             var q = Serialize(fq);
-            Assert.AreEqual(2, q.Count);
-            Assert.AreEqual("facet.field", q[0].Key);
-            Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("f.pepe.facet.offset", q[1].Key);
-            Assert.AreEqual("5", q[1].Value);
+            Assert.Equal(2, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
+            Assert.Equal("f.pepe.facet.offset", q[1].Key);
+            Assert.Equal("5", q[1].Value);
         }
 
-        [Test]
+        [Fact]
         public void Mincount() {
             var fq = new SolrFacetFieldQuery("pepe") {MinCount = 5};
             var q = Serialize(fq);
-            Assert.AreEqual(2, q.Count);
-            Assert.AreEqual("facet.field", q[0].Key);
-            Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("f.pepe.facet.mincount", q[1].Key);
-            Assert.AreEqual("5", q[1].Value);
+            Assert.Equal(2, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
+            Assert.Equal("f.pepe.facet.mincount", q[1].Key);
+            Assert.Equal("5", q[1].Value);
         }
 
-        [Test]
+        [Fact]
         public void MincountWithLocalParams_IgnoresLocalParams() {
             var fq = new SolrFacetFieldQuery(new LocalParams { { "ex", "cat" } } + "pepe") { MinCount = 5 };
             var q = Serialize(fq);
-            Assert.AreEqual(2, q.Count);
-            Assert.AreEqual("facet.field", q[0].Key);
-            Assert.AreEqual("{!ex=cat}pepe", q[0].Value);
-            Assert.AreEqual("f.pepe.facet.mincount", q[1].Key);
-            Assert.AreEqual("5", q[1].Value);
+            Assert.Equal(2, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("{!ex=cat}pepe", q[0].Value);
+            Assert.Equal("f.pepe.facet.mincount", q[1].Key);
+            Assert.Equal("5", q[1].Value);
         }
 
-        [Test]
+        [Fact]
         public void Missing() {
             var fq = new SolrFacetFieldQuery("pepe") {Missing = true};
             var q = Serialize(fq);
-            Assert.AreEqual(2, q.Count);
-            Assert.AreEqual("facet.field", q[0].Key);
-            Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("f.pepe.facet.missing", q[1].Key);
-            Assert.AreEqual("true", q[1].Value);
+            Assert.Equal(2, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
+            Assert.Equal("f.pepe.facet.missing", q[1].Key);
+            Assert.Equal("true", q[1].Value);
         }
 
-        [Test]
+        [Fact]
         public void EnumCacheDF() {
             var fq = new SolrFacetFieldQuery("pepe") {EnumCacheMinDf = 5};
             var q = Serialize(fq);
-            Assert.AreEqual(2, q.Count);
-            Assert.AreEqual("facet.field", q[0].Key);
-            Assert.AreEqual("pepe", q[0].Value);
-            Assert.AreEqual("f.pepe.facet.enum.cache.minDf", q[1].Key);
-            Assert.AreEqual("5", q[1].Value);
+            Assert.Equal(2, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
+            Assert.Equal("f.pepe.facet.enum.cache.minDf", q[1].Key);
+            Assert.Equal("5", q[1].Value);
         }
     }
 }

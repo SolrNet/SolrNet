@@ -14,17 +14,17 @@
 // limitations under the License.
 #endregion
 
-using MbUnit.Framework;
+using Xunit;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class IntegrationTests {
 
-        [Test]
+        [Fact]
         public void SwappingMappingManager() {
             var mapper = new MappingManager();
             Startup.Container.Clear();
@@ -35,10 +35,10 @@ namespace SolrNet.Tests {
             ServiceLocator.SetLocatorProvider(() => container);
             Startup.Init<Document>("http://localhost");
             var mapperFromFactory = ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>();
-            Assert.AreSame(mapper, mapperFromFactory);
+            Assert.Same(mapper, mapperFromFactory);
         }
 
-        [Test]
+        [Fact]
         public void SwappingMappingManager2() {
             var mapper = new MappingManager();
             Startup.Container.Clear();
@@ -48,10 +48,10 @@ namespace SolrNet.Tests {
             ServiceLocator.SetLocatorProvider(() => Startup.Container);
             Startup.Init<Document>("http://localhost");
             var mapperFromFactory = ServiceLocator.Current.GetInstance<IReadOnlyMappingManager>();
-            Assert.AreSame(mapper, mapperFromFactory);
+            Assert.Same(mapper, mapperFromFactory);
         }
 
-        [Test]
+        [Fact]
         public void MappingValidationManager() {
             Startup.Container.Clear();
             Startup.InitContainer();

@@ -16,35 +16,35 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class TypeHelperTests {
-        [Test]
+        [Fact]
         public void IsGenericAssignableFrom() {
-            Assert.IsTrue(TypeHelper.IsGenericAssignableFrom(typeof (IDictionary<,>), typeof (Dictionary<string, string>)));
+            Assert.True(TypeHelper.IsGenericAssignableFrom(typeof (IDictionary<,>), typeof (Dictionary<string, string>)));
         }
 
-        [Test]
+        [Fact]
         public void IsNotGenericAssignableFrom() {
-            Assert.IsFalse(TypeHelper.IsGenericAssignableFrom(typeof(IDictionary<,>), typeof(List<string>)));
+            Assert.False(TypeHelper.IsGenericAssignableFrom(typeof(IDictionary<,>), typeof(List<string>)));
         }
 
-        [Test]
+        [Fact]
         public void IsNotGenericAssignableFrom_non_generic() {
-            Assert.IsFalse(TypeHelper.IsGenericAssignableFrom(typeof(IList), typeof(List<string>)));
+            Assert.False(TypeHelper.IsGenericAssignableFrom(typeof(IList), typeof(List<string>)));
         }
 
-        [Test]
+        [Fact]
         public void IsNullableType() {
-            Assert.IsTrue(TypeHelper.IsNullableType(typeof (int?)));
+            Assert.True(TypeHelper.IsNullableType(typeof (int?)));
         }
 
-        [Test]
+        [Fact]
         public void IsNotNullableType() {
-            Assert.IsFalse(TypeHelper.IsNullableType(typeof(int)));
+            Assert.False(TypeHelper.IsNullableType(typeof(int)));
         }
 
     }

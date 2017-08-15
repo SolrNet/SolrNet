@@ -15,19 +15,19 @@
 #endregion
 
 using System;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class SolrHasValueQueryTests {
-        [Test]
+        [Fact]
         public void Query() {
             var q = new SolrHasValueQuery("name");
             var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             var query = serializer.Serialize(q);
-            Assert.AreEqual("name:[* TO *]", query);
+            Assert.Equal("name:[* TO *]", query);
         }
     }
 }

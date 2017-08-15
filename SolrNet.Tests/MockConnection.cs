@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using MbUnit.Framework;
+using Xunit;
 
 namespace SolrNet.Tests {
     public class MockConnection : ISolrConnection {
@@ -60,9 +60,9 @@ namespace SolrNet.Tests {
 
         public virtual string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
             var param = new List<KeyValuePair<string, string>>(parameters);
-            Assert.AreEqual(expectations.Count, param.Count, "Expected {0} parameters but found {1}.\nActual parameters:\n {2}", expectations.Count, param.Count, DumpParams(param));
+            Assert.Equal(expectations.Count, param.Count);
             foreach (var p in param)
-                Assert.IsTrue(expectations.Contains(p), "Parameter {0}={1}, not found in expectations.\nCurrent expectations are:\n {2}", p.Key, p.Value, DumpParams(expectations));
+                Assert.True(expectations.Contains(p));
             return response;
         }
     }

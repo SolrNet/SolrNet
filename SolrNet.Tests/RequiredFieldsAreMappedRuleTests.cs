@@ -17,7 +17,7 @@
 #endregion
 
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
@@ -25,9 +25,9 @@ using SolrNet.Schema;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class RequiredFieldsAreMappedRuleTests {
-        [Test]
+        [Fact]
         public void RequiredSolrFieldForWhichNoCopyFieldExistsShouldReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
@@ -40,7 +40,7 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(1, validationResults.Count);
+            Assert.Equal(1, validationResults.Count);
         }
     }
 }

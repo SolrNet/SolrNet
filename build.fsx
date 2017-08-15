@@ -1,6 +1,5 @@
 #I @"lib"
 #r "FakeLib.dll"
-#r "Fake.Gallio.dll"
 #r "System.Xml.Linq"
 #load "fake.fsx"
 
@@ -48,26 +47,6 @@ Target "Build" <| fun _ -> mainSln "Rebuild"
 let libs = ["SolrNet"; "SolrNet.DSL"; "HttpWebAdapters"; "Castle.Facilities.SolrNetIntegration"; "Ninject.Integration.SolrNet"; "StructureMap.SolrNetIntegration"; "AutofacContrib.SolrNet"; "Unity.SolrNetIntegration"; "NHibernate.SolrNet"]
 let dlls = [for l in libs -> l + ".dll"]
 let dirs = [for l in libs -> l @@ "bin" @@ config]
-
-let testAssemblies = !! ("**/bin/"+config+"/*Tests.dll") |> Seq.distinctBy (fun p -> p.Split [|'/';'\\'|] |> System.Linq.Enumerable.Last)
-let noIntegrationTests = "exclude Category: Integration"
-let onlyIntegrationTests = "Category: Integration"
-let testTargets = List.map (fun lib -> "Test." + lib) libs |> List.filter (fun l -> not (l.Contains "NHibernate"))
-
-for lib,target in Seq.zip libs testTargets do
-    Target target <| fun _ ->
-        !! (lib+".Tests/bin/"+config+"/"+lib+".Tests.dll")
-            |> Gallio.Run (fun p -> { p with Filters = noIntegrationTests })
-
-Target "Coverage" <| fun _ ->
-    testAssemblies |> Gallio.Run (fun p -> { p with 
-                                                Filters = noIntegrationTests
-                                                RunnerType = "NCover"
-                                                PluginDirectories = ["lib"] })
-
-Target "IntegrationTest" <| fun _ ->
-    use s = Solr.start()
-    testAssemblies |> Gallio.Run (fun p -> { p with Filters = onlyIntegrationTests })
 
 let merge libraries = 
     rm_rf buildDir
@@ -204,17 +183,12 @@ Target "ReleasePackage" <| fun _ ->
     rm_rf outputPath
 
 Target "BuildAll" DoNothing
-Target "TestAndRelease" DoNothing
 Target "BuildAndRelease" DoNothing
 Target "NuGet.All" DoNothing
 Target "All" DoNothing
-Target "Test" DoNothing
-Target "TestAndNuGet" DoNothing
 
-"Test" <== ["BuildAll"] @ testTargets
 "BuildAll" <== ["Build";"Merge"] //;"BuildSample"
 "BuildAndRelease" <== ["Clean";"Version";"BuildAll";"Docs";"ReleasePackage"]
-"TestAndRelease" <== ["Clean";"Version";"Test";"ReleasePackage"]
 "NuGet" <== ["Clean";"Build";"BasicMerge";"Docs"]
 "NuGet.All" <== (getAllTargetsNames() |> List.filter ((<*) "NuGet") |> List.filter ((<>) "NuGet.All") |> List.sort)
 "TestAndNuGet" <== ["Clean";"Version"; "Test"; "NuGet.All"]

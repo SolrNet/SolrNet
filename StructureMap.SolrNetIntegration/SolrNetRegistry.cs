@@ -94,30 +94,32 @@ namespace StructureMap.SolrNetIntegration
             For<ISolrConnection>().Add<SolrConnection>()
                 .Named(coreConnectionId)
                 .Ctor<string>("serverURL").Is(core.Url)
-                .Setter(c => c.Cache).IsTheDefault();
+                .Setter<ISolrCache>().IsTheDefault();
 
             var ISolrQueryExecuter = typeof(ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
             var SolrQueryExecuter = typeof(SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
 
             For(ISolrQueryExecuter).Add(SolrQueryExecuter).Named(core.Id + SolrQueryExecuter)
-                .CtorDependency<ISolrConnection>("connection").IsNamedInstance(coreConnectionId);
+                .Ctor<ISolrConnection>("connection").IsNamedInstance(coreConnectionId);
 
             var ISolrBasicOperations = typeof(ISolrBasicOperations<>).MakeGenericType(core.DocumentType);
             var ISolrBasicReadOnlyOperations = typeof(ISolrBasicReadOnlyOperations<>).MakeGenericType(core.DocumentType);
             var SolrBasicServer = typeof(SolrBasicServer<>).MakeGenericType(core.DocumentType);
 
             For(ISolrBasicOperations).Add(SolrBasicServer).Named(core.Id + SolrBasicServer)
-                .CtorDependency<ISolrConnection>("connection").IsNamedInstance(coreConnectionId)
-                .Child("queryExecuter").IsNamedInstance(core.Id + SolrQueryExecuter);
+                .Ctor<ISolrConnection>("connection").IsNamedInstance(coreConnectionId);
+                // Don't think this is necessary because of line 102 which will inject it
+                // In my tests, searches worked without this configuration:
+                //.Child("queryExecuter").IsNamedInstance(core.Id + SolrQueryExecuter);
 
             For(ISolrBasicReadOnlyOperations).Add(SolrBasicServer).Named(core.Id + SolrBasicServer)
-                .CtorDependency<ISolrConnection>("connection").IsNamedInstance(coreConnectionId)
-                .Child("queryExecuter").IsNamedInstance(core.Id + SolrQueryExecuter);
+                .Ctor<ISolrConnection>("connection").IsNamedInstance(coreConnectionId);
+                //.Child("queryExecuter").IsNamedInstance(core.Id + SolrQueryExecuter);
 
             var ISolrOperations = typeof(ISolrOperations<>).MakeGenericType(core.DocumentType);
             var SolrServer = typeof(SolrServer<>).MakeGenericType(core.DocumentType);
-            For(ISolrOperations).Add(SolrServer).Named(core.Id)
-                .Child("basicServer").IsNamedInstance(core.Id + SolrBasicServer);
+            For(ISolrOperations).Add(SolrServer).Named(core.Id);
+                //.Child("basicServer").IsNamedInstance(core.Id + SolrBasicServer);
         }
 
         private void AddCoresFromConfig(SolrServers solrServers)

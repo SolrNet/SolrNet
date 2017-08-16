@@ -16,9 +16,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Castle.Core.Configuration;
 using Castle.MicroKernel.Facilities;
 using Castle.MicroKernel.Registration;
+using Castle.Windsor;
 using SolrNet;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
@@ -40,6 +42,23 @@ namespace Castle.Facilities.SolrNetIntegration {
     /// </summary>
     public class SolrNetFacility : AbstractFacility {
         private readonly string solrURL;
+        private bool _addedToSolr;
+
+        /// <summary>
+        /// Fetches an existing facility from windsor or adds a new one if none exists yet.
+        /// </summary>
+        /// <param name="container"></param>
+        /// <returns></returns>
+        public static SolrNetFacility GetFromOrAddToContainer(IWindsorContainer container) {
+            var existingFacility = container.Kernel.GetFacilities().OfType<SolrNetFacility>().SingleOrDefault();
+            if (existingFacility != null) {
+                return existingFacility;
+            }
+
+            var facility = new SolrNetFacility();
+            container.AddFacility(facility);
+            return facility;
+        }
 
         /// <summary>
         /// Default mapper override
@@ -63,22 +82,28 @@ namespace Castle.Facilities.SolrNetIntegration {
         private string GetSolrUrl() {
             if (solrURL != null)
                 return solrURL;
+
             if (FacilityConfig == null)
-                throw new FacilityException("Please add solrURL to the SolrNetFacility configuration");
+                return null;
+
             var configNode = FacilityConfig.Children["solrURL"];
             if (configNode == null)
-                throw new FacilityException("Please add solrURL to the SolrNetFacility configuration");
+                return null;
+
             var url = configNode.Value;
             ValidateUrl(url);
             return url;
         }
 
-        protected override void Init() {
+        protected override void Init() {            
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Kernel.Register(Component.For<IReadOnlyMappingManager>().Instance(mapper));
             //Kernel.Register(Component.For<ISolrCache>().ImplementedBy<HttpRuntimeCache>());
-            Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
-                                .Parameters(Parameter.ForKey("serverURL").Eq(GetSolrUrl())));
+            var solrUrl = GetSolrUrl();
+            if (solrURL != null) {
+                Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
+                    .Parameters(Parameter.ForKey("serverURL").Eq(solrUrl)));
+            }
 
             Kernel.Register(Component.For(typeof (ISolrDocumentActivator<>)).ImplementedBy(typeof(SolrDocumentActivator<>)));
 
@@ -134,7 +159,8 @@ namespace Castle.Facilities.SolrNetIntegration {
             foreach (var core in cores) {
                 RegisterCore(core);
             }
-        }
+            _addedToSolr = true;
+        }        
 
         /// <summary>
         /// Registers a new core in the container.
@@ -186,7 +212,11 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// <param name="coreUrl"></param>
         public void AddCore(string coreId, Type documentType, string coreUrl) {
             ValidateUrl(coreUrl);
-            cores.Add(new SolrCore(coreId, documentType, coreUrl));
+            var solrCore = new SolrCore(coreId, documentType, coreUrl);
+            cores.Add(solrCore);
+            if (_addedToSolr) {
+                RegisterCore(solrCore);
+            }
         }
 
         private void AddCoresFromConfig() {
@@ -248,6 +278,6 @@ namespace Castle.Facilities.SolrNetIntegration {
             }
         }
 
-        private readonly List<SolrCore> cores = new List<SolrCore>();
+        private readonly List<SolrCore> cores = new List<SolrCore>();        
     }
 }

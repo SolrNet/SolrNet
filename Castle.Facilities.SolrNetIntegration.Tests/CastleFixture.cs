@@ -34,7 +34,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
     [TestFixture]
     public class CastleFixture {
         [Test]
-        [ExpectedException(typeof(FacilityException))]
+        [ExpectedException(typeof(FacilityException)), Ignore("Why would we want this. Its perfectly reasonable to only setup url for cores. A default url does not really make sense to me when we use multi core configurations")]
         public void NoConfig_throws() {
             var container = new WindsorContainer();
             container.AddFacility<SolrNetFacility>();
@@ -147,6 +147,62 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             solrFacility.AddCore("core2-id", typeof(Core1Entity), core1url);
             var container = new WindsorContainer();
             container.AddFacility("solr", solrFacility);
+
+            TestCores(container);
+        }
+
+        [Test]
+        public void GetFromOrAddToContainer()
+        {
+            const string core0url = "http://localhost:8983/solr/core0";
+            const string core1url = "http://localhost:8983/solr/core1";
+
+            var container = new WindsorContainer();
+
+            var solrFacility = SolrNetFacility.GetFromOrAddToContainer(container);
+            var existingFacility = SolrNetFacility.GetFromOrAddToContainer(container);
+            Assert.AreSame(solrFacility, existingFacility);
+
+            solrFacility.AddCore("core0-id", typeof(Document), core0url);
+            solrFacility.AddCore("core1-id", typeof(Document), core1url);
+            solrFacility.AddCore("core2-id", typeof(Core1Entity), core1url);            
+
+            TestCores(container);
+        }
+
+        [Test]
+        public void GetFromOrAddToContainerExtension()
+        {
+            const string core0url = "http://localhost:8983/solr/core0";
+            const string core1url = "http://localhost:8983/solr/core1";
+
+            var container = new WindsorContainer();
+
+            var solrFacility = container.GetOrAddSolrNetFacility();
+            var existingFacility = container.GetOrAddSolrNetFacility();
+            Assert.AreSame(solrFacility, existingFacility);
+
+            solrFacility.AddCore("core0-id", typeof(Document), core0url);
+            solrFacility.AddCore("core1-id", typeof(Document), core1url);
+            solrFacility.AddCore("core2-id", typeof(Core1Entity), core1url);
+
+            TestCores(container);
+        }
+
+        [Test]
+        public void RegisterCoreAfterFacilityIsAddedToWindsor()
+        {
+            const string core0url = "http://localhost:8983/solr/core0";
+            const string core1url = "http://localhost:8983/solr/core1";
+            var solrFacility = new SolrNetFacility("http://localhost:8983/solr/defaultCore");
+            var container = new WindsorContainer();
+
+            solrFacility.AddCore("core0-id", typeof(Document), core0url);
+
+            container.AddFacility("solr", solrFacility);
+
+            solrFacility.AddCore("core1-id", typeof(Document), core1url);
+            solrFacility.AddCore("core2-id", typeof(Core1Entity), core1url);
 
             TestCores(container);
         }

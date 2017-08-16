@@ -14,13 +14,13 @@
 // limitations under the License.
 #endregion
 
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 using System;
 
 namespace SolrNet.Tests {
-	[TestFixture]
+	
 	public class SolrQueryByFieldTests {
 		public class TestDocument {}
 
@@ -30,46 +30,46 @@ namespace SolrNet.Tests {
         }
 
 
-        [Test]
+        [Fact]
         public void NullField_yields_null_query() {
             var q = new SolrQueryByField(null, "123456");
-            Assert.IsNull(Serialize(q));
+            Assert.Null(Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void NullValue_yields_null_query() {
             var q = new SolrQueryByField("id", null);
-            Assert.IsNull(Serialize(q));
+            Assert.Null(Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void EmptyValue() {
             var q = new SolrQueryByField("id", "");
-            Assert.AreEqual("id:(\"\")", Serialize(q));
+            Assert.Equal("id:(\"\")", Serialize(q));
         }
 
-		[Test]
+		[Fact]
 		public void Basic() {
 			var q = new SolrQueryByField("id", "123456");
-            Assert.AreEqual("id:(123456)", Serialize(q));
+            Assert.Equal("id:(123456)", Serialize(q));
 		}
 
-		[Test]
+		[Fact]
 		public void ShouldQuoteSpaces() {
 			var q = new SolrQueryByField("id", "hello world");
-            Assert.AreEqual("id:(\"hello world\")", Serialize(q));
+            Assert.Equal("id:(\"hello world\")", Serialize(q));
 		}
 
-		[Test]
+		[Fact]
 		public void ShouldQuoteSpecialChar() {
 			var q = new SolrQueryByField("id", "hello+world-bye&&q||w!e(r)t{y}[u]^i\"o~p:a\\s+d;;?*/");
-            Assert.AreEqual(@"id:(hello\+world\-bye\&&q\||w\!e\(r\)t\{y\}\[u\]\^i\""o\~p\:a\\s\+d\;\;\?\*\/)", Serialize(q));
+            Assert.Equal(@"id:(hello\+world\-bye\&&q\||w\!e\(r\)t\{y\}\[u\]\^i\""o\~p\:a\\s\+d\;\;\?\*\/)", Serialize(q));
 		}
 
-        [Test]
+        [Fact]
         public void QuotedFalse() {
             var q = new SolrQueryByField("id", "hello?wor/ld*") { Quoted = false };
-            Assert.AreEqual("id:(hello?wor/ld*)", Serialize(q));
+            Assert.Equal("id:(hello?wor/ld*)", Serialize(q));
         }
 	}
 }

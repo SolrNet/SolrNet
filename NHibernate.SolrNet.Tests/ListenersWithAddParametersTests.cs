@@ -14,13 +14,14 @@
 // limitations under the License.
 #endregion
 
-using MbUnit.Framework;
+using Xunit;
 using Moroco;
 using NHibernate.SolrNet.Impl;
 using SolrNet;
 
 namespace NHibernate.SolrNet.Tests {
-    [TestFixture]
+
+    [Trait("Category", "Outdated")]
     public class ListenersWithAddParametersTests : BaseNHTests {
         readonly AddParameters addParameters = new AddParameters { CommitWithin = 4343 };
 
@@ -28,12 +29,12 @@ namespace NHibernate.SolrNet.Tests {
             return new SolrNetListener<Entity>(solr) {AddParameters = addParameters};
         }
 
-        [Test]
+        [Fact]
         public void Add_includes_parameters_when_configured() {
             var entity = new Entity { Description = "pepe" };
             mockSolr.addDocParams += (doc, param) => {
-                Assert.AreSame(entity, doc);
-                Assert.AreSame(addParameters, param);
+                Assert.Same(entity, doc);
+                Assert.Same(addParameters, param);
                 return null;
             };
             mockSolr.addDocParams &= x => x.Expect(1);

@@ -1,13 +1,13 @@
 using System.Linq;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests 
 {
-    [TestFixture]
+    
     public class SolrCoreReplicationTests 
     {
         /*
@@ -38,98 +38,98 @@ namespace SolrNet.Tests
 
         */
 
-        [Test]
+        [Fact]
         public void ReplicationStatusOk()
         {
             var parser = new ReplicationStatusResponseParser<string>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationStatusOk.xml");
             var results = parser.Parse(xml);
 
-            Assert.IsNotNull(results.responseHeader);
-            Assert.AreEqual("OK", results.status);
-            Assert.IsNull(results.message);         
+            Assert.NotNull(results.responseHeader);
+            Assert.Equal("OK", results.status);
+            Assert.Null(results.message);         
         }
 
-        [Test]
+        [Fact]
         public void ReplicationStatusError()
         {
             var parser = new ReplicationStatusResponseParser<string>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationStatusError.xml");
             var results = parser.Parse(xml);
 
-            Assert.IsNotNull(results.responseHeader);
-            Assert.AreEqual("ERROR", results.status);
-            Assert.IsNotNull(results.message);
-            Assert.AreEqual("No slave configured or no 'masterUrl' Specified", results.message);
+            Assert.NotNull(results.responseHeader);
+            Assert.Equal("ERROR", results.status);
+            Assert.NotNull(results.message);
+            Assert.Equal("No slave configured or no 'masterUrl' Specified", results.message);
         }
 
-        [Test]
+        [Fact]
         public void ReplicationIndexVersion()
         {
             var parser = new ReplicationIndexVersionResponseParser<string>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationIndexVersion.xml");
             var results = parser.Parse(xml);
 
-            Assert.IsNotNull(results.responseHeader);
-            Assert.AreEqual(0, results.indexversion);
-            Assert.AreEqual(1, results.generation);
+            Assert.NotNull(results.responseHeader);
+            Assert.Equal(0, results.indexversion);
+            Assert.Equal(1, results.generation);
         }
 
-        [Test]
+        [Fact]
         public void ReplicationDetailsMaster()
         {
             var parser = new ReplicationDetailsResponseParser<string>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationDetailsMaster.xml");
             var results = parser.Parse(xml);
 
-            Assert.IsNotNull(results.responseHeader);
-            Assert.AreEqual(1391678354779, results.indexVersion);
-            Assert.AreEqual(3821, results.generation);
-            Assert.AreEqual("914.55 MB", results.indexSize);
-            Assert.AreEqual("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);
-            Assert.AreEqual("true", results.isMaster);
-            Assert.AreEqual("false", results.isSlave);
-            Assert.IsNull(results.isReplicating);            
-            Assert.IsNull(results.timeRemaining);
-            Assert.IsNull(results.totalPercent);
+            Assert.NotNull(results.responseHeader);
+            Assert.Equal(1391678354779, results.indexVersion);
+            Assert.Equal(3821, results.generation);
+            Assert.Equal("914.55 MB", results.indexSize);
+            Assert.Equal("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);
+            Assert.Equal("true", results.isMaster);
+            Assert.Equal("false", results.isSlave);
+            Assert.Null(results.isReplicating);            
+            Assert.Null(results.timeRemaining);
+            Assert.Null(results.totalPercent);
         }
 
-        [Test]
+        [Fact]
         public void ReplicationDetailsSlaveNotReplicating()
         {
             var parser = new ReplicationDetailsResponseParser<string>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationDetailsSlaveNotReplicating.xml");
             var results = parser.Parse(xml);
 
-            Assert.IsNotNull(results.responseHeader);
-            Assert.AreEqual(1391591222457, results.indexVersion);
-            Assert.AreEqual(3820, results.generation);
-            Assert.AreEqual("94 bytes", results.indexSize);
-            Assert.AreEqual("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);
-            Assert.AreEqual("false", results.isMaster);
-            Assert.AreEqual("true", results.isSlave);
-            Assert.AreEqual("false", results.isReplicating);
-            Assert.IsNull(results.timeRemaining);
-            Assert.IsNull(results.totalPercent);
+            Assert.NotNull(results.responseHeader);
+            Assert.Equal(1391591222457, results.indexVersion);
+            Assert.Equal(3820, results.generation);
+            Assert.Equal("94 bytes", results.indexSize);
+            Assert.Equal("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);
+            Assert.Equal("false", results.isMaster);
+            Assert.Equal("true", results.isSlave);
+            Assert.Equal("false", results.isReplicating);
+            Assert.Null(results.timeRemaining);
+            Assert.Null(results.totalPercent);
         }
 
-        [Test]
+        [Fact]
         public void ReplicationDetailsSlaveIsReplicating()
         {
             var parser = new ReplicationDetailsResponseParser<string>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseReplicationDetailsSlaveIsReplicating.xml");
             var results = parser.Parse(xml);
 
-            Assert.IsNotNull(results.responseHeader);
-            Assert.AreEqual(1391591222457, results.indexVersion);
-            Assert.AreEqual(3820, results.generation);
-            Assert.AreEqual("94 bytes", results.indexSize);
-            Assert.AreEqual("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);
-            Assert.AreEqual("false", results.isMaster);
-            Assert.AreEqual("true", results.isSlave);
-            Assert.AreEqual("true", results.isReplicating);
-            Assert.AreEqual("8s", results.timeRemaining);
-            Assert.AreEqual("37.0", results.totalPercent);
+            Assert.NotNull(results.responseHeader);
+            Assert.Equal(1391591222457, results.indexVersion);
+            Assert.Equal(3820, results.generation);
+            Assert.Equal("94 bytes", results.indexSize);
+            Assert.Equal("/usr/share/solr/solr-4.5.0/example/solr/Eui1/data/index/", results.indexPath);
+            Assert.Equal("false", results.isMaster);
+            Assert.Equal("true", results.isSlave);
+            Assert.Equal("true", results.isReplicating);
+            Assert.Equal("8s", results.timeRemaining);
+            Assert.Equal("37.0", results.totalPercent);
         }
     }
 }

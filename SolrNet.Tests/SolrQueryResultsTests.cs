@@ -14,22 +14,22 @@
 // limitations under the License.
 #endregion
 
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class SolrQueryResultsTests {
-        [Test]
+        [Fact]
         public void FacetQueries_NotNullByDefault() {
             var r = new SolrQueryResults<Entity>();
-            Assert.IsNotNull(r.FacetQueries);
+            Assert.NotNull(r.FacetQueries);
         }
 
-        [Test]
+        [Fact]
         public void FacetFields_NotNullByDefault() {
             var r = new SolrQueryResults<Entity>();
-            Assert.IsNotNull(r.FacetFields);
+            Assert.NotNull(r.FacetFields);
         }
 
         public class Entity {}

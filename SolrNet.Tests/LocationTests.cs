@@ -1,68 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldParsers;
 
-namespace SolrNet.Tests {
-    public static class LocationTests {
-        [StaticTestFactory]
-        public static IEnumerable<Test> Tests() {
-            var locations = new[] {
-                new { location = new Location(12, 23), toString = "12,23" },
-                new { location = new Location(-4.3, 0.20), toString = "-4.3,0.2" },
+namespace SolrNet.Tests
+{
+    public class LocationTests
+    {
+        public static IEnumerable<object[]> locations = new[] {
+                new object[] {new Location(12, 23), "12,23" },
+                new object[] {new Location(-4.3, 0.20), "-4.3,0.2" },
             };
 
-            foreach (var l in locations) {
-                var x = l;
-                yield return new TestCase("ToString " + x.toString,
-                    () => Assert.AreEqual(x.toString, x.location.ToString()));
 
-                yield return new TestCase("Parse " + x.toString, () => {
-                    var parsedLocation = LocationFieldParser.Parse(x.toString);
-                    Assert.AreEqual(x.location, parsedLocation);
-                    Assert.AreEqual(x.location.Latitude, parsedLocation.Latitude);
-                    Assert.AreEqual(x.location.Longitude, parsedLocation.Longitude);
-                });
-            }
-
-            var invalidLatitudes = new[] {-100, 120};
-            foreach (var x in invalidLatitudes) {
-                var latitude = x;
-
-                yield return new TestCase("Latitude " + latitude + " is invalid", 
-                    () => Assert.IsFalse(Location.IsValidLatitude(latitude)));
-
-                yield return new TestCase("Invalid latitude throws: " + latitude, 
-                    () => Assert.Throws<ArgumentOutOfRangeException>(() => new Location(latitude, 0)));
-            }
-
-            var invalidLongitudes = new[] {-200, 999};
-            foreach (var x in invalidLongitudes) {
-                var longitude = x;
-
-                yield return new TestCase("Longitude " + longitude + " is invalid",
-                    () => Assert.IsFalse(Location.IsValidLongitude(longitude)));
-
-                yield return new TestCase("Invalid longitude throws: " + longitude,
-                    () => Assert.Throws<ArgumentOutOfRangeException>(() => new Location(0, longitude)));
-            }
-
-            yield return new TestCase("TryCreate returns null with invalid lat/long", () => {
-                foreach (var lat in invalidLatitudes)
-                    foreach (var lng in invalidLongitudes) {
-                        var loc = Location.TryCreate(lat, lng);
-                        Assert.IsNull(loc);
-                    }
-            });
-
-            yield return new TestCase("TryCreate returns non-null with valid lat/long", () => {
-                foreach (var l in locations) {
-                    var loc = l.location;
-                    var loc2 = Location.TryCreate(loc.Latitude, loc.Longitude);
-                    Assert.IsNotNull(loc2);
-                    Assert.AreEqual(loc, loc2);
-                }
-            });
+        [Theory]
+        [MemberData(nameof(locations))]
+        public void ToString(Location location, string stringRepresentation)
+        {
+            Assert.Equal(stringRepresentation, location.ToString());
         }
+
+        [Theory]
+        [MemberData(nameof(locations))]
+        public void Parse(Location location, string stringRepresentation)
+        {
+            var parsedLocation = LocationFieldParser.Parse(stringRepresentation);
+            Assert.Equal(location, parsedLocation);
+            Assert.Equal(location.Latitude, parsedLocation.Latitude);
+            Assert.Equal(location.Longitude, parsedLocation.Longitude);
+        }
+
+
+        public static IEnumerable<object[]> invalidLatitutes = new[] { new object[] { -100 }, new object[] { -120 } };
+        [Theory]
+        [MemberData(nameof(invalidLatitutes))]
+        public void InvalidLatitude(int latitude)
+        {
+
+            Assert.False(Location.IsValidLatitude(latitude));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new Location(latitude, 0));
+
+        }
+
+        public static IEnumerable<object[]> invalidLongitudes = new[] { new object[] { -200 }, new object[] { 999 } };
+        [Theory]
+        [MemberData(nameof(invalidLongitudes))]
+        public void InvalidLongitudes(int longitude)
+        {
+
+            Assert.False(Location.IsValidLongitude(longitude));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new Location(0, longitude));
+
+        }
+
+        public static IEnumerable<object[]> invalidLatLong = new[] { new object[] { -100, -200 }, new object[] { -120, 999 } };
+        [Theory]
+        [MemberData(nameof(invalidLatLong))]
+        public void InvalidLatLong(int lat, int lng)
+        {
+            var loc = Location.TryCreate(lat, lng);
+            Assert.Null(loc);
+
+        }
+
+
+        [Theory]
+        [MemberData(nameof(locations))]
+        public void ValidLatLong(Location location, string stringRepresentation)
+        {
+            var loc2 = Location.TryCreate((double)location.Latitude, (double)location.Longitude);
+            Assert.NotNull(loc2);
+            Assert.Equal((Location)location, loc2);
+        }
+
     }
 }

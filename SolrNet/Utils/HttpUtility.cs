@@ -41,7 +41,7 @@ using System.Web.Util;
 
 namespace SolrNet.Utils {
 
-#if !MOBILE
+#if !MOBILE && !NETSTANDARD2_0
     // CAS - no InheritanceDemand here as the class is sealed
     [AspNetHostingPermission(SecurityAction.LinkDemand, Level = AspNetHostingPermissionLevel.Minimal)]
 #endif

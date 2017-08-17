@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>SolrNet</PackageId>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Version>0.7.1</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Impl\HttpRuntimeCache.cs" />
+    <Compile Remove="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="1.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.0.0" />
+  </ItemGroup>
+</Project>

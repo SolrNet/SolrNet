@@ -68,9 +68,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -211,10 +210,6 @@
     <ProjectReference Include="..\Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj">
       <Project>{0F21F5B6-5986-4301-B0F7-FD9800DB8091}</Project>
       <Name>Castle.Facilities.SolrNetIntegration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">
-      <Project>{AE7D2A46-3F67-4986-B04B-7DCE79A549A5}</Project>
-      <Name>HttpWebAdapters</Name>
     </ProjectReference>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">
       <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>

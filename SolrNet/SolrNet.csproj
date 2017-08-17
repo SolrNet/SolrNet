@@ -116,6 +116,15 @@
     <Compile Include="Commands\Parameters\GroupingParameters.cs" />
     <Compile Include="Commands\Parameters\TermsSort.cs" />
     <Compile Include="Commands\Parameters\TermVectorParameters.cs" />
+    <Compile Include="HttpWebAdapters\IHttpWebRequest.cs" />
+    <Compile Include="HttpWebAdapters\IHttpWebRequestFactory.cs" />
+    <Compile Include="HttpWebAdapters\IHttpWebResponse.cs" />
+    <Compile Include="HttpWebAdapters\Impl\BasicAuthHttpWebRequestFactory.cs" />
+    <Compile Include="HttpWebAdapters\Impl\HttpWebRequestAdapter.cs" />
+    <Compile Include="HttpWebAdapters\Impl\HttpWebRequestFactory.cs" />
+    <Compile Include="HttpWebAdapters\Impl\HttpWebRequestMethod.cs" />
+    <Compile Include="HttpWebAdapters\Impl\HttpWebResponseAdapter.cs" />
+    <Compile Include="HttpWebAdapters\WebResponseStub.cs" />
     <Compile Include="Impl\DebugResults.cs" />
     <Compile Include="Impl\ReplicationDetailsResponse.cs" />
     <Compile Include="Impl\ISolrReplicationDetailsResponseParser.cs" />
@@ -380,12 +389,6 @@
     <Compile Include="Utils\Unit.cs" />
     <Compile Include="Utils\UriValidator.cs" />
     <Compile Include="Utils\X.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">
-      <Project>{AE7D2A46-3F67-4986-B04B-7DCE79A549A5}</Project>
-      <Name>HttpWebAdapters</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

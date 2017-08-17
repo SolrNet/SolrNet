@@ -37,7 +37,6 @@ using System.IO;
 using System.Security.Permissions;
 using System.Text;
 using System.Web;
-using System.Web.Util;
 
 namespace SolrNet.Utils {
 

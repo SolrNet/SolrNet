@@ -9,7 +9,7 @@
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Apache Solr client</description>
+    <description>Autofac module for SolrNet</description>
     <language>en-US</language>
     <dependencies>
       <dependency id="SolrNet" version="[0.7.1]" />

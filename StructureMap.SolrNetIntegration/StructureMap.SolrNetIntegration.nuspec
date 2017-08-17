@@ -17,8 +17,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\release\StructureMap.Integration.SolrNet.dll" target="lib\net46\StructureMap.Integration.SolrNet.dll" />
-    <file src="bin\release\StructureMap.Integration.SolrNet.pdb" target="lib\net46\StructureMap.Integration.SolrNet.pdb" />
-    <file src="bin\release\StructureMap.Integration.SolrNet.XML" target="lib\net46\StructureMap.Integration.SolrNet.xml" />
+    <file src="bin\release\StructureMap.SolrNetIntegration.dll" target="lib\net46\StructureMap.SolrNetIntegration.dll" />
+    <file src="bin\release\StructureMap.SolrNetIntegration.pdb" target="lib\net46\StructureMap.SolrNetIntegration.pdb" />
+    <file src="bin\release\StructureMap.SolrNetIntegration.XML" target="lib\net46\StructureMap.SolrNetIntegration.xml" />
   </files>
 </package>

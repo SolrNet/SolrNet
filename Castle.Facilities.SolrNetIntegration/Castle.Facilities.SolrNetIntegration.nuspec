@@ -3,7 +3,7 @@
   <metadata>
     <id>SolrNet.Windsor</id>
     <version>0.7.1</version>
-    <title>SolrNet</title>
+    <title>SolrNet.Windsor</title>
     <authors>Mauricio Scheffer and contributors</authors>
     <owners>Mauricio Scheffer</owners>
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>

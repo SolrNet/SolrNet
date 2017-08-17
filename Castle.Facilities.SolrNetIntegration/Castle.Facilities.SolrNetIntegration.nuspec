@@ -18,8 +18,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="lib\Castle.Facilities.SolrNetIntegration.dll" target="lib\net46\AutofacContrib.SolrNet.dll" />
-    <file src="lib\Castle.Facilities.SolrNetIntegration.pdb" target="lib\net46\AutofacContrib.SolrNet.pdb" />
-    <file src="lib\Castle.Facilities.SolrNetIntegration.XML" target="lib\net46\AutofacContrib.SolrNet.xml" />
+    <file src="lib\Castle.Facilities.SolrNetIntegration.dll" target="lib\net46\Castle.Facilities.SolrNetIntegration.dll" />
+    <file src="lib\Castle.Facilities.SolrNetIntegration.pdb" target="lib\net46\Castle.Facilities.SolrNetIntegration.pdb" />
+    <file src="lib\Castle.Facilities.SolrNetIntegration.XML" target="lib\net46\Castle.Facilities.SolrNetIntegration.xml" />
   </files>
 </package>

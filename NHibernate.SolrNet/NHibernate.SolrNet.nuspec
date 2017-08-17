@@ -13,13 +13,12 @@
     <language>en-US</language>
     <dependencies>
       <dependency id="SolrNet" version="[0.7.1]" />
-      <dependency id="Castle.Core" version="4.1.1" />
-      <dependency id="Castle.Windsor" version="4.0.0" />
+      <dependency id="NHibernate" version="3.2.0.4000" />
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\release\Castle.Facilities.SolrNetIntegration.dll" target="lib\net46\Castle.Facilities.SolrNetIntegration.dll" />
-    <file src="bin\release\Castle.Facilities.SolrNetIntegration.pdb" target="lib\net46\Castle.Facilities.SolrNetIntegration.pdb" />
-    <file src="bin\release\Castle.Facilities.SolrNetIntegration.XML" target="lib\net46\Castle.Facilities.SolrNetIntegration.xml" />
+    <file src="bin\release\NHibernate.SolrNet.dll" target="lib\net46\NHibernate.SolrNet.dll" />
+    <file src="bin\release\NHibernate.SolrNet.pdb" target="lib\net46\NHibernate.SolrNet.pdb" />
+    <file src="bin\release\NHibernate.SolrNet.XML" target="lib\net46\NHibernate.SolrNet.xml" />
   </files>
 </package>

@@ -19,9 +19,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Xunit;
+using System.Threading.Tasks;
 
-namespace SolrNet.Tests {
-    public class MockConnection : ISolrConnection {
+namespace SolrNet.Tests
+{
+    public class MockConnection : ISolrConnection
+    {
         private readonly ICollection<KeyValuePair<string, string>> expectations;
         private const string response =
             @"<?xml version=""1.0"" encoding=""UTF-8""?>
@@ -30,9 +33,10 @@ namespace SolrNet.Tests {
 </response>
 ";
 
-        public MockConnection() {}
+        public MockConnection() { }
 
-        public MockConnection(ICollection<KeyValuePair<string, string>> expectations) {
+        public MockConnection(ICollection<KeyValuePair<string, string>> expectations)
+        {
             this.expectations = expectations;
         }
 
@@ -42,28 +46,49 @@ namespace SolrNet.Tests {
 
         public virtual Encoding XmlEncoding { get; set; }
 
-        public virtual string Post(string relativeUrl, string s) {
+        public virtual string Post(string relativeUrl, string s)
+        {
             return string.Empty;
         }
 
-        public virtual string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public virtual Task<string> PostAsync (string relativeUrl, string s)
+        {
+            return Task.FromResult(Post(relativeUrl, s));
+        }
+
+        public virtual string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
             return string.Empty;
         }
 
-        public string DumpParams(List<KeyValuePair<string, string>> parameters) {
+        public virtual Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
+            return Task.FromResult(PostStream(relativeUrl, contentType, content, parameters));
+        }
+
+
+        public string DumpParams(List<KeyValuePair<string, string>> parameters)
+        {
             return string.Join("\n", parameters.ConvertAll(kv => string.Format("{0}={1}", kv.Key, kv.Value)).ToArray());
         }
 
-        public string DumpParams(IEnumerable<KeyValuePair<string, string>> parameters) {
+        public string DumpParams(IEnumerable<KeyValuePair<string, string>> parameters)
+        {
             return DumpParams(new List<KeyValuePair<string, string>>(parameters));
         }
 
-        public virtual string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public virtual string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
             var param = new List<KeyValuePair<string, string>>(parameters);
             Assert.Equal(expectations.Count, param.Count);
             foreach (var p in param)
                 Assert.True(expectations.Contains(p));
             return response;
         }
+        public virtual Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
+            return Task.FromResult(Get(relativeUrl, parameters));
+        }
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>SolrNet.Windsor</id>
+    <id>SolrNet.NHibernate</id>
     <version>0.7.1</version>
     <title>SolrNet</title>
     <authors>Mauricio Scheffer and contributors</authors>
@@ -9,7 +9,7 @@
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Windsor facility for SolrNet</description>
+    <description>NHibernate integration for SolrNet</description>
     <language>en-US</language>
     <dependencies>
       <dependency id="SolrNet" version="[0.7.1]" />

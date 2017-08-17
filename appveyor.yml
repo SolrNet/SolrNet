@@ -1,7 +1,7 @@
 version: 0.7.1.{build}
 image: Visual Studio 2017
 before_build:
-- cmd: nuget restore solrnet.sln
+- cmd: dotnet restore solrnet.sln
 configuration: Release
 nuget:
   project_feed: true

@@ -4,15 +4,11 @@ using System.Linq;
 
 namespace SolrNet.Impl {
     public class SolrMoreLikeThisHandlerQueryResultsParser<T> : ISolrMoreLikeThisHandlerQueryResultsParser<T> {
-        private readonly ISolrAbstractResponseParser<T>[] parsers;
+        private readonly IEnumerable< ISolrAbstractResponseParser<T>> parsers;
 
-        public SolrMoreLikeThisHandlerQueryResultsParser(ISolrAbstractResponseParser<T>[] parsers) {
-            this.parsers = parsers;
-        }
-
-        public SolrMoreLikeThisHandlerQueryResultsParser(IEnumerable<ISolrAbstractResponseParser<T>> parsers)
+            public SolrMoreLikeThisHandlerQueryResultsParser(IEnumerable<ISolrAbstractResponseParser<T>> parsers)
         {
-            this.parsers = parsers.ToArray();
+            this.parsers = parsers;
         }
 
         public SolrMoreLikeThisHandlerResults<T> Parse(string r) {

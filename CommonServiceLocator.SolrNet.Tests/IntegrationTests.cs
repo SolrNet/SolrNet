@@ -19,8 +19,10 @@ using Microsoft.Practices.ServiceLocation;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Utils;
+using SolrNet;
 
-namespace SolrNet.Tests {
+namespace CommonServiceLocator.SolrNet.Tests
+{
     
     public class IntegrationTests {
 

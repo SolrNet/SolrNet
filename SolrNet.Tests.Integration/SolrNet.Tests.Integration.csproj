@@ -66,6 +66,10 @@
     <Compile Include="SolrCoreAdminFixture.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj">
+      <Project>{17b34150-5102-435b-a487-84dd5803a228}</Project>
+      <Name>CommonServiceLocator.SolrNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SolrNet.Tests\SolrNet.Tests.csproj">
       <Project>{f3fe6ef5-cf5c-4461-8691-4a498a463fd5}</Project>
       <Name>SolrNet.Tests</Name>

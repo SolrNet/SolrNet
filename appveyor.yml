@@ -2,9 +2,9 @@ version: 0.7.1.{build}
 image: Visual Studio 2017
 before_build:
 - cmd: >-
-    nuget restore
-
     dotnet restore
+
+    nuget restore
 configuration: Release
 nuget:
   project_feed: true

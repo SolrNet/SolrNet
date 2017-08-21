@@ -1,4 +1,6 @@
-﻿using System.Xml.Linq;
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
+using System.Linq;
 
 namespace SolrNet.Impl {
     public class SolrMoreLikeThisHandlerQueryResultsParser<T> : ISolrMoreLikeThisHandlerQueryResultsParser<T> {
@@ -6,6 +8,11 @@ namespace SolrNet.Impl {
 
         public SolrMoreLikeThisHandlerQueryResultsParser(ISolrAbstractResponseParser<T>[] parsers) {
             this.parsers = parsers;
+        }
+
+        public SolrMoreLikeThisHandlerQueryResultsParser(IEnumerable<ISolrAbstractResponseParser<T>> parsers)
+        {
+            this.parsers = parsers.ToArray();
         }
 
         public SolrMoreLikeThisHandlerResults<T> Parse(string r) {

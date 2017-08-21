@@ -12,10 +12,18 @@
     <PackageProjectUrl>https://github.com/solrnet/solrnet</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="CommonServiceLocator" Version="1.3.0" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\SolrNet.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\SolrNet.xml</DocumentationFile>
+  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net46|AnyCPU'">
+    <DocumentationFile>bin\Release\net46\SolrNet.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net46|AnyCPU'">
+    <DocumentationFile>bin\Debug\net46\SolrNet.xml</DocumentationFile>
+  </PropertyGroup>
 
   <!-- NET 4.6 STUFF: -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
@@ -34,9 +42,5 @@
   <!-- NETSTANDARD 2.0 stuff: -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <Compile Remove="Impl\HttpRuntimeCache.cs" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="CommonServiceLocator" Version="1.3.0" />
   </ItemGroup>
 </Project>

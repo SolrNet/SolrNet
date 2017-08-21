@@ -22,7 +22,8 @@ using Xunit;
 using Microsoft.Practices.ServiceLocation;
 using SolrNet.Utils;
 
-namespace SolrNet.Tests {
+namespace CommonServiceLocator.SolrNet.Tests
+{
     
     public class CommonServiceLocatorTests : ServiceLocatorTestCase {
         [Fact]

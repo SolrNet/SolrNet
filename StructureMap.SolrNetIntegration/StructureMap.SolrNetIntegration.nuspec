@@ -12,7 +12,7 @@
     <description>StructureMap registry for SolrNet</description>
     <language>en-US</language>
     <dependencies>
-      <dependency id="SolrNet" version="[0.7.1]" />
+      <dependency id="SolrNet.Core" version="[0.7.1]" />
       <dependency id="StructureMap" version="2.6.2" />
     </dependencies>
   </metadata>

@@ -107,6 +107,10 @@
     <Compile Include="SolrSessionTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj">
+      <Project>{17b34150-5102-435b-a487-84dd5803a228}</Project>
+      <Name>CommonServiceLocator.SolrNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NHibernate.SolrNet\NHibernate.SolrNet.csproj">
       <Project>{D3312CD6-C4E8-4903-9B9D-95175B85EEE8}</Project>
       <Name>NHibernate.SolrNet</Name>

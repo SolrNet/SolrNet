@@ -53,6 +53,11 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\CollectionResolutionExtension.cs" />
+    <Compile Include="Collections\CollectionResolutionStrategy.cs" />
+    <Compile Include="Collections\CoupledToImplementationDetailsOverrideExtractor.cs" />
+    <Compile Include="Collections\NullResolverOverrideExtractor.cs" />
+    <Compile Include="Collections\ResolverOverrideExtractor.cs" />
     <Compile Include="Config\SolrConfigurationSection.cs" />
     <Compile Include="Config\SolrServerElement.cs" />
     <Compile Include="Config\SolrServers.cs" />
@@ -68,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="license.md" />
     <None Include="packages.config" />
     <None Include="Unity.SolrNetIntegration.nuspec" />
   </ItemGroup>

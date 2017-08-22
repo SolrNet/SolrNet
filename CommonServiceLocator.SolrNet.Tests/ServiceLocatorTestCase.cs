@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using Xunit;
 using Microsoft.Practices.ServiceLocation;
 
-namespace SolrNet.Tests {
+namespace CommonServiceLocator.SolrNet.Tests
+{
     /// <summary>
     /// Copied from CommonServiceLocator.WindsorAdapter.Tests
     /// Written by Oren Eini (Ayende)

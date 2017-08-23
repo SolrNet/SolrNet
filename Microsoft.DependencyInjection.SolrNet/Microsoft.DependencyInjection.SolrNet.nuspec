@@ -12,7 +12,7 @@
     <description>SolrNet extensions for Microsoft.Extensions.DependencyInjection</description>
     <language>en-US</language>
     <dependencies>
-      <dependency id="SolrNet" version="[0.7.1]" />
+      <dependency id="SolrNet.Core" version="[0.7.1]" />
       <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.0.0" />
     </dependencies>
   </metadata>

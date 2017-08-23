@@ -1,9 +1,27 @@
+# Change Log
+
+## 0.7.1
+- Added `netstandard 2.0` support
+- Added `Microsoft.Extensions.DependencyInjection` support
+- Added `Async` support
+- Use `xUnit` for unit tests instead of MBUnit
+- Upgraded `Unity` to 4.0.1
+- Upgraded `StructureMap` to 4.5.2
+- Added `AppVeyor.yml` for default build scripts
+- Cleaned up solution
+
+## 0.6.1 (2017-08-15)
+- Upgraded all projects to .NET 4.6
+- Upgraded Ninject to 3.2.2
+- Upgraded CommonServiceLocator to 1.3 
+- Upgraded Autofac to 4.6.1.0
+
+## 0.5.1
 - Fix handling of NaN in stats
 - Handle multi-value field containing one or more nulls
+- Spellcheck and Collation Parser Improvement
 
-0.5.0a1 (2015-05-04)
-===
-
+## 0.5.0a1 (2015-05-04)
 - Breaking change: queries that quote values now also quote slash ('/') due to changes in Solr/Lucene 4 (https://issues.apache.org/jira/browse/LUCENE-2604)
 - Upgraded to Ninject 3
 - Added commitWithin option to Delete
@@ -18,15 +36,14 @@
 - Fixed commit without parameters should not send waitFlush (issue #172)
 - Fixed MappingManager with class hierarchy (issue #37)
 
-0.4.0b2 (2011-12-29)
-===
+## 0.4.0b2 (2011-12-29)
+
 
 - Upgraded to Windsor 3.0
 - Fixed cache injection in Structuremap integration
 - Fixed response parser registrations in built-in container
 
-0.4.0b1 (2011-12-04)
-===
+## 0.4.0b1 (2011-12-04)
 
 - Upgraded to NHibernate 3.2.0
 - Added support for MoreLikeThis handler
@@ -44,8 +61,7 @@
 - Added support for multicore in Autofac module
 - Obsoleted Add(IEnumerable<T>). Use AddRange() instead.
 
-0.4.0a1 (2011-06-19)
-===
+## 0.4.0a1 (2011-06-19)
 
 - Upgraded to StructureMap 2.6.2
 - Added mixed exclusive/inclusive range queries (for Solr 4.0) (issue #142)
@@ -68,8 +84,7 @@
 - Minor breaking change: removed SolrConnection constructor with IHttpWebRequestFactory parameter. Made IHttpWebRequestFactory a property.
 - Added Autofac integration module (issue #85)
 
-0.3.1 (2011-03-31)
-===
+## 0.3.1 (2011-03-31)
 
 - Fixed issue #139 : fixed parsing of decimals with exponential notation
 - Fixed SolrQueryInList with empty strings
@@ -80,8 +95,7 @@
 - Fixed issue #130 : null in range queries translated to *
 - Fixed issue #133 : ignore LocalParams for facet field parameters
 
-0.3.0 (2010-12-05)
-===
+## 0.3.0 (2010-12-05)
 
 - NuGet packages
 - Upgraded to Ninject 2.1.0.76
@@ -97,8 +111,7 @@
 - Added support for multi-core in StructureMap registry
 - Upgraded to StructureMap 2.6.1
 
-0.3.0 beta1 (2010-06-08)
-===
+## 0.3.0 beta1 (2010-06-08)
 
 - Breaking change: field collapsing changed completely.
 - Breaking change: removed ServerURL and Version properties from ISolrConnection.
@@ -126,14 +139,12 @@
 - Added operator - for queries
 - Added support for LocalParams (issue #62)
 
-0.2.3 (2009-12-29)
-===
+## 0.2.3 (2009-12-29)
 
 - Upgraded to NHibernate 2.1.2
 - Upgraded Solr in sample app to 1.4.0
 
-0.2.3 beta1 (2009-09-13)
-===
+## 0.2.3 beta1 (2009-09-13)
 
 - Fixed minor date parsing bug
 - Added support for field collapsing
@@ -149,8 +160,7 @@
 - NHibernate integration
 - Fixed Not() query operator returning wrong type
 
-0.2.2 (2009-05-07)
-===
+## 0.2.2 (2009-05-07)
 
 - Bugfix: semicolons are now correctly escaped in queries.
 - Bugfix: invalid xml characters (control chars) are now correctly filtered.
@@ -164,8 +174,7 @@
 - Merged all SolrNet assemblies (SolrNet, SolrNet.DSL, the Castle facility, the Ninject module and the internal HttpWebAdapters).
 - Windsor and Ninject are not packaged anymore.
 
-0.2.1 (2009-02-25)
-===
+## 0.2.1 (2009-02-25)
 
 - Added support for Spell checking
 - Added support for More like this
@@ -173,8 +182,7 @@
 - Added "has any value" query
 - Fluent interface for query building
 
-0.2.0 (2009-02-18)
-===
+## 0.2.0 (2009-02-18)
 
 - Major rewrite
 - Deprecated ISolrDocument interface
@@ -192,7 +200,6 @@
 - Added more code samples, better organized wiki
 - Changed initialization and instantiation of the service
 
-0.1 (2008-09-15)
-===
+## 0.1 (2008-09-15)
 
 - Initial release

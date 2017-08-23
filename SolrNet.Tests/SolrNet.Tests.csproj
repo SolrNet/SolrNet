@@ -110,7 +110,6 @@
     <Compile Include="CollapseResponseParserTests.cs" />
     <Compile Include="CollectionFieldSerializerTests.cs" />
     <Compile Include="CommitCommandTests.cs" />
-    <Compile Include="CommonServiceLocatorTests.cs" />
     <Compile Include="DateTimeFieldParserTests.cs" />
     <Compile Include="GenericDictionaryFieldSerializerTests.cs" />
     <Compile Include="InferringFieldParserTests.cs" />
@@ -121,7 +120,6 @@
     <Compile Include="HttpTests.cs" />
     <Compile Include="Integration.Sample\Product.cs" />
     <Compile Include="Integration.Sample\ProductLoose.cs" />
-    <Compile Include="IntegrationTests.cs" />
     <Compile Include="LocalParamsTests.cs" />
     <Compile Include="MappedPropertiesIsInSolrSchemaRuleTests.cs" />
     <Compile Include="MappingManagerTests.cs" />
@@ -156,7 +154,6 @@
     <EmbeddedResource Include="Resources\responseWithSpellCheckingCollationInCollations.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="ServiceLocatorTestCase.cs" />
     <Compile Include="SolrCoreReplicationTests.cs" />
     <Compile Include="SolrDIHStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />

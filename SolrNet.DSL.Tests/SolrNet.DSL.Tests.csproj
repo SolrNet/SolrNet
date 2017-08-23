@@ -81,6 +81,10 @@
     <Compile Include="QueryBuildingTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj">
+      <Project>{17b34150-5102-435b-a487-84dd5803a228}</Project>
+      <Name>CommonServiceLocator.SolrNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SolrNet.DSL\SolrNet.DSL.csproj">
       <Project>{385E2EC3-885B-43D5-A86B-955692058BA0}</Project>
       <Name>SolrNet.DSL</Name>

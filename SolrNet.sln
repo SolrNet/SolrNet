@@ -3,7 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet", "SolrNet\SolrNet.csproj", "{CEEB8690-3E08-4440-B647-787A58E71CFA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{26EBA068-9BBB-4FEC-B425-787D4AE99848}"
+	ProjectSection(SolutionItems) = preProject
+		build.fsx = build.fsx
+		fake.fsx = fake.fsx
+		Tests.fsx = Tests.fsx
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet", "SolrNet\SolrNet.csproj", "{CEEB8690-3E08-4440-B647-787A58E71CFA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Tests", "SolrNet.Tests\SolrNet.Tests.csproj", "{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}"
 EndProject
@@ -41,6 +48,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{648832
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DependencyInjection.SolrNet", "Microsoft.DependencyInjection.SolrNet\Microsoft.DependencyInjection.SolrNet.csproj", "{8EED7D76-F9CA-40D5-B86E-A34A16795286}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.DependencyInjection.SolrNet.Tests", "Microsoft.DependencyInjection.SolrNet.Tests\Microsoft.DependencyInjection.SolrNet.Tests.csproj", "{042745E4-2750-41B5-9CCD-5156029CB6B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonServiceLocator.SolrNet", "CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj", "{17B34150-5102-435B-A487-84DD5803A228}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonServiceLocator.SolrNet.Tests", "CommonServiceLocator.SolrNet.Tests\CommonServiceLocator.SolrNet.Tests.csproj", "{0988D6A2-04FD-4328-AFFA-677DB377432D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,12 +131,27 @@ Global
 		{4BC966D4-2EC0-47FF-B784-B649BFAABD81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BC966D4-2EC0-47FF-B784-B649BFAABD81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BC966D4-2EC0-47FF-B784-B649BFAABD81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EED7D76-F9CA-40D5-B86E-A34A16795286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EED7D76-F9CA-40D5-B86E-A34A16795286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EED7D76-F9CA-40D5-B86E-A34A16795286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EED7D76-F9CA-40D5-B86E-A34A16795286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{042745E4-2750-41B5-9CCD-5156029CB6B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{042745E4-2750-41B5-9CCD-5156029CB6B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{042745E4-2750-41B5-9CCD-5156029CB6B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{042745E4-2750-41B5-9CCD-5156029CB6B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17B34150-5102-435B-A487-84DD5803A228}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17B34150-5102-435B-A487-84DD5803A228}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17B34150-5102-435B-A487-84DD5803A228}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17B34150-5102-435B-A487-84DD5803A228}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0988D6A2-04FD-4328-AFFA-677DB377432D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0988D6A2-04FD-4328-AFFA-677DB377432D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0988D6A2-04FD-4328-AFFA-677DB377432D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0988D6A2-04FD-4328-AFFA-677DB377432D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC12CF2E-A108-47A2-B60C-A17B3102D52D}
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

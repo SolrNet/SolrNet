@@ -14,15 +14,15 @@
 // limitations under the License.
 #endregion
 
-using MbUnit.Framework;
+using Xunit;
 using Moroco;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet.Tests {
-	[TestFixture]
+	
 	public class DeleteCommandTests {
-		[Test]
+		[Fact]
 		public void DeleteById() {
 			const string id = "123123";
 		    var conn = new Mocks.MSolrConnection();
@@ -30,10 +30,10 @@ namespace SolrNet.Tests {
 		        .Args("/update", string.Format("<delete><id>{0}</id></delete>", id));
             var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(new[] { id }, null, null), null);
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
-        [Test]
+        [Fact]
         public void DeleteByMultipleId() {
             var ids = new[] {"123", "456"};
             var conn = new Mocks.MSolrConnection();
@@ -41,10 +41,10 @@ namespace SolrNet.Tests {
             conn.post = conn.post.Args("/update", xml);
             var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, null, null), null);
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
-		[Test]
+		[Fact]
 		public void DeleteByQuery() {
             const string queryString = "someQuery";
 		    var q = new SolrQuery(queryString);
@@ -59,10 +59,10 @@ namespace SolrNet.Tests {
             var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(null, q, querySerializer), null);
             cmd.Execute(conn);
 
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
 		}
 
-        [Test]
+        [Fact]
         public void DeleteByIdAndQuery() {
             var ids = new[] { "123", "456" };
             const string queryString = "someQuery";
@@ -77,11 +77,11 @@ namespace SolrNet.Tests {
             var cmd = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), null);
             cmd.Execute(conn);
 
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
 
         }
 
-		[Test]
+		[Fact]
 		public void DeleteFromCommitted() {
 			const string id = "123123";
             var xml = string.Format("<delete fromCommitted=\"true\"><id>{0}</id></delete>", id);
@@ -94,10 +94,10 @@ namespace SolrNet.Tests {
             };
             cmd.Execute(conn);
 
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
 		}
 
-		[Test]
+		[Fact]
 		public void DeleteFromCommittedAndFromPending() {
 			const string id = "123123";
 
@@ -112,10 +112,10 @@ namespace SolrNet.Tests {
             };
             cmd.Execute(conn);
 
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
 		}
 
-		[Test]
+		[Fact]
 		public void DeleteFromPending() {
 			const string id = "123123";
 
@@ -129,7 +129,7 @@ namespace SolrNet.Tests {
             };
             cmd.Execute(conn);
 
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
 		}
 	}
 }

@@ -15,85 +15,96 @@
 #endregion
 
 using System;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Exceptions;
 using SolrNet.Mapping;
 
-namespace SolrNet.Tests {
-	[TestFixture]
-	public class AllPropertiesMappingManagerTests {
-		[Test]
-		public void GetFields() {
-			var m = new AllPropertiesMappingManager();
-			var fields = m.GetFields(typeof(Entity)).Values;
-			Assert.AreEqual(2, fields.Count);
-			foreach (var f in fields) {
-				if (f.FieldName == "Id")
-					Assert.AreEqual("Id", f.Property.Name);
-				else if (f.FieldName == "Description")
-					Assert.AreEqual("Description", f.Property.Name);
-				else
-					Assert.Fail("Invalid field '{0}'", f.FieldName);
-			}
-		}
+namespace SolrNet.Tests
+{
 
-		[Test]
-		public void Get_and_set_unique_key() {
-			var m = new AllPropertiesMappingManager();
-			m.SetUniqueKey(typeof(Entity).GetProperty("Id"));
-			var pk = m.GetUniqueKey(typeof (Entity));
-			Assert.IsNotNull(pk);
-			Assert.IsNotNull(pk.Property);
-			Assert.IsNotNull(pk.FieldName);
-			Assert.AreEqual("Id", pk.Property.Name);
-			Assert.AreEqual("Id", pk.FieldName);
-		}
+    public class AllPropertiesMappingManagerTests
+    {
+        [Fact]
+        public void GetFields()
+        {
+            var m = new AllPropertiesMappingManager();
+            var fields = m.GetFields(typeof(Entity)).Values;
+            Assert.Equal(2, fields.Count);
+            foreach (var f in fields)
+            {
+                if (f.FieldName == "Id")
+                    Assert.Equal("Id", f.Property.Name);
+                else if (f.FieldName == "Description")
+                    Assert.Equal("Description", f.Property.Name);
+                else
+                    Assert.True(false,String.Format("Invalid field '{0}'", f.FieldName));
+            }
+        }
 
-        [Test]
-        public void NoUniqueKey_IsNull() {
+        [Fact]
+        public void Get_and_set_unique_key()
+        {
+            var m = new AllPropertiesMappingManager();
+            m.SetUniqueKey(typeof(Entity).GetProperty("Id"));
+            var pk = m.GetUniqueKey(typeof(Entity));
+            Assert.NotNull(pk);
+            Assert.NotNull(pk.Property);
+            Assert.NotNull(pk.FieldName);
+            Assert.Equal("Id", pk.Property.Name);
+            Assert.Equal("Id", pk.FieldName);
+        }
+
+        [Fact]
+        public void NoUniqueKey_IsNull()
+        {
             var m = new AllPropertiesMappingManager();
             var pk = m.GetUniqueKey(typeof(Entity));
-            Assert.IsNull(pk);
+            Assert.Null(pk);
         }
 
-        [Test]
-        public void NoProperties_ShouldReturnEmpty() {
+        [Fact]
+        public void NoProperties_ShouldReturnEmpty()
+        {
             var m = new AllPropertiesMappingManager();
-            var props = m.GetFields(typeof (NoProperties));
-            Assert.AreEqual(0, props.Count);
+            var props = m.GetFields(typeof(NoProperties));
+            Assert.Equal(0, props.Count);
         }
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void SetUniqueKey_null_throws() {
+        [Fact]
+        public void SetUniqueKey_null_throws()
+        {
             var m = new AllPropertiesMappingManager();
-            m.SetUniqueKey(null);
+            Assert.Throws<ArgumentNullException>(() => m.SetUniqueKey(null));
         }
 
-        [Test]
-        public void Inherited() {
+        [Fact]
+        public void Inherited()
+        {
             var m = new AllPropertiesMappingManager();
-            var fields = m.GetFields(typeof (InheritedEntity));
-            Assert.AreEqual(3, fields.Count);            
+            var fields = m.GetFields(typeof(InheritedEntity));
+            Assert.Equal(3, fields.Count);
         }
 
-        [Test]
-        public void GetRegistered() {
+        [Fact]
+        public void GetRegistered()
+        {
             var m = new AllPropertiesMappingManager();
             var types = m.GetRegisteredTypes();
-            Assert.IsEmpty(types);
+            Assert.Empty(types);
         }
 
-        public class NoProperties {}
+        public class NoProperties { }
 
-		public class Entity {
-			public int Id { get; set; }
+        public class Entity
+        {
+            public int Id { get; set; }
 
-			public string Description { get; set; }
-		}
+            public string Description { get; set; }
+        }
 
-        public class InheritedEntity: Entity {
+        public class InheritedEntity : Entity
+        {
             public DateTime DateOfBirth { get; set; }
         }
-	}
+    }
 }

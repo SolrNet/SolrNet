@@ -1,22 +1,22 @@
 ﻿// 
 
 using System;
-using MbUnit.Framework;
+using Xunit;
 using Ninject.Integration.SolrNet.Config;
 using SolrNet;
 
 namespace Ninject.Integration.SolrNet.Tests {
-    [TestFixture]
-    [Category("Integration")]
+    
+    [Trait("Category","Integration")]
     public class NinjectIntegrationFixture {
         private StandardKernel kernel;
-        [SetUp]
-        public void SetUp()
+
+        public NinjectIntegrationFixture()
         {
             kernel = new StandardKernel();
         }
 
-        [Test]
+        [Fact]
         public void Ping_And_Query()
         {
             var c = new StandardKernel();
@@ -26,7 +26,7 @@ namespace Ninject.Integration.SolrNet.Tests {
             Console.WriteLine(solr.Query(SolrQuery.All).Count);
         }
 
-        [Test]
+        [Fact]
         public void Ping_And_Query_SingleCore()
         {
             var solrServers = new SolrServers {
@@ -42,7 +42,7 @@ namespace Ninject.Integration.SolrNet.Tests {
             Console.WriteLine(solr.Query(SolrQuery.All).Count);
         }
 
-        [Test]
+        [Fact]
         public void Ping_And_Query_MultiCore()
         {
             var solrServers = new SolrServers {
@@ -66,7 +66,7 @@ namespace Ninject.Integration.SolrNet.Tests {
             Console.WriteLine("Query core 2: {0}", solr2.Query(SolrQuery.All).Count);
         }
 
-        [Test]
+        [Fact]
         public void MultiCore_GetByName()
         {
             var solrServers = new SolrServers {
@@ -83,10 +83,10 @@ namespace Ninject.Integration.SolrNet.Tests {
             };
             kernel.Load(new SolrNetModule(solrServers));
             var solr1 = kernel.Get<ISolrOperations<Entity>>("core-0");
-            Assert.IsNotNull(solr1);
+            Assert.NotNull(solr1);
             Console.WriteLine("Query core 1: {0}", solr1.Query(SolrQuery.All).Count);
             var solr2 = kernel.Get<ISolrOperations<Entity2>>("core-1");
-            Assert.IsNotNull(solr2);
+            Assert.NotNull(solr2);
             solr2.Ping();
             Console.WriteLine("Query core 2: {0}", solr2.Query(SolrQuery.All).Count);
         }

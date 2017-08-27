@@ -16,12 +16,12 @@
 
 using System;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class SolrMultipleCriteriaQueryTests {
         public class TestDocument  {}
 
@@ -31,56 +31,56 @@ namespace SolrNet.Tests {
         }
 
 
-        [Test]
+        [Fact]
         public void Concat() {
             var q1 = new SolrQuery("1");
             var q2 = new SolrQuery("2");
             var qm = new SolrMultipleCriteriaQuery(new[] {q1, q2});
-            Assert.AreEqual("(1  2)", Serialize(qm));
+            Assert.Equal("(1  2)", Serialize(qm));
         }
 
-        [Test]
+        [Fact]
         public void Concat_different_types() {
             var q1 = new SolrQuery("1");
             var q2 = new SolrQueryByField("f", "v");
             var qm = new SolrMultipleCriteriaQuery(new ISolrQuery[] {q1, q2});
             Console.WriteLine(Serialize(qm));
-            Assert.AreEqual("(1  f:(v))", Serialize(qm));
+            Assert.Equal("(1  f:(v))", Serialize(qm));
         }
 
 
-        [Test]
+        [Fact]
         public void AcceptsNulls() {
             var q1 = new SolrQuery("1");
             ISolrQuery q2 = null;
             var qm = new SolrMultipleCriteriaQuery(new[] {q1, q2});
-            Assert.AreEqual("(1)", Serialize(qm));
+            Assert.Equal("(1)", Serialize(qm));
         }
 
-        [Test]
+        [Fact]
         public void Empty() {
             var qm = new SolrMultipleCriteriaQuery(new ISolrQuery[] { });
-            Assert.IsEmpty(Serialize(qm));
+            Assert.Empty(Serialize(qm));
         }
 
-        [Test]
+        [Fact]
         public void EmptyQueries_are_ignored() {
             var qm = new SolrMultipleCriteriaQuery(new ISolrQuery[] { new SolrQuery(""), });
-            Assert.IsEmpty(Serialize(qm));
+            Assert.Empty(Serialize(qm));
         }
 
-        [Test]
+        [Fact]
         public void NullQueries_are_ignored() {
             var qm = new SolrMultipleCriteriaQuery(new ISolrQuery[] { new SolrQuery(null), });
-            Assert.IsEmpty(Serialize(qm));
+            Assert.Empty(Serialize(qm));
         }
 
-        [Test]
+        [Fact]
         public void StaticConstructor() {
             var q = SolrMultipleCriteriaQuery.Create(new SolrQueryByField("id", "123"), new SolrQuery("solr"));
-            Assert.AreEqual(2, q.Queries.Count());
-            Assert.AreEqual("(id:(123)  solr)", Serialize(q));
-            Assert.IsEmpty(q.Oper);
+            Assert.Equal(2, q.Queries.Count());
+            Assert.Equal("(id:(123)  solr)", Serialize(q));
+            Assert.Empty(q.Oper);
         }
     }
 }

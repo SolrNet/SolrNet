@@ -16,10 +16,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
-using SolrNet.Impl.ResponseParsers;
 using SolrNet.Schema;
 
 namespace SolrNet.Impl {
@@ -27,44 +27,64 @@ namespace SolrNet.Impl {
     /// Implements the basic Solr operations
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class SolrBasicServer<T> : LowLevelSolr, ISolrBasicOperations<T> {
+    public class SolrBasicServer<T> : ISolrBasicOperations<T> {
+        private readonly ISolrConnection connection;
         private readonly ISolrQueryExecuter<T> queryExecuter;
         private readonly ISolrDocumentSerializer<T> documentSerializer;
         private readonly ISolrSchemaParser schemaParser;
+        private readonly ISolrHeaderResponseParser headerParser;
         private readonly ISolrQuerySerializer querySerializer;
         private readonly ISolrDIHStatusParser dihStatusParser;
         private readonly ISolrExtractResponseParser extractResponseParser;
 
-        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDIHStatusParser dihStatusParser, ISolrExtractResponseParser extractResponseParser) 
-            : base(connection, headerParser) {
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDIHStatusParser dihStatusParser, ISolrExtractResponseParser extractResponseParser) {
+            this.connection = connection;
             this.extractResponseParser = extractResponseParser;
             this.queryExecuter = queryExecuter;
             this.documentSerializer = documentSerializer;
             this.schemaParser = schemaParser;
+            this.headerParser = headerParser;
             this.querySerializer = querySerializer;
             this.dihStatusParser = dihStatusParser;
         }
 
-        public ResponseHeader Commit(CommitOptions options) {
-            options = options ?? new CommitOptions();
-            var cmd = new CommitCommand {
-                WaitFlush = options.WaitFlush, 
-                WaitSearcher = options.WaitSearcher,
-                ExpungeDeletes = options.ExpungeDeletes,
-                MaxSegments = options.MaxSegments,
-            };
+
+        public ResponseHeader Commit(CommitOptions options)
+        {
+            CommitCommand cmd = GetCommitCommand(options);
             return SendAndParseHeader(cmd);
         }
 
-        public ResponseHeader Optimize(CommitOptions options) {
+        private static CommitCommand GetCommitCommand(CommitOptions options)
+        {
             options = options ?? new CommitOptions();
-            var cmd = new OptimizeCommand {
-                WaitFlush = options.WaitFlush, 
+            var cmd = new CommitCommand
+            {
+                WaitFlush = options.WaitFlush,
                 WaitSearcher = options.WaitSearcher,
                 ExpungeDeletes = options.ExpungeDeletes,
                 MaxSegments = options.MaxSegments,
             };
+            return cmd;
+        }
+
+        public ResponseHeader Optimize(CommitOptions options)
+        {
+            OptimizeCommand cmd = GetOptimizeCommand( options);
             return SendAndParseHeader(cmd);
+        }
+
+        private static OptimizeCommand GetOptimizeCommand( CommitOptions options)
+        {
+            options = options ?? new CommitOptions();
+            var cmd = new OptimizeCommand
+            {
+                WaitFlush = options.WaitFlush,
+                WaitSearcher = options.WaitSearcher,
+                ExpungeDeletes = options.ExpungeDeletes,
+                MaxSegments = options.MaxSegments,
+            };
+            return cmd;
         }
 
         public ResponseHeader Rollback() {
@@ -87,14 +107,6 @@ namespace SolrNet.Impl {
             return SendAndParseHeader(delete);
         }
 
-        public string Send(ISolrCommand cmd) {
-            return((LowLevelSolr)this).Send(cmd);
-        }
-
-        public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
-            return ((LowLevelSolr)this).SendAndParseHeader(cmd);
-        }
-
         public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q) {
             var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), null);
             return SendAndParseHeader(delete);
@@ -103,11 +115,43 @@ namespace SolrNet.Impl {
         public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
             return queryExecuter.Execute(query, options);
         }
-        
-        public ExtractResponse SendAndParseExtract(ISolrCommand cmd) {
+
+        public string Send(ISolrCommand cmd) {
+            return cmd.Execute(connection);
+        }
+
+        public Task<string> SendAsync(ISolrCommand cmd)
+        {
+            return cmd.ExecuteAsync(connection);
+        }
+
+        public ExtractResponse SendAndParseExtract(ISolrCommand cmd)
+        {
             var r = Send(cmd);
             var xml = XDocument.Parse(r);
             return extractResponseParser.Parse(xml);
+
+        }
+
+        public async Task<ExtractResponse> SendAndParseExtractAsync(ISolrCommand cmd)
+        {
+            var r = await SendAsync(cmd);
+            var xml = XDocument.Parse(r);
+            return extractResponseParser.Parse(xml);
+        }
+
+
+        public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
+            var r = Send(cmd);
+            var xml = XDocument.Parse(r);
+            return headerParser.Parse(xml);
+        }
+
+        public async Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)
+        {
+            var r = await SendAsync(cmd);
+            var xml = XDocument.Parse(r);
+            return headerParser.Parse(xml);
         }
 
         public ResponseHeader Ping() {
@@ -130,13 +174,79 @@ namespace SolrNet.Impl {
         {
             return this.queryExecuter.Execute(query, options);
         }
+
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options)
+        {
+            return this.queryExecuter.ExecuteAsync(query, options);
+        }
+
+        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
+        {
+            return this.queryExecuter.ExecuteAsync(query, options);
+        }
+
+        public Task<ResponseHeader> PingAsync()
+        {
+            return SendAndParseHeaderAsync(new PingCommand());
+        }
+
+        public async Task<SolrSchema> GetSchemaAsync(string schemaFileName)
+        {
+            string schemaXml = await connection.GetAsync("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
+            var schema = XDocument.Parse(schemaXml);
+            return schemaParser.Parse(schema);
+        }
+
+        public async Task<SolrDIHStatus> GetDIHStatusAsync(KeyValuePair<string, string> options)
+        {
+            var response = await connection.GetAsync("/dataimport", null);
+            var dihstatus = XDocument.Parse(response);
+            return dihStatusParser.Parse(dihstatus);
+        }
+
+        public Task<ResponseHeader> CommitAsync(CommitOptions options)
+        {
+            var cmd = GetCommitCommand(options);
+            return SendAndParseHeaderAsync(cmd);
+        }
+
+        public Task<ResponseHeader> OptimizeAsync(CommitOptions options)
+        {
+            var cmd = GetOptimizeCommand(options);
+            return SendAndParseHeaderAsync(cmd);
+        }
+
+        public Task<ResponseHeader> RollbackAsync()
+        {
+            return SendAndParseHeaderAsync(new RollbackCommand());
+        }
+
+        public Task<ResponseHeader> AddWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
+        {
+            var cmd = new AddCommand<T>(docs, documentSerializer, parameters);
+            return SendAndParseHeaderAsync(cmd);
+        }
+
+        public Task<ExtractResponse> ExtractAsync(ExtractParameters parameters)
+        {
+            var cmd = new ExtractCommand(parameters);
+            return SendAndParseExtractAsync(cmd);
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
+        {
+            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), parameters);
+            return SendAndParseHeaderAsync(delete);
+        }
     }
 
-    public class LowLevelSolr {
+    public class LowLevelSolr
+    {
         protected readonly ISolrHeaderResponseParser headerParser;
         protected readonly ISolrConnection connection;
 
-        public LowLevelSolr(ISolrConnection connection, ISolrHeaderResponseParser parser) {
+        public LowLevelSolr(ISolrConnection connection, ISolrHeaderResponseParser parser)
+        {
             this.headerParser = parser ?? new HeaderResponseParser();
             this.connection = connection;
         }

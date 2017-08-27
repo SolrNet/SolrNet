@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -26,5 +27,9 @@ namespace SolrNet.Commands {
 		public string Execute(ISolrConnection connection) {
 			return connection.Get("/admin/ping", new Dictionary<string, string>());
 		}
-	}
+        public Task<string> ExecuteAsync(ISolrConnection connection)
+        {
+            return connection.GetAsync("/admin/ping", new Dictionary<string, string>());
+        }
+    }
 }

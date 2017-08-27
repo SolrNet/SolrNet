@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
+using System.Threading.Tasks;
 
 namespace SolrNet {
 	/// <summary>
@@ -31,5 +32,13 @@ namespace SolrNet {
 		SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options);
 
         SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options);
-	}
+
+        /// <summary>
+        /// Executes the query and returns results
+        /// </summary>
+        /// <returns>query results</returns>
+        Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options);
+
+        Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options);
+    }
 }

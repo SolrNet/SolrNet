@@ -16,60 +16,61 @@
 
 using System;
 using System.Xml.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldParsers;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class DefaultFieldParserTests {
-        [Test]
-        [Row("str")]
-        [Row("bool")]
-        [Row("int")]
-        [Row("date")]
+        [Theory]
+        [InlineData("str")]
+        [InlineData("bool")]
+        [InlineData("int")]
+        [InlineData("date")]
         public void CanHandleSolrTypes(string solrType) {
             var p = new DefaultFieldParser();
-            Assert.IsTrue(p.CanHandleSolrType(solrType));
+            Assert.True(p.CanHandleSolrType(solrType));
         }
 
-        [Test]
-        [Row(typeof(float))]
-        [Row(typeof(float?))]
-        [Row(typeof(double))]
-        [Row(typeof(double?))]
-        [Row(typeof(string))]
-        [Row(typeof(DateTime))]
-        [Row(typeof(DateTime?))]
-        [Row(typeof(DateTimeOffset))]
-        [Row(typeof(DateTimeOffset?))]
-        [Row(typeof(bool))]
-        [Row(typeof(bool?))]
-        [Row(typeof(Money))]
-        [Row(typeof(Location))]
+        [Theory]
+        [InlineData(typeof(float))]
+        [InlineData(typeof(float?))]
+        [InlineData(typeof(double))]
+        [InlineData(typeof(double?))]
+        [InlineData(typeof(string))]
+        [InlineData(typeof(DateTime))]
+        [InlineData(typeof(DateTime?))]
+        [InlineData(typeof(DateTimeOffset))]
+        [InlineData(typeof(DateTimeOffset?))]
+        [InlineData(typeof(bool))]
+        [InlineData(typeof(bool?))]
+        [InlineData(typeof(Money))]
+        [InlineData(typeof(Location))]
         public void CanHandleType(Type t) {
             var p = new DefaultFieldParser();
-            Assert.IsTrue(p.CanHandleType(t));
+            Assert.True(p.CanHandleType(t));
         }
 
-        [Test]
+        [Fact]
         public void ParseNullableInt() {
             var doc = new XDocument();
             doc.Add(new XElement("int", "31"));
             var p = new DefaultFieldParser();
             var i = p.Parse(doc.Root, typeof (int?));
-            Assert.IsInstanceOfType(typeof(int?), i);
+            Assert.IsAssignableFrom(typeof(int?), i);
+            Assert.IsType(typeof(int), i);
             var ii = (int?) i;
-            Assert.IsTrue(ii.HasValue);
-            Assert.AreEqual(31, ii.Value);
+            Assert.True(ii.HasValue);
+            Assert.Equal(31, ii.Value);
         }
 
-        [Test]
+        [Fact]
         public void ParseLocation() {
             var doc = new XDocument();
             doc.Add(new XElement("str", "31.2,-44.2"));
             var p = new DefaultFieldParser();
             var l = p.Parse(doc.Root, typeof(Location));
-            Assert.IsInstanceOfType<Location>(l);
+            Assert.IsType<Location>(l);
         }
     }
 }

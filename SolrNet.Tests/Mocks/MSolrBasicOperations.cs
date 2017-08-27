@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Moroco;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
@@ -80,5 +81,74 @@ namespace SolrNet.Tests.Mocks {
             return delete.Invoke(ids, q, parameters);
         }
 
+        public Task<ResponseHeader> CommitAsync(CommitOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> OptimizeAsync(CommitOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> RollbackAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AddWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ExtractResponse> ExtractAsync(ExtractParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> SendAsync(ISolrCommand cmd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ExtractResponse> SendAndParseExtractAsync(ISolrCommand cmd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> PingAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrSchema> GetSchemaAsync(string schemaFileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrDIHStatus> GetDIHStatusAsync(KeyValuePair<string, string> options)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

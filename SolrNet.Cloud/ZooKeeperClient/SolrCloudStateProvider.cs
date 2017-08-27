@@ -208,7 +208,7 @@ namespace SolrNet.Cloud.ZooKeeperClient
         private SolrCloudState GetExternalCollectionsState()
         {
             var resultState = new SolrCloudState(new Dictionary<string, SolrCloudCollection>());
-            List<string> children;
+            IEnumerable<string> children;
 
             try
             {

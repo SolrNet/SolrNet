@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
 
 namespace SolrNet.Cloud.Tests
 {
     public class SolrCloudOperationsTests
     {
-        [Test]
+        [Fact]
         public void ShouldRedirectToProvidedOperations() {
             var provider = new FakeProvider();
             var operations = new SolrCloudOperations<FakeEntity>(provider, provider);
             operations.Commit();
-            Debug.Assert(provider.LastOperation == "Commit", "Should call the provided Commit method");
+            Assert.Equal(provider.LastOperation , "Commit");
         }
 
-        [Test]
+        [Fact]
         public void ShouldEventuallyUseAllActiveReplicasForRead() {
             var provider = new FakeProvider();
             var state = provider.GetCloudState();
@@ -35,10 +35,10 @@ namespace SolrNet.Cloud.Tests
                     urls.Add(provider.LastUrl);
                 }
             }
-            Debug.Assert(urls.Count == count, "Should eventually use all active replicas for read");
+            Assert.True(urls.Count == count, "Should eventually use all active replicas for read");
         }
 
-        [Test]
+        [Fact]
         public void ShouldEventuallyUseAllActiveLeadersForWrite() {
             var provider = new FakeProvider();
             var state = provider.GetCloudState();
@@ -59,7 +59,7 @@ namespace SolrNet.Cloud.Tests
                     urls.Add(provider.LastUrl);
                 }
             }
-            Debug.Assert(urls.Count == count, "Should eventually use all active leaders for write");
+            Assert.True(urls.Count == count, "Should eventually use all active leaders for write");
         }
     }
 }

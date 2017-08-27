@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace SolrNet.Cloud.CollectionsAdmin {
-    public class SolrCollectionsAdmin : LowLevelSolr, ISolrCollectionsAdmin
+    public class SolrCollectionsAdmin : LowLevelSolrServer, ISolrCollectionsAdmin
     {
         private const string AdminHandler = "/admin/collections";
 

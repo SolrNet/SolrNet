@@ -73,9 +73,9 @@
     <Compile Include="SolrCoreAdminFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SolrNet.Cloud.Unity\SolrNet.Cloud.Unity.csproj">
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj">
       <Project>{63538cf2-62c5-4f5a-99b2-9f14896afb98}</Project>
-      <Name>SolrNet.Cloud.Unity</Name>
+      <Name>CommonServiceLocator.SolrNet.Cloud</Name>
     </ProjectReference>
     <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj">
       <Project>{bda98c34-3b00-4b1f-b850-9c776fede8e3}</Project>

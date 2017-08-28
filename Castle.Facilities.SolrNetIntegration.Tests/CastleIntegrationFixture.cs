@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using Castle.Core.Configuration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet;
 
 namespace Castle.Facilities.SolrNetIntegration.Tests {
-    [TestFixture]
-    [Category("Integration")]
+    [Trait("Category","Integration")]
     public class CastleIntegrationFixture {
-        [Test]
+        [Fact]
         public void Ping_Query()
         {
             var configStore = new DefaultConfigurationStore();
@@ -25,7 +24,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             Console.WriteLine(solr.Query(SolrQuery.All).Count);
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument()
         {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
@@ -33,16 +32,16 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.AddFacility("solr", solrFacility);
             var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
             var results = solr.Query(SolrQuery.All);
-            Assert.GreaterThan(results.Count, 0);
+            Assert.True(results.Count> 0);
             foreach (var d in results)
             {
-                Assert.GreaterThan(d.Count, 0);
+                Assert.True(d.Count > 0);
                 foreach (var kv in d)
                     Console.WriteLine("{0}: {1}", kv.Key, kv.Value);
             }
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument_add()
         {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");

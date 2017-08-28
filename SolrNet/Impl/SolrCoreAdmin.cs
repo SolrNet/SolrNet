@@ -9,7 +9,7 @@ namespace SolrNet.Impl {
     /// Solr core administration commands.
     /// </summary>
     /// <seealso href="http://wiki.apache.org/solr/CoreAdmin"/>
-    public class SolrCoreAdmin : LowLevelSolr, ISolrCoreAdmin {
+    public class SolrCoreAdmin : LowLevelSolrServer, ISolrCoreAdmin {
         private readonly ISolrStatusResponseParser resultParser;
 
         private const string coreHandler = "/admin/cores";

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
@@ -10,28 +10,35 @@ using StructureMap.SolrNetIntegration.Config;
 
 namespace StructureMap.SolrNetIntegration.Tests
 {
-    [TestFixture]
+
     public class StructureMapFixture
-    {                
-        [Test]
+    {
+        private readonly IContainer Container;
+
+        public StructureMapFixture()
+        {
+            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
+            Container=  new Container (c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
+        }
+
+        [Fact]
         public void ResolveSolrOperations()
         {
-            SetupContainer();
-           var m = ObjectFactory.GetInstance<ISolrOperations<Entity>>();
-            Assert.IsNotNull(m);            
+                    var m = Container.GetInstance<ISolrOperations<Entity>>();
+            Assert.NotNull(m);
         }
 
-        [Test]
-        public void RegistersSolrConnectionWithAppConfigServerUrl() {
-            SetupContainer();
-            var instanceKey = "entity" + typeof(SolrConnection);
+        [Fact]
+        public void RegistersSolrConnectionWithAppConfigServerUrl()
+        {
+                        var instanceKey = "entity" + typeof(SolrConnection);
 
-            var solrConnection = (SolrConnection)ObjectFactory.Container.GetInstance<ISolrConnection>(instanceKey);
+            var solrConnection = (SolrConnection)Container.GetInstance<ISolrConnection>(instanceKey);
 
-            Assert.AreEqual("http://localhost:8983/solr/entity", solrConnection.ServerURL);
+            Assert.Equal("http://localhost:8983/solr/collection0", solrConnection.ServerURL);
         }
 
-        [Test, ExpectedException(typeof(InvalidURLException))]
+        [Fact]
         public void Should_throw_exception_for_invalid_protocol_on_url()
         {
             var solrServers = new SolrServers {
@@ -39,13 +46,12 @@ namespace StructureMap.SolrNetIntegration.Tests
                     Id = "test",
                     Url = "htp://localhost:8893",
                     DocumentType = typeof(Entity2).AssemblyQualifiedName,
-                }                
+                }
             };
-            ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers)));
-            ObjectFactory.GetInstance<SolrConnection>();
+            Assert.Throws<InvalidURLException>(() => new Container(c => c.IncludeRegistry(new SolrNetRegistry(solrServers))));
         }
 
-        [Test, ExpectedException(typeof(InvalidURLException))]
+        [Fact]
         public void Should_throw_exception_for_invalid_url()
         {
             var solrServers = new SolrServers {
@@ -55,34 +61,33 @@ namespace StructureMap.SolrNetIntegration.Tests
                     DocumentType = typeof(Entity2).AssemblyQualifiedName,
                 }
             };
-            ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrServers)));
-            ObjectFactory.GetInstance<SolrConnection>();
+
+            Assert.Throws<InvalidURLException>(() => new Container(c => c.IncludeRegistry(new SolrNetRegistry(solrServers))));
         }
 
-        [Test]
+        [Fact]
         public void Container_has_ISolrFieldParser()
         {
-            SetupContainer();
-            var parser = ObjectFactory.GetInstance<ISolrFieldParser>();
-            Assert.IsNotNull(parser);
+
+            var parser = Container.GetInstance<ISolrFieldParser>();
+            Assert.NotNull(parser);
         }
 
-        [Test]
+        [Fact]
         public void Container_has_ISolrFieldSerializer()
         {
-           SetupContainer();
-            ObjectFactory.GetInstance<ISolrFieldSerializer>();
+            Container.GetInstance<ISolrFieldSerializer>();
         }
 
-        [Test]
+        [Fact]
         public void Container_has_ISolrDocumentPropertyVisitor()
         {
-            SetupContainer();
-            ObjectFactory.GetInstance<ISolrDocumentPropertyVisitor>();
+            Container.GetInstance<ISolrDocumentPropertyVisitor>();
         }
 
-        [Test]
-        public void DictionaryDocument_and_multi_core() {
+        [Fact]
+        public void DictionaryDocument_and_multi_core()
+        {
             var cores = new SolrServers {
                 new SolrServerElement {
                     Id = "default",
@@ -100,43 +105,36 @@ namespace StructureMap.SolrNetIntegration.Tests
                     Url = "http://localhost:8983/solr/entity2",
                 },
             };
-            ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(cores)));
-            var solr1 = ObjectFactory.GetInstance<ISolrOperations<Entity>>();
-            var solr2 = ObjectFactory.GetInstance<ISolrOperations<Entity2>>();
-            var solrDict = ObjectFactory.GetInstance<ISolrOperations<Dictionary<string, object>>>();
+            var container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(cores)));
+            var solr1 = container.GetInstance<ISolrOperations<Entity>>();
+            var solr2 = container.GetInstance<ISolrOperations<Entity2>>();
+            var solrDict = container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument_ResponseParser()
         {
-            SetupContainer();
-
-            var parser = ObjectFactory.GetInstance<ISolrDocumentResponseParser<Dictionary<string, object>>>();
-            Assert.IsInstanceOfType<SolrDictionaryDocumentResponseParser>(parser);
+            var parser = Container.GetInstance<ISolrDocumentResponseParser<Dictionary<string, object>>>();
+            Assert.IsType<SolrDictionaryDocumentResponseParser>(parser);
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument_Serializer()
         {
-            SetupContainer();
-            var serializer = ObjectFactory.GetInstance<ISolrDocumentSerializer<Dictionary<string, object>>>();
-            Assert.IsInstanceOfType<SolrDictionarySerializer>(serializer);
+            var serializer = Container.GetInstance<ISolrDocumentSerializer<Dictionary<string, object>>>();
+            Assert.IsType<SolrDictionarySerializer>(serializer);
         }
 
-        [Test]
-        public void Cache() {
-            SetupContainer();
-            ObjectFactory.Configure(cfg => cfg.For<ISolrCache>().Use<HttpRuntimeCache>());
-            var connectionId = "entity" + typeof (SolrConnection);
-            var connection = (SolrConnection) ObjectFactory.GetNamedInstance<ISolrConnection>(connectionId);
-            Assert.IsNotNull(connection.Cache);
-            Assert.IsInstanceOfType<HttpRuntimeCache>(connection.Cache);
-        }
-
-        private static void SetupContainer()
+        [Fact]
+        public void Cache()
         {
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
-            ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
+            Container.Configure(cfg => cfg.For<ISolrCache>().Use<HttpRuntimeCache>());
+            var connectionId = "entity" + typeof(SolrConnection);
+            var connection = (SolrConnection)Container.GetInstance<ISolrConnection>(connectionId);
+            Assert.NotNull(connection.Cache);
+            Assert.IsType<HttpRuntimeCache>(connection.Cache);
         }
+
+      
     }
 }

@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
-using MbUnit.Framework;
 using SolrNet.Attributes;
 using SolrNet.Cloud.ZooKeeperClient;
 using CloudStartup = SolrNet.Cloud.Startup;
-
+using Xunit;
 namespace SolrNet.Unity.Tests
 {
+    [Trait("Category", "Integration")]
     public class Test
     {
-        [Test]
+        [Fact]
         public void TestSorlCloud() {
             using (var provider = new SolrCloudStateProvider("10.26.11.30:9983")) {
                 CloudStartup.Init<TestEntity>(provider);
@@ -33,7 +33,7 @@ namespace SolrNet.Unity.Tests
             solr.Commit();
 
             var results = solr.Query(SolrQuery.All);
-            Assert.AreEqual(num, results.Count, "results count");
+            Assert.Equal(num, results.Count);
         }
 
 
@@ -49,7 +49,9 @@ namespace SolrNet.Unity.Tests
             }
         }
 
-        [Test]
+
+
+        [Fact]
         public void AddRemoveTest()
         {
             const int DocumentCount = 1000;
@@ -67,7 +69,7 @@ namespace SolrNet.Unity.Tests
             operations.Commit();
 
             var results = operations.Query(SolrQuery.All);
-            Assert.AreEqual(DocumentCount, results.Count, "results count");
+            Assert.Equal(DocumentCount, results.Count);
         }
     }
 

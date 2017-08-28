@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using Xunit;
 using Moroco;
 using SolrNet.Attributes;
 using SolrNet.Commands.Parameters;
@@ -28,7 +28,7 @@ namespace SolrNet.DSL.Tests {
     /// <summary>
     /// These tests are more to define DSL syntax than anything else.
     /// </summary>
-    [TestFixture]
+    
     public class DSLTests {
         public class TestDocument  {}
 
@@ -46,15 +46,14 @@ namespace SolrNet.DSL.Tests {
 
         public delegate string Writer(string s, IDictionary<string, string> q);
 
-        [FixtureSetUp]
-        public void FixtureSetup() {
+        public  DSLTests() {
             Startup.Container.Clear();
             Startup.InitContainer();
             Startup.Init<TestDocument>("http://localhost");
             Startup.Init<TestDocumentWithId>("http://localhost");
         }
 
-        [Test]
+        [Fact]
         public void Add() {
             var conn = new MSolrConnection();
             conn.post &= x => x.Args("/update", "<add><doc /></add>").Expect(1);
@@ -63,7 +62,7 @@ namespace SolrNet.DSL.Tests {
             conn.post.Verify();
         }
 
-        [Test]
+        [Fact]
         public void Commit() {
             var conn = new MSolrConnection();
             conn.post &= x => x.Args("/update", "<commit />").Expect(1);
@@ -72,7 +71,7 @@ namespace SolrNet.DSL.Tests {
             conn.post.Verify();
         }
 
-        [Test]
+        [Fact]
         public void CommitWithParams() {
             var conn = new MSolrConnection();
             conn.post &= x => x.Args("/update", "<commit waitSearcher=\"true\" waitFlush=\"true\" />").Expect(1);
@@ -81,7 +80,7 @@ namespace SolrNet.DSL.Tests {
             conn.post.Verify();
         }
 
-        [Test]
+        [Fact]
         public void DeleteById() {
             const string id = "123456";
             var conn = new MSolrConnection();
@@ -92,7 +91,7 @@ namespace SolrNet.DSL.Tests {
             conn.post.Verify();
         }
 
-        [Test]
+        [Fact]
         public void DeleteByIds() {
             var ids = new[] {"123", "456"};
             var conn = new MSolrConnection();
@@ -104,7 +103,7 @@ namespace SolrNet.DSL.Tests {
             conn.post.Verify();
         }
 
-        [Test]
+        [Fact]
         public void DeleteByQuery() {
             const string q = "id:123456";
             var conn = new MSolrConnection();
@@ -115,7 +114,7 @@ namespace SolrNet.DSL.Tests {
             conn.post.Verify();
         }
 
-        [Test]
+        [Fact]
         public void DeleteByQueryString() {
             const string q = "id:123456";
             var conn = new MSolrConnection();
@@ -126,29 +125,29 @@ namespace SolrNet.DSL.Tests {
             conn.post.Verify();
         }
 
-        [Test]
+        [Fact]
         public void Optimize() {
             var conn = new MSolrConnection();
             conn.post &= x => x.Args("/update", "<optimize />");
             Solr.Connection = conn;
             Solr.Optimize();
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
-        [Test]
+        [Fact]
         public void OptimizeWithParams() {
             var conn = new MSolrConnection();
             conn.post &= x => x.Args("/update", "<optimize waitSearcher=\"true\" waitFlush=\"true\" />");
             Solr.Connection = conn;
             Solr.Optimize(true, true);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
         public string DefaultRows() {
             return SolrQueryExecuter<TestDocumentWithId>.ConstDefaultRows.ToString();
         }
 
-        [Test]
+        [Fact]
         public void OrderBy() {
             var conn = new MockConnection(new Dictionary<string, string> {
                 {"q", "(Id:(123456))"},
@@ -162,7 +161,7 @@ namespace SolrNet.DSL.Tests {
                 .Run();
         }
 
-        [Test]
+        [Fact]
         public void OrderBy2() {
             const string queryString = "id:123";
             var query = new Dictionary<string, string> {
@@ -175,7 +174,7 @@ namespace SolrNet.DSL.Tests {
             Solr.Query<TestDocument>(new SolrQuery(queryString), new SortOrder("id", Order.ASC));
         }
 
-        [Test]
+        [Fact]
         public void OrderBy2Multiple() {
             const string queryString = "id:123";
             var query = new Dictionary<string, string> {
@@ -191,7 +190,7 @@ namespace SolrNet.DSL.Tests {
             });
         }
 
-        [Test]
+        [Fact]
         public void OrderByAscDesc() {
             var query = new Dictionary<string, string> {
                 {"q", "(Id:(123456))"},
@@ -207,7 +206,7 @@ namespace SolrNet.DSL.Tests {
                 .Run();
         }
 
-        [Test]
+        [Fact]
         public void OrderByAscDescMultiple() {
             var query = new Dictionary<string, string> {
                 {"q", "(Id:(123456))"},
@@ -224,16 +223,16 @@ namespace SolrNet.DSL.Tests {
                 .Run();
         }
 
-        [Test]
+        [Fact]
         public void Query() {
             var conn = new MSolrConnection();
             conn.get &= x => x.Return(response);
             Solr.Connection = conn;
             var r = Solr.Query<TestDocument>("");
-            Assert.AreEqual(1, r.NumFound);
+            Assert.Equal(1, r.NumFound);
         }
 
-        [Test]
+        [Fact]
         public void Query_InvalidField_ShouldNOTThrow() {
             const string response =
                 @"<?xml version=""1.0"" encoding=""UTF-8""?>
@@ -246,7 +245,7 @@ namespace SolrNet.DSL.Tests {
             Solr.Query<TestDocument>("");
         }
 
-        [Test]
+        [Fact]
         public void QueryByAnyField() {
             var query = new Dictionary<string, string> {
                 {"q", "(id:(123456))"},
@@ -257,7 +256,7 @@ namespace SolrNet.DSL.Tests {
             Solr.Query<TestDocument>().By("id").Is("123456").Run();
         }
 
-        [Test]
+        [Fact]
         public void QueryByRange() {
             var query = new Dictionary<string, string> {
                 {"q", "(id:[123 TO 456])"},
@@ -268,7 +267,7 @@ namespace SolrNet.DSL.Tests {
             Solr.Query<TestDocument>().ByRange("id", 123, 456).Run();
         }
 
-        [Test]
+        [Fact]
         public void QueryByRange_AnotherSyntax() {
             var query = new Dictionary<string, string> {
                 {"q", "(id:[123 TO 456])"},
@@ -279,7 +278,7 @@ namespace SolrNet.DSL.Tests {
             Solr.Query<TestDocument>().By("id").Between(123).And(456).Run();
         }
 
-        [Test]
+        [Fact]
         public void QueryByRangeConcatenable() {
             var conn = new MockConnection(new Dictionary<string, string> {
                 {"q", "((id:[123 TO 456])  p:[a TO z])"},
@@ -289,7 +288,7 @@ namespace SolrNet.DSL.Tests {
             Solr.Query<TestDocument>().ByRange("id", 123, 456).ByRange("p", "a", "z").Run();
         }
 
-        [Test]
+        [Fact]
         public void QueryByRangeExclusive() {
             var query = new Dictionary<string, string> {
                 {"q", "(id:{123 TO 456})"},
@@ -300,7 +299,7 @@ namespace SolrNet.DSL.Tests {
             Solr.Query<TestDocument>().ByRange("id", 123, 456).Exclusive().Run();
         }
 
-        [Test]
+        [Fact]
         public void QueryByRangeInclusive() {
             var query = new Dictionary<string, string> {
                 {"q", "(id:[123 TO 456])"},
@@ -311,7 +310,7 @@ namespace SolrNet.DSL.Tests {
             Solr.Query<TestDocument>().ByRange("id", 123, 456).Inclusive().Run();
         }
 
-        [Test]
+        [Fact]
         public void QueryISolrQuery() {
             const string queryString = "id:123";
             var conn = new MockConnection(new Dictionary<string, string> {
@@ -322,7 +321,7 @@ namespace SolrNet.DSL.Tests {
             Solr.Query<TestDocument>(new SolrQuery(queryString));
         }
 
-        [Test]
+        [Fact]
         public void QueryISolrQueryWithPagination() {
             const string queryString = "id:123";
             var query = new Dictionary<string, string> {
@@ -335,16 +334,16 @@ namespace SolrNet.DSL.Tests {
             Solr.Query<TestDocument>(new SolrQuery(queryString), 10, 20);
         }
 
-        [Test]
+        [Fact]
         public void QueryWithPagination() {
             var conn = new MSolrConnection();
             conn.get &= x => x.Return(response);
             Solr.Connection = conn;
             var r = Solr.Query<TestDocument>("", 10, 20);
-            Assert.AreEqual(1, r.NumFound);
+            Assert.Equal(1, r.NumFound);
         }
 
-        [Test]
+        [Fact]
         public void FacetField() {
             var conn = new MSolrConnection();
             conn.get &= x => x.Return(response);
@@ -352,7 +351,7 @@ namespace SolrNet.DSL.Tests {
             var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithFacetField("modeldesc").Run();
         }
 
-        [Test]
+        [Fact]
         public void FacetField_options() {
             var conn = new MSolrConnection();
             conn.get &= x => x.Return(response);
@@ -368,7 +367,7 @@ namespace SolrNet.DSL.Tests {
                 .Run();
         }
 
-        [Test]
+        [Fact]
         public void FacetQuery_string() {
             var conn = new MSolrConnection();
             conn.get &= x => x.Return(response);
@@ -376,7 +375,7 @@ namespace SolrNet.DSL.Tests {
             var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithFacetQuery("").Run();
         }
 
-        [Test]
+        [Fact]
         public void FacetQuery_ISolrQuery() {
             var conn = new MSolrConnection();
             conn.get &= x => x.Return(response);
@@ -384,8 +383,7 @@ namespace SolrNet.DSL.Tests {
             var r = Solr.Query<TestDocument>().By("makedesc").Is("bmw").WithFacetQuery(new SolrQuery("")).Run();
         }
 
-        [Test]
-        [Ignore("Not implemented")]
+        [Fact(Skip = "Not implemented")]
         public void FacetQuery_Fluent() {
             throw new NotImplementedException();
             //var mocks = new MockRepository();
@@ -400,7 +398,7 @@ namespace SolrNet.DSL.Tests {
             //});
         }
 
-        [Test]
+        [Fact]
         public void Highlighting() {
             var conn = new MockConnection(new Dictionary<string, string> {
                 {"q", "(makedesc:(bmw))"},
@@ -414,7 +412,7 @@ namespace SolrNet.DSL.Tests {
             }).Run();
         }
 
-        [Test]
+        [Fact]
         public void HighlightingFields() {
             var conn = new MockConnection(new Dictionary<string, string> {
                 {"q", "(makedesc:(bmw))"},

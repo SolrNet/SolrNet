@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SolrNet</id>
+    <version>0.7.1</version>
+    <title>SolrNet</title>
+    <authors>Mauricio Scheffer and contributors</authors>
+    <owners>Mauricio Scheffer</owners>
+    <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Apache Solr client with buildin Dependency Injection.</description>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="CommonServiceLocator" version="1.3" />
+      <dependency id="SolrNet.Core" version="[0.7.1]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\release\CommonServiceLocator.SolrNet.dll" target="lib\net46\CommonServiceLocator.SolrNet.dll" />
+    <file src="bin\release\CommonServiceLocator.SolrNet.pdb" target="lib\net46\CommonServiceLocator.SolrNet.pdb" />
+  </files>
+</package>

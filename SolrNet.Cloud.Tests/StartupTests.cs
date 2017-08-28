@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 using SolrNet.Cloud.CollectionsAdmin;
 using SolrNet.Cloud.ZooKeeperClient;
 using SolrNet.Commands.Parameters;
@@ -7,6 +7,7 @@ using SolrNet.Impl.ResponseParsers;
 
 namespace SolrNet.Cloud.Tests
 {
+    [Trait("Category", "Integration")]
     public class StartupTests
     {
         private void PrepareCollections(string[] collectionNames)
@@ -26,8 +27,7 @@ namespace SolrNet.Cloud.Tests
             }            
         }
 
-        [SetUp]
-        public void Setup()
+        public StartupTests()
         {
             var collectionNames = new[] { "data", "hosts" };
             PrepareCollections(collectionNames);            
@@ -36,12 +36,11 @@ namespace SolrNet.Cloud.Tests
             Startup.Init<FakeEntity1>(new SolrCloudStateProvider("127.0.0.1:9983"), collectionNames[1]);
         }
 
-        [Test]
+        [Fact]
         public void ShouldResolveBasicOperationsFromStartupContainer()
         {
             Assert.NotNull(
-                Startup.Container.GetInstance<ISolrBasicOperations<FakeEntity>>(),
-                "Should resolve basic operations from startup container");
+                Startup.Container.GetInstance<ISolrBasicOperations<FakeEntity>>());
 
             var a = Startup.Container.GetInstance<ISolrOperations<FakeEntity>>();
             var b = Startup.Container.GetInstance<ISolrOperations<FakeEntity1>>();
@@ -50,35 +49,32 @@ namespace SolrNet.Cloud.Tests
             b.Query("test1", new QueryOptions() { Rows = 10 });
         }
 
-        [Test]
+        [Fact]
         public void ShouldResolveBasicReadOnlyOperationsFromStartupContainer()
         {
             Assert.NotNull(
-                Startup.Container.GetInstance<ISolrBasicReadOnlyOperations<FakeEntity>>(),
-                "Should resolve basic read only operations from startup container");
+                Startup.Container.GetInstance<ISolrBasicReadOnlyOperations<FakeEntity>>());
         }
 
-        [Test]
+
+        [Fact]
         public void ShouldResolveOperationsFromStartupContainer() {
             Assert.NotNull(
-                Startup.Container.GetInstance<ISolrOperations<FakeEntity>>(),
-                "Should resolve operations from startup container");
+                Startup.Container.GetInstance<ISolrOperations<FakeEntity>>());
         }
 
-        [Test]
+        [Fact]
         public void ShouldResolveOperationsProviderFromStartupContainer()
         {
             Assert.NotNull(
-                Startup.Container.GetInstance<ISolrOperationsProvider>(),
-                "Should resolve operations provider from startup container");
+                Startup.Container.GetInstance<ISolrOperationsProvider>());
         }
 
-        [Test]
+        [Fact]
         public void ShouldResolveReadOnlyOperationsFromStartupContainer()
         {
             Assert.NotNull(
-                Startup.Container.GetInstance<ISolrReadOnlyOperations<FakeEntity>>(),
-                "Should resolve read only operations from startup container");
+                Startup.Container.GetInstance<ISolrReadOnlyOperations<FakeEntity>>());
         }
     }
 }

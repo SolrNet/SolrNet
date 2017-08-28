@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Moroco;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
@@ -173,6 +174,191 @@ namespace SolrNet.Tests.Mocks {
         }
 
         public IEnumerable<ValidationResult> EnumerateValidationResults() {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> CommitAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> RollbackAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> OptimizeAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AddAsync(T doc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AddAsync(T doc, AddParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AddWithBoostAsync(T doc, double boost)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AddWithBoostAsync(T doc, double boost, AddParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ExtractResponse> ExtractAsync(ExtractParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AddRangeAsync(IEnumerable<T> docs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AddRangeAsync(IEnumerable<T> docs, AddParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AddRangeWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AddRangeWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(T doc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(T doc, DeleteParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<T> docs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<T> docs, DeleteParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(ISolrQuery q)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(ISolrQuery q, DeleteParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(string id, DeleteParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, DeleteParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> BuildSpellCheckDictionaryAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(string q)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(string q, ICollection<SortOrder> orders)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(string q, QueryOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery q)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, ICollection<SortOrder> orders)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ICollection<KeyValuePair<string, int>>> FacetFieldQueryAsync(SolrFacetFieldQuery facets)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> PingAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrSchema> GetSchemaAsync(string schemaFileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<SolrDIHStatus> GetDIHStatusAsync(KeyValuePair<string, string> options)
+        {
             throw new NotImplementedException();
         }
     }

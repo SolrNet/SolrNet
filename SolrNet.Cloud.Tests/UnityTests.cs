@@ -1,5 +1,5 @@
 ﻿using Microsoft.Practices.Unity;
-using NUnit.Framework;
+using Xunit;
 using Unity.SolrNetCloudIntegration;
 
 namespace SolrNet.Cloud.Tests
@@ -12,35 +12,31 @@ namespace SolrNet.Cloud.Tests
                 new UnityContainer());
         }
 
-        [Test]
+        [Fact]
         public void ShouldResolveBasicOperationsFromStartupContainer()
         {
             Assert.NotNull(
-                Setup().Resolve<ISolrBasicOperations<FakeEntity>>(),
-                "Should resolve basic operations from unity container");
+                Setup().Resolve<ISolrBasicOperations<FakeEntity>>());
         }
 
-        [Test]
+        [Fact]
         public void ShouldResolveBasicReadOnlyOperationsFromStartupContainer()
         {
             Assert.NotNull(
-                Setup().Resolve<ISolrBasicReadOnlyOperations<FakeEntity>>(),
-                "Should resolve basic read only operations from unity container");
+                Setup().Resolve<ISolrBasicReadOnlyOperations<FakeEntity>>());
         }
 
-        [Test]
+        [Fact]
         public void ShouldResolveOperationsFromStartupContainer() {
             Assert.NotNull(
-                Setup().Resolve<ISolrOperations<FakeEntity>>(),
-                "Should resolve operations from unity container");
+                Setup().Resolve<ISolrOperations<FakeEntity>>());
         }
 
-        [Test]
+        [Fact]
         public void ShouldResolveReadOnlyOperationsFromStartupContainer()
         {
             Assert.NotNull(
-                Setup().Resolve<ISolrReadOnlyOperations<FakeEntity>>(),
-                "Should resolve read only operations from unity container");
+                Setup().Resolve<ISolrReadOnlyOperations<FakeEntity>>());
         }
     }
 }

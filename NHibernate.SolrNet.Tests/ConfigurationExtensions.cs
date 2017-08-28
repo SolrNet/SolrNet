@@ -24,20 +24,20 @@ using Environment=NHibernate.Cfg.Environment;
 namespace NHibernate.SolrNet.Tests {
     public static class ConfigurationExtensions {
 
-        public static Configuration GetEmptyNHConfig() {
+        public static Configuration GetEmptyNHConfig(string testdbFilename = "test.db") {
             var nhConfig = new Configuration {
                 Properties = new Dictionary<string, string> {
                     {Environment.ConnectionProvider, typeof(DriverConnectionProvider).FullName},
                     {Environment.ConnectionDriver, typeof(SQLite20Driver).FullName},
                     {Environment.Dialect, typeof(SQLiteDialect).FullName},
-                    {Environment.ConnectionString, "Data Source=test.db;Version=3;New=True;"},
+                    {Environment.ConnectionString, $"Data Source={testdbFilename};Version=3;New=True;"},
                 }
             };
             return nhConfig;
         }
 
-        public static Configuration GetNhConfig() {
-            var nhConfig = GetEmptyNHConfig();
+        public static Configuration GetNhConfig(string testdbFilename = null) {
+            var nhConfig = GetEmptyNHConfig(testdbFilename);
             nhConfig.Register(typeof (Entity));
             return nhConfig;
         }

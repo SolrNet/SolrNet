@@ -17,42 +17,42 @@
 #endregion
 
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class CollapseResponseParserTests {
-        [Test]
+        [Fact]
         public void Parse() {
             var parser = new CollapseResponseParser<TestDoc>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.collapseResponse.xml");
             var results = new SolrQueryResults<TestDoc>();
             parser.Parse(xml, results);
-            Assert.IsNotNull(results.Collapsing);
-            Assert.AreEqual("manu_exact", results.Collapsing.Field);
-            Assert.AreEqual(5, results.Collapsing.CollapsedDocuments.Count);
+            Assert.NotNull(results.Collapsing);
+            Assert.Equal("manu_exact", results.Collapsing.Field);
+            Assert.Equal(5, results.Collapsing.CollapsedDocuments.Count);
             var firstCollapse = results.Collapsing.CollapsedDocuments.ElementAt(0);
-            Assert.AreEqual("F8V7067-APL-KIT", firstCollapse.Id);
-            Assert.AreEqual(1, firstCollapse.CollapseCount);
-            Assert.AreEqual("Belkin", firstCollapse.FieldValue);
+            Assert.Equal("F8V7067-APL-KIT", firstCollapse.Id);
+            Assert.Equal(1, firstCollapse.CollapseCount);
+            Assert.Equal("Belkin", firstCollapse.FieldValue);
         }
 
-        [Test]
+        [Fact]
         public void Parse2() {
             var parser = new CollapseResponseParser<TestDoc>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.collapseResponse2.xml");
             var results = new SolrQueryResults<TestDoc>();
             parser.Parse(xml, results);
-            Assert.IsNotNull(results.Collapsing);
-            Assert.AreEqual("manu_exact", results.Collapsing.Field);
-            Assert.AreEqual(3, results.Collapsing.CollapsedDocuments.Count);
+            Assert.NotNull(results.Collapsing);
+            Assert.Equal("manu_exact", results.Collapsing.Field);
+            Assert.Equal(3, results.Collapsing.CollapsedDocuments.Count);
             var firstCollapse = results.Collapsing.CollapsedDocuments.ElementAt(0);
-            Assert.AreEqual("F8V7067-APL-KIT", firstCollapse.Id);
-            Assert.AreEqual(1, firstCollapse.CollapseCount);
-            Assert.AreEqual("Belkin", firstCollapse.FieldValue);
+            Assert.Equal("F8V7067-APL-KIT", firstCollapse.Id);
+            Assert.Equal(1, firstCollapse.CollapseCount);
+            Assert.Equal("Belkin", firstCollapse.FieldValue);
         }
 
         public class TestDoc {}

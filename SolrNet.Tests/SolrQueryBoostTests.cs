@@ -15,35 +15,35 @@
 #endregion
 
 using System;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class SolrQueryBoostTests {
-        [Test]
+        [Fact]
         public void Boost() {
             var q = new SolrQueryBoost(new SolrQuery("solr"), 34.2);
             var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             var query = serializer.Serialize(q);
-            Assert.AreEqual("(solr)^34.2", query);
+            Assert.Equal("(solr)^34.2", query);
         }
 
-        [Test]
+        [Fact]
         public void Boost_with_high_value() {
             var q = new SolrQueryBoost(new SolrQuery("solr"), 34.2E10);
             var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             var query = serializer.Serialize(q);
-            Assert.AreEqual("(solr)^342000000000", query);
+            Assert.Equal("(solr)^342000000000", query);
         }
 
-        [Test]
+        [Fact]
         public void SolrQuery_Boost() {
             var q = new SolrQuery("solr").Boost(12.2);
             var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             var query = serializer.Serialize(q);
-            Assert.AreEqual("(solr)^12.2", query);
+            Assert.Equal("(solr)^12.2", query);
         }
     }
 }

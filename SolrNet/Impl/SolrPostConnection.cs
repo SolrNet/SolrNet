@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
+using System.Threading.Tasks;
 
 namespace SolrNet.Impl
 {
@@ -28,25 +29,37 @@ namespace SolrNet.Impl
 			return conn.Post(relativeUrl, s);
 		}
 
-		public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        public Task<string> PostAsync(string relativeUrl, string s)
+        {
+            return conn.PostAsync(relativeUrl, s);
+        }
+
+        public (HttpWebRequest request, string queryString) PrepareGet(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
+            var u = new UriBuilder(serverUrl);
+            u.Path += relativeUrl;
+            var request = (HttpWebRequest)WebRequest.Create(u.Uri);
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            var qs = string.Join("&", parameters
+                .Select(kv => string.Format("{0}={1}", HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
+                .ToArray());
+            request.ContentLength = Encoding.UTF8.GetByteCount(qs);
+            request.ProtocolVersion = HttpVersion.Version11;
+            request.KeepAlive = true;
+
+            return (request, qs);
+        }
+
+        public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
 		{
-			var u = new UriBuilder(serverUrl);
-			u.Path += relativeUrl;
-			var request = (HttpWebRequest)WebRequest.Create(u.Uri);
-			request.Method = "POST";
-			request.ContentType = "application/x-www-form-urlencoded";
-			var qs = string.Join("&", parameters
-				.Select(kv => string.Format("{0}={1}", HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
-				.ToArray());
-			request.ContentLength = Encoding.UTF8.GetByteCount(qs);
-			request.ProtocolVersion = HttpVersion.Version11;
-			request.KeepAlive = true;
+            var g = PrepareGet(relativeUrl, parameters);
 			try
 			{
-				using (var postParams = request.GetRequestStream())
+				using (var postParams = g.request.GetRequestStream())
 				using (var sw = new StreamWriter(postParams))
-					sw.Write(qs);
-				using (var response = request.GetResponse())
+					sw.Write(g.queryString);
+				using (var response = g.request.GetResponse())
 				using (var responseStream = response.GetResponseStream())
 				using (var sr = new StreamReader(responseStream, Encoding.UTF8, true))
 					return sr.ReadToEnd();
@@ -57,9 +70,34 @@ namespace SolrNet.Impl
 			}
 		}
 
-		public string PostStream(string relativeUrl, string contentType, System.IO.Stream content, IEnumerable<KeyValuePair<string, string>> getParameters) {
+        public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
+            var g = PrepareGet(relativeUrl, parameters);
+            try
+            {
+                using (var postParams = await g.request.GetRequestStreamAsync())
+                using (var sw = new StreamWriter(postParams))
+                    await sw.WriteAsync(g.queryString);
+                using (var response = await g.request.GetResponseAsync())
+                using (var responseStream = response.GetResponseStream())
+                using (var sr = new StreamReader(responseStream, Encoding.UTF8, true))
+                    return await sr.ReadToEndAsync();
+            }
+            catch (WebException e)
+            {
+                throw new SolrConnectionException(e);
+            }
+        }
+
+
+        public string PostStream(string relativeUrl, string contentType, System.IO.Stream content, IEnumerable<KeyValuePair<string, string>> getParameters) {
 			return conn.PostStream(relativeUrl, contentType, content, getParameters);
 		}
 
-	}
+        public Task<string> PostStreamAsync(string relativeUrl, string contentType, System.IO.Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
+        {
+            return conn.PostStreamAsync(relativeUrl, contentType, content, getParameters);
+        }
+
+    }
 }

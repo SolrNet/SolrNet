@@ -1,13 +1,13 @@
-﻿using MbUnit.Framework;
+﻿using Xunit;
 using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class SolrFacetPivotQueryTest {
         private static readonly SolrFacetPivotQuerySerializer serializer = new SolrFacetPivotQuerySerializer();
 
-        [Test]
+        [Fact]
         public void SinglePivotTest() {
             var q = new SolrFacetPivotQuery {
                 Fields = new[] {new PivotFields("manu_exact", "inStock")},
@@ -15,24 +15,24 @@ namespace SolrNet.Tests {
             };
 
             var r = serializer.Serialize(q);
-            Assert.Contains(r, KV.Create("facet.pivot", "manu_exact,inStock"));
-            Assert.Contains(r, KV.Create("facet.pivot.mincount", "1"));
+            Assert.Contains(KV.Create("facet.pivot", "manu_exact,inStock"),r);
+            Assert.Contains(KV.Create("facet.pivot.mincount", "1"), r);
         }
 
-        [Test]
+        [Fact]
         public void SinglePivotTestWithoutMinCount() {
             var q = new SolrFacetPivotQuery {
                 Fields = new[] { new PivotFields("manu_exact","inStock")}
             };
 
             var r = serializer.Serialize(q);
-            Assert.Contains(r, KV.Create("facet.pivot", "manu_exact,inStock"));
+            Assert.Contains( KV.Create("facet.pivot", "manu_exact,inStock"), r);
             foreach (var kvPair in r) {
-                Assert.DoesNotContain(kvPair.Key, "facet.pivot.mincount");
+                Assert.DoesNotContain("facet.pivot.mincount", kvPair.Key);
             }
         }
 
-        [Test]
+        [Fact]
         public void MultiplePivotTest() {
             var q = new SolrFacetPivotQuery {
                 Fields = new[] { new PivotFields("manu_exact","inStock"), new PivotFields("inStock", "cat"), },
@@ -40,9 +40,9 @@ namespace SolrNet.Tests {
             };
 
             var r = serializer.Serialize(q);
-            Assert.Contains(r, KV.Create("facet.pivot", "manu_exact,inStock"));
-            Assert.Contains(r, KV.Create("facet.pivot", "inStock,cat"));
-            Assert.Contains(r, KV.Create("facet.pivot.mincount", "1"));
+            Assert.Contains( KV.Create("facet.pivot", "manu_exact,inStock"), r);
+            Assert.Contains( KV.Create("facet.pivot", "inStock,cat"), r);
+            Assert.Contains( KV.Create("facet.pivot.mincount", "1"), r);
         }
     }
 }

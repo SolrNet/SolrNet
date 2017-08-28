@@ -14,13 +14,13 @@
 // limitations under the License.
 #endregion
 
-using MbUnit.Framework;
+using Xunit;
 using System.Linq;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
-	[TestFixture]
+	
 	public class SolrQueryInListTests {
 
         public string Serialize(object q) {
@@ -28,36 +28,36 @@ namespace SolrNet.Tests {
             return serializer.Serialize(q);
         }
 
-		[Test]
+		[Fact]
 		public void ListOfInt() {
 			var q = new SolrQueryInList("id", new[] {1, 2, 3, 4}.Select(i => i.ToString()));
-            Assert.AreEqual("(id:((1) OR (2) OR (3) OR (4)))", Serialize(q));
+            Assert.Equal("(id:((1) OR (2) OR (3) OR (4)))", Serialize(q));
 		}
 
-        [Test]
+        [Fact]
         public void ShouldQuoteValues() {
             var q = new SolrQueryInList("id", new[] {"one", "two thousand"});
-            Assert.AreEqual("(id:((one) OR (\"two thousand\")))", Serialize(q));
+            Assert.Equal("(id:((one) OR (\"two thousand\")))", Serialize(q));
         }
 
 
-        [Test]
+        [Fact]
         public void ShouldQuoteEmptyValues() {
             var q = new SolrQueryInList("id", new[] { "", "two thousand" });
-            Assert.AreEqual("(id:((\"\") OR (\"two thousand\")))", Serialize(q));
+            Assert.Equal("(id:((\"\") OR (\"two thousand\")))", Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void EmptyList_should_be_null_query() {
             var q = new SolrQueryInList("id", new string[0]);
-            Assert.IsNull(Serialize(q));
+            Assert.Null(Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void Fieldname_with_spaces()
         {
             var q = new SolrQueryInList("i have spaces", new[] { "one", "two thousand" });
-            Assert.AreEqual("(i\\ have\\ spaces:((one) OR (\"two thousand\")))", Serialize(q));
+            Assert.Equal("(i\\ have\\ spaces:((one) OR (\"two thousand\")))", Serialize(q));
         }
 	}
 }

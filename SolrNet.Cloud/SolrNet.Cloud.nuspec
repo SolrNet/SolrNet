@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>SolrNet.Cloud.Core</id>
+    <version>0.7.1-beta</version>
+    <authors>Mauricio Scheffer and contributors</authors>
+    <owners>Mauricio Scheffer</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
+    <description>Apache SolrCloud client</description>
+    <dependencies>
+      <dependency id="SolrNet.Core" version="[0.7.1]" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\release\SolrNet.Cloud.dll" target="lib\net46\SolrNet.Cloud.dll" />
+    <file src="bin\release\SolrNet.Cloud.pdb" target="lib\net46\SolrNet.Cloud.pdb" />
+  </files>
+</package>

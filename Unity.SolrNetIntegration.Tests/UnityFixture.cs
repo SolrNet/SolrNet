@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using MbUnit.Framework;
+using Xunit;
 using Microsoft.Practices.Unity;
 using SolrNet;
 using SolrNet.Exceptions;
@@ -9,36 +9,35 @@ using SolrNet.Impl;
 using Unity.SolrNetIntegration.Config;
 
 namespace Unity.SolrNetIntegration.Tests {
-    [TestFixture]
     public class UnityFixture {
-        [Test]
+        [Fact]
         public void ResolveSolrOperations() {
             using (var container = SetupContainer()) {
                 var m = container.Resolve<ISolrOperations<Entity>>();
-                Assert.IsNotNull(m);
+                Assert.NotNull(m);
             }
         }
-        [Test]
+        [Fact]
         public void ResolveAllISolrAbstractResponseParser()
         {
             using (var container = SetupContainer()) {
                 var m = container.ResolveAll(typeof(ISolrAbstractResponseParser<UnityFixture>));
-                Assert.IsNotEmpty(m);
+                Assert.NotEmpty(m);
             }
         }
 
-        [Test]
+        [Fact]
         public void RegistersSolrConnectionWithAppConfigServerUrl() {
             using (var container = SetupContainer()) {
                 var instanceKey = "entity" + typeof (SolrConnection);
 
                 var solrConnection = (SolrConnection) container.Resolve<ISolrConnection>(instanceKey);
 
-                Assert.AreEqual("http://localhost:8983/solr/entity", solrConnection.ServerURL);
+                Assert.Equal("http://localhost:8983/solr/collection1", solrConnection.ServerURL);
             }
         }
 
-        [Test, ExpectedException(typeof (InvalidURLException))]
+        [Fact]
         public void Should_throw_exception_for_invalid_protocol_on_url() {
             var solrServers = new SolrServers {
                 new SolrServerElement {
@@ -48,12 +47,11 @@ namespace Unity.SolrNetIntegration.Tests {
                 }
             };
             using (var container = new UnityContainer()) {
-                new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container);
-                container.Resolve<ISolrConnection>();
+                Assert.Throws<InvalidURLException>(() => new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container));
             }
         }
 
-        [Test, ExpectedException(typeof (InvalidURLException))]
+       [Fact]
         public void Should_throw_exception_for_invalid_url() {
             var solrServers = new SolrServers {
                 new SolrServerElement {
@@ -63,46 +61,45 @@ namespace Unity.SolrNetIntegration.Tests {
                 }
             };
             using (var container = new UnityContainer()) {
-                new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container);
-                container.Resolve<ISolrConnection>();
+                Assert.Throws<InvalidURLException>(() => new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container));
             }
         }
 
-        [Test]
+        [Fact]
         public void Container_has_ISolrFieldParser() {
             using (var container = SetupContainer()) {
                 var parser = container.Resolve<ISolrFieldParser>();
-                Assert.IsNotNull(parser);
+                Assert.NotNull(parser);
             }
         }
 
-        [Test]
+        [Fact]
         public void Container_has_ISolrFieldSerializer() {
             using (var container = SetupContainer()) {
                 container.Resolve<ISolrFieldSerializer>();
             }
         }
 
-        [Test]
+        [Fact]
         public void Container_has_ISolrDocumentPropertyVisitor() {
             using (var container = SetupContainer()) {
                 container.Resolve<ISolrDocumentPropertyVisitor>();
             }
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument_ResponseParser() {
             using (var container = SetupContainer()) {
                 var parser = container.Resolve<ISolrDocumentResponseParser<Dictionary<string, object>>>();
-                Assert.IsInstanceOfType<SolrDictionaryDocumentResponseParser>(parser);
+                Assert.IsType<SolrDictionaryDocumentResponseParser>(parser);
             }
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument_Serializer() {
             using (var container = SetupContainer()) {
                 var serializer = container.Resolve<ISolrDocumentSerializer<Dictionary<string, object>>>();
-                Assert.IsInstanceOfType<SolrDictionarySerializer>(serializer);
+                Assert.IsType<SolrDictionarySerializer>(serializer);
             }
         }
 

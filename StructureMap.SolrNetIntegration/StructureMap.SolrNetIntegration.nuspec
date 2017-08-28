@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SolrNet.StructureMap</id>
+    <version>0.7.1</version>
+    <title>SolrNet.StructureMap</title>
+    <authors>Mauricio Scheffer and contributors</authors>
+    <owners>Mauricio Scheffer</owners>
+    <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>StructureMap registry for SolrNet</description>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="SolrNet.Core" version="[0.7.1]" />
+      <dependency id="StructureMap" version="4.5.2" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\release\StructureMap.SolrNetIntegration.dll" target="lib\net46\StructureMap.SolrNetIntegration.dll" />
+    <file src="bin\release\StructureMap.SolrNetIntegration.pdb" target="lib\net46\StructureMap.SolrNetIntegration.pdb" />
+    <file src="bin\release\StructureMap.SolrNetIntegration.XML" target="lib\net46\StructureMap.SolrNetIntegration.xml" />
+  </files>
+</package>

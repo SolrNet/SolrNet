@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
-using NUnit.Framework;
+using Xunit;
 
 namespace SolrNet.Cloud.Tests {
     public class SolrClusterStateParserTests {
@@ -24,13 +24,13 @@ namespace SolrNet.Cloud.Tests {
             get { return File.ReadAllText(@"resources\externalstate2.json"); }
         }
 
-        [Test]
+        [Fact]
         public void ShouldProduceEmptyStateFromEmptyJson() {
             var state = SolrCloudStateParser.Parse(EmptyJson);
             Assert.False(state.Collections.Any());
         }
 
-        [Test]
+        [Fact]
         public void ShouldProduceNotEmptyStateFromNotEmptyJson() {
             var collections = SolrCloudStateParser.Parse(NotEmptyJson).Collections.Values;
             Assert.True(collections.Any());
@@ -43,7 +43,7 @@ namespace SolrNet.Cloud.Tests {
             Assert.True(replicas.Any(replica => replica.IsLeader));
         }
 
-        [Test]
+        [Fact]
         public void ShouldProduceMergedStateFromSeveralJson() {
             var internalCollectionsState = SolrCloudStateParser.Parse(InternalCollectionsState);
             var external1State = SolrCloudStateParser.Parse(FirstExternalCollectionState);
@@ -52,7 +52,7 @@ namespace SolrNet.Cloud.Tests {
             var totalCollectionsCount = internalCollectionsState.Collections.Count + external1State.Collections.Count + external2State.Collections.Count;
             var zkState = internalCollectionsState.Merge(external1State).Merge(external2State);
 
-            Assert.AreEqual(zkState.Collections.Count, totalCollectionsCount);
+            Assert.Equal(zkState.Collections.Count, totalCollectionsCount);
         }
     }
 }

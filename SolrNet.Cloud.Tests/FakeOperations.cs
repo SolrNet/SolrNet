@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 using SolrNet.Mapping.Validation;
 using SolrNet.Schema;
+using System.Runtime.CompilerServices;
 
 namespace SolrNet.Cloud.Tests
 {
     public class FakeOperations<T> : ISolrBasicOperations<T>, ISolrOperations<T>
     {
-        public FakeOperations(FakeProvider provider) {
+        public FakeOperations(FakeProvider provider)
+        {
             this.provider = provider;
         }
 
@@ -16,278 +19,499 @@ namespace SolrNet.Cloud.Tests
 
         public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options)
         {
-            provider.LastOperation = "Query";
+            SetLastOperation();
             return null;
         }
 
         public SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
         {
-            provider.LastOperation = "MoreLikeThis";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Ping()
         {
-            provider.LastOperation = "Ping";
+            SetLastOperation();
             return null;
         }
 
         public SolrSchema GetSchema(string schemaFileName)
         {
-            provider.LastOperation = "GetSchema";
+            SetLastOperation();
             return null;
         }
 
         public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options)
         {
-            provider.LastOperation = "GetDIHStatus";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Commit(CommitOptions options)
         {
-            provider.LastOperation = "Commit";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Optimize(CommitOptions options)
         {
-            provider.LastOperation = "Optimize";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Commit()
         {
-            provider.LastOperation = "Commit";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Rollback()
         {
-            provider.LastOperation = "Rollback";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Optimize()
         {
-            provider.LastOperation = "Optimize";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Add(T doc)
         {
-            provider.LastOperation = "Add";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Add(T doc, AddParameters parameters)
         {
-            provider.LastOperation = "Add";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader AddWithBoost(T doc, double boost)
         {
-            provider.LastOperation = "AddWithBoost";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader AddWithBoost(T doc, double boost, AddParameters parameters)
         {
-            provider.LastOperation = "AddWithBoost";
+            SetLastOperation();
             return null;
         }
 
         public ExtractResponse Extract(ExtractParameters parameters)
         {
-            provider.LastOperation = "Extract";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Add(IEnumerable<T> docs)
         {
-            provider.LastOperation = "Add";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader AddRange(IEnumerable<T> docs)
         {
-            provider.LastOperation = "AddRange";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Add(IEnumerable<T> docs, AddParameters parameters)
         {
-            provider.LastOperation = "Add";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader AddRange(IEnumerable<T> docs, AddParameters parameters)
         {
-            provider.LastOperation = "AddRange";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs)
         {
-            provider.LastOperation = "AddWithBoost";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader AddRangeWithBoost(IEnumerable<KeyValuePair<T, double?>> docs)
         {
-            provider.LastOperation = "AddRangeWithBoost";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
         {
-            provider.LastOperation = "AddWithBoost";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader AddRangeWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
         {
-            provider.LastOperation = "AddRangeWithBoost";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(T doc)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(T doc, DeleteParameters parameters)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(IEnumerable<T> docs)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(IEnumerable<T> docs, DeleteParameters parameters)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(ISolrQuery q)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(ISolrQuery q, DeleteParameters parameters)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(string id)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(string id, DeleteParameters parameters)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(IEnumerable<string> ids)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(IEnumerable<string> ids, DeleteParameters parameters)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
         {
-            provider.LastOperation = "Delete";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader BuildSpellCheckDictionary()
         {
-            provider.LastOperation = "BuildSpellCheckDictionary";
+            SetLastOperation();
             return null;
         }
 
         public IEnumerable<ValidationResult> EnumerateValidationResults()
         {
-            provider.LastOperation = "EnumerateValidationResults";
+            SetLastOperation();
             return null;
         }
 
         public string Send(ISolrCommand cmd)
         {
-            provider.LastOperation = "Send";
+            SetLastOperation();
             return null;
         }
 
         public ResponseHeader SendAndParseHeader(ISolrCommand cmd)
         {
-            provider.LastOperation = "SendAndParseHeader";
+            SetLastOperation();
             return null;
         }
 
         public ExtractResponse SendAndParseExtract(ISolrCommand cmd)
         {
-            provider.LastOperation = "SendAndParseExtract";
+            SetLastOperation();
             return null;
         }
 
         public SolrQueryResults<T> Query(string q)
         {
-            provider.LastOperation = "Query";
+            SetLastOperation();
             return null;
         }
 
         public SolrQueryResults<T> Query(string q, ICollection<SortOrder> orders)
         {
-            provider.LastOperation = "Query";
+            SetLastOperation();
             return null;
         }
 
         public SolrQueryResults<T> Query(string q, QueryOptions options)
         {
-            provider.LastOperation = "Query";
+            SetLastOperation();
             return null;
         }
 
         public SolrQueryResults<T> Query(ISolrQuery q)
         {
-            provider.LastOperation = "Query";
+            SetLastOperation();
             return null;
         }
 
         public SolrQueryResults<T> Query(ISolrQuery query, ICollection<SortOrder> orders)
         {
-            provider.LastOperation = "Query";
+            SetLastOperation();
             return null;
         }
 
         public ICollection<KeyValuePair<string, int>> FacetFieldQuery(SolrFacetFieldQuery facets)
         {
-            provider.LastOperation = "FacetFieldQuery";
+            SetLastOperation();
             return null;
+        }
+
+        public Task<ResponseHeader> CommitAsync(CommitOptions options)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> OptimizeAsync(CommitOptions options)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> RollbackAsync()
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AddWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ExtractResponse> ExtractAsync(ExtractParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<string> SendAsync(ISolrCommand cmd)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ExtractResponse> SendAndParseExtractAsync(ISolrCommand cmd)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> PingAsync()
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<SolrSchema> GetSchemaAsync(string schemaFileName)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<SolrDIHStatus> GetDIHStatusAsync(KeyValuePair<string, string> options)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> CommitAsync()
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> OptimizeAsync()
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AddAsync(T doc)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AddAsync(T doc, AddParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AddWithBoostAsync(T doc, double boost)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AddWithBoostAsync(T doc, double boost, AddParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AddRangeAsync(IEnumerable<T> docs)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AddRangeAsync(IEnumerable<T> docs, AddParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AddRangeWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AddRangeWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(T doc)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(T doc, DeleteParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<T> docs)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<T> docs, DeleteParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(ISolrQuery q)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(ISolrQuery q, DeleteParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(string id)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(string id, DeleteParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, DeleteParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> BuildSpellCheckDictionaryAsync()
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync()
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(string q)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(string q, ICollection<SortOrder> orders)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(string q, QueryOptions options)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery q)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, ICollection<SortOrder> orders)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ICollection<KeyValuePair<string, int>>> FacetFieldQueryAsync(SolrFacetFieldQuery facets)
+        {
+            SetLastOperation(); return null;
+        }
+
+        private void SetLastOperation([CallerMemberName]string operation = null)
+        {
+            provider.LastOperation = operation;
+
         }
     }
 }

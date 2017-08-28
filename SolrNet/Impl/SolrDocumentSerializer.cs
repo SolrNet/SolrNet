@@ -17,7 +17,6 @@
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Web.UI;
 using System.Xml.Linq;
 
 namespace SolrNet.Impl {

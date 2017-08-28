@@ -14,21 +14,23 @@
 // limitations under the License.
 #endregion
 
-using MbUnit.Framework;
+using Xunit;
 using Moroco;
+using sn = SolrNet;
 
 namespace NHibernate.SolrNet.Tests {
-    [TestFixture]
+
+    [Trait("Category", "Outdated")]
     public class ListenersTests: BaseNHTests {
 
-        [Test]
+        [Fact]
         public void PostInsert_manual_flush_adds_to_solr() {
             var entity = new Entity {Description = "pepe"};
-            mockSolr.addDocParams += (e, p) => {
-                Assert.AreSame(entity, e);
-                Assert.IsNull(p);
+            mockSolr.addDocParams += new MFunc<Entity, sn.AddParameters, sn.ResponseHeader>((e, p) => {
+                Assert.Same(entity, e);
+                Assert.Null(p);
                 return null;
-            };
+            });
             using (var session = sessionFactory.OpenSession()) {
                 session.FlushMode = FlushMode.Never;
                 session.Save(entity);
@@ -36,7 +38,7 @@ namespace NHibernate.SolrNet.Tests {
             }
         }
 
-        [Test]
+        [Fact]
         public void PostInsert_manual_flush_without_flush_doesnt_add_to_solr() {
             var entity = new Entity {Description = "pepe"};
             mockSolr.addDocParams &= x => x.Expect(0);
@@ -46,21 +48,21 @@ namespace NHibernate.SolrNet.Tests {
             }
         }
 
-        [Test]
+        [Fact]
         public void PostInsert_autoflush_without_flush_adds_to_solr() {
             var entity = new Entity {Description = "pepe"};
-            mockSolr.addDocParams += (e, p) => {
-                Assert.AreSame(entity, e);
-                Assert.IsNull(p);
+            mockSolr.addDocParams += new MFunc<Entity, sn.AddParameters, sn.ResponseHeader>( (e, p) => {
+                Assert.Same(entity, e);
+                Assert.Null(p);
                 return null;
-            };
+            });
             mockSolr.addDocParams &= x => x.Expect(1);
             using (var session = sessionFactory.OpenSession()) {
                 session.Save(entity);
             }
         }
 
-        [Test]
+        [Fact]
         public void PostInsert_without_commit_doesnt_add_to_solr() {
             var entity = new Entity();
             mockSolr.addDocParams &= x => x.Expect(0);
@@ -72,7 +74,7 @@ namespace NHibernate.SolrNet.Tests {
             }
         }
 
-        [Test]
+        [Fact]
         public void PostInsert_with_commit_adds_to_solr() {
             var entity = new Entity();
             mockSolr.addDocParams &= x => x.Expect(1);
@@ -84,8 +86,7 @@ namespace NHibernate.SolrNet.Tests {
             }
         } 
 
-        [Test]
-        [Ignore("Session dispose should follow transaction rollback. See http://www.nhforge.org/doc/nh/en/index.html#manipulatingdata-endingsession-commit")]
+        [Fact(Skip = "Session dispose should follow transaction rollback. See http://www.nhforge.org/doc/nh/en/index.html#manipulatingdata-endingsession-commit")]
         public void Insert_with_multiple_transactions() {
             var entity = new Entity();
             mockSolr.addDocParams &= x => x.Expect(1);
@@ -102,7 +103,7 @@ namespace NHibernate.SolrNet.Tests {
             }
         }
 
-        [Test]
+        [Fact]
         public void Insert_with_multiple_transactions2() {
             var entity = new Entity();
             mockSolr.addDocParams &= x => x.Expect(1);

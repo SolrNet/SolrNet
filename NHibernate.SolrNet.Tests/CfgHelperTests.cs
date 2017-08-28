@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using Xunit;
 using Microsoft.Practices.ServiceLocation;
 using NHibernate.Event;
 using NHibernate.SolrNet.Impl;
@@ -24,9 +24,9 @@ using SolrNet;
 using SolrNet.Tests.Mocks;
 
 namespace NHibernate.SolrNet.Tests {
-    [TestFixture]
+    
     public class CfgHelperTests {
-        [Test]
+        [Fact]
         public void Configure_from_servicelocator() {
             var mapper = new MReadOnlyMappingManager();
             mapper.getRegisteredTypes += () => new[] {typeof (Entity)};
@@ -40,14 +40,14 @@ namespace NHibernate.SolrNet.Tests {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
             var helper = new CfgHelper();
             helper.Configure(nhConfig, true);
-            Assert.GreaterThan(nhConfig.EventListeners.PostInsertEventListeners.Length, 0);
-            Assert.GreaterThan(nhConfig.EventListeners.PostUpdateEventListeners.Length, 0);
-            Assert.GreaterThan(nhConfig.EventListeners.PostDeleteEventListeners.Length, 0);
+            Assert.True(nhConfig.EventListeners.PostInsertEventListeners.Length >  0);
+            Assert.True(nhConfig.EventListeners.PostUpdateEventListeners.Length >  0);
+            Assert.True(nhConfig.EventListeners.PostDeleteEventListeners.Length >  0);
             var listener = nhConfig.EventListeners.PostInsertEventListeners[0];
-            Assert.IsInstanceOfType<SolrNetListener<Entity>>(listener);
+            Assert.IsType<SolrNetListener<Entity>>(listener);
         }
 
-        [Test]
+        [Fact]
         public void Configure_from_serviceprovider() {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
 
@@ -62,14 +62,14 @@ namespace NHibernate.SolrNet.Tests {
             });
             var helper = new CfgHelper(provider);
             helper.Configure(nhConfig, true);
-            Assert.GreaterThan(nhConfig.EventListeners.PostInsertEventListeners.Length, 0);
-            Assert.GreaterThan(nhConfig.EventListeners.PostUpdateEventListeners.Length, 0);
-            Assert.GreaterThan(nhConfig.EventListeners.PostDeleteEventListeners.Length, 0);
+            Assert.True(nhConfig.EventListeners.PostInsertEventListeners.Length >  0);
+            Assert.True(nhConfig.EventListeners.PostUpdateEventListeners.Length >  0);
+            Assert.True(nhConfig.EventListeners.PostDeleteEventListeners.Length >  0);
             var listener = nhConfig.EventListeners.PostInsertEventListeners[0];
-            Assert.IsInstanceOfType<SolrNetListener<Entity>>(listener);
+            Assert.IsType<SolrNetListener<Entity>>(listener);
         }
 
-        [Test]
+        [Fact]
         public void Configure_with_addparameters() {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
             var mapper = new MReadOnlyMappingManager();
@@ -86,11 +86,11 @@ namespace NHibernate.SolrNet.Tests {
             var helper = new CfgHelper(provider);
             helper.Configure(nhConfig, true, addParameters);
             var listener = nhConfig.EventListeners.PostInsertEventListeners[0];
-            Assert.IsInstanceOfType<SolrNetListener<Entity>>(listener);
-            Assert.AreEqual(addParameters, ((IListenerSettings)listener).AddParameters);
+            Assert.IsType<SolrNetListener<Entity>>(listener);
+            Assert.Equal(addParameters, ((IListenerSettings)listener).AddParameters);
         }
 
-        [Test]
+        [Fact]
         public void Does_not_override_existing_listeners() {
             var nhConfig = ConfigurationExtensions.GetNhConfig();
 
@@ -110,7 +110,7 @@ namespace NHibernate.SolrNet.Tests {
 
             var helper = new CfgHelper(provider);
             helper.Configure(nhConfig, true);
-            Assert.AreEqual(2, nhConfig.EventListeners.PostInsertEventListeners.Length);
+            Assert.Equal(2, nhConfig.EventListeners.PostInsertEventListeners.Length);
         }
 
     }

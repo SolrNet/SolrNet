@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
+using System.Threading.Tasks;
 
 namespace SolrNet {
     /// <summary>
@@ -30,15 +31,32 @@ namespace SolrNet {
         ResponseHeader Commit(CommitOptions options);
 
         /// <summary>
+        /// Commits posted documents
+        /// </summary>
+        /// <param name="options">Commit options</param>
+        Task<ResponseHeader> CommitAsync(CommitOptions options);
+
+        /// <summary>
         /// Optimizes Solr's index
         /// </summary>
         /// <param name="options">Optimization options</param>
         ResponseHeader Optimize(CommitOptions options);
 
         /// <summary>
+        /// Optimizes Solr's index
+        /// </summary>
+        /// <param name="options">Optimization options</param>
+        Task<ResponseHeader> OptimizeAsync(CommitOptions options);
+
+        /// <summary>
         /// Rollbacks all add/deletes made to the index since the last commit.
         /// </summary>
         ResponseHeader Rollback();
+
+        /// <summary>
+        /// Rollbacks all add/deletes made to the index since the last commit.
+        /// </summary>
+        Task<ResponseHeader> RollbackAsync();
 
         /// <summary>
         /// Adds / updates several documents with index-time boost
@@ -49,11 +67,26 @@ namespace SolrNet {
         ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters);
 
         /// <summary>
+        /// Adds / updates several documents with index-time boost
+        /// </summary>
+        /// <param name="docs"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+       Task<ResponseHeader> AddWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters);
+
+        /// <summary>
         /// Adds / updates the extracted contents of a richdocument
         /// </summary>
         /// <param name="parameters"></param>
         /// <returns></returns>
         ExtractResponse Extract(ExtractParameters parameters);
+
+        /// <summary>
+        /// Adds / updates the extracted contents of a richdocument
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task<ExtractResponse> ExtractAsync(ExtractParameters parameters);
 
         /// <summary>
         /// Deletes all documents that match the given id's or the query
@@ -64,11 +97,26 @@ namespace SolrNet {
         ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters);
 
         /// <summary>
+        /// Deletes all documents that match the given id's or the query
+        /// </summary>
+        /// <param name="ids">document ids to delete</param>
+        /// <param name="q">query to match</param>
+        /// <returns></returns>
+        Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters);
+
+        /// <summary>
         /// Sends a custom command
         /// </summary>
         /// <param name="cmd">command to send</param>
         /// <returns>solr response</returns>
         string Send(ISolrCommand cmd);
+
+        /// <summary>
+        /// Sends a custom command
+        /// </summary>
+        /// <param name="cmd">command to send</param>
+        /// <returns>solr response</returns>
+        Task<string> SendAsync(ISolrCommand cmd);
 
         /// <summary>
         /// Sends a custom command, returns parsed header from xml response
@@ -78,10 +126,20 @@ namespace SolrNet {
         ResponseHeader SendAndParseHeader(ISolrCommand cmd);
 
         /// <summary>
+        /// Sends a custom command, returns parsed header from xml response
+        /// </summary>
+        Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd);
+
+        /// <summary>
         /// Sends a custom command, returns parsed extract response from xml response
         /// </summary>
         /// <param name="cmd"></param>
         /// <returns></returns>
         ExtractResponse SendAndParseExtract(ISolrCommand cmd);
+
+        /// <summary>
+        /// Sends a custom command, returns parsed extract response from xml response
+        /// </summary>
+        Task<ExtractResponse> SendAndParseExtractAsync(ISolrCommand cmd);
     }
 }

@@ -16,84 +16,84 @@
 
 using System;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Attributes;
 using SolrNet.Exceptions;
 using SolrNet.Mapping;
 
 namespace SolrNet.Tests {
-	[TestFixture]
+	
 	public class AttributesMappingManagerTests {
-		[Test]
+		[Fact]
 		public void GetFields() {
 			var m = new AttributesMappingManager();
 			var fields = m.GetFields(typeof (Entity)).Values;
-			Assert.AreEqual(2, fields.Count);
+			Assert.Equal(2, fields.Count);
 			foreach (var f in fields) {
 				if (f.FieldName == "Id")
-					Assert.AreEqual("Id", f.Property.Name);
+					Assert.Equal("Id", f.Property.Name);
 				else if (f.FieldName == "desc")
-					Assert.AreEqual("Description", f.Property.Name);
+					Assert.Equal("Description", f.Property.Name);
 				else
-					Assert.Fail("Invalid field '{0}'", f.FieldName);
+					Assert.True(false, string.Format("Invalid field '{0}'", f.FieldName));
 			}
 		}
 
-		[Test]
+		[Fact]
 		public void GetUniqueKey() {
 			var m = new AttributesMappingManager();
 			var key = m.GetUniqueKey(typeof (Entity));
-			Assert.IsNotNull(key);
-			Assert.IsNotNull(key.Property);
-			Assert.AreEqual("Id", key.Property.Name);
-			Assert.AreEqual("Id", key.FieldName);
+			Assert.NotNull(key);
+			Assert.NotNull(key.Property);
+			Assert.Equal("Id", key.Property.Name);
+			Assert.Equal("Id", key.FieldName);
 		}
 
-        [Test]
+        [Fact]
         public void DifferentTypes() {
             var m = new AttributesMappingManager();
             var key = m.GetUniqueKey(typeof(Entity));
-            Assert.IsNotNull(key);
-            Assert.IsNotNull(key.Property);
-            Assert.AreEqual("Id", key.Property.Name);
-            Assert.AreEqual("Id", key.FieldName);
+            Assert.NotNull(key);
+            Assert.NotNull(key.Property);
+            Assert.Equal("Id", key.Property.Name);
+            Assert.Equal("Id", key.FieldName);
             var fields = m.GetFields(typeof (AnotherEntity));
-            Assert.AreEqual(1, fields.Count);
+            Assert.Equal(1, fields.Count);
         }
 
-        [Test]
+        [Fact]
         public void NoProperties_ShouldReturnEmpty() {
             var m = new AttributesMappingManager();
             var fields = m.GetFields(typeof (NoProperties));
-            Assert.AreEqual(0, fields.Count);
+            Assert.Equal(0, fields.Count);
         }
 
-        [Test]
+        [Fact]
         public void GetUniqueKey_without_unique_key_throws() {
             var m = new AttributesMappingManager();
             var pk = m.GetUniqueKey(typeof (AnotherEntity));
-            Assert.IsNull(pk);
+            Assert.Null(pk);
         }
 
-        [Test]
+        [Fact]
         public void Inherited() {
             var m = new AttributesMappingManager();
             var fields = m.GetFields(typeof (InheritedEntity));
-            Assert.AreEqual(3, fields.Count);
+            Assert.Equal(3, fields.Count);
             var uniqueKey = m.GetUniqueKey(typeof(InheritedEntity));
-            Assert.IsNotNull(uniqueKey);
-            Assert.AreEqual("Id", uniqueKey.FieldName);
+            Assert.NotNull(uniqueKey);
+            Assert.Equal("Id", uniqueKey.FieldName);
         }
 
-        [Test]
+        [Fact]
         public void GetRegisteredTypes() {
             var m = new AttributesMappingManager();
             var types = m.GetRegisteredTypes();
-            Assert.GreaterThan(types.Count, 0);
-            Assert.Contains(types, typeof(Entity));
-            Assert.Contains(types, typeof(InheritedEntity));
-            Assert.Contains(types, typeof(AnotherEntity));
-            Assert.DoesNotContain(types, typeof(NoProperties));
+            Assert.True(types.Count > 0);
+            Assert.Contains( typeof(Entity), types);
+            Assert.Contains( typeof(InheritedEntity), types);
+            Assert.Contains(typeof(AnotherEntity), types);
+            Assert.DoesNotContain( typeof(NoProperties), types);
         }
 
         public class NoProperties {}

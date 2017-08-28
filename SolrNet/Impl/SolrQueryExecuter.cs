@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
@@ -684,6 +685,24 @@ namespace SolrNet.Impl {
         public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options) {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
             var r = connection.Get(MoreLikeThisHandler, param);
+            var qr = mlthResultParser.Parse(r);
+            return qr;
+        }
+
+        public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options)
+        {
+            var param = GetAllParameters(q, options);
+            var results = new SolrQueryResults<T>();
+            var r = await connection.GetAsync(Handler, param);
+            var xml = XDocument.Parse(r);
+            resultParser.Parse(xml, results);
+            return results;
+        }
+
+        public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options)
+        {
+            var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
+            var r = await connection.GetAsync(MoreLikeThisHandler, param);
             var qr = mlthResultParser.Parse(r);
             return qr;
         }

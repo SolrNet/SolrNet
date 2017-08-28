@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
@@ -47,26 +48,43 @@ namespace SolrNet.Impl {
             this.dihStatusParser = dihStatusParser;
         }
 
-        public ResponseHeader Commit(CommitOptions options) {
-            options = options ?? new CommitOptions();
-            var cmd = new CommitCommand {
-                WaitFlush = options.WaitFlush, 
-                WaitSearcher = options.WaitSearcher,
-                ExpungeDeletes = options.ExpungeDeletes,
-                MaxSegments = options.MaxSegments,
-            };
+
+        public ResponseHeader Commit(CommitOptions options)
+        {
+            CommitCommand cmd = GetCommitCommand(options);
             return SendAndParseHeader(cmd);
         }
 
-        public ResponseHeader Optimize(CommitOptions options) {
+        private static CommitCommand GetCommitCommand(CommitOptions options)
+        {
             options = options ?? new CommitOptions();
-            var cmd = new OptimizeCommand {
-                WaitFlush = options.WaitFlush, 
+            var cmd = new CommitCommand
+            {
+                WaitFlush = options.WaitFlush,
                 WaitSearcher = options.WaitSearcher,
                 ExpungeDeletes = options.ExpungeDeletes,
                 MaxSegments = options.MaxSegments,
             };
+            return cmd;
+        }
+
+        public ResponseHeader Optimize(CommitOptions options)
+        {
+            OptimizeCommand cmd = GetOptimizeCommand( options);
             return SendAndParseHeader(cmd);
+        }
+
+        private static OptimizeCommand GetOptimizeCommand( CommitOptions options)
+        {
+            options = options ?? new CommitOptions();
+            var cmd = new OptimizeCommand
+            {
+                WaitFlush = options.WaitFlush,
+                WaitSearcher = options.WaitSearcher,
+                ExpungeDeletes = options.ExpungeDeletes,
+                MaxSegments = options.MaxSegments,
+            };
+            return cmd;
         }
 
         public ResponseHeader Rollback() {
@@ -102,14 +120,36 @@ namespace SolrNet.Impl {
             return cmd.Execute(connection);
         }
 
-        public ExtractResponse SendAndParseExtract(ISolrCommand cmd) {
+        public Task<string> SendAsync(ISolrCommand cmd)
+        {
+            return cmd.ExecuteAsync(connection);
+        }
+
+        public ExtractResponse SendAndParseExtract(ISolrCommand cmd)
+        {
             var r = Send(cmd);
+            var xml = XDocument.Parse(r);
+            return extractResponseParser.Parse(xml);
+
+        }
+
+        public async Task<ExtractResponse> SendAndParseExtractAsync(ISolrCommand cmd)
+        {
+            var r = await SendAsync(cmd);
             var xml = XDocument.Parse(r);
             return extractResponseParser.Parse(xml);
         }
 
+
         public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
             var r = Send(cmd);
+            var xml = XDocument.Parse(r);
+            return headerParser.Parse(xml);
+        }
+
+        public async Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)
+        {
+            var r = await SendAsync(cmd);
             var xml = XDocument.Parse(r);
             return headerParser.Parse(xml);
         }
@@ -133,6 +173,70 @@ namespace SolrNet.Impl {
         public SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
         {
             return this.queryExecuter.Execute(query, options);
+        }
+
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options)
+        {
+            return this.queryExecuter.ExecuteAsync(query, options);
+        }
+
+        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
+        {
+            return this.queryExecuter.ExecuteAsync(query, options);
+        }
+
+        public Task<ResponseHeader> PingAsync()
+        {
+            return SendAndParseHeaderAsync(new PingCommand());
+        }
+
+        public async Task<SolrSchema> GetSchemaAsync(string schemaFileName)
+        {
+            string schemaXml = await connection.GetAsync("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
+            var schema = XDocument.Parse(schemaXml);
+            return schemaParser.Parse(schema);
+        }
+
+        public async Task<SolrDIHStatus> GetDIHStatusAsync(KeyValuePair<string, string> options)
+        {
+            var response = await connection.GetAsync("/dataimport", null);
+            var dihstatus = XDocument.Parse(response);
+            return dihStatusParser.Parse(dihstatus);
+        }
+
+        public Task<ResponseHeader> CommitAsync(CommitOptions options)
+        {
+            var cmd = GetCommitCommand(options);
+            return SendAndParseHeaderAsync(cmd);
+        }
+
+        public Task<ResponseHeader> OptimizeAsync(CommitOptions options)
+        {
+            var cmd = GetOptimizeCommand(options);
+            return SendAndParseHeaderAsync(cmd);
+        }
+
+        public Task<ResponseHeader> RollbackAsync()
+        {
+            return SendAndParseHeaderAsync(new RollbackCommand());
+        }
+
+        public Task<ResponseHeader> AddWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
+        {
+            var cmd = new AddCommand<T>(docs, documentSerializer, parameters);
+            return SendAndParseHeaderAsync(cmd);
+        }
+
+        public Task<ExtractResponse> ExtractAsync(ExtractParameters parameters)
+        {
+            var cmd = new ExtractCommand(parameters);
+            return SendAndParseExtractAsync(cmd);
+        }
+
+        public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
+        {
+            var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), parameters);
+            return SendAndParseHeaderAsync(delete);
         }
     }
 }

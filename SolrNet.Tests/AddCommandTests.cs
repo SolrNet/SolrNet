@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using Xunit;
 using Moroco;
 using SolrNet.Attributes;
 using SolrNet.Commands;
@@ -26,7 +26,7 @@ using SolrNet.Mapping;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
-	[TestFixture]
+	
 	public class AddCommandTests {
 		public class SampleDoc  {
 			[SolrField]
@@ -69,12 +69,12 @@ namespace SolrNet.Tests {
 
 		public delegate string Writer(string ignored, string s);
 
-		[Test]
+		[Fact]
 		public void Execute() {
 		    var conn = new Mocks.MSolrConnection();
 		    conn.post += (url, content) => {
-		        Assert.AreEqual("/update", url);
-		        Assert.AreEqual("<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc></add>", content);
+		        Assert.Equal("/update", url);
+		        Assert.Equal("<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc></add>", content);
 		        Console.WriteLine(content);
 		        return null;
 		    };
@@ -84,15 +84,15 @@ namespace SolrNet.Tests {
 			};
             var cmd = new AddCommand<SampleDoc>(docs, docSerializer, null);
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
-        [Test]
+        [Fact]
         public void DocumentBoost() {
             var conn = new Mocks.MSolrConnection();
             conn.post += (url, content) => {
-                Assert.AreEqual("/update", url);
-                Assert.AreEqual("<add><doc boost=\"2.1\" /></add>", content);
+                Assert.Equal("/update", url);
+                Assert.Equal("<add><doc boost=\"2.1\" /></add>", content);
                 Console.WriteLine(content);
                 return null;
             };
@@ -100,10 +100,10 @@ namespace SolrNet.Tests {
             var docs = new[] { new KeyValuePair<TestDocWithString, double?>(new TestDocWithString(), 2.1) };
             var cmd = new AddCommand<TestDocWithString>(docs, docSerializer, null);
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
-        [Test]
+        [Fact]
         public void DocumentAddParametersCommitWithinSpecified() {
             var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
             var conn = new Mocks.MSolrConnection();
@@ -113,10 +113,10 @@ namespace SolrNet.Tests {
             var parameters = new AddParameters { CommitWithin = 1000 };
             var cmd = new AddCommand<TestDocWithString>(docs, docSerializer, parameters);
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
-        [Test]
+        [Fact]
         public void DocumentAddParametersOverwriteSpecifiedTrue() {
             var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
             var conn = new Mocks.MSolrConnection();
@@ -126,10 +126,10 @@ namespace SolrNet.Tests {
             var parameters = new AddParameters { Overwrite = true };
             var cmd = new AddCommand<TestDocWithString>(docs, docSerializer, parameters);
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
-        [Test]
+        [Fact]
         public void DocumentAddParametersOverwriteSpecifiedFalse() {
             var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
             var conn = new Mocks.MSolrConnection();
@@ -139,10 +139,10 @@ namespace SolrNet.Tests {
             var parameters = new AddParameters { Overwrite = false };
             var cmd = new AddCommand<TestDocWithString>(docs, docSerializer, parameters);
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
-        [Test]
+        [Fact]
         public void FieldBoost() {
             var docSerializer = new SolrDocumentSerializer<TestDocWithFieldBoost>(new AttributesMappingManager(), new DefaultFieldSerializer());
             var conn = new Mocks.MSolrConnection();
@@ -151,10 +151,10 @@ namespace SolrNet.Tests {
             var docs = new[] { new KeyValuePair<TestDocWithFieldBoost, double?>(new TestDocWithFieldBoost(), null) };
             var cmd = new AddCommand<TestDocWithFieldBoost>(docs, docSerializer, null);
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
-		[Test]
+		[Fact]
 		public void SupportsDocumentWithStringCollection() {
             var docSerializer = new SolrDocumentSerializer<TestDocWithCollections>(new AttributesMappingManager(), new DefaultFieldSerializer());
 		    var conn = new Mocks.MSolrConnection();
@@ -165,10 +165,10 @@ namespace SolrNet.Tests {
             };
             var cmd = new AddCommand<TestDocWithCollections>(docs, docSerializer, null);
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
 		}
 
-        [Test]
+        [Fact]
         public void RemovesControlCharactersFromXML() {
             var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());
             var doc = new TestDocWithString { Desc = "control" + (char)0x7 + (char)0x1F + (char)0xFFFE + (char)0xFFFF + (char)0xFFF4  };
@@ -183,10 +183,10 @@ namespace SolrNet.Tests {
             Assert.DoesNotContain(xml, "&#xFFFE;");
         }
 
-        [Test]
+        [Fact]
         public void RemoveControlCharacters() {
             var xml = SolrDocumentSerializer<object>.RemoveControlCharacters("control " + (char)1);
-            Assert.DoesNotContain(xml, (char)1);
+            Assert.DoesNotContain((char)1, xml);
         }
 	}
 }

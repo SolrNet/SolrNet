@@ -440,20 +440,20 @@ namespace SolrNet.Cloud.CollectionsAdmin {
 
         public static OverseerStatusClass Parse(string jsonString)
         {
-            var jobject = JValue.Parse(jsonString);
+            var jobject = JToken.Parse(jsonString);
             var overseerStatus = jobject.ToObject<OverseerStatusClass>();
-            var jobjectDynamic = JValue.Parse(jsonString) as dynamic;
+            
+            overseerStatus.OverseerOperations = ParseOperationDict( jobject["overseer_operations"]);
+            overseerStatus.CollectionOperations = ParseOperationDict(jobject["collection_operations"]);
+            overseerStatus.OverseerQueue = ParseOperationDict(jobject["overseer_queue"]);
+            overseerStatus.OverseerInternalQueue = ParseOperationDict(jobject["overseer_internal_queue"]);
+            overseerStatus.CollectionQueue = ParseOperationDict(jobject["collection_queue"]);
 
-            overseerStatus.OverseerOperations = ParseOperationDict(jobjectDynamic.overseer_operations);
-            overseerStatus.CollectionOperations = ParseOperationDict(jobjectDynamic.collection_operations);
-            overseerStatus.OverseerQueue = ParseOperationDict(jobjectDynamic.overseer_queue);
-            overseerStatus.OverseerInternalQueue = ParseOperationDict(jobjectDynamic.overseer_internal_queue);
-            overseerStatus.CollectionQueue = ParseOperationDict(jobjectDynamic.collection_queue);
 
             return overseerStatus;
         }
 
-        private static Dictionary<string, OverseerOperationsClass> ParseOperationDict(JArray operationJArray)
+        private static Dictionary<string, OverseerOperationsClass> ParseOperationDict(JToken operationJArray)
         {
             var operationsDict = new Dictionary<string, OverseerOperationsClass>();
             string operationType = null;

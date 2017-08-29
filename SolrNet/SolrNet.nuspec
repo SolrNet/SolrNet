@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>SolrNet.Core</id>
-    <version>0.7.1</version>
+    <version>0.8.1</version>
     <authors>Mauricio Scheffer and contributors</authors>
     <owners>Mauricio Scheffer</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

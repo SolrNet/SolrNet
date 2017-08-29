@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using SolrNet.Utils;
 using Parent = SolrNet.Startup;
+using System.Threading.Tasks;
 
 namespace SolrNet.Cloud
 {
     /// <summary>
     /// Startup helper for cloud mode
     /// </summary>
-    public static class Startup {
+    public static class Startup
+    {
         /// <summary>
         /// Collection list
         /// </summary>
@@ -30,7 +32,8 @@ namespace SolrNet.Cloud
         /// <summary>
         /// Constructor
         /// </summary>
-        static Startup() {
+        static Startup()
+        {
             Collections = new HashSet<string>();
             Providers = new Dictionary<string, ISolrCloudStateProvider>(StringComparer.OrdinalIgnoreCase);
         }
@@ -38,10 +41,11 @@ namespace SolrNet.Cloud
         /// <summary>
         /// Startup initializing 
         /// </summary>
-        public static void Init<T>(ISolrCloudStateProvider cloudStateProvider, bool isPostConnection = false) {
+        public static async Task InitAsync<T>(ISolrCloudStateProvider cloudStateProvider, bool isPostConnection = false)
+        {
             if (cloudStateProvider == null)
                 throw new ArgumentNullException("cloudStateProvider");
-            EnsureRegistration(cloudStateProvider);
+            await EnsureRegistrationAsync(cloudStateProvider);
 
             if (!Collections.Add(string.Empty))
                 return;
@@ -74,12 +78,14 @@ namespace SolrNet.Cloud
         /// <summary>
         /// Startup initializing 
         /// </summary>
-        public static void Init<T>(ISolrCloudStateProvider cloudStateProvider, string collectionName, bool isPostConnection = false) {
+        public static async Task InitAsync<T>(ISolrCloudStateProvider cloudStateProvider, string collectionName, bool isPostConnection = false)
+        {
             if (cloudStateProvider == null)
                 throw new ArgumentNullException("cloudStateProvider");
             if (string.IsNullOrEmpty(collectionName))
                 throw new ArgumentNullException("collectionName");
-            EnsureRegistration(cloudStateProvider);
+
+            await EnsureRegistrationAsync(cloudStateProvider);
 
             if (!Collections.Add(collectionName))
                 return;
@@ -116,18 +122,19 @@ namespace SolrNet.Cloud
         /// <summary>
         /// Ensures registrations and initializing
         /// </summary>
-        private static void EnsureRegistration(ISolrCloudStateProvider cloudStateProvider)
+        private static async Task EnsureRegistrationAsync(ISolrCloudStateProvider cloudStateProvider)
         {
             if (Providers.Count == 0)
                 Parent.Container.Register<ISolrOperationsProvider>(c => new OperationsProvider());
             if (Providers.ContainsKey(cloudStateProvider.Key))
                 return;
-            cloudStateProvider.Init();
+            await cloudStateProvider.InitAsync();
             Providers.Add(cloudStateProvider.Key, cloudStateProvider);
             Parent.Container.Register(cloudStateProvider.Key, container => cloudStateProvider);
         }
 
-        private class OperationsProvider : ISolrOperationsProvider {
+        private class OperationsProvider : ISolrOperationsProvider
+        {
             public ISolrBasicOperations<T> GetBasicOperations<T>(string url, bool isPostConnection = false)
             {
                 return SolrNet.GetBasicServer<T>(url, isPostConnection);

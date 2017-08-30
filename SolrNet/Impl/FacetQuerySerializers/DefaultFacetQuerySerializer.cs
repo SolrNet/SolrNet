@@ -25,6 +25,7 @@ namespace SolrNet.Impl.FacetQuerySerializers {
             serializer = new AggregateFacetQuerySerializer(new ISolrFacetQuerySerializer[] {
                 new SolrFacetQuerySerializer(querySerializer),
                 new SolrFacetDateQuerySerializer(fieldSerializer),
+                new SolrFacetRangeQuerySerializer(fieldSerializer),
                 new SolrFacetFieldQuerySerializer(),
 				new SolrFacetPivotQuerySerializer()
             });

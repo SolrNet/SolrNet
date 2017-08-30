@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>SolrNet.Ninject</id>
-    <version>0.7.1</version>
+    <version>0.8.1</version>
     <title>SolrNet.Ninject</title>
     <authors>Mauricio Scheffer and contributors</authors>
     <owners>Mauricio Scheffer</owners>
@@ -12,7 +12,7 @@
     <description>Ninject module for SolrNet</description>
     <language>en-US</language>
     <dependencies>
-      <dependency id="SolrNet.Core" version="[0.7.1]" />
+      <dependency id="SolrNet.Core" version="[0.8.1]" />
       <dependency id="Ninject" version="3.2.2.0" />
     </dependencies>
   </metadata>

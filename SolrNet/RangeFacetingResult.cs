@@ -19,37 +19,31 @@ using System;
 
 namespace SolrNet {
     /// <summary>
-    /// Date faceting result
+    /// Range faceting result
     /// </summary>
-    [Obsolete("As of Solr 3.1 has been deprecated, as of Solr 6.6 unsupported.")]
-    public class DateFacetingResult {
+    public class RangeFacetingResult {
 
 		/// <summary>
-		/// Date range gap (e.g. "+1DAY")
+		/// Range range gap (e.g. "+1DAY")
 		/// </summary>
         public string Gap { get; set; }
 
         /// <summary>
         /// Maximum value
         /// </summary>
-        public DateTime End { get; set; }
+        public string End { get; set; }
 
-		/// <summary>
-		/// The date faceting results.
-		/// </summary>
-		public IList<KeyValuePair<DateTime, int>> DateResults { get; set; }
+        public string Start { get; set; }
+
+        /// <summary>
+        /// The date faceting results.
+        /// </summary>
+        public IList<KeyValuePair<string, int>> RangeResults { get; set; } = new List<KeyValuePair<string, int>>();
 
         /// <summary>
         /// Other date faceting results.
         /// </summary>
-        public IDictionary<FacetDateOther, int> OtherResults { get; set; }
-
-        /// <summary>
-        /// Date faceting result
-        /// </summary>
-		public DateFacetingResult() {
-			DateResults = new List<KeyValuePair<DateTime, int>>();
-            OtherResults = new Dictionary<FacetDateOther, int>();
-        }
+        public IDictionary<FacetRangeOther, int> OtherResults { get; set; } = new Dictionary<FacetRangeOther, int>();
+       
     }
 }

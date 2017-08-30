@@ -36,6 +36,8 @@ namespace SolrNet.Impl.ResponseParsers {
                 results.FacetFields = ParseFacetFields(mainFacetNode);
                 results.FacetDates = ParseFacetDates(mainFacetNode);
 				results.FacetPivots = ParseFacetPivots(mainFacetNode);
+                results.FacetRanges = ParseFacetRanges(mainFacetNode);
+                results.FacetIntervals = ParseFacetIntervals(mainFacetNode);
             }
         }
 
@@ -56,6 +58,8 @@ namespace SolrNet.Impl.ResponseParsers {
             }
             return d;
         }
+
+    
 
         /// <summary>
         /// Parses facet fields results
@@ -86,6 +90,7 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
+        [Obsolete("As of Solr 3.1 has been deprecated, as of Solr 6.6 unsupported.")]
         public IDictionary<string, DateFacetingResult> ParseFacetDates(XElement node) {
             var d = new Dictionary<string, DateFacetingResult>();
             var facetDateNode = node.Elements("lst")
@@ -99,6 +104,28 @@ namespace SolrNet.Impl.ResponseParsers {
             return d;
         }
 
+        /// <summary>
+        /// Parses facet range results
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public IDictionary<string, RangeFacetingResult> ParseFacetRanges(XElement node)
+        {
+            var d = new Dictionary<string, RangeFacetingResult>();
+            var facetRangeNode = node.Elements("lst")
+                .Where(X.AttrEq("name", "facet_ranges"));
+            if (facetRangeNode != null)
+            {
+                foreach (var fieldNode in facetRangeNode.Elements())
+                {
+                    var name = fieldNode.Attribute("name").Value;
+                    d[name] = ParseRangeFacetingNode(fieldNode);
+                }
+            }
+            return d;
+        }
+
+        [Obsolete("As of Solr 3.1 has been deprecated, as of Solr 6.6 unsupported.")]
         public DateFacetingResult ParseDateFacetingNode(XElement node) {
             var r = new DateFacetingResult();
             var intParser = new IntFieldParser();
@@ -134,12 +161,84 @@ namespace SolrNet.Impl.ResponseParsers {
             return r;
         }
 
-		/// <summary>
-		/// Parses facet pivot results
-		/// </summary>
-		/// <param name="node"></param>
-		/// <returns></returns>
-		public IDictionary<string, IList<Pivot>> ParseFacetPivots(XElement node)
+        public RangeFacetingResult ParseRangeFacetingNode(XElement node)
+        {
+            var r = new RangeFacetingResult();
+            var intParser = new IntFieldParser();
+            foreach (var rangeFacetingNode in node.Elements())
+            {
+                var name = rangeFacetingNode.Attribute("name").Value;
+                switch (name)
+                {
+                    case "gap":
+                        r.Gap = rangeFacetingNode.Value;
+                        break;
+                    case "start":
+                        r.Start = rangeFacetingNode.Value;
+                        break;
+                    case "end":
+                        r.End = rangeFacetingNode.Value;
+                        break;
+                    case "counts":
+                        foreach (var item in rangeFacetingNode.Elements()) {
+                            r.RangeResults.Add(KV.Create(item.Attribute("name").Value, (int)intParser.Parse(item, typeof(int))));
+                        }
+                        break;
+                    default:
+                        //collect FacetRangeOther items
+                        if (rangeFacetingNode.Name != "int")
+                            break;
+
+                        var count = (int)intParser.Parse(rangeFacetingNode, typeof(int));
+                        if (name == FacetDateOther.After.ToString())
+                            r.OtherResults[FacetRangeOther.After] = count;
+                        else if (name == FacetDateOther.Before.ToString())
+                            r.OtherResults[FacetRangeOther.Before] = count;
+                        else if (name == FacetDateOther.Between.ToString())
+                            r.OtherResults[FacetRangeOther.Between] = count;
+                        break;
+                }
+            }
+            return r;
+        }
+
+
+        /// <summary>
+        /// Parses facet interval results
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public IDictionary<string, ICollection<KeyValuePair<string,int>>> ParseFacetIntervals(XElement node)
+        {
+            var d = new Dictionary<string, ICollection<KeyValuePair<string,int>>>();
+            var facetIntervals = node.Elements("lst")
+                .Where(X.AttrEq("name", "facet_intervals"))
+                .SelectMany(x=>x.Elements());
+            foreach (var fieldNode in facetIntervals)
+            {
+                var field = fieldNode.Attribute("name").Value;
+                var c = new List<KeyValuePair<string, int>>();
+                foreach (var facetNode in fieldNode.Elements())
+                {
+                    var nameAttr = facetNode.Attribute("name");
+                    var key = nameAttr?.Value ?? "";
+                    var value = Convert.ToInt32(facetNode.Value);
+                    c.Add(new KeyValuePair<string, int>(key, value));
+                }
+                d[field] = c;
+            }
+
+
+            return d;
+        }
+
+
+        /// <summary>
+        /// Parses facet pivot results
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public IDictionary<string, IList<Pivot>> ParseFacetPivots(XElement node)
 		{
 			var d = new Dictionary<string, IList<Pivot>>();
             var facetPivotNode = node.Elements("lst")

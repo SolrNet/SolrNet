@@ -423,6 +423,53 @@ namespace SolrNet.Tests
             Assert.Equal(2, r.FacetFields["cat"].First(q => q.Key == "connector").Value);
             Assert.Equal(2, r.FacetFields["cat"].First(q => q.Key == "").Value); // facet.missing as empty string
 
+
+            //Facet Ranges
+            Assert.NotNull(r.FacetRanges);
+            Assert.Equal(r.FacetRanges.Count, 2);
+            Assert.Equal(r.FacetRanges.First().Key , "date-timestamp");
+            Assert.Equal(r.FacetRanges.First().Value.Start, "2017-07-30T00:00:00Z");
+            Assert.Equal(r.FacetRanges.First().Value.End, "2017-08-30T00:00:00Z");
+            Assert.Equal(r.FacetRanges.First().Value.Gap, "+1DAY");
+            Assert.Equal(r.FacetRanges.First().Value.OtherResults[FacetRangeOther.Before], 41622120);
+            Assert.Equal(r.FacetRanges.First().Value.OtherResults[FacetRangeOther.After], 47336);
+            Assert.Equal(r.FacetRanges.First().Value.OtherResults[FacetRangeOther.Between], 75812);
+            Assert.Equal(r.FacetRanges.First().Value.RangeResults.Count,31);
+            Assert.Equal(r.FacetRanges.First().Value.RangeResults.First().Key, "2017-07-30T00:00:00Z");
+            Assert.Equal(r.FacetRanges.First().Value.RangeResults.First().Value, 222);
+            Assert.Equal(r.FacetRanges.First().Value.RangeResults.Last().Key, "2017-08-29T00:00:00Z");
+            Assert.Equal(r.FacetRanges.First().Value.RangeResults.Last().Value, 20);
+
+            Assert.Equal(r.FacetRanges.Last().Key, "version");
+            Assert.Equal(r.FacetRanges.Last().Value.Gap, "1000");
+            Assert.Equal(r.FacetRanges.Last().Value.RangeResults.First().Key, "1531035549990449850");
+            Assert.Equal(r.FacetRanges.Last().Value.RangeResults.First().Value, 20);
+            Assert.Equal(r.FacetRanges.Last().Value.RangeResults.Last().Key, "1531035549990659850");
+            Assert.Equal(r.FacetRanges.Last().Value.RangeResults.Last().Value, 0);
+
+
+            //Facet Intervals 
+            Assert.NotNull(r.FacetIntervals);
+            Assert.Equal(r.FacetIntervals.Count, 2);
+            Assert.Equal(r.FacetIntervals.First().Key, "letters");
+            Assert.Equal(r.FacetIntervals.First().Value.Count, 3);
+            Assert.Equal(r.FacetIntervals.First().Value.First().Key , "[*,b]");
+            Assert.Equal(r.FacetIntervals.First().Value.First().Value , 5);
+            Assert.Equal(r.FacetIntervals.First().Value.Last().Key, "bar");
+            Assert.Equal(r.FacetIntervals.First().Value.Last().Value, 4544341);
+
+
+            Assert.Equal(r.FacetIntervals.Last().Key, "number");
+            Assert.Equal(r.FacetIntervals.Last().Value.Count, 2);
+            Assert.Equal(r.FacetIntervals.Last().Value.First().Key, "[0,500]");
+            Assert.Equal(r.FacetIntervals.Last().Value.First().Value, 9);
+            Assert.Equal(r.FacetIntervals.Last().Value.Last().Key, "[500,1000]");
+            Assert.Equal(r.FacetIntervals.Last().Value.Last().Value, 123);
+
+
+
+
+            //Facet Queries
             Assert.NotNull(r.FacetQueries);
             //Console.WriteLine(r.FacetQueries.Count);
             Assert.Equal(1, r.FacetQueries.Count);
@@ -768,6 +815,51 @@ namespace SolrNet.Tests
             Assert.Equal(1, other[FacetDateOther.Before]);
             Assert.Equal(0, other[FacetDateOther.After]);
             Assert.Equal(0, other[FacetDateOther.Between]);
+        }
+
+        [Fact]
+        public void ParseFacetRangeResults()
+        {
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithRangeFacet.xml");
+            var p = new FacetsResponseParser<Product>();
+            var results = p.ParseFacetRanges(xml.Root);
+            Assert.Equal(1, results.Count);
+            var result = results.First();
+            Assert.Equal("timestamp", result.Key);
+            Assert.Equal("+1DAY", result.Value.Gap);
+            Assert.Equal("2017-08-29T00:00:00Z", result.Value.Start);
+            Assert.Equal("2017-08-31T00:00:00Z", result.Value.End);
+            var RangeResults = result.Value.RangeResults;
+            Assert.Equal(2, RangeResults.Count);
+            Assert.Equal(27, RangeResults[0].Value);
+            Assert.Equal("2017-08-29T00:00:00Z", RangeResults[0].Key);
+            Assert.Equal(124, RangeResults[1].Value);
+            Assert.Equal("2017-08-30T00:00:00Z", RangeResults[1].Key);
+        }
+
+        [Fact]
+        public void ParseFacetRangeResultsWithOther()
+        {
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithRangeFacetAndOther.xml");
+            var p = new FacetsResponseParser<Product>();
+            var results = p.ParseFacetRanges(xml.Root);
+            Assert.Equal(1, results.Count);
+            var result = results.First();
+            Assert.Equal("timestamp", result.Key);
+            Assert.Equal("+1DAY", result.Value.Gap);
+            Assert.Equal("2017-08-29T00:00:00Z", result.Value.Start);
+            Assert.Equal("2017-08-31T00:00:00Z", result.Value.End);
+            var RangeResults = result.Value.RangeResults;
+            Assert.Equal(2, RangeResults.Count);
+            Assert.Equal(27, RangeResults[0].Value);
+            Assert.Equal("2017-08-29T00:00:00Z", RangeResults[0].Key);
+            Assert.Equal(124, RangeResults[1].Value);
+            Assert.Equal("2017-08-30T00:00:00Z", RangeResults[1].Key);
+
+            var other = result.Value.OtherResults;
+            Assert.Equal(41739753, other[FacetRangeOther.Before]);
+            Assert.Equal(47567, other[FacetRangeOther.After]);
+            Assert.Equal(151, other[FacetRangeOther.Between]);
         }
 
         [Fact]

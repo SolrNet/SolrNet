@@ -158,6 +158,8 @@
     <Compile Include="SolrDIHStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
+    <Compile Include="SolrFacetIntervalQueryTests.cs" />
+    <Compile Include="SolrFacetRangeQueryTests.cs" />
     <Compile Include="SolrFacetPivotQueryTest.cs" />
     <Compile Include="SolrMoreLikeThisHandlerStreamUrlQueryTests.cs" />
     <Compile Include="SolrQueryByDistanceTests.cs" />
@@ -353,6 +355,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\partialResponseWithRangeFacet.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\partialResponseWithRangeFacetAndOther.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ZooKeeperNet;
+using org.apache.zookeeper;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace SolrNet.Cloud.ZooKeeperClient
 {
-    public class SolrCloudStateProvider : ISolrCloudStateProvider, IWatcher
+    public class SolrCloudStateProvider : Watcher, ISolrCloudStateProvider
     {
         /// <summary>
         /// Cluster state path constant
@@ -42,12 +44,12 @@ namespace SolrNet.Cloud.ZooKeeperClient
         /// <summary>
         /// Object for lock
         /// </summary>
-        private readonly object syncLock;
+        private readonly System.Threading.SemaphoreSlim semaphoreSlim = new System.Threading.SemaphoreSlim(1, 1);
 
         /// <summary>
         /// ZooKeeper client instance
         /// </summary>
-        private IZooKeeper zooKeeper;
+        private ZooKeeper zooKeeper;
 
         /// <summary>
         /// ZooKeeper connection string
@@ -63,27 +65,33 @@ namespace SolrNet.Cloud.ZooKeeperClient
                 throw new ArgumentNullException("zooKeeperConnection");
 
             this.zooKeeperConnection = zooKeeperConnection;
-            syncLock = new object();
             Key = zooKeeperConnection;
         }
 
         /// <summary>
         /// Initialize cloud state
         /// </summary>
-        public void Init()
+        public async Task InitAsync()
         {
             if (isInitialized)
             {
                 return;
             }
-            lock (syncLock)
+
+            await semaphoreSlim.WaitAsync().ConfigureAwait(false);
+            try
             {
                 if (!isInitialized)
                 {
-                    Update();
+                    await UpdateAsync().ConfigureAwait(false);
                     isInitialized = true;
                 }
             }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
+
         }
 
         /// <summary>
@@ -101,9 +109,9 @@ namespace SolrNet.Cloud.ZooKeeperClient
         /// (causes reloading all cloud data and too slow to use in production)
         /// </summary>
         /// <returns>Solr Cloud State</returns>
-        public SolrCloudState GetFreshCloudState()
+        public async Task<SolrCloudState> GetFreshCloudStateAsync()
         {
-            SynchronizedUpdate(cleanZookeeperConnection: true);
+            await SynchronizedUpdateAsync(cleanZookeeperConnection: true);
             return GetCloudState();
         }
 
@@ -113,32 +121,41 @@ namespace SolrNet.Cloud.ZooKeeperClient
             {
                 return;
             }
-            lock (syncLock)
+
+            if (!isDisposed)
             {
-                if (!isDisposed)
+                if (zooKeeper != null)
                 {
-                    if (zooKeeper != null)
-                    {
-                        zooKeeper.Dispose();
-                    }
-                    isDisposed = true;
+                    zooKeeper.closeAsync().ConfigureAwait(false);
                 }
+                isDisposed = true;
             }
+
+        }
+
+        public async Task DisposeAsync()
+        {
+            if (!isDisposed && zooKeeper != null)
+            {
+                await zooKeeper.closeAsync().ConfigureAwait(false);
+                isDisposed = true;
+            }
+
         }
 
         /// <summary>
         /// Watcher for zookeeper events
         /// </summary>
         /// <param name="event">zookeeper event</param>
-        void IWatcher.Process(WatchedEvent @event)
+        public override async Task process(WatchedEvent @event)
         {
-            if (@event.Type != EventType.None && !string.IsNullOrEmpty(@event.Path))
+            if (@event.get_Type() != Event.EventType.None && !string.IsNullOrEmpty(@event.getPath()))
             {
-                SynchronizedUpdate();                
+                await SynchronizedUpdateAsync().ConfigureAwait(false);
             }
-            else if (@event.Type == EventType.None && @event.State == KeeperState.Disconnected)
+            else if (@event.get_Type() == Event.EventType.None && @event.getState() == Event.KeeperState.Disconnected)
             {
-                SynchronizedUpdate(cleanZookeeperConnection: true);
+                await SynchronizedUpdateAsync(cleanZookeeperConnection: true).ConfigureAwait(false);
             }
         }
 
@@ -146,49 +163,49 @@ namespace SolrNet.Cloud.ZooKeeperClient
         /// Synchronized updates of zookeeper connection and actual cloud state
         /// </summary>
         /// <param name="cleanZookeeperConnection">clean zookeeper connection and create new one</param>
-        private void SynchronizedUpdate(bool cleanZookeeperConnection = false)
+        private async Task SynchronizedUpdateAsync(bool cleanZookeeperConnection = false)
         {
-            lock (syncLock)
-            {                
-                try
-                {
-                    Update(cleanZookeeperConnection);
-                }
-                catch (Exception ex)
-                {
-                    // log exceptions here
-                }
+
+            await semaphoreSlim.WaitAsync().ConfigureAwait(false);
+            try
+            {
+                await UpdateAsync(cleanZookeeperConnection).ConfigureAwait(false);
             }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
+
         }
 
         /// <summary>
         /// Updates zookeeper connection and actual cloud state
         /// </summary>
         /// <param name="cleanZookeeperConnection">clean zookeeper connection and create new one</param>
-        private void Update(bool cleanZookeeperConnection = false)
+        private async Task UpdateAsync(bool cleanZookeeperConnection = false)
         {
             if (zooKeeper == null || cleanZookeeperConnection)
             {
                 if (zooKeeper != null)
                 {
-                    zooKeeper.Dispose();
+                    await zooKeeper.closeAsync().ConfigureAwait(false);
                 }
-                zooKeeper = new ZooKeeper(zooKeeperConnection, TimeSpan.FromSeconds(10), this);
+                zooKeeper = new ZooKeeper(zooKeeperConnection, 10_000, this);
             }
 
-            state = GetInternalCollectionsState().Merge(GetExternalCollectionsState());
+            state = (await GetInternalCollectionsStateAsync().ConfigureAwait(false)).Merge(await GetExternalCollectionsStateAsync().ConfigureAwait(false));
         }
 
         /// <summary>
         /// Returns parsed internal collections cloud state
         /// </summary>
-        private SolrCloudState GetInternalCollectionsState()
+        private async Task<SolrCloudState> GetInternalCollectionsStateAsync()
         {
-            byte[] data;
+            DataResult data;
 
             try
             {
-                data = zooKeeper.GetData(ClusterState, true, null);
+                data = await zooKeeper.getDataAsync(ClusterState, true).ConfigureAwait(false);
             }
             catch (KeeperException ex)
             {
@@ -197,7 +214,7 @@ namespace SolrNet.Cloud.ZooKeeperClient
 
             var collectionsState =
                 data != null
-                ? SolrCloudStateParser.Parse(Encoding.Default.GetString(data))
+                ? SolrCloudStateParser.Parse(Encoding.Default.GetString(data.Data))
                 : new SolrCloudState(new Dictionary<string, SolrCloudCollection>());
             return collectionsState;
         }
@@ -205,39 +222,39 @@ namespace SolrNet.Cloud.ZooKeeperClient
         /// <summary>
         /// Returns parsed external collections cloud state
         /// </summary>
-        private SolrCloudState GetExternalCollectionsState()
+        private async Task<SolrCloudState> GetExternalCollectionsStateAsync()
         {
             var resultState = new SolrCloudState(new Dictionary<string, SolrCloudCollection>());
-            IEnumerable<string> children;
+            ChildrenResult children;
 
             try
             {
-                children = zooKeeper.GetChildren(CollectionsZkNode, true);
+                children = await zooKeeper.getChildrenAsync(CollectionsZkNode, true).ConfigureAwait(false);
             }
             catch (KeeperException ex)
             {
                 return resultState;
             }
 
-            if (children == null || children.IsEmpty())
+            if (children == null || !children.Children.Any())
                 return resultState;
 
-            foreach (var child in children)
+            foreach (var child in children.Children)
             {
-                byte[] data;
+                DataResult data;
 
                 try
                 {
-                    data = zooKeeper.GetData(GetCollectionPath(child), true, null);
+                    data = await zooKeeper.getDataAsync(GetCollectionPath(child), true).ConfigureAwait(false);
                 }
                 catch (KeeperException ex)
                 {
                     data = null;
                 }
 
-                var collectionState = 
-                    data != null 
-                    ? SolrCloudStateParser.Parse(Encoding.Default.GetString(data)) 
+                var collectionState =
+                    data != null
+                    ? SolrCloudStateParser.Parse(Encoding.Default.GetString(data.Data))
                     : new SolrCloudState(new Dictionary<string, SolrCloudCollection>());
                 resultState = resultState.Merge(collectionState);
             }

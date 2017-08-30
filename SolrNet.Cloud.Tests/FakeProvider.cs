@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SolrNet.Cloud.Tests
 {
@@ -14,6 +15,11 @@ namespace SolrNet.Cloud.Tests
         }
 
         public void Dispose() {
+        }
+
+        public Task DisposeAsync()
+        {
+            return Task.CompletedTask;
         }
 
         public SolrCloudState GetCloudState() {
@@ -52,7 +58,8 @@ namespace SolrNet.Cloud.Tests
                 });
         }
 
-        public void Init() {
+        public Task InitAsync() {
+            return Task.CompletedTask;
         }
 
         public ISolrBasicOperations<T> GetBasicOperations<T>(string url, bool isPostConnection = false)

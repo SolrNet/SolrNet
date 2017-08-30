@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace SolrNet.Cloud
 {
@@ -6,6 +7,7 @@ namespace SolrNet.Cloud
     /// Solr cloud state provider interface
     /// </summary>
     public interface ISolrCloudStateProvider : IDisposable {
+        
         /// <summary>
         /// Provider key
         /// </summary>
@@ -19,6 +21,8 @@ namespace SolrNet.Cloud
         /// <summary>
         /// Provider initialization
         /// </summary>
-        void Init();
+        Task InitAsync();
+
+        Task DisposeAsync();
     }
 }

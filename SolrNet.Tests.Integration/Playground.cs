@@ -4,19 +4,23 @@ using SolrNet.Attributes;
 using SolrNet.Cloud.ZooKeeperClient;
 using CloudStartup = SolrNet.Cloud.Startup;
 using Xunit;
+using System.Threading.Tasks;
+
 namespace SolrNet.Unity.Tests
 {
     [Trait("Category", "Integration")]
     public class Test
     {
         [Fact]
-        public void TestSorlCloud() {
-            using (var provider = new SolrCloudStateProvider("10.26.11.30:9983")) {
-                CloudStartup.Init<TestEntity>(provider);
+        public async Task TestSorlCloud()
+        {
+            using (var provider = new SolrCloudStateProvider("10.26.11.30:9983"))
+            {
+                await CloudStartup.InitAsync<TestEntity>(provider);
                 TestRoutine();
             }
         }
-    
+
         public void TestRoutine()
         {
             var num = 1000;
@@ -52,12 +56,11 @@ namespace SolrNet.Unity.Tests
 
 
         [Fact]
-        public void AddRemoveTest()
+        public async Task AddRemoveTest()
         {
             const int DocumentCount = 1000;
             const string ZooKeeperConnection = "10.26.11.30:9983";
-
-            CloudStartup.Init<TestEntity>(new SolrCloudStateProvider(ZooKeeperConnection));
+            await CloudStartup.InitAsync<TestEntity>(new SolrCloudStateProvider(ZooKeeperConnection));
             var operations = CloudStartup.Container.GetInstance<ISolrOperations<TestEntity>>();
 
             operations.Delete(SolrQuery.All);
@@ -73,7 +76,8 @@ namespace SolrNet.Unity.Tests
         }
     }
 
-    public class TestEntity {
+    public class TestEntity
+    {
         [SolrField("id")]
         public string Id { get; set; }
 

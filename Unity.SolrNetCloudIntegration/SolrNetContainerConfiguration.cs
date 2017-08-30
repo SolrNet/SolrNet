@@ -10,18 +10,33 @@ namespace Unity.SolrNetCloudIntegration
     /// </summary>
     public class SolrNetContainerConfiguration
     {
+
+        public IUnityContainer ConfigureContainer(string zookeeperConnection, IUnityContainer container)
+        {
+            var stateProvider = new SolrNet.Cloud.ZooKeeperClient.SolrCloudStateProvider(zookeeperConnection);
+
+            return ConfigureContainer(stateProvider, container);
+        }
+
         /// <summary>
         /// Returns configured unity container
         /// </summary>
-        public IUnityContainer ConfigureContainer(ISolrCloudStateProvider cloudStateProvider, IUnityContainer container) {
+        public IUnityContainer ConfigureContainer(ISolrCloudStateProvider cloudStateProvider, IUnityContainer container)
+        {
+
+            //add Collections support
+            container.AddNewExtension<Collections.CollectionResolutionExtension>();
+
             if (cloudStateProvider == null)
                 throw new ArgumentNullException("cloudStateProvider");
             if (container == null)
                 throw new ArgumentNullException("container");
             if (container.IsRegistered<ISolrCloudStateProvider>(cloudStateProvider.Key))
                 return container;
-            cloudStateProvider.Init();
-            foreach (var collection in cloudStateProvider.GetCloudState().Collections.Keys) {
+
+            Nito.AsyncEx.AsyncContext.Run(() => cloudStateProvider.InitAsync());
+            foreach (var collection in cloudStateProvider.GetCloudState().Collections.Keys)
+            {
                 if (!container.IsRegistered<ISolrCloudStateProvider>())
                     RegisterFirstCollection(cloudStateProvider, container);
                 RegisterCollection(cloudStateProvider, collection, container);
@@ -35,7 +50,8 @@ namespace Unity.SolrNetCloudIntegration
         /// <summary>
         /// Registers collection
         /// </summary>
-        private static void RegisterCollection(ISolrCloudStateProvider cloudStateProvider, string collection, IUnityContainer container) {
+        private static void RegisterCollection(ISolrCloudStateProvider cloudStateProvider, string collection, IUnityContainer container)
+        {
             var injection = new InjectionConstructor(
                     new ResolvedParameter<ISolrCloudStateProvider>(cloudStateProvider.Key),
                     new ResolvedParameter<ISolrOperationsProvider>(),
@@ -49,7 +65,8 @@ namespace Unity.SolrNetCloudIntegration
         /// <summary>
         /// Registers first collection
         /// </summary>
-        private static void RegisterFirstCollection(ISolrCloudStateProvider cloudStateProvider, IUnityContainer container) {
+        private static void RegisterFirstCollection(ISolrCloudStateProvider cloudStateProvider, IUnityContainer container)
+        {
             var injection = new InjectionConstructor(
                     new ResolvedParameter<ISolrCloudStateProvider>(cloudStateProvider.Key),
                     new ResolvedParameter<ISolrOperationsProvider>());

@@ -6,12 +6,13 @@ using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
 using SolrNet.Cloud.ZooKeeperClient;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SolrNet.Cloud.Tests
 {
-    [Trait("Category","Integration")]
-    public class CollectionsAdminTests
-    {        
+    [Trait("Category", "Integration")]
+    public class CollectionsAdminTests : IAsyncLifetime
+    {
         private const string COLLECTION_NAME = "test";
         private const string CONFIG_NAME = "data";
         private readonly string[] SHARD_NAMES = new string[] { "shard1", "shard2" };
@@ -31,45 +32,37 @@ namespace SolrNet.Cloud.Tests
         private const int ZOOKEEPER_REFRESH_PERIOD_MSEC = 2000;
         private ISolrCloudStateProvider solrCloudStateProvider = null;
 
-        public  CollectionsAdminTests()
-        {
-            solrconnection = new SolrConnection(SOLR_CONNECTION_URL);
-            collections = new SolrCollectionsAdmin(solrconnection, new HeaderResponseParser<string>());
-
-            var solrCloud = new SolrCloudStateProvider(ZOOKEEPER_CONNECTION);
-            Startup.Init<string>(solrCloud, COLLECTION_NAME, true);
-            solrCloudStateProvider = Startup.Container.GetInstance<ISolrCloudStateProvider>(solrCloud.Key);
-        }
-
+    
         [Fact]
-        public void ReloadColection()
+        public async Task ReloadColection()
         {
             CreateCollectionIfNotExists(collections, COLLECTION_NAME);
-            
+
             Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
-            AssertCollectionPresenceByCloudState(COLLECTION_NAME);
+            await AssertCollectionPresenceByCloudStateAsync(COLLECTION_NAME);
 
             var res = collections.ReloadCollection(COLLECTION_NAME);
             Assert.True(res.Status == 0);
 
             Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
-            AssertCollectionPresenceByCloudState(COLLECTION_NAME);
+            await AssertCollectionPresenceByCloudStateAsync(COLLECTION_NAME);
         }
 
         [Fact]
-        public void CreateRemoveCollectionExcplicitRouter()
+        public async Task CreateRemoveCollectionExcplicitRouter()
         {
+
             RemoveCollectionIfExists(collections, COLLECTION_NAME);
             Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
-            var state = GetFreshCloudState();
+            var state = await GetFreshCloudStateAsync();
             Assert.NotNull(state);
             Assert.True(state.Collections == null || !state.Collections.ContainsKey(COLLECTION_NAME));
 
             var res = collections.CreateCollection(COLLECTION_NAME, numShards: NUM_SHARDS);
             Assert.True(res.Status == 0);
 
-            Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);            
-            var collectionState = AssertCollectionPresenceByCloudState(COLLECTION_NAME);
+            Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
+            var collectionState = await AssertCollectionPresenceByCloudStateAsync(COLLECTION_NAME);
             Assert.NotNull(collectionState.Shards);
             Assert.True(collectionState.Shards.Count == NUM_SHARDS);
 
@@ -77,21 +70,22 @@ namespace SolrNet.Cloud.Tests
             Assert.True(res.Status == 0);
 
             Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
-            state = GetFreshCloudState();
+            state = await GetFreshCloudStateAsync();
             Assert.NotNull(state);
             Assert.True(state.Collections == null || !state.Collections.ContainsKey(COLLECTION_NAME));
         }
 
         [Fact]
-        public void CreateRemoveCollectionImplicitRouter()
+        public async Task CreateRemoveCollectionImplicitRouter()
         {
+
             RemoveCollectionIfExists(collections, COLLECTION_NAME);
             var shardNamesString = string.Join(",", SHARD_NAMES);
             var res = collections.CreateCollection(COLLECTION_NAME, routerName: ROUTER_NAME, shards: shardNamesString, maxShardsPerNode: 10);
             Assert.True(res.Status == 0);
 
             Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
-            var collectionState = AssertCollectionPresenceByCloudState(COLLECTION_NAME);            
+            var collectionState = await AssertCollectionPresenceByCloudStateAsync(COLLECTION_NAME);
             Assert.NotNull(collectionState.Router);
             Assert.True(collectionState.Router.Name == ROUTER_NAME);
             Assert.NotNull(collectionState.Shards);
@@ -105,22 +99,23 @@ namespace SolrNet.Cloud.Tests
             Assert.True(res.Status == 0);
 
             Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
-            var state = GetFreshCloudState();
+            var state = await GetFreshCloudStateAsync();
             Assert.NotNull(state);
             Assert.True(state.Collections == null || !state.Collections.ContainsKey(COLLECTION_NAME));
         }
 
         [Fact]
-        public void AddRemoveShard()
+        public async Task AddRemoveShard()
         {
             RemoveCollectionIfExists(collections, COLLECTION_NAME);
-            try {
+            try
+            {
                 var shardNamesString = string.Join(",", SHARD_NAMES);
                 var res = collections.CreateCollection(COLLECTION_NAME, routerName: ROUTER_NAME, shards: shardNamesString, maxShardsPerNode: 10);
                 Assert.True(res.Status == 0);
 
                 Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
-                var collectionState = AssertCollectionPresenceByCloudState(COLLECTION_NAME);
+                var collectionState = await AssertCollectionPresenceByCloudStateAsync(COLLECTION_NAME);
                 Assert.NotNull(collectionState.Router);
                 Assert.True(collectionState.Router.Name == ROUTER_NAME);
                 Assert.NotNull(collectionState.Shards);
@@ -133,29 +128,33 @@ namespace SolrNet.Cloud.Tests
                 collections.CreateShard(COLLECTION_NAME, "shard3");
                 // Assert shard is created, check via cluster state
                 Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
-                collectionState = AssertCollectionPresenceByCloudState(COLLECTION_NAME);
+                collectionState = await AssertCollectionPresenceByCloudStateAsync(COLLECTION_NAME);
                 Assert.NotNull(collectionState.Shards);
                 Assert.True(collectionState.Shards.ContainsKey("shard3"));
 
                 collections.DeleteShard(COLLECTION_NAME, "shard3");
 
                 Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
-                collectionState = AssertCollectionPresenceByCloudState(COLLECTION_NAME);
+                collectionState = await AssertCollectionPresenceByCloudStateAsync(COLLECTION_NAME);
                 Assert.NotNull(collectionState.Shards);
                 Assert.False(collectionState.Shards.ContainsKey("shard3"));
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Assert.True(false, e.ToString());
-            } finally {
+            }
+            finally
+            {
                 var res = collections.DeleteCollection(COLLECTION_NAME);
                 Assert.True(res.Status == 0);
             }
         }
 
         [Fact]
-        public void ModifyCollection()
+        public async Task ModifyCollection()
         {
             RemoveCollectionIfExists(collections, COLLECTION_NAME);
-            AssertAddCollectionAndGetFirstShard(COLLECTION_NAME);
+            await AssertAddCollectionAndGetFirstShardAsync(COLLECTION_NAME);
             var response = collections.ModifyCollection(COLLECTION_NAME, maxShardsPerNode: 3, replicationFactor: 2, autoAddReplicas: true);
             Assert.NotNull(response);
             Assert.True(response.Status == 0);
@@ -163,11 +162,11 @@ namespace SolrNet.Cloud.Tests
 
         //[Fact]
         // causes internal server error (one shard, two shards - doesn't matter)
-        public void SplitShard()
+        public async Task SplitShard()
         {
             RemoveCollectionIfExists(collections, COLLECTION_NAME);
             var shard_names = new[] { "shard1" };
-            var shard = AssertAddCollectionAndGetFirstShard(COLLECTION_NAME, shard_names);
+            var shard = await AssertAddCollectionAndGetFirstShardAsync(COLLECTION_NAME, shard_names);
             var response = collections.SplitShard(COLLECTION_NAME, shard.Name);
             Assert.NotNull(response);
             Assert.True(response.Status == 0);
@@ -189,15 +188,15 @@ namespace SolrNet.Cloud.Tests
         }
 
         [Fact]
-        public void AddReplica()
+        public async Task AddReplica()
         {
-            AssertAddReplica();
+            await AssertAddReplicaAsync();
         }
 
         [Fact]
-        public void DeleteReplica()
+        public async Task DeleteReplica()
         {
-            var shard = AssertAddReplica();
+            var shard = await AssertAddReplicaAsync();
             var replica = shard.Replicas.Values.Last();
             var response = collections.DeleteReplica(COLLECTION_NAME, shard: shard.Name, replica: replica.Name);
             Assert.NotNull(response);
@@ -229,30 +228,30 @@ namespace SolrNet.Cloud.Tests
         }
 
         [Fact]
-        public void AddRole()
+        public async Task AddRole()
         {
-            AssertAddRole();
+            await AssertAddRoleAsync();
         }
 
         [Fact]
-        public void RemoveRole()
+        public async Task RemoveRole()
         {
-            var node = AssertAddRole();
+            var node = await AssertAddRoleAsync();
             var response = collections.RemoveRole(NODE_ROLE_NAME, node);
             Assert.NotNull(response);
             Assert.True(response.Status == 0);
         }
 
         [Fact]
-        public void AddReplicaProperty()
+        public async Task AddReplicaProperty()
         {
-            AssertAddReplicaProperty();
+            await AssertAddReplicaPropertyAsync();
         }
 
         [Fact]
-        public void DeleteReplicaProperty()
+        public async Task DeleteReplicaProperty()
         {
-            var shardReplicaNames = AssertAddReplicaProperty();
+            var shardReplicaNames = await AssertAddReplicaPropertyAsync();
             var response = collections.DeleteReplicaProperty(COLLECTION_NAME, shard: shardReplicaNames.Item1, replica: shardReplicaNames.Item2, property: PROPERTY_NAME);
             Assert.NotNull(response);
             Assert.True(response.Status == 0);
@@ -314,15 +313,15 @@ namespace SolrNet.Cloud.Tests
             }
         }
 
-        private SolrCloudState GetFreshCloudState()
+        private Task<SolrCloudState> GetFreshCloudStateAsync()
         {
-            return (solrCloudStateProvider as SolrCloudStateProvider).GetFreshCloudState();
+            return (solrCloudStateProvider as SolrCloudStateProvider).GetFreshCloudStateAsync();
         }
 
-        private SolrCloudCollection AssertCollectionPresenceByCloudState(string collectionName)
+        private async Task<SolrCloudCollection> AssertCollectionPresenceByCloudStateAsync(string collectionName)
         {
             //var state = solrCloudStateProvider.GetCloudState();
-            var state = GetFreshCloudState();
+            var state = await GetFreshCloudStateAsync();
 
             Assert.NotNull(state);
             Assert.NotNull(state.Collections);
@@ -333,13 +332,13 @@ namespace SolrNet.Cloud.Tests
             return collectionState;
         }
 
-        private SolrCloudShard AssertAddCollectionAndGetFirstShard(string collectionName = COLLECTION_NAME, string[] shard_names = null)
+        private async Task<SolrCloudShard> AssertAddCollectionAndGetFirstShardAsync(string collectionName = COLLECTION_NAME, string[] shard_names = null)
         {
             var finalShardNames = shard_names ?? SHARD_NAMES;
             Assert.NotNull(finalShardNames);
             Assert.True(finalShardNames.Length > 0);
             CreateCollectionIfNotExists(collections, collectionName, shard_names: finalShardNames);
-            var collectionState = AssertCollectionPresenceByCloudState(collectionName);
+            var collectionState = await AssertCollectionPresenceByCloudStateAsync(collectionName);
             Assert.NotNull(collectionState.Shards);
             Assert.True(collectionState.Shards.ContainsKey(finalShardNames[0]));
             var shard = collectionState.Shards[finalShardNames[0]];
@@ -349,9 +348,9 @@ namespace SolrNet.Cloud.Tests
             return shard;
         }
 
-        private Tuple<string, string> AssertAddReplicaProperty()
-        {            
-            var shard = AssertAddCollectionAndGetFirstShard();            
+        private async Task<Tuple<string, string>> AssertAddReplicaPropertyAsync()
+        {
+            var shard = await AssertAddCollectionAndGetFirstShardAsync();
             var replica = shard.Replicas.Values.First();
             Assert.NotNull(replica);
             var response = collections.AddReplicaProperty(COLLECTION_NAME, shard: shard.Name, replica: replica.Name, property: PROPERTY_NAME, propertyValue: "true");
@@ -360,10 +359,10 @@ namespace SolrNet.Cloud.Tests
             return new Tuple<string, string>(shard.Name, replica.Name);
         }
 
-        private string AssertAddRole()
+        private async Task<string> AssertAddRoleAsync()
         {
             CreateCollectionIfNotExists(collections, COLLECTION_NAME);
-            var collectionState = AssertCollectionPresenceByCloudState(COLLECTION_NAME);
+            var collectionState = await AssertCollectionPresenceByCloudStateAsync(COLLECTION_NAME);
             var node = collectionState.Shards.Values.First().Replicas.Values.First().Url;
             var response = collections.AddRole(NODE_ROLE_NAME, node);
             Assert.NotNull(response);
@@ -371,10 +370,10 @@ namespace SolrNet.Cloud.Tests
             return node;
         }
 
-        private SolrCloudShard AssertAddReplica()
+        private async Task<SolrCloudShard> AssertAddReplicaAsync()
         {
             RemoveCollectionIfExists(collections, COLLECTION_NAME);
-            var shard = AssertAddCollectionAndGetFirstShard();
+            var shard = await AssertAddCollectionAndGetFirstShardAsync();
             var response = collections.AddReplica(COLLECTION_NAME, shard: shard.Name);
             Assert.NotNull(response);
             Assert.True(response.Status == 0);
@@ -387,6 +386,21 @@ namespace SolrNet.Cloud.Tests
             var response = collections.CreateAlias(COLLECTION_NAME, COLLECTION_ALIAS);
             Assert.NotNull(response);
             Assert.True(response.Status == 0);
+        }
+
+        public async  Task InitializeAsync()
+        {
+            solrconnection = new SolrConnection(SOLR_CONNECTION_URL);
+            collections = new SolrCollectionsAdmin(solrconnection, new HeaderResponseParser<string>());
+
+            var solrCloud = new SolrCloudStateProvider(ZOOKEEPER_CONNECTION);
+            await Startup.InitAsync<string>(solrCloud, COLLECTION_NAME, true);
+            solrCloudStateProvider = Startup.Container.GetInstance<ISolrCloudStateProvider>(solrCloud.Key);
+        }
+
+        public async Task DisposeAsync()
+        {
+            await solrCloudStateProvider.DisposeAsync();
         }
     }
 }

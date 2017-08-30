@@ -295,5 +295,17 @@
         <long name="end">1531035549990660850</long>
       </lst>
     </lst>
+    <lst name="facet_intervals">
+      <lst name="letters">
+        <int name="[*,b]">5</int>
+        <int name="foo">45441</int>
+        <int name="bar">4544341</int>
+      </lst>
+      <lst name="number">
+        <int name="[0,500]">9</int>
+        <int name="[500,1000]">123</int>
+      </lst>
+    </lst>
+    
   </lst>
 </response>

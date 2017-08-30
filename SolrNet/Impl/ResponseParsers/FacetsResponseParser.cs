@@ -37,6 +37,7 @@ namespace SolrNet.Impl.ResponseParsers {
                 results.FacetDates = ParseFacetDates(mainFacetNode);
 				results.FacetPivots = ParseFacetPivots(mainFacetNode);
                 results.FacetRanges = ParseFacetRanges(mainFacetNode);
+                results.FacetIntervals = ParseFacetIntervals(mainFacetNode);
             }
         }
 
@@ -57,6 +58,8 @@ namespace SolrNet.Impl.ResponseParsers {
             }
             return d;
         }
+
+    
 
         /// <summary>
         /// Parses facet fields results
@@ -198,6 +201,37 @@ namespace SolrNet.Impl.ResponseParsers {
             }
             return r;
         }
+
+
+        /// <summary>
+        /// Parses facet interval results
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public IDictionary<string, ICollection<KeyValuePair<string,int>>> ParseFacetIntervals(XElement node)
+        {
+            var d = new Dictionary<string, ICollection<KeyValuePair<string,int>>>();
+            var facetIntervals = node.Elements("lst")
+                .Where(X.AttrEq("name", "facet_intervals"))
+                .SelectMany(x=>x.Elements());
+            foreach (var fieldNode in facetIntervals)
+            {
+                var field = fieldNode.Attribute("name").Value;
+                var c = new List<KeyValuePair<string, int>>();
+                foreach (var facetNode in fieldNode.Elements())
+                {
+                    var nameAttr = facetNode.Attribute("name");
+                    var key = nameAttr?.Value ?? "";
+                    var value = Convert.ToInt32(facetNode.Value);
+                    c.Add(new KeyValuePair<string, int>(key, value));
+                }
+                d[field] = c;
+            }
+
+
+            return d;
+        }
+
 
         /// <summary>
         /// Parses facet pivot results

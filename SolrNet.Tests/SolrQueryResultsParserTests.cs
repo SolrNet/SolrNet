@@ -448,6 +448,27 @@ namespace SolrNet.Tests
             Assert.Equal(r.FacetRanges.Last().Value.RangeResults.Last().Value, 0);
 
 
+            //Facet Intervals 
+            Assert.NotNull(r.FacetIntervals);
+            Assert.Equal(r.FacetIntervals.Count, 2);
+            Assert.Equal(r.FacetIntervals.First().Key, "letters");
+            Assert.Equal(r.FacetIntervals.First().Value.Count, 3);
+            Assert.Equal(r.FacetIntervals.First().Value.First().Key , "[*,b]");
+            Assert.Equal(r.FacetIntervals.First().Value.First().Value , 5);
+            Assert.Equal(r.FacetIntervals.First().Value.Last().Key, "bar");
+            Assert.Equal(r.FacetIntervals.First().Value.Last().Value, 4544341);
+
+
+            Assert.Equal(r.FacetIntervals.Last().Key, "number");
+            Assert.Equal(r.FacetIntervals.Last().Value.Count, 2);
+            Assert.Equal(r.FacetIntervals.Last().Value.First().Key, "[0,500]");
+            Assert.Equal(r.FacetIntervals.Last().Value.First().Value, 9);
+            Assert.Equal(r.FacetIntervals.Last().Value.Last().Key, "[500,1000]");
+            Assert.Equal(r.FacetIntervals.Last().Value.Last().Value, 123);
+
+
+
+
             //Facet Queries
             Assert.NotNull(r.FacetQueries);
             //Console.WriteLine(r.FacetQueries.Count);

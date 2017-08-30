@@ -158,6 +158,7 @@
     <Compile Include="SolrDIHStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
+    <Compile Include="SolrFacetIntervalQueryTests.cs" />
     <Compile Include="SolrFacetRangeQueryTests.cs" />
     <Compile Include="SolrFacetPivotQueryTest.cs" />
     <Compile Include="SolrMoreLikeThisHandlerStreamUrlQueryTests.cs" />

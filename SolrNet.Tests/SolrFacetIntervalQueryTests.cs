@@ -93,7 +93,7 @@ namespace SolrNet.Tests
 
             var r = Serialize(q);
             Assert.Contains(KV.Create("facet.interval", "state"), r);
-            Assert.Contains(KV.Create("f.state.facet.interval.set", "[,pa]"), r);
+            Assert.Contains(KV.Create("f.state.facet.interval.set", "[*,pa]"), r);
         }
 
         [Fact]
@@ -104,7 +104,7 @@ namespace SolrNet.Tests
 
             var r = Serialize(q);
             Assert.Contains(KV.Create("facet.interval", "state"), r);
-            Assert.Contains(KV.Create("f.state.facet.interval.set", "[,*]"), r);
+            Assert.Contains(KV.Create("f.state.facet.interval.set", "[*,*]"), r);
         }
 
         [Fact]
@@ -143,7 +143,7 @@ namespace SolrNet.Tests
 
             var r = Serialize(q);
             Assert.Contains(KV.Create("facet.interval", "letters"), r);
-            Assert.Contains(KV.Create("f.letters.facet.interval.set", "{!key=a}[,d]"), r);
+            Assert.Contains(KV.Create("f.letters.facet.interval.set", "{!key=a}[*,d]"), r);
             Assert.Contains(KV.Create("f.letters.facet.interval.set", "[e,g]"), r);
             Assert.Contains(KV.Create("f.letters.facet.interval.set", "[k,*]"), r);
         }
@@ -159,7 +159,7 @@ namespace SolrNet.Tests
 
             var r = Serialize(q);
             Assert.Contains(KV.Create("facet.interval", "{!ex=cat}state"), r);
-            Assert.Contains(KV.Create("f.state.facet.interval.set", "[,*]"), r);
+            Assert.Contains(KV.Create("f.state.facet.interval.set", "[*,*]"), r);
         }
 
 

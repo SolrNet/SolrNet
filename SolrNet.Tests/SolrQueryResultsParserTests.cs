@@ -593,6 +593,24 @@ namespace SolrNet.Tests
         }
 
         [Fact]
+        public void ParseSpellCheckingCollateTrueInExpandedCollations()
+        {
+            //Collations node now separates from collation nodes from suggestions
+            var parser = new SpellCheckResponseParser<Product>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingExpandedCollationInCollations.xml");
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
+            var spellChecking = parser.ParseSpellChecking(docNode);
+            Assert.NotNull(spellChecking);
+            Assert.Equal("dell ultrasharp", spellChecking.Collation);
+            Assert.Equal(2, spellChecking.Count);
+            Assert.Equal(1, spellChecking.First().Suggestions.Count);
+            Assert.Equal("dell", spellChecking.First().Suggestions.First());
+            Assert.Equal(1, spellChecking.Last().Suggestions.Count);
+            Assert.Equal("ultrasharp", spellChecking.Last().Suggestions.First());
+            Assert.Equal(1, spellChecking.Collations.Count);
+        }
+
+        [Fact]
         public void ParseSpellCheckingCollateTrueInCollations()
         {
             //Collations node now separates from collation nodes from suggestions
@@ -601,9 +619,14 @@ namespace SolrNet.Tests
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             var spellChecking = parser.ParseSpellChecking(docNode);
             Assert.NotNull(spellChecking);
-            Assert.Equal("dell ultrasharp", spellChecking.Collation);
+            Assert.Equal("dell maxtor", spellChecking.Collation);
             Assert.Equal(2, spellChecking.Count);
-            Assert.Equal(1, spellChecking.Collations.Count);
+            Assert.Equal(1, spellChecking.First().Suggestions.Count);
+            Assert.Equal("dell", spellChecking.First().Suggestions.First());
+            Assert.Equal(2, spellChecking.Last().Suggestions.Count);
+            Assert.Equal("maxtor", spellChecking.Last().Suggestions.First());
+            Assert.Equal("motor", spellChecking.Last().Suggestions.Last());
+            Assert.Equal(2, spellChecking.Collations.Count);
         }
 
         [Fact]

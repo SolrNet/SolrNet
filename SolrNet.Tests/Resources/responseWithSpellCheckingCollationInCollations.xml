@@ -2,41 +2,29 @@
 <response>
   <lst name="responseHeader">
     <int name="status">0</int>
-    <int name="QTime">10</int>
+    <int name="QTime">30</int>
   </lst>
-  <result name="response" start="0" numFound="0"/>
+  <result name="response" numFound="0" start="0"></result>
   <lst name="spellcheck">
     <lst name="suggestions">
       <lst name="delll">
         <int name="numFound">1</int>
         <int name="startOffset">0</int>
         <int name="endOffset">5</int>
-        <int name="origFreq">0</int>
         <arr name="suggestion">
-          <lst>
-            <str name="word">dell</str>
-            <int name="freq">2</int>
-          </lst>
+          <str>dell</str>
         </arr>
       </lst>
       <lst name="mxtor">
         <int name="numFound">2</int>
         <int name="startOffset">6</int>
         <int name="endOffset">11</int>
-        <int name="origFreq">0</int>
         <arr name="suggestion">
-          <lst>
-            <str name="word">maxtor</str>
-            <int name="freq">2</int>
-          </lst>
-          <lst>
-            <str name="word">motor</str>
-            <int name="freq">1</int>
-          </lst>
+          <str>maxtor</str>
+          <str>motor</str>
         </arr>
       </lst>
     </lst>
-    <bool name="correctlySpelled">false</bool>
     <lst name="collations">
       <str name="collation">dell maxtor</str>
       <str name="collation">dell motor</str>

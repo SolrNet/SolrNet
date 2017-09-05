@@ -596,6 +596,7 @@ namespace SolrNet.Tests
         public void ParseSpellCheckingCollateTrueInExpandedCollations()
         {
             //Collations node now separates from collation nodes from suggestions
+            //Result when spellcheck.extendedResults=true and spellcheck.collateExtendedResults=true.
             var parser = new SpellCheckResponseParser<Product>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingExpandedCollationInCollations.xml");
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
@@ -614,6 +615,7 @@ namespace SolrNet.Tests
         public void ParseSpellCheckingCollateTrueInCollations()
         {
             //Collations node now separates from collation nodes from suggestions
+            //Result when spellcheck.extendedResults=false and spellcheck.collateExtendedResults=false.
             var parser = new SpellCheckResponseParser<Product>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingCollationInCollations.xml");
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");

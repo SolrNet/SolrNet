@@ -362,6 +362,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\partialResponseWithRangeFacetAndOther.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingExpandedCollationInCollations.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using SolrNet.Utils;
+using System.Linq;
 
 namespace SolrNet.Impl.ResponseParsers
 {
@@ -63,6 +64,8 @@ namespace SolrNet.Impl.ResponseParsers
             {
                 // Solr 5.0+
                 collationNodes = collationsNode.XPathSelectElements("lst[@name='collation']");
+                if (collationNodes.Count() == 0)
+                    collationNodes = collationsNode.XPathSelectElements("str[@name='collation']");
             }
             else
             {
@@ -72,13 +75,17 @@ namespace SolrNet.Impl.ResponseParsers
 
             foreach (var cn in collationNodes)
             {
+                string collationValue = string.Empty;
                 if (cn.XPathSelectElement("str[@name='collationQuery']") != null)
+                    collationValue = cn.XPathSelectElement("str[@name='collationQuery']").Value;
+                else if (cn.Name.LocalName == "str")
+                    collationValue = cn.Value;
+
+                if (collationValue != string.Empty)
                 {
-                    r.Collations.Add(cn.XPathSelectElement("str[@name='collationQuery']").Value);
+                    r.Collations.Add(collationValue);
                     if (string.IsNullOrEmpty(r.Collation))
-                    {
-                        r.Collation = cn.XPathSelectElement("str[@name='collationQuery']").Value;
-                    }
+                        r.Collation = collationValue;
                 }
             }
 
@@ -94,7 +101,9 @@ namespace SolrNet.Impl.ResponseParsers
                     result.EndOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='endOffset']").Value);
                     result.StartOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='startOffset']").Value);
                     var suggestions = new List<string>();
-                    var suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/str");
+                    var suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/lst/str");
+                    if (suggestionNodes.Count() == 0)
+                        suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/str");
                     foreach (var suggestionNode in suggestionNodes)
                     {
                         suggestions.Add(suggestionNode.Value);

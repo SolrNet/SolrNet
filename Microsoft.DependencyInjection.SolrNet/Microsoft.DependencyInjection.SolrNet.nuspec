@@ -17,8 +17,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\release\Unity.SolrNetIntegration.dll" target="lib\net46\Unity.SolrNetIntegration.dll" />
-    <file src="bin\release\Unity.SolrNetIntegration.pdb" target="lib\net46\Unity.SolrNetIntegration.pdb" />
-    <file src="bin\release\Unity.SolrNetIntegration.XML" target="lib\net46\Unity.SolrNetIntegration.xml" />
+    <file src="bin\release\netstandard2.0\Microsoft.DependencyInjection.SolrNet.dll" target="lib\netstandard2.0\Microsoft.DependencyInjection.SolrNet.dll" /> 
+    <file src="bin\release\netstandard2.0\Microsoft.DependencyInjection.SolrNet.pdb" target="lib\netstandard2.0\Microsoft.DependencyInjection.SolrNet.pdb" />
+    <!-- <file src="bin\release\netstandard2.0\Microsoft.DependencyInjection.SolrNet.XML" target="lib\netstandard2.0\Microsoft.DependencyInjection.SolrNet.xml" /> -->
   </files>
 </package>

@@ -35,7 +35,7 @@ namespace SolrNet.Tests {
         }
 
         [Fact(Skip = "performance test")]
-        public void ReadFully() {
+        public void ReadFullyPerfTest() {
             for (int i = 0; i < Reps; i++) {
                 var req = WebRequest.Create("http://www.google.com");
                 using (var r = req.GetResponse())

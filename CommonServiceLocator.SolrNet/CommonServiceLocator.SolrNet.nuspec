@@ -17,11 +17,9 @@
     </dependencies>
   </metadata>
     <files>
-    <files>
       <file src="bin\release\net46\CommonServiceLocator.SolrNet.dll" target="lib\net46\CommonServiceLocator.SolrNet.dll" />
       <file src="bin\release\net46\CommonServiceLocator.SolrNet.pdb" target="lib\net46\CommonServiceLocator.SolrNet.pdb" />
       <file src="bin\release\netstandard2.0\CommonServiceLocator.SolrNet.dll" target="lib\netstandard2.0\CommonServiceLocator.SolrNet.dll" />
       <file src="bin\release\netstandard2.0\CommonServiceLocator.SolrNet.pdb" target="lib\netstandard2.0\CommonServiceLocator.SolrNet.pdb" />
     </files>
-  </files>
 </package>

@@ -38,12 +38,5 @@ namespace SolrNet.Tests {
             Assert.Equal("(solr)^=342000000000", query);
         }
 
-        [Fact]
-        public void SolrQuery_ConstantScore() {
-            var q = new SolrQuery("solr").Boost(12.2);
-            var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
-            var query = serializer.Serialize(q);
-            Assert.Equal("(solr)^=12.2", query);
-        }
     }
 }

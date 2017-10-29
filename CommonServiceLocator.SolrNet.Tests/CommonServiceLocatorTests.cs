@@ -19,7 +19,7 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using Xunit;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using SolrNet.Utils;
 
 namespace CommonServiceLocator.SolrNet.Tests

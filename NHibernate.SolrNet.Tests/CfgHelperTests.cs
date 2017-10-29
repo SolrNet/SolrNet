@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using NHibernate.Event;
 using NHibernate.SolrNet.Impl;
 using SolrNet;

@@ -26,8 +26,11 @@ using SolrNet.Utils;
 namespace SolrNet.Tests {
     
     public class SolrFacetDateQueryTests {
+
         [Fact]
-        public void Serialize() {
+        #pragma warning disable xUnit1024 // Test methods cannot have overloads
+        public void Serialize()
+        {
             var q = new SolrFacetDateQuery("timestamp", new DateTime(2009,1,1), new DateTime(2009,2,2), "+1DAY") {
                 HardEnd = true,
                 Other = new[] {FacetDateOther.After},

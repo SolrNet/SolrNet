@@ -22,7 +22,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Xunit;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 using SolrNet.Tests.Integration.Sample;

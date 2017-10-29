@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Moroco;
 using SolrNet;
 using SolrNet.Commands.Parameters;

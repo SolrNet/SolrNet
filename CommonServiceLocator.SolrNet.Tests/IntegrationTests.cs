@@ -15,7 +15,7 @@
 #endregion
 
 using Xunit;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Utils;

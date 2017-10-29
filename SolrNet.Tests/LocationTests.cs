@@ -15,7 +15,7 @@ namespace SolrNet.Tests
 
         [Theory]
         [MemberData(nameof(locations))]
-        public void ToString(Location location, string stringRepresentation)
+        public void ToStringRepresentation(Location location, string stringRepresentation)
         {
             Assert.Equal(stringRepresentation, location.ToString());
         }

@@ -15,7 +15,7 @@
 #endregion
 
 using System;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using NHibernate.Cfg;
 using NHibernate.SolrNet.Impl;
 using SolrNet;

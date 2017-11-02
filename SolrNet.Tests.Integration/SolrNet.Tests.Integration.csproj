@@ -60,14 +60,26 @@
     <Reference Include="xunit.execution.desktop, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\packages\xunit.extensibility.execution.2.3.1\lib\net452\xunit.execution.desktop.dll</HintPath>
     </Reference>
+    <Reference Include="ZooKeeperNetEx, Version=3.4.9.4, Culture=neutral, PublicKeyToken=42cd15de36f9b993, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZooKeeperNetEx.3.4.9.4\lib\net45\ZooKeeperNetEx.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Playground.cs" />
     <Compile Include="IntegrationFixtureAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IntegrationFixture.cs" />
     <Compile Include="SolrCoreAdminFixture.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj">
+      <Project>{63538cf2-62c5-4f5a-99b2-9f14896afb98}</Project>
+      <Name>CommonServiceLocator.SolrNet.Cloud</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj">
+      <Project>{bda98c34-3b00-4b1f-b850-9c776fede8e3}</Project>
+      <Name>SolrNet.Cloud</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj">
       <Project>{17b34150-5102-435b-a487-84dd5803a228}</Project>
       <Name>CommonServiceLocator.SolrNet</Name>
@@ -79,6 +91,10 @@
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">
       <Project>{ceeb8690-3e08-4440-b647-787a58e71cfa}</Project>
       <Name>SolrNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj">
+      <Project>{7b507754-c877-4de7-ae2a-19cf5191c95e}</Project>
+      <Name>Unity.SolrNetCloudIntegration</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

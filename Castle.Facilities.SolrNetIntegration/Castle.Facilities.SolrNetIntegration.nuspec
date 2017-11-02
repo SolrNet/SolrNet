@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>SolrNet.Windsor</id>
-    <version>0.9.1</version>
+    <version>1.0.0</version>
     <title>SolrNet.Windsor</title>
     <authors>Mauricio Scheffer and contributors</authors>
     <owners>Mauricio Scheffer</owners>
@@ -14,12 +14,12 @@
 
     <dependencies>
       <group targetFramework=".NETFramework4.6">
-        <dependency id="SolrNet.Core" version="[0.9.1]" />
+        <dependency id="SolrNet.Core" version="1.0.0" />
         <dependency id="Castle.Core" version="4.2.1" />
         <dependency id="Castle.Windsor" version="4.1.0" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="SolrNet.Core" version="[0.9.1]" />
+        <dependency id="SolrNet.Core" version="1.0.0" />
         <dependency id="Castle.Core" version="4.2.1" />
         <dependency id="Castle.Windsor" version="4.1.0" />
       </group>

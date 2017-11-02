@@ -27,7 +27,7 @@ namespace SolrNet.Impl {
     /// Implements the basic Solr operations
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
-    public class SolrBasicServer<T> : ISolrBasicOperations<T> {
+    public class SolrBasicServer<T> : LowLevelSolrServer,  ISolrBasicOperations<T> {
         private readonly ISolrConnection connection;
         private readonly ISolrQueryExecuter<T> queryExecuter;
         private readonly ISolrDocumentSerializer<T> documentSerializer;
@@ -37,7 +37,8 @@ namespace SolrNet.Impl {
         private readonly ISolrDIHStatusParser dihStatusParser;
         private readonly ISolrExtractResponseParser extractResponseParser;
 
-        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDIHStatusParser dihStatusParser, ISolrExtractResponseParser extractResponseParser) {
+        public SolrBasicServer(ISolrConnection connection, ISolrQueryExecuter<T> queryExecuter, ISolrDocumentSerializer<T> documentSerializer, ISolrSchemaParser schemaParser, ISolrHeaderResponseParser headerParser, ISolrQuerySerializer querySerializer, ISolrDIHStatusParser dihStatusParser, ISolrExtractResponseParser extractResponseParser) 
+            : base(connection,headerParser) {
             this.connection = connection;
             this.extractResponseParser = extractResponseParser;
             this.queryExecuter = queryExecuter;
@@ -116,14 +117,8 @@ namespace SolrNet.Impl {
             return queryExecuter.Execute(query, options);
         }
 
-        public string Send(ISolrCommand cmd) {
-            return cmd.Execute(connection);
-        }
-
-        public Task<string> SendAsync(ISolrCommand cmd)
-        {
-            return cmd.ExecuteAsync(connection);
-        }
+     
+   
 
         public ExtractResponse SendAndParseExtract(ISolrCommand cmd)
         {
@@ -140,19 +135,6 @@ namespace SolrNet.Impl {
             return extractResponseParser.Parse(xml);
         }
 
-
-        public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
-            var r = Send(cmd);
-            var xml = XDocument.Parse(r);
-            return headerParser.Parse(xml);
-        }
-
-        public async Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)
-        {
-            var r = await SendAsync(cmd);
-            var xml = XDocument.Parse(r);
-            return headerParser.Parse(xml);
-        }
 
         public ResponseHeader Ping() {
             return SendAndParseHeader(new PingCommand());
@@ -238,5 +220,62 @@ namespace SolrNet.Impl {
             var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), parameters);
             return SendAndParseHeaderAsync(delete);
         }
+    }
+
+    public class LowLevelSolrServer
+    {
+        protected readonly ISolrHeaderResponseParser headerParser;
+        protected readonly ISolrConnection connection;
+
+        public LowLevelSolrServer(ISolrConnection connection, ISolrHeaderResponseParser parser)
+        {
+            this.headerParser = parser ?? new ResponseParsers.HeaderResponseParser();
+            this.connection = connection;
+        }
+
+        public XDocument Send(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
+        {
+            var r = SendRaw(handler, solrParams);
+            return XDocument.Parse(r);
+        }
+
+        public string Send(ISolrCommand cmd)
+        {
+            return cmd.Execute(connection);
+        }
+
+        public Task<string> SendAsync(ISolrCommand cmd)
+        {
+            return cmd.ExecuteAsync(connection);
+        }
+
+        public ResponseHeader SendAndParseHeader(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
+        {
+            var r = connection.Get(handler, solrParams);
+            var xml = XDocument.Parse(r);
+            return headerParser.Parse(xml);
+        }
+
+        public ResponseHeader SendAndParseHeader(ISolrCommand cmd)
+        {
+            var r = Send(cmd);
+            var xml = XDocument.Parse(r);
+            return headerParser.Parse(xml);
+        }
+
+        public async Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)
+        {
+            var r = await SendAsync(cmd);
+            var xml = XDocument.Parse(r);
+            return headerParser.Parse(xml);
+        }
+
+        public string SendRaw(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
+        {
+            var r = connection.Get(handler, solrParams);
+            return r;
+        }
+
+     
     }
 }

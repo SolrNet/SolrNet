@@ -70,8 +70,8 @@
     <Reference Include="xunit.execution.desktop, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\packages\xunit.extensibility.execution.2.3.1\lib\net452\xunit.execution.desktop.dll</HintPath>
     </Reference>
-    <Reference Include="ZooKeeperNetEx, Version=3.4.9.4, Culture=neutral, PublicKeyToken=42cd15de36f9b993, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZooKeeperNetEx.3.4.9.4\lib\net45\ZooKeeperNetEx.dll</HintPath>
+    <Reference Include="ZooKeeperNetEx, Version=3.4.10.1, Culture=neutral, PublicKeyToken=42cd15de36f9b993, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZooKeeperNetEx.3.4.10.1\lib\net45\ZooKeeperNetEx.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

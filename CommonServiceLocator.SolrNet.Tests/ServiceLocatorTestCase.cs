@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Xunit;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 
 namespace CommonServiceLocator.SolrNet.Tests
 {

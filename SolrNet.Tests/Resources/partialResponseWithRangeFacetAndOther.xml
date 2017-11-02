@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <lst name="facet_ranges">
+    <lst name="timestamp">
+      <lst name="counts">
+        <int name="2017-08-29T00:00:00Z">27</int>
+        <int name="2017-08-30T00:00:00Z">124</int>
+      </lst>
+      <str name="gap">+1DAY</str>
+      <int name="before">41739753</int>
+      <int name="after">47567</int>
+      <int name="between">151</int>
+      <date name="start">2017-08-29T00:00:00Z</date>
+      <date name="end">2017-08-31T00:00:00Z</date>
+    </lst>
+  </lst>
+</root>

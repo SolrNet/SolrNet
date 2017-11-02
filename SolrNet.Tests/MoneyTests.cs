@@ -17,7 +17,7 @@ namespace SolrNet.Tests
 
         [Theory]
         [MemberData(nameof(moneys))]
-        public void ToString(Money money, string stringRepresentation)
+        public void ToStringRepresentation(Money money, string stringRepresentation)
         {
             Assert.Equal(stringRepresentation, money.ToString());
         }

@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+    <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Version>0.7.1</Version>
+    <Version>0.9.1</Version>
     <Authors>Mauricio Scheffer and contributors</Authors>
     <Company />
     <Product>SolrNet</Product>
@@ -42,5 +43,8 @@
   <!-- NETSTANDARD 2.0 stuff: -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <Compile Remove="Impl\HttpRuntimeCache.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SolrFacetRangeQuery.cs" />
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FacetQuerySerializers {
+    [Obsolete("As of Solr 3.1 has been deprecated, as of Solr 6.6 unsupported.")]
     public class SolrFacetDateQuerySerializer : SingleTypeFacetQuerySerializer<SolrFacetDateQuery> {
 
         private static readonly Regex localParamsRx = new Regex(@"\{![^\}]+\}", RegexOptions.Compiled);

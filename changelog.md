@@ -1,6 +1,11 @@
 # Change Log
 
-## 0.7.1
+## 0.8.1 (development)
+* Added Range Faceting support
+* Added Interval Faceting support
+* Marked Date Faceting as obsolete.
+
+## 0.7.1 (2017-08-28)
 - Added `netstandard 2.0` support
 - Added `Microsoft.Extensions.DependencyInjection` support
 - Added `Async` support

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using log4net.Config;
 using Xunit;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using NHibernate.Tool.hbm2ddl;
 using SolrNet;
 using SolrNet.Impl;

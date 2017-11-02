@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CommonServiceLocator.SolrNet")]
+[assembly: AssemblyTitle("SolrNet.Tests.Common")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CommonServiceLocator.SolrNet")]
+[assembly: AssemblyProduct("SolrNet.Tests.Common")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("17b34150-5102-435b-a487-84dd5803a228")]
+[assembly: Guid("48da5170-b96e-485c-941d-0d7797dca0ef")]
 
 // Version information for an assembly consists of the following four values:
 //

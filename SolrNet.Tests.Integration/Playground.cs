@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Practices.ServiceLocation;
 using SolrNet.Attributes;
 using SolrNet.Cloud.ZooKeeperClient;
 using CloudStartup = SolrNet.Cloud.Startup;
 using Xunit;
 using System.Threading.Tasks;
+using CommonServiceLocator;
 
 namespace SolrNet.Unity.Tests
 {

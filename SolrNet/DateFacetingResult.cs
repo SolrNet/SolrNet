@@ -21,6 +21,7 @@ namespace SolrNet {
     /// <summary>
     /// Date faceting result
     /// </summary>
+    [Obsolete("As of Solr 3.1 has been deprecated, as of Solr 6.6 unsupported.")]
     public class DateFacetingResult {
 
 		/// <summary>

@@ -1,15 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{26EBA068-9BBB-4FEC-B425-787D4AE99848}"
-	ProjectSection(SolutionItems) = preProject
-		build.fsx = build.fsx
-		fake.fsx = fake.fsx
-		Tests.fsx = Tests.fsx
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet", "SolrNet\SolrNet.csproj", "{CEEB8690-3E08-4440-B647-787A58E71CFA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Tests", "SolrNet.Tests\SolrNet.Tests.csproj", "{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}"
@@ -18,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.DSL", "SolrNet.DSL\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.DSL.Tests", "SolrNet.DSL.Tests\SolrNet.DSL.Tests.csproj", "{58FA9DC2-97C8-4B2A-892E-B1617854401D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castle.Facilities.SolrNetIntegration", "Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj", "{0F21F5B6-5986-4301-B0F7-FD9800DB8091}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Castle.Facilities.SolrNetIntegration", "Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj", "{0F21F5B6-5986-4301-B0F7-FD9800DB8091}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castle.Facilities.SolrNetIntegration.Tests", "Castle.Facilities.SolrNetIntegration.Tests\Castle.Facilities.SolrNetIntegration.Tests.csproj", "{3D3D5F34-2C51-4197-BB11-5D28EFB75E5D}"
 EndProject
@@ -53,7 +46,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DependencyInjecti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.DependencyInjection.SolrNet.Tests", "Microsoft.DependencyInjection.SolrNet.Tests\Microsoft.DependencyInjection.SolrNet.Tests.csproj", "{042745E4-2750-41B5-9CCD-5156029CB6B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonServiceLocator.SolrNet", "CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj", "{17B34150-5102-435B-A487-84DD5803A228}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonServiceLocator.SolrNet", "CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj", "{17B34150-5102-435B-A487-84DD5803A228}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonServiceLocator.SolrNet.Tests", "CommonServiceLocator.SolrNet.Tests\CommonServiceLocator.SolrNet.Tests.csproj", "{0988D6A2-04FD-4328-AFFA-677DB377432D}"
 EndProject

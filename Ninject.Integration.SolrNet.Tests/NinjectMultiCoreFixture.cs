@@ -14,17 +14,17 @@
 // limitations under the License.
 #endregion
 
-using System;
-using Xunit;
 using Moroco;
+using Xunit;
 using Ninject.Integration.SolrNet.Config;
 using SolrNet;
 using System.Configuration;
 using SolrNet.Exceptions;
 using SolrNet.Tests.Mocks;
 
-namespace Ninject.Integration.SolrNet.Tests {
-    
+namespace Ninject.Integration.SolrNet.Tests
+{
+
     public class NinjectMultiCoreFixture {
         private StandardKernel kernel;
         public NinjectMultiCoreFixture()

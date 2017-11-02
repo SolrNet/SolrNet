@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SolrNet.Impl;
 
 namespace SolrNet.Tests.Mocks {
-    class MSolrFieldSerializer: ISolrFieldSerializer {
+    public class MSolrFieldSerializer: ISolrFieldSerializer {
         public Func<Type, bool> canHandleType;
         public Func<object, IEnumerable<PropertyNode>> serialize;
 

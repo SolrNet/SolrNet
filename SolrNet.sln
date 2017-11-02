@@ -50,6 +50,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonServiceLocator.SolrNe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonServiceLocator.SolrNet.Tests", "CommonServiceLocator.SolrNet.Tests\CommonServiceLocator.SolrNet.Tests.csproj", "{0988D6A2-04FD-4328-AFFA-677DB377432D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Tests.Common", "SolrNet.Tests.Common\SolrNet.Tests.Common.csproj", "{48DA5170-B96E-485C-941D-0D7797DCA0EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,6 +142,10 @@ Global
 		{0988D6A2-04FD-4328-AFFA-677DB377432D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0988D6A2-04FD-4328-AFFA-677DB377432D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0988D6A2-04FD-4328-AFFA-677DB377432D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48DA5170-B96E-485C-941D-0D7797DCA0EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48DA5170-B96E-485C-941D-0D7797DCA0EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48DA5170-B96E-485C-941D-0D7797DCA0EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48DA5170-B96E-485C-941D-0D7797DCA0EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

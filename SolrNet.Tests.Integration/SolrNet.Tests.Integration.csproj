@@ -72,9 +72,9 @@
       <Project>{17b34150-5102-435b-a487-84dd5803a228}</Project>
       <Name>CommonServiceLocator.SolrNet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SolrNet.Tests\SolrNet.Tests.csproj">
-      <Project>{f3fe6ef5-cf5c-4461-8691-4a498a463fd5}</Project>
-      <Name>SolrNet.Tests</Name>
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
+      <Project>{48DA5170-B96E-485C-941D-0D7797DCA0EF}</Project>
+      <Name>SolrNet.Tests.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">
       <Project>{ceeb8690-3e08-4440-b647-787a58e71cfa}</Project>

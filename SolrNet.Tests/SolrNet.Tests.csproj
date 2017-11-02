@@ -105,7 +105,6 @@
     <Compile Include="GenericDictionaryDocumentVisitorTests.cs" />
     <Compile Include="LocationTests.cs" />
     <Compile Include="MergeCommandTests.cs" />
-    <Compile Include="Mocks\MSolrFieldSerializer.cs" />
     <Compile Include="MoneyTests.cs" />
     <Compile Include="ExtractCommandTests.cs" />
     <Compile Include="AddCommandTests.cs" />
@@ -122,32 +121,11 @@
     <Compile Include="ExceptionTests.cs" />
     <Compile Include="FieldParserTests.cs" />
     <Compile Include="HttpTests.cs" />
-    <Compile Include="Integration.Sample\Product.cs" />
-    <Compile Include="Integration.Sample\ProductLoose.cs" />
     <Compile Include="LocalParamsTests.cs" />
     <Compile Include="MappedPropertiesIsInSolrSchemaRuleTests.cs" />
     <Compile Include="MappingManagerTests.cs" />
     <Compile Include="MappingTypesAreCompatibleWithSolrTypesRuleTests.cs" />
     <Compile Include="MemoizingMappingManagerTests.cs" />
-    <Compile Include="MockConnection.cs" />
-    <Compile Include="Mocks\HttpWebRequest.cs" />
-    <Compile Include="Mocks\HttpWebRequestFactory.cs" />
-    <Compile Include="Mocks\HttpWebResponse.cs" />
-    <Compile Include="Mocks\MMappingValidator.cs" />
-    <Compile Include="Mocks\MServiceLocator.cs" />
-    <Compile Include="Mocks\MServiceProvider.cs" />
-    <Compile Include="Mocks\MSolrMoreLikeThisHandlerQueryResultsParser.cs" />
-    <Compile Include="Mocks\MSolrOperations.cs" />
-    <Compile Include="Mocks\MReadOnlyMappingManager.cs" />
-    <Compile Include="Mocks\MSolrAbstractResponseParser.cs" />
-    <Compile Include="Mocks\MSolrBasicOperations.cs" />
-    <Compile Include="Mocks\MSolrCache.cs" />
-    <Compile Include="Mocks\MSolrConnection.cs" />
-    <Compile Include="Mocks\MSolrDocumentSerializer.cs" />
-    <Compile Include="Mocks\MSolrExtractResponseParser.cs" />
-    <Compile Include="Mocks\MSolrFieldParser.cs" />
-    <Compile Include="Mocks\MSolrHeaderResponseParser.cs" />
-    <Compile Include="Mocks\MSolrQuerySerializer.cs" />
     <Compile Include="MoreLikeThisHandlerMatchResponseParserTests.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="MultivaluedMappedToCollectionRuleTests.cs" />
@@ -173,14 +151,7 @@
     <Compile Include="SolrSchemaParserTests.cs" />
     <Compile Include="SolrStatusResponseParserTests.cs" />
     <Compile Include="UniqueKeyMatchesMappingRuleTests.cs" />
-    <Compile Include="Utils\CompressionUtils.cs" />
-    <Compile Include="Utils\EmbeddedResource.cs" />
-    <Compile Include="Utils\LoggingConnection.cs" />
-    <Compile Include="Utils\Moroco.cs" />
-    <Compile Include="Utils\Node.cs" />
-    <Compile Include="Utils\ProfilerFacility.cs" />
     <Compile Include="Utils\ProfilerTests.cs" />
-    <Compile Include="Utils\ProfilingContainer.cs" />
     <Compile Include="QueryOptionsTests.cs" />
     <Compile Include="RandomSortTests.cs" />
     <Compile Include="SolrDocumentSerializerTestsDocumentClasses.cs" />
@@ -212,6 +183,10 @@
     <ProjectReference Include="..\Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj">
       <Project>{0F21F5B6-5986-4301-B0F7-FD9800DB8091}</Project>
       <Name>Castle.Facilities.SolrNetIntegration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
+      <Project>{48da5170-b96e-485c-941d-0d7797dca0ef}</Project>
+      <Name>SolrNet.Tests.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">
       <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>

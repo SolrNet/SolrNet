@@ -118,9 +118,9 @@
       <Project>{D3312CD6-C4E8-4903-9B9D-95175B85EEE8}</Project>
       <Name>NHibernate.SolrNet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SolrNet.Tests\SolrNet.Tests.csproj">
-      <Project>{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}</Project>
-      <Name>SolrNet.Tests</Name>
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
+      <Project>{48DA5170-B96E-485C-941D-0D7797DCA0EF}</Project>
+      <Name>SolrNet.Tests.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">
       <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>

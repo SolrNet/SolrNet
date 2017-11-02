@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>SolrNet.Cloud.Core</id>
-    <version>0.8.1-beta</version>
+    <version>1.0.0</version>
     <authors>Mauricio Scheffer and contributors</authors>
     <owners>Mauricio Scheffer</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,13 +12,13 @@
     <repository type="git" url="https://github.com/solrnet/solrnet" />
     <dependencies>
       <group targetFramework=".NETFramework4.6">
-        <dependency id="SolrNet" version="0.8.1" exclude="Build,Analyzers" />
-        <dependency id="ZooKeeperNetEx" version="3.4.9.4" exclude="Build,Analyzers" />
+        <dependency id="SolrNet" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="ZooKeeperNetEx" version="3.4.10.1" exclude="Build,Analyzers" />
         <dependency id="Newtonsoft.Json" version="10.0.3" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="SolrNet" version="0.8.1" exclude="Build,Analyzers" />
-        <dependency id="ZooKeeperNetEx" version="3.4.9.4" exclude="Build,Analyzers" />
+        <dependency id="SolrNet" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="ZooKeeperNetEx" version="3.4.10.1" exclude="Build,Analyzers" />
         <dependency id="Newtonsoft.Json" version="10.0.3" exclude="Build,Analyzers" />
       </group>
     </dependencies>

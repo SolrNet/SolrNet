@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Autofac module for SolrNet. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x. </description>
     <language>en-US</language>
+    <iconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</iconUrl>
     <dependencies>
       <dependency id="SolrNet.Core" version="1.0.0" />
       <dependency id="Autofac" version="4.6.1" />

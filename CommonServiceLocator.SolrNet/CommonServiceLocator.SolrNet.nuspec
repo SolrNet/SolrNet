@@ -8,6 +8,7 @@
     <owners>Mauricio Scheffer</owners>
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
+    <iconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x. This package comes with a build in easy to use Dependency Injection for SolrNet.Core.
     </description>

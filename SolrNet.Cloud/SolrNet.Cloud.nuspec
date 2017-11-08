@@ -8,7 +8,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
-    <description>Apache SolrCloud client</description>
+    <iconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</iconUrl>
+    <description>
+      SolrNet.Cloud is a .NET Open Source client for Apache SolrCloud. This version of SolrNet.Cloud is compatible with Solr 1.x to Solr 7.x.
+      This is the SolrNet.Cloud.Core package, and should be used in combination with any of our easy to use Dependency Injection SolrNet.Cloud integration libraries.
+    </description>
     <repository type="git" url="https://github.com/solrnet/solrnet" />
     <dependencies>
       <group targetFramework=".NETFramework4.6">

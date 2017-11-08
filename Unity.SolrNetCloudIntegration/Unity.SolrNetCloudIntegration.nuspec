@@ -8,7 +8,7 @@
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Unity integration for SolrNet Cloud</description>
+    <description>Unity integration for SolrNet.Cloud. This version of SolrNet.Cloud is compatible with Solr 1.x to Solr 7.x. </description>
     <language>en-US</language>
     <dependencies>
       <dependency id="Unity" version="4.0.1" />

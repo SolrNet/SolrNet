@@ -9,7 +9,7 @@
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Apache SolrCloud client with buildin Dependency Injection.</description>
+    <description>SolrNet.Cloud is a .NET Open Source client for Apache SolrCloud. This version of SolrNet.Cloud is compatible with Solr 1.x to Solr 7.x. This package comes with buildin Dependency Injection.</description>
     <language>en-US</language>
     <dependencies>
       <dependency id="CommonServiceLocator" version="2.0.1" />

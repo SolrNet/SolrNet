@@ -9,7 +9,7 @@
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Autofac module for SolrNet</description>
+    <description>Autofac module for SolrNet. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x. </description>
     <language>en-US</language>
     <dependencies>
       <dependency id="SolrNet.Core" version="1.0.0" />

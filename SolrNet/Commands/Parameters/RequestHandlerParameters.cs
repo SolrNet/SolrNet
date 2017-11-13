@@ -7,21 +7,17 @@ namespace SolrNet.Commands.Parameters
     /// </summary>
     public class RequestHandlerParameters
     {
-        private readonly string handlerUrl;
 
         /// <summary>
         /// URL for query request handler.
         /// </summary>
-        public string HandlerUrl
-        {
-            get { return handlerUrl; }
-        }
+        public string HandlerUrl { get; }
 
         public RequestHandlerParameters(string url)
         {
             if (string.IsNullOrEmpty(url))
                 throw new ArgumentException("url");
-            this.handlerUrl = url;
+            this.HandlerUrl = url;
         }
     }
 }

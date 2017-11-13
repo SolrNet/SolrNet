@@ -662,7 +662,11 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <returns>query results</returns>
         public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
+<<<<<<< HEAD
             var handler = options?.RequestHandler != null ? options.RequestHandler.HandlerUrl : DefaultHandler;
+=======
+            var handler = options?.RequestHandler?.HandlerUrl ?? Handler;
+>>>>>>> a4b30490f659a96891499a041fb139f7eaac0a42
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
             var r = connection.Get(handler, param);
@@ -686,7 +690,11 @@ namespace SolrNet.Impl {
 
         public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options)
         {
+<<<<<<< HEAD
             var handler = options?.RequestHandler != null ? options.RequestHandler.HandlerUrl : DefaultHandler;
+=======
+            var handler = options?.RequestHandler?.HandlerUrl ?? Handler;
+>>>>>>> a4b30490f659a96891499a041fb139f7eaac0a42
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
             var r = await connection.GetAsync(handler, param);

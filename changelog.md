@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.0 (development)
+- Added support for custom request handlers (RequestHandlerParameters)
+- Breaking change: SolrQueryExecuter Handler property changed to DefaultHandler
+
 ## 0.8.1 (development)
 * Added Range Faceting support
 * Added Interval Faceting support

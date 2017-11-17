@@ -1,6 +1,8 @@
 # Change Log
 
 ## 1.0.0 (development)
+- **SolrNet.Cloud**: First class SolrCloud support
+- Move to semantic versioning
 - Added support for custom request handlers (RequestHandlerParameters)
 - Breaking change: SolrQueryExecuter Handler property changed to DefaultHandler
 
@@ -11,8 +13,6 @@
 * Decoupled shared unit test code.
 
 ## 0.8.1 (2017-09-27)
-* **SolrNet.Cloud**: First class SolrCloud support
-* Move to semantic versioning
 * Added Range Faceting support
 * Added Interval Faceting support
 * Marked Date Faceting as obsolete.

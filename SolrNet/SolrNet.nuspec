@@ -2,13 +2,16 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>SolrNet.Core</id>
-    <version>0.9.1</version>
+    <version>1.0.0</version>
     <authors>Mauricio Scheffer and contributors</authors>
     <owners>Mauricio Scheffer</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
-    <description>Apache Solr client</description>
+    <iconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</iconUrl>
+    <description>SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.
+    This is the SolrNet.Core package, and should be used in combination with any of our easy to use Dependency Injection SolrNet integration libraries.
+    </description>
     <dependencies>
       <group targetFramework=".NETFramework4.6">
         <dependency id="System.ValueTuple" version="4.4.0" exclude="Build,Analyzers" />

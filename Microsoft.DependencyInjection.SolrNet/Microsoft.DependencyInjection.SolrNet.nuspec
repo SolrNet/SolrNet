@@ -2,17 +2,18 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>SolrNet.Microsoft.DependencyInjection</id>
-    <version>0.9.1</version>
+    <version>1.0.0</version>
     <title>SolrNet.Microsoft.DependencyInjection</title>
     <authors>Gidon Junge and contributors</authors>
     <owners>Mauricio Scheffer</owners>
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
+    <iconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>SolrNet extensions for Microsoft.Extensions.DependencyInjection</description>
+    <description>SolrNet extensions for Microsoft.Extensions.DependencyInjection. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</description>
     <language>en-US</language>
     <dependencies>
-      <dependency id="SolrNet.Core" version="[0.9.1]" />
+      <dependency id="SolrNet.Core" version="1.0.0" />
       <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.0.0" />
     </dependencies>
   </metadata>

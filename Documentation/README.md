@@ -51,27 +51,14 @@ If you have questions about Solr itself (i.e. not specifically about SolrNet) us
 
 ### Contributing
 
-[Paul Bouwer has written an excellent guide for contributors](http://blog.paulbouwer.com/2010/12/27/git-github-and-an-open-source-net-project-introduction/) starting from scratch (no previous Git knowledge required).  
-In a nutshell:
+See [Contributing](../contributing.md)
 
- * Don't worry about code formatting, styles, etc.
- * Tests are a must. Without tests, changes will not be merged, except for very specific cases.
- * Whenever possible, favor immutable classes and pure code.
- * If you're adding a new feature or making a breaking change, update the corresponding documentation.
- * SolrNet has recently adopted using [Gitflow workflow](http://nvie.com/posts/a-successful-git-branching-model/) as its branching strategy, whenever you contribute please from your fork create a pull request with a branch that is up to date. Once confirmed, it will be merged and a new version will be released.
+### Release notes
+
+See [Change Log](../changelog.md)
+
 
 You can also contribute by donating a few bucks:
 
 [![Click here to lend your support to: SolrNet and make a donation at www.pledgie.com !](http://www.pledgie.com/campaigns/11245.png?skin_name=chrome)](http://www.pledgie.com/campaigns/11245)
 
-### Release notes
-
- * [Initial release](http://bugsquash.blogspot.com/2007/11/introducing-solrnet.html)
- * [0.2.0](http://bugsquash.blogspot.com/2009/02/solrnet-02-released.html)
- * [0.2.1](http://bugsquash.blogspot.com/2009/02/solrnet-021-released.html)
- * [0.2.2](http://bugsquash.blogspot.com/2009/05/solrnet-022-released.html)
- * [0.2.3b1](http://bugsquash.blogspot.com/2009/09/solrnet-023-beta1.html)
- * [0.3.0](http://bugsquash.blogspot.com/2010/06/solr-030-beta1.html)
- * [0.3.1](http://bugsquash.blogspot.com/2011/03/solrnet-031-released.html)
- * [0.4.0a1](http://bugsquash.blogspot.com/2011/06/solrnet-040-alpha-1-released.html)
- * [0.5.1] Includes spellchecker parser issue

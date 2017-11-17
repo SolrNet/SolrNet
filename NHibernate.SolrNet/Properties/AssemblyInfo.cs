@@ -20,8 +20,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("NHibernate.SolrNet")]
 [assembly: AssemblyProduct("NHibernate.SolrNet")]
 [assembly: AssemblyCopyright("Copyright Mauricio Scheffer 2007-2017")]
-[assembly: AssemblyVersion("0.9.1.1001")]
-[assembly: AssemblyFileVersion("0.9.1.1001")]
+[assembly: AssemblyVersion("1.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.*")]
 [assembly: AssemblyInformationalVersion("4758ae1c6550363fb060857db120ff3aed438052")]
 [assembly: AssemblyDelaySign(false)]
 

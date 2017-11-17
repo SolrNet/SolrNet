@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
+    <AssemblyName>CommonServiceLocator.SolrNet.Cloud</AssemblyName>
+    <RootNamespace>CommonServiceLocator.SolrNet.Cloud</RootNamespace>
+    <Version>1.0.0</Version>
+    <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
+    <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/solrnet/solrnet</PackageProjectUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj" />
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
+    <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="2.0.1" />
+  </ItemGroup>
+</Project>

@@ -140,6 +140,11 @@ namespace SolrNet.Impl {
             return extractResponseParser.Parse(xml);
         }
 
+        public ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            var atomicUpdate = new AtomicUpdateCommand(uniqueKey, id, updateSpecs, parameters);
+            return SendAndParseHeader(atomicUpdate);
+        }
 
         public ResponseHeader SendAndParseHeader(ISolrCommand cmd) {
             var r = Send(cmd);

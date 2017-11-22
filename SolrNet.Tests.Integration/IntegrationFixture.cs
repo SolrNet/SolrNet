@@ -559,15 +559,17 @@ namespace SolrNet.Tests.Integration {
         }
 
         [Fact]
-        public void MoreLikeThisHandler() {
+        public void MoreLikeThisHandler()
+        {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             solr.Delete(SolrQuery.All);
             solr.Commit();
             AddSampleDocs();
-            var mltParams = new MoreLikeThisHandlerParameters(new[] {"cat", "name"}) {
-                MatchInclude = true, 
-                MinTermFreq = 1, 
-                MinDocFreq = 1, 
+            var mltParams = new MoreLikeThisHandlerParameters(new[] { "cat", "name" })
+            {
+                MatchInclude = true,
+                MinTermFreq = 1,
+                MinDocFreq = 1,
                 ShowTerms = InterestingTerms.List,
             };
             var q = SolrMLTQuery.FromQuery(new SolrQuery("id:UTF8TEST"));
@@ -575,11 +577,29 @@ namespace SolrNet.Tests.Integration {
             Assert.Equal(2, results.Count);
             Assert.NotNull(results.Match);
             Assert.Equal("UTF8TEST", results.Match.Id);
-            Assert.True (results.InterestingTerms.Count > 0);
-            foreach (var t in results.InterestingTerms) {
+            Assert.True(results.InterestingTerms.Count > 0);
+            foreach (var t in results.InterestingTerms)
+            {
                 Console.WriteLine("Interesting term: {0} ({1})", t.Key, t.Value);
             }
-            
+        }
+
+        [Fact]
+        public void AtomicUpdate()
+        {
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+ 
+            solr.AddRange(products);
+            solr.Commit();
+ 
+            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("features", AtomicUpdateType.Add, "Feature 3"), new AtomicUpdateSpec("price", AtomicUpdateType.Inc, "1"), new AtomicUpdateSpec("manu", AtomicUpdateType.Set, "MyCo") };
+            solr.AtomicUpdate("DEL12345", updateSpecs);
+            solr.Commit();
+ 
+            Product productAfterUpdate = solr.Query("id:DEL12345")[0];
+            Assert.Equal(3, productAfterUpdate.Features.Count);
+            Assert.Equal("MyCo", productAfterUpdate.Manufacturer);
+            Assert.Equal(93, productAfterUpdate.Price);
         }
     }
 }

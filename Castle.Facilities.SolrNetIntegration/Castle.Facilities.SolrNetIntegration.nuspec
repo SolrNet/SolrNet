@@ -12,7 +12,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Windsor facility for SolrNet. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</description>
     <language>en-US</language>
-
     <dependencies>
       <group targetFramework=".NETFramework4.6">
         <dependency id="SolrNet.Core" version="1.0.0" />
@@ -25,15 +24,11 @@
         <dependency id="Castle.Windsor" version="4.1.0" />
       </group>
     </dependencies>
-  
-    
   </metadata>
   <files>
-    <files>
-      <file src="bin\release\net46\Castle.Facilities.SolrNetIntegration.dll" target="lib\net46\Castle.Facilities.SolrNetIntegration.dll" />
-      <file src="bin\release\net46\Castle.Facilities.SolrNetIntegration.pdb" target="lib\net46\Castle.Facilities.SolrNetIntegration.pdb" />
-      <file src="bin\release\netstandard2.0\Castle.Facilities.SolrNetIntegration.dll" target="lib\netstandard2.0\Castle.Facilities.SolrNetIntegration.dll" />
-      <file src="bin\release\netstandard2.0\Castle.Facilities.SolrNetIntegration.pdb" target="lib\netstandard2.0\Castle.Facilities.SolrNetIntegration.pdb" />
-    </files>
+    <file src="bin\release\net46\Castle.Facilities.SolrNetIntegration.dll" target="lib\net46\Castle.Facilities.SolrNetIntegration.dll" />
+    <file src="bin\release\net46\Castle.Facilities.SolrNetIntegration.pdb" target="lib\net46\Castle.Facilities.SolrNetIntegration.pdb" />
+    <file src="bin\release\netstandard2.0\Castle.Facilities.SolrNetIntegration.dll" target="lib\netstandard2.0\Castle.Facilities.SolrNetIntegration.dll" />
+    <file src="bin\release\netstandard2.0\Castle.Facilities.SolrNetIntegration.pdb" target="lib\netstandard2.0\Castle.Facilities.SolrNetIntegration.pdb" />
   </files>
 </package>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SolrNet.Cloud</id>
+    <version>1.0.0</version>
+    <title>SolrNet</title>
+    <authors>Mauricio Scheffer and contributors</authors>
+    <owners>Mauricio Scheffer</owners>
+    <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
+    <iconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SolrNet.Cloud is a .NET Open Source client for Apache SolrCloud. This version of SolrNet.Cloud is compatible with Solr 1.x to Solr 7.x. This package comes with buildin Dependency Injection.</description>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="CommonServiceLocator" version="2.0.1" />
+      <dependency id="SolrNet.Cloud.Core" version="1.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+      <file src="bin\release\net46\CommonServiceLocator.SolrNet.Cloud.dll" target="lib\net46\CommonServiceLocator.SolrNet.Cloud.dll" />
+      <file src="bin\release\net46\CommonServiceLocator.SolrNet.Cloud.pdb" target="lib\net46\CommonServiceLocator.SolrNet.Cloud.pdb" />
+      <file src="bin\release\netstandard2.0\CommonServiceLocator.SolrNet.Cloud.dll" target="lib\netstandard2.0\CommonServiceLocator.SolrNet.Cloud.dll" />
+      <file src="bin\release\netstandard2.0\CommonServiceLocator.SolrNet.Cloud.pdb" target="lib\netstandard2.0\CommonServiceLocator.SolrNet.Cloud.pdb" />
+  </files>
+</package>

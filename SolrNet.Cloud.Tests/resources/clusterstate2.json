@@ -1,0 +1,49 @@
+{
+    "myconf": {
+        "replicationFactor": "1",
+        "shards": {
+            "shard1": {
+                "range": "80000000-ffffffff",
+                "state": "active",
+                "replicas": {
+                    "core_node1": {
+                        "core": "myconf_shard1",
+                        "base_url": "http://192.168.0.105:8983/solr",
+                        "node_name": "192.168.0.105:8983_solr",
+                        "state": "active"
+                    },
+                    "core_node3": {
+                        "core": "myconf_shard1",
+                        "base_url": "http://192.168.0.102:8983/solr",
+                        "node_name": "192.168.0.102:8983_solr",
+                        "state": "active",
+                        "leader": "true"
+                    }
+                }
+            },
+            "shard2": {
+                "range": "0-7fffffff",
+                "state": "active",
+                "replicas": {
+                    "core_node2": {
+                        "core": "myconf_shard2",
+                        "base_url": "http://192.168.0.105:8983/solr",
+                        "node_name": "192.168.0.105:8983_solr",
+                        "state": "active"
+                    },
+                    "core_node4": {
+                        "core": "myconf_shard2",
+                        "base_url": "http://192.168.0.102:8983/solr",
+                        "node_name": "192.168.0.102:8983_solr",
+                        "state": "active",
+                        "leader": "true"
+                    }
+                }
+            }
+        },
+        "router": { "name": "compositeId" },
+        "maxShardsPerNode": "1",
+        "autoAddReplicas": "false",
+        "autoCreated": "true"
+    }
+}

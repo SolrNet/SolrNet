@@ -51,17 +51,12 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Default Solr query handler
         /// </summary>
-        public static readonly string DefaultHandler = "/select";
+        public string DefaultHandler { get; set; } = "/select";
 
         /// <summary>
         /// Default Solr handler for More Like This queries
         /// </summary>
         public static readonly string DefaultMoreLikeThisHandler = "/mlt";
-
-        /// <summary>
-        /// Solr query request handler to use. By default "/select"
-        /// </summary>
-        public string Handler { get; set; }
 
         /// <summary>
         /// Solr request handler to use for MoreLikeThis-handler queries. By default "/mlt"
@@ -83,7 +78,6 @@ namespace SolrNet.Impl {
             this.querySerializer = querySerializer;
             this.facetQuerySerializer = facetQuerySerializer;
             DefaultRows = ConstDefaultRows;
-            Handler = DefaultHandler;
             MoreLikeThisHandler = DefaultMoreLikeThisHandler;
         }
 
@@ -668,9 +662,10 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <returns>query results</returns>
         public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
+            var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
-            var r = connection.Get(Handler, param);
+            var r = connection.Get(handler, param);
             var xml = XDocument.Parse(r);
             resultParser.Parse(xml, results);
             return results;
@@ -691,9 +686,10 @@ namespace SolrNet.Impl {
 
         public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options)
         {
+            var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
-            var r = await connection.GetAsync(Handler, param);
+            var r = await connection.GetAsync(handler, param);
             var xml = XDocument.Parse(r);
             resultParser.Parse(xml, results);
             return results;

@@ -2,17 +2,18 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>SolrNet.Autofac</id>
-    <version>0.9.1</version>
+    <version>1.0.0</version>
     <title>SolrNet.Autofac</title>
     <authors>Mauricio Scheffer and contributors</authors>
     <owners>Mauricio Scheffer</owners>
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Autofac module for SolrNet</description>
+    <description>Autofac module for SolrNet. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x. </description>
     <language>en-US</language>
+    <iconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</iconUrl>
     <dependencies>
-      <dependency id="SolrNet.Core" version="[0.9.1]" />
+      <dependency id="SolrNet.Core" version="1.0.0" />
       <dependency id="Autofac" version="4.6.1" />
     </dependencies>
   </metadata>

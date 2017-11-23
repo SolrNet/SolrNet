@@ -80,6 +80,14 @@ namespace SolrNet.Tests
         public virtual string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             var param = new List<KeyValuePair<string, string>>(parameters);
+            foreach (var e in expectations)
+            {
+                if (e.Key == "handler") {
+                    Assert.Equal(relativeUrl, e.Value);
+                    param.Add(e);
+                }
+
+            }   
             Assert.Equal(expectations.Count, param.Count);
             foreach (var p in param)
                 Assert.True(expectations.Contains(p));

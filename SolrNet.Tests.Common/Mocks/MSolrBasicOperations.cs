@@ -81,6 +81,11 @@ namespace SolrNet.Tests.Mocks {
             return delete.Invoke(ids, q, parameters);
         }
 
+        public ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<ResponseHeader> CommitAsync(CommitOptions options)
         {
             throw new NotImplementedException();

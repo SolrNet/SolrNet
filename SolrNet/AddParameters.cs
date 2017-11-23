@@ -41,6 +41,16 @@ namespace SolrNet
     }
 
     /// <summary>
+    /// Contains parameters than can be specified when atomically updating a document from the index.
+    /// </summary>
+    /// <remarks>
+    /// CommitWithin works in SOLR 3.6+ - see https://issues.apache.org/jira/browse/SOLR-2280
+    /// </remarks>
+    public class AtomicUpdateParameters : UpdateParameters{
+ 
+    }
+
+    /// <summary>
     /// Contains parameters that can be specified when making any update to the index.
     /// </summary>
     public abstract class UpdateParameters {

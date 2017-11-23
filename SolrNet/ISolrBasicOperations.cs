@@ -141,5 +141,15 @@ namespace SolrNet {
         /// Sends a custom command, returns parsed extract response from xml response
         /// </summary>
         Task<ExtractResponse> SendAndParseExtractAsync(ISolrCommand cmd);
+
+        /// <summary>
+        /// Updates the document with the provided ID
+        /// </summary>
+        /// <param name="uniqueKey">Name of the unique key field</param>
+        /// <param name="id">ID of the document to update</param>
+        /// <param name="updateSpecs">Specifications for the updates</param>
+        /// <param name="parameters">The atomic update parameters</param>
+        /// <returns></returns>
+        ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
     }
 }

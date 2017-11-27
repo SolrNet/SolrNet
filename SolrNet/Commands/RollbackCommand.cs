@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -23,6 +24,11 @@ namespace SolrNet.Commands {
     public class RollbackCommand : ISolrCommand {
         public string Execute(ISolrConnection connection) {
             return connection.Post("/update", "<rollback/>");
+        }
+
+        public Task<string> ExecuteAsync(ISolrConnection connection)
+        {
+            return connection.PostAsync("/update", "<rollback/>");
         }
     }
 }

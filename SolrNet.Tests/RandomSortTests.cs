@@ -15,43 +15,43 @@
 #endregion
 
 using System;
-using MbUnit.Framework;
+using Xunit;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class RandomSortTests {
-        [Test]
+        [Fact]
         public void Random() {
             var r = new RandomSortOrder("random");
             var rndSort = r.ToString();
             Console.WriteLine(rndSort);
-            Assert.Like(rndSort, "random_\\d+ asc");
+            Assert.Matches("random_\\d+ asc", rndSort);
         }
 
-        [Test]
+        [Fact]
         public void RandomWithSeed() {
             const string seed = "234asd";
             var r = new RandomSortOrder("random", seed);
             var rndSort = r.ToString();
             Console.WriteLine(rndSort);
-            Assert.Like(rndSort, string.Format("random_{0} asc", seed));
+            Assert.Equal(rndSort, string.Format("random_{0} asc", seed), true,true,true);
         }
 
-        [Test]
+        [Fact]
         public void RandomWithOrder() {
             var r = new RandomSortOrder("random", Order.DESC);
             var rndSort = r.ToString();
             Console.WriteLine(rndSort);
-            Assert.Like(rndSort, "random_\\d+ desc");
+            Assert.Matches("random_\\d+ desc", rndSort );
         }
 
-        [Test]
+        [Fact]
         public void RandomWithSeedAndOrder() {
             const string seed = "234asd";
             var r = new RandomSortOrder("random", seed, Order.DESC);
             var rndSort = r.ToString();
             Console.WriteLine(rndSort);
-            Assert.Like(rndSort, string.Format("random_{0} desc", seed));
+            Assert.Equal(rndSort, string.Format("random_{0} desc", seed), true, true, true);
         }
     }
 }

@@ -1,5 +1,5 @@
 using System.Configuration;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet;
 using SolrNet.Impl;
 using StructureMap.Configuration.DSL;
@@ -7,16 +7,18 @@ using StructureMap.SolrNetIntegration.Config;
 
 namespace StructureMap.SolrNetIntegration.Tests
 {
-    [TestFixture]
+
     public class StructureMapMultiCoreFixture
     {
-        [SetUp]
-        public void SetUp()
+
+        private readonly IContainer Container;
+        public StructureMapMultiCoreFixture()
         {
             var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
-            ObjectFactory.Initialize(c => 
+
+            Container = new Container(c=> 
             {
-                c.Scan(s => 
+                c.Scan(s =>
                 {
                     s.Assembly(typeof(SolrNetRegistry).Assembly);
                     s.Assembly(typeof(SolrConnection).Assembly);
@@ -26,25 +28,27 @@ namespace StructureMap.SolrNetIntegration.Tests
             });
         }
 
-        [Test]
+        [Fact]
         public void Get_SolrOperations_for_Entity()
         {
-            var solrOperations = ObjectFactory.Container.GetInstance<ISolrOperations<Entity>>();
-            Assert.IsNotNull(solrOperations);
+            var solrOperations = Container.GetInstance<ISolrOperations<Entity>>();
+            Assert.NotNull(solrOperations);
         }
 
-        [Test]
+        [Fact]
         public void Get_SolrOperations_for_Entity2()
         {
-            var solrOperations2 = ObjectFactory.Container.GetInstance<ISolrOperations<Entity2>>("entity2");
-            Assert.IsNotNull(solrOperations2);
+            var solrOperations2 = Container.GetInstance<ISolrOperations<Entity2>>("entity2");
+            Assert.NotNull(solrOperations2);
         }
 
-        [Test]
+        [Fact]
         public void Same_document_type_different_core_url()
         {
-            var core1 = ObjectFactory.Container.GetInstance<ISolrOperations<Entity2>>("entity2");
-            var core2 = ObjectFactory.Container.GetInstance<ISolrOperations<Entity2>>("entity3");
+            var core1 = Container.GetInstance<ISolrOperations<Entity2>>("entity2");
+            var core2 = Container.GetInstance<ISolrOperations<Entity2>>("entity3");
         }
+
+
     }
 }

@@ -14,7 +14,9 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using SolrNet.Utils;
@@ -42,7 +44,7 @@ namespace SolrNet.Impl.ResponseParsers {
         /// <param name="results"></param>
         /// <param name="node"></param>
         /// <returns></returns>
-        public IDictionary<string, HighlightedSnippets> ParseHighlighting(IEnumerable<T> results, XElement node) {
+        public static IDictionary<string, HighlightedSnippets> ParseHighlighting(IEnumerable<T> results, XElement node) {
             var highlights = new Dictionary<string, HighlightedSnippets>();
             var docRefs = node.Elements("lst");
             foreach (var docRef in docRefs) {
@@ -57,15 +59,15 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="nodes"></param>
         /// <returns></returns>
-        public HighlightedSnippets ParseHighlightingFields(IEnumerable<XElement> nodes)
-        {
+        public static HighlightedSnippets ParseHighlightingFields(IEnumerable<XElement> nodes) {
             var fields = new HighlightedSnippets();
-            foreach (var field in nodes){
+            foreach (var field in nodes) {
                 var fieldName = field.Attribute("name").Value;
-                var snippets = new List<string>();
-                foreach (var str in field.Elements("str")){
-                    snippets.Add(str.Value);
-                }
+                ICollection<string> snippets = field.Elements("str")
+                    .Select(str => str.Value)
+                    .ToList();
+                if (snippets.Count == 0 && !string.IsNullOrEmpty(field.Value))
+                    snippets = new[] { field.Value };
                 fields.Add(fieldName, snippets);
             }
             return fields;

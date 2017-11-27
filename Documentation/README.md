@@ -4,10 +4,13 @@ SolrNet does not attempt to abstract much over Solr, it's assumed that you know 
 
 If you're not familiar with Solr, take your time to follow the [Solr tutorial](http://lucene.apache.org/solr/tutorial.html), see the [FAQ](http://wiki.apache.org/solr/FAQ) and the [docs](http://wiki.apache.org/solr/FrontPage ). Consider getting a [book](http://lucene.apache.org/solr/books.html).
 
+<!-- This page documents SolrNet features in the master branch. For version-specific documentation, see the Documentation directory on the corresponding version branch. For example https://github.com/mausch/SolrNet/blob/0.4.x/Documentation/README.md -->
+
 ### Downloads
 
-It's currently recommended to get the latest binaries directly from the [build server](http://teamcity.codebetter.com/viewType.html?buildTypeId=bt290&tab=buildTypeHistoryList&guest=1) (see "Artifacts").  
-Otherwise, NuGet packages (currently outdated) are available:
+It's currently recommended to get the latest binaries directly from the build server. [![Build status](https://ci.appveyor.com/api/projects/status/0oj6vqpnoyw08jtq?svg=true)](https://ci.appveyor.com/project/XavierMorera/solrnet-crl26). <!--The build server also has a NuGet feed with these nightly builds: https://ci.appveyor.com/nuget/solrnet-022x5w7kmuba -->
+
+Otherwise, NuGet packages at nuget.org (currently outdated due to lack of documentation) are available:
 
  * [SolrNet](https://www.nuget.org/packages/SolrNet/) (core library)
  * [SolrNet.Windsor](https://www.nuget.org/packages/SolrNet.Windsor/)
@@ -36,6 +39,7 @@ Otherwise, NuGet packages (currently outdated) are available:
  * [NHibernate integration](NHibernate-integration.md)
  * [Accessing multiple Solr cores / instances](Multi-core-instance.md)
  * [Mapping validation](Schema-Mapping-validation.md)
+ * [Binary document upload](Extract.md)
  * [Sample web application](Sample-application.md)
  * [FAQ](FAQ.md)
  * [Websites, products and companies using SolrNet](Powered-by-SolrNet.md)
@@ -54,6 +58,7 @@ In a nutshell:
  * Tests are a must. Without tests, changes will not be merged, except for very specific cases.
  * Whenever possible, favor immutable classes and pure code.
  * If you're adding a new feature or making a breaking change, update the corresponding documentation.
+ * SolrNet has recently adopted using [Gitflow workflow](http://nvie.com/posts/a-successful-git-branching-model/) as its branching strategy, whenever you contribute please from your fork create a pull request with a branch that is up to date. Once confirmed, it will be merged and a new version will be released.
 
 You can also contribute by donating a few bucks:
 
@@ -69,3 +74,4 @@ You can also contribute by donating a few bucks:
  * [0.3.0](http://bugsquash.blogspot.com/2010/06/solr-030-beta1.html)
  * [0.3.1](http://bugsquash.blogspot.com/2011/03/solrnet-031-released.html)
  * [0.4.0a1](http://bugsquash.blogspot.com/2011/06/solrnet-040-alpha-1-released.html)
+ * [0.5.1] Includes spellchecker parser issue

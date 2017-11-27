@@ -18,29 +18,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl;
 using SolrNet.Impl.FieldSerializers;
 
-namespace SolrNet.Tests {
-    [TestFixture]
-    public class SolrDictionarySerializerTests {
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Serialize_null() {
+namespace SolrNet.Tests
+{
+
+    public class SolrDictionarySerializerTests
+    {
+        [Fact]
+        public void Serialize_null()
+        {
             var serializer = GetSerializer();
-            serializer.Serialize(null, null);
+            Assert.Throws<ArgumentNullException>(() => serializer.Serialize(null, null));
         }
 
-        [Test]
-        public void Serialize_empty() {
+        [Fact]
+        public void Serialize_empty()
+        {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object>(), null);
-            Assert.AreEqual(xml.Nodes().Count(), 0);
+            Assert.Equal(xml.Nodes().Count(), 0);
         }
 
-        [Test]
-        public void Serialize_string() {
+        [Fact]
+        public void Serialize_string()
+        {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object> {
                 {"one", "uno"}
@@ -48,16 +52,18 @@ namespace SolrNet.Tests {
             AssertSerializedField(xml, "uno");
         }
 
-        private static void AssertSerializedField(XElement docNode, string value) {
-            Assert.AreEqual(docNode.Nodes().Count(), 1);
+        private static void AssertSerializedField(XElement docNode, string value)
+        {
+            Assert.Equal(docNode.Nodes().Count(), 1);
             var fieldNode = docNode.Element("field");
-            Assert.IsNotNull(fieldNode);
-            Assert.AreEqual("one", fieldNode.Attribute("name").Value);
-            Assert.AreEqual(value, fieldNode.Value);
+            Assert.NotNull(fieldNode);
+            Assert.Equal("one", fieldNode.Attribute("name").Value);
+            Assert.Equal(value, fieldNode.Value);
         }
 
-        [Test]
-        public void Serialize_int() {
+        [Fact]
+        public void Serialize_int()
+        {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object> {
                 {"one", 1}
@@ -65,8 +71,9 @@ namespace SolrNet.Tests {
             AssertSerializedField(xml, "1");
         }
 
-        [Test]
-        public void Serialize_float() {
+        [Fact]
+        public void Serialize_float()
+        {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object> {
                 {"one", 1.23f}
@@ -74,8 +81,9 @@ namespace SolrNet.Tests {
             AssertSerializedField(xml, "1.23");
         }
 
-        [Test]
-        public void Serialize_double() {
+        [Fact]
+        public void Serialize_double()
+        {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object> {
                 {"one", 1.23d}
@@ -83,8 +91,9 @@ namespace SolrNet.Tests {
             AssertSerializedField(xml, "1.23");
         }
 
-        [Test]
-        public void Serialize_decimal() {
+        [Fact]
+        public void Serialize_decimal()
+        {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object> {
                 {"one", 1.23m}
@@ -92,8 +101,9 @@ namespace SolrNet.Tests {
             AssertSerializedField(xml, "1.23");
         }
 
-        [Test]
-        public void Serialize_DateTime() {
+        [Fact]
+        public void Serialize_DateTime()
+        {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object> {
                 {"one", new DateTime(2000, 1, 2, 12, 23, 34)}
@@ -101,34 +111,61 @@ namespace SolrNet.Tests {
             AssertSerializedField(xml, "2000-01-02T12:23:34Z");
         }
 
-        [Test]
-        public void Serialize_Array() {
+        [Fact]
+        public void Serialize_Array()
+        {
             var serializer = GetSerializer();
             var docNode = serializer.Serialize(new Dictionary<string, object> {
                 {"one", new[] {1,2,3}}
             }, null);
-            Assert.AreEqual(docNode.Nodes().Count(), 3);
+            Assert.Equal(docNode.Nodes().Count(), 3);
             var fieldNodes = docNode.Elements("field").ToList();
-            Assert.AreEqual("1", fieldNodes[0].Value);
-            Assert.AreEqual("2", fieldNodes[1].Value);
-            Assert.AreEqual("3", fieldNodes[2].Value);
+            Assert.Equal("1", fieldNodes[0].Value);
+            Assert.Equal("2", fieldNodes[1].Value);
+            Assert.Equal("3", fieldNodes[2].Value);
         }
 
-        [Test]
-        public void Serialize_List() {
+        [Fact]
+        public void Serialize_List()
+        {
             var serializer = GetSerializer();
             var docNode = serializer.Serialize(new Dictionary<string, object> {
                 {"one", new List<string> {"a", "b", "c"}}
             }, null);
-            Assert.AreEqual(docNode.Nodes().Count(), 3);
+            Assert.Equal(docNode.Nodes().Count(), 3);
             var fieldNodes = docNode.Elements("field").ToList();
-            Assert.AreEqual("a", fieldNodes[0].Value);
-            Assert.AreEqual("b", fieldNodes[1].Value);
-            Assert.AreEqual("c", fieldNodes[2].Value);
+            Assert.Equal("a", fieldNodes[0].Value);
+            Assert.Equal("b", fieldNodes[1].Value);
+            Assert.Equal("c", fieldNodes[2].Value);
         }
 
-        [Test]
-        public void Serialize_KeyValuePair() {
+        [Fact]
+        public void Serialize_SparseList()
+        {
+            var serializer = GetSerializer();
+            var docNode = serializer.Serialize(new Dictionary<string, object> {
+                {"one", new List<string> {"a", null, "b", "c"}}
+            }, null);
+            Assert.Equal(docNode.Nodes().Count(), 3);
+            var fieldNodes = docNode.Elements("field").ToList();
+            Assert.Equal("a", fieldNodes[0].Value);
+            Assert.Equal("b", fieldNodes[1].Value);
+            Assert.Equal("c", fieldNodes[2].Value);
+        }
+
+        [Fact]
+        public void Serialize_EmptyList()
+        {
+            var serializer = GetSerializer();
+            var docNode = serializer.Serialize(new Dictionary<string, object> {
+                {"one", new List<string> {null, null}}
+            }, null);
+            Assert.Equal(docNode.Nodes().Count(), 0);
+        }
+
+        [Fact]
+        public void Serialize_KeyValuePair()
+        {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object> {
                 {"one", new KeyValuePair<string, string>("a", "b")}
@@ -136,7 +173,8 @@ namespace SolrNet.Tests {
             AssertSerializedField(xml, "[a, b]");
         }
 
-        private SolrDictionarySerializer GetSerializer() {
+        private SolrDictionarySerializer GetSerializer()
+        {
             return new SolrDictionarySerializer(new DefaultFieldSerializer());
         }
     }

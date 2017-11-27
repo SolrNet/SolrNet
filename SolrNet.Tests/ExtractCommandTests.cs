@@ -17,39 +17,39 @@
 #endregion
 
 using System;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Commands;
 using SolrNet.Tests.Mocks;
 using SolrNet.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class ExtractCommandTests {
-        [Test]
+        [Fact]
         public void Execute() {
             var parameters = new ExtractParameters(null, "1", "text.doc");
             var conn = new MSolrConnection();
-            conn.postStream += (url, b, stream, kvs) => {
-                Assert.AreEqual("/update/extract", url);
+            conn.postStream += new Moroco.MFunc<string, string, System.IO.Stream, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>>, string>( (url, b, stream, kvs) => {
+                Assert.Equal("/update/extract", url);
                 var p = new[] {
                     KV.Create("literal.id", parameters.Id),
                     KV.Create("resource.name", parameters.ResourceName),
                 };
-                Assert.AreElementsEqualIgnoringOrder(p, kvs);
+                Assert.Equal(p, kvs); //ignore order should be added
                 return "";
-            };
+            });
             var cmd = new ExtractCommand(parameters);
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.postStream.Calls);
+            Assert.Equal(1, conn.postStream.Calls);
         }
 
-        [Test]
+        [Fact]
         public void ExecuteWithAllParameters() {
             var parameters = new ExtractParameters(null, "1", "text.doc");
             var conn = new MSolrConnection();
-            conn.postStream += (url, type, stream, kvs) => {
-                Assert.AreEqual("/update/extract", url);
-                Assert.AreEqual("application/word-document", type);
+            conn.postStream += new Moroco.MFunc<string, string, System.IO.Stream, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>>, string>( (url, type, stream, kvs) => {
+                Assert.Equal("/update/extract", url);
+                Assert.Equal("application/word-document", type);
 
                 var p = new[] {
                     KV.Create("literal.id", parameters.Id),
@@ -68,9 +68,10 @@ namespace SolrNet.Tests {
                     KV.Create("lowernames", "true")
                 };
 
-                Assert.AreElementsEqualIgnoringOrder(p, kvs);
+
+                Assert.Equal(p, kvs); //ignore order should be added
                 return "";
-            };
+            });
 
             var cmd = new ExtractCommand(new ExtractParameters(null, "1", "text.doc") {
                 AutoCommit = true,
@@ -89,11 +90,10 @@ namespace SolrNet.Tests {
                 StreamType = "application/word-document"
             });
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.postStream.Calls);
+            Assert.Equal(1, conn.postStream.Calls);
         }
 
-        [Test]
-        [ExpectedException(typeof (ArgumentException))]
+        [Fact]
         public void ExecuteWithDuplicateIdField() {
             const string DuplicateId = "duplicateId";
             var cmd = new ExtractCommand(new ExtractParameters(null, DuplicateId, "text.doc") {
@@ -102,7 +102,7 @@ namespace SolrNet.Tests {
                     new ExtractField("field2", "value2"),
                 }
             });
-            cmd.Execute(null);
+          Assert.Throws<ArgumentException>(()=>  cmd.Execute(null));
         }
     }
 }

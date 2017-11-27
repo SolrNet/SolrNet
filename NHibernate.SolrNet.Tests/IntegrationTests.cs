@@ -17,20 +17,36 @@
 using System.Collections.Generic;
 using System.Reflection;
 using log4net.Config;
-using MbUnit.Framework;
-using Microsoft.Practices.ServiceLocation;
+using Xunit;
+using CommonServiceLocator;
 using NHibernate.SolrNet.Impl;
 using NHibernate.Tool.hbm2ddl;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Mapping;
+using System;
 
 namespace NHibernate.SolrNet.Tests {
-    [TestFixture]
-    [Category("Integration")]
-    public class IntegrationTests {
-        [Test]
+    
+    [Trait("Category", "Outdated")]
+    [Trait("Category","Integration")]
+    
+    public class IntegrationTests : IDisposable {
+
+        public IntegrationTests()
+        {
+            BasicConfigurator.Configure();
+            SetupSolr();
+
+            cfg = SetupNHibernate();
+
+            cfgHelper = new CfgHelper();
+            cfgHelper.Configure(cfg, true);
+            sessionFactory = cfg.BuildSessionFactory();
+        }
+
+        [Fact]
         public void Insert() {
             using (var session = sessionFactory.OpenSession()) {
                 session.Save(new Entity {
@@ -42,12 +58,12 @@ namespace NHibernate.SolrNet.Tests {
             }
             using (var session = cfgHelper.OpenSession(sessionFactory)) {
                 var entities = session.CreateSolrQuery("solr").List<Entity>();
-                Assert.AreEqual(1, entities.Count);
-                Assert.AreEqual(2, entities[0].Tags.Count);
+                Assert.Equal(1, entities.Count);
+                Assert.Equal(2, entities[0].Tags.Count);
             }
         }
 
-        [Test]
+        [Fact]
         public void DoesntLeakMem() {
             using (var session = cfgHelper.OpenSession(sessionFactory)) {
                 session.FlushMode = FlushMode.Never;
@@ -60,7 +76,7 @@ namespace NHibernate.SolrNet.Tests {
             var listener = cfg.EventListeners.PostInsertEventListeners[0];
             var addField = typeof (SolrNetListener<Entity>).GetField("entitiesToAdd", BindingFlags.NonPublic | BindingFlags.Instance);
             var addDict = (IDictionary<ITransaction, List<Entity>>)addField.GetValue(listener);
-            Assert.AreEqual(0, addDict.Count);
+            Assert.Equal(0, addDict.Count);
         }
 
         private Configuration SetupNHibernate() {
@@ -98,21 +114,11 @@ namespace NHibernate.SolrNet.Tests {
             solr.Commit();
         }
 
-        [FixtureSetUp]
-        public void FixtureSetup() {
-            BasicConfigurator.Configure();
-            SetupSolr();
 
-            cfg = SetupNHibernate();
-
-            cfgHelper = new CfgHelper();
-            cfgHelper.Configure(cfg, true);
-            sessionFactory = cfg.BuildSessionFactory();
-        }
-
-        [FixtureTearDown]
-        public void FixtureTearDown() {
+        public void Dispose()
+        {
             sessionFactory.Dispose();
+
         }
 
         private Configuration cfg;

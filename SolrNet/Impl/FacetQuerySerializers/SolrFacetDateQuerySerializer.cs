@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FacetQuerySerializers {
+    [Obsolete("As of Solr 3.1 has been deprecated, as of Solr 6.6 unsupported.")]
     public class SolrFacetDateQuerySerializer : SingleTypeFacetQuerySerializer<SolrFacetDateQuery> {
 
         private static readonly Regex localParamsRx = new Regex(@"\{![^\}]+\}", RegexOptions.Compiled);
@@ -46,6 +47,9 @@ namespace SolrNet.Impl.FacetQuerySerializers {
             if (q.Other != null && q.Other.Count > 0)
                 foreach (var o in q.Other)
                     yield return KV.Create(string.Format("f.{0}.facet.date.other", fieldWithoutLocalParams), o.ToString());
+            if (q.Include != null && q.Include.Count > 0)
+                foreach (var i in q.Include)
+                    yield return KV.Create(string.Format("f.{0}.facet.date.include", fieldWithoutLocalParams), i.ToString());
         }
     }
 }

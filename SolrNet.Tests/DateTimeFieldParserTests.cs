@@ -18,65 +18,66 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldParsers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Utils;
 
-namespace SolrNet.Tests {
-    public class DateTimeFieldParserTests {
-        [StaticTestFactory]
-        public static IEnumerable<Test> ParseYears() {
-            return parsedDates.Select(pd => {
-                var name = "ParseYears " + pd.Key;
-                Test t = new TestCase(name, () => Assert.AreEqual(pd.Value, DateTimeFieldParser.ParseDate(pd.Key)));
-                return t;
-            });
+namespace SolrNet.Tests
+{
+    public class DateTimeFieldParserTests
+    {
+        [Theory]
+        [MemberData(nameof(parsedDates))]
+        public static void ParseYears(KeyValuePair<string, DateTime> pd)
+        {
+            var name = "ParseYears " + pd.Key;
+            var value = DateTimeFieldParser.ParseDate(pd.Key);
+            Assert.Equal(pd.Value, value);
+            Assert.Equal(pd.Value.Kind, value.Kind);
         }
 
-        private static readonly IEnumerable<KeyValuePair<string, DateTime>> parsedDates =
+        public static readonly IEnumerable<object[]> parsedDates =
             new[] {
-                KV.Create("1-01-01T00:00:00Z", new DateTime(1, 1, 1)),
-                KV.Create("2004-11-01T00:00:00Z", new DateTime(2004, 11, 1)),
-                KV.Create("2012-05-10T14:17:23.684Z", new DateTime(2012, 5, 10, 14, 17, 23, 684)),
-                KV.Create("2012-05-10T14:17:23.68Z", new DateTime(2012, 5, 10, 14, 17, 23, 680)),
-                KV.Create("2012-05-10T14:17:23.6Z", new DateTime(2012, 5, 10, 14, 17, 23, 600)),
+              new object[] {  KV.Create("1-01-01T00:00:00Z", new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc)) },
+                new object[] {KV.Create("2004-11-01T00:00:00Z", new DateTime(2004, 11, 1, 0, 0, 0, DateTimeKind.Utc)) },
+                new object[] {KV.Create("2012-05-10T14:17:23.684Z", new DateTime(2012, 5, 10, 14, 17, 23, 684, DateTimeKind.Utc)) },
+                new object[] {KV.Create("2012-05-10T14:17:23.68Z", new DateTime(2012, 5, 10, 14, 17, 23, 680, DateTimeKind.Utc)) },
+                new object[] {KV.Create("2012-05-10T14:17:23.6Z", new DateTime(2012, 5, 10, 14, 17, 23, 600, DateTimeKind.Utc)) },
             };
 
-        [StaticTestFactory]
-        public static IEnumerable<Test> RoundTrip() {
-            return dateTimes.Select(dt => {
-                Test t = new TestCase("RoundTrip " + dt, () => {
-                    var value = DateTimeFieldParser.ParseDate(DateTimeFieldSerializer.SerializeDate(dt));
-                    Assert.AreEqual(dt, value);
-                });
-                return t;
-            });
+        [Theory]
+        [MemberData(nameof(dateTimes))]
+        public static void RoundTrip(DateTime dt)
+        {
+            var value = DateTimeFieldParser.ParseDate(DateTimeFieldSerializer.SerializeDate(dt));
+            Assert.Equal(dt, value);
+            Assert.Equal(dt.Kind, value.Kind);
         }
 
-        [StaticTestFactory]
-        public static IEnumerable<Test> NullableRoundTrips() {
+        [Theory]
+        [MemberData(nameof(dateTimes))]
+        public static void NullableRoundTrips(DateTime dt)
+        {
             var parser = new NullableFieldParser(new DateTimeFieldParser());
             var serializer = new NullableFieldSerializer(new DateTimeFieldSerializer());
-            return dateTimes.Select(dt => {
-                Test t = new TestCase("NullableRoundTrips " + dt, () => {
-                    var s = serializer.Serialize(dt).First().FieldValue;
-                    var xml = new XDocument();
-                    xml.Add(new XElement("date", s));
-                    var value = (DateTime?) parser.Parse(xml.Root, typeof (DateTime?));
-                    Assert.AreEqual(dt, value);
-                });
-                return t;
-            });
+
+            var s = serializer.Serialize(dt).First().FieldValue;
+            var xml = new XDocument();
+            xml.Add(new XElement("date", s));
+            var value = (DateTime?)parser.Parse(xml.Root, typeof(DateTime?));
+            Assert.Equal(dt, value);
+            Assert.Equal(dt.Kind, value.Value.Kind);
+
         }
 
-        private static readonly IEnumerable<DateTime> dateTimes =
+        public static readonly IEnumerable<object[]> dateTimes =
             new[] {
-                new DateTime(1, 1, 1),
-                new DateTime(2004, 11, 1),
-                new DateTime(2004, 11, 1, 15, 41, 23),
-                new DateTime(2012, 5, 10, 14, 17, 23, 684),
-                new DateTime(2008, 5, 6, 14, 21, 23, 0, DateTimeKind.Local),
+               new object[] { new DateTime(1, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
+               new object[] { new DateTime(2004, 11, 1, 0, 0, 0, DateTimeKind.Utc) },
+                new object[] {new DateTime(2004, 11, 1, 15, 41, 23, DateTimeKind.Utc) },
+                new object[] {new DateTime(2012, 5, 10, 14, 17, 23, 684, DateTimeKind.Utc) },
+                new object[] {new DateTime(2008, 5, 6, 14, 21, 23, 0, DateTimeKind.Utc) },
             };
     }
 }

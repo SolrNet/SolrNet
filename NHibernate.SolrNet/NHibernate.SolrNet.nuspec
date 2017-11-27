@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SolrNet.NHibernate</id>
+    <version>0.9.1</version>
+    <title>SolrNet.NHibernate</title>
+    <authors>Mauricio Scheffer and contributors</authors>
+    <owners>Mauricio Scheffer</owners>
+    <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NHibernate integration for SolrNet</description>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="SolrNet.Core" version="[0.9.1]" />
+      <dependency id="NHibernate" version="3.2.0.4000" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\release\NHibernate.SolrNet.dll" target="lib\net46\NHibernate.SolrNet.dll" />
+    <file src="bin\release\NHibernate.SolrNet.pdb" target="lib\net46\NHibernate.SolrNet.pdb" />
+    <file src="bin\release\NHibernate.SolrNet.XML" target="lib\net46\NHibernate.SolrNet.xml" />
+  </files>
+</package>

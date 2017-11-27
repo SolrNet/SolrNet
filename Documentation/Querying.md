@@ -185,12 +185,14 @@ In Solr you can't retrieve all your documents in single query. However, by defau
 ```
 ISolrOperations<Product> solr = ...
 solr.Query("somequery", new QueryOptions{
-  Start = 10,
+  StartOrCursor = new StartOrCursor.Start(10),
   Rows = 25
 });
 ```
 
 This will fetch at most 25 documents, starting from the 10th document in the total result set.
+
+If you're planning to paginate beyond the first few pages of results, take a look at [CursorMark](CursorMark.md) instead.
 
 ### Additional parameters
 Solr has lots of features that aren't directly mapped in SolrNet, but you can enable and use most of them with the `ExtraParams` dictionary. Parameters defined in `ExtraParams` are directly passed to the Solr querystring. For example you can [restrict the maximum time allowed for a query](http://wiki.apache.org/solr/CommonQueryParameters#timeAllowed):
@@ -226,4 +228,24 @@ solr.Query(new LocalParams {{"type", "dismax"},{"qf", "myfield"}} + new SolrQuer
 
 This will generate: `q={!type=dismax qf=myfield}solr rocks`
 
-More information about LocalParams in the [Solr wiki](http://wiki.apache.org/solr/LocalParams).
+More information about LocalParams in the [Solr wiki](https://cwiki.apache.org/confluence/display/solr/Local+Parameters+in+Queries).
+
+### ExtraParams
+ExtraParams provides a way to add extra arbitrary parameters in the request query string. 
+
+Differently from LocalParams which is an IDictionary, ExtraParams is an IEnumerable<KeyValuePair<string, string>> therefore it does not have an issue with repeated keys. A sample scenario could be that you want to apply multiple boost queries (bq). 
+
+Please look at the example below:
+```
+var extraParams = new List<KeyValuePair<string, string>>();
+
+extraParams.Add(new KeyValuePair<string, string>("bq", "SomeQuery^10"));
+extraParams.Add(new KeyValuePair<string, string>("bq", "SomeOtherQuery^10"));
+
+var options new new QueryOptions();
+options.ExtraParams = extraParams; //Since my List implements the right interface
+
+solr.Query(myQuery, options)
+```
+
+

@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
@@ -95,8 +96,13 @@ namespace SolrNet.Impl {
             if (options == null)
                 yield break;
 
-            if (options.Start.HasValue)
+            if (options.StartOrCursor != null) {
+                yield return options.StartOrCursor.Switch(
+                                    start => KV.Create("start", start.Row.ToString()),
+                                    cursor => KV.Create("cursorMark", cursor.ToString()));
+            } else if (options.Start.HasValue) {
                 yield return KV.Create("start", options.Start.ToString());
+            }
 
             var rows = options.Rows.HasValue ? options.Rows.Value : DefaultRows;
             yield return KV.Create("rows", rows.ToString());
@@ -113,6 +119,9 @@ namespace SolrNet.Impl {
             if (options.ExtraParams != null)
                 foreach (var p in options.ExtraParams)
                     yield return p;
+
+            if (options.Debug) 
+                yield return KV.Create("debugQuery", "true");
         }
 
         /// <summary>
@@ -156,6 +165,9 @@ namespace SolrNet.Impl {
 				yield return p;
 
             foreach (var p in GetGroupingQueryOptions(options))
+                yield return p;
+
+            foreach (var p in GetCollapseExpandOptions(options.CollapseExpand, querySerializer.Serialize))
                 yield return p;
 
             foreach (var p in GetClusteringParameters(options))
@@ -216,6 +228,8 @@ namespace SolrNet.Impl {
                 yield return KV.Create("facet.offset", fp.Offset.ToString());
             if (fp.Sort.HasValue)
                 yield return KV.Create("facet.sort", fp.Sort.ToString().ToLowerInvariant());
+            if (fp.Threads.HasValue)
+                yield return KV.Create("facet.threads", fp.Threads.ToString().ToLowerInvariant());
         }
 
         /// <summary>
@@ -287,55 +301,58 @@ namespace SolrNet.Impl {
                 param["hl"] = "true";
                 if (h.Fields != null) {
                     param["hl.fl"] = string.Join(",", h.Fields.ToArray());
-
-                    if (h.Snippets.HasValue)
-                        param["hl.snippets"] = h.Snippets.Value.ToString();
-
-                    if (h.Fragsize.HasValue)
-                        param["hl.fragsize"] = h.Fragsize.Value.ToString();
-
-                    if (h.RequireFieldMatch.HasValue)
-                        param["hl.requireFieldMatch"] = h.RequireFieldMatch.Value.ToString().ToLowerInvariant();
-
-                    if (h.AlternateField != null)
-                        param["hl.alternateField"] = h.AlternateField;
-
-                    if (h.BeforeTerm != null)
-                        param[h.UseFastVectorHighlighter == true ? "hl.tag.pre" : "hl.simple.pre"] = h.BeforeTerm;
-
-                    if (h.AfterTerm != null)
-                        param[h.UseFastVectorHighlighter == true ? "hl.tag.post" : "hl.simple.post"] = h.AfterTerm;
-
-                    if (h.RegexSlop.HasValue)
-                        param["hl.regex.slop"] = Convert.ToString(h.RegexSlop.Value, CultureInfo.InvariantCulture);
-
-                    if (h.RegexPattern != null)
-                        param["hl.regex.pattern"] = h.RegexPattern;
-
-                    if (h.RegexMaxAnalyzedChars.HasValue)
-                        param["hl.regex.maxAnalyzedChars"] = h.RegexMaxAnalyzedChars.Value.ToString();
-
-                    if (h.UsePhraseHighlighter.HasValue)
-                        param["hl.usePhraseHighlighter"] = h.UsePhraseHighlighter.Value.ToString().ToLowerInvariant();
-
-                    if (h.UseFastVectorHighlighter.HasValue)
-                        param["hl.useFastVectorHighlighter"] = h.UseFastVectorHighlighter.Value.ToString().ToLowerInvariant();
-
-                    if (h.HighlightMultiTerm.HasValue)
-                        param["hl.highlightMultiTerm"] = h.HighlightMultiTerm.Value.ToString().ToLowerInvariant();
-
-                    if (h.MergeContiguous.HasValue)
-                        param["hl.mergeContiguous"] = h.MergeContiguous.Value.ToString().ToLowerInvariant();
-
-                    if (h.MaxAnalyzedChars.HasValue)
-                        param["hl.maxAnalyzedChars"] = h.MaxAnalyzedChars.Value.ToString();
-
-                    if (h.MaxAlternateFieldLength.HasValue)
-                        param["hl.maxAlternateFieldLength"] = h.MaxAlternateFieldLength.Value.ToString();
-
-                    if (h.Fragmenter.HasValue)
-                        param["hl.fragmenter"] = h.Fragmenter.Value == SolrHighlightFragmenter.Regex ? "regex" : "gap";
                 }
+
+                if (h.Snippets.HasValue)
+                    param["hl.snippets"] = h.Snippets.Value.ToString();
+
+                if (h.Fragsize.HasValue)
+                    param["hl.fragsize"] = h.Fragsize.Value.ToString();
+
+                if (h.RequireFieldMatch.HasValue)
+                    param["hl.requireFieldMatch"] = h.RequireFieldMatch.Value.ToString().ToLowerInvariant();
+
+                if (h.AlternateField != null)
+                    param["hl.alternateField"] = h.AlternateField;
+
+                if (h.BeforeTerm != null)
+                    param[h.UseFastVectorHighlighter == true ? "hl.tag.pre" : "hl.simple.pre"] = h.BeforeTerm;
+
+                if (h.AfterTerm != null)
+                    param[h.UseFastVectorHighlighter == true ? "hl.tag.post" : "hl.simple.post"] = h.AfterTerm;
+
+                if (h.Query != null)
+                    param["hl.q"] = querySerializer.Serialize(h.Query);
+
+                if (h.RegexSlop.HasValue)
+                    param["hl.regex.slop"] = Convert.ToString(h.RegexSlop.Value, CultureInfo.InvariantCulture);
+
+                if (h.RegexPattern != null)
+                    param["hl.regex.pattern"] = h.RegexPattern;
+
+                if (h.RegexMaxAnalyzedChars.HasValue)
+                    param["hl.regex.maxAnalyzedChars"] = h.RegexMaxAnalyzedChars.Value.ToString();
+
+                if (h.UsePhraseHighlighter.HasValue)
+                    param["hl.usePhraseHighlighter"] = h.UsePhraseHighlighter.Value.ToString().ToLowerInvariant();
+
+                if (h.UseFastVectorHighlighter.HasValue)
+                    param["hl.useFastVectorHighlighter"] = h.UseFastVectorHighlighter.Value.ToString().ToLowerInvariant();
+
+                if (h.HighlightMultiTerm.HasValue)
+                    param["hl.highlightMultiTerm"] = h.HighlightMultiTerm.Value.ToString().ToLowerInvariant();
+
+                if (h.MergeContiguous.HasValue)
+                    param["hl.mergeContiguous"] = h.MergeContiguous.Value.ToString().ToLowerInvariant();
+
+                if (h.MaxAnalyzedChars.HasValue)
+                    param["hl.maxAnalyzedChars"] = h.MaxAnalyzedChars.Value.ToString();
+
+                if (h.MaxAlternateFieldLength.HasValue)
+                    param["hl.maxAlternateFieldLength"] = h.MaxAlternateFieldLength.Value.ToString();
+
+                if (h.Fragmenter.HasValue)
+                    param["hl.fragmenter"] = h.Fragmenter.Value == SolrHighlightFragmenter.Regex ? "regex" : "gap";
             }
             return param;
         }
@@ -465,16 +482,21 @@ namespace SolrNet.Impl {
         /// <param name="options"></param>
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetGroupingQueryOptions(QueryOptions options) {
-            if (options.Grouping == null || options.Grouping.Fields.Count == 0)
+            if (options.Grouping == null)
                 yield break;
 
             yield return KV.Create("group", true.ToString().ToLowerInvariant());
 
-            foreach (var groupfield in options.Grouping.Fields) {
-                if (string.IsNullOrEmpty(groupfield))
-                    continue;
-                yield return KV.Create("group.field", groupfield);
+            if (options.Grouping.Fields != null)
+            {
+                foreach (var groupfield in options.Grouping.Fields)
+                {
+                    if (string.IsNullOrEmpty(groupfield))
+                        continue;
+                    yield return KV.Create("group.field", groupfield);
+                }
             }
+
             if (options.Grouping.Limit.HasValue)
                 yield return KV.Create("group.limit", options.Grouping.Limit.ToString());
 
@@ -484,8 +506,13 @@ namespace SolrNet.Impl {
             if (options.Grouping.Main.HasValue)
                 yield return KV.Create("group.main", options.Grouping.Main.ToString().ToLowerInvariant());
 
-            if (!string.IsNullOrEmpty(options.Grouping.Query))
-                yield return KV.Create("group.query", options.Grouping.Query);
+            if (options.Grouping.Query != null)
+            {
+                foreach (var query in options.Grouping.Query.Where(query => query != null))
+                {
+                    yield return KV.Create("group.query", querySerializer.Serialize(query));
+                }
+            }
 
             if (!string.IsNullOrEmpty(options.Grouping.Func))
                 yield return KV.Create("group.func", options.Grouping.Func);
@@ -496,7 +523,67 @@ namespace SolrNet.Impl {
             if (options.Grouping.Ngroups.HasValue)
                 yield return KV.Create("group.ngroups", options.Grouping.Ngroups.ToString().ToLowerInvariant());
 
+            if (options.Grouping.Truncate.HasValue)
+                yield return KV.Create("group.truncate", options.Grouping.Truncate.ToString().ToLowerInvariant());
+
+            if (options.Grouping.CachePercent.HasValue)
+                yield return KV.Create("group.cache.percent", options.Grouping.CachePercent.ToString());
+
             yield return KV.Create("group.format", options.Grouping.Format.ToString().ToLowerInvariant());
+        }
+
+        public static IEnumerable<KeyValuePair<string, string>> GetCollapseOptions(CollapseExpandParameters options) {
+            if (options == null)
+                throw new ArgumentNullException("options");
+
+            yield return KV.Create("field", options.Field);
+
+            if (options.NullPolicy != null)
+                yield return KV.Create("nullPolicy", options.NullPolicy.Policy);
+
+            if (options.MinOrMaxField != null)
+                yield return options.MinOrMaxField.Switch<KeyValuePair<string, string>>(
+                    min: x => KV.Create("min", x.Field),
+                    max: x => KV.Create("max", x.Field));
+        }
+
+        public static IEnumerable<KeyValuePair<string, string>> GetExpandOptions(ExpandParameters parameters, Func<ISolrQuery, string> serializer) {
+            if (parameters == null)
+                yield break;
+
+            yield return KV.Create("expand", "true");
+
+            if (parameters.Rows.HasValue)
+                yield return KV.Create("expand.rows", parameters.Rows.Value.ToString());
+
+            if (parameters.Sort != null)
+                yield return KV.Create("expand.sort", parameters.Sort.ToString());
+
+            if (serializer == null)
+                throw new ArgumentNullException("serializer");
+
+            if (parameters.Query != null)
+                yield return KV.Create("expand.q", serializer(parameters.Query));
+
+            if (parameters.FilterQuery != null)
+                yield return KV.Create("expand.fq", serializer(parameters.FilterQuery));
+        }
+
+        /// <summary>
+        /// Gets the solr parameters for collapse-expand queries
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static IEnumerable<KeyValuePair<string, string>> GetCollapseExpandOptions(CollapseExpandParameters options, Func<ISolrQuery, string> serializer)
+        {
+            if (options == null)
+                yield break;
+
+            var collapseValues = GetCollapseOptions(options).Select(x => x.Key + "=" + x.Value).ToArray();
+            yield return KV.Create("fq", "{!collapse " + string.Join(" ", collapseValues) + "}");
+
+            foreach (var kv in GetExpandOptions(options.Expand, serializer))
+                yield return kv;
         }
 
         /// <summary>
@@ -598,6 +685,24 @@ namespace SolrNet.Impl {
         public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options) {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
             var r = connection.Get(MoreLikeThisHandler, param);
+            var qr = mlthResultParser.Parse(r);
+            return qr;
+        }
+
+        public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options)
+        {
+            var param = GetAllParameters(q, options);
+            var results = new SolrQueryResults<T>();
+            var r = await connection.GetAsync(Handler, param);
+            var xml = XDocument.Parse(r);
+            resultParser.Parse(xml, results);
+            return results;
+        }
+
+        public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options)
+        {
+            var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
+            var r = await connection.GetAsync(MoreLikeThisHandler, param);
             var qr = mlthResultParser.Parse(r);
             return qr;
         }

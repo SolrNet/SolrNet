@@ -53,6 +53,11 @@ namespace SolrNet {
         public CollapseResults Collapsing { get; set; }
 
         /// <summary>
+        /// CollapseExpand results
+        /// </summary>
+        public CollapseExpandResults<T> CollapseExpand { set; get; }
+
+        /// <summary>
         /// Clustering results
         /// </summary>
         public ClusterResults Clusters { get; set; }
@@ -71,6 +76,11 @@ namespace SolrNet {
         /// Grouping results
         /// </summary>
         public IDictionary<string, GroupedResults<T>> Grouping { set; get; }
+
+        /// <summary>
+        /// Debug results
+        /// </summary>
+        public DebugResults Debug { set; get; }
 
         public SolrQueryResults() {
             SpellChecking = new SpellCheckResults();

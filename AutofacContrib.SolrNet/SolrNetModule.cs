@@ -22,6 +22,7 @@ using System.Configuration;
 using Autofac;
 using Autofac.Core;
 using AutofacContrib.SolrNet.Config;
+using HttpWebAdapters;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
@@ -65,6 +66,11 @@ namespace AutofacContrib.SolrNet {
         /// </summary>
         public IReadOnlyMappingManager Mapper { get; set; }
 
+        /// <summary>
+        /// Optional override to provide a different <see cref="IHttpWebRequestFactory"/>.
+        /// </summary>
+        public IHttpWebRequestFactory HttpWebRequestFactory { get; set; }
+
         private void RegisterCommonComponents(ContainerBuilder builder) {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             builder.RegisterInstance(mapper).As<IReadOnlyMappingManager>();
@@ -102,7 +108,12 @@ namespace AutofacContrib.SolrNet {
 
         private void RegisterSingleCore(ContainerBuilder builder) {
             RegisterCommonComponents(builder);
-            builder.RegisterInstance(new SolrConnection(ServerUrl)).As<ISolrConnection>();
+
+            SolrConnection solrConnection = new SolrConnection(ServerUrl);
+            if (HttpWebRequestFactory != null) {
+                solrConnection.HttpWebRequestFactory = HttpWebRequestFactory;
+            }
+            builder.RegisterInstance(solrConnection).As<ISolrConnection>();
 
             builder.RegisterGeneric(typeof (SolrBasicServer<>))
                 .As(typeof (ISolrBasicOperations<>), typeof (ISolrBasicReadOnlyOperations<>))

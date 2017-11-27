@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <Import Project="..\packages\xunit.runner.visualstudio.2.3.1\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\packages\xunit.runner.visualstudio.2.3.1\build\net20\xunit.runner.visualstudio.props')" />
+  <Import Project="..\packages\xunit.core.2.3.1\build\xunit.core.props" Condition="Exists('..\packages\xunit.core.2.3.1\build\xunit.core.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -15,7 +17,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -33,7 +35,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +47,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -53,30 +57,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\packages\Castle.Core.3.2.0\lib\net35\Castle.Core.dll</HintPath>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Windsor">
-      <HintPath>..\packages\Castle.Windsor.3.2.0\lib\net35\Castle.Windsor.dll</HintPath>
+    <Reference Include="Castle.Windsor, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Windsor.4.1.0\lib\net45\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Gallio, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Gallio.dll</HintPath>
+    <Reference Include="CommonServiceLocator, Version=2.0.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.1\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
-      <Name>log4net</Name>
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="MbUnit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\MbUnit.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -84,14 +78,31 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.abstractions.2.0.1\lib\net35\xunit.abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.assert.2.3.1\lib\netstandard1.1\xunit.assert.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.core.2.3.1\lib\netstandard1.1\xunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.execution.2.3.1\lib\net452\xunit.execution.desktop.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollapseExpandResponseParserTests.cs" />
     <Compile Include="DateTimeOffsetFieldParserTests.cs" />
+    <Compile Include="DebugResponseParserTests.cs" />
     <Compile Include="DefaultResponseParserTests.cs" />
+    <Compile Include="GenericDictionaryDocumentVisitorTests.cs" />
     <Compile Include="LocationTests.cs" />
     <Compile Include="MergeCommandTests.cs" />
     <Compile Include="MoneyTests.cs" />
@@ -102,7 +113,6 @@
     <Compile Include="CollapseResponseParserTests.cs" />
     <Compile Include="CollectionFieldSerializerTests.cs" />
     <Compile Include="CommitCommandTests.cs" />
-    <Compile Include="CommonServiceLocatorTests.cs" />
     <Compile Include="DateTimeFieldParserTests.cs" />
     <Compile Include="GenericDictionaryFieldSerializerTests.cs" />
     <Compile Include="InferringFieldParserTests.cs" />
@@ -111,33 +121,11 @@
     <Compile Include="ExceptionTests.cs" />
     <Compile Include="FieldParserTests.cs" />
     <Compile Include="HttpTests.cs" />
-    <Compile Include="Integration.Sample\Product.cs" />
-    <Compile Include="Integration.Sample\ProductLoose.cs" />
-    <Compile Include="IntegrationTests.cs" />
     <Compile Include="LocalParamsTests.cs" />
     <Compile Include="MappedPropertiesIsInSolrSchemaRuleTests.cs" />
     <Compile Include="MappingManagerTests.cs" />
     <Compile Include="MappingTypesAreCompatibleWithSolrTypesRuleTests.cs" />
     <Compile Include="MemoizingMappingManagerTests.cs" />
-    <Compile Include="MockConnection.cs" />
-    <Compile Include="Mocks\HttpWebRequest.cs" />
-    <Compile Include="Mocks\HttpWebRequestFactory.cs" />
-    <Compile Include="Mocks\HttpWebResponse.cs" />
-    <Compile Include="Mocks\MMappingValidator.cs" />
-    <Compile Include="Mocks\MServiceLocator.cs" />
-    <Compile Include="Mocks\MServiceProvider.cs" />
-    <Compile Include="Mocks\MSolrMoreLikeThisHandlerQueryResultsParser.cs" />
-    <Compile Include="Mocks\MSolrOperations.cs" />
-    <Compile Include="Mocks\MReadOnlyMappingManager.cs" />
-    <Compile Include="Mocks\MSolrAbstractResponseParser.cs" />
-    <Compile Include="Mocks\MSolrBasicOperations.cs" />
-    <Compile Include="Mocks\MSolrCache.cs" />
-    <Compile Include="Mocks\MSolrConnection.cs" />
-    <Compile Include="Mocks\MSolrDocumentSerializer.cs" />
-    <Compile Include="Mocks\MSolrExtractResponseParser.cs" />
-    <Compile Include="Mocks\MSolrFieldParser.cs" />
-    <Compile Include="Mocks\MSolrHeaderResponseParser.cs" />
-    <Compile Include="Mocks\MSolrQuerySerializer.cs" />
     <Compile Include="MoreLikeThisHandlerMatchResponseParserTests.cs" />
     <Compile Include="MoreLikeThisTests.cs" />
     <Compile Include="MultivaluedMappedToCollectionRuleTests.cs" />
@@ -145,27 +133,25 @@
     <Compile Include="OptimizeCommandTests.cs" />
     <Compile Include="RegularDocumentVisitorTests.cs" />
     <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
-    <Compile Include="ServiceLocatorTestCase.cs" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingCollationInCollations.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="SolrCoreReplicationTests.cs" />
     <Compile Include="SolrDIHStatusParserTest.cs" />
     <Compile Include="SolrDictionarySerializerTests.cs" />
     <Compile Include="MappingValidatorTests.cs" />
+    <Compile Include="SolrFacetIntervalQueryTests.cs" />
+    <Compile Include="SolrFacetRangeQueryTests.cs" />
     <Compile Include="SolrFacetPivotQueryTest.cs" />
     <Compile Include="SolrMoreLikeThisHandlerStreamUrlQueryTests.cs" />
+    <Compile Include="SolrConstantScoreQueryTests.cs" />
     <Compile Include="SolrQueryByDistanceTests.cs" />
     <Compile Include="SolrQueryByFieldRegexTests.cs" />
     <Compile Include="SolrQuerySerializerStub.cs" />
     <Compile Include="SolrSchemaParserTests.cs" />
     <Compile Include="SolrStatusResponseParserTests.cs" />
     <Compile Include="UniqueKeyMatchesMappingRuleTests.cs" />
-    <Compile Include="Utils\CompressionUtils.cs" />
-    <Compile Include="Utils\EmbeddedResource.cs" />
-    <Compile Include="Utils\Lazy.cs" />
-    <Compile Include="Utils\LoggingConnection.cs" />
-    <Compile Include="Utils\Moroco.cs" />
-    <Compile Include="Utils\Node.cs" />
-    <Compile Include="Utils\ProfilerFacility.cs" />
     <Compile Include="Utils\ProfilerTests.cs" />
-    <Compile Include="Utils\ProfilingContainer.cs" />
     <Compile Include="QueryOptionsTests.cs" />
     <Compile Include="RandomSortTests.cs" />
     <Compile Include="SolrDocumentSerializerTestsDocumentClasses.cs" />
@@ -198,9 +184,9 @@
       <Project>{0F21F5B6-5986-4301-B0F7-FD9800DB8091}</Project>
       <Name>Castle.Facilities.SolrNetIntegration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HttpWebAdapters\HttpWebAdapters.csproj">
-      <Project>{AE7D2A46-3F67-4986-B04B-7DCE79A549A5}</Project>
-      <Name>HttpWebAdapters</Name>
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
+      <Project>{48da5170-b96e-485c-941d-0d7797dca0ef}</Project>
+      <Name>SolrNet.Tests.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">
       <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>
@@ -214,7 +200,9 @@
     <EmbeddedResource Include="Resources\responseWithExtractContent.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\solrSchemaBasic.xml" />
@@ -235,7 +223,9 @@
     <EmbeddedResource Include="Resources\responseWithEnumAsString.xml" />
     <EmbeddedResource Include="Resources\responseWithDict.xml" />
     <EmbeddedResource Include="Resources\responseWithDictFloat.xml" />
-    <EmbeddedResource Include="Resources\responseWithSpellChecking.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellChecking.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\responseWithMoreLikeThis.xml" />
     <EmbeddedResource Include="Resources\responseWithStats.xml" />
     <EmbeddedResource Include="Resources\partialResponseWithDateFacet.xml" />
@@ -313,8 +303,58 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseReplicationDetailsMaster.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationDetailsSlaveIsReplicating.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationDetailsSlaveNotReplicating.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationIndexVersion.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationStatusError.xml" />
+    <EmbeddedResource Include="Resources\responseReplicationStatusOk.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithHighlighting3.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\partialResponseWithStats.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\collapseWithExpandResponse.xml" />
+    <EmbeddedResource Include="Resources\collapseWithoutExpandResponse.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithStructuredDebugDetails.xml" />
+    <EmbeddedResource Include="Resources\responseWithSimpleDebugDetails.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\docWithDynamicFields.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingCollationInSuggestions.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\partialResponseWithRangeFacet.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\partialResponseWithRangeFacetAndOther.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\xunit.core.2.3.1\build\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.3.1\build\xunit.core.props'))" />
+    <Error Condition="!Exists('..\packages\xunit.core.2.3.1\build\xunit.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.3.1\build\xunit.core.targets'))" />
+    <Error Condition="!Exists('..\packages\xunit.runner.visualstudio.2.3.1\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.runner.visualstudio.2.3.1\build\net20\xunit.runner.visualstudio.props'))" />
+  </Target>
+  <Import Project="..\packages\xunit.core.2.3.1\build\xunit.core.targets" Condition="Exists('..\packages\xunit.core.2.3.1\build\xunit.core.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

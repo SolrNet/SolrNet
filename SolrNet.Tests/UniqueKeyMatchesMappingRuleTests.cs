@@ -18,7 +18,7 @@
 
 using System;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
@@ -26,9 +26,9 @@ using SolrNet.Schema;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class UniqueKeyMatchesMappingRuleTests {
-        [Test]
+        [Fact]
         public void NonMatchingUniqueKeyMappingShouldReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
@@ -41,10 +41,10 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(1, validationResults.Count);
+            Assert.Equal(1, validationResults.Count);
         }
 
-        [Test]
+        [Fact]
         public void MatchingUniqueKeyMappingShouldNotReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
@@ -57,10 +57,10 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(0, validationResults.Count);
+            Assert.Equal(0, validationResults.Count);
         }
 
-        [Test]
+        [Fact]
         public void SchemaNull_MappingNotNull_generates_error() {
             var rule = new UniqueKeyMatchesMappingRule();
             var mapper = new MappingManager();
@@ -68,32 +68,32 @@ namespace SolrNet.Tests {
             mapper.Add(idProperty);
             mapper.SetUniqueKey(idProperty);
             var validations = rule.Validate(typeof (SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
-            Assert.IsNotNull(validations);
-            Assert.AreEqual(1, validations.Count);
+            Assert.NotNull(validations);
+            Assert.Equal(1, validations.Count);
             foreach (var v in validations)
                 Console.WriteLine("{0}: {1}", v.GetType(), v.Message);
-            Assert.IsInstanceOfType<ValidationError>(validations[0]);
+            Assert.IsType<ValidationError>(validations[0]);
         }
 
-        [Test]
+        [Fact]
         public void SchemaNotNull_MappingNull_generates_warning() {
             var rule = new UniqueKeyMatchesMappingRule();
             var schema = new SolrSchema {UniqueKey = "id"};
             var validations = rule.Validate(typeof (SchemaMappingTestDocument), schema, new MappingManager()).ToList();
-            Assert.IsNotNull(validations);
-            Assert.AreEqual(1, validations.Count);
+            Assert.NotNull(validations);
+            Assert.Equal(1, validations.Count);
             foreach (var v in validations)
                 Console.WriteLine("{0}: {1}", v.GetType(), v.Message);
-            Assert.IsInstanceOfType<ValidationWarning>(validations[0]);
+            Assert.IsType<ValidationWarning>(validations[0]);
         }
 
-        [Test]
+        [Fact]
         public void SchemaNull_MappingNull_no_errors() {
             var rule = new UniqueKeyMatchesMappingRule();
             var schema = new SolrSchema();
             var validations = rule.Validate(typeof (SchemaMappingTestDocument), schema, new MappingManager()).ToList();
-            Assert.IsNotNull(validations);
-            Assert.AreEqual(0, validations.Count);
+            Assert.NotNull(validations);
+            Assert.Equal(0, validations.Count);
         }
     }
 }

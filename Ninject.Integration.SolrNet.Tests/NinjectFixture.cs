@@ -15,23 +15,23 @@
 #endregion
 
 using System;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet;
 
 namespace Ninject.Integration.SolrNet.Tests {
-    [TestFixture]
+    
     public class NinjectFixture {
 
-        [Test]
+        [Fact]
         public void ReplaceMapper() {
             var c = new StandardKernel();
             var mapper = new global::SolrNet.Tests.Mocks.MReadOnlyMappingManager();
             c.Load(new SolrNetModule("http://localhost:8983/solr") {Mapper = mapper});
             var m = c.Get<IReadOnlyMappingManager>();
-            Assert.AreSame(mapper, m);
+            Assert.Same(mapper, m);
         }
 
-        [Test]
+        [Fact]
         public void ResolveSolrOperations() {
             var c = new StandardKernel();
             c.Load(new SolrNetModule("http://localhost:8983/solr"));

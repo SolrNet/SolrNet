@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+	<lst name="responseHeader">
+		<int name="status">0</int>
+		<int name="QTime">0</int>
+	</lst>
+	<str name="status">ERROR</str>
+	<str name="message">No slave configured or no 'masterUrl' Specified</str>
+</response>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace SolrNet.Utils {
     /// <summary>
@@ -39,6 +40,16 @@ namespace SolrNet.Utils {
 
         public static Action<A, B> ToAction<A, B>(this Func<A, B, Unit> f) {
             return (a, b) => f(a, b);
+        }
+
+        /// <summary>
+        /// Helps C# with type inference
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public static Func<T> Func<T>(Func<T> f) {
+            return f;
         }
     }
 }

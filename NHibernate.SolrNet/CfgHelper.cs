@@ -15,7 +15,7 @@
 #endregion
 
 using System;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using NHibernate.Cfg;
 using NHibernate.SolrNet.Impl;
 using SolrNet;
@@ -24,6 +24,7 @@ namespace NHibernate.SolrNet {
     /// <summary>
     /// Helper class to configure NHibernate-SolrNet integration.
     /// </summary>
+    [Obsolete("Deprecated. Replace with your own integration.")]
     public class CfgHelper {
         private readonly IReadOnlyMappingManager mapper;
         private readonly IServiceProvider provider;

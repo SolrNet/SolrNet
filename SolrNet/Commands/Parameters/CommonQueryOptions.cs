@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SolrNet.Commands.Parameters {
     /// <summary>
@@ -25,7 +26,14 @@ namespace SolrNet.Commands.Parameters {
         /// Offset in the complete result set for the queries where the set of returned documents should begin
         /// Default is 0
         /// </summary>
+        [Obsolete("Use StartOrCursor instead, setting StartOrCursor.Start")]
         public int? Start { get; set; }
+
+        /// <summary>
+        /// Starting row or cursor mark for pagination.
+        /// Default is start=0
+        /// </summary>
+        public StartOrCursor StartOrCursor { get; set; }
 
         /// <summary>
         /// Maximum number of documents from the complete result set to return to the client for every request.
@@ -52,5 +60,9 @@ namespace SolrNet.Commands.Parameters {
         /// </summary>
         public IEnumerable<KeyValuePair<string, string>> ExtraParams { get; set; }
 
+        /// <summary>
+        /// Requests debug information: timing and explain of score calculation
+        /// </summary>
+        public bool Debug { get; set; }
     }
 }

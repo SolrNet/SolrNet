@@ -1,4 +1,4 @@
-﻿using MbUnit.Framework;
+﻿using Xunit;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FieldParsers;
@@ -8,9 +8,9 @@ using SolrNet.Tests.Integration.Sample;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class MoreLikeThisHandlerMatchResponseParserTests {
-        [Test]
+        [Fact]
         public void Parse() {
             var mapper = new AttributesMappingManager();
             var fieldParser = new DefaultFieldParser();
@@ -20,7 +20,7 @@ namespace SolrNet.Tests {
             var mltResults = new SolrMoreLikeThisHandlerResults<Product>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithMLTHandlerMatch.xml");
             p.Parse(xml, mltResults);
-            Assert.IsNotNull(mltResults.Match);
+            Assert.NotNull(mltResults.Match);
         }
     }
 }

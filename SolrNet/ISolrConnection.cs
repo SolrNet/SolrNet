@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace SolrNet {
     /// <summary>
@@ -31,6 +32,14 @@ namespace SolrNet {
         string Post(string relativeUrl, string s);
 
         /// <summary>
+        /// POSTs to Solr asynchronously
+        /// </summary>
+        /// <param name="relativeUrl">Path to post to</param>
+        /// <param name="s">POST content</param>
+        /// <returns></returns>
+        Task<string> PostAsync(string relativeUrl, string s);
+
+        /// <summary>
         /// POSTs binary to Solr
         /// </summary>
         /// <param name="relativeUrl">Path to post to</param>
@@ -41,11 +50,29 @@ namespace SolrNet {
         string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters);
 
         /// <summary>
+        /// POSTs binary to Solr asynchronously
+        /// </summary>
+        /// <param name="relativeUrl">Path to post to</param>
+        /// <param name="contentType">Request content type (optional)</param>
+        /// <param name="content">Binary content</param>
+        /// <param name="getParameters">extra parameters to pass in query string</param>
+        /// <returns></returns>
+        Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters);
+
+        /// <summary>
         /// GETs from Solr
         /// </summary>
         /// <param name="relativeUrl">Path to get from</param>
         /// <param name="parameters">Query string parameters</param>
         /// <returns></returns>
         string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters);
+
+        /// <summary>
+        /// GETs from Solr asynchronously
+        /// </summary>
+        /// <param name="relativeUrl">Path to get from</param>
+        /// <param name="parameters">Query string parameters</param>
+        /// <returns></returns>
+        Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters);
     }
 }

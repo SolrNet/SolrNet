@@ -1,46 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet;
 using StructureMap.SolrNetIntegration.Config;
 
 namespace StructureMap.SolrNetIntegration.Tests {
-    [TestFixture]
-    [Category("Integration")]
+    
+    [Trait("Category","Integration")]
     public class StructureMapIntegrationFixture {
 
-        [Test]
+        private readonly IContainer Container;
+
+        public StructureMapIntegrationFixture()
+        {
+            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
+            Container = new Container (c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
+        }
+
+
+        [Fact]
         public void Ping_And_Query()
         {
-            SetupContainer();
-            var solr = ObjectFactory.GetInstance<ISolrOperations<Entity>>();
+            var solr = Container.GetInstance<ISolrOperations<Entity>>();
             solr.Ping();
             Console.WriteLine(solr.Query(SolrQuery.All).Count);
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument()
         {
-            SetupContainer();
 
-            var solr = ObjectFactory.Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
+            var solr = Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
             var results = solr.Query(SolrQuery.All);
-            Assert.GreaterThan(results.Count, 0);
+            Assert.True (results.Count > 0);
             foreach (var d in results)
             {
-                Assert.GreaterThan(d.Count, 0);
+                Assert.True(d.Count > 0);
                 foreach (var kv in d)
                     Console.WriteLine("{0}: {1}", kv.Key, kv.Value);
             }
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument_add()
         {
-            SetupContainer();
 
-            var solr = ObjectFactory.Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
+            var solr = Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
 
             solr.Add(new Dictionary<string, object> 
             {
@@ -51,11 +57,6 @@ namespace StructureMap.SolrNetIntegration.Tests {
             });
         }
 
-        private static void SetupContainer()
-        {
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
-            ObjectFactory.Initialize(c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
-        }
-
+       
     }
 }

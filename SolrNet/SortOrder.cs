@@ -33,8 +33,6 @@ namespace SolrNet {
 		///<param name="fieldName">The name of the field to sort by.</param>
 		///<exception cref="InvalidSortOrderException">Thrown if field name contains spaces.</exception>
 		public SortOrder(string fieldName) {
-			if (fieldName.IndexOf(' ') >= 0)
-				throw new InvalidSortOrderException(string.Format("Field name ({0}) cannot contain spaces.", fieldName));
 			this.fieldName = fieldName;
 		}
 

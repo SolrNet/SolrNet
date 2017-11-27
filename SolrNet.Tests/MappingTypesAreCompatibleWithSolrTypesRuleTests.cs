@@ -17,7 +17,7 @@
 #endregion
 
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
@@ -25,9 +25,9 @@ using SolrNet.Schema;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class MappingTypesAreCompatibleWithSolrTypesRuleTests {
-        [Test]
+        [Fact]
         public void StringMappedToIntShouldReturnError() {
             var mappingTypesCompatibleRule = new MappingTypesAreCompatibleWithSolrTypesRule(new[] {new StringSolrFieldTypeChecker()});
 
@@ -41,10 +41,10 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(1, validationResults.Count);
+            Assert.Equal(1, validationResults.Count);
         }
 
-        [Test]
+        [Fact]
         public void StringMappedToStringShouldNotReturnError() {
             var mappingTypesCompatibleRule = new MappingTypesAreCompatibleWithSolrTypesRule(new[] {new StringSolrFieldTypeChecker()});
 
@@ -56,10 +56,10 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(0, validationResults.Count);
+            Assert.Equal(0, validationResults.Count);
         }
 
-        [Test]
+        [Fact]
         public void MappingTypesAreCompatibleWithSolrTypesRule_with_nonexistant_rule() {
             var rule = new MappingTypesAreCompatibleWithSolrTypesRule(new[] {new StringSolrFieldTypeChecker()});
             var mappingManager = new MappingManager();

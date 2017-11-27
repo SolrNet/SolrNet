@@ -1,11 +1,11 @@
 ﻿// 
 
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class SolrQueryByFieldRegexTests {
 
         public string Serialize(object q)
@@ -14,46 +14,46 @@ namespace SolrNet.Tests {
             return serializer.Serialize(q);
         }
 
-        [Test]
+        [Fact]
         public void NullField_yields_null_query()
         {
             var q = new SolrQueryByFieldRegex(null, "11(.*?)");
-            Assert.IsNull(Serialize(q));
+            Assert.Null(Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void NullValue_yields_null_query()
         {
             var q = new SolrQueryByFieldRegex("id", null);
-            Assert.IsNull(Serialize(q));
+            Assert.Null(Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void Basic_test_creates_correctly()
         {
             var q = new SolrQueryByFieldRegex("id","11(.*?)");
-            Assert.AreEqual("id:/11(.*?)/", Serialize(q));
+            Assert.Equal("id:/11(.*?)/", Serialize(q));
         } 
         
-        [Test]
+        [Fact]
         public void Basic_test_brackets_creates_correctly()
         {
             var q = new SolrQueryByFieldRegex("id", "[0-9]{5}");
-            Assert.AreEqual("id:/[0-9]{5}/", Serialize(q));
+            Assert.Equal("id:/[0-9]{5}/", Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void Strip_slashes_creates_correctly()
         {
             var q = new SolrQueryByFieldRegex("id", "/11(.*?)/");
-            Assert.AreEqual("id:/11(.*?)/", Serialize(q));
+            Assert.Equal("id:/11(.*?)/", Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void FieldNameWithSpaces()
         {
             var q = new SolrQueryByFieldRegex("field with spaces", "11(.*?)");
-            Assert.AreEqual(@"field\ with\ spaces:/11(.*?)/", Serialize(q));
+            Assert.Equal(@"field\ with\ spaces:/11(.*?)/", Serialize(q));
         }    
     }
 }

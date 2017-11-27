@@ -458,7 +458,15 @@ namespace SolrNet
         /// <param name="updateSpecs">The specification that defines the update</param>
         /// <returns></returns>
         ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs);
- 
+
+        /// <summary>
+        /// Updates a document according to the supplied specification (asynchronous).
+        /// </summary>
+        /// <param name="doc">The document to update</param>
+        /// <param name="updateSpecs">The specification that defines the update</param>
+        /// <returns></returns>
+        Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs);
+
         /// <summary>
         /// Updates the document with the supplied ID according to the supplied specification.
         /// </summary>
@@ -466,7 +474,15 @@ namespace SolrNet
         /// <param name="updateSpecs">The specification that defines the update</param>
         /// <returns></returns>
         ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs);
- 
+
+        /// <summary>
+        /// Updates the document with the supplied ID according to the supplied specification (asynchronous).
+        /// </summary>
+        /// <param name="id">The ID of the document to update</param>
+        /// <param name="updateSpecs">The specification that defines the update</param>
+        /// <returns></returns>
+        Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs);
+
         /// <summary>
         /// Updates a document according to the supplied specification.
         /// </summary>
@@ -475,7 +491,16 @@ namespace SolrNet
         /// <param name="parameters">The atomic update parameters</param>
         /// <returns></returns>
         ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
- 
+
+        /// <summary>
+        /// Updates a document according to the supplied specification (asynchronous).
+        /// </summary>
+        /// <param name="doc">The document to update</param>
+        /// <param name="updateSpecs">The specification that defines the update</param>
+        /// <param name="parameters">The atomic update parameters</param>
+        /// <returns></returns>
+        Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
+
         /// <summary>
         /// Updates the document with the supplied ID according to the supplied specification.
         /// </summary>
@@ -484,5 +509,14 @@ namespace SolrNet
         /// <param name="parameters">The atomic update parameters</param>
         /// <returns></returns>
         ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
+
+        /// <summary>
+        /// Updates the document with the supplied ID according to the supplied specification (asynchronous).
+        /// </summary>
+        /// <param name="id">The ID of the document to update</param>
+        /// <param name="updateSpecs">The specification that defines the update</param>
+        /// <param name="parameters">The atomic update parameters</param>
+        /// <returns></returns>
+        Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
     }
 }

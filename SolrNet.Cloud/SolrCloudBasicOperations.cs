@@ -88,6 +88,16 @@ namespace SolrNet.Cloud
             return PerformBasicOperation(operations => operations.SendAndParseExtract(cmd));
         }
 
+        public ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            return PerformBasicOperation(operations => operations.AtomicUpdate(uniqueKey, id, updateSpecs, parameters));
+        }
+
+        public Task<ResponseHeader> AtomicUpdateAsync(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            return PerformBasicOperation(operations => operations.AtomicUpdateAsync(uniqueKey, id, updateSpecs, parameters));
+        }
+
         public Task<ResponseHeader> CommitAsync(CommitOptions options)
         {
             return PerformBasicOperation(operations => operations.CommitAsync(options));

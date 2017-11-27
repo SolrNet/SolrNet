@@ -46,17 +46,17 @@ namespace SolrNet
         /// <summary>
         /// Name of the field to apply the update to
         /// </summary>
-        public string Field;
+        public string Field { get; set; }
 
         /// <summary>
         /// Type of update to apply
         /// </summary>
-        public AtomicUpdateType Type;
+        public AtomicUpdateType Type { get; set; }
 
         /// <summary>
         /// The update value
         /// </summary>
-        public string Value;
+        public string Value { get; set; }
 
         public AtomicUpdateSpec(string field, AtomicUpdateType type, string value)
         {

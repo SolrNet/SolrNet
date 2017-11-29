@@ -30,6 +30,9 @@ using SolrNet.Tests.Mocks;
 using SolrNet.Tests.Utils;
 using SolrNet.Utils;
 using System.Linq;
+using System.IO;
+using System.Text;
+
 namespace SolrNet.Tests {
     
     public class SolrOperationsTests {
@@ -533,39 +536,24 @@ namespace SolrNet.Tests {
         {
             var xml = EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml");
             var connection = new MSolrConnection();
-            connection.post += (url, content) => {
+            connection.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+                string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
-                Assert.Equal("<add commitWithin=\"4343\" overwrite=\"true\"><doc><field name=\"id\">0</field><field name=\"animal\" update=\"set\">squirrel</field><field name=\"food\" update=\"add\">nuts</field><field name=\"count\" update=\"inc\">3</field></doc></add>", content);
+                Assert.Equal("commitwithin", ((KeyValuePair<string, string>[])param)[0].Key);
+                Assert.Equal("4343", ((KeyValuePair<string, string>[])param)[0].Value);
+                Assert.Equal("[{\"id\":\"0\",\"animal\":{\"set\":\"squirrel\"},\"food\":{\"add\":[\"nuts\",\"seeds\"]},\"count\":{\"inc\":3},\"colour\":{\"remove\":\"pink\"},\"habitat\":{\"removeregex\":[\"tree.*\",\"river.+\"]}}]", text);
                 return xml;
-            };
+            });
             var headerParser = new MSolrHeaderResponseParser();
             headerParser.parse += _ => null;
             var basic = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, null, null, null, headerParser, null, null, null);
             var ops = new SolrServer<TestDocumentWithUniqueKey>(basic, new AttributesMappingManager(), null);
             var parameters = new AtomicUpdateParameters { CommitWithin = 4343 };
-            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, "squirrel"), new AtomicUpdateSpec("food", AtomicUpdateType.Add, "nuts"), new AtomicUpdateSpec("count", AtomicUpdateType.Inc, "3") };
+            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, "squirrel"),
+                new AtomicUpdateSpec("food", AtomicUpdateType.Add, new string[] {"nuts", "seeds" }), new AtomicUpdateSpec("count", AtomicUpdateType.Inc, 3),
+                new AtomicUpdateSpec("colour", AtomicUpdateType.Remove, "pink"), new AtomicUpdateSpec("habitat", AtomicUpdateType.RemoveRegex, new string[]{ "tree.*", "river.+" }) };
             ops.AtomicUpdate(new TestDocumentWithUniqueKey(), updateSpecs, parameters);
-            Assert.Equal(1, connection.post.Calls);
-        }
-
-        [Fact]
-        public void AtomicUpdateSetNull()
-        {
-            var xml = EmbeddedResource.GetEmbeddedString(GetType(), "Resources.response.xml");
-            var connection = new MSolrConnection();
-            connection.post += (url, content) => {
-                Assert.Equal("/update", url);
-                Assert.Equal("<add commitWithin=\"4343\" overwrite=\"true\"><doc><field name=\"id\">0</field><field name=\"animal\" null=\"true\" /></doc></add>", content);
-                return xml;
-            };
-            var headerParser = new MSolrHeaderResponseParser();
-            headerParser.parse += _ => null;
-            var basic = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, null, null, null, headerParser, null, null, null);
-            var ops = new SolrServer<TestDocumentWithUniqueKey>(basic, new AttributesMappingManager(), null);
-            var parameters = new AtomicUpdateParameters { CommitWithin = 4343 };
-            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, null) };
-            ops.AtomicUpdate(new TestDocumentWithUniqueKey(), updateSpecs, parameters);
-            Assert.Equal(1, connection.post.Calls);
+            Assert.Equal(1, connection.postStream.Calls);
         }
     }
 }

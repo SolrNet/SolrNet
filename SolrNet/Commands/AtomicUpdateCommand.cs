@@ -19,6 +19,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Runtime.Serialization.Json;
+using System.IO;
+using System.Text;
 
 namespace SolrNet.Commands
 {
@@ -34,75 +37,78 @@ namespace SolrNet.Commands
 
         public AtomicUpdateCommand(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            this.uniqueKey = uniqueKey;
-            this.id = id;
-            this.updateSpecs = updateSpecs;
+            this.uniqueKey = uniqueKey ?? throw new ArgumentNullException("Null value supplied for uniqueKey parameter.");
+            this.id = id ?? throw new ArgumentNullException("Null value supplied for id parameter.");
+            this.updateSpecs = updateSpecs ?? throw new ArgumentNullException("Null value supplied for updateSpecs parameter.");
             this.parameters = parameters;
         }
 
         public string Execute(ISolrConnection connection)
         {
-            string xml = GetAtomicUpdateXml();
-            return connection.Post("/update", xml);
+            string json = GetAtomicUpdateJson();
+            var bytes = Encoding.UTF8.GetBytes(json);
+            using (var content = new MemoryStream(bytes))
+                return connection.PostStream("/update", "text/json; charset=utf-8", content, GetParamsAsKvp());
         }
 
         public Task<string> ExecuteAsync(ISolrConnection connection)
         {
-            string xml = GetAtomicUpdateXml();
-            return connection.PostAsync("/update", xml);
+            string json = GetAtomicUpdateJson();
+            var bytes = Encoding.UTF8.GetBytes(json);
+            using (var content = new MemoryStream(bytes))
+                return connection.PostStreamAsync("/update", "text/json; charset=utf-8", content, GetParamsAsKvp());
         }
 
-        private string GetAtomicUpdateXml()
+        private KeyValuePair<string, string>[] GetParamsAsKvp()
         {
-            var addElement = new XElement("add");
-            if (parameters != null)
+            if(parameters != null && parameters.CommitWithin.HasValue)
             {
-                if (parameters.CommitWithin.HasValue)
-                {
-                    var commit = new XAttribute("commitWithin", parameters.CommitWithin.Value.ToString(CultureInfo.InvariantCulture));
-                    addElement.Add(commit);
-                }
+                KeyValuePair<string, string>[] kvps = new KeyValuePair<string, string>[1];
+                kvps[0] = new KeyValuePair<string, string>("commitwithin", parameters.CommitWithin.ToString());
+                return kvps;
             }
-
-            // Overwrite must always be true for the update to take affect
-            var overwrite = new XAttribute("overwrite", "true");
-            addElement.Add(overwrite);
-
-            var doc = new XElement("doc");
-            addElement.Add(doc);
-
-            // Check we have a value for the ID
-            if(id == null)
+            else
             {
-                throw new ArgumentNullException("Null value supplied for id parameter.");
+                return null;
             }
+        }
 
-            var idField = new XElement("field", id);
-            var uniqueName = new XAttribute("name", uniqueKey);
-            idField.Add(uniqueName);
-            doc.Add(idField);
+        private string GetAtomicUpdateJson()
+        {
+            string json = "[{\"" + uniqueKey + "\":\"" + id + "\"";
 
             foreach (var updateSpec in updateSpecs)
             {
-                var field = new XElement("field", updateSpec.Value);
-                var name = new XAttribute("name", updateSpec.Field);
-                field.Add(name);
-
-                if (updateSpec.Value == null)
-                {
-                    var nullAttrib = new XAttribute("null", "true");
-                    field.Add(nullAttrib);
-                }
-                else
-                {
-                    var updateType = new XAttribute("update", updateSpec.Type.ToString().ToLower());
-                    field.Add(updateType);
-                }
-
-                doc.Add(field);
+                json += ",\"" + updateSpec.Field + "\":{\"" + updateSpec.Type.ToString().ToLower() + "\":" + ParseValue(updateSpec.Value) + "}";
             }
 
-            return addElement.ToString(SaveOptions.DisableFormatting);
+            json += "}]";
+            return json;
+        }
+
+        private string ParseValue(object value)
+        {
+            if (value is int)
+                return value.ToString();
+            if (value is string)
+                return "\"" + value + "\"";
+            if (value is string[])
+            {
+                string[] values = (string[])value;
+                string str = "[";
+                for(int i=0; i<values.Length; i++)
+                {
+                    str += "\"" + values[i] + "\"";
+                    if(i != values.Length - 1)
+                    {
+                        str += ","; // Add comma (except on the last value)
+                    }
+                }
+                str += "]";
+                return str;
+            }
+
+            throw new ArgumentNullException("Value for atomic update must be int, string or string[].");
         }
     }
 }

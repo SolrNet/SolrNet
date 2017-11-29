@@ -28,6 +28,7 @@ using SolrNet.Impl;
 using SolrNet.Tests.Integration.Sample;
 using SolrNet.Tests;
 using SolrNet.Tests.Utils;
+using System.Threading;
 
 namespace SolrNet.Tests.Integration {
     [Trait("Category","Integration")]
@@ -588,18 +589,25 @@ namespace SolrNet.Tests.Integration {
         public void AtomicUpdate()
         {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
- 
-            solr.AddRange(products);
+            solr.Delete(SolrQuery.All);
             solr.Commit();
- 
-            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("features", AtomicUpdateType.Add, "Feature 3"), new AtomicUpdateSpec("price", AtomicUpdateType.Inc, "1"), new AtomicUpdateSpec("manu", AtomicUpdateType.Set, "MyCo") };
-            solr.AtomicUpdate("DEL12345", updateSpecs);
+            AddSampleDocs();
+
+            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("features", AtomicUpdateType.Add, new string[] { "Feature 3", "Feature 4" }),
+                new AtomicUpdateSpec("price", AtomicUpdateType.Inc, "1"),
+                new AtomicUpdateSpec("manu", AtomicUpdateType.Set, "MyCo"),
+                new AtomicUpdateSpec("cat", AtomicUpdateType.RemoveRegex, "hard.*")};
+            AtomicUpdateParameters parameters = new AtomicUpdateParameters();
+            parameters.CommitWithin = 1;
+            solr.AtomicUpdate("SP2514N", updateSpecs, parameters);
             solr.Commit();
- 
-            Product productAfterUpdate = solr.Query("id:DEL12345")[0];
-            Assert.Equal(3, productAfterUpdate.Features.Count);
+
+            Product productAfterUpdate = solr.Query("id:SP2514N")[0];
+            Assert.True(productAfterUpdate.Features.Contains("Feature 3"));
+            Assert.True(productAfterUpdate.Features.Contains("Feature 4"));
             Assert.Equal("MyCo", productAfterUpdate.Manufacturer);
             Assert.Equal(93, productAfterUpdate.Price);
+            Assert.False(productAfterUpdate.Features.Contains("hard drive"));
         }
     }
 }

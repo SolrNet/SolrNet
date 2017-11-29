@@ -227,6 +227,36 @@ namespace SolrNet.Cloud.Tests
             return null;
         }
 
+        public ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            SetLastOperation();
+            return null;
+        }
+
+        public ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs)
+        {
+            SetLastOperation();
+            return null;
+        }
+
+        public ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs)
+        {
+            SetLastOperation();
+            return null;
+        }
+
+        public ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            SetLastOperation();
+            return null;
+        }
+
+        public ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            SetLastOperation();
+            return null;
+        }
+
         public ResponseHeader BuildSpellCheckDictionary()
         {
             SetLastOperation();
@@ -464,6 +494,31 @@ namespace SolrNet.Cloud.Tests
         }
 
         public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AtomicUpdateAsync(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            SetLastOperation(); return null;
+        }
+
+        public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
             SetLastOperation(); return null;
         }

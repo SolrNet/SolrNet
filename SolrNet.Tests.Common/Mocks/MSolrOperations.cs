@@ -315,6 +315,26 @@ namespace SolrNet.Tests.Mocks {
             throw new NotImplementedException();
         }
 
+        public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<ResponseHeader> BuildSpellCheckDictionaryAsync()
         {
             throw new NotImplementedException();

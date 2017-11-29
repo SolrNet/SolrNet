@@ -22,21 +22,29 @@ namespace SolrNet
     public enum AtomicUpdateType
     {
         /// <summary>
-        /// Sets or replaces a particular value, or remove the value if null is specified as the new value
+        /// Sets or replaces the value(s) of a particular field
         /// </summary>
         Set,
         /// <summary>
-        /// Adds an additional value to a multi-valued field
+        /// Adds additional value(s) to a multi-valued field
         /// </summary>
         Add,
         /// <summary>
         /// Increments a numeric value by a specific amount
         /// </summary>
-        Inc
+        Inc,
+        /// <summary>
+        /// Removes specified value(s) from a multi-valued field
+        /// </summary>
+        Remove,
+        /// <summary>
+        /// Removes value(s) from a multi-valued field according to the regular expression(s) specified
+        /// </summary>
+        RemoveRegex
     }
 
     /// <summary>
-    /// Contains all the information to make a single atomic update to a indexed document.
+    /// Contains all the information to make a single atomic update to an indexed document.
     /// </summary>
     /// <remarks>
     /// See https://wiki.apache.org/solr/Atomic_Updates
@@ -46,19 +54,51 @@ namespace SolrNet
         /// <summary>
         /// Name of the field to apply the update to
         /// </summary>
-        public string Field;
+        public string Field { get; private set; }
 
         /// <summary>
         /// Type of update to apply
         /// </summary>
-        public AtomicUpdateType Type;
+        public AtomicUpdateType Type { get; private set; }
 
         /// <summary>
         /// The update value
         /// </summary>
-        public string Value;
+        public object Value { get; private set; }
 
+        /// <summary>
+        /// Constructor for single string updates
+        /// </summary>
+        /// <param name="field">Name of the field to apply the update to</param>
+        /// <param name="type">Type of update to apply</param>
+        /// <param name="value">String containing the update</param>
         public AtomicUpdateSpec(string field, AtomicUpdateType type, string value)
+        {
+            Field = field;
+            Type = type;
+            Value = value;
+        }
+
+        /// <summary>
+        /// Constructor for multiple string updates
+        /// </summary>
+        /// <param name="field">Name of the field to apply the update to</param>
+        /// <param name="type">Type of update to apply</param>
+        /// <param name="value">String array containing the updates</param>
+        public AtomicUpdateSpec(string field, AtomicUpdateType type, string[] value)
+        {
+            Field = field;
+            Type = type;
+            Value = value;
+        }
+
+        /// <summary>
+        /// Constructor for int updates
+        /// </summary>
+        /// <param name="field">Name of the field to apply the update to</param>
+        /// <param name="type">Type of update to apply</param>
+        /// <param name="value">Int containing the update</param>
+        public AtomicUpdateSpec(string field, AtomicUpdateType type, int value)
         {
             Field = field;
             Type = type;

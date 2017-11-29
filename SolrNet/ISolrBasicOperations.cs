@@ -151,5 +151,15 @@ namespace SolrNet {
         /// <param name="parameters">The atomic update parameters</param>
         /// <returns></returns>
         ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
+        
+        /// <summary>
+        /// Updates the document with the provided ID (asynchronous)
+        /// </summary>
+        /// <param name="uniqueKey">Name of the unique key field</param>
+        /// <param name="id">ID of the document to update</param>
+        /// <param name="updateSpecs">Specifications for the updates</param>
+        /// <param name="parameters">The atomic update parameters</param>
+        /// <returns></returns>
+        Task<ResponseHeader> AtomicUpdateAsync(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
     }
 }

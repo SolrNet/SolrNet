@@ -49,14 +49,8 @@ namespace SolrNet.Impl.ResponseParsers
         public SpellCheckResults ParseSpellChecking(XElement node)
         {
             var r = new SpellCheckResults();
-            var suggestionsNode = node.XPathSelectElement("lst[@name='suggestions']");
-
-            var collationNode = suggestionsNode.XPathSelectElement("str[@name='collation']");
-            if (collationNode != null)
-            {
-                r.Collation = collationNode.Value;
-            }
-
+            var suggestionsNode = node.XPathSelectElement("lst[@name='suggestions']");           
+            
             IEnumerable<XElement> collationNodes;
             var collationsNode = node.XPathSelectElement("lst[@name='collations']");
             if (collationsNode != null)
@@ -70,16 +64,33 @@ namespace SolrNet.Impl.ResponseParsers
                 collationNodes = suggestionsNode.XPathSelectElements("lst[@name='collation']");
             }
 
+            CollationResult tempCollation;
             foreach (var cn in collationNodes)
             {
+                //If it does not contain collationQuery element, it is a suggestion
                 if (cn.XPathSelectElement("str[@name='collationQuery']") != null)
                 {
-                    r.Collations.Add(cn.XPathSelectElement("str[@name='collationQuery']").Value);
-                    if (string.IsNullOrEmpty(r.Collation))
+                    tempCollation = new CollationResult();
+                    tempCollation.CollationQuery = cn.XPathSelectElement("str[@name='collationQuery']").Value;
+
+                    if (cn.XPathSelectElement("long[@name='hits']") != null)
                     {
-                        r.Collation = cn.XPathSelectElement("str[@name='collationQuery']").Value;
+                        tempCollation.Hits = Convert.ToInt64(cn.XPathSelectElement("long[@name='hits']").Value);
                     }
-                }
+                    else if (cn.XPathSelectElement("int[@name='hits']") != null)
+                    {
+                        tempCollation.Hits = Convert.ToInt32(cn.XPathSelectElement("int[@name='hits']").Value);
+                    }
+
+                    //Selects the mispellings and corrections
+                    var correctionNodes = cn.XPathSelectElements("lst[@name='misspellingsAndCorrections']");
+                    tempCollation.MisspellingsAndCorrections = new Dictionary<string, string>();
+                    foreach (var mc in correctionNodes.Elements())
+                    {
+                        tempCollation.MisspellingsAndCorrections.Add(mc.Attribute("name").Value, mc.Value);
+                    }
+                    r.Collations.Add(tempCollation);                
+                }                
             }
 
             var spellChecks = suggestionsNode.Elements("lst");

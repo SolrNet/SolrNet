@@ -574,7 +574,7 @@ namespace SolrNet.Tests
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             var spellChecking = parser.ParseSpellChecking(docNode);
             Assert.NotNull(spellChecking);
-            Assert.Equal("dell ultrasharp", spellChecking.Collation);
+            Assert.Equal("dell ultrasharp", spellChecking.Collations.First().CollationQuery);
             Assert.Equal(2, spellChecking.Count);
         }
 
@@ -587,7 +587,8 @@ namespace SolrNet.Tests
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             var spellChecking = parser.ParseSpellChecking(docNode);
             Assert.NotNull(spellChecking);
-            Assert.Equal("audit", spellChecking.Collation);
+            Assert.Equal("audit", spellChecking.Collations.First().CollationQuery);
+            Assert.Equal("au dt", spellChecking.Collations.Last().CollationQuery);
             Assert.Equal(2, spellChecking.Count);
             Assert.Equal(2, spellChecking.Collations.Count);
         }
@@ -601,9 +602,46 @@ namespace SolrNet.Tests
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             var spellChecking = parser.ParseSpellChecking(docNode);
             Assert.NotNull(spellChecking);
-            Assert.Equal("dell ultrasharp", spellChecking.Collation);
+            Assert.Equal("dell ultrasharp", spellChecking.Collations.First().CollationQuery);
             Assert.Equal(2, spellChecking.Count);
             Assert.Equal(1, spellChecking.Collations.Count);
+        }
+
+        [Theory]
+        [InlineData("4-")]
+        [InlineData("5+")]
+        public void ParseSpellCheckingCollations(string solrVersion)
+        {
+            //Collations node now separates from collation nodes from suggestions
+            var parser = new SpellCheckResponseParser<Product>();
+            XDocument xml;
+
+            if (solrVersion.Equals("5+"))
+            {
+                xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingAndCollationsSolr5+.xml");
+            }
+            else
+            {
+                xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingAndCollationsSolr4-.xml");
+            }
+
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
+            var spellChecking = parser.ParseSpellChecking(docNode);
+            Assert.NotNull(spellChecking);
+            Assert.NotNull(spellChecking.Collations);
+            Assert.Equal(2, spellChecking.Collations.Count);
+            //First result
+            Assert.Equal("audit differences", spellChecking.Collations.First().CollationQuery);
+            Assert.Equal(1111, spellChecking.Collations.First().Hits);
+            Assert.Equal(2, spellChecking.Collations.First().MisspellingsAndCorrections.Count);
+            Assert.Equal("audit", spellChecking.Collations.First().MisspellingsAndCorrections["aodit"]);
+            Assert.Equal("differences", spellChecking.Collations.First().MisspellingsAndCorrections["differencex"]);
+            //Second result
+            Assert.Equal("(ao dit) differences", spellChecking.Collations.Last().CollationQuery);
+            Assert.Equal(1234, spellChecking.Collations.Last().Hits);
+            Assert.Equal(2, spellChecking.Collations.Last().MisspellingsAndCorrections.Count);
+            Assert.Equal("ao dit", spellChecking.Collations.Last().MisspellingsAndCorrections["aodit"]);
+            Assert.Equal("differences", spellChecking.Collations.Last().MisspellingsAndCorrections["differencex"]);
         }
 
         [Fact]

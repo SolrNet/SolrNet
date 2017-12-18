@@ -520,6 +520,9 @@ namespace SolrNet.Impl {
             if (options.Grouping.Truncate.HasValue)
                 yield return KV.Create("group.truncate", options.Grouping.Truncate.ToString().ToLowerInvariant());
 
+            if (options.Grouping.Facet.HasValue)
+                yield return KV.Create("group.facet", options.Grouping.Facet.ToString().ToLowerInvariant());
+
             if (options.Grouping.CachePercent.HasValue)
                 yield return KV.Create("group.cache.percent", options.Grouping.CachePercent.ToString());
 

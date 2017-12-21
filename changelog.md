@@ -5,7 +5,9 @@
 - Move to semantic versioning
 - Added support for custom request handlers (RequestHandlerParameters)
 - Breaking change: SolrQueryExecuter Handler property changed to DefaultHandler
-- Add support for `group.facet` parameter #215 
+- Add support for `group.facet` parameter #215  (@drakeh)
+- Adding `collations` support for Solr 4+ #348 (@ariasjose)
+- Added support for `Atomic Updates` #341 (@alanh-ti)
 
 ## 0.9.1 (2017-11-02)
 * Add support for `ConstantScore` query

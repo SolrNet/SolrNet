@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <result numFound="1" start="0">
+    <doc>
+      <str name="Key">224fbdc1-12df-4520-9fbe-dd91f916eba1</str>
+    </doc>
+  </result>
+  <lst name="spellcheck">
+    <lst name="suggestions">
+      <lst name="audot">
+        <int name="numFound">5</int>
+        <int name="startOffset">0</int>
+        <int name="endOffset">5</int>
+        <arr name="suggestion">
+          <str>audit</str>
+          <str>au dot</str>
+          <str>audet</str>
+          <str>aud ot</str>
+          <str>audyt</str>
+        </arr>
+      </lst>
+      <lst name="collation">
+        <int name="numFound">4</int>
+        <int name="startOffset">6</int>
+        <int name="endOffset">15</int>
+        <arr name="suggestion">
+          <str>colla tion</str>
+          <str>collection</str>
+          <str>coll ation</str>
+          <str>collusion</str>
+        </arr>
+      </lst>
+    </lst>
+    <lst name="collations">
+      <str name="collation">audit collation</str>
+      <str name="collation">audit (colla tion)</str>
+    </lst>
+  </lst>
+</response>

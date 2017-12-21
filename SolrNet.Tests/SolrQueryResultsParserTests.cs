@@ -644,6 +644,42 @@ namespace SolrNet.Tests
             Assert.Equal("differences", spellChecking.Collations.Last().MisspellingsAndCorrections["differencex"]);
         }
 
+        [Theory]
+        [InlineData("4-")]
+        [InlineData("5+")]
+        public void ParseSpellCheckingCollationsNoExtended(string solrVersion)
+        {
+            //Collations node now separates from collation nodes from suggestions
+            var parser = new SpellCheckResponseParser<Product>();
+            XDocument xml;
+
+            if (solrVersion.Equals("5+"))
+            {
+                xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingAndCollationsNoExtendedSolr5+.xml");
+            }
+            else
+            {
+                xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingAndCollationsNoExtendedSolr4-.xml");
+            }
+
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
+            var spellChecking = parser.ParseSpellChecking(docNode);
+            Assert.NotNull(spellChecking);
+            Assert.NotNull(spellChecking.Collations);
+            Assert.Equal(2, spellChecking.Collations.Count);
+            //First result
+            Assert.Equal("audit collation", spellChecking.Collations.First().CollationQuery);
+            Assert.Equal(0, spellChecking.Collations.First().MisspellingsAndCorrections.Count);
+            InvalidOperationException ex1 = Assert.Throws<InvalidOperationException>(() => spellChecking.Collations.First().Hits);
+            Assert.Equal("Operation not supported when collateExtendedResults parameter is set to false.", ex1.Message);
+
+            //Second result
+            Assert.Equal("audit (colla tion)", spellChecking.Collations.Last().CollationQuery);
+            Assert.Equal(0, spellChecking.Collations.Last().MisspellingsAndCorrections.Count);
+            InvalidOperationException ex2 = Assert.Throws<InvalidOperationException>(() => spellChecking.Collations.Last().Hits);
+            Assert.Equal("Operation not supported when collateExtendedResults parameter is set to false.", ex2.Message);            
+        }
+
         [Fact]
         public void ParseClustering()
         {

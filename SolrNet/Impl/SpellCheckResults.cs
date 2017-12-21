@@ -22,15 +22,11 @@ namespace SolrNet.Impl {
     /// Spell-checking query results
     /// </summary>
     public class SpellCheckResults : ICollection<SpellCheckResult> {
-        /// <summary>
-        /// Suggestion query from spell-checking
-        /// </summary>
-        public string Collation { get; set; }
 
         /// <summary>
         /// Multiple collations returned
         /// </summary>
-        public ICollection<string> Collations = new List<string>();
+        public ICollection<CollationResult> Collations = new List<CollationResult>();
 
         private readonly ICollection<SpellCheckResult> SpellChecks = new List<SpellCheckResult>();
 

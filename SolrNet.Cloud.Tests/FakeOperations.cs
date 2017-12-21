@@ -325,157 +325,188 @@ namespace SolrNet.Cloud.Tests
 
         public Task<ResponseHeader> CommitAsync(CommitOptions options)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> OptimizeAsync(CommitOptions options)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> RollbackAsync()
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AddWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ExtractResponse> ExtractAsync(ExtractParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ExtractResponse>(null);
         }
 
         public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<string> SendAsync(ISolrCommand cmd)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<string>(null);
         }
 
         public Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ExtractResponse> SendAndParseExtractAsync(ISolrCommand cmd)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ExtractResponse>(null);
         }
 
         public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<SolrQueryResults<T>>(null);
         }
 
         public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<SolrMoreLikeThisHandlerResults<T>>(null);
         }
 
         public Task<ResponseHeader> PingAsync()
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<SolrSchema> GetSchemaAsync(string schemaFileName)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<SolrSchema>(null);
         }
 
         public Task<SolrDIHStatus> GetDIHStatusAsync(KeyValuePair<string, string> options)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<SolrDIHStatus>(null);
         }
 
         public Task<ResponseHeader> CommitAsync()
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> OptimizeAsync()
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AddAsync(T doc)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AddAsync(T doc, AddParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AddWithBoostAsync(T doc, double boost)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AddWithBoostAsync(T doc, double boost, AddParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AddRangeAsync(IEnumerable<T> docs)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AddRangeAsync(IEnumerable<T> docs, AddParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AddRangeWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AddRangeWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> DeleteAsync(T doc)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> DeleteAsync(T doc, DeleteParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> DeleteAsync(IEnumerable<T> docs)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> DeleteAsync(IEnumerable<T> docs, DeleteParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> DeleteAsync(ISolrQuery q)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> DeleteAsync(ISolrQuery q, DeleteParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> DeleteAsync(string id)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> DeleteAsync(string id, DeleteParameters parameters)
@@ -485,88 +516,103 @@ namespace SolrNet.Cloud.Tests
 
         public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, DeleteParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AtomicUpdateAsync(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return new Task<ResponseHeader>(null);
         }
 
         public Task<ResponseHeader> BuildSpellCheckDictionaryAsync()
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
         }
 
         public Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync()
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<IEnumerable<ValidationResult>>(null);
         }
 
         public Task<SolrQueryResults<T>> QueryAsync(string q)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<SolrQueryResults<T>>(null);
         }
 
         public Task<SolrQueryResults<T>> QueryAsync(string q, ICollection<SortOrder> orders)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<SolrQueryResults<T>>(null);
         }
 
         public Task<SolrQueryResults<T>> QueryAsync(string q, QueryOptions options)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<SolrQueryResults<T>>(null);
         }
 
         public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery q)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<SolrQueryResults<T>>(null);
         }
 
         public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, ICollection<SortOrder> orders)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<SolrQueryResults<T>> (null);
         }
 
         public Task<ICollection<KeyValuePair<string, int>>> FacetFieldQueryAsync(SolrFacetFieldQuery facets)
         {
-            SetLastOperation(); return null;
+            SetLastOperation();
+            return Task.FromResult<ICollection<KeyValuePair<string, int>>>(null);
         }
 
         private void SetLastOperation([CallerMemberName]string operation = null)
         {
             provider.LastOperation = operation;
-
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +48,6 @@ namespace SolrNet.Impl {
             this.querySerializer = querySerializer;
             this.dihStatusParser = dihStatusParser;
         }
-
 
         public ResponseHeader Commit(CommitOptions options)
         {
@@ -117,9 +116,6 @@ namespace SolrNet.Impl {
             return queryExecuter.Execute(query, options);
         }
 
-     
-   
-
         public ExtractResponse SendAndParseExtract(ISolrCommand cmd)
         {
             var r = Send(cmd);
@@ -135,6 +131,16 @@ namespace SolrNet.Impl {
             return extractResponseParser.Parse(xml);
         }
 
+        public ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters){
+            var atomicUpdate = new AtomicUpdateCommand(uniqueKey, id, updateSpecs, parameters);
+            return SendAndParseHeader(atomicUpdate);
+        }
+
+        public Task<ResponseHeader> AtomicUpdateAsync(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            var atomicUpdate = new AtomicUpdateCommand(uniqueKey, id, updateSpecs, parameters);
+            return SendAndParseHeaderAsync(atomicUpdate);
+        }
 
         public ResponseHeader Ping() {
             return SendAndParseHeader(new PingCommand());

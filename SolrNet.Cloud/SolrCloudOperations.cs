@@ -219,6 +219,26 @@ namespace SolrNet.Cloud
             return PerformOperation(operations => operations.EnumerateValidationResults());
         }
 
+        public ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs)
+        {
+            return PerformOperation(operations => operations.AtomicUpdate(doc, updateSpecs), true);
+        }
+
+        public ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs)
+        {
+            return PerformOperation(operations => operations.AtomicUpdate(id, updateSpecs), true);
+        }
+
+        public ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            return PerformOperation(operations => operations.AtomicUpdate(doc, updateSpecs, parameters), true);
+        }
+
+        public ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            return PerformOperation(operations => operations.AtomicUpdate(id, updateSpecs, parameters), true);
+        }
+
         public Task<ResponseHeader> CommitAsync()
             => PerformOperation(operations => operations.CommitAsync());
 
@@ -335,5 +355,17 @@ namespace SolrNet.Cloud
 
         public Task<SolrDIHStatus> GetDIHStatusAsync(KeyValuePair<string, string> options)
             => PerformOperation(operations => operations.GetDIHStatusAsync(options));
+
+        public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs)
+            => PerformOperation(operations => operations.AtomicUpdateAsync(doc, updateSpecs));
+
+        public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs)
+            => PerformOperation(operations => operations.AtomicUpdateAsync(id, updateSpecs));
+
+        public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+            => PerformOperation(operations => operations.AtomicUpdateAsync(doc, updateSpecs, parameters));
+
+        public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+            => PerformOperation(operations => operations.AtomicUpdateAsync(id, updateSpecs, parameters));
     }
 }

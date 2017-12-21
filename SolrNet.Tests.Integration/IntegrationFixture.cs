@@ -28,6 +28,7 @@ using SolrNet.Impl;
 using SolrNet.Tests.Integration.Sample;
 using SolrNet.Tests;
 using SolrNet.Tests.Utils;
+using System.Threading;
 
 namespace SolrNet.Tests.Integration {
     [Trait("Category","Integration")]
@@ -559,15 +560,17 @@ namespace SolrNet.Tests.Integration {
         }
 
         [Fact]
-        public void MoreLikeThisHandler() {
+        public void MoreLikeThisHandler()
+        {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             solr.Delete(SolrQuery.All);
             solr.Commit();
             AddSampleDocs();
-            var mltParams = new MoreLikeThisHandlerParameters(new[] {"cat", "name"}) {
-                MatchInclude = true, 
-                MinTermFreq = 1, 
-                MinDocFreq = 1, 
+            var mltParams = new MoreLikeThisHandlerParameters(new[] { "cat", "name" })
+            {
+                MatchInclude = true,
+                MinTermFreq = 1,
+                MinDocFreq = 1,
                 ShowTerms = InterestingTerms.List,
             };
             var q = SolrMLTQuery.FromQuery(new SolrQuery("id:UTF8TEST"));
@@ -575,11 +578,36 @@ namespace SolrNet.Tests.Integration {
             Assert.Equal(2, results.Count);
             Assert.NotNull(results.Match);
             Assert.Equal("UTF8TEST", results.Match.Id);
-            Assert.True (results.InterestingTerms.Count > 0);
-            foreach (var t in results.InterestingTerms) {
+            Assert.True(results.InterestingTerms.Count > 0);
+            foreach (var t in results.InterestingTerms)
+            {
                 Console.WriteLine("Interesting term: {0} ({1})", t.Key, t.Value);
             }
-            
+        }
+
+        [Fact]
+        public void AtomicUpdate()
+        {
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            solr.Delete(SolrQuery.All);
+            solr.Commit();
+            AddSampleDocs();
+
+            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("features", AtomicUpdateType.Add, new string[] { "Feature 3", "Feature 4" }),
+                new AtomicUpdateSpec("price", AtomicUpdateType.Inc, "1"),
+                new AtomicUpdateSpec("manu", AtomicUpdateType.Set, "MyCo"),
+                new AtomicUpdateSpec("cat", AtomicUpdateType.RemoveRegex, "hard.*")};
+            AtomicUpdateParameters parameters = new AtomicUpdateParameters();
+            parameters.CommitWithin = 1;
+            solr.AtomicUpdate("SP2514N", updateSpecs, parameters);
+            solr.Commit();
+
+            Product productAfterUpdate = solr.Query("id:SP2514N")[0];
+            Assert.True(productAfterUpdate.Features.Contains("Feature 3"));
+            Assert.True(productAfterUpdate.Features.Contains("Feature 4"));
+            Assert.Equal("MyCo", productAfterUpdate.Manufacturer);
+            Assert.Equal(93, productAfterUpdate.Price);
+            Assert.False(productAfterUpdate.Features.Contains("hard drive"));
         }
     }
 }

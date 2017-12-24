@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>SolrNet.Cloud.Unity</id>
+    <version>1.0.0</version>
+    <authors>Mauricio Scheffer and contributors</authors>
+    <owners>Mauricio Scheffer</owners>
+    <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
+    <iconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Unity integration for SolrNet.Cloud. This version of SolrNet.Cloud is compatible with Solr 1.x to Solr 7.x. </description>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="Unity" version="4.0.1" />
+      <dependency id="SolrNet.Cloud" version="1.0.0" />
+      <dependency id="ZooKeeperNetEx" version="3.4.9.4" />
+      <dependency id="Nito.AsyncEx" version="4.0.1"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\release\Unity.SolrNetCloudIntegration.dll" target="lib\net46\Unity.SolrNetCloudIntegration.dll" />
+    <file src="bin\release\Unity.SolrNetCloudIntegration.pdb" target="lib\net46\Unity.SolrNetCloudIntegration.pdb" />
+  </files>
+</package>

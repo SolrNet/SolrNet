@@ -1,6 +1,21 @@
 # Change Log
 
-## 0.8.1 (development)
+## 1.0.0 (development)
+- **SolrNet.Cloud**: First class SolrCloud support
+- Move to semantic versioning
+- Added support for custom request handlers (RequestHandlerParameters)
+- Breaking change: SolrQueryExecuter Handler property changed to DefaultHandler
+- Add support for `group.facet` parameter #215  (@drakeh)
+- Adding `collations` support for Solr 4+ #348 (@ariasjose)
+- Added support for `Atomic Updates` #341 (@alanh-ti)
+
+## 0.9.1 (2017-11-02)
+* Add support for `ConstantScore` query
+* Fixed support for Solr 7.0 due to breaking change, in which JSON  is the default response formatter instead of XML
+* More DI libraries are now `netstandard 2.0` compliant
+* Decoupled shared unit test code.
+
+## 0.8.1 (2017-09-27)
 * Added Range Faceting support
 * Added Interval Faceting support
 * Marked Date Faceting as obsolete.

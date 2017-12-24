@@ -98,6 +98,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AtomicUpdateCommandTests.cs" />
     <Compile Include="CollapseExpandResponseParserTests.cs" />
     <Compile Include="DateTimeOffsetFieldParserTests.cs" />
     <Compile Include="DebugResponseParserTests.cs" />
@@ -346,13 +347,14 @@
     <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\solrManagedSchemaBasic.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsSolr4-.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsSolr5+.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\solrManagedSchemaNoUniqueKey.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsNoExtendedSolr4-.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\solrManagedSchemaEmptyUniqueKey.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsNoExtendedSolr5+.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

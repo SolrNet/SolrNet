@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using SolrNet.Utils;
@@ -51,34 +52,53 @@ namespace SolrNet.Impl.ResponseParsers
             var r = new SpellCheckResults();
             var suggestionsNode = node.XPathSelectElement("lst[@name='suggestions']");
 
-            var collationNode = suggestionsNode.XPathSelectElement("str[@name='collation']");
-            if (collationNode != null)
-            {
-                r.Collation = collationNode.Value;
-            }
-
             IEnumerable<XElement> collationNodes;
             var collationsNode = node.XPathSelectElement("lst[@name='collations']");
             if (collationsNode != null)
             {
                 // Solr 5.0+
-                collationNodes = collationsNode.XPathSelectElements("lst[@name='collation']");
+                collationNodes = collationsNode.XPathSelectElements("lst[@name='collation']")
+                    .Union(collationsNode.XPathSelectElements("str[@name='collation']"));
             }
             else
             {
                 // Solr 4.x and lower
-                collationNodes = suggestionsNode.XPathSelectElements("lst[@name='collation']");
+                collationNodes = suggestionsNode.XPathSelectElements("lst[@name='collation']")
+                    .Union(suggestionsNode.XPathSelectElements("str[@name='collation']"));              
             }
-
+            
+            CollationResult tempCollation;
             foreach (var cn in collationNodes)
             {
+                //If it does not contain collationQuery element, it is a suggestion
                 if (cn.XPathSelectElement("str[@name='collationQuery']") != null)
                 {
-                    r.Collations.Add(cn.XPathSelectElement("str[@name='collationQuery']").Value);
-                    if (string.IsNullOrEmpty(r.Collation))
+                    tempCollation = new CollationResult();
+                    tempCollation.CollationQuery = cn.XPathSelectElement("str[@name='collationQuery']").Value;
+
+                    if (cn.XPathSelectElement("long[@name='hits']") != null)
                     {
-                        r.Collation = cn.XPathSelectElement("str[@name='collationQuery']").Value;
+                        tempCollation.Hits = Convert.ToInt64(cn.XPathSelectElement("long[@name='hits']").Value);
                     }
+                    else if (cn.XPathSelectElement("int[@name='hits']") != null)
+                    {
+                        tempCollation.Hits = Convert.ToInt32(cn.XPathSelectElement("int[@name='hits']").Value);
+                    }
+
+                    //Selects the mispellings and corrections
+                    var correctionNodes = cn.XPathSelectElements("lst[@name='misspellingsAndCorrections']");
+                    foreach (var mc in correctionNodes.Elements())
+                    {
+                        tempCollation.MisspellingsAndCorrections.Add(mc.Attribute("name").Value, mc.Value);
+                    }
+                    r.Collations.Add(tempCollation);
+                }
+                else if(cn.Name.LocalName.Equals("str"))
+                {
+                    tempCollation = new CollationResult();
+                    tempCollation.CollationQuery = cn.Value;
+                    tempCollation.Hits = -1;                    
+                    r.Collations.Add(tempCollation);
                 }
             }
 

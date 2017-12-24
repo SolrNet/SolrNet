@@ -2,23 +2,24 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>SolrNet.Windsor</id>
-    <version>0.9.2</version>
+    <version>1.0.0</version>
     <title>SolrNet.Windsor</title>
     <authors>Mauricio Scheffer and contributors</authors>
     <owners>Mauricio Scheffer</owners>
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/SolrNet/SolrNet</projectUrl>
+    <iconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Windsor facility for SolrNet</description>
+    <description>Windsor facility for SolrNet. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</description>
     <language>en-US</language>
     <dependencies>
       <group targetFramework=".NETFramework4.6">
-        <dependency id="SolrNet.Core" version="[0.9.1]" />
+        <dependency id="SolrNet.Core" version="1.0.0" />
         <dependency id="Castle.Core" version="4.2.1" />
         <dependency id="Castle.Windsor" version="4.1.0" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="SolrNet.Core" version="[0.9.1]" />
+        <dependency id="SolrNet.Core" version="1.0.0" />
         <dependency id="Castle.Core" version="4.2.1" />
         <dependency id="Castle.Windsor" version="4.1.0" />
       </group>

@@ -41,7 +41,8 @@ namespace SolrNet.Tests {
         }
 
         [Fact]
-        public void Execute() {
+        public void Execute()
+        {
             const string queryString = "id:123456";
             var q = new Dictionary<string, string>();
             q["q"] = queryString;
@@ -54,6 +55,27 @@ namespace SolrNet.Tests {
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, serializer, null, null);
             var r = queryExecuter.Execute(new SolrQuery(queryString), null);
             Assert.Equal(1, serializer.serialize.Calls);
+        }
+
+        [Fact]
+        public void RequestHandler()
+        {
+            const string queryString = "id:123456";
+            var q = new Dictionary<string, string>();
+            q["q"] = queryString;
+            q["handler"] = "/update";
+            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            var queryOptions = new QueryOptions {
+                RequestHandler = new RequestHandlerParameters("/update")
+            };
+            var conn = new MockConnection(q);
+            var serializer = new MSolrQuerySerializer();
+            serializer.serialize += _ => queryString;
+            var parser = new MSolrAbstractResponseParser<TestDocument>();
+            parser.parse &= x => x.Stub();
+
+            var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, serializer, null, null);
+            var r = queryExecuter.Execute(new SolrQuery(queryString), queryOptions);
         }
 
         [Fact]

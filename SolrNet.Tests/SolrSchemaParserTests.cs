@@ -25,6 +25,8 @@ namespace SolrNet.Tests
     
     public class SolrSchemaParserTests
     {
+
+#region "schema.xml"
         [Fact]
         public void SolrFieldTypeParsing()
         {
@@ -115,6 +117,101 @@ namespace SolrNet.Tests
             SolrSchema schemaDoc = schemaParser.Parse(xml);
             Assert.Null(schemaDoc.UniqueKey);
         }
+        #endregion
+
+
+#region "managed-schema"
+        [Fact]
+        public void SolrFieldTypeParsingManagedSchema()
+        {
+            var schemaParser = new SolrSchemaParser();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrManagedSchemaBasic.xml");
+            SolrSchema schemaDoc = schemaParser.Parse(xml);
+
+            Assert.Equal(2, schemaDoc.SolrFieldTypes.Count);
+            Assert.Equal("string", schemaDoc.SolrFieldTypes[0].Name);
+            Assert.Equal("solr.StrField", schemaDoc.SolrFieldTypes[0].Type);
+        }
+
+        [Fact]
+        public void SolrFieldParsingManagedSchema()
+        {
+            var schemaParser = new SolrSchemaParser();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrManagedSchemaBasic.xml");
+            SolrSchema schemaDoc = schemaParser.Parse(xml);
+
+            Assert.Equal(4, schemaDoc.SolrFields.Count);
+            Assert.Equal("id", schemaDoc.SolrFields[0].Name);
+
+            Assert.True(schemaDoc.SolrFields[0].IsRequired);
+            Assert.False(schemaDoc.SolrFields[2].IsRequired);
+
+            Assert.True(schemaDoc.SolrFields[3].IsMultiValued);
+            Assert.False(schemaDoc.SolrFields[0].IsMultiValued);
+
+            Assert.True(schemaDoc.SolrFields[2].IsIndexed);
+            Assert.False(schemaDoc.SolrFields[3].IsIndexed);
+
+            Assert.True(schemaDoc.SolrFields[0].IsStored);
+            Assert.False(schemaDoc.SolrFields[3].IsStored);
+
+            Assert.False(schemaDoc.SolrFields[1].IsDocValues);
+            Assert.False(schemaDoc.SolrFields[2].IsDocValues);
+            Assert.True(schemaDoc.SolrFields[3].IsDocValues);
+
+            Assert.Equal("string", schemaDoc.SolrFields[0].Type.Name);
+        }
+
+        [Fact]
+        public void SolrDynamicFieldParsingManagedSchema()
+        {
+            var schemaParser = new SolrSchemaParser();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrManagedSchemaBasic.xml");
+            SolrSchema schemaDoc = schemaParser.Parse(xml);
+
+            Assert.Equal(1, schemaDoc.SolrDynamicFields.Count);
+            Assert.Equal("*_s", schemaDoc.SolrDynamicFields[0].Name);
+        }
+
+        [Fact]
+        public void SolrCopyFieldParsingManagedSchema()
+        {
+            var schemaParser = new SolrSchemaParser();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrManagedSchemaBasic.xml");
+            SolrSchema schemaDoc = schemaParser.Parse(xml);
+
+            Assert.Equal(1, schemaDoc.SolrCopyFields.Count);
+            Assert.Equal("name", schemaDoc.SolrCopyFields[0].Source);
+            Assert.Equal("nameSort", schemaDoc.SolrCopyFields[0].Destination);
+        }
+
+        [Fact]
+        public void UniqueKeyPresentManagedSchema()
+        {
+            var schemaParser = new SolrSchemaParser();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrManagedSchemaBasic.xml");
+            SolrSchema schemaDoc = schemaParser.Parse(xml);
+            Assert.Equal("id", schemaDoc.UniqueKey);
+        }
+
+        [Fact]
+        public void UniqueKeyNotPresentManagedSchema()
+        {
+            var schemaParser = new SolrSchemaParser();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrManagedSchemaNoUniqueKey.xml");
+            SolrSchema schemaDoc = schemaParser.Parse(xml);
+            Assert.Null(schemaDoc.UniqueKey);
+        }
+
+        [Fact]
+        public void UniqueKeyEmptyManagedSchema()
+        {
+            var schemaParser = new SolrSchemaParser();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrManagedSchemaEmptyUniqueKey.xml");
+            SolrSchema schemaDoc = schemaParser.Parse(xml);
+            Assert.Null(schemaDoc.UniqueKey);
+        }
+        #endregion
 
     }
 }

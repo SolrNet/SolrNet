@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace SolrNet.Impl {
@@ -21,19 +22,48 @@ namespace SolrNet.Impl {
     /// Collation Result
     /// </summary>
     public class CollationResult {
-        /// <summary>
-        /// Collation query term
-        /// </summary>
-        public string CollationQuery { get; set;}
 
         /// <summary>
         /// Number of hits
         /// </summary>
-        public long Hits { get; set;}
+        private long _hits;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        internal CollationResult()
+        {
+            MisspellingsAndCorrections = new Dictionary<string, string>();
+        }
+
+        /// <summary>
+        /// Collation query term
+        /// </summary>
+        public string CollationQuery { get; internal set;}
+
+        /// <summary>
+        /// Number of hits
+        /// </summary>
+        public long Hits {
+            get {
+                if (_hits >= 0)
+                {
+                    return _hits;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Operation not supported when collateExtendedResults parameter is set to false.");
+                }
+            }
+            internal set
+            {
+                _hits = value;
+            }
+        }
 
         /// <summary>
         /// MisspellingsAndCorrections
         /// </summary>
-        public IDictionary<string, string> MisspellingsAndCorrections { get; set;}
+        public IDictionary<string, string> MisspellingsAndCorrections { get; internal set;}
     }
 }

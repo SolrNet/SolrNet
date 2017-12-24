@@ -350,6 +350,12 @@
     <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsSolr4-.xml" />
     <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsSolr5+.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsNoExtendedSolr4-.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsNoExtendedSolr5+.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using SolrNet.Utils;
@@ -56,14 +57,16 @@ namespace SolrNet.Impl.ResponseParsers
             if (collationsNode != null)
             {
                 // Solr 5.0+
-                collationNodes = collationsNode.XPathSelectElements("lst[@name='collation']");
+                collationNodes = collationsNode.XPathSelectElements("lst[@name='collation']")
+                    .Union(collationsNode.XPathSelectElements("str[@name='collation']"));
             }
             else
             {
                 // Solr 4.x and lower
-                collationNodes = suggestionsNode.XPathSelectElements("lst[@name='collation']");
+                collationNodes = suggestionsNode.XPathSelectElements("lst[@name='collation']")
+                    .Union(suggestionsNode.XPathSelectElements("str[@name='collation']"));              
             }
-
+            
             CollationResult tempCollation;
             foreach (var cn in collationNodes)
             {
@@ -84,11 +87,17 @@ namespace SolrNet.Impl.ResponseParsers
 
                     //Selects the mispellings and corrections
                     var correctionNodes = cn.XPathSelectElements("lst[@name='misspellingsAndCorrections']");
-                    tempCollation.MisspellingsAndCorrections = new Dictionary<string, string>();
                     foreach (var mc in correctionNodes.Elements())
                     {
                         tempCollation.MisspellingsAndCorrections.Add(mc.Attribute("name").Value, mc.Value);
                     }
+                    r.Collations.Add(tempCollation);
+                }
+                else if(cn.Name.LocalName.Equals("str"))
+                {
+                    tempCollation = new CollationResult();
+                    tempCollation.CollationQuery = cn.Value;
+                    tempCollation.Hits = -1;                    
                     r.Collations.Add(tempCollation);
                 }
             }

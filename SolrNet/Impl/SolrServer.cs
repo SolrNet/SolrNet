@@ -314,9 +314,9 @@ namespace SolrNet.Impl
             return basicServer.GetSchema(schemaFileName);
         }
 
-        public IEnumerable<ValidationResult> EnumerateValidationResults()
+        public IEnumerable<ValidationResult> EnumerateValidationResults(String schemaFileName)
         {
-            var schema = GetSchema();
+            var schema = GetSchema(schemaFileName);
             return _schemaMappingValidator.EnumerateValidationResults(typeof(T), schema);
         }
 

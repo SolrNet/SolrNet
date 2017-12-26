@@ -316,7 +316,12 @@ namespace SolrNet.Impl
 
         public IEnumerable<ValidationResult> EnumerateValidationResults()
         {
-            var schema = GetSchema();
+            return EnumerateValidationResults("schema.xml");
+        }
+
+        public IEnumerable<ValidationResult> EnumerateValidationResults(String schemaFileName)
+        {
+            var schema = GetSchema(schemaFileName);
             return _schemaMappingValidator.EnumerateValidationResults(typeof(T), schema);
         }
 
@@ -477,6 +482,12 @@ namespace SolrNet.Impl
         public async Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync()
         {
             var schema = await basicServer.GetSchemaAsync("schema.xml");
+            return _schemaMappingValidator.EnumerateValidationResults(typeof(T), schema);
+        }
+
+        public async Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync(String schemaFileName)
+        {
+            var schema = await basicServer.GetSchemaAsync(schemaFileName);
             return _schemaMappingValidator.EnumerateValidationResults(typeof(T), schema);
         }
     }

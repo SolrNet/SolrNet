@@ -367,5 +367,13 @@ namespace SolrNet.Cloud
 
         public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
             => PerformOperation(operations => operations.AtomicUpdateAsync(id, updateSpecs, parameters));
+
+        public IEnumerable<ValidationResult> EnumerateValidationResults(string schemaFileName)
+        {
+            return PerformOperation(operations => operations.EnumerateValidationResults(schemaFileName));
+        }
+
+        public Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync(string schemaFileName)
+          => PerformOperation(operations => operations.EnumerateValidationResultsAsync(schemaFileName));
     }
 }

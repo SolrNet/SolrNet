@@ -399,5 +399,15 @@ namespace SolrNet.Tests.Mocks {
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<ValidationResult> EnumerateValidationResults(string schemaFileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync(string schemaFileName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

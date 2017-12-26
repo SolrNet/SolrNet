@@ -269,6 +269,12 @@ namespace SolrNet.Cloud.Tests
             return null;
         }
 
+        public IEnumerable<ValidationResult> EnumerateValidationResults(string schemaFileName)
+        {
+            SetLastOperation();
+            return null;
+        }
+
         public string Send(ISolrCommand cmd)
         {
             SetLastOperation();
@@ -569,6 +575,12 @@ namespace SolrNet.Cloud.Tests
         }
 
         public Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync()
+        {
+            SetLastOperation();
+            return Task.FromResult<IEnumerable<ValidationResult>>(null);
+        }
+
+        public Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync(string schemaFileName)
         {
             SetLastOperation();
             return Task.FromResult<IEnumerable<ValidationResult>>(null);

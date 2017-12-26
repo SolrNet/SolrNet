@@ -443,6 +443,13 @@ namespace SolrNet
         /// the type's mapping against the Solr schema if any.</returns>
         IEnumerable<ValidationResult> EnumerateValidationResults();
 
+        /// <summary>
+        /// Validates the mapping of the type T against the Solr schema XML document.
+        /// </summary>
+        /// <param name="schemaFileName"></param>
+        /// <returns></returns>
+        IEnumerable<ValidationResult> EnumerateValidationResults(String schemaFileName);
+
         ///<summary>
         /// Validates the mapping of the type T against the Solr schema XML document.
         ///</summary>
@@ -450,6 +457,12 @@ namespace SolrNet
         /// A collection of <see cref="ValidationResult"/> objects containing warnings and error found validating
         /// the type's mapping against the Solr schema if any.</returns>
         Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync();
+		
+		/// <summary>
+        /// Validates the mapping of the type T against the Solr schema XML document.
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync(String schemaFileName);
 
         /// <summary>
         /// Updates a document according to the supplied specification.

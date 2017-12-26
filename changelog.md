@@ -8,6 +8,7 @@
 - Add support for `group.facet` parameter #215  (@drakeh)
 - Adding `collations` support for Solr 4+ #348 (@ariasjose)
 - Added support for `Atomic Updates` #341 (@alanh-ti)
+- Added Support for managed-schema in `solr.EnumerateValidationResults()` #357 (@bkrbkr)
 
 ## 0.9.1 (2017-11-02)
 * Add support for `ConstantScore` query

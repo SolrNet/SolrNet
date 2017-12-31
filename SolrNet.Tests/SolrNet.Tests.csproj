@@ -356,6 +356,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsNoExtendedSolr5+.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\solrManagedSchemaBasic.xml" />
+    <EmbeddedResource Include="Resources\solrManagedSchemaEmptyUniqueKey.xml" />
+    <EmbeddedResource Include="Resources\solrManagedSchemaNoUniqueKey.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

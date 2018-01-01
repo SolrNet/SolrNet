@@ -1,6 +1,6 @@
 # Change Log
 
-## 1.0.0 (development)
+## 1.0.0 (2018-01-01)
 - **SolrNet.Cloud**: First class SolrCloud support
 - Move to semantic versioning
 - Added support for custom request handlers (RequestHandlerParameters)

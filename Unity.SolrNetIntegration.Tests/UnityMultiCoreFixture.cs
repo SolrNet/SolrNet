@@ -1,6 +1,5 @@
 using System.Configuration;
 using Xunit;
-using Microsoft.Practices.Unity;
 using SolrNet;
 using Unity.SolrNetIntegration.Config;
 using System;

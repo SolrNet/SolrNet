@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Microsoft.Practices.Unity;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
@@ -17,6 +16,7 @@ using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
 using Unity.SolrNetIntegration.Config;
+using Unity.Injection;
 
 namespace Unity.SolrNetIntegration {
     public class SolrNetContainerConfiguration {

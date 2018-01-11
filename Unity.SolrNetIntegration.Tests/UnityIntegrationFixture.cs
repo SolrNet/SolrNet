@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using Xunit;
-using Microsoft.Practices.Unity;
 using SolrNet;
 using Unity.SolrNetIntegration.Config;
 

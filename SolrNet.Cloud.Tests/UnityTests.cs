@@ -1,6 +1,6 @@
-﻿using Microsoft.Practices.Unity;
-using Xunit;
+﻿using Xunit;
 using Unity.SolrNetCloudIntegration;
+using Unity;
 
 namespace SolrNet.Cloud.Tests
 {

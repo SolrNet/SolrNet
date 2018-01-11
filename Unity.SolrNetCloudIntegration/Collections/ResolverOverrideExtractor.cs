@@ -1,5 +1,5 @@
-﻿using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
+﻿using Unity.Builder;
+using Unity.Resolution;
 
 namespace Unity.SolrNetCloudIntegration.Collections
 {

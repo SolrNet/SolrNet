@@ -1,5 +1,4 @@
-﻿using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -7,6 +6,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Unity.Builder;
+using Unity.ObjectBuilder;
+using Unity.Resolution;
 
 namespace Unity.SolrNetCloudIntegration.Collections
 {

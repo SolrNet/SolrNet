@@ -1,9 +1,9 @@
-﻿using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Utility;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.Builder;
+using Unity.Builder.Strategy;
+using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
 namespace Unity.SolrNetIntegration.Collections
 {
@@ -37,7 +37,7 @@ namespace Unity.SolrNetIntegration.Collections
                     context.Existing = resolver(context);
                     context.BuildComplete = true;
                 }
-            }
+            }          
         }
 
         private static object ResolveCollection<T>(IBuilderContext context)

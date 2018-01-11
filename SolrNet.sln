@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet", "SolrNet\SolrNet.csproj", "{CEEB8690-3E08-4440-B647-787A58E71CFA}"
 EndProject
@@ -50,9 +50,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonServiceLocator.SolrNe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonServiceLocator.SolrNet.Tests", "CommonServiceLocator.SolrNet.Tests\CommonServiceLocator.SolrNet.Tests.csproj", "{0988D6A2-04FD-4328-AFFA-677DB377432D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonServiceLocator.SolrNet.Cloud", "CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj", "{63538CF2-62C5-4F5A-99B2-9F14896AFB98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonServiceLocator.SolrNet.Cloud", "CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj", "{63538CF2-62C5-4F5A-99B2-9F14896AFB98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Cloud", "SolrNet.Cloud\SolrNet.Cloud.csproj", "{BDA98C34-3B00-4B1F-B850-9C776FEDE8E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.Cloud", "SolrNet.Cloud\SolrNet.Cloud.csproj", "{BDA98C34-3B00-4B1F-B850-9C776FEDE8E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Cloud.Tests", "SolrNet.Cloud.Tests\SolrNet.Cloud.Tests.csproj", "{C4FF031C-FB88-4186-9305-B180A07EC7DA}"
 EndProject
@@ -175,6 +175,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45
 		SolutionGuid = {BC12CF2E-A108-47A2-B60C-A17B3102D52D}
 	EndGlobalSection
 EndGlobal

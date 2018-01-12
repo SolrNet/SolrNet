@@ -15,19 +15,19 @@ namespace SolrNet.Impl
 	/// </summary>
 	public class PostSolrConnection : ISolrConnection
 	{
-		private readonly ISolrConnection conn;
-		private readonly string serverUrl;
+		    private readonly ISolrConnection conn;
+		    private readonly string serverUrl;
 
-		public PostSolrConnection(ISolrConnection conn, string serverUrl)
-		{
-			this.conn = conn;
-			this.serverUrl = serverUrl;
-		}
+		    public PostSolrConnection(ISolrConnection conn, string serverUrl)
+		    {
+			    this.conn = conn;
+			    this.serverUrl = serverUrl;
+		    }
 
-		public string Post(string relativeUrl, string s)
-		{
-			return conn.Post(relativeUrl, s);
-		}
+		    public string Post(string relativeUrl, string s)
+		    {
+			    return conn.Post(relativeUrl, s);
+		    }
 
         public Task<string> PostAsync(string relativeUrl, string s)
         {
@@ -41,9 +41,16 @@ namespace SolrNet.Impl
             var request = (HttpWebRequest)WebRequest.Create(u.Uri);
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
-            var qs = string.Join("&", parameters
+
+          var param = new List<KeyValuePair<string, string>>();
+          if (parameters != null)
+            param.AddRange(parameters);
+
+          param.Add(KV.Create("wt", "xml"));
+          var qs = string.Join("&", param
                 .Select(kv => string.Format("{0}={1}", HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
                 .ToArray());
+
             request.ContentLength = Encoding.UTF8.GetByteCount(qs);
             request.ProtocolVersion = HttpVersion.Version11;
             request.KeepAlive = true;
@@ -52,23 +59,23 @@ namespace SolrNet.Impl
         }
 
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
-		{
-            var g = PrepareGet(relativeUrl, parameters);
-			try
-			{
-				using (var postParams = g.request.GetRequestStream())
-				using (var sw = new StreamWriter(postParams))
-					sw.Write(g.queryString);
-				using (var response = g.request.GetResponse())
-				using (var responseStream = response.GetResponseStream())
-				using (var sr = new StreamReader(responseStream, Encoding.UTF8, true))
-					return sr.ReadToEnd();
-			}
-			catch (WebException e)
-			{
-				throw new SolrConnectionException(e);
-			}
-		}
+		    {
+          var g = PrepareGet(relativeUrl, parameters);
+			    try
+			    {
+				    using (var postParams = g.request.GetRequestStream())
+				    using (var sw = new StreamWriter(postParams))
+					    sw.Write(g.queryString);
+				    using (var response = g.request.GetResponse())
+				    using (var responseStream = response.GetResponseStream())
+				    using (var sr = new StreamReader(responseStream, Encoding.UTF8, true))
+					    return sr.ReadToEnd();
+			    }
+			    catch (WebException e)
+			    {
+				    throw new SolrConnectionException(e);
+			    }
+		    }
 
         public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
         {

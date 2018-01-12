@@ -191,6 +191,41 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             Assert.IsAssignableFrom<ISolrOperations<Core1Entity>>(container.Resolve<ISolrOperations<Core1Entity>>("core2-id"));
         }
 
+        [Fact]
+        public void AddCoreWithPostConnections()
+        {
+          const string core0url = "http://localhost:8983/solr/core0";
+          const string core1url = "http://localhost:8983/solr/core1";
+          var solrFacility = new SolrNetFacility("http://localhost:8983/solr/defaultCore");
+          solrFacility.AddCore("core0-id", typeof(Document), core0url, true);
+          solrFacility.AddCore("core1-id", typeof(Document), core1url, true);
+          solrFacility.AddCore("core2-id", typeof(Core1Entity), core1url, true);
+          var container = new WindsorContainer();
+          container.AddFacility(solrFacility);
+
+          TestCoresWithPostConnections(container);
+        }
+
+        private void TestCoresWithPostConnections(IWindsorContainer container)
+        {
+          // assert that everything is correctly wired
+          container.Kernel.DependencyResolving += (client, model, dep) =>
+          {
+            if (model.TargetType != typeof(ISolrConnection) ||
+                client.Implementation.Name == typeof(PostSolrConnection).Name) return;
+
+            if (client.Name.StartsWith("core0-id"))
+              Assert.Equal("http://localhost:8983/solr/core0", ((PostSolrConnection)dep).ServerUrl);
+            if (client.Name.StartsWith("core1-id"))
+              Assert.Equal("http://localhost:8983/solr/core1", ((PostSolrConnection)dep).ServerUrl);
+            if (client.Name.StartsWith("core2-id"))
+              Assert.Equal("http://localhost:8983/solr/core1", ((PostSolrConnection)dep).ServerUrl);
+          };
+
+          Assert.IsAssignableFrom<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core0-id"));
+          Assert.IsAssignableFrom<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core1-id"));
+          Assert.IsAssignableFrom<ISolrOperations<Core1Entity>>(container.Resolve<ISolrOperations<Core1Entity>>("core2-id"));
+        }
 
 
         [Fact]

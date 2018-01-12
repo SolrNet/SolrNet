@@ -24,7 +24,9 @@ namespace SolrNet.Impl
 			    this.serverUrl = serverUrl;
 		    }
 
-		    public string Post(string relativeUrl, string s)
+	      public string ServerUrl => serverUrl;
+
+	      public string Post(string relativeUrl, string s)
 		    {
 			    return conn.Post(relativeUrl, s);
 		    }

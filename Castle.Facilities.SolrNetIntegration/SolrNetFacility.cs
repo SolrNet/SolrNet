@@ -153,9 +153,11 @@ namespace Castle.Facilities.SolrNetIntegration
         {
             var coreConnectionId = core.Id + typeof(SolrConnection);
             if (core.PostConnection)
-              Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<PostSolrConnection>()
-                                .Named(coreConnectionId)
-                                .Parameters(Parameter.ForKey("serverURL").Eq(core.Url)));
+              Kernel.Register(
+                Component.For<ISolrConnection>().ImplementedBy<PostSolrConnection>()
+                         .Named(coreConnectionId)
+                         .DependsOn(Dependency.OnValue("serverURL", core.Url))
+              );
             else
               Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
                                   .Named(coreConnectionId)

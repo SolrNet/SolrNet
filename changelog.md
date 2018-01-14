@@ -2,6 +2,7 @@
 
 ## 1.0.1 (2018-01-01)
 - Upgrade `Unity` from 4.0 to 5.0  #364 (@JeroenvdBurg)
+- Change Contributing guide to follow the GitHub Fork and Pull model.
 
 ## 1.0.0 (2018-01-01)
 - **SolrNet.Cloud**: First class SolrCloud support

@@ -27,7 +27,7 @@ namespace SolrNet.Impl
         /// <summary>
         /// URL to Solr
         /// </summary>
-        public string ServerURL
+        public string ServerUrl
         {
             get { return serverUrl; }
         }

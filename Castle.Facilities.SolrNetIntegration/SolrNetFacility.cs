@@ -152,9 +152,16 @@ namespace Castle.Facilities.SolrNetIntegration
         private void RegisterCore(SolrCore core)
         {
             var coreConnectionId = core.Id + typeof(SolrConnection);
-            Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
-                                .Named(coreConnectionId)
-                                .Parameters(Parameter.ForKey("serverURL").Eq(core.Url)));
+            if (core.PostConnection)
+              Kernel.Register(
+                Component.For<ISolrConnection>().ImplementedBy<PostSolrConnection>()
+                         .Named(coreConnectionId)
+                         .DependsOn(Dependency.OnValue("serverURL", core.Url))
+              );
+            else
+              Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
+                                  .Named(coreConnectionId)
+                                  .Parameters(Parameter.ForKey("serverURL").Eq(core.Url)));
 
             var ISolrQueryExecuter = typeof(ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
             var SolrQueryExecuter = typeof(SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
@@ -183,9 +190,9 @@ namespace Castle.Facilities.SolrNetIntegration
         /// </summary>
         /// <param name="documentType"></param>
         /// <param name="coreUrl"></param>
-        public void AddCore(Type documentType, string coreUrl)
+        public void AddCore(Type documentType, string coreUrl, bool postConnection = false)
         {
-            AddCore(Guid.NewGuid().ToString(), documentType, coreUrl);
+            AddCore(Guid.NewGuid().ToString(), documentType, coreUrl, postConnection);
         }
 
         /// <summary>
@@ -194,10 +201,11 @@ namespace Castle.Facilities.SolrNetIntegration
         /// <param name="coreId">Component name for <see cref="ISolrOperations{T}"/></param>
         /// <param name="documentType"></param>
         /// <param name="coreUrl"></param>
-        public void AddCore(string coreId, Type documentType, string coreUrl)
+        /// <param name="postConnection"></param>
+        public void AddCore(string coreId, Type documentType, string coreUrl, bool postConnection = false)
         {
             ValidateUrl(coreUrl);
-            cores.Add(new SolrCore(coreId, documentType, coreUrl));
+            cores.Add(new SolrCore(coreId, documentType, coreUrl, postConnection));
         }
 
         private void AddCoresFromConfig()

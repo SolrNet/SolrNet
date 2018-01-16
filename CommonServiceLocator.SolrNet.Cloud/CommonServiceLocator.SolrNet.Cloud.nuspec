@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>CommonServiceLocator.SolrNet.Cloud</id>
+    <id>SolrNet.Cloud</id>
     <version>1.0.1</version>
-    <title>CommonServiceLocator.SolrNet.Cloud</title>
+    <title>SolrNet.Cloud</title>
     <authors>Mauricio Scheffer and contributors</authors>
     <owners>Mauricio Scheffer</owners>
     <licenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</licenseUrl>

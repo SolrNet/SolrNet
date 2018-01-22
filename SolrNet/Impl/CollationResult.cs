@@ -33,7 +33,7 @@ namespace SolrNet.Impl {
         /// </summary>
         internal CollationResult()
         {
-            MisspellingsAndCorrections = new Dictionary<string, string>();
+            MisspellingsAndCorrections = new List<KeyValuePair<string, string>>();
         }
 
         /// <summary>
@@ -64,6 +64,6 @@ namespace SolrNet.Impl {
         /// <summary>
         /// MisspellingsAndCorrections
         /// </summary>
-        public IDictionary<string, string> MisspellingsAndCorrections { get; internal set;}
+        public ICollection<KeyValuePair<string, string>> MisspellingsAndCorrections { get; internal set;}
     }
 }

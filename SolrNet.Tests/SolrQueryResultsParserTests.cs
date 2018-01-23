@@ -680,6 +680,37 @@ namespace SolrNet.Tests
             Assert.Equal("Operation not supported when collateExtendedResults parameter is set to false.", ex2.Message);            
         }
 
+        [Theory]
+        [InlineData("4-")]
+        [InlineData("5+")]
+        public void ParseSpellCheckingCollationsDuplicates(string solrVersion)
+        {
+            //Collations node now separates from collation nodes from suggestions
+            var parser = new SpellCheckResponseParser<Product>();
+            XDocument xml;
+
+            if (solrVersion.Equals("5+"))
+            {
+                xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingAndCollationsDuplicatesSolr5+.xml");
+            }
+            else
+            {
+                xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingAndCollationsDuplicatesSolr4-.xml");
+            }
+
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
+            var spellChecking = parser.ParseSpellChecking(docNode);
+            Assert.NotNull(spellChecking);
+            Assert.NotNull(spellChecking.Collations);
+            Assert.Equal(1, spellChecking.Collations.Count);
+            //First result
+            Assert.Equal("audit audit", spellChecking.Collations.ElementAt(0).CollationQuery);
+            Assert.Equal(1111, spellChecking.Collations.ElementAt(0).Hits);
+            Assert.Equal(2, spellChecking.Collations.ElementAt(0).MisspellingsAndCorrections.Count);
+            Assert.Equal("audit", spellChecking.Collations.ElementAt(0).MisspellingsAndCorrections.ElementAt(0).Value);
+            Assert.Equal("audit", spellChecking.Collations.ElementAt(0).MisspellingsAndCorrections.ElementAt(1).Value);                     
+        }
+
         [Fact]
         public void ParseClustering()
         {

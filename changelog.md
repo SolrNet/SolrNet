@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.2 (2018-01-24)
+- Fix: Error when collations contain duplicates #373 (@ariasjose)
+
 ## 1.0.1 (2018-01-15)
 - Upgrade `Unity` from 4.0 to 5.0  #364 (@JeroenvdBurg)
 - Change Contributing guide to follow the GitHub Fork and Pull model.

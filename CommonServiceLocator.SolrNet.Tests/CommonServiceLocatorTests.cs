@@ -282,7 +282,7 @@ namespace CommonServiceLocator.SolrNet.Tests
             var inst2 = new ServiceImpl();
             container.Register<IService>(c => inst2);
             container.Clear();
-            Assert.Equal(0, container.GetAllInstances<IService>().ToArray().Length);
+            Assert.Empty(container.GetAllInstances<IService>().ToArray());
         }
 
         protected override IServiceLocator CreateServiceLocator() {

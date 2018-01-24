@@ -40,7 +40,7 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.Equal(1, validationResults.Count);
+            Assert.Single(validationResults);
         }
     }
 }

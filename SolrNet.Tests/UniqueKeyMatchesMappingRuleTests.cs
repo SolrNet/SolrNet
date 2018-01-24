@@ -41,7 +41,7 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.Equal(1, validationResults.Count);
+            Assert.Single(validationResults);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.Equal(0, validationResults.Count);
+            Assert.Empty(validationResults);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace SolrNet.Tests {
             mapper.SetUniqueKey(idProperty);
             var validations = rule.Validate(typeof (SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
             Assert.NotNull(validations);
-            Assert.Equal(1, validations.Count);
+            Assert.Single(validations);
             foreach (var v in validations)
                 Console.WriteLine("{0}: {1}", v.GetType(), v.Message);
             Assert.IsType<ValidationError>(validations[0]);
@@ -81,7 +81,7 @@ namespace SolrNet.Tests {
             var schema = new SolrSchema {UniqueKey = "id"};
             var validations = rule.Validate(typeof (SchemaMappingTestDocument), schema, new MappingManager()).ToList();
             Assert.NotNull(validations);
-            Assert.Equal(1, validations.Count);
+            Assert.Single(validations);
             foreach (var v in validations)
                 Console.WriteLine("{0}: {1}", v.GetType(), v.Message);
             Assert.IsType<ValidationWarning>(validations[0]);
@@ -93,7 +93,7 @@ namespace SolrNet.Tests {
             var schema = new SolrSchema();
             var validations = rule.Validate(typeof (SchemaMappingTestDocument), schema, new MappingManager()).ToList();
             Assert.NotNull(validations);
-            Assert.Equal(0, validations.Count);
+            Assert.Empty(validations);
         }
     }
 }

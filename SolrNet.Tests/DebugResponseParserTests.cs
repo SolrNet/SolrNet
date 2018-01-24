@@ -16,7 +16,7 @@ namespace SolrNet.Tests
             var results = new SolrQueryResults<object>();
             parser.Parse(xml, results);
 
-            Assert.Equal(0, results.Count);
+            Assert.Empty(results);
             Assert.True(results.Debug is DebugResults.PlainDebugResults);
             Assert.NotNull(results.Debug.Timing);
             Assert.Equal(15, results.Debug.Timing.TotalTime);
@@ -32,7 +32,7 @@ namespace SolrNet.Tests
             var results = new SolrQueryResults<object>();
             parser.Parse(xml, results);
 
-            Assert.Equal(0, results.Count);
+            Assert.Empty(results);
             Assert.True(results.Debug is DebugResults.PlainDebugResults);
             Assert.NotNull(results.Debug.Explanation);
             Assert.Equal(2, results.Debug.Explanation.Count);
@@ -47,7 +47,7 @@ namespace SolrNet.Tests
             parser.Parse(xml, results);
             var debugData = results.Debug;
 
-            Assert.Equal(0, results.Count);
+            Assert.Empty(results);
             Assert.NotNull(results.Debug.Explanation);
             Assert.True(results.Debug is DebugResults.StructuredDebugResults);
 

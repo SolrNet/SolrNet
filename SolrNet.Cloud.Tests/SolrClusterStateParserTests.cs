@@ -36,11 +36,11 @@ namespace SolrNet.Cloud.Tests {
             Assert.True(collections.Any());
             var shards = collections.SelectMany(collection => collection.Shards.Values).ToList();
             Assert.True(shards.Any());
-            Assert.True(shards.Any(shard => shard.IsActive));
+            Assert.Contains(shards, shard => shard.IsActive);
             var replicas = shards.SelectMany(shard => shard.Replicas.Values).ToList();
             Assert.True(replicas.Any());
-            Assert.True(replicas.Any(replica => replica.IsActive));
-            Assert.True(replicas.Any(replica => replica.IsLeader));
+            Assert.Contains(replicas, replica => replica.IsActive);
+            Assert.Contains(replicas, replica => replica.IsLeader);
         }
 
         [Fact]

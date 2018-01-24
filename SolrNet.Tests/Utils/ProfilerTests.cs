@@ -43,7 +43,7 @@ namespace SolrNet.Tests.Utils {
             container.Register(Component.For<NonProxyable>());
             container.Resolve<NonProxyable>().LongOperation();
             var profile = container.GetProfile();
-            Assert.Equal(0, profile.Children.Count);
+            Assert.Empty(profile.Children);
         }
 
         // Y-combinator
@@ -66,7 +66,7 @@ namespace SolrNet.Tests.Utils {
             container.Register(Component.For<Proxyable>());
             container.Resolve<Proxyable>().LongOperation();
             var profile = container.GetProfile();
-            Assert.Equal(1, profile.Children.Count);
+            Assert.Single(profile.Children);
             Console.WriteLine("{0}: {1}", profile.Children[0].Value.Key, profile.Children[0].Value.Value);
             var fProfile = Flatten(profile);
             var q = from n in fProfile

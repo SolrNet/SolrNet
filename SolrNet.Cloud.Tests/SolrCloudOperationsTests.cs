@@ -13,7 +13,7 @@ namespace SolrNet.Cloud.Tests
             var provider = new FakeProvider();
             var operations = new SolrCloudOperations<FakeEntity>(provider, provider);
             operations.Commit();
-            Assert.Equal(provider.LastOperation , "Commit");
+            Assert.Equal("Commit", provider.LastOperation );
         }
 
         [Fact]

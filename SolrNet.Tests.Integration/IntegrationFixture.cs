@@ -92,7 +92,7 @@ namespace SolrNet.Tests.Integration {
 
             solr.Query(new SolrQueryByField("name", @"3;Furniture"));
             var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m).Boost(2));
-            Assert.Equal(1, products.Count);
+            Assert.Single(products);
             Assert.Equal(name, products[0].Name);
             Assert.Equal("SP2514N", products[0].Id);
             Assert.Equal(guid, products[0].Guid);
@@ -192,7 +192,7 @@ namespace SolrNet.Tests.Integration {
             solr.Commit();
             var productsAfterDelete = solr.Query(SolrQuery.All);
 
-            Assert.Equal(0, productsAfterDelete.Count);
+            Assert.Empty(productsAfterDelete);
         }
         
          
@@ -391,7 +391,7 @@ namespace SolrNet.Tests.Integration {
             Add_then_query();
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             var results = solr.Query(new LocalParams {{"q.op", "AND"}} + "solr ipod");
-            Assert.Equal(0, results.Count);
+            Assert.Empty(results);
         }
 
         [Fact]
@@ -477,7 +477,7 @@ namespace SolrNet.Tests.Integration {
 			
 			Console.WriteLine("Group.Count {0}", results.Grouping.Count);
 			Assert.Equal(1, results.Grouping.Count);
-			Assert.Equal(true, results.Grouping.ContainsKey("manu_exact"));
+			Assert.True(results.Grouping.ContainsKey("manu_exact"));
 			Assert.True(results.Grouping["manu_exact"].Groups.Count>=1);
 		}
 
@@ -497,8 +497,8 @@ namespace SolrNet.Tests.Integration {
 
             Console.WriteLine("Group.Count {0}", results.Grouping.Count);
             Assert.Equal(2, results.Grouping.Count);
-            Assert.Equal(true, results.Grouping.ContainsKey("manu_exact"));
-            Assert.Equal(true, results.Grouping.ContainsKey("name"));
+            Assert.True(results.Grouping.ContainsKey("manu_exact"));
+            Assert.True(results.Grouping.ContainsKey("name"));
             Assert.True (results.Grouping["manu_exact"].Groups.Count >= 1);
             Assert.True(results.Grouping["name"].Groups.Count >= 1);
         }
@@ -515,7 +515,7 @@ namespace SolrNet.Tests.Integration {
             var _ = initLoose.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<ProductLoose>>();
             var products = solr.Query(SolrQuery.All, new QueryOptions {Fields = new[] {"*", "score"}});
-            Assert.Equal(1, products.Count);
+            Assert.Single(products);
             var product = products[0];
             Assert.Equal("SP2514N", product.Id);
             Assert.True(product.Score.HasValue);
@@ -526,9 +526,9 @@ namespace SolrNet.Tests.Integration {
             Console.WriteLine(product.OtherFields.Count);
             foreach (var field in product.OtherFields)
                 Console.WriteLine("{0}: {1} ({2})", field.Key, field.Value, TypeOrNull(field.Value));
-            Assert.IsType(typeof(DateTime), product.OtherFields["timestamp"]);
+            Assert.IsType<DateTime>(product.OtherFields["timestamp"]);
             Assert.Equal(new DateTime(1,1,1), product.OtherFields["timestamp"]);
-            Assert.IsAssignableFrom(typeof(ICollection), product.OtherFields["features"]);
+            Assert.IsAssignableFrom<ICollection>(product.OtherFields["features"]);
             product.OtherFields["timestamp"] = new DateTime(2010, 1, 1);
             product.OtherFields["features"] = new[] {"a", "b", "c"};
             product.OtherFields.Remove("_version_"); // avoid optimistic locking for now https://issues.apache.org/jira/browse/SOLR-3178

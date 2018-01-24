@@ -26,7 +26,7 @@ namespace SolrNet.Tests {
         public void Serialize_null_returns_empty() {
             var s = new CollectionFieldSerializer(new DefaultFieldSerializer());
             var p = s.Serialize(null).ToList();
-            Assert.Equal(0, p.Count);
+            Assert.Empty(p);
         }
 
         [Fact]

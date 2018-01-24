@@ -75,7 +75,7 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             SolrSchema schemaDoc = schemaParser.Parse(xml);
 
-            Assert.Equal(1, schemaDoc.SolrDynamicFields.Count);
+            Assert.Single(schemaDoc.SolrDynamicFields);
             Assert.Equal("*_s", schemaDoc.SolrDynamicFields[0].Name);
         }
 
@@ -86,7 +86,7 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrSchemaBasic.xml");
             SolrSchema schemaDoc = schemaParser.Parse(xml);
 
-            Assert.Equal(1, schemaDoc.SolrCopyFields.Count);
+            Assert.Single(schemaDoc.SolrCopyFields);
             Assert.Equal("name", schemaDoc.SolrCopyFields[0].Source);
             Assert.Equal("nameSort", schemaDoc.SolrCopyFields[0].Destination);
         }
@@ -169,7 +169,7 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrManagedSchemaBasic.xml");
             SolrSchema schemaDoc = schemaParser.Parse(xml);
 
-            Assert.Equal(1, schemaDoc.SolrDynamicFields.Count);
+            Assert.Single(schemaDoc.SolrDynamicFields);
             Assert.Equal("*_s", schemaDoc.SolrDynamicFields[0].Name);
         }
 
@@ -180,7 +180,7 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrManagedSchemaBasic.xml");
             SolrSchema schemaDoc = schemaParser.Parse(xml);
 
-            Assert.Equal(1, schemaDoc.SolrCopyFields.Count);
+            Assert.Single(schemaDoc.SolrCopyFields);
             Assert.Equal("name", schemaDoc.SolrCopyFields[0].Source);
             Assert.Equal("nameSort", schemaDoc.SolrCopyFields[0].Destination);
         }

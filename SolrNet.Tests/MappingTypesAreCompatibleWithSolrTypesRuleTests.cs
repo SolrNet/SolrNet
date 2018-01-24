@@ -41,7 +41,7 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.Equal(1, validationResults.Count);
+            Assert.Single(validationResults);
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.Equal(0, validationResults.Count);
+            Assert.Empty(validationResults);
         }
 
         [Fact]

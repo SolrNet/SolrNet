@@ -110,7 +110,7 @@ namespace SolrNet.Tests {
         [Fact]
         public void IsDefaultCore() {
             var r = ParseFromResults("Resources.responseWithStatus2.xml");
-            Assert.Equal(1, r.Count);
+            Assert.Single(r);
             var core = r[0];
             Assert.True(core.IsDefaultCore);
         }

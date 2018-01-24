@@ -60,7 +60,7 @@ namespace SolrNet.Tests {
             } catch (ArgumentException) {
                 // Should get an Exception here because instance directory was not specified.
                 var createResponseHeader = solrCoreAdmin.Create(coreName, instanceDir);
-                Assert.Equal(createResponseHeader.Status, 0);
+                Assert.Equal(0, createResponseHeader.Status);
             }
 
             var result = solrCoreAdmin.Status(coreName);
@@ -85,7 +85,7 @@ namespace SolrNet.Tests {
             var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
             var reloadResponseHeader = solrCoreAdmin.Reload(coreName);
-            Assert.Equal(reloadResponseHeader.Status, 0);
+            Assert.Equal(0, reloadResponseHeader.Status);
         }
 
         [Fact(Skip = "Our version of solr doesn't support this") ]
@@ -94,7 +94,7 @@ namespace SolrNet.Tests {
             var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
             var aliasResponseHeader = solrCoreAdmin.Alias(coreName, "corefoo");
-            Assert.Equal(aliasResponseHeader.Status, 0);
+            Assert.Equal(0, aliasResponseHeader.Status);
         }
 
         [Fact]
@@ -103,7 +103,7 @@ namespace SolrNet.Tests {
             var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
             var createResponseHeader = solrCoreAdmin.Create(coreName, instanceDir);
-            Assert.Equal(createResponseHeader.Status, 0);
+            Assert.Equal(0, createResponseHeader.Status);
             var result = solrCoreAdmin.Status(coreName);
             Assert.NotNull(result);
             Assert.NotEmpty(result.Name);
@@ -115,7 +115,7 @@ namespace SolrNet.Tests {
             var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
             var swapResponseHeader = solrCoreAdmin.Swap("core-new", "core-swap");
-            Assert.Equal(swapResponseHeader.Status, 0);
+            Assert.Equal(0, swapResponseHeader.Status);
         }
 
         [Fact]
@@ -126,7 +126,7 @@ namespace SolrNet.Tests {
             //Assert.Equal(swapUnloadResponseHeader.Status, 0);
 
             var newUnloadResponseHeader = solrCoreAdmin.Unload("core-new", UnloadCommand.Delete.Index);
-            Assert.Equal(newUnloadResponseHeader.Status, 0);
+            Assert.Equal(0, newUnloadResponseHeader.Status);
         }
     }
 }

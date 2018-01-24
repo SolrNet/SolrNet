@@ -30,7 +30,7 @@ namespace SolrNet.Tests {
             var xml = new XDocument();
             xml.Add(new XElement("int", "31"));
             var v = p.Parse(xml.Root, null);
-            Assert.IsType(typeof(float), v);
+            Assert.IsType<float>(v);
             Assert.Equal(31f, v);
         }
 
@@ -103,7 +103,7 @@ namespace SolrNet.Tests {
             var xml = new XDocument();
             xml.Add(new XElement("str", "One"));
             var r = p.Parse(xml.Root, typeof(Numbers));
-            Assert.IsType(typeof(Numbers), r);
+            Assert.IsType<Numbers>(r);
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace SolrNet.Tests {
             var xml = new XDocument();
             xml.Add(new XElement("str", "One"));
             var r = p.Parse(xml.Root, typeof(Numbers));
-            Assert.IsType(typeof(Numbers), r);
+            Assert.IsType<Numbers>(r);
         }
 
         private enum Numbers {

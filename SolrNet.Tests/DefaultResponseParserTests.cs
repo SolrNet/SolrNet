@@ -19,7 +19,7 @@ namespace SolrNet.Tests {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.response.xml");
             var results = new SolrQueryResults<Doc>();
             parser.Parse(xml, results);
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             Assert.Equal(new Location(51.5171, -0.1062), results[0].Loc);
         }
 
@@ -31,7 +31,7 @@ namespace SolrNet.Tests {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithResultAndGroup.xml");
             var results = new SolrQueryResults<TestDoc>();
             parser.Parse(xml, results);
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             Assert.Equal(1, results.Grouping["titleId"].Ngroups);
         }
     }

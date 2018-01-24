@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using Microsoft.Extensions.Configuration;
 using SolrNet;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
@@ -22,6 +23,8 @@ namespace StructureMap.SolrNetIntegration
 {
     public class SolrNetRegistry : Registry
     {
+
+        private readonly List<SolrCore> cores = new List<SolrCore>();
         public SolrNetRegistry(SolrServers solrServers)
         {
             For<IReadOnlyMappingManager>().Use<MemoizingMappingManager>()
@@ -37,7 +40,8 @@ namespace StructureMap.SolrNetIntegration
             RegisterSerializers();
             RegisterOperations();
 
-            AddCoresFromConfig(solrServers);
+
+            AddCores(solrServers.SolrServerElements);
         }
 
         private void RegisterValidationRules()
@@ -128,14 +132,9 @@ namespace StructureMap.SolrNetIntegration
                  .Dependencies.Add("basicServer", new ReferencedInstance(core.Id + SolrBasicServer));
         }
 
-        private void AddCoresFromConfig(SolrServers solrServers)
+        private void AddCores(List<SolrServerElement> serverle)
         {
-            if (solrServers == null)
-                return;
-
-            var cores = new List<SolrCore>();
-
-            foreach (SolrServerElement server in solrServers)
+            foreach (SolrServerElement server in serverle)
             {
                 var solrCore = GetCoreFrom(server);
                 cores.Add(solrCore);
@@ -146,6 +145,7 @@ namespace StructureMap.SolrNetIntegration
                 RegisterCore(core);
             }
         }
+
 
         private static SolrCore GetCoreFrom(SolrServerElement server)
         {
@@ -179,11 +179,11 @@ namespace StructureMap.SolrNetIntegration
             }
             catch (Exception e)
             {
-                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType), e);
+                throw new ConfigurationErrorsException($"Error getting document type '{documentType}'", e);
             }
 
             if (type == null)
-                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType));
+                throw new ConfigurationErrorsException($"Error getting document type '{documentType}'");
 
             return type;
         }

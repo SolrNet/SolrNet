@@ -6,6 +6,7 @@ using SolrNet;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
 using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using StructureMap.SolrNetIntegration.Config;
 
 namespace StructureMap.SolrNetIntegration.Tests
@@ -17,25 +18,30 @@ namespace StructureMap.SolrNetIntegration.Tests
 
         public StructureMapFixture()
         {
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
-            Container=  new Container (c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath("D:/repos/SolrNet/StructureMap.SolrNetIntegration.Tests/")
+                .AddJsonFile("cores.json")
+                .Build()
+                .GetSection("solr");
+
+            Container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(configuration.Get<SolrServers>())));
         }
 
         [Fact]
         public void ResolveSolrOperations()
         {
-                    var m = Container.GetInstance<ISolrOperations<Entity>>();
+            var m = Container.GetInstance<ISolrOperations<Entity>>();
             Assert.NotNull(m);
         }
 
         [Fact]
         public void RegistersSolrConnectionWithAppConfigServerUrl()
         {
-                        var instanceKey = "entity" + typeof(SolrConnection);
+            var instanceKey = "entity" + typeof(SolrConnection);
 
             var solrConnection = (SolrConnection)Container.GetInstance<ISolrConnection>(instanceKey);
 
-            Assert.Equal("http://localhost:8983/solr/collection0", solrConnection.ServerURL);
+            Assert.Equal("http://localhost:8983/solr/collection1", solrConnection.ServerURL);
         }
 
         [Fact]
@@ -127,6 +133,6 @@ namespace StructureMap.SolrNetIntegration.Tests
 
       
 
-      
+
     }
 }

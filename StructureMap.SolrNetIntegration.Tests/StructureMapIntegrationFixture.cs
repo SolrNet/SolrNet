@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using Xunit;
+
+using System.IO;
+using System.Reflection;
+using Microsoft.Extensions.Configuration;
 using SolrNet;
+using Xunit;
+
 using StructureMap.SolrNetIntegration.Config;
 
 namespace StructureMap.SolrNetIntegration.Tests {
@@ -14,8 +18,13 @@ namespace StructureMap.SolrNetIntegration.Tests {
 
         public StructureMapIntegrationFixture()
         {
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
-            Container = new Container (c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath("D:/repos/SolrNet/StructureMap.SolrNetIntegration.Tests/")
+                .AddJsonFile("cores.json")
+                .Build()
+                .GetSection("solr");
+
+            Container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(configuration.Get<SolrServers>())));
         }
 
 

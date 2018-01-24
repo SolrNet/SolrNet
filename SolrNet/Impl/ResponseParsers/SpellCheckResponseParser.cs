@@ -89,7 +89,7 @@ namespace SolrNet.Impl.ResponseParsers
                     var correctionNodes = cn.XPathSelectElements("lst[@name='misspellingsAndCorrections']");
                     foreach (var mc in correctionNodes.Elements())
                     {
-                        tempCollation.MisspellingsAndCorrections.Add(mc.Attribute("name").Value, mc.Value);
+                        tempCollation.MisspellingsAndCorrections.Add(new KeyValuePair<string, string>(mc.Attribute("name").Value, mc.Value));
                     }
                     r.Collations.Add(tempCollation);
                 }

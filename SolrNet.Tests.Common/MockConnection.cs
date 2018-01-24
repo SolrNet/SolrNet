@@ -18,8 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Xunit;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace SolrNet.Tests
 {

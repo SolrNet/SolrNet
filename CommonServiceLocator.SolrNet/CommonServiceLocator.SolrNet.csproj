@@ -13,6 +13,6 @@
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommonServiceLocator" Version="2.0.1" />
+    <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
   </ItemGroup>
 </Project>

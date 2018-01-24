@@ -125,15 +125,7 @@ namespace StructureMap.SolrNetIntegration.Tests
             Assert.IsType<SolrDictionarySerializer>(serializer);
         }
 
-        [Fact]
-        public void Cache()
-        {
-            Container.Configure(cfg => cfg.For<ISolrCache>().Use<HttpRuntimeCache>());
-            var connectionId = "entity" + typeof(SolrConnection);
-            var connection = (SolrConnection)Container.GetInstance<ISolrConnection>(connectionId);
-            Assert.NotNull(connection.Cache);
-            Assert.IsType<HttpRuntimeCache>(connection.Cache);
-        }
+      
 
       
     }

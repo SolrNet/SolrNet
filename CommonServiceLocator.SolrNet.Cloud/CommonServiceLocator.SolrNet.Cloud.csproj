@@ -4,7 +4,6 @@
     <AssemblyName>CommonServiceLocator.SolrNet.Cloud</AssemblyName>
     <RootNamespace>CommonServiceLocator.SolrNet.Cloud</RootNamespace>
     <Version>1.0.2</Version>
-    <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
     <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/solrnet/solrnet</PackageProjectUrl>

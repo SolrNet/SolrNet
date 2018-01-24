@@ -9,9 +9,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Microsoft.DependencyInjection.SolrNet\Microsoft.DependencyInjection.SolrNet.csproj">
       <Name>Microsoft.DependencyInjection.SolrNet</Name>
     </ProjectReference>

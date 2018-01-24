@@ -2,17 +2,23 @@
   <PropertyGroup>
     <TargetFrameworks>net46</TargetFrameworks>
     <Version>1.0.2</Version>
-    <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
     <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/solrnet/solrnet</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</PackageIconUrl>
+    <Authors>Mauricio Scheffer and contributors</Authors>
+    <PackageId>SolrNet.StructureMap</PackageId>
+    <Company />
+    <Product>SolrNet.StructureMap</Product>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>StructureMap registry for SolrNet. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</Description>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
   </ItemGroup>
   <ItemGroup>
-   <PackageReference Include="StructureMap" Version="4.5.2"/>
-   <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0"/>
+   <PackageReference Include="StructureMap" Version="4.5.2" />
+   <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
   </ItemGroup>
     <ItemGroup>
     <Reference Include="System.Configuration" />

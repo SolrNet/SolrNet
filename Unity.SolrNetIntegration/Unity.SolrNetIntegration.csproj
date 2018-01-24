@@ -2,17 +2,23 @@
   <PropertyGroup>
     <TargetFrameworks>net46</TargetFrameworks>
     <Version>1.0.2</Version>
-    <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile>
     <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/solrnet/solrnet</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</PackageIconUrl>
+    <Authors>Mauricio Scheffer and contributors</Authors>
+    <PackageId>SolrNet.Unity</PackageId>
+    <Company />
+    <Product>SolrNet.Unity</Product>
+    <Description>Unity integration for SolrNet. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EnterpriseLibrary.Common" Version="6.0.1304.0"/>
-    <PackageReference Include="Unity" Version="5.0.0"/>
+    <PackageReference Include="EnterpriseLibrary.Common" Version="6.0.1304.0" />
+    <PackageReference Include="Unity" Version="5.0.0" />
   </ItemGroup>
     <ItemGroup>
     <Reference Include="System.Configuration" />

@@ -42,7 +42,7 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.Equal(0, validationResults.Count);
+            Assert.Empty(validationResults);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.Equal(0, validationResults.Count);
+            Assert.Empty(validationResults);
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.Equal(1, validationResults.Count);
+            Assert.Single(validationResults);
         }
 
         [Fact]
@@ -88,7 +88,7 @@ namespace SolrNet.Tests {
             mapper.Add(typeof (SchemaMappingTestDocument).GetProperty("Score"), "score");
             var results = rule.Validate(typeof (SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
             Assert.NotNull(results);
-            Assert.Equal(0, results.Count);
+            Assert.Empty(results);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace SolrNet.Tests {
             var fieldType = new SolrFieldType("string", "solr.StrField");
             schema.SolrFields.Add(new SolrField("ma_uaua", fieldType));
             var results = rule.Validate(typeof(SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
-            Assert.Equal(0, results.Count);
+            Assert.Empty(results);
         }
     }
 }

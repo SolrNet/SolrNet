@@ -2,6 +2,7 @@
 
 ## 1.0.2 (2018-01-24)
 - Fix: Error when collations contain duplicates #373 (@ariasjose)
+- House keeping: move to new csproj format. Merge nuspec files into csproj. #374
 
 ## 1.0.1 (2018-01-15)
 - Upgrade `Unity` from 4.0 to 5.0  #364 (@JeroenvdBurg)

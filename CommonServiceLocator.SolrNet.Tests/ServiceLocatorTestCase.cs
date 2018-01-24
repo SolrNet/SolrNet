@@ -52,13 +52,13 @@ namespace CommonServiceLocator.SolrNet.Tests
         [Fact]
         public void GetNamedInstance() {
             var instance = locator.GetInstance<ILogger>(typeof (AdvancedLogger).FullName);
-            Assert.IsType(typeof (AdvancedLogger), instance);
+            Assert.IsType<AdvancedLogger>(instance);
         }
 
         [Fact]
         public void GetNamedInstance2() {
             var instance = locator.GetInstance<ILogger>(typeof (SimpleLogger).FullName);
-            Assert.IsType(typeof (SimpleLogger), instance);
+            Assert.IsType<SimpleLogger>(instance);
         }
 
         [Fact]

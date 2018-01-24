@@ -28,7 +28,7 @@ namespace SolrNet.Tests {
         public void Serialize_null_returns_empty() {
             var s = new GenericDictionaryFieldSerializer(new DefaultFieldSerializer());
             var l = s.Serialize(null).ToList();
-            Assert.Equal(0, l.Count);
+            Assert.Empty(l);
         }
 
         [Fact]

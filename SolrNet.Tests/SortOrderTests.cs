@@ -53,19 +53,19 @@ namespace SolrNet.Tests {
 		[Fact]
 		public void ParseAsc() {
 			var o = SortOrder.Parse("pepe asc");
-            Assert.Equal(o.ToString(), "pepe asc",true,true,true);
+            Assert.Equal("pepe asc", o.ToString(),true,true,true);
 		}
 
 		[Fact]
 		public void ParseDesc() {
 			var o = SortOrder.Parse("pepe desc");
-            Assert.Equal(o.ToString(), "pepe desc", true, true, true);
+            Assert.Equal("pepe desc", o.ToString(), true, true, true);
 		}
 
         [Fact]
         public void ParseDescWithSpaces() {
             var o = SortOrder.Parse("pepe  desc");
-            Assert.Equal(o.ToString(), "pepe desc", true, true, true);
+            Assert.Equal("pepe desc", o.ToString(), true, true, true);
         }
 
 		[Fact]

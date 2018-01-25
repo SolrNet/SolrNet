@@ -23,6 +23,7 @@ Otherwise, NuGet packages at nuget.org (currently outdated due to lack of docume
 ### Documentation index
 
  * [Overview and basic usage](Basic-usage.md)
+ * [Basic cloud usage](Basic-usage-cloud.md)
  * [Mapping](Mapping.md)
  * [Initialization](Initialization.md)
  * [Create/Update/Delete](CRUD.md)

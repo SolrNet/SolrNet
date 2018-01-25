@@ -39,6 +39,7 @@ You can find the latest builds on our AppVeyor build service: [![Build status](h
 ### Documentation index
 
  * [Overview and basic usage](Documentation/Basic-usage.md)
+ * [Basic cloud usage](Documentation/Basic-usage-cloud.md)
  * [Mapping](Documentation/Mapping.md)
  * [Initialization](Documentation/Initialization.md)
  * [Create/Update/Delete](Documentation/CRUD.md)

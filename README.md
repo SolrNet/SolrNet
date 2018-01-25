@@ -19,7 +19,7 @@ The easiest way to get going is to use our NuGet packages:
 |[SolrNet](https://www.nuget.org/packages/SolrNet/)| [Lightweight DI - commonservicelocator](https://github.com/unitycontainer/commonservicelocator) | 4.6 | 2.0 |
 |[SolrNet.Windsor](https://www.nuget.org/packages/SolrNet.Windsor/)| [Castle Windsor](http://www.castleproject.org/projects/windsor/) integration | 4.6 | 2.0 |
 |[SolrNet.Microsoft.DependencyInjection](https://www.nuget.org/packages/SolrNet.Microsoft.DependencyInjection/)|[Microsoft Core Dependency Injection](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection) | 4.6.1 | 2.0 |
-|[SolrNet.StructureMap](https://www.nuget.org/packages/SolrNet.StructureMap/)|[StructureMap](http://structuremap.github.io/) | 4.6 | - |
+|[SolrNet.StructureMap](https://www.nuget.org/packages/SolrNet.StructureMap/)|[StructureMap](http://structuremap.github.io/) | 4.6 | 2.0 |
 |[SolrNet.Ninject](https://www.nuget.org/packages/SolrNet.Ninject/)| [Ninject](http://www.ninject.org/)  | 4.6 | - |
 |[SolrNet.Unity](https://www.nuget.org/packages/SolrNet.Unity/)| [Unity](https://github.com/unitycontainer/unity) | 4.6 | - |
 |[SolrNet.Autofac](https://www.nuget.org/packages/SolrNet.Autofac/)| [Autofac](https://autofac.org/) | 4.6 | - |

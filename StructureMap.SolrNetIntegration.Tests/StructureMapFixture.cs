@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Collections.Generic;
 using Xunit;
 using SolrNet;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using StructureMap.SolrNetIntegration.Config;
 
@@ -19,7 +16,7 @@ namespace StructureMap.SolrNetIntegration.Tests
         public StructureMapFixture()
         {
             var configuration = new ConfigurationBuilder()
-                .SetBasePath("D:/repos/SolrNet/StructureMap.SolrNetIntegration.Tests/")
+                .SetBasePath("D:/repos/SolrNet/StructureMap.SolrNetIntegration.Tests/").AddInMemoryCollection()
                 .AddJsonFile("cores.json")
                 .Build()
                 .GetSection("solr");

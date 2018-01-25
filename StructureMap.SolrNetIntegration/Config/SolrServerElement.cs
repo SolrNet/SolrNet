@@ -1,5 +1,4 @@
-﻿
-namespace StructureMap.SolrNetIntegration.Config 
+﻿namespace StructureMap.SolrNetIntegration.Config 
 {
     public class SolrServerElement
     {

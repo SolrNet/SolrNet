@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using System.IO;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using SolrNet;
 using Xunit;
@@ -26,8 +23,7 @@ namespace StructureMap.SolrNetIntegration.Tests {
 
             Container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(configuration.Get<SolrServers>())));
         }
-
-
+        
         [Fact]
         public void Ping_And_Query()
         {
@@ -65,7 +61,5 @@ namespace StructureMap.SolrNetIntegration.Tests {
                 {"timestamp", DateTime.UtcNow},
             });
         }
-
-       
     }
 }

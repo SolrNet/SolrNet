@@ -1,9 +1,7 @@
-﻿using System.Configuration;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Xunit;
 using SolrNet;
 using SolrNet.Impl;
-using StructureMap.Configuration.DSL;
 using StructureMap.SolrNetIntegration.Config;
 
 namespace StructureMap.SolrNetIntegration.Tests

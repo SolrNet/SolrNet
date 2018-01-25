@@ -35,6 +35,15 @@ namespace StructureMap.SolrNetIntegration.Tests {
         [Fact]
         public void DictionaryDocument()
         {
+            var cores = new SolrServers {
+                new SolrServerElement {
+                    Id = "entity1dict",
+                    DocumentType = typeof(Dictionary<string, object>).AssemblyQualifiedName,
+                    Url = "http://localhost:8983/solr/core1",
+                }
+            };
+
+            Container.Configure(c => c.AddRegistry(new SolrNetRegistry(cores)));
 
             var solr = Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
             var results = solr.Query(SolrQuery.All);
@@ -50,6 +59,15 @@ namespace StructureMap.SolrNetIntegration.Tests {
         [Fact]
         public void DictionaryDocument_add()
         {
+            var cores = new SolrServers {
+                new SolrServerElement {
+                    Id = "entity1dict",
+                    DocumentType = typeof(Dictionary<string, object>).AssemblyQualifiedName,
+                    Url = "http://localhost:8983/solr/core1",
+                }
+            };
+
+            Container.Configure(c=>c.AddRegistry(new SolrNetRegistry(cores)));
 
             var solr = Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
 

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net46</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Version>1.0.2</Version>
     <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
@@ -17,10 +17,7 @@
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
   </ItemGroup>
   <ItemGroup>
-   <PackageReference Include="StructureMap" Version="4.5.2" />
+   <PackageReference Include="StructureMap" Version="4.6.1" />
    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
-  </ItemGroup>
-    <ItemGroup>
-    <Reference Include="System.Configuration" />
   </ItemGroup>
 </Project>

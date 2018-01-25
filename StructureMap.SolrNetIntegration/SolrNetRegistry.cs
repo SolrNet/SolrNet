@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using Microsoft.Extensions.Configuration;
 using SolrNet;
-using SolrNet.Exceptions;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -160,7 +157,7 @@ namespace StructureMap.SolrNetIntegration
         {
             var url = server.Url;
             if (string.IsNullOrEmpty(url))
-                throw new ConfigurationErrorsException("Core url missing in SolrNet core configuration");
+                throw new StructureMapConfigurationException("Core url missing in SolrNet core configuration"); // ConfigurationErrorsException("Core url missing in SolrNet core configuration");
             return url;
         }
 
@@ -169,7 +166,7 @@ namespace StructureMap.SolrNetIntegration
             var documentType = server.DocumentType;
 
             if (string.IsNullOrEmpty(documentType))
-                throw new ConfigurationErrorsException("Document type missing in SolrNet core configuration");
+                throw new StructureMapConfigurationException("Document type missing in SolrNet core configuration");
 
             Type type;
 
@@ -179,11 +176,11 @@ namespace StructureMap.SolrNetIntegration
             }
             catch (Exception e)
             {
-                throw new ConfigurationErrorsException($"Error getting document type '{documentType}'", e);
+                throw new StructureMapConfigurationException($"Error getting document type '{documentType}'", e);
             }
 
             if (type == null)
-                throw new ConfigurationErrorsException($"Error getting document type '{documentType}'");
+                throw new StructureMapConfigurationException($"Error getting document type '{documentType}'");
 
             return type;
         }

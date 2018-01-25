@@ -16,7 +16,7 @@ namespace StructureMap.SolrNetIntegration.Tests
         public StructureMapFixture()
         {
             var configuration = new ConfigurationBuilder()
-                .SetBasePath("D:/repos/SolrNet/StructureMap.SolrNetIntegration.Tests/").AddInMemoryCollection()
+                .SetBasePath("D:/repos/SolrNet/StructureMap.SolrNetIntegration.Tests/")
                 .AddJsonFile("cores.json")
                 .Build()
                 .GetSection("solr");

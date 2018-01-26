@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Extensions.Configuration;
 using SolrNet;
 using Xunit;
@@ -16,7 +17,7 @@ namespace StructureMap.SolrNetIntegration.Tests {
         public StructureMapIntegrationFixture()
         {
             var configuration = new ConfigurationBuilder()
-                .SetBasePath("D:/repos/SolrNet/StructureMap.SolrNetIntegration.Tests/")
+                .SetBasePath(Directory.GetParent("../../../").FullName)
                 .AddJsonFile("cores.json")
                 .Build()
                 .GetSection("solr");

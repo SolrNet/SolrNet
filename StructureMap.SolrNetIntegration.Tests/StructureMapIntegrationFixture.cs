@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using Microsoft.Extensions.Configuration;
 using SolrNet;
 using Xunit;
+#if NETCOREAPP2_0 || NETSTANDARD2_0
+using Microsoft.Extensions.Configuration;
+using System.IO;
+#else
+using System.Configuration;
+#endif
 
 using StructureMap.SolrNetIntegration.Config;
 
@@ -16,15 +20,19 @@ namespace StructureMap.SolrNetIntegration.Tests {
 
         public StructureMapIntegrationFixture()
         {
+#if NETCOREAPP2_0 || NETSTANDARD2_0
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetParent("../../../").FullName)
                 .AddJsonFile("cores.json")
                 .Build()
                 .GetSection("solr");
-
             Container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(configuration.Get<SolrServers>())));
+#else
+            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
+            Container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
+#endif
         }
-        
+
         [Fact]
         public void Ping_And_Query()
         {

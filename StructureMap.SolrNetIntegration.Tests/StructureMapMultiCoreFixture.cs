@@ -1,7 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
-using Xunit;
+﻿using Xunit;
 using SolrNet;
 using SolrNet.Impl;
+#if NETCOREAPP2_0 || NETSTANDARD2_0
+using Microsoft.Extensions.Configuration;
+using System.IO;
+#else
+using System.Configuration;
+#endif
 using StructureMap.SolrNetIntegration.Config;
 
 namespace StructureMap.SolrNetIntegration.Tests
@@ -13,8 +18,9 @@ namespace StructureMap.SolrNetIntegration.Tests
         private readonly IContainer Container;
         public StructureMapMultiCoreFixture()
         {
+#if NETCOREAPP2_0 || NETSTANDARD2_0
             var configuration = new ConfigurationBuilder()
-                .SetBasePath("D:/repos/SolrNet/StructureMap.SolrNetIntegration.Tests/")
+                .SetBasePath(Directory.GetParent("../../../").FullName)
                 .AddJsonFile("cores.json")
                 .Build()
                 .GetSection("solr");
@@ -28,6 +34,22 @@ namespace StructureMap.SolrNetIntegration.Tests
                 });
                 c.AddRegistry(new SolrNetRegistry(configuration.Get<SolrServers>()));
             });
+
+
+#else
+            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
+
+            Container = new Container(c =>
+            {
+                c.Scan(s =>
+                {
+                    s.Assembly(typeof(SolrNetRegistry).Assembly);
+                    s.Assembly(typeof(SolrConnection).Assembly);
+                    s.WithDefaultConventions();
+                });
+                c.AddRegistry(new SolrNetRegistry(solrConfig.SolrServers));
+            });  
+#endif
         }
 
         [Fact]

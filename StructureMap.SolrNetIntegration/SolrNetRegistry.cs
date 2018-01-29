@@ -37,8 +37,11 @@ namespace StructureMap.SolrNetIntegration
             RegisterSerializers();
             RegisterOperations();
 
-
-            AddCores(solrServers.SolrServerElements);
+#if NETSTANDARD2_0
+            AddCoresFromConfig(solrServers.SolrServerElements);
+#else
+            AddCoresFromConfig(solrServers);
+#endif
         }
 
         private void RegisterValidationRules()
@@ -128,10 +131,15 @@ namespace StructureMap.SolrNetIntegration
             For(ISolrOperations).Add(SolrServer).Named(core.Id)
                  .Dependencies.Add("basicServer", new ReferencedInstance(core.Id + SolrBasicServer));
         }
-
-        private void AddCores(List<SolrServerElement> serverle)
+#if NETSTANDARD2_0
+        private void AddCoresFromConfig(List<SolrServerElement> solrServers)
+#else
+        private void AddCoresFromConfig(SolrServers solrServers)
+#endif
         {
-            foreach (SolrServerElement server in serverle)
+            if (solrServers == null)
+                return;
+            foreach (SolrServerElement server in solrServers)
             {
                 var solrCore = GetCoreFrom(server);
                 cores.Add(solrCore);

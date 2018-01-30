@@ -128,9 +128,5 @@ namespace StructureMap.SolrNetIntegration.Tests
             var serializer = Container.GetInstance<ISolrDocumentSerializer<Dictionary<string, object>>>();
             Assert.IsType<SolrDictionarySerializer>(serializer);
         }
-
-      
-
-
     }
 }

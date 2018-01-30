@@ -7,9 +7,9 @@ namespace StructureMap.SolrNetIntegration.Config
     {
         public List<SolrServerElement> SolrServerElements { get; set; }
 
-        public void Add(SolrServerElement solrSevServerElement)
+        public void Add(SolrServerElement solrSevServer)
         {
-            SolrServerElements.Add(solrSevServerElement);
+            SolrServerElements.Add(solrSevServer);
         }
 
         public SolrServers()

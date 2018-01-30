@@ -20,8 +20,9 @@ namespace StructureMap.SolrNetIntegration
 {
     public class SolrNetRegistry : Registry
     {
-
-        private readonly List<SolrCore> cores = new List<SolrCore>();
+#if NET46
+        public SolrNetRegistry(SolrServerElements solrServers):this(MapToSolerServers(solrServers)){}
+#endif
         public SolrNetRegistry(SolrServers solrServers)
         {
             For<IReadOnlyMappingManager>().Use<MemoizingMappingManager>()
@@ -38,7 +39,7 @@ namespace StructureMap.SolrNetIntegration
             RegisterOperations();
 
 
-            AddCores(solrServers.SolrServerElements);
+            AddCores(solrServers);
         }
 
         private void RegisterValidationRules()
@@ -129,17 +130,12 @@ namespace StructureMap.SolrNetIntegration
                  .Dependencies.Add("basicServer", new ReferencedInstance(core.Id + SolrBasicServer));
         }
 
-        private void AddCores(List<SolrServerElement> serverle)
+        private void AddCores(SolrServers serverle)
         {
-            foreach (SolrServerElement server in serverle)
+            foreach (var server in serverle.SolrServerElements)
             {
                 var solrCore = GetCoreFrom(server);
-                cores.Add(solrCore);
-            }
-
-            foreach (var core in cores)
-            {
-                RegisterCore(core);
+                RegisterCore(solrCore);
             }
         }
 
@@ -184,5 +180,25 @@ namespace StructureMap.SolrNetIntegration
 
             return type;
         }
+#if NET46
+        private static SolrServers MapToSolerServers(SolrServerElements solrServers)
+        {
+            var solrs = new SolrServers();
+
+            foreach (var solrServerElement in solrServers)
+            {
+                if (solrServerElement is SolrServerElement element)
+                {
+                    solrs.SolrServerElements.Add(new SolrServerElement
+                    {
+                        DocumentType = element.DocumentType,
+                        Id = element.Id,
+                        Url = element.Url
+                    });
+                }
+            }
+            return solrs;
+        }
+#endif
     }
 }

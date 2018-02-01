@@ -24,8 +24,10 @@ namespace StructureMap.SolrNetIntegration.Config
 
         IEnumerator<ISolrServer> IEnumerable<ISolrServer>.GetEnumerator()
         {
-            foreach (var key in base.BaseGetAllKeys())
-                yield return base.BaseGet(key) as SolrServerElement;
+            foreach (SolrServerElement server in this)
+            {
+                yield return server;
+            }
         }
 
         public override ConfigurationElementCollectionType CollectionType

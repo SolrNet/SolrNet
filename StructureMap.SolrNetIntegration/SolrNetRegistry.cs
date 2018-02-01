@@ -13,17 +13,13 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
-using StructureMap.SolrNetIntegration.Config;
 using StructureMap.Pipeline;
 
 namespace StructureMap.SolrNetIntegration
 {
     public class SolrNetRegistry : Registry
     {
-#if NET46
-        public SolrNetRegistry(SolrServerElements solrServers):this(MapToSolerServers(solrServers)){}
-#endif
-        public SolrNetRegistry(SolrServers solrServers)
+        public SolrNetRegistry(IEnumerable<ISolrServer> solrServers)
         {
             For<IReadOnlyMappingManager>().Use<MemoizingMappingManager>()
                 .Ctor<IReadOnlyMappingManager>("mapper").Is(new AttributesMappingManager());
@@ -130,17 +126,16 @@ namespace StructureMap.SolrNetIntegration
                  .Dependencies.Add("basicServer", new ReferencedInstance(core.Id + SolrBasicServer));
         }
 
-        private void AddCores(SolrServers serverle)
+        private void AddCores(IEnumerable<ISolrServer> servers)
         {
-            foreach (var server in serverle.SolrServerElements)
+            foreach (var server in servers)
             {
                 var solrCore = GetCoreFrom(server);
                 RegisterCore(solrCore);
             }
         }
 
-
-        private static SolrCore GetCoreFrom(SolrServerElement server)
+        private static SolrCore GetCoreFrom(ISolrServer server)
         {
             var id = server.Id ?? Guid.NewGuid().ToString();
             var documentType = GetCoreDocumentType(server);
@@ -149,7 +144,7 @@ namespace StructureMap.SolrNetIntegration
             return new SolrCore(id, documentType, coreUrl);
         }
 
-        private static string GetCoreUrl(SolrServerElement server)
+        private static string GetCoreUrl(ISolrServer server)
         {
             var url = server.Url;
             if (string.IsNullOrEmpty(url))
@@ -157,7 +152,7 @@ namespace StructureMap.SolrNetIntegration
             return url;
         }
 
-        private static Type GetCoreDocumentType(SolrServerElement server)
+        private static Type GetCoreDocumentType(ISolrServer server)
         {
             var documentType = server.DocumentType;
 
@@ -180,25 +175,6 @@ namespace StructureMap.SolrNetIntegration
 
             return type;
         }
-#if NET46
-        private static SolrServers MapToSolerServers(SolrServerElements solrServers)
-        {
-            var solrs = new SolrServers();
 
-            foreach (var solrServerElement in solrServers)
-            {
-                if (solrServerElement is SolrServerElement element)
-                {
-                    solrs.SolrServerElements.Add(new SolrServerElement
-                    {
-                        DocumentType = element.DocumentType,
-                        Id = element.Id,
-                        Url = element.Url
-                    });
-                }
-            }
-            return solrs;
-        }
-#endif
     }
 }

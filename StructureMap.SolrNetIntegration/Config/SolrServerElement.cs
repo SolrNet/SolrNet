@@ -1,73 +1,32 @@
-﻿#if NET46
-using System.Configuration;
-#endif
+﻿using System.Configuration;
 
 namespace StructureMap.SolrNetIntegration.Config
 {
-    public class SolrServerElement
-#if NET46
-        : ConfigurationElement
-#endif
+    public class SolrServerElement : ConfigurationElement, ISolrServer
     {
-#if NET46
         private const string ID = "id";
         private const string URL = "url";
         private const string DOCUMENT_TYPE = "documentType";
 
         [ConfigurationProperty(ID, IsKey = true, IsRequired = true)]
-#endif
         public string Id
         {
-            get
-#if NET46
-            { return base[ID].ToString(); }
-#else
-;
-#endif
-            set
-#if NET46
-            { base[ID] = value; }
-#else
-;
-#endif
+            get { return base[ID].ToString(); }
+            set { base[ID] = value; }
         }
 
-#if NET46
         [ConfigurationProperty(URL, IsKey = true, IsRequired = true)]
-#endif
         public string Url
         {
-            get
-#if NET46
-            {return base[URL].ToString();}
-#else
-;
-#endif
-            set
-#if NET46 
-            { base[URL] = value; }
-#else
-;
-#endif
+            get { return base[URL].ToString(); }
+            set { base[URL] = value; }
         }
 
-#if NET46
         [ConfigurationProperty(DOCUMENT_TYPE, IsKey = true, IsRequired = true)]
-#endif
         public string DocumentType
         {
-            get
-#if NET46
-            { return base[DOCUMENT_TYPE].ToString(); }
-#else
-;
-#endif
-            set
-#if NET46
-            { base[DOCUMENT_TYPE] = value; }
-#else
-;
-#endif
+            get { return base[DOCUMENT_TYPE].ToString(); }
+            set { base[DOCUMENT_TYPE] = value; }
         }
 
         public override string ToString()

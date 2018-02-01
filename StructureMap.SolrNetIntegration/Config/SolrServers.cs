@@ -1,26 +1,16 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-namespace StructureMap.SolrNetIntegration.Config 
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace StructureMap.SolrNetIntegration.Config
 {
-    public class SolrServers: IEnumerable
+    /// <summary>
+    /// List of ISolrServer, backward compatible usage.
+    /// </summary>
+    [Obsolete("Just use List<ISolrServer>")]
+    public class SolrServers : List<ISolrServer>
     {
-        public List<SolrServerElement> SolrServerElements { get; set; }
-
-        public void Add(SolrServerElement solrSevServer)
-        {
-            SolrServerElements.Add(solrSevServer);
-        }
-
-        public SolrServers()
-        {
-            SolrServerElements = new List<SolrServerElement>();
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return SolrServerElements.GetEnumerator();
-        }
     }
-
-
 }

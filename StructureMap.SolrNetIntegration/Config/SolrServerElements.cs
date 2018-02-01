@@ -1,9 +1,10 @@
-﻿#if NET46
+﻿using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace StructureMap.SolrNetIntegration.Config
 {
-    public class SolrServerElements:ConfigurationElementCollection
+    public class SolrServerElements : ConfigurationElementCollection, IEnumerable<ISolrServer>
     {
         public void Add(SolrServerElement configurationElement)
         {
@@ -21,6 +22,12 @@ namespace StructureMap.SolrNetIntegration.Config
             return solrServerElement.Url + solrServerElement.DocumentType;
         }
 
+        IEnumerator<ISolrServer> IEnumerable<ISolrServer>.GetEnumerator()
+        {
+            foreach (var key in base.BaseGetAllKeys())
+                yield return base.BaseGet(key) as SolrServerElement;
+        }
+
         public override ConfigurationElementCollectionType CollectionType
         {
             get { return ConfigurationElementCollectionType.BasicMap; }
@@ -32,4 +39,3 @@ namespace StructureMap.SolrNetIntegration.Config
         }
     }
 }
-#endif

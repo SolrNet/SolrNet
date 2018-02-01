@@ -1,6 +1,4 @@
-﻿#if NET46
-
-using System.Configuration;
+﻿using System.Configuration;
 
 namespace StructureMap.SolrNetIntegration.Config
 {
@@ -13,6 +11,3 @@ namespace StructureMap.SolrNetIntegration.Config
         }
     }
 }
-
-
-#endif

@@ -3,36 +3,30 @@ using Xunit;
 using SolrNet;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
-#if NETCOREAPP2_0 || NETSTANDARD2_0
 using Microsoft.Extensions.Configuration;
 using System.IO;
-#else
+using System.IO;
 using System.Configuration;
-#endif
 using StructureMap.SolrNetIntegration.Config;
-
+using System.Linq;
 namespace StructureMap.SolrNetIntegration.Tests
 {
 
     public class StructureMapFixture
     {
-        private readonly IContainer Container;
-
+        IContainer Container;
         public StructureMapFixture()
         {
-#if NETCOREAPP2_0 || NETSTANDARD2_0
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetParent("../../../").FullName)
-                .AddJsonFile("cores.json")
-                .Build()
-                .GetSection("solr");
-
-            Container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(configuration.Get<SolrServers>())));
-#else
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
-            Container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
-#endif
+            var servers = new List<SolrServer>
+            {
+                new SolrServer ("entity","http://localhost:8983/solr/collection1", "StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity2","http://localhost:8983/solr/core0", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity3","http://localhost:8983/solr/core1", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests")
+            };
+            Container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(servers)));
         }
+
+
 
         [Fact]
         public void ResolveSolrOperations()
@@ -44,11 +38,76 @@ namespace StructureMap.SolrNetIntegration.Tests
         [Fact]
         public void RegistersSolrConnectionWithAppConfigServerUrl()
         {
+
+            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
+            var container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
+
             var instanceKey = "entity" + typeof(SolrConnection);
 
-            var solrConnection = (SolrConnection)Container.GetInstance<ISolrConnection>(instanceKey);
+            var solrConnection = (SolrConnection)container.GetInstance<ISolrConnection>(instanceKey);
 
             Assert.Equal("http://localhost:8983/solr/collection1", solrConnection.ServerURL);
+        }
+
+
+        [Fact]
+        public void CheckParseAppConfig()
+        {
+
+            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
+            var servers = solrConfig.SolrServers;
+
+            Assert.Equal("entity", servers.First().Id);
+            Assert.Equal("http://localhost:8983/solr/collection1", servers.First().Url);
+            Assert.Equal("StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests", servers.First().DocumentType);
+
+            Assert.Equal(3, servers.Count);
+            Assert.Equal("entity3", servers.Last().Id);
+            Assert.Equal("http://localhost:8983/solr/core1", servers.Last().Url);
+            Assert.Equal("StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests", servers.Last().DocumentType);
+
+        }
+
+        [Fact]
+        public void RegistersSolrConnectionWithCoresJsonServerUrl()
+        {
+            var configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent("../../../").FullName)
+               .AddJsonFile("cores.json")
+               .Build()
+               .GetSection("solr:servers");
+
+            var container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(configuration.Get<List<SolrServer>>())));
+
+
+            var instanceKey = "entity" + typeof(SolrConnection);
+
+            var solrConnection = (SolrConnection)container.GetInstance<ISolrConnection>(instanceKey);
+
+            Assert.Equal("http://localhost:8983/solr/collection1", solrConnection.ServerURL);
+        }
+
+
+        [Fact]
+        public void CheckParseJsonConfiguration()
+        {
+            var configuration = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetParent("../../../").FullName)
+               .AddJsonFile("cores.json")
+               .Build()
+               .GetSection("solr:servers");
+
+            var servers = configuration.Get<List<SolrServer>>();
+
+            Assert.Equal(3, servers.Count);
+            Assert.Equal("entity", servers.First().Id);
+            Assert.Equal("http://localhost:8983/solr/collection1", servers.First().Url);
+            Assert.Equal("StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests", servers.First().DocumentType);
+
+            Assert.Equal("entity3", servers.Last().Id);
+            Assert.Equal("http://localhost:8983/solr/core1", servers.Last().Url);
+            Assert.Equal("StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests", servers.Last().DocumentType);
+
         }
 
         [Fact]

@@ -1,6 +1,6 @@
 ﻿{
   "solr": {
-    "SolrServerElements": [
+    "servers": [
       {
         "id": "entity",
         "url": "http://localhost:8983/solr/collection1",

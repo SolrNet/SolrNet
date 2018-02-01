@@ -5,9 +5,9 @@ namespace StructureMap.SolrNetIntegration.Config
     public class SolrConfigurationSection : ConfigurationSection
     {
         [ConfigurationProperty("", IsDefaultCollection = true)]
-        public SolrServerElements SolrServers
+        public SolrServers SolrServers
         {
-            get { return (SolrServerElements)base[""]; }
+            get { return (SolrServers)base[""]; }
         }
     }
 }

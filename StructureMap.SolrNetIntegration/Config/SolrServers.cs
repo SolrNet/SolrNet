@@ -1,16 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StructureMap.SolrNetIntegration.Config
 {
-    /// <summary>
-    /// List of ISolrServer, backward compatible usage.
-    /// </summary>
-    [Obsolete("Just use List<ISolrServer>")]
-    public class SolrServers : List<ISolrServer>
+    public class SolrServers : ConfigurationElementCollection, IEnumerable<ISolrServer>
     {
+        public void Add(SolrServerElement configurationElement)
+        {
+            base.BaseAdd(configurationElement);
+        }
+
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new SolrServerElement();
+        }
+
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            var solrServerElement = (SolrServerElement)element;
+            return solrServerElement.Url + solrServerElement.DocumentType;
+        }
+
+        IEnumerator<ISolrServer> IEnumerable<ISolrServer>.GetEnumerator()
+        {
+            foreach (SolrServerElement server in this)
+            {
+                yield return server;
+            }
+        }
+
+        public override ConfigurationElementCollectionType CollectionType
+        {
+            get { return ConfigurationElementCollectionType.BasicMap; }
+        }
+
+        protected override string ElementName
+        {
+            get { return "server"; }
+        }
     }
 }

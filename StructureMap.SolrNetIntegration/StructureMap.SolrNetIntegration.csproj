@@ -26,7 +26,7 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <Compile Remove="Config\SolrConfigurationSection.cs" />
     <Compile Remove="Config\SolrServerElement.cs" />
-    <Compile Remove="Config\SolrServerElements.cs" />
+    <Compile Remove="Config\SolrServers.cs" />
   </ItemGroup>
 
 

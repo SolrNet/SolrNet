@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using SolrNet;
 using SolrNet.Impl;
+using System.Collections.Generic;
 #if NETCOREAPP2_0 || NETSTANDARD2_0
 using Microsoft.Extensions.Configuration;
 using System.IO;
@@ -18,12 +19,14 @@ namespace StructureMap.SolrNetIntegration.Tests
         private readonly IContainer Container;
         public StructureMapMultiCoreFixture()
         {
-#if NETCOREAPP2_0 || NETSTANDARD2_0
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetParent("../../../").FullName)
-                .AddJsonFile("cores.json")
-                .Build()
-                .GetSection("solr");
+
+            var servers = new List<SolrServer>
+            {
+                new SolrServer ("entity","http://localhost:8983/solr/collection1", "StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity2","http://localhost:8983/solr/core0", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity3","http://localhost:8983/solr/core1", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests")
+            };
+         
             Container = new Container(c =>
             {
                 c.Scan(s =>
@@ -32,24 +35,9 @@ namespace StructureMap.SolrNetIntegration.Tests
                     s.Assembly(typeof(SolrConnection).Assembly);
                     s.WithDefaultConventions();
                 });
-                c.AddRegistry(new SolrNetRegistry(configuration.Get<SolrServers>()));
+                c.AddRegistry(new SolrNetRegistry(servers));
             });
-
-
-#else
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
-
-            Container = new Container(c =>
-            {
-                c.Scan(s =>
-                {
-                    s.Assembly(typeof(SolrNetRegistry).Assembly);
-                    s.Assembly(typeof(SolrConnection).Assembly);
-                    s.WithDefaultConventions();
-                });
-                c.AddRegistry(new SolrNetRegistry(solrConfig.SolrServers));
-            });  
-#endif
+            
         }
 
         [Fact]

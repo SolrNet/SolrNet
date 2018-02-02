@@ -1,26 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-namespace StructureMap.SolrNetIntegration.Config 
+﻿using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+
+namespace StructureMap.SolrNetIntegration.Config
 {
-    public class SolrServers: IEnumerable
+    public class SolrServers : ConfigurationElementCollection, IEnumerable<ISolrServer>
     {
-        public List<SolrServerElement> SolrServerElements { get; set; }
-
-        public void Add(SolrServerElement solrSevServer)
+        public void Add(SolrServerElement configurationElement)
         {
-            SolrServerElements.Add(solrSevServer);
+            base.BaseAdd(configurationElement);
         }
 
-        public SolrServers()
+        protected override ConfigurationElement CreateNewElement()
         {
-            SolrServerElements = new List<SolrServerElement>();
+            return new SolrServerElement();
         }
 
-        public IEnumerator GetEnumerator()
+        protected override object GetElementKey(ConfigurationElement element)
         {
-            return SolrServerElements.GetEnumerator();
+            var solrServerElement = (SolrServerElement)element;
+            return solrServerElement.Url + solrServerElement.DocumentType;
+        }
+
+        IEnumerator<ISolrServer> IEnumerable<ISolrServer>.GetEnumerator()
+        {
+            foreach (SolrServerElement server in this)
+            {
+                yield return server;
+            }
+        }
+
+        public override ConfigurationElementCollectionType CollectionType
+        {
+            get { return ConfigurationElementCollectionType.BasicMap; }
+        }
+
+        protected override string ElementName
+        {
+            get { return "server"; }
         }
     }
-
-
 }

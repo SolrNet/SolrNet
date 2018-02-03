@@ -3,14 +3,6 @@
     <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="App.config">
-      <SubType>Designer</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
@@ -57,6 +49,12 @@
     <Content Include="exampledocs\solr.xml" />
     <Content Include="exampledocs\utf8-example.xml" />
     <Content Include="exampledocs\vidcard.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="app.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
  
 </Project>

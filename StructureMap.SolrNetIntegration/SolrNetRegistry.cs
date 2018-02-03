@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using SolrNet;
-using SolrNet.Exceptions;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -15,14 +13,13 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
-using StructureMap.SolrNetIntegration.Config;
 using StructureMap.Pipeline;
 
 namespace StructureMap.SolrNetIntegration
 {
     public class SolrNetRegistry : Registry
     {
-        public SolrNetRegistry(SolrServers solrServers)
+        public SolrNetRegistry(IEnumerable<ISolrServer> solrServers)
         {
             For<IReadOnlyMappingManager>().Use<MemoizingMappingManager>()
                 .Ctor<IReadOnlyMappingManager>("mapper").Is(new AttributesMappingManager());
@@ -37,7 +34,8 @@ namespace StructureMap.SolrNetIntegration
             RegisterSerializers();
             RegisterOperations();
 
-            AddCoresFromConfig(solrServers);
+
+            AddCores(solrServers);
         }
 
         private void RegisterValidationRules()
@@ -128,26 +126,16 @@ namespace StructureMap.SolrNetIntegration
                  .Dependencies.Add("basicServer", new ReferencedInstance(core.Id + SolrBasicServer));
         }
 
-        private void AddCoresFromConfig(SolrServers solrServers)
+        private void AddCores(IEnumerable<ISolrServer> servers)
         {
-            if (solrServers == null)
-                return;
-
-            var cores = new List<SolrCore>();
-
-            foreach (SolrServerElement server in solrServers)
+            foreach (var server in servers)
             {
                 var solrCore = GetCoreFrom(server);
-                cores.Add(solrCore);
-            }
-
-            foreach (var core in cores)
-            {
-                RegisterCore(core);
+                RegisterCore(solrCore);
             }
         }
 
-        private static SolrCore GetCoreFrom(SolrServerElement server)
+        private static SolrCore GetCoreFrom(ISolrServer server)
         {
             var id = server.Id ?? Guid.NewGuid().ToString();
             var documentType = GetCoreDocumentType(server);
@@ -156,20 +144,20 @@ namespace StructureMap.SolrNetIntegration
             return new SolrCore(id, documentType, coreUrl);
         }
 
-        private static string GetCoreUrl(SolrServerElement server)
+        private static string GetCoreUrl(ISolrServer server)
         {
             var url = server.Url;
             if (string.IsNullOrEmpty(url))
-                throw new ConfigurationErrorsException("Core url missing in SolrNet core configuration");
+                throw new StructureMapConfigurationException("Core url missing in SolrNet core configuration"); // ConfigurationErrorsException("Core url missing in SolrNet core configuration");
             return url;
         }
 
-        private static Type GetCoreDocumentType(SolrServerElement server)
+        private static Type GetCoreDocumentType(ISolrServer server)
         {
             var documentType = server.DocumentType;
 
             if (string.IsNullOrEmpty(documentType))
-                throw new ConfigurationErrorsException("Document type missing in SolrNet core configuration");
+                throw new StructureMapConfigurationException("Document type missing in SolrNet core configuration");
 
             Type type;
 
@@ -179,13 +167,14 @@ namespace StructureMap.SolrNetIntegration
             }
             catch (Exception e)
             {
-                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType), e);
+                throw new StructureMapConfigurationException($"Error getting document type '{documentType}'", e);
             }
 
             if (type == null)
-                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType));
+                throw new StructureMapConfigurationException($"Error getting document type '{documentType}'");
 
             return type;
         }
+
     }
 }

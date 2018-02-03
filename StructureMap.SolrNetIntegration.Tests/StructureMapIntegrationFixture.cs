@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using Xunit;
 using SolrNet;
+using Xunit;
+#if NETCOREAPP2_0 || NETSTANDARD2_0
+using Microsoft.Extensions.Configuration;
+using System.IO;
+#else
+using System.Configuration;
+#endif
+
 using StructureMap.SolrNetIntegration.Config;
 
 namespace StructureMap.SolrNetIntegration.Tests {
@@ -14,10 +20,14 @@ namespace StructureMap.SolrNetIntegration.Tests {
 
         public StructureMapIntegrationFixture()
         {
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
-            Container = new Container (c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
+            var servers = new List<SolrServer>
+            {
+                new SolrServer ("entity","http://localhost:8983/solr/collection1", "StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity2","http://localhost:8983/solr/core0", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity3","http://localhost:8983/solr/core1", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests")
+            };
+            Container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(servers)));
         }
-
 
         [Fact]
         public void Ping_And_Query()
@@ -30,6 +40,15 @@ namespace StructureMap.SolrNetIntegration.Tests {
         [Fact]
         public void DictionaryDocument()
         {
+            var cores = new SolrServers {
+                new SolrServerElement {
+                    Id = "entity1dict",
+                    DocumentType = typeof(Dictionary<string, object>).AssemblyQualifiedName,
+                    Url = "http://localhost:8983/solr/core1",
+                }
+            };
+
+            Container.Configure(c => c.AddRegistry(new SolrNetRegistry(cores)));
 
             var solr = Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
             var results = solr.Query(SolrQuery.All);
@@ -45,6 +64,15 @@ namespace StructureMap.SolrNetIntegration.Tests {
         [Fact]
         public void DictionaryDocument_add()
         {
+            var cores = new SolrServers {
+                new SolrServerElement {
+                    Id = "entity1dict",
+                    DocumentType = typeof(Dictionary<string, object>).AssemblyQualifiedName,
+                    Url = "http://localhost:8983/solr/core1",
+                }
+            };
+
+            Container.Configure(c=>c.AddRegistry(new SolrNetRegistry(cores)));
 
             var solr = Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
 
@@ -56,7 +84,5 @@ namespace StructureMap.SolrNetIntegration.Tests {
                 {"timestamp", DateTime.UtcNow},
             });
         }
-
-       
     }
 }

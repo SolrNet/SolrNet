@@ -1,8 +1,13 @@
-using System.Configuration;
-using Xunit;
+﻿using Xunit;
 using SolrNet;
 using SolrNet.Impl;
-using StructureMap.Configuration.DSL;
+using System.Collections.Generic;
+#if NETCOREAPP2_0 || NETSTANDARD2_0
+using Microsoft.Extensions.Configuration;
+using System.IO;
+#else
+using System.Configuration;
+#endif
 using StructureMap.SolrNetIntegration.Config;
 
 namespace StructureMap.SolrNetIntegration.Tests
@@ -14,9 +19,15 @@ namespace StructureMap.SolrNetIntegration.Tests
         private readonly IContainer Container;
         public StructureMapMultiCoreFixture()
         {
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
 
-            Container = new Container(c=> 
+            var servers = new List<SolrServer>
+            {
+                new SolrServer ("entity","http://localhost:8983/solr/collection1", "StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity2","http://localhost:8983/solr/core0", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity3","http://localhost:8983/solr/core1", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests")
+            };
+         
+            Container = new Container(c =>
             {
                 c.Scan(s =>
                 {
@@ -24,8 +35,9 @@ namespace StructureMap.SolrNetIntegration.Tests
                     s.Assembly(typeof(SolrConnection).Assembly);
                     s.WithDefaultConventions();
                 });
-                c.AddRegistry(new SolrNetRegistry(solrConfig.SolrServers));
+                c.AddRegistry(new SolrNetRegistry(servers));
             });
+            
         }
 
         [Fact]

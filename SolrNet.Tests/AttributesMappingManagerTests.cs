@@ -39,7 +39,15 @@ namespace SolrNet.Tests {
 			}
 		}
 
-		[Fact]
+        [Fact]
+        public void GetFields_WithDuplicatesProperties()
+        {
+            var m = new AttributesMappingManager();
+            Assert.Throws<SolrNetException>(() => m.GetFields(typeof(EntityWithDuplicateFields)).Values);
+          
+        }
+
+        [Fact]
 		public void GetUniqueKey() {
 			var m = new AttributesMappingManager();
 			var key = m.GetUniqueKey(typeof (Entity));
@@ -89,12 +97,14 @@ namespace SolrNet.Tests {
         public void GetRegisteredTypes() {
             var m = new AttributesMappingManager();
             var types = m.GetRegisteredTypes();
+
             Assert.True(types.Count > 0);
             Assert.Contains( typeof(Entity), types);
             Assert.Contains( typeof(InheritedEntity), types);
             Assert.Contains(typeof(AnotherEntity), types);
             Assert.DoesNotContain( typeof(NoProperties), types);
         }
+
 
         public class NoProperties {}
 
@@ -114,6 +124,15 @@ namespace SolrNet.Tests {
         public class AnotherEntity {
             [SolrField]
             public string Name { get; set; }
+        }
+
+        public class EntityWithDuplicateFields
+        {
+            [SolrField("foo")]
+            public string Prop1 { get; set; }
+
+            [SolrField("foo")]
+            public string Prop2 { get; set; }
         }
 	}
 }

@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.3 
+- Add `netstandard 2.0` support to `StructureMap.SolrNetIntegration` #376 (@ciprianmo)
+
 ## 1.0.2 (2018-01-24)
 - Fix: Error when collations contain duplicates #373 (@ariasjose)
 - House keeping: move to new csproj format. Merge nuspec files into csproj. #374

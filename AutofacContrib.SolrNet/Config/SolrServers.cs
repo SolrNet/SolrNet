@@ -1,10 +1,11 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 
 namespace AutofacContrib.SolrNet.Config {
     /// <summary>
     /// Solr cores / instances configuration
     /// </summary>
-    public class SolrServers : ConfigurationElementCollection {
+    public class SolrServers : ConfigurationElementCollection, IEnumerable<ISolrServer> {
         /// <summary>
         /// Adds a new core / instance to the config
         /// </summary>
@@ -20,6 +21,14 @@ namespace AutofacContrib.SolrNet.Config {
         protected override object GetElementKey(ConfigurationElement element) {
             var solrServerElement = (SolrServerElement) element;
             return solrServerElement.Url + solrServerElement.DocumentType;
+        }
+
+        IEnumerator<ISolrServer> IEnumerable<ISolrServer>.GetEnumerator()
+        {
+            foreach (SolrServerElement server in this)
+            {
+                yield return server;
+            }
         }
 
         public override ConfigurationElementCollectionType CollectionType {

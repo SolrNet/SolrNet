@@ -46,11 +46,11 @@ namespace Ninject.Integration.SolrNet.Tests
             Assert.Equal(3, servers.Count);
             Assert.Equal("entity", servers.First().Id);
             Assert.Equal("http://localhost:8983/solr/collection1", servers.First().Url);
-            Assert.Equal("StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests", servers.First().DocumentType);
+            Assert.Equal("Ninject.Integration.SolrNet.Tests.Entity, Ninject.Integration.SolrNet.Tests", servers.First().DocumentType);
 
             Assert.Equal("entity3", servers.Last().Id);
             Assert.Equal("http://localhost:8983/solr/core1", servers.Last().Url);
-            Assert.Equal("StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests", servers.Last().DocumentType);
+            Assert.Equal("Ninject.Integration.SolrNet.Tests.Entity2, Ninject.Integration.SolrNet.Tests", servers.Last().DocumentType);
 
         }
     }

@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.4 
+- Add `netstandard 2.0`support to `Ninject.Integration.SolrNet`
+
 ## 1.0.3 
 - Add `netstandard 2.0` support to `StructureMap.SolrNetIntegration` #376 (@ciprianmo)
 - Fix: Attempting to add duplicate SolrField should give a more helpful error #380

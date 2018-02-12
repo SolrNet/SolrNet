@@ -38,28 +38,5 @@ namespace SolrNet.Cloud.Tests
             Assert.NotNull(
                 Setup().Resolve<ISolrReadOnlyOperations<FakeEntity>>());
         }
-
-        [Fact]
-        public void ShouldResolveIOperations ()
-        {
-            using (var container = new UnityContainer())
-            {
-                var cont = new Unity.SolrNetCloudIntegration.SolrNetContainerConfiguration().ConfigureContainer(new FakeProvider(), container);
-                var obj = cont.Resolve<ISolrOperations<Camera>>();
-            
-            }
-        }
-
-        public class Camera
-        {
-            [Attributes.SolrField("Name")]
-            public string Name { get; set; }
-
-            [Attributes.SolrField("UID")]
-            public int UID { get; set; }
-
-            [Attributes.SolrField("id")]
-            public string Id { get; set; }
-        }
     }
 }

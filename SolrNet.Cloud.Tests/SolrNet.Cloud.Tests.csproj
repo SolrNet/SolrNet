@@ -75,6 +75,7 @@
     <Compile Include="CollectionsAdminTests.cs" />
     <Compile Include="FakeOperations.cs" />
     <Compile Include="FakeProvider.cs" />
+    <Compile Include="SolrCloudStateProviderTests.cs" />
     <Compile Include="UnityTests.cs" />
     <Compile Include="StartupTests.cs" />
     <Compile Include="SolrCloudOperationsTests.cs" />

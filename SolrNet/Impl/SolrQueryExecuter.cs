@@ -692,8 +692,19 @@ namespace SolrNet.Impl {
             var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
-            var r = await connection.GetAsync(handler, param);
-            var xml = XDocument.Parse(r);
+
+            XDocument xml;
+            if (connection is IStreamSolrConnection  cc)
+            {
+                var r = await cc.GetAsync(handler, param, System.Threading.CancellationToken.None);
+                xml = XDocument.Load(r);
+            }
+            else
+            {
+                var r = await connection.GetAsync(handler, param);
+                xml = XDocument.Parse(r);
+            }
+
             resultParser.Parse(xml, results);
             return results;
         }

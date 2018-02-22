@@ -52,7 +52,7 @@ namespace SolrNet.Impl
 
         public HttpClient HttpClient { get; }
 
-        public int MaxQueryLength { get; set; } = 8192;
+        public int MaxUriLength { get; set; } = 8192;
 
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) => SyncFallbackConnection.Get(relativeUrl, parameters);
 
@@ -73,8 +73,11 @@ namespace SolrNet.Impl
             u.Query = GetQuery(parameters);
 
             HttpResponseMessage response;
-            if (u.Uri.PathAndQuery.Length > MaxQueryLength)
-                response = await HttpClient.PostAsync(relativeUrl, new FormUrlEncodedContent(parameters), cancellationToken);
+            if (u.Uri.ToString().Length > MaxUriLength)
+            {
+                u.Query = null;
+                response = await HttpClient.PostAsync(u.Uri, new FormUrlEncodedContent(parameters), cancellationToken);
+            }
             else
                 response = await HttpClient.GetAsync(u.Uri, cancellationToken);
 

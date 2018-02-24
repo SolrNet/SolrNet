@@ -1,7 +1,7 @@
 # Faceting
-
+This is a change i want to commit
 SolrNet supports [faceted searching](https://cwiki.apache.org/confluence/display/solr/Faceting).
-
+This is a change I dont want to commit
 There are basically three kinds of facet queries:
 
  1. querying by field
@@ -156,4 +156,4 @@ http://wiki.apache.org/solr/HierarchicalFaceting#Pivot_Facets
 
 http://wiki.apache.org/solr/SimpleFacetParameters#Pivot_.28ie_Decision_Tree.29_Faceting
 
-this is a test branch
+this is a test branchthis is a test branch with another change

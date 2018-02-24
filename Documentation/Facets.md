@@ -156,4 +156,8 @@ http://wiki.apache.org/solr/HierarchicalFaceting#Pivot_Facets
 
 http://wiki.apache.org/solr/SimpleFacetParameters#Pivot_.28ie_Decision_Tree.29_Faceting
 
+<<<<<<< HEAD
 this is a test branchthis is a test branch with another change
+=======
+this is a test branch
+>>>>>>> e6313a65... Added test branch message

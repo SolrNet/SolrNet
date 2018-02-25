@@ -112,30 +112,5 @@ namespace SolrNet.Tests
             await Assert.ThrowsAsync<TaskCanceledException>(() => conn.GetAsync("/select/", p, tokenSource.Token));
             
         }
-
-        //[Trait("Category", "Integration")]
-        //[Fact(Skip = "unknown reason")]
-        //public void ActualConnectionWithException()
-        //{
-        //    var conn = new SolrConnection(solrURL);
-        //    var p = new Dictionary<string, string>();
-        //    p["version"] = "2.1";
-        //    p["indent"] = "on";
-        //    p["q"] = "idq:123";
-        //    try
-        //    {
-        //        conn.Get("/select/", p);
-        //        Assert.True(false, "Should have thrown");
-        //    }
-        //    catch (SolrConnectionException e)
-        //    {
-        //        Console.WriteLine(e);
-        //        Console.WriteLine(e.Url);
-        //    }
-        //}
-
-
-
-
     }
 }

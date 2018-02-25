@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.0.6 
+- New: `AutoSolrConnection`, automatically uses `GET` or `POST` depending on uri length. Improved performance when using `async` methods. 
+
 ## 1.0.5 
 - SolrNet Cloud: add checks if Zookeeper connection is valid
 

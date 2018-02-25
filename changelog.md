@@ -2,6 +2,7 @@
 
 ## 1.0.6 
 - New: `AutoSolrConnection`, automatically uses `GET` or `POST` depending on uri length. Improved performance when using `async` methods. 
+- Add `netstandard 2.0` support to `Unity.SolrNetIntegration`
 
 ## 1.0.5 
 - SolrNet Cloud: add checks if Zookeeper connection is valid

@@ -21,7 +21,7 @@ The easiest way to get going is to use our NuGet packages:
 |[SolrNet.Microsoft.DependencyInjection](https://www.nuget.org/packages/SolrNet.Microsoft.DependencyInjection/)|[Microsoft Core Dependency Injection](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection) | 4.6.1 | 2.0 |
 |[SolrNet.StructureMap](https://www.nuget.org/packages/SolrNet.StructureMap/)|[StructureMap](http://structuremap.github.io/) | 4.6 | 2.0 |
 |[SolrNet.Ninject](https://www.nuget.org/packages/SolrNet.Ninject/)| [Ninject](http://www.ninject.org/)  | 4.6 | 2.0 |
-|[SolrNet.Unity](https://www.nuget.org/packages/SolrNet.Unity/)| [Unity](https://github.com/unitycontainer/unity) | 4.6 | - |
+|[SolrNet.Unity](https://www.nuget.org/packages/SolrNet.Unity/)| [Unity](https://github.com/unitycontainer/unity) | 4.6 | 2.0 |
 |[SolrNet.Autofac](https://www.nuget.org/packages/SolrNet.Autofac/)| [Autofac](https://autofac.org/) | 4.6 | 2.0 |
 |[SolrNet.NHibernate](https://www.nuget.org/packages/SolrNet.NHibernate/)| [NHibernate](http://nhibernate.info/) | 4.6 | - |
 

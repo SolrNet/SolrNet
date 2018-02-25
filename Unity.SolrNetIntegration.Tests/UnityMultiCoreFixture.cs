@@ -1,4 +1,4 @@
-using System.Configuration;
+﻿using System.Configuration;
 using Xunit;
 using SolrNet;
 using Unity.SolrNetIntegration.Config;
@@ -15,8 +15,6 @@ namespace Unity.SolrNetIntegration.Tests {
             container = new UnityContainer();
             new SolrNetContainerConfiguration().ConfigureContainer(solrConfig.SolrServers, container);
         }
-
-        
 
         [Fact]
         public void Get_SolrOperations_for_Entity() {

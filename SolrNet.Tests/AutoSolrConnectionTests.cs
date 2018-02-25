@@ -34,7 +34,7 @@ namespace SolrNet.Tests
 
     public class AutoSolrConnectionTests
     {
-        private const string solrURL = "http://us-solr.tdnet.com:8983/solr/production"; //"http://localhost:8983/solr";
+        private const string solrURL = "http://localhost:8983/solr";
 
         [Trait("Category", "Integration")]
         [Fact()]

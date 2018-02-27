@@ -109,6 +109,7 @@
     <EmbeddedResource Include="Resources\responseWithMoreLikeThis.xml" />
     <EmbeddedResource Include="Resources\responseWithResultAndGroup.xml" />
     <EmbeddedResource Include="Resources\responseWithSimpleDebugDetails.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingExtended.xml" />
     <EmbeddedResource Include="Resources\responseWithSpellChecking.xml" />
     <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsDuplicatesSolr4-.xml" />
     <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsDuplicatesSolr5+.xml" />

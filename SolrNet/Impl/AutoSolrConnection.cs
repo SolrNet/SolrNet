@@ -52,7 +52,7 @@ namespace SolrNet.Impl
 
         public HttpClient HttpClient { get; }
 
-        public int MaxUriLength { get; set; } = 8192;
+        public int MaxUriLength { get; set; } = 7600;
 
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) => SyncFallbackConnection.Get(relativeUrl, parameters);
 

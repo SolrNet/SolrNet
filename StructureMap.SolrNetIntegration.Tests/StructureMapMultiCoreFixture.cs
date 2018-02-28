@@ -35,7 +35,7 @@ namespace StructureMap.SolrNetIntegration.Tests
                     s.Assembly(typeof(SolrConnection).Assembly);
                     s.WithDefaultConventions();
                 });
-                c.AddRegistry(new SolrNetRegistry(servers));
+                c.AddRegistry(SolrNetRegistry.Create(servers));
             });
             
         }

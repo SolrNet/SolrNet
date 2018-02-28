@@ -26,7 +26,7 @@ namespace StructureMap.SolrNetIntegration.Tests {
                 new SolrServer ("entity2","http://localhost:8983/solr/core0", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"),
                 new SolrServer ("entity3","http://localhost:8983/solr/core1", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests")
             };
-            Container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(servers)));
+            Container = new Container(c => c.IncludeRegistry(SolrNetRegistry.Create(servers)));
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace StructureMap.SolrNetIntegration.Tests {
                 }
             };
 
-            Container.Configure(c => c.AddRegistry(new SolrNetRegistry(cores)));
+            Container.Configure(c => c.AddRegistry(SolrNetRegistry.Create(cores)));
 
             var solr = Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
             var results = solr.Query(SolrQuery.All);
@@ -72,7 +72,7 @@ namespace StructureMap.SolrNetIntegration.Tests {
                 }
             };
 
-            Container.Configure(c=>c.AddRegistry(new SolrNetRegistry(cores)));
+            Container.Configure(c=>c.AddRegistry(SolrNetRegistry.Create(cores)));
 
             var solr = Container.GetInstance<ISolrOperations<Dictionary<string, object>>>();
 

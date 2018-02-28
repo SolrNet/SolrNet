@@ -2,7 +2,7 @@
 
 ## 1.0.7
 - Fix: Parsing error when spellcheck.extendedResults=true #398 (@ariasjose)
-
+- Tweaked the AutoSolrConnection `MaxUriLength`.
 
 ## 1.0.6 
 - New: `AutoSolrConnection`, automatically uses `GET` or `POST` depending on uri length. Improved performance when using `async` methods. 

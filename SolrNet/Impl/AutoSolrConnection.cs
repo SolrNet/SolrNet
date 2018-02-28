@@ -50,8 +50,14 @@ namespace SolrNet.Impl
         /// </summary>
         public string ServerURL { get; }
 
+        /// <summary>
+        /// Gets the HttpClient used communicate with the Solr server.
+        /// </summary>
         public HttpClient HttpClient { get; }
 
+        /// <summary>
+        /// The maximum length of the URL before switching to a POST request.
+        /// </summary>
         public int MaxUriLength { get; set; } = 7600;
 
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) => SyncFallbackConnection.Get(relativeUrl, parameters);

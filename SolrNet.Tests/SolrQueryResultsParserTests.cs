@@ -574,8 +574,38 @@ namespace SolrNet.Tests
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             var spellChecking = parser.ParseSpellChecking(docNode);
             Assert.NotNull(spellChecking);
-            Assert.Equal("dell ultrasharp", spellChecking.Collations.First().CollationQuery);
+            //Suggestions
             Assert.Equal(2, spellChecking.Count);
+            //First suggestion - hell
+            Assert.Equal(1, spellChecking.First().Suggestions.Count);
+            Assert.Equal("dell", spellChecking.First().Suggestions.Single());
+            //Second suggestion - ultrashar
+            Assert.Equal(1, spellChecking.Last().Suggestions.Count);
+            Assert.Equal("ultrasharp", spellChecking.Last().Suggestions.Single());            
+            //Collations
+            Assert.Equal("dell ultrasharp", spellChecking.Collations.First().CollationQuery);
+            Assert.Equal(1, spellChecking.Collations.Count);
+        }
+
+        [Fact]        
+        public void ParseSpellCheckingExtendedResults()
+        {
+            var parser = new SpellCheckResponseParser<Product>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingExtended.xml");
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
+            var spellChecking = parser.ParseSpellChecking(docNode);
+            Assert.NotNull(spellChecking);
+            //Number of suggestions
+            Assert.Equal(2, spellChecking.Count);
+
+            //First suggestion - hell
+            Assert.Equal(1, spellChecking.First().Suggestions.Count);
+            Assert.Equal("dell", spellChecking.First().Suggestions.Single());
+
+            //Second suggestion - ultrashar
+            Assert.Equal(2, spellChecking.Last().Suggestions.Count);
+            Assert.Equal("ultrasharp", spellChecking.Last().Suggestions.First());
+            Assert.Equal("ultrasharps", spellChecking.Last().Suggestions.Last());
         }
 
         [Fact]

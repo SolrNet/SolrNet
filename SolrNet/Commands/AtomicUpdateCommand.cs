@@ -51,12 +51,12 @@ namespace SolrNet.Commands
                 return connection.PostStream("/update", "text/json; charset=utf-8", content, GetParamsAsKvp());
         }
 
-        public Task<string> ExecuteAsync(ISolrConnection connection)
+        public async Task<string> ExecuteAsync(ISolrConnection connection)
         {
             string json = GetAtomicUpdateJson();
             var bytes = Encoding.UTF8.GetBytes(json);
             using (var content = new MemoryStream(bytes))
-                return connection.PostStreamAsync("/update", "text/json; charset=utf-8", content, GetParamsAsKvp());
+                return await connection.PostStreamAsync("/update", "text/json; charset=utf-8", content, GetParamsAsKvp());
         }
 
         private KeyValuePair<string, string>[] GetParamsAsKvp()

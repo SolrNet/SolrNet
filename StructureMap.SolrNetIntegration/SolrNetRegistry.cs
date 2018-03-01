@@ -19,9 +19,18 @@ namespace StructureMap.SolrNetIntegration
 {
     public class SolrNetRegistry : Registry
     {
-        // Constructor should not be used to create SolrNetRegistry as it's 
-        private SolrNetRegistry()
+        // Constructor should not be used to create SolrNetRegistry we use virtual methods during the initialization. Use Initialize instead.       
+        protected SolrNetRegistry()
         {
+
+        }
+
+        [Obsolete("Use static Create method instead. This constructor shouldn't be used from child classes at it may cause unexpected behaviour (it won't not use overriden methods).")]
+        public SolrNetRegistry(IEnumerable<ISolrServer> solrServers)
+        {
+
+#warning This is unsafe! This will cause troubles on inheritance!
+            this.Initialize(solrServers);
         }
 
         public static SolrNetRegistry Create(IEnumerable<ISolrServer> solrServers)
@@ -106,7 +115,7 @@ namespace StructureMap.SolrNetIntegration
 
             For<ISolrConnection>().Use(() => new AutoSolrConnection(coreUrl))
                 .Named(coreConnectionId);
-            
+
             var ISolrQueryExecuter = typeof(ISolrQueryExecuter<>).MakeGenericType(documentType);
             var SolrQueryExecuter = typeof(SolrQueryExecuter<>).MakeGenericType(documentType);
 
@@ -134,7 +143,7 @@ namespace StructureMap.SolrNetIntegration
         }
 
         protected virtual void RegisterServers(IEnumerable<ISolrServer> servers)
-        {            
+        {
             foreach (var server in servers)
             {
                 RegisterCore(server.Id ?? Guid.NewGuid().ToString(), GetCoreDocumentType(server), GetCoreUrl(server));
@@ -146,7 +155,7 @@ namespace StructureMap.SolrNetIntegration
             var url = server.Url;
             if (string.IsNullOrEmpty(url))
                 throw new StructureMapConfigurationException("Core url missing in SolrNet core configuration");
-            
+
             UriValidator.ValidateHTTP(url);
             return url;
         }

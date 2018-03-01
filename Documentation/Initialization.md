@@ -78,11 +78,12 @@ Install-Package SolrNet.StructureMap
 If you are using StructureMap, you can use the StructureMap module (`StructureMap.SolrNetIntegration`):
 
 ```C#
-ObjectFactory.Initialize(
-    x => x.AddRegistry(
-        new SolrNetRegistry("http://localhost:8893/solr")
-    )
-);
+IEnumerable<SolrServer> solrServers = new[]
+{
+	new SolrServer(id: "test", url: "http://localhost:8893", documentType: "testDocumentType")
+};
+
+var container = new StructureMap.Container(SolrNetRegistry.Create(solrServers));
 ```
 
 ### Autofac
@@ -109,7 +110,7 @@ Install-Package SolrNet.Autofac
 var solrServers = new SolrServers {
         new SolrServerElement {
           Id = "test",
-          Url = "htp://localhost:8893",
+          Url = "http://localhost:8893",
           DocumentType = typeof (Entity).AssemblyQualifiedName,
         }
 };

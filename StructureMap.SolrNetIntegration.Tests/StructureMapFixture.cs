@@ -5,10 +5,10 @@ using SolrNet.Exceptions;
 using SolrNet.Impl;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-using System.IO;
 using System.Configuration;
 using StructureMap.SolrNetIntegration.Config;
 using System.Linq;
+
 namespace StructureMap.SolrNetIntegration.Tests
 {
 
@@ -23,7 +23,7 @@ namespace StructureMap.SolrNetIntegration.Tests
                 new SolrServer ("entity2","http://localhost:8983/solr/core0", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"),
                 new SolrServer ("entity3","http://localhost:8983/solr/core1", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests")
             };
-            Container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(servers)));
+            Container = new Container(c => c.IncludeRegistry(SolrNetRegistry.Create(servers)));
         }
 
 
@@ -40,11 +40,11 @@ namespace StructureMap.SolrNetIntegration.Tests
         {
 
             var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
-            var container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(solrConfig.SolrServers)));
+            var container = new Container(c => c.IncludeRegistry(SolrNetRegistry.Create(solrConfig.SolrServers)));
 
             var instanceKey = "entity" + typeof(SolrConnection);
 
-            var solrConnection = (SolrConnection)container.GetInstance<ISolrConnection>(instanceKey);
+            var solrConnection = (AutoSolrConnection)container.GetInstance<ISolrConnection>(instanceKey);
 
             Assert.Equal("http://localhost:8983/solr/collection1", solrConnection.ServerURL);
         }
@@ -77,12 +77,12 @@ namespace StructureMap.SolrNetIntegration.Tests
                .Build()
                .GetSection("solr:servers");
 
-            var container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(configuration.Get<List<SolrServer>>())));
+            var container = new Container(c => c.IncludeRegistry(SolrNetRegistry.Create(configuration.Get<List<SolrServer>>())));
 
 
             var instanceKey = "entity" + typeof(SolrConnection);
 
-            var solrConnection = (SolrConnection)container.GetInstance<ISolrConnection>(instanceKey);
+            var solrConnection = (AutoSolrConnection)container.GetInstance<ISolrConnection>(instanceKey);
 
             Assert.Equal("http://localhost:8983/solr/collection1", solrConnection.ServerURL);
         }
@@ -120,7 +120,7 @@ namespace StructureMap.SolrNetIntegration.Tests
                     DocumentType = typeof(Entity2).AssemblyQualifiedName,
                 }
             };
-            Assert.Throws<InvalidURLException>(() => new Container(c => c.IncludeRegistry(new SolrNetRegistry(solrServers))));
+            Assert.Throws<InvalidURLException>(() => new Container(c => c.IncludeRegistry(SolrNetRegistry.Create(solrServers))));
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace StructureMap.SolrNetIntegration.Tests
                 }
             };
 
-            Assert.Throws<InvalidURLException>(() => new Container(c => c.IncludeRegistry(new SolrNetRegistry(solrServers))));
+            Assert.Throws<InvalidURLException>(() => new Container(c => c.IncludeRegistry(SolrNetRegistry.Create(solrServers))));
         }
 
         [Fact]
@@ -177,7 +177,7 @@ namespace StructureMap.SolrNetIntegration.Tests
                     Url = "http://localhost:8983/solr/entity2",
                 },
             };
-            var container = new Container(c => c.IncludeRegistry(new SolrNetRegistry(cores)));
+            var container = new Container(c => c.IncludeRegistry(SolrNetRegistry.Create(cores)));
             var solr1 = container.GetInstance<ISolrOperations<Entity>>();
             var solr2 = container.GetInstance<ISolrOperations<Entity2>>();
             var solrDict = container.GetInstance<ISolrOperations<Dictionary<string, object>>>();

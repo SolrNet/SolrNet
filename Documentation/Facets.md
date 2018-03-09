@@ -129,7 +129,7 @@ if (results.FacetPivots.Count > 0)
     }
 }
 ```
-
+This is a test branch
 This sample will create two main categories by inStock(true or false) and then broken down by cat (category). It will print out the following:
 ```
   Pivot: inStock with value true. Child Pivots:

@@ -1,5 +1,7 @@
 # Faceting
 
+This is a change I want to commit
+
 SolrNet supports [faceted searching](https://cwiki.apache.org/confluence/display/solr/Faceting).
 
 There are basically three kinds of facet queries:
@@ -7,6 +9,8 @@ There are basically three kinds of facet queries:
  1. querying by field
  1. date facets
  1. arbitrary facet queries
+
+We want to thank you very much and wish you all the best!
 
 Facet queries are issued through the `FacetQueries` property of `QueryOptions`. Then the `QueryOptions` instance is passed to the server instance.
 
@@ -24,6 +28,7 @@ Or on the other hand your project requires all facets to be returned and since S
 Querying by field is handled by the `SolrFacetFieldQuery` class. Results are available through the `FacetFields` property.
 
 Example: print all categories sorted by popularity.
+This a test branch with another change
 
 ```c#
 ISolrOperations<Document> solr = ...
@@ -129,7 +134,7 @@ if (results.FacetPivots.Count > 0)
     }
 }
 ```
-
+This is a test branch
 This sample will create two main categories by inStock(true or false) and then broken down by cat (category). It will print out the following:
 ```
   Pivot: inStock with value true. Child Pivots:

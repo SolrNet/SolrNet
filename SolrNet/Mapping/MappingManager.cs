@@ -44,34 +44,43 @@ namespace SolrNet.Mapping {
         }
 
 	    public void Add(PropertyInfo property, string fieldName, float? boost) {
-		    if (property == null)
-			    throw new ArgumentNullException("property");
-		    if (fieldName == null)
-			    throw new ArgumentNullException("fieldName");
-
-			var declaringType = property.DeclaringType ?? property.ReflectedType;
-
-			// create or find the SolrFieldModel dictionary...
-		    Dictionary<string, SolrFieldModel> solrFieldDict;
-			if (!mappings.ContainsKey(declaringType))
-			{
-			    solrFieldDict = new Dictionary<string, SolrFieldModel>();
-				mappings[declaringType] = solrFieldDict;
-		    } else {
-				solrFieldDict = mappings[declaringType];
-		    }
-
-			// see if the property is already there...
-			var m = solrFieldDict.FirstOrDefault(k => k.Value.Property == property);
-		    if (m.Key != null) {
-				// it is, so remove it
-				solrFieldDict.Remove(m.Key);
-		    }
-
-			// and add the SolrFieldModel to the dictionary by fieldName
-		    var fld = new SolrFieldModel(property, fieldName, boost);
-			solrFieldDict[fieldName] = fld;
+		    Add(property, fieldName, boost, false);
 	    }
+
+        public void Add(PropertyInfo property, string fieldName, float? boost, bool useReflectedTypeOnly) {
+            if (property == null)
+                throw new ArgumentNullException("property");
+            if (fieldName == null)
+                throw new ArgumentNullException("fieldName");
+
+            var declaringType = useReflectedTypeOnly
+                ? property.ReflectedType
+                : property.DeclaringType ?? property.ReflectedType;
+
+            // create or find the SolrFieldModel dictionary...
+            Dictionary<string, SolrFieldModel> solrFieldDict;
+            if (!mappings.ContainsKey(declaringType))
+            {
+                solrFieldDict = new Dictionary<string, SolrFieldModel>();
+                mappings[declaringType] = solrFieldDict;
+            }
+            else
+            {
+                solrFieldDict = mappings[declaringType];
+            }
+
+            // see if the property is already there...
+            var m = solrFieldDict.FirstOrDefault(k => k.Value.Property == property);
+            if (m.Key != null)
+            {
+                // it is, so remove it
+                solrFieldDict.Remove(m.Key);
+            }
+
+            // and add the SolrFieldModel to the dictionary by fieldName
+            var fld = new SolrFieldModel(property, fieldName, boost);
+            solrFieldDict[fieldName] = fld;
+        }
 
 	    /// <summary>
         /// Gets all the SolrFieldModels mapped for this type
@@ -89,10 +98,16 @@ namespace SolrNet.Mapping {
 	    }
 
         public void SetUniqueKey(PropertyInfo property) {
+            SetUniqueKey(property, false);
+        }
+
+        public void SetUniqueKey(PropertyInfo property, bool useReflectedTypeOnly) {
             if (property == null)
                 throw new ArgumentNullException("property");
 
-            var declaringType = property.DeclaringType ?? property.ReflectedType;
+            var declaringType = useReflectedTypeOnly
+                ? property.ReflectedType
+                : property.DeclaringType ?? property.ReflectedType;
 
             if (!mappings.ContainsKey(declaringType))
 				throw new ArgumentException(string.Format("Property '{0}.{1}' not mapped. Please use Add() to map it first", declaringType, property.Name));

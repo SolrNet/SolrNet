@@ -22,10 +22,12 @@ namespace SolrNet
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            return services.AddSolrNet(new SolrCore[] { new SolrCore(null, null, url) });
+            return services.AddSolrNet(new SolrCore[] { new SolrCore(null, null, url) }, null);
         }
 
-        private static IServiceCollection AddSolrNet(this IServiceCollection services, IEnumerable<SolrCore> cores)
+        public static IServiceCollection AddSolrNet(this IServiceCollection services, string url, Action<SolrNetOptions> setupAction) => AddSolrNet(services, new SolrCore[] { new SolrCore(null, null, url) }, setupAction);
+
+        private static IServiceCollection AddSolrNet(this IServiceCollection services, IEnumerable<SolrCore> cores, Action<SolrNetOptions> setupAction)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
@@ -34,7 +36,7 @@ namespace SolrNet
             services.AddTransient<ISolrFieldParser, DefaultFieldParser>();
             services.AddTransient(typeof(ISolrDocumentActivator<>), typeof(SolrDocumentActivator<>));
             services.AddTransient(typeof(ISolrDocumentResponseParser<>), typeof(SolrDocumentResponseParser<>));
-            
+
             services.AddTransient<ISolrDocumentResponseParser<Dictionary<string, object>>, SolrDictionaryDocumentResponseParser>();
             services.AddTransient<ISolrFieldSerializer, DefaultFieldSerializer>();
             services.AddTransient<ISolrQuerySerializer, DefaultQuerySerializer>();
@@ -63,15 +65,22 @@ namespace SolrNet
             {
                 throw new NotImplementedException("Microsoft DependencyInjection doesn't support Key/Name based injection. This is a place holder for the future.");
             }
-            else
+
+            var connection = new AutoSolrConnection(cores.Single().Url);
+            //Bind single type to a single url, prevent breaking existing functionality
+            services.AddSingleton<ISolrConnection>(connection);
+            services.AddTransient(typeof(ISolrQueryExecuter<>), typeof(SolrQueryExecuter<>));
+            services.AddTransient(typeof(ISolrBasicOperations<>), typeof(SolrBasicServer<>));
+            services.AddTransient(typeof(ISolrBasicReadOnlyOperations<>), typeof(SolrBasicServer<>));
+            services.AddScoped(typeof(ISolrOperations<>), typeof(SolrServer<>));
+            services.AddTransient(typeof(ISolrReadOnlyOperations<>), typeof(SolrServer<>));
+
+            
+            if (setupAction != null)
             {
-                //Bind single type to a single url, prevent breaking existing functionality
-                services.AddTransient<ISolrConnection>(_ => new SolrConnection(cores.Single().Url));
-                services.AddTransient(typeof(ISolrQueryExecuter<>), typeof(SolrQueryExecuter<>));
-                services.AddTransient(typeof(ISolrBasicOperations<>), typeof(SolrBasicServer<>));
-                services.AddTransient(typeof(ISolrBasicReadOnlyOperations<>), typeof(SolrBasicServer<>));
-                services.AddScoped(typeof(ISolrOperations<>), typeof(SolrServer<>));
-                services.AddTransient(typeof(ISolrReadOnlyOperations<>), typeof(SolrServer<>));
+                var options = new SolrNetOptions(connection.HttpClient);
+                //allow for custom headers to be injected.
+                setupAction(options);
             }
 
 

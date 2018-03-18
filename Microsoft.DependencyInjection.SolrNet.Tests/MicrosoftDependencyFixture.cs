@@ -74,10 +74,10 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
         public void CannotResolveSolrAbstractResponseParsersViaArray()
         {
             //MS Dependency injection doesn't support 
-            Assert.Throws<InvalidOperationException>(() => 
+            Assert.Throws<InvalidOperationException>(() =>
                 DefaultServiceProvider.GetRequiredService<ISolrAbstractResponseParser<Entity>[]>()
             );
-            
+
         }
 
 
@@ -106,6 +106,27 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             Assert.NotNull(solr);
         }
 
+
+
+        [Fact]
+        public void SetBasicAuthenticationHeader()
+        {
+            var sc = new ServiceCollection();
+
+            //my credentials
+            var credentials = System.Text.Encoding.ASCII.GetBytes("myUsername:myPassword");
+            //in base64
+            var credentialsBase64 = Convert.ToBase64String(credentials);
+            //use the options to set the Authorization header.
+            sc.AddSolrNet("http://localhost:8983/solr", options => { options.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentialsBase64); });
+
+            //test
+            var provider = sc.BuildServiceProvider();
+            var connection = provider.GetRequiredService<ISolrConnection>() as AutoSolrConnection;
+
+            Assert.NotNull(connection.HttpClient.DefaultRequestHeaders.Authorization);
+            Assert.Equal(credentialsBase64, connection.HttpClient.DefaultRequestHeaders.Authorization.Parameter);
+        }
 
         public class Entity { }
     }

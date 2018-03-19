@@ -1,5 +1,8 @@
 # Change Log
 
+##1.0.8
+- Microsoft Dependency Injection update: use AutoSolrConnection, and allow tweaking HttpClient on service configuration. #409
+
 ## 1.0.7
 - Fix: Parsing error when spellcheck.extendedResults=true #398 (@ariasjose)
 - Tweaked the AutoSolrConnection `MaxUriLength`.

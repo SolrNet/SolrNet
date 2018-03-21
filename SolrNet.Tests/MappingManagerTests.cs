@@ -74,6 +74,21 @@ namespace SolrNet.Tests {
         }
 
         [Fact]
+        public void InheritedEntityMappedUsingReflectedTypeOnly()
+        {
+            var mappingManager = new MappingManager();
+            var idProperty = typeof(InheritedEntity).GetProperty("Id");
+            mappingManager.Add(idProperty, "id", null, true);
+            mappingManager.SetUniqueKey(idProperty, true);
+            mappingManager.Add(typeof(InheritedEntity).GetProperty("Description"), "description", null, true);
+
+            var fields = mappingManager.GetFields(typeof(InheritedEntity));
+            Assert.Equal(2, fields.Count);
+            Assert.Equal("id", fields.First().Value.FieldName);
+            Assert.Equal("description", fields.Last().Value.FieldName);
+        }
+
+        [Fact]
         public void SetUniqueKey_without_mapping_throws() {
             var mgr = new MappingManager();
             var property = typeof (Entity).GetProperty("Id");

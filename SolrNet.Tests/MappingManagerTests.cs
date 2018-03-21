@@ -76,16 +76,30 @@ namespace SolrNet.Tests {
         [Fact]
         public void InheritedEntityMappedUsingReflectedTypeOnly()
         {
-            var mappingManager = new MappingManager();
-            var idProperty = typeof(InheritedEntity).GetProperty("Id");
-            mappingManager.Add(idProperty, "id", null, true);
-            mappingManager.SetUniqueKey(idProperty, true);
-            mappingManager.Add(typeof(InheritedEntity).GetProperty("Description"), "description", null, true);
+            var mappingManager = new MappingManager(true);
+            var idProperty = typeof(ComplexEntity<FrenchSchemaLanguage>).GetProperty("Id");
+            mappingManager.Add(idProperty, "id");
+            mappingManager.SetUniqueKey(idProperty);
+            mappingManager.Add(typeof(ComplexEntity<FrenchSchemaLanguage>).GetProperty("Description"), "description");
 
-            var fields = mappingManager.GetFields(typeof(InheritedEntity));
-            Assert.Equal(2, fields.Count);
-            Assert.Equal("id", fields.First().Value.FieldName);
-            Assert.Equal("description", fields.Last().Value.FieldName);
+            var registeredType = mappingManager.GetRegisteredTypes();
+            Assert.Equal(1, registeredType.Count);
+            Assert.Single(registeredType, typeof(ComplexEntity<FrenchSchemaLanguage>));
+        }
+
+        [Fact]
+        public void InheritedEntityMappedNotUsingReflectedTypeOnly()
+        {
+            var mappingManager = new MappingManager(false); // Same as "new MappingManager();"
+            var idProperty = typeof(ComplexEntity<FrenchSchemaLanguage>).GetProperty("Id");
+            mappingManager.Add(idProperty, "id");
+            mappingManager.SetUniqueKey(idProperty);
+            mappingManager.Add(typeof(ComplexEntity<FrenchSchemaLanguage>).GetProperty("Description"), "description");
+
+            var registeredType = mappingManager.GetRegisteredTypes();
+            Assert.Equal(2, registeredType.Count);
+            Assert.Collection(registeredType, type => Assert.Equal(typeof(BaseComplexEntity<FrenchSchemaLanguage>), type),
+                type => Assert.Equal(typeof(ComplexEntity<FrenchSchemaLanguage>), type));
         }
 
         [Fact]
@@ -190,5 +204,38 @@ namespace SolrNet.Tests {
 
     public class InheritedEntity: Entity {
         public string Description { get; set; }
+    }
+
+    public class ComplexEntity<T> : BaseComplexEntity<T>
+        where T : SchemaLanguage, new()
+    {
+        public string Description { get; set; }
+    }
+
+    public class BaseComplexEntity<T> where T : SchemaLanguage, new()
+    {
+        public int Id { get; set; }
+        public T Language => new T();
+    }
+
+    public abstract class SchemaLanguage
+    {
+        public string LanguageCode { get; set; }
+    }
+
+    public class FrenchSchemaLanguage : SchemaLanguage
+    {
+        public FrenchSchemaLanguage()
+        {
+            LanguageCode = "fr";
+        }
+    }
+
+    public class EnglishSchemaLanguage : SchemaLanguage
+    {
+        public EnglishSchemaLanguage()
+        {
+            LanguageCode = "en";
+        }
     }
 }

@@ -19,35 +19,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace SolrNet.Mapping {
+namespace SolrNet.Mapping
+{
     /// <summary>
     /// Manual mapping manager
     /// </summary>
-    public class MappingManager : IMappingManager {
-        private readonly IDictionary<Type, Dictionary<string,SolrFieldModel>> mappings = new Dictionary<Type, Dictionary<string,SolrFieldModel>>();
-		private readonly IDictionary<Type, SolrFieldModel> uniqueKeys = new Dictionary<Type, SolrFieldModel>();
+    public class MappingManager : IMappingManager
+    {
+        private readonly bool _useReflectedTypeOnly;
+        private readonly IDictionary<Type, Dictionary<string, SolrFieldModel>> mappings = new Dictionary<Type, Dictionary<string, SolrFieldModel>>();
+        private readonly IDictionary<Type, SolrFieldModel> uniqueKeys = new Dictionary<Type, SolrFieldModel>();
 
-        public void Add(PropertyInfo property) {
+        public MappingManager() : this(false) { }
+
+        public MappingManager(bool useReflectedTypeOnly)
+        {
+            _useReflectedTypeOnly = useReflectedTypeOnly;
+        }
+
+        public void Add(PropertyInfo property)
+        {
             if (property == null)
                 throw new ArgumentNullException("property");
 
             Add(property, property.Name);
         }
 
-        public void Add(PropertyInfo property, string fieldName) {
-            if (property == null)
-                throw new ArgumentNullException("property");
-            if (fieldName == null)
-                throw new ArgumentNullException("fieldName");
-
-            Add(property, fieldName, null);
+        public void Add(PropertyInfo property, string fieldName)
+        {
+            Add(property, fieldName, null, _useReflectedTypeOnly);
         }
 
-	    public void Add(PropertyInfo property, string fieldName, float? boost) {
-		    Add(property, fieldName, boost, false);
-	    }
+        public void Add(PropertyInfo property, string fieldName, bool useReflectedTypeOnly)
+        {
+            Add(property, fieldName, null, useReflectedTypeOnly);
+        }
 
-        public void Add(PropertyInfo property, string fieldName, float? boost, bool useReflectedTypeOnly) {
+        public void Add(PropertyInfo property, string fieldName, float? boost)
+        {
+            Add(property, fieldName, boost, _useReflectedTypeOnly);
+        }
+
+        public void Add(PropertyInfo property, string fieldName, float? boost, bool useReflectedTypeOnly)
+        {
             if (property == null)
                 throw new ArgumentNullException("property");
             if (fieldName == null)
@@ -82,26 +96,29 @@ namespace SolrNet.Mapping {
             solrFieldDict[fieldName] = fld;
         }
 
-	    /// <summary>
+        /// <summary>
         /// Gets all the SolrFieldModels mapped for this type
         /// </summary>
         /// <param name="type">Document type</param>
         /// <returns>Null if <paramref name="type"/> is not mapped</returns>
-        public IDictionary<string,SolrFieldModel> GetFields(Type type) {
+        public IDictionary<string, SolrFieldModel> GetFields(Type type)
+        {
             if (type == null)
                 throw new ArgumentNullException("type");
 
-		    return mappings
-			    .Where(m => m.Key.IsAssignableFrom(type))
-			    .SelectMany(kvp => kvp.Value)
-			    .ToDictionary(pair => pair.Key, pair => pair.Value);
-	    }
-
-        public void SetUniqueKey(PropertyInfo property) {
-            SetUniqueKey(property, false);
+            return mappings
+                .Where(m => m.Key.IsAssignableFrom(type))
+                .SelectMany(kvp => kvp.Value)
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
-        public void SetUniqueKey(PropertyInfo property, bool useReflectedTypeOnly) {
+        public void SetUniqueKey(PropertyInfo property)
+        {
+            SetUniqueKey(property, _useReflectedTypeOnly);
+        }
+
+        public void SetUniqueKey(PropertyInfo property, bool useReflectedTypeOnly)
+        {
             if (property == null)
                 throw new ArgumentNullException("property");
 
@@ -110,34 +127,36 @@ namespace SolrNet.Mapping {
                 : property.DeclaringType ?? property.ReflectedType;
 
             if (!mappings.ContainsKey(declaringType))
-				throw new ArgumentException(string.Format("Property '{0}.{1}' not mapped. Please use Add() to map it first", declaringType, property.Name));
+                throw new ArgumentException(string.Format("Property '{0}.{1}' not mapped. Please use Add() to map it first", declaringType, property.Name));
 
-			var solrFieldDict = mappings[declaringType];
+            var solrFieldDict = mappings[declaringType];
 
-	        var theSolrFieldModel = solrFieldDict
-				.Where(kvp => kvp.Value.Property == property)
-				.Select(kvp => kvp.Value)
-				.FirstOrDefault();
+            var theSolrFieldModel = solrFieldDict
+                .Where(kvp => kvp.Value.Property == property)
+                .Select(kvp => kvp.Value)
+                .FirstOrDefault();
 
-			if (theSolrFieldModel == null)
-				throw new ArgumentException(string.Format("Property '{0}.{1}' not mapped. Please use Add() to map it first", declaringType, property.Name));
+            if (theSolrFieldModel == null)
+                throw new ArgumentException(string.Format("Property '{0}.{1}' not mapped. Please use Add() to map it first", declaringType, property.Name));
 
-			uniqueKeys[declaringType] = theSolrFieldModel;
+            uniqueKeys[declaringType] = theSolrFieldModel;
         }
 
-        public SolrFieldModel GetUniqueKey(Type type) {
+        public SolrFieldModel GetUniqueKey(Type type)
+        {
             if (type == null)
                 throw new ArgumentNullException("type");
 
-	        var prop = uniqueKeys
-		        .Where(k => k.Key.IsAssignableFrom(type))
-		        .Select(x => x.Value)
-		        .FirstOrDefault();
+            var prop = uniqueKeys
+                .Where(k => k.Key.IsAssignableFrom(type))
+                .Select(x => x.Value)
+                .FirstOrDefault();
 
-	        return prop;
+            return prop;
         }
 
-        public ICollection<Type> GetRegisteredTypes() {
+        public ICollection<Type> GetRegisteredTypes()
+        {
             return mappings.Select(k => k.Key).ToList();
         }
     }

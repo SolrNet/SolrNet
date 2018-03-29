@@ -1,8 +1,9 @@
 # Change Log
 
-##1.0.8
+## 1.0.8
 - Microsoft Dependency Injection update: use AutoSolrConnection, and allow tweaking HttpClient on service configuration. #409
 - Added ability to force the usage of the reflected type when adding a property mapping #407 (@davewut)
+
 ## 1.0.7
 - Fix: Parsing error when spellcheck.extendedResults=true #398 (@ariasjose)
 - Tweaked the AutoSolrConnection `MaxUriLength`.

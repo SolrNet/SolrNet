@@ -16,123 +16,145 @@
 
 using System;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 
-namespace SolrNet.Tests {
-    [TestFixture]
-    public class OperatorOverloadingTests {
-        public string Serialize(object q) {
+namespace SolrNet.Tests
+{
+
+    public class OperatorOverloadingTests
+    {
+        public string Serialize(object q)
+        {
             var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             return serializer.Serialize(q);
         }
 
-        [Test]
-        public void OneAnd() {
+        [Fact]
+        public void OneAnd()
+        {
             var q = new SolrQuery("solr") && new SolrQuery("name:desc");
-            Assert.AreEqual("(solr AND name:desc)", Serialize(q));
+            Assert.Equal("(solr AND name:desc)", Serialize(q));
         }
 
-        [Test]
-        public void OneOr() {
+        [Fact]
+        public void OneOr()
+        {
             var q = new SolrQuery("solr") || new SolrQuery("name:desc");
-            Assert.AreEqual("(solr OR name:desc)", Serialize(q));
+            Assert.Equal("(solr OR name:desc)", Serialize(q));
         }
 
-        [Test]
-        public void MultipleAnd() {
+        [Fact]
+        public void MultipleAnd()
+        {
             var q = new SolrQuery("solr") && new SolrQuery("name:desc") && new SolrQueryByField("id", "123456");
-            Assert.AreEqual("((solr AND name:desc) AND id:(123456))", Serialize(q));
+            Assert.Equal("((solr AND name:desc) AND id:(123456))", Serialize(q));
         }
 
-        [Test]
-        public void MultipleOr() {
+        [Fact]
+        public void MultipleOr()
+        {
             var q = new SolrQuery("solr") || new SolrQuery("name:desc") || new SolrQueryByField("id", "123456");
-            Assert.AreEqual("((solr OR name:desc) OR id:(123456))", Serialize(q));
+            Assert.Equal("((solr OR name:desc) OR id:(123456))", Serialize(q));
         }
 
-        [Test]
-        public void MixedAndOrs_obeys_operator_precedence() {
+        [Fact]
+        public void MixedAndOrs_obeys_operator_precedence()
+        {
             var q = new SolrQuery("solr") || new SolrQuery("name:desc") && new SolrQueryByField("id", "123456");
-            Assert.AreEqual("(solr OR (name:desc AND id:(123456)))", Serialize(q));
+            Assert.Equal("(solr OR (name:desc AND id:(123456)))", Serialize(q));
         }
 
-        [Test]
-        public void MixedAndOrs_with_parentheses_obeys_precedence() {
+        [Fact]
+        public void MixedAndOrs_with_parentheses_obeys_precedence()
+        {
             var q = (new SolrQuery("solr") || new SolrQuery("name:desc")) && new SolrQueryByField("id", "123456");
-            Assert.AreEqual("((solr OR name:desc) AND id:(123456))", Serialize(q));
+            Assert.Equal("((solr OR name:desc) AND id:(123456))", Serialize(q));
         }
 
-        [Test]
-        public void Add() {
+        [Fact]
+        public void Add()
+        {
             var q = new SolrQuery("solr") + new SolrQuery("name:desc");
-            Assert.AreEqual("(solr  name:desc)", Serialize(q));
+            Assert.Equal("(solr  name:desc)", Serialize(q));
         }
 
-        [Test]
-        public void PlusEqualMany() {
+        [Fact]
+        public void PlusEqualMany()
+        {
             AbstractSolrQuery q = new SolrQuery("first");
-            foreach (var _ in Enumerable.Range(0, 10)) {
+            foreach (var _ in Enumerable.Range(0, 10))
+            {
                 q += new SolrQuery("others");
             }
-            Assert.AreEqual("((((((((((first  others)  others)  others)  others)  others)  others)  others)  others)  others)  others)", Serialize(q));
+            Assert.Equal("((((((((((first  others)  others)  others)  others)  others)  others)  others)  others)  others)  others)", Serialize(q));
         }
 
-        [Test]
-        public void Not() {
+        [Fact]
+        public void Not()
+        {
             var q = !new SolrQuery("solr");
-            Assert.AreEqual("-solr", Serialize(q));
+            Assert.Equal("-solr", Serialize(q));
         }
 
-        [Test]
-        public void AndNot() {
+        [Fact]
+        public void AndNot()
+        {
             var q = new SolrQuery("a") && !new SolrQuery("b");
             Console.WriteLine(Serialize(q));
-            Assert.AreEqual("(a AND -b)", Serialize(q));
+            Assert.Equal("(a AND -b)", Serialize(q));
         }
 
-        [Test]
-        public void Minus() {
+        [Fact]
+        public void Minus()
+        {
             var q = new SolrQuery("solr") - new SolrQuery("name:desc");
-            Assert.AreEqual("(solr  -name:desc)", Serialize(q));
+            Assert.Equal("(solr  -name:desc)", Serialize(q));
         }
 
-        [Test]
-        public void AllMinus() {
+        [Fact]
+        public void AllMinus()
+        {
             var q = SolrQuery.All - new SolrQuery("product");
-            Assert.AreEqual("(*:*  -product)", Serialize(q));
+            Assert.Equal("(*:*  -product)", Serialize(q));
         }
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void NullAnd_Throws() {
-            var a = SolrQuery.All && null;
+        [Fact]
+
+        public void NullAnd_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => SolrQuery.All && null);
         }
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void NullOr_Throws() {
-            var a = SolrQuery.All || null;
+        [Fact]
+
+        public void NullOr_Throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => SolrQuery.All || null);
         }
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void NullPlus_throws() {
-            var a = SolrQuery.All + null;
+        [Fact]
+
+        public void NullPlus_throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => SolrQuery.All + null);
         }
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void NullMinus_throws() {
-            var a = SolrQuery.All - null;
+        [Fact]
+        public void NullMinus_throws()
+        {
+            Assert.Throws<ArgumentNullException>(() => SolrQuery.All - null);
         }
 
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void NullNot_argumentnull() {
-            AbstractSolrQuery a = null;
-            var b = !a;
+        [Fact]
+        public void NullNot_argumentnull()
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                AbstractSolrQuery a = null;
+                var b = !a;
+            });
         }
     }
 }

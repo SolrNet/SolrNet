@@ -3,7 +3,7 @@
 using System.Configuration;
 
 namespace Ninject.Integration.SolrNet.Config {
-    public class SolrServerElement : ConfigurationElement
+    public class SolrServerElement : ConfigurationElement, ISolrServer
     {
         private const string ID = "id";
         private const string URL = "url";

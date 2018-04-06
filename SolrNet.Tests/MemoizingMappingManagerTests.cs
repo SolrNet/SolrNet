@@ -18,18 +18,18 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Mapping;
 using SolrNet.Tests.Mocks;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class MemoizingMappingManagerTests {
-        [Test]
+        [Fact]
         public void CallsInnerJustOnce() {
             var innerMapper = new MReadOnlyMappingManager();
             innerMapper.getFields += t => {
-                Assert.AreEqual(typeof (TestDocument), t);
+                Assert.Equal(typeof (TestDocument), t);
                 return new Dictionary<string, SolrFieldModel> {
                     {"id", new SolrFieldModel (property : typeof (TestDocument).GetProperty("Id"), fieldName : "id")},
                 };
@@ -37,31 +37,31 @@ namespace SolrNet.Tests {
             var mapper = new MemoizingMappingManager(innerMapper);
             mapper.GetFields(typeof (TestDocument));
             mapper.GetFields(typeof (TestDocument));
-            Assert.AreEqual(1, innerMapper.getFields.Calls);
+            Assert.Equal(1, innerMapper.getFields.Calls);
         }
 
-        [Test]
+        [Fact]
         public void GetUniqueKeyIsMemoized() {
             var innerMapper = new MReadOnlyMappingManager();
             innerMapper.getUniqueKey += t => {
-	            Assert.AreEqual(typeof (TestDocument), t);
+	            Assert.Equal(typeof (TestDocument), t);
 	            return new SolrFieldModel(property : typeof (TestDocument).GetProperty("Id"),
 	                                      fieldName : "id");
             };
             var mapper = new MemoizingMappingManager(innerMapper);
             mapper.GetUniqueKey(typeof(TestDocument));
             mapper.GetUniqueKey(typeof(TestDocument));
-            Assert.AreEqual(1, innerMapper.getUniqueKey.Calls);
+            Assert.Equal(1, innerMapper.getUniqueKey.Calls);
         }
 
-        [Test]
+        [Fact]
         public void GetRegistered() {
             var innerMapper = new MReadOnlyMappingManager();
             innerMapper.getRegisteredTypes += () => new[] {typeof (TestDocument)};
             var mapper = new MemoizingMappingManager(innerMapper);
             var types = mapper.GetRegisteredTypes();
-            Assert.AreEqual(1, types.Count);
-            Assert.AreEqual(typeof (TestDocument), types.First());
+            Assert.Equal(1, types.Count);
+            Assert.Equal(typeof (TestDocument), types.First());
             mapper.GetRegisteredTypes();
         }
 

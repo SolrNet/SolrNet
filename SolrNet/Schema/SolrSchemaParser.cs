@@ -37,12 +37,16 @@ namespace SolrNet.Schema {
 
             var schemaElem = solrSchemaXml.Element("schema");
 
-            foreach (var fieldNode in schemaElem.XPathSelectElements("types/fieldType|types/fieldtype")) {
+            foreach (var fieldNode in schemaElem.XPathSelectElements("types/fieldType|types/fieldtype|fieldtype|fieldType")) {
                 var field = new SolrFieldType(fieldNode.Attribute("name").Value, fieldNode.Attribute("class").Value);
                 result.SolrFieldTypes.Add(field);
             }
 
             var fieldsElem = schemaElem.Element("fields");
+			if (fieldsElem is null)
+ 			{
+ 				fieldsElem = schemaElem;
+ 			}
 
             foreach (var fieldNode in fieldsElem.Elements("field")) {
                 var fieldTypeName = fieldNode.Attribute("type").Value;

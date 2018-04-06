@@ -14,26 +14,25 @@
 // limitations under the License.
 #endregion
 
-using System;
-using MbUnit.Framework;
 using Moroco;
+using Xunit;
 using Ninject.Integration.SolrNet.Config;
 using SolrNet;
 using System.Configuration;
 using SolrNet.Exceptions;
 using SolrNet.Tests.Mocks;
 
-namespace Ninject.Integration.SolrNet.Tests {
-    [TestFixture]
+namespace Ninject.Integration.SolrNet.Tests
+{
+
     public class NinjectMultiCoreFixture {
         private StandardKernel kernel;
-        [SetUp]
-        public void SetUp()
+        public NinjectMultiCoreFixture()
         {
             kernel = new StandardKernel();
         }
 
-        [Test]
+        [Fact]
         public void ResolveSolrOperations() {
             //var kernel = new StandardKernel();
 
@@ -46,23 +45,23 @@ namespace Ninject.Integration.SolrNet.Tests {
             };
             kernel.Load(new SolrNetModule(solrServers));
             var solr = kernel.Get<ISolrOperations<Entity>>();
-            Assert.IsNotNull(solr);
+            Assert.NotNull(solr);
         }
 
-        [Test]
+        [Fact]
         public void Resolve_MultiCore_FromConfig()
         {
             var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
             kernel.Load(new SolrNetModule(solrConfig.SolrServers));
 
             var solrOperations = kernel.Get<ISolrOperations<Entity>>();
-            Assert.IsNotNull(solrOperations);
+            Assert.NotNull(solrOperations);
 
             var solrOperations2 = kernel.Get<ISolrOperations<Entity2>>();
-            Assert.IsNotNull(solrOperations2);
+            Assert.NotNull(solrOperations2);
         }
 
-        [Test]
+        [Fact]
         public void MultiCore_SameClassBinding()
         {
             var solrServers = new SolrServers {
@@ -79,12 +78,12 @@ namespace Ninject.Integration.SolrNet.Tests {
             };
             kernel.Load(new SolrNetModule(solrServers));
             var solr1 = kernel.Get<ISolrOperations<Entity>>("core-0");
-            Assert.IsNotNull(solr1);
+            Assert.NotNull(solr1);
             var solr2 = kernel.Get<ISolrOperations<Entity>>("core-1");
-            Assert.IsNotNull(solr2);
+            Assert.NotNull(solr2);
         }
 
-        [Test]
+        [Fact]
         public void MultiCore_Rebind_IConnection()
         {
             var solrServers = new SolrServers {
@@ -108,7 +107,7 @@ namespace Ninject.Integration.SolrNet.Tests {
 ";
 
             var solr1 = kernel.Get<ISolrOperations<Entity>>("core-0");
-            Assert.IsNotNull(solr1);
+            Assert.NotNull(solr1);
 
             Assert.Throws<SolrConnectionException>(() => solr1.Query("SomeField:Value"));
 
@@ -118,10 +117,10 @@ namespace Ninject.Integration.SolrNet.Tests {
             kernel.Rebind<ISolrConnection>().ToConstant(conn).WithMetadata("CoreId", "core-1");
 
             var solr2 = kernel.Get<ISolrOperations<Entity>>("core-1");
-            Assert.IsNotNull(solr2);
+            Assert.NotNull(solr2);
 
             var r = solr2.Query("SomeField:Value");
-            Assert.AreEqual(1, r.NumFound);
+            Assert.Equal(1, r.NumFound);
         }
     }
 }

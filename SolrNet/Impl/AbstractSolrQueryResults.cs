@@ -43,7 +43,18 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Facet date results
         /// </summary>
+        [Obsolete("As of Solr 3.1 has been deprecated, as of Solr 6.6 unsupported.")]
         public IDictionary<string, DateFacetingResult> FacetDates { get; set; }
+
+        /// <summary>
+        /// Facet ranges results
+        /// </summary>
+        public IDictionary<string, RangeFacetingResult> FacetRanges { get; set; }
+
+        /// <summary>
+        /// Facet ranges results
+        /// </summary>
+        public IDictionary<string, ICollection<KeyValuePair<string, int>>> FacetIntervals { get; set; }
 
         /// <summary>
         /// Facet pivot results
@@ -54,6 +65,8 @@ namespace SolrNet.Impl {
             FacetQueries = new Dictionary<string, int>();
             FacetFields = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
             FacetDates = new Dictionary<string, DateFacetingResult>();
+            FacetRanges = new Dictionary<string, RangeFacetingResult>();
+            FacetIntervals = new Dictionary<string, ICollection<KeyValuePair<string, int>>>();
             FacetPivots = new Dictionary<string, IList<Pivot>>();
         }
 

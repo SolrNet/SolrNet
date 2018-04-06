@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\xunit.core.2.3.1\build\xunit.core.props" Condition="Exists('..\packages\xunit.core.2.3.1\build\xunit.core.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C4FF031C-FB88-4186-9305-B180A07EC7DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SolrNet.Cloud.Tests</RootNamespace>
+    <AssemblyName>SolrNet.Cloud.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.0.0\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.0.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.0.0\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.abstractions.2.0.1\lib\net35\xunit.abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.assert.2.3.1\lib\netstandard1.1\xunit.assert.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.core.2.3.1\lib\netstandard1.1\xunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.execution.2.3.1\lib\net452\xunit.execution.desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="ZooKeeperNetEx, Version=3.4.10.1, Culture=neutral, PublicKeyToken=42cd15de36f9b993, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZooKeeperNetEx.3.4.10.1\lib\net45\ZooKeeperNetEx.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CollectionsAdminTests.cs" />
+    <Compile Include="FakeOperations.cs" />
+    <Compile Include="FakeProvider.cs" />
+    <Compile Include="SolrCloudStateProviderTests.cs" />
+    <Compile Include="UnityTests.cs" />
+    <Compile Include="StartupTests.cs" />
+    <Compile Include="SolrCloudOperationsTests.cs" />
+    <Compile Include="SolrClusterStateParserTests.cs" />
+    <Compile Include="FakeEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <Content Include="resources\clusterstate1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\clusterstate2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\empty.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\not-empty.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\externalstate1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\externalstate2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj">
+      <Project>{17b34150-5102-435b-a487-84dd5803a228}</Project>
+      <Name>CommonServiceLocator.SolrNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj">
+      <Project>{63538cf2-62c5-4f5a-99b2-9f14896afb98}</Project>
+      <Name>CommonServiceLocator.SolrNet.Cloud</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj">
+      <Project>{bda98c34-3b00-4b1f-b850-9c776fede8e3}</Project>
+      <Name>SolrNet.Cloud</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj">
+      <Project>{ceeb8690-3e08-4440-b647-787a58e71cfa}</Project>
+      <Name>SolrNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj">
+      <Project>{7b507754-c877-4de7-ae2a-19cf5191c95e}</Project>
+      <Name>Unity.SolrNetCloudIntegration</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\xunit.core.2.3.1\build\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.3.1\build\xunit.core.props'))" />
+    <Error Condition="!Exists('..\packages\xunit.core.2.3.1\build\xunit.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.3.1\build\xunit.core.targets'))" />
+  </Target>
+  <Import Project="..\packages\xunit.core.2.3.1\build\xunit.core.targets" Condition="Exists('..\packages\xunit.core.2.3.1\build\xunit.core.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

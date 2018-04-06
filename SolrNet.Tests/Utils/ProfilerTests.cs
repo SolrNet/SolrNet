@@ -20,10 +20,10 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Castle.MicroKernel.Registration;
-using MbUnit.Framework;
+using Xunit;
 
 namespace SolrNet.Tests.Utils {
-    [TestFixture]
+    
     public class ProfilerTests {
         public class NonProxyable {
             public void LongOperation() {
@@ -37,13 +37,13 @@ namespace SolrNet.Tests.Utils {
             }
         }
 
-        [Test]
+        [Fact]
         public void NonProxyableComponent() {
             var container = new ProfilingContainer();
             container.Register(Component.For<NonProxyable>());
             container.Resolve<NonProxyable>().LongOperation();
             var profile = container.GetProfile();
-            Assert.AreEqual(0, profile.Children.Count);
+            Assert.Empty(profile.Children);
         }
 
         // Y-combinator
@@ -60,13 +60,13 @@ namespace SolrNet.Tests.Utils {
                 yield return i;
         }
 
-        [Test]
+        [Fact]
         public void ProxyableComponent() {
             var container = new ProfilingContainer();
             container.Register(Component.For<Proxyable>());
             container.Resolve<Proxyable>().LongOperation();
             var profile = container.GetProfile();
-            Assert.AreEqual(1, profile.Children.Count);
+            Assert.Single(profile.Children);
             Console.WriteLine("{0}: {1}", profile.Children[0].Value.Key, profile.Children[0].Value.Value);
             var fProfile = Flatten(profile);
             var q = from n in fProfile

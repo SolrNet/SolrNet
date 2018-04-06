@@ -16,25 +16,25 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldSerializers;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class CollectionFieldSerializerTests {
-        [Test]
+        [Fact]
         public void Serialize_null_returns_empty() {
             var s = new CollectionFieldSerializer(new DefaultFieldSerializer());
             var p = s.Serialize(null).ToList();
-            Assert.AreEqual(0, p.Count);
+            Assert.Empty(p);
         }
 
-        [Test]
+        [Fact]
         public void Serialize_collection_with_null_element() {
             var s = new CollectionFieldSerializer(new DefaultFieldSerializer());
             var c = new List<string> {"a", null };
             var p = s.Serialize(c).ToList();
-            Assert.AreEqual(2, p.Count);
+            Assert.Equal(2, p.Count);
         }
     }
 }

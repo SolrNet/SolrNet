@@ -16,39 +16,39 @@
 
 using System;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Exceptions;
 using SolrNet.Mapping;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class MappingManagerTests {
-        [Test]
+        [Fact]
         public void AddAndGet() {
             var mgr = new MappingManager();
             mgr.Add(typeof (Entity).GetProperty("Id"), "id");
             var fields = mgr.GetFields(typeof (Entity));
-            Assert.AreEqual(1, fields.Count);
+            Assert.Equal(1, fields.Count);
         }
 
-        [Test]
+        [Fact]
         public void No_Mapped_type_returns_empty() {
             var mgr = new MappingManager();
             var fields = mgr.GetFields(typeof (Entity));
-            Assert.AreEqual(0, fields.Count);
+            Assert.Equal(0, fields.Count);
         }
 
-        [Test]
+        [Fact]
         public void Add_duplicate_property_overwrites() {
             var mgr = new MappingManager();
             mgr.Add(typeof (Entity).GetProperty("Id"), "id");
             mgr.Add(typeof (Entity).GetProperty("Id"), "id2");
             var fields = mgr.GetFields(typeof (Entity));
-            Assert.AreEqual(1, fields.Count);
-            Assert.AreEqual("id2", fields.First().Value.FieldName);
+            Assert.Equal(1, fields.Count);
+            Assert.Equal("id2", fields.First().Value.FieldName);
         }
 
-        [Test]
+        [Fact]
         public void UniqueKey_Set_and_get() {
             var mgr = new MappingManager();
             var property = typeof (Entity).GetProperty("Id");
@@ -56,11 +56,11 @@ namespace SolrNet.Tests {
             mgr.SetUniqueKey(property);
             var key = mgr.GetUniqueKey(typeof (Entity));
 
-            Assert.AreEqual(property, key.Property);
-            Assert.AreEqual("id", key.FieldName);
+            Assert.Equal(property, key.Property);
+            Assert.Equal("id", key.FieldName);
         }
 
-        [Test]
+        [Fact]
         public void UniqueKey_Set_and_get_for_inherited_classes()
         {
             var mgr = new MappingManager();
@@ -69,108 +69,131 @@ namespace SolrNet.Tests {
             mgr.SetUniqueKey(property);
             var key = mgr.GetUniqueKey(typeof(InheritedEntity));
 
-            Assert.AreEqual(property, key.Property);
-            Assert.AreEqual("id", key.FieldName);
+            Assert.Equal(property, key.Property);
+            Assert.Equal("id", key.FieldName);
         }
 
-        [Test]
-        [ExpectedException(typeof (ArgumentException))]
+        [Fact]
+        public void InheritedEntityMappedUsingReflectedTypeOnly()
+        {
+            var mappingManager = new MappingManager(true);
+            var idProperty = typeof(ComplexEntity<FrenchSchemaLanguage>).GetProperty("Id");
+            mappingManager.Add(idProperty, "id");
+            mappingManager.SetUniqueKey(idProperty);
+            mappingManager.Add(typeof(ComplexEntity<FrenchSchemaLanguage>).GetProperty("Description"), "description");
+
+            var registeredType = mappingManager.GetRegisteredTypes();
+            Assert.Equal(1, registeredType.Count);
+            Assert.Single(registeredType, typeof(ComplexEntity<FrenchSchemaLanguage>));
+        }
+
+        [Fact]
+        public void InheritedEntityMappedNotUsingReflectedTypeOnly()
+        {
+            var mappingManager = new MappingManager(false); // Same as "new MappingManager();"
+            var idProperty = typeof(ComplexEntity<FrenchSchemaLanguage>).GetProperty("Id");
+            mappingManager.Add(idProperty, "id");
+            mappingManager.SetUniqueKey(idProperty);
+            mappingManager.Add(typeof(ComplexEntity<FrenchSchemaLanguage>).GetProperty("Description"), "description");
+
+            var registeredType = mappingManager.GetRegisteredTypes();
+            Assert.Equal(2, registeredType.Count);
+            Assert.Collection(registeredType, type => Assert.Equal(typeof(BaseComplexEntity<FrenchSchemaLanguage>), type),
+                type => Assert.Equal(typeof(ComplexEntity<FrenchSchemaLanguage>), type));
+        }
+
+        [Fact]
         public void SetUniqueKey_without_mapping_throws() {
             var mgr = new MappingManager();
             var property = typeof (Entity).GetProperty("Id");
-            mgr.SetUniqueKey(property);
+            Assert.Throws<ArgumentException>(() => mgr.SetUniqueKey(property));
         }
 
-        [Test]
+        [Fact]
         public void Add_property_only() {
             var mgr = new MappingManager();
             var property = typeof (Entity).GetProperty("Id");
             mgr.Add(property);
             var fields = mgr.GetFields(typeof (Entity));
-            Assert.AreEqual(1, fields.Count);
-            Assert.AreEqual("Id", fields.First().Value.FieldName);
+            Assert.Equal(1, fields.Count);
+            Assert.Equal("Id", fields.First().Value.FieldName);
         }
 
-        [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [Fact]
         public void SetUniqueKey_doesnt_admit_null() {
             var mgr = new MappingManager();
-            mgr.SetUniqueKey(null);
+            Assert.Throws<ArgumentNullException>(() => mgr.SetUniqueKey(null));
         }
 
-        [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [Fact]
         public void GetUniqueKey_doesnt_admit_null() {
             var mgr = new MappingManager();
-            mgr.GetUniqueKey(null);
+            Assert.Throws<ArgumentNullException>(() => mgr.GetUniqueKey(null));
         }
 
-        [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [Fact]
+        
         public void GetFields_doesnt_admit_null() {
             var mgr = new MappingManager();
-            mgr.GetFields(null);
+            Assert.Throws<ArgumentNullException>(() => mgr.GetFields(null));
         }
 
-        [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [Fact]
         public void AddProperty_doesnt_admit_null() {
             var mgr = new MappingManager();
-            mgr.Add(null);
+            Assert.Throws<ArgumentNullException>(() => mgr.Add(null));
         }
 
-        [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [Fact]
         public void AddProperty2_doesnt_admit_null() {
             var mgr = new MappingManager();
-            mgr.Add(null, "");
+            Assert.Throws<ArgumentNullException>(() => mgr.Add(null, ""));
         }
 
-        [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [Fact]
         public void AddProperty3_doesnt_admit_null() {
             var mgr = new MappingManager();
-            mgr.Add(typeof (Entity).GetProperties()[0], null);
+            Assert.Throws<ArgumentNullException>(() => mgr.Add(typeof (Entity).GetProperties()[0], null));
         }
 
-        [Test]
+        [Fact]
         public void Inherited() {
             var mgr = new MappingManager();
             mgr.Add(typeof(Entity).GetProperty("Id"), "id");
             mgr.Add(typeof(InheritedEntity).GetProperty("Description"), "desc");
             var entityFields = mgr.GetFields(typeof(Entity));
-            Assert.AreEqual(1, entityFields.Count);
+            Assert.Equal(1, entityFields.Count);
             var inheritedEntityFields = mgr.GetFields(typeof(InheritedEntity));
-            Assert.AreEqual(2, inheritedEntityFields.Count);
+            Assert.Equal(2, inheritedEntityFields.Count);
         }
 
-		[Test]
+		[Fact]
 		public void Inherited_gets_id_property_correctly()
 		{
 			var mgr = new MappingManager();
 			mgr.Add(typeof(Entity).GetProperty("Id"), "id");
 
-			Assert.IsTrue(mgr.GetFields(typeof(Entity)).ContainsKey("id"), "Entity contains id field");
-			Assert.IsTrue(mgr.GetFields(typeof(InheritedEntity)).ContainsKey("id"), "InheritedEntity contains id field");
+			Assert.True(mgr.GetFields(typeof(Entity)).ContainsKey("id"), "Entity contains id field");
+			Assert.True(mgr.GetFields(typeof(InheritedEntity)).ContainsKey("id"), "InheritedEntity contains id field");
 		}
 
-		[Test]
+		[Fact]
 		public void Inherited_gets_id_property_correctly2()
 		{
 			var mgr = new MappingManager();
 			mgr.Add(typeof(InheritedEntity).GetProperty("Id"), "id");
 
-			Assert.IsTrue(mgr.GetFields(typeof(InheritedEntity)).ContainsKey("id"), "InheritedEntity contains id field");
-			Assert.IsTrue(mgr.GetFields(typeof(Entity)).ContainsKey("id"), "Entity contains id field");
+			Assert.True(mgr.GetFields(typeof(InheritedEntity)).ContainsKey("id"), "InheritedEntity contains id field");
+			Assert.True(mgr.GetFields(typeof(Entity)).ContainsKey("id"), "Entity contains id field");
 		}
 
-        [Test]
+        [Fact]
         public void GetRegistered() {
             var mgr = new MappingManager();
             mgr.Add(typeof(Entity).GetProperty("Id"), "id");
             var types = mgr.GetRegisteredTypes();
-            Assert.AreEqual(1, types.Count);
-            Assert.Contains(types, typeof(Entity));
+            Assert.Equal(1, types.Count);
+            Assert.Contains( typeof(Entity),types);
         }
 
     }
@@ -181,5 +204,38 @@ namespace SolrNet.Tests {
 
     public class InheritedEntity: Entity {
         public string Description { get; set; }
+    }
+
+    public class ComplexEntity<T> : BaseComplexEntity<T>
+        where T : SchemaLanguage, new()
+    {
+        public string Description { get; set; }
+    }
+
+    public class BaseComplexEntity<T> where T : SchemaLanguage, new()
+    {
+        public int Id { get; set; }
+        public T Language => new T();
+    }
+
+    public abstract class SchemaLanguage
+    {
+        public string LanguageCode { get; set; }
+    }
+
+    public class FrenchSchemaLanguage : SchemaLanguage
+    {
+        public FrenchSchemaLanguage()
+        {
+            LanguageCode = "fr";
+        }
+    }
+
+    public class EnglishSchemaLanguage : SchemaLanguage
+    {
+        public EnglishSchemaLanguage()
+        {
+            LanguageCode = "en";
+        }
     }
 }

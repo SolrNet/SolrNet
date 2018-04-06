@@ -19,6 +19,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using SolrNet.Utils;
+using System.Threading.Tasks;
 
 namespace SolrNet.Commands {
 	/// <summary>
@@ -75,5 +76,11 @@ namespace SolrNet.Commands {
 	        var xml = ConvertToXml();
 			return connection.Post("/update", xml);
 		}
-	}
+
+        public Task<string> ExecuteAsync(ISolrConnection connection)
+        {
+            var xml = ConvertToXml();
+            return connection.PostAsync("/update", xml);
+        }
+    }
 }

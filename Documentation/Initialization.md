@@ -10,13 +10,34 @@ Then you ask the service locator for the SolrNet service instance which allows y
 
 ```C#
 var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-solr.Delete(SolrQuery.All);
-solr.Add(p);
-solr.Commit();
-var products = solr.Query(new SolrQueryByRange<decimal>("price", 10m, 100m));
+await solr.DeleteAsync(SolrQuery.All);
+await solr.AddAsync(p);
+await solr.CommitAsync();
+var products = await solr.QueryAsync(new SolrQueryByRange<decimal>("price", 10m, 100m));
 ```
 
+### Microsoft.Extensions.DependencyInjection (ASP.NET core)
+
+``` PowerShell
+Install-Package SolrNet.Microsoft.DependencyInjection
+```
+![https://www.nuget.org/packages/SolrNet.Microsoft.DependencyInjection/](https://img.shields.io/nuget/v/SolrNet.Microsoft.DependencyInjection.svg)
+
+To use, with an `IServiceCollection` instance and one or more assemblies:
+
+``` C#
+services.AddSolrNet("http://localhost:8983/solr");
+```
+
+
 ### Castle Windsor
+
+``` PowerShell
+Install-Package SolrNet.Windsor
+```
+![https://www.nuget.org/packages/SolrNet.Windsor/](https://img.shields.io/nuget/v/SolrNet.Windsor.svg)
+
+
 Alternatively, if your app uses Castle Windsor you can set up SolrNet using the included facility:
 
 ```C#
@@ -38,23 +59,39 @@ Or using Windsor's xml config:
 ### Ninject
 If you're using Ninject, you can use the Ninject module:
 
+``` PowerShell
+Install-Package SolrNet.Ninject
+```
+![https://www.nuget.org/packages/SolrNet.Ninject/](https://img.shields.io/nuget/v/SolrNet.Ninject.svg)
+
 ```C#
 kernel.Load(new SolrNetModule("http://localhost:8983/solr"));
 ```
 
 ### StructureMap
+``` PowerShell
+Install-Package SolrNet.StructureMap
+```
+![https://www.nuget.org/packages/SolrNet.StructureMap/](https://img.shields.io/nuget/v/SolrNet.StructureMap.svg)
+
+
 If you are using StructureMap, you can use the StructureMap module (`StructureMap.SolrNetIntegration`):
 
 ```C#
-ObjectFactory.Initialize(
-    x => x.AddRegistry(
-        new SolrNetRegistry("http://localhost:8893/solr")
-    )
-);
+IEnumerable<SolrServer> solrServers = new[]
+{
+	new SolrServer(id: "test", url: "http://localhost:8893", documentType: "testDocumentType")
+};
+
+var container = new StructureMap.Container(SolrNetRegistry.Create(solrServers));
 ```
 
 ### Autofac
-(SolrNet 0.4.0)
+``` PowerShell
+Install-Package SolrNet.Autofac
+```
+![https://www.nuget.org/packages/SolrNet.Autofac/](https://img.shields.io/nuget/v/SolrNet.Autofac.svg)
+
 
 ```C#
 var builder = new ContainerBuilder();
@@ -63,13 +100,17 @@ var container = builder.Build();
 ```
 
 ### Unity
-(SolrNet 0.4.0)
+``` PowerShell
+Install-Package SolrNet.Autofac
+```
+![https://www.nuget.org/packages/SolrNet.Autofac/](https://img.shields.io/nuget/v/SolrNet.Autofac.svg)
+
 
 ```C#
 var solrServers = new SolrServers {
         new SolrServerElement {
           Id = "test",
-          Url = "htp://localhost:8893",
+          Url = "http://localhost:8893",
           DocumentType = typeof (Entity).AssemblyQualifiedName,
         }
 };

@@ -1,74 +1,60 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4BC966D4-2EC0-47FF-B784-B649BFAABD81}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SolrNet.Tests.Integration</RootNamespace>
-    <AssemblyName>SolrNet.Tests.Integration</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gallio">
-      <HintPath>..\lib\Gallio.dll</HintPath>
-    </Reference>
-    <Reference Include="MbUnit">
-      <HintPath>..\lib\MbUnit.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IntegrationFixture.cs" />
-    <Compile Include="SolrCoreAdminFixture.cs" />
+    <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
+    <PackageReference Include="Castle.Core" Version="4.2.1" />
+    <PackageReference Include="Castle.Windsor" Version="4.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
+ 
   <ItemGroup>
-    <ProjectReference Include="..\SolrNet.Tests\SolrNet.Tests.csproj">
-      <Project>{f3fe6ef5-cf5c-4461-8691-4a498a463fd5}</Project>
-      <Name>SolrNet.Tests</Name>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj">
+      <Name>CommonServiceLocator.SolrNet.Cloud</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj">
+      <Project>{bda98c34-3b00-4b1f-b850-9c776fede8e3}</Project>
+      <Name>SolrNet.Cloud</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj">
+      <Name>CommonServiceLocator.SolrNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
+      <Name>SolrNet.Tests.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj">
-      <Project>{ceeb8690-3e08-4440-b647-787a58e71cfa}</Project>
       <Name>SolrNet</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj">
+      <Name>Unity.SolrNetCloudIntegration</Name>
+    </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <ItemGroup>
+    <Content Include="exampledocs\hd.xml" />
+    <Content Include="exampledocs\ipod_other.xml" />
+    <Content Include="exampledocs\ipod_video.xml" />
+    <Content Include="exampledocs\mem.xml" />
+    <Content Include="exampledocs\monitor.xml" />
+    <Content Include="exampledocs\monitor2.xml" />
+    <Content Include="exampledocs\mp500.xml" />
+    <Content Include="exampledocs\sd500.xml" />
+    <Content Include="exampledocs\solr.xml" />
+    <Content Include="exampledocs\utf8-example.xml" />
+    <Content Include="exampledocs\vidcard.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="app.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+ 
 </Project>

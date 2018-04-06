@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <result numFound="1" start="0">
+    <doc>
+      <str name="Key">224fbdc1-12df-4520-9fbe-dd91f916eba1</str>
+    </doc>
+  </result>
+  <lst name="spellcheck">
+    <lst name="suggestions">
+      <lst name="delll">
+        <int name="numFound">1</int>
+        <int name="startOffset">0</int>
+        <int name="endOffset">5</int>
+        <int name="origFreq">0</int>
+        <arr name="suggestion">
+          <lst>
+            <str name="word">dell</str>
+            <int name="freq">1</int>
+          </lst>
+        </arr>
+      </lst>
+      <lst name="ultra sharp">
+        <int name="numFound">1</int>
+        <int name="startOffset">6</int>
+        <int name="endOffset">17</int>
+        <int name="origFreq">0</int>
+        <arr name="suggestion">
+          <lst>
+            <str name="word">ultrasharp</str>
+            <int name="freq">1</int>
+          </lst>
+        </arr>
+      </lst>
+    </lst>
+    <bool name="correctlySpelled">false</bool>
+    <lst name="collations">
+      <lst name="collation">
+        <str name="collationQuery">dell ultrasharp</str>
+        <int name="hits">1</int>
+        <lst name="misspellingsAndCorrections">
+          <str name="delll">dell</str>
+          <str name="ultra sharp">ultrasharp</str>
+        </lst>
+      </lst>
+    </lst>
+  </lst>
+</response>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="default-config" version="1.6">
+
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"  />
+    
+    <field name="id" type="string" indexed="true" stored="true" required="true" />
+  
+</schema>

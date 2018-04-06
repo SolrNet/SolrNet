@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net471</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.DependencyInjection.SolrNet\Microsoft.DependencyInjection.SolrNet.csproj">
+      <Name>Microsoft.DependencyInjection.SolrNet</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

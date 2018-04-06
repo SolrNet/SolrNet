@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net46</TargetFrameworks>
+    <Version>1.0.8</Version>
+    <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/solrnet/solrnet</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</PackageIconUrl>
+    <Authors>Mauricio Scheffer and contributors</Authors>
+    <PackageId>SolrNet.Cloud.Unity</PackageId>
+    <Company />
+    <Product>SolrNet.Cloud.Unity</Product>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Unity integration for SolrNet.Cloud. This version of SolrNet.Cloud is compatible with Solr 1.x to Solr 7.x.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
+    <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EnterpriseLibrary.Common" Version="6.0.1304.0" />
+    <PackageReference Include="Microsoft.Bcl" Version="1.1.10" />
+    <PackageReference Include="Microsoft.Bcl.Async" Version="1.0.168" />
+    <PackageReference Include="Microsoft.Bcl.Build" Version="1.0.21" />
+    <PackageReference Include="Nito.AsyncEx" Version="4.0.1" />
+    <PackageReference Include="Unity" Version="5.0.0" />
+    <PackageReference Include="ZooKeeperNetEx" Version="3.4.10.1" />
+  </ItemGroup>
+</Project>

@@ -1,31 +1,31 @@
 using System;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Commands;
 using SolrNet.Tests.Mocks;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class OptimizeCommandTests {
-        [Test]
+        [Fact]
         public void ExecuteBasic() {
             var conn = new MSolrConnection();
             conn.post += (url, content) => {
-                Assert.AreEqual("/update", url);
-                Assert.AreEqual("<optimize />", content);
+                Assert.Equal("/update", url);
+                Assert.Equal("<optimize />", content);
                 Console.WriteLine(content);
                 return null;
             };
             var cmd = new OptimizeCommand();
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
-        [Test]
+        [Fact]
         public void ExecuteWithBasicOptions() {
             var conn = new MSolrConnection();
             conn.post += (url, content) => {
-                Assert.AreEqual("/update", url);
-                Assert.AreEqual("<optimize waitSearcher=\"true\" waitFlush=\"true\" />", content);
+                Assert.Equal("/update", url);
+                Assert.Equal("<optimize waitSearcher=\"true\" waitFlush=\"true\" />", content);
                 Console.WriteLine(content);
                 return null;
             };
@@ -34,15 +34,15 @@ namespace SolrNet.Tests {
                 WaitSearcher = true
             };
             cmd.Execute(conn);
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
 
-        [Test]
+        [Fact]
         public void ExecuteWithAllOptions() {
             var conn = new MSolrConnection();
             conn.post += (url, content) => {
-                Assert.AreEqual("/update", url);
-                Assert.AreEqual("<optimize waitSearcher=\"true\" waitFlush=\"true\" expungeDeletes=\"true\" maxSegments=\"2\" />", content);
+                Assert.Equal("/update", url);
+                Assert.Equal("<optimize waitSearcher=\"true\" waitFlush=\"true\" expungeDeletes=\"true\" maxSegments=\"2\" />", content);
                 Console.WriteLine(content);
                 return null;
             };
@@ -54,7 +54,7 @@ namespace SolrNet.Tests {
             };
             cmd.Execute(conn);
 
-            Assert.AreEqual(1, conn.post.Calls);
+            Assert.Equal(1, conn.post.Calls);
         }
     }
 }

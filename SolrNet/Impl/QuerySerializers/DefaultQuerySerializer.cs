@@ -26,6 +26,7 @@ namespace SolrNet.Impl.QuerySerializers {
                 new QueryByFieldRegexSerializer(),
                 new LocalParamsSerializer(this),
                 new BoostQuerySerializer(this),
+                new ConstantScoreQuerySerializer(this),
                 new HasValueQuerySerializer(this),
                 new NotQuerySerializer(this),
                 new RequiredQuerySerializer(this),

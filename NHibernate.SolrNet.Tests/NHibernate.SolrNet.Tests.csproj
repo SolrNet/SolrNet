@@ -1,145 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{10FEA661-BAD8-44F6-98CF-4D06516448D6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NHibernate.SolrNet.Tests</RootNamespace>
-    <AssemblyName>NHibernate.SolrNet.Tests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <PlatformTarget>x86</PlatformTarget>
+    <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gallio, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Gallio.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="MbUnit, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\MbUnit.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate">
-      <HintPath>..\lib\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite">
-      <HintPath>..\lib\System.Data.SQLite.DLL</HintPath>
-    </Reference>
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseNHTests.cs" />
-    <Compile Include="CfgHelperTests.cs" />
-    <Compile Include="ConfigurationExtensions.cs" />
-    <Compile Include="Entity.cs" />
-    <Compile Include="IntegrationTests.cs" />
-    <Compile Include="ListenersTests.cs" />
-    <Compile Include="ListenersWithAddParametersTests.cs" />
-    <Compile Include="IntegrationTests2.cs" />
-    <Compile Include="MPostInsertEventListener.cs" />
-    <Compile Include="NHibernateMapper.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SolrSessionTests.cs" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj">
+      <Name>CommonServiceLocator.SolrNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NHibernate.SolrNet\NHibernate.SolrNet.csproj">
-      <Project>{D3312CD6-C4E8-4903-9B9D-95175B85EEE8}</Project>
       <Name>NHibernate.SolrNet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SolrNet.Tests\SolrNet.Tests.csproj">
-      <Project>{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}</Project>
-      <Name>SolrNet.Tests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SolrNet\SolrNet.csproj">
-      <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>
-      <Name>SolrNet</Name>
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
+      <Name>SolrNet.Tests.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

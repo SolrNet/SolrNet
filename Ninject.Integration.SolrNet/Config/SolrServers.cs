@@ -1,8 +1,10 @@
 ﻿// 
+using System.Collections.Generic;
 using System.Configuration;
 
 namespace Ninject.Integration.SolrNet.Config {
-    public class SolrServers : ConfigurationElementCollection {
+    public class SolrServers : ConfigurationElementCollection, IEnumerable<ISolrServer>
+    {
         public void Add(SolrServerElement configurationElement)
         {
             base.BaseAdd(configurationElement);
@@ -17,6 +19,14 @@ namespace Ninject.Integration.SolrNet.Config {
         {
             var solrServerElement = (SolrServerElement)element;
             return solrServerElement.Url + solrServerElement.DocumentType;
+        }
+
+        IEnumerator<ISolrServer> IEnumerable<ISolrServer>.GetEnumerator()
+        {
+            foreach (SolrServerElement server in this)
+            {
+                yield return server;
+            }
         }
 
         public override ConfigurationElementCollectionType CollectionType

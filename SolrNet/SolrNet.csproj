@@ -34,8 +34,6 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
-    <Compile Include="Schema\LukeResponse.cs" />
-    <Compile Include="Schema\LukeResponseParser.cs" />
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
     <Reference Include="System.Net.Http" />
   </ItemGroup>

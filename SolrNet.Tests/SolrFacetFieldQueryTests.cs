@@ -128,5 +128,51 @@ namespace SolrNet.Tests {
             Assert.Equal("f.pepe.facet.enum.cache.minDf", q[1].Key);
             Assert.Equal("5", q[1].Value);
         }
+
+        [Fact]
+        public void Contains()
+        {
+            var fq = new SolrFacetFieldQuery("pepe") { Contains = "cont" };
+            var q = Serialize(fq);
+            Assert.Equal(2, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
+            Assert.Equal("f.pepe.facet.contains", q[1].Key);
+            Assert.Equal("cont", q[1].Value);
+        }
+
+        [Fact]
+        public void ContainsIgnoreCase()
+        {
+            var fq = new SolrFacetFieldQuery("pepe") { ContainsIgnoreCase = true };
+            var q = Serialize(fq);
+            Assert.Equal(1, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
+
+            fq = new SolrFacetFieldQuery("pepe") { ContainsIgnoreCase = true, Contains = "cont" };
+            q = Serialize(fq);
+            Assert.Equal(3, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
+
+            Assert.Equal("f.pepe.facet.contains", q[1].Key);
+            Assert.Equal("cont", q[1].Value);
+
+            Assert.Equal("f.pepe.facet.contains.ignoreCase", q[2].Key);
+            Assert.Equal("true", q[2].Value);
+        }
+
+        [Fact]
+        public void Exists()
+        {
+            var fq = new SolrFacetFieldQuery("pepe") { Exists = true };
+            var q = Serialize(fq);
+            Assert.Equal(2, q.Count);
+            Assert.Equal("facet.field", q[0].Key);
+            Assert.Equal("pepe", q[0].Value);
+            Assert.Equal("f.pepe.facet.exists", q[1].Key);
+            Assert.Equal("true", q[1].Value);
+        }
     }
 }

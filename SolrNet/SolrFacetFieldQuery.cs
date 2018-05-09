@@ -81,5 +81,20 @@ namespace SolrNet {
 		/// </summary>
 		public int? EnumCacheMinDf { get; set; }
 
-	}
+        /// <summary>
+        /// This parameter limits the terms on which to facet to those containing the given substring. 
+        /// This does not limit the query in any way, only the facets that would be returned in response to the query.
+        /// </summary>
+        public string Contains { get; set; }
+
+        /// <summary>
+        /// If facet.contains is used, the facet.contains.ignoreCase parameter causes case to be ignored when matching the given substring against candidate facet terms.
+        /// </summary>
+        public bool? ContainsIgnoreCase { get; set; }
+
+        /// <summary>
+        /// To cap facet counts by 1, specify facet.exists=true. It can be used with facet.method=enum or when it’s omitted. It can be used only on non-trie fields (such as strings). It may speed up facet counting on large indices and/or high-cardinality facet values..
+        /// </summary>
+        public bool? Exists { get; set; }
+    }
 }

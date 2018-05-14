@@ -3,7 +3,7 @@
     <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
     <AssemblyName>CommonServiceLocator.SolrNet</AssemblyName>
     <RootNamespace>CommonServiceLocator.SolrNet</RootNamespace>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
     <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/solrnet/solrnet</PackageProjectUrl>

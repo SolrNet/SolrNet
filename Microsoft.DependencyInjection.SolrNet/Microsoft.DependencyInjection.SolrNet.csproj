@@ -7,7 +7,7 @@
     <PackageIconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</PackageIconUrl>
     <Authors>Gidon Junge and contributors</Authors>
     <Company />
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
     <PackageId>SolrNet.Microsoft.DependencyInjection</PackageId>
     <Product>SolrNet.Microsoft.DependencyInjection</Product>
     <Description>SolrNet extensions for Microsoft.Extensions.DependencyInjection. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</Description>

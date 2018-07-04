@@ -7,12 +7,13 @@ If you're using the default built-in container, you can replace it like this bef
 
 ```C#
 var mapper = new MappingManager();
+
 /* Here come your mappings */
-var container = new Container(Startup.Container);
-container.RemoveAll<IReadOnlyMappingManager>();
-container.Register<IReadOnlyMappingManager>(c => mapper);
-ServiceLocator.SetLocatorProvider(() => container);
-Startup.Init<Document>("http://localhost:8983/solr");
+
+Startup.Container.RemoveAll<IReadOnlyMappingManager>();
+Startup.Container.Register<IReadOnlyMappingManager>(c => mapper);
+
+Startup.Init<Document>("http://localhost:8983/solr/document");
 ```
 
 ### Windsor facility

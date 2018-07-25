@@ -32,6 +32,7 @@ namespace SolrNet {
         public SolrQueryInList(string fieldName, IEnumerable<string> list) {
             this.fieldName = fieldName;
             this.list = list;
+            Quoted = true;
         }
 
         /// <summary>
@@ -40,6 +41,11 @@ namespace SolrNet {
         /// <param name="fieldName">Solr field name</param>
         /// <param name="values">Field values to query</param>
         public SolrQueryInList(string fieldName, params string[] values) : this(fieldName, (IEnumerable<string>) values) {}
+
+        /// <summary>
+        /// If true (default), special characters (e.g. '?', '*') in the value are quoted.
+        /// </summary>
+        public bool Quoted { get; set; }
 
         /// <summary>
         /// Field name

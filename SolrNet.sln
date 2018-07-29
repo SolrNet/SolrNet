@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet", "SolrNet\SolrNet.csproj", "{CEEB8690-3E08-4440-B647-787A58E71CFA}"
 EndProject
@@ -61,6 +61,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.Tests.Common", "SolrNet.Tests.Common\SolrNet.Tests.Common.csproj", "{48DA5170-B96E-485C-941D-0D7797DCA0EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C167AD0C-270B-4297-94C5-BE5548AA6038}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleInjector.SolrNet.Tests", "SimpleInjector.SolrNet.Tests\SimpleInjector.SolrNet.Tests.csproj", "{110F4D69-8F08-42F5-97DB-B0A42B3107AC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleInjector.SolrNet", "SimpleInjector.SolrNet\SimpleInjector.SolrNet.csproj", "{D1A5AF1A-CB44-4079-85C6-08D8F74CFF21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -172,6 +176,14 @@ Global
 		{48DA5170-B96E-485C-941D-0D7797DCA0EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48DA5170-B96E-485C-941D-0D7797DCA0EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48DA5170-B96E-485C-941D-0D7797DCA0EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{110F4D69-8F08-42F5-97DB-B0A42B3107AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{110F4D69-8F08-42F5-97DB-B0A42B3107AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{110F4D69-8F08-42F5-97DB-B0A42B3107AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{110F4D69-8F08-42F5-97DB-B0A42B3107AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1A5AF1A-CB44-4079-85C6-08D8F74CFF21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1A5AF1A-CB44-4079-85C6-08D8F74CFF21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1A5AF1A-CB44-4079-85C6-08D8F74CFF21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1A5AF1A-CB44-4079-85C6-08D8F74CFF21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,9 +202,10 @@ Global
 		{0988D6A2-04FD-4328-AFFA-677DB377432D} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{C4FF031C-FB88-4186-9305-B180A07EC7DA} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{48DA5170-B96E-485C-941D-0D7797DCA0EF} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{110F4D69-8F08-42F5-97DB-B0A42B3107AC} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BC12CF2E-A108-47A2-B60C-A17B3102D52D}
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45
+		SolutionGuid = {BC12CF2E-A108-47A2-B60C-A17B3102D52D}
 	EndGlobalSection
 EndGlobal

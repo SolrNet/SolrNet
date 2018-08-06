@@ -69,11 +69,13 @@ namespace SolrNet
             var connection = new AutoSolrConnection(cores.Single().Url);
             //Bind single type to a single url, prevent breaking existing functionality
             services.AddSingleton<ISolrConnection>(connection);
-            services.AddTransient(typeof(ISolrQueryExecuter<>), typeof(SolrQueryExecuter<>));
-            services.AddTransient(typeof(ISolrBasicOperations<>), typeof(SolrBasicServer<>));
-            services.AddTransient(typeof(ISolrBasicReadOnlyOperations<>), typeof(SolrBasicServer<>));
-            services.AddScoped(typeof(ISolrOperations<>), typeof(SolrServer<>));
-            services.AddTransient(typeof(ISolrReadOnlyOperations<>), typeof(SolrServer<>));
+
+            services.AddTransient(typeof(ISolrInjectedConnection<>), typeof(BasicInjectionConnection<>));
+            services.AddTransient(typeof(ISolrQueryExecuter<>), typeof(SolrInjectionQueryExecuter<>));
+            services.AddTransient(typeof(ISolrBasicOperations<>), typeof(SolrInjectionBasicServer<>));
+            services.AddTransient(typeof(ISolrBasicReadOnlyOperations<>), typeof(SolrInjectionBasicServer<>));
+            services.AddScoped(typeof(ISolrOperations<>), typeof(SolrInjectionServer<>));
+            services.AddTransient(typeof(ISolrReadOnlyOperations<>), typeof(SolrInjectionServer<>));
 
             
             if (setupAction != null)
@@ -84,6 +86,20 @@ namespace SolrNet
             }
 
 
+            return services;
+        }
+
+        /// <summary>
+        /// Method to deal with adding a second core into Microsoft's dependency injection system.
+        /// </summary>
+        /// <param name="services">The dependency injection service.</param>
+        /// <param name="url">The url for the second core.</param>
+        /// <typeparam name="TModel">The type of model that should be used for this core.</typeparam>
+        /// <returns>The dependency injection service.</returns>
+        public static IServiceCollection AddSolrCore<TModel>(this IServiceCollection services, string url)
+        {
+            var connection = new BasicInjectionConnection<TModel>(new AutoSolrConnection(url));
+            services.AddTransient(typeof(ISolrInjectedConnection<TModel>), (service) => connection);
             return services;
         }
     }

@@ -1,23 +1,27 @@
 # Change Log
 
-## 1.0.9
+## 1.0.10 (2018-07-26)
+- QueryInListSerializer should not always auto quote
+- Overriding the default mapper, built-in container example doesn't work #423
+
+## 1.0.9 (2018-05-14)
 - Added missing properties to SolrFacetFieldQuery
 
-## 1.0.8
+## 1.0.8 (2018-04-02)
 - Microsoft Dependency Injection update: use AutoSolrConnection, and allow tweaking HttpClient on service configuration. #409
 - Added ability to force the usage of the reflected type when adding a property mapping #407 (@davewut)
 
-## 1.0.7
+## 1.0.7 (2018-03-05)
 - Fix: Parsing error when spellcheck.extendedResults=true #398 (@ariasjose)
 - Tweaked the AutoSolrConnection `MaxUriLength`.
 - Fix: AtomicUpdate async doesn't work due to stream being closed prematurely #401
 - Use AutoSolrConnection instead of SolrConnection in StructureMap.SolrNetIntegration #400 (@chyczewski-maciej)
 
-## 1.0.6 
+## 1.0.6 (2018-02-26)
 - New: `AutoSolrConnection`, automatically uses `GET` or `POST` depending on uri length. Improved performance when using `async` methods. 
 - Add `netstandard 2.0` support to `Unity.SolrNetIntegration`
 
-## 1.0.5 
+## 1.0.5 (2018-02-13)
 - SolrNet Cloud: add checks if Zookeeper connection is valid
 
 ## 1.0.4 (2018-02-04)

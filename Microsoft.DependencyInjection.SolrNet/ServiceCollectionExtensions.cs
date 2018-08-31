@@ -18,17 +18,61 @@ namespace SolrNet
 {
     public static class ServiceCollectionExtensions
     {
+        private static bool addedGeneralDI = false;
         public static IServiceCollection AddSolrNet(this IServiceCollection services, string url)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            return services.AddSolrNet(new SolrCore[] { new SolrCore(null, null, url) }, null);
+            return services.AddSolrNet(new SolrCore(null, null, url), null);
         }
 
-        public static IServiceCollection AddSolrNet(this IServiceCollection services, string url, Action<SolrNetOptions> setupAction) => AddSolrNet(services, new SolrCore[] { new SolrCore(null, null, url) }, setupAction);
+        public static IServiceCollection AddSolrNet(this IServiceCollection services, string url, Action<SolrNetOptions> setupAction) => AddSolrNet(services, new SolrCore(null, null, url), setupAction);
 
-        private static IServiceCollection AddSolrNet(this IServiceCollection services, IEnumerable<SolrCore> cores, Action<SolrNetOptions> setupAction)
+        private static IServiceCollection AddSolrNet(this IServiceCollection services, SolrCore core, Action<SolrNetOptions> setupAction)
         {
+            if (core == null) return services;
+            return BuildSolrNet(services, core.Url, setupAction);
+        }
+
+        /// <summary>
+        /// Method to deal with adding a second core into Microsoft's dependency injection system.
+        /// </summary>
+        /// <param name="services">The dependency injection service.</param>
+        /// <param name="url">The url for the second core.</param>
+        /// <typeparam name="TModel">The type of model that should be used for this core.</typeparam>
+        /// <returns>The dependency injection service.</returns>
+        public static IServiceCollection AddSolrNet<TModel>(this IServiceCollection services, string url)
+        {
+            return AddSolrNet<TModel>(services, url, null);
+        }
+
+        /// <summary>
+        /// Method to deal with adding a second core into Microsoft's dependency injection system.
+        /// </summary>
+        /// <param name="services">The dependency injection service.</param>
+        /// <param name="url">The url for the second core.</param>
+        /// <param name="setupAction">allow for custom headers to be injected.</param>
+        /// <typeparam name="TModel">The type of model that should be used for this core.</typeparam>
+        /// <returns>The dependency injection service.</returns>
+        public static IServiceCollection AddSolrNet<TModel>(this IServiceCollection services, string url, Action<SolrNetOptions> setupAction)
+        {
+            services = BuildSolrNet(services, url, setupAction);
+            var connection = new BasicInjectionConnection<TModel>(new AutoSolrConnection(url));
+            services.AddTransient(typeof(ISolrInjectedConnection<TModel>), (service) => connection);
+            return services;
+        }
+
+        /// <summary>
+        /// Method is mean to add in the basic solr net DI to deal with multiple cores.
+        /// </summary>
+        /// <param name="services">The dependency injection service.</param>
+        /// <param name="url">The url to be built from.</param>
+        /// <param name="setupAction">The setup action that should be used for injection purposes.</param>
+        /// <returns></returns>
+        private static IServiceCollection BuildSolrNet(IServiceCollection services, string url, Action<SolrNetOptions> setupAction) {
+            if (addedGeneralDI) return services;
+            addedGeneralDI = true;
+
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             services.AddSingleton<IReadOnlyMappingManager, AttributesMappingManager>();
@@ -59,14 +103,7 @@ namespace SolrNet
             services.AddTransient<ISolrDIHStatusParser, SolrDIHStatusParser>();
             services.AddTransient<IMappingValidator, MappingValidator>();
 
-            if (!cores.Any()) return services;
-
-            if (cores.Count() > 1)
-            {
-                throw new NotImplementedException("Microsoft DependencyInjection doesn't support Key/Name based injection. This is a place holder for the future.");
-            }
-
-            var connection = new AutoSolrConnection(cores.Single().Url);
+            var connection = new AutoSolrConnection(url);
             //Bind single type to a single url, prevent breaking existing functionality
             services.AddSingleton<ISolrConnection>(connection);
 
@@ -85,21 +122,6 @@ namespace SolrNet
                 setupAction(options);
             }
 
-
-            return services;
-        }
-
-        /// <summary>
-        /// Method to deal with adding a second core into Microsoft's dependency injection system.
-        /// </summary>
-        /// <param name="services">The dependency injection service.</param>
-        /// <param name="url">The url for the second core.</param>
-        /// <typeparam name="TModel">The type of model that should be used for this core.</typeparam>
-        /// <returns>The dependency injection service.</returns>
-        public static IServiceCollection AddSolrCore<TModel>(this IServiceCollection services, string url)
-        {
-            var connection = new BasicInjectionConnection<TModel>(new AutoSolrConnection(url));
-            services.AddTransient(typeof(ISolrInjectedConnection<TModel>), (service) => connection);
             return services;
         }
     }

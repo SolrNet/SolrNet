@@ -64,6 +64,21 @@ namespace SolrNet.Impl.ResponseParsers {
             return r;
         }
 
+        /// <summary>
+        /// Parses percentiles node.
+        /// </summary>
+        /// <param name="node">Percentile node.</param>
+        /// <returns></returns>
+        public IDictionary<double, double> ParsePercentilesNode(XElement node) {
+            var r = new Dictionary<double, double>();
+
+            foreach (var n in node.Elements()) {
+                var percentile = Convert.ToDouble(n.Attribute("name").Value, CultureInfo.InvariantCulture);
+                r.Add(percentile, GetDoubleValue(n));
+            }
+            return r;
+        }
+
         public StatsResult ParseStatsNode(XElement node) {
             var r = new StatsResult();
             foreach (var statNode in node.Elements()) {
@@ -88,10 +103,13 @@ namespace SolrNet.Impl.ResponseParsers {
                         r.StdDev = GetDoubleValue(statNode);
                         break;
                     case "count":
-						r.Count = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Count = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
                         break;
                     case "missing":
-						r.Missing = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Missing = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
+                        break;
+                    case "percentiles":
+                        r.Percentiles = ParsePercentilesNode(statNode);
                         break;
                     default:
                         r.FacetResults = ParseFacetNode(statNode);

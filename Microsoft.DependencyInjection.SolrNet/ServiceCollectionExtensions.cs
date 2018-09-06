@@ -19,6 +19,8 @@ namespace SolrNet
     public static class ServiceCollectionExtensions
     {
         private static bool addedGeneralDI = false;
+        private static bool addedNoneTyped = false;
+
         public static IServiceCollection AddSolrNet(this IServiceCollection services, string url)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
@@ -30,7 +32,10 @@ namespace SolrNet
 
         private static IServiceCollection AddSolrNet(this IServiceCollection services, SolrCore core, Action<SolrNetOptions> setupAction)
         {
+            if (addedGeneralDI && !addedNoneTyped) throw new InvalidOperationException("Non-typed Solr Core needs to be called before AddSolrNet<>().");
+            if (addedGeneralDI && addedNoneTyped) throw new InvalidOperationException("Only one non-typed Solr Core can be registered.  In order to use multiple cores, use the typed AddSolrNet<>() overload.");
             if (core == null) return services;
+            addedNoneTyped = true;
             return BuildSolrNet(services, core.Url, setupAction);
         }
 

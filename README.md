@@ -24,6 +24,7 @@ The easiest way to get going is to use our NuGet packages:
 |[SolrNet.Unity](https://www.nuget.org/packages/SolrNet.Unity/)| [Unity](https://github.com/unitycontainer/unity) | 4.6 | 2.0 |
 |[SolrNet.Autofac](https://www.nuget.org/packages/SolrNet.Autofac/)| [Autofac](https://autofac.org/) | 4.6 | 2.0 |
 |[SolrNet.NHibernate](https://www.nuget.org/packages/SolrNet.NHibernate/)| [NHibernate](http://nhibernate.info/) | 4.6 | - |
+|[SolrNet.SimpleInjector](https://www.nuget.org/packages/SolrNet.SimpleInjector/)| [SimpleInjector](https://simpleinjector.org/) | 4.6 | 2.0 |
 
 #### SolrCloud 
 

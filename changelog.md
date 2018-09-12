@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.11 (2018-09-)
+- Added SimpleInjector support #430 (@jrmartins)
+- Support multiple cores when using Microsoft Dependency Injection #432 (@tspayne87)
+- Added support for percentiles in stats queries #442 (@PulasthiSeneviratne)
+- Fix: Send date in UTC time zone to Solr Server #439 (@mr-KVA)
+
 ## 1.0.10 (2018-07-26)
 - QueryInListSerializer should not always auto quote
 - Overriding the default mapper, built-in container example doesn't work #423

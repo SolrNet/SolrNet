@@ -32,8 +32,8 @@ namespace SolrNet.Tests
         public void SerializeWithDateOneItem()
         {
             var q = new SolrFacetIntervalQuery("timestamp");
-            q.Sets.Add(new FacetIntervalSet(new FacetIntervalSetValue(new DateTime(2009, 1, 1), true), new FacetIntervalSetValue(new DateTime(2010, 1, 1), true)));
-          
+            q.Sets.Add(new FacetIntervalSet(new FacetIntervalSetValue(new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc), true), new FacetIntervalSetValue(new DateTime(2010, 1, 1, 0, 0, 0, DateTimeKind.Utc), true)));
+
             var r = Serialize(q);
             Assert.Contains(KV.Create("facet.interval", "timestamp"), r);
             Assert.Contains(KV.Create("f.timestamp.facet.interval.set", "[2009-01-01T00:00:00Z,2010-01-01T00:00:00Z]"), r);
@@ -77,7 +77,7 @@ namespace SolrNet.Tests
         public void SerializeWithEndUnbound()
         {
             var q = new SolrFacetIntervalQuery("state");
-            q.Sets.Add(new FacetIntervalSet(new FacetIntervalSetValue("az", true),null));
+            q.Sets.Add(new FacetIntervalSet(new FacetIntervalSetValue("az", true), null));
 
             var r = Serialize(q);
             Assert.Contains(KV.Create("facet.interval", "state"), r);
@@ -124,7 +124,7 @@ namespace SolrNet.Tests
             var q = new SolrFacetIntervalQuery("state");
             var lp = new LocalParams();
             lp.Add("key", "arizonatopen");
-            q.Sets.Add(new FacetIntervalSet(new FacetIntervalSetValue("az", false), new FacetIntervalSetValue("pa", false), lp));             
+            q.Sets.Add(new FacetIntervalSet(new FacetIntervalSetValue("az", false), new FacetIntervalSetValue("pa", false), lp));
 
             var r = Serialize(q);
             Assert.Contains(KV.Create("facet.interval", "state"), r);

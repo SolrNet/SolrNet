@@ -22,106 +22,120 @@ using SolrNet.Impl;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Mapping;
 
-namespace SolrNet.Tests {
-	
-	public partial class SolrDocumentSerializerTests {
-		[Fact]
-		public void Serializes() {
-		    var mapper = new AttributesMappingManager();
-			var ser = new SolrDocumentSerializer<SampleDoc>(mapper, new DefaultFieldSerializer());
-			var doc = new SampleDoc {Id = "id", Dd = 23.5m};
-			string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
-			Assert.Equal("<doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc>", fs);
-		}
+namespace SolrNet.Tests
+{
 
-		[Fact]
-		public void SupportsCollections() {
-            var mapper = new AttributesMappingManager();
-            var ser = new SolrDocumentSerializer<TestDocWithCollections>(mapper, new DefaultFieldSerializer());
-			var doc = new TestDocWithCollections();
-            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
-			Assert.Equal("<doc><field name=\"coll\">one</field><field name=\"coll\">two</field></doc>", fs);
-		}
-
-		[Fact]
-		public void EscapesStrings() {
-            var mapper = new AttributesMappingManager();
-            var ser = new SolrDocumentSerializer<SampleDoc>(mapper, new DefaultFieldSerializer());
-			var doc = new SampleDoc {Id = "<quote\""};
-            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
-            Assert.Equal("<doc><field name=\"Id\">&lt;quote\"</field><field name=\"Flower\">0</field></doc>", fs);
-		}
-
-		[Fact]
-		public void AcceptsNullObjects() {
-            var mapper = new AttributesMappingManager();
-            var ser = new SolrDocumentSerializer<SampleDoc>(mapper, new DefaultFieldSerializer());
-			var doc = new SampleDoc {Id = null};
-            ser.Serialize(doc, null).ToString();
-		}
-
-		[Fact]
-		public void AcceptsSparseCollections() {
-            var mapper = new AttributesMappingManager();
-            var ser = new SolrDocumentSerializer<TestDocWithCollections>(mapper, new DefaultFieldSerializer());
-			var doc = new TestDocWithCollections { coll = new[] { "one", null, "two" } };
-            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
-			Assert.Equal("<doc><field name=\"coll\">one</field><field name=\"coll\">two</field></doc>", fs);
-		}
-
-		[Fact]
-		public void AcceptsEmptyCollections() {
-            var mapper = new AttributesMappingManager();
-            var ser = new SolrDocumentSerializer<TestDocWithCollections>(mapper, new DefaultFieldSerializer());
-			var doc = new TestDocWithCollections { coll = new string[] { null, null } };
-            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
-			Assert.Equal("<doc />", fs);
-		}
-
-		/// <summary>
-		/// Support according to http://lucene.apache.org/solr/api/org/apache/solr/schema/DateField.html
-		/// </summary>
-		[Fact]
-		public void SupportsDateTime() {
-            var mapper = new AttributesMappingManager();
-            var ser = new SolrDocumentSerializer<TestDocWithDate>(mapper, new DefaultFieldSerializer());
-			var doc = new TestDocWithDate {Date = new DateTime(2001, 1, 2, 3, 4, 5)};
-            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
-			Assert.Equal("<doc><field name=\"Date\">2001-01-02T03:04:05Z</field></doc>", fs);
-		}
-
-		[Fact]
-		public void SupportsBoolTrue() {
-            var mapper = new AttributesMappingManager();
-            var ser = new SolrDocumentSerializer<TestDocWithBool>(mapper, new DefaultFieldSerializer());
-			var doc = new TestDocWithBool {B = true};
-            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
-			Assert.Equal("<doc><field name=\"B\">true</field></doc>", fs);
-		}
-
-		[Fact]
-		public void SupportsBoolFalse() {
-            var mapper = new AttributesMappingManager();
-            var ser = new SolrDocumentSerializer<TestDocWithBool>(mapper, new DefaultFieldSerializer());
-			var doc = new TestDocWithBool {B = false};
-            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
-			Assert.Equal("<doc><field name=\"B\">false</field></doc>", fs);
-		}
-
+    public partial class SolrDocumentSerializerTests
+    {
         [Fact]
-        public void SupportsGuid() {
+        public void Serializes()
+        {
             var mapper = new AttributesMappingManager();
-            var ser = new SolrDocumentSerializer<TestDocWithGuid>(mapper, new DefaultFieldSerializer());
-            var doc = new TestDocWithGuid {Key = Guid.NewGuid()};
+            var ser = new SolrDocumentSerializer<SampleDoc>(mapper, new DefaultFieldSerializer());
+            var doc = new SampleDoc { Id = "id", Dd = 23.5m };
             string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
-            Assert.Equal("<doc><field name=\"Key\">"+doc.Key+"</field></doc>", fs);
+            Assert.Equal("<doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc>", fs);
         }
 
         [Fact]
-        public void SupportsGenericDictionary_empty() {
+        public void SupportsCollections()
+        {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithCollections>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithCollections();
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
+            Assert.Equal("<doc><field name=\"coll\">one</field><field name=\"coll\">two</field></doc>", fs);
+        }
+
+        [Fact]
+        public void EscapesStrings()
+        {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<SampleDoc>(mapper, new DefaultFieldSerializer());
+            var doc = new SampleDoc { Id = "<quote\"" };
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
+            Assert.Equal("<doc><field name=\"Id\">&lt;quote\"</field><field name=\"Flower\">0</field></doc>", fs);
+        }
+
+        [Fact]
+        public void AcceptsNullObjects()
+        {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<SampleDoc>(mapper, new DefaultFieldSerializer());
+            var doc = new SampleDoc { Id = null };
+            ser.Serialize(doc, null).ToString();
+        }
+
+        [Fact]
+        public void AcceptsSparseCollections()
+        {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithCollections>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithCollections { coll = new[] { "one", null, "two" } };
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
+            Assert.Equal("<doc><field name=\"coll\">one</field><field name=\"coll\">two</field></doc>", fs);
+        }
+
+        [Fact]
+        public void AcceptsEmptyCollections()
+        {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithCollections>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithCollections { coll = new string[] { null, null } };
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
+            Assert.Equal("<doc />", fs);
+        }
+
+        /// <summary>
+        /// Support according to http://lucene.apache.org/solr/api/org/apache/solr/schema/DateField.html
+        /// </summary>
+        [Fact]
+        public void SupportsDateTime()
+        {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithDate>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithDate { Date = new DateTime(2001, 1, 2, 3, 4, 5, DateTimeKind.Utc) };
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
+            Assert.Equal("<doc><field name=\"Date\">2001-01-02T03:04:05Z</field></doc>", fs);
+        }
+
+        [Fact]
+        public void SupportsBoolTrue()
+        {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithBool>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithBool { B = true };
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
+            Assert.Equal("<doc><field name=\"B\">true</field></doc>", fs);
+        }
+
+        [Fact]
+        public void SupportsBoolFalse()
+        {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithBool>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithBool { B = false };
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
+            Assert.Equal("<doc><field name=\"B\">false</field></doc>", fs);
+        }
+
+        [Fact]
+        public void SupportsGuid()
+        {
+            var mapper = new AttributesMappingManager();
+            var ser = new SolrDocumentSerializer<TestDocWithGuid>(mapper, new DefaultFieldSerializer());
+            var doc = new TestDocWithGuid { Key = Guid.NewGuid() };
+            string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
+            Assert.Equal("<doc><field name=\"Key\">" + doc.Key + "</field></doc>", fs);
+        }
+
+        [Fact]
+        public void SupportsGenericDictionary_empty()
+        {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithGenDict>(mapper, new DefaultFieldSerializer());
-            var doc = new TestDocWithGenDict {
+            var doc = new TestDocWithGenDict
+            {
                 Id = 5,
                 Dict = new Dictionary<string, string>(),
             };
@@ -130,10 +144,12 @@ namespace SolrNet.Tests {
         }
 
         [Fact]
-        public void SupportsGenericDictionary_string_string() {
+        public void SupportsGenericDictionary_string_string()
+        {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithGenDict>(mapper, new DefaultFieldSerializer());
-            var doc = new TestDocWithGenDict {
+            var doc = new TestDocWithGenDict
+            {
                 Id = 5,
                 Dict = new Dictionary<string, string> {
                     {"one", "1"},
@@ -145,10 +161,12 @@ namespace SolrNet.Tests {
         }
 
         [Fact]
-        public void SupportsGenericDictionary_string_int() {
+        public void SupportsGenericDictionary_string_int()
+        {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithGenDict2>(mapper, new DefaultFieldSerializer());
-            var doc = new TestDocWithGenDict2 {
+            var doc = new TestDocWithGenDict2
+            {
                 Id = 5,
                 Dict = new Dictionary<string, int> {
                     {"one", 1},
@@ -160,15 +178,17 @@ namespace SolrNet.Tests {
         }
 
         [Fact]
-        public void SupportsGenericDictionary_rest() {
+        public void SupportsGenericDictionary_rest()
+        {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithGenDict3>(mapper, new DefaultFieldSerializer());
-            var doc = new TestDocWithGenDict3 {
+            var doc = new TestDocWithGenDict3
+            {
                 Id = 5,
                 Dict = new Dictionary<string, object> {
                     {"one", 1},
                     {"two", 2},
-                    {"fecha", new DateTime(2010, 1, 1)},
+                    {"fecha", new DateTime(2010, 1, 1,0,0,0, DateTimeKind.Utc)},
                     {"SomeCollection", new[] {"a", "b", "c"}},
                 },
             };
@@ -177,7 +197,8 @@ namespace SolrNet.Tests {
         }
 
         [Fact]
-        public void SupportsNullableDateTime() {
+        public void SupportsNullableDateTime()
+        {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithNullableDate>(mapper, new DefaultFieldSerializer());
             var doc = new TestDocWithNullableDate();
@@ -186,10 +207,12 @@ namespace SolrNet.Tests {
         }
 
         [Fact]
-        public void UTF_XML() {
+        public void UTF_XML()
+        {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithString>(mapper, new DefaultFieldSerializer());
-            var doc = new TestDocWithString {
+            var doc = new TestDocWithString
+            {
                 Desc = @"ÚóÁ⌠╒"""
             };
             string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
@@ -197,21 +220,25 @@ namespace SolrNet.Tests {
         }
 
         [Fact]
-        public void DocumentBoost() {
+        public void DocumentBoost()
+        {
             var mapper = new AttributesMappingManager();
             ISolrDocumentSerializer<TestDocWithString> ser = new SolrDocumentSerializer<TestDocWithString>(mapper, new DefaultFieldSerializer());
-            var doc = new TestDocWithString {
+            var doc = new TestDocWithString
+            {
                 Desc = "hello"
             };
             string fs = ser.Serialize(doc, 2.1).ToString(SaveOptions.DisableFormatting);
-            Assert.Equal(@"<doc boost=""2.1""><field name=""Desc"">hello</field></doc>", fs);            
+            Assert.Equal(@"<doc boost=""2.1""><field name=""Desc"">hello</field></doc>", fs);
         }
 
         [Fact]
-        public void FieldBoost() {
+        public void FieldBoost()
+        {
             var mapper = new AttributesMappingManager();
             ISolrDocumentSerializer<TestDocWithBoostedString> ser = new SolrDocumentSerializer<TestDocWithBoostedString>(mapper, new DefaultFieldSerializer());
-            var doc = new TestDocWithBoostedString {
+            var doc = new TestDocWithBoostedString
+            {
                 Desc = "hello"
             };
             string fs = ser.Serialize(doc, null).ToString(SaveOptions.DisableFormatting);
@@ -219,10 +246,12 @@ namespace SolrNet.Tests {
         }
 
         [Fact]
-        public void Inheritance() {
+        public void Inheritance()
+        {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithString>(mapper, new DefaultFieldSerializer());
-            var doc = new InheritedDoc {
+            var doc = new InheritedDoc
+            {
                 Desc = "Description",
                 Desc1 = "Description1"
             };
@@ -231,14 +260,16 @@ namespace SolrNet.Tests {
         }
 
         [Fact]
-        public void PropertyWithoutGetter() {
+        public void PropertyWithoutGetter()
+        {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithoutGetter>(mapper, new DefaultFieldSerializer());
             string fs = ser.Serialize(new TestDocWithoutGetter(), null).ToString();
         }
 
         [Fact]
-        public void Location() {
+        public void Location()
+        {
             var mapper = new AttributesMappingManager();
             var ser = new SolrDocumentSerializer<TestDocWithLocation>(mapper, new DefaultFieldSerializer());
             var testDoc = new TestDocWithLocation { Loc = new Location(12.2, -12.3) };
@@ -246,5 +277,5 @@ namespace SolrNet.Tests {
             Assert.Equal(@"<doc><field name=""location"">12.2,-12.3</field></doc>", fs);
         }
 
-	}
+    }
 }

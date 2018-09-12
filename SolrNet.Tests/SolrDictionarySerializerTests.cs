@@ -106,7 +106,7 @@ namespace SolrNet.Tests
         {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object> {
-                {"one", new DateTime(2000, 1, 2, 12, 23, 34)}
+                {"one", new DateTime(2000, 1, 2, 12, 23, 34, DateTimeKind.Utc)}
             }, null);
             AssertSerializedField(xml, "2000-01-02T12:23:34Z");
         }

@@ -1,12 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+    <AssemblyName>SimpleInjector.SolrNet</AssemblyName>
+    <RootNamespace>SolrNet</RootNamespace>
+    <PackageIconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</PackageIconUrl>
+    <Authors>jrmartins and contributors</Authors>
+    <Company />
+    <Version>1.0.11</Version>
+    <PackageId>SimpleInjector.SolrNet</PackageId>
+    <Product>SimpleInjector.SolrNet</Product>
+    <Description>SolrNet extensions for SimpleInjector. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</Description>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/SolrNet/SolrNet</PackageProjectUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="SimpleInjector" Version="4.3.0" />
-    <PackageReference Include="SolrNet.Core" Version="1.0.9" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
+  </ItemGroup>
 </Project>

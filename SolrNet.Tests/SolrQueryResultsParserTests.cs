@@ -861,6 +861,8 @@ namespace SolrNet.Tests
             Assert.Equal(1, priceStats.FacetResults.Count);
             Assert.True(priceStats.FacetResults.ContainsKey("inStock"));
             var priceInStockStats = priceStats.FacetResults["inStock"];
+            Assert.NotNull(priceStats.Percentiles);
+            Assert.Equal(36000.0, priceStats.Percentiles[50]);
             Assert.Equal(2, priceInStockStats.Count);
             Assert.True(priceInStockStats.ContainsKey("true"));
             Assert.True(priceInStockStats.ContainsKey("false"));

@@ -19,62 +19,73 @@ using Xunit;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 
-namespace SolrNet.Tests {
-	
-	public class SolrQueryByRangeTests {
-		public class TestDocument {}
+namespace SolrNet.Tests
+{
 
-        public string Serialize(object q) {
+    public class SolrQueryByRangeTests
+    {
+        public class TestDocument { }
+
+        public string Serialize(object q)
+        {
             var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
             return serializer.Serialize(q);
         }
 
 
-		[Fact]
-		public void IntInclusive() {
-			var q = new SolrQueryByRange<int>("id", 123, 456);
-			Assert.Equal("id:[123 TO 456]", Serialize(q));
-		}
-
-		[Fact]
-		public void StringInclusive() {
-			var q = new SolrQueryByRange<string>("id", "Arroz", "Zimbabwe");
-			Assert.Equal("id:[Arroz TO Zimbabwe]", Serialize(q));
-		}
-
-		[Fact]
-		public void StringExclusive() {
-			var q = new SolrQueryByRange<string>("id", "Arroz", "Zimbabwe", false);
-			Assert.Equal("id:{Arroz TO Zimbabwe}", Serialize(q));
-		}
+        [Fact]
+        public void IntInclusive()
+        {
+            var q = new SolrQueryByRange<int>("id", 123, 456);
+            Assert.Equal("id:[123 TO 456]", Serialize(q));
+        }
 
         [Fact]
-        public void FloatInclusive() {
+        public void StringInclusive()
+        {
+            var q = new SolrQueryByRange<string>("id", "Arroz", "Zimbabwe");
+            Assert.Equal("id:[Arroz TO Zimbabwe]", Serialize(q));
+        }
+
+        [Fact]
+        public void StringExclusive()
+        {
+            var q = new SolrQueryByRange<string>("id", "Arroz", "Zimbabwe", false);
+            Assert.Equal("id:{Arroz TO Zimbabwe}", Serialize(q));
+        }
+
+        [Fact]
+        public void FloatInclusive()
+        {
             var q = new SolrQueryByRange<float>("price", 123.45f, 234.56f);
             Assert.Equal("price:[123.45 TO 234.56]", Serialize(q));
         }
 
         [Fact]
-        public void NullableFloat() {
+        public void NullableFloat()
+        {
             var q = new SolrQueryByRange<float?>("price", null, 234.56f);
             Assert.Equal("price:[* TO 234.56]", Serialize(q));
         }
 
         [Fact]
-        public void DateTimeInclusive() {
-            var q = new SolrQueryByRange<DateTime>("ts", new DateTime(2001, 1, 5), new DateTime(2002, 3, 4, 5, 6, 7));
+        public void DateTimeInclusive()
+        {
+            var q = new SolrQueryByRange<DateTime>("ts", new DateTime(2001, 1, 5, 0, 0, 0, DateTimeKind.Utc), new DateTime(2002, 3, 4, 5, 6, 7, DateTimeKind.Utc));
             Assert.Equal("ts:[2001-01-05T00:00:00Z TO 2002-03-04T05:06:07Z]", Serialize(q));
         }
 
         [Fact]
-        public void NullableDateTime() {
-            var q = new SolrQueryByRange<DateTime?>("ts", new DateTime(2001, 1, 5), new DateTime(2002, 3, 4, 5, 6, 7));
+        public void NullableDateTime()
+        {
+            var q = new SolrQueryByRange<DateTime?>("ts", new DateTime(2001, 1, 5, 0, 0, 0, DateTimeKind.Utc), new DateTime(2002, 3, 4, 5, 6, 7,  DateTimeKind.Utc));
             Assert.Equal("ts:[2001-01-05T00:00:00Z TO 2002-03-04T05:06:07Z]", Serialize(q));
         }
 
         [Fact]
-        public void NullableDateTimeWithNull() {
-            var q = new SolrQueryByRange<DateTime?>("ts", null, new DateTime(2002, 3, 4, 5, 6, 7));
+        public void NullableDateTimeWithNull()
+        {
+            var q = new SolrQueryByRange<DateTime?>("ts", null, new DateTime(2002, 3, 4, 5, 6, 7, DateTimeKind.Utc));
             Assert.Equal("ts:[* TO 2002-03-04T05:06:07Z]", Serialize(q));
         }
 

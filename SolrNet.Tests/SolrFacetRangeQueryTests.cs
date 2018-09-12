@@ -31,7 +31,7 @@ namespace SolrNet.Tests
         [Fact]
         public void SerializeWithDate()
         {
-            var q = new SolrFacetRangeQuery("timestamp", new DateTime(2009, 1, 1), new DateTime(2009, 2, 2), "+1DAY")
+            var q = new SolrFacetRangeQuery("timestamp", new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc), new DateTime(2009, 2, 2, 0, 0, 0, DateTimeKind.Utc), "+1DAY")
             {
                 HardEnd = true,
                 Other = new[] { FacetRangeOther.After },
@@ -72,7 +72,7 @@ namespace SolrNet.Tests
         [Fact]
         public void IgnoresLocalParams()
         {
-            var q = new SolrFacetRangeQuery(new LocalParams { { "ex", "cat" } } + "timestamp", new DateTime(2009, 1, 1), new DateTime(2009, 2, 2), "+1DAY")
+            var q = new SolrFacetRangeQuery(new LocalParams { { "ex", "cat" } } + "timestamp", new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc), new DateTime(2009, 2, 2, 0, 0, 0, DateTimeKind.Utc), "+1DAY")
             {
                 HardEnd = true,
                 Other = new[] { FacetRangeOther.After },

@@ -23,47 +23,53 @@ using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 using SolrNet.Utils;
 
-namespace SolrNet.Tests {
-    
-    public class SolrFacetDateQueryTests {
+namespace SolrNet.Tests
+{
+
+    public class SolrFacetDateQueryTests
+    {
 
         [Fact]
-        #pragma warning disable xUnit1024 // Test methods cannot have overloads
+#pragma warning disable xUnit1024 // Test methods cannot have overloads
         public void Serialize()
         {
-            var q = new SolrFacetDateQuery("timestamp", new DateTime(2009,1,1), new DateTime(2009,2,2), "+1DAY") {
-                HardEnd = true,
-                Other = new[] {FacetDateOther.After},
-                Include = new[] { FacetDateInclude.Lower },
-            };
-            var r = Serialize(q);
-            Assert.Contains( KV.Create("facet.date", "timestamp"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.start", "2009-01-01T00:00:00Z"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.gap", "+1DAY"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.hardend", "true"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.other", "after"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.include", "lower"),r);
-        }
-        
-        [Fact]
-        public void IgnoresLocalParams() {
-            var q = new SolrFacetDateQuery(new LocalParams { { "ex", "cat" } } + "timestamp", new DateTime(2009, 1, 1), new DateTime(2009, 2, 2), "+1DAY") {
+            var q = new SolrFacetDateQuery("timestamp", new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc), new DateTime(2009, 2, 2, 0, 0, 0, DateTimeKind.Utc), "+1DAY")
+            {
                 HardEnd = true,
                 Other = new[] { FacetDateOther.After },
                 Include = new[] { FacetDateInclude.Lower },
             };
             var r = Serialize(q);
-            Assert.Contains( KV.Create("facet.date", "{!ex=cat}timestamp"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.start", "2009-01-01T00:00:00Z"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.gap", "+1DAY"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.hardend", "true"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.other", "after"),r);
-            Assert.Contains( KV.Create("f.timestamp.facet.date.include", "lower"),r);
+            Assert.Contains(KV.Create("facet.date", "timestamp"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.start", "2009-01-01T00:00:00Z"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.gap", "+1DAY"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.hardend", "true"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.other", "after"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.include", "lower"), r);
         }
 
-        private static IList<KeyValuePair<string, string>> Serialize(object o) {
+        [Fact]
+        public void IgnoresLocalParams()
+        {
+            var q = new SolrFacetDateQuery(new LocalParams { { "ex", "cat" } } + "timestamp", new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc), new DateTime(2009, 2, 2, 0, 0, 0, DateTimeKind.Utc), "+1DAY")
+            {
+                HardEnd = true,
+                Other = new[] { FacetDateOther.After },
+                Include = new[] { FacetDateInclude.Lower },
+            };
+            var r = Serialize(q);
+            Assert.Contains(KV.Create("facet.date", "{!ex=cat}timestamp"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.start", "2009-01-01T00:00:00Z"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.gap", "+1DAY"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.hardend", "true"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.other", "after"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.include", "lower"), r);
+        }
+
+        private static IList<KeyValuePair<string, string>> Serialize(object o)
+        {
             var fieldSerializer = new DefaultFieldSerializer();
             var serializer = new DefaultFacetQuerySerializer(new DefaultQuerySerializer(fieldSerializer), fieldSerializer);
             return serializer.Serialize(o).ToList();

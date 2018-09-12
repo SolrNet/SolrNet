@@ -118,5 +118,17 @@ container = new UnityContainer();
 new SolrNetContainerConfiguration().ConfigureContainer(solrServers, container);
 ```
 
+### SimpleInjector
+``` PowerShell
+Install-Package SolrNet.SimpleInjector
+```
+![https://www.nuget.org/packages/SolrNet.SimpleInjector/](https://img.shields.io/nuget/v/SolrNet.SimpleInjector.svg)
+
+```C#
+Create or use an existing SimpleInjector Container and add Solr by passing its URL: 
+var container = new SimpleInjector.Container();
+container.AddSolrNet("http://localhost:8983/solr");
+```
+
 ### Multi-core mapping
 If you need to map multiple Solr cores/instances, see [this page](Multi-core-instance.md).

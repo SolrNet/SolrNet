@@ -32,7 +32,7 @@ services.AddSolrNet<Person>("http://localhost:8983/solr/person");
 Inject it into your workflow after initialization
 ``` C#
 class SampleController {
-    SaveData(ISolrOperations<Product> solrProduct, ISolrOperations<Person> solrPerson) {
+    void SaveData(ISolrOperations<Product> solrProduct, ISolrOperations<Person> solrPerson) {
         solrProduct.Add(new Product { Name = "Kodak EasyShare" });
         solrProduct.Commit();
 

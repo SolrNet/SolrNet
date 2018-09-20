@@ -27,6 +27,7 @@ To use, with an `IServiceCollection` instance and one or more assemblies:
 
 ``` C#
 services.AddSolrNet("http://localhost:8983/solr");
+services.AddSolrNet<Person>("http://localhost:8983/solr/person");
 ```
 
 

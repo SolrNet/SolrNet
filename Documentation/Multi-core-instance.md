@@ -21,6 +21,27 @@ solrPerson.Add(new Person { FirstName = "Joe", LastName = "Example" });
 solrPerson.Commit();
 ```
 
+### Microsoft.Extensions.DependencyInjection (ASP.NET core)
+Initialize solr with  `IServiceCollection` instance on start up
+
+``` C#
+services.AddSolrNet<Product>("http://localhost:8983/solr/product");
+services.AddSolrNet<Person>("http://localhost:8983/solr/person");
+```
+
+Inject it into your workflow after initialization
+``` C#
+class SampleController {
+    SaveData(ISolrOperations<Product> solrProduct, ISolrOperations<Person> solrPerson) {
+        solrProduct.Add(new Product { Name = "Kodak EasyShare" });
+        solrProduct.Commit();
+
+        solrPerson.Add(new Person { FirstName = "Joe", LastName = "Example" });
+        solrPerson.Commit();
+    }
+}
+```
+
 ### With Windsor facility
 Code config:
 

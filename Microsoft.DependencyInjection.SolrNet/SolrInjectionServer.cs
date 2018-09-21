@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,15 +17,12 @@
 using System;
 
 namespace SolrNet.Microsoft.DependencyInjection {
-    internal class SolrCore {
-        public string Id { get; private set; }
-        public string Url { get; private set; }
-        public Type DocumentType { get; private set; }
-
-        public SolrCore(string id, Type documentType, string url) {
-            Id = id;
-            DocumentType = documentType;
-            Url = url;
-        }
+    /// <summary>
+    /// Overridden Class to include the wrapper connection so that we can use the dependency injection system for two seperate cores.
+    /// </summary>
+    /// <typeparam name="TModel">The model being used for the specific core.</typeparam>
+    public class SolrInjectionServer<TModel> : SolrServer<TModel> {
+        public SolrInjectionServer(ISolrBasicOperations<TModel> basicServer, IReadOnlyMappingManager mappingManager, IMappingValidator _schemaMappingValidator)
+            : base(basicServer, mappingManager, _schemaMappingValidator) { }
     }
 }

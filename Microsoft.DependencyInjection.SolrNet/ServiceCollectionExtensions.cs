@@ -50,9 +50,9 @@ namespace SolrNet
         public static IServiceCollection AddSolrNet(this IServiceCollection services, string url, Action<SolrNetOptions> setupAction)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
+            if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException(nameof(url));
             if (addedGeneralDI && !addedNoneTyped) throw new InvalidOperationException("Non-typed Solr Core needs to be called before AddSolrNet<>().");
             if (addedGeneralDI && addedNoneTyped) throw new InvalidOperationException("Only one non-typed Solr Core can be registered.  In order to use multiple cores, use the typed AddSolrNet<>() overload.");
-            if (core == null) return services;
             addedNoneTyped = true;
             return BuildSolrNet(services, url, setupAction);
         }

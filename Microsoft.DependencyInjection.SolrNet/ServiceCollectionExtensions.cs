@@ -18,15 +18,15 @@ namespace SolrNet
 {
     public static class ServiceCollectionExtensions
     {
-        /// <summary>
-        /// Flag to check if the general dependency injection has been called.
-        /// </summary>
-        private static bool addedGeneralDI = false;
-        /// <summary>
-        /// Flag to check if a none typed dependency injection has been called yet.  Mainly used
-        /// to determine certain error messages.
-        /// </summary>
-        private static bool addedNoneTyped = false;
+        private static bool AddedGeneralDI(IServiceCollection services)
+        {
+            return services.Any(s => s.ServiceType == typeof(IReadOnlyMappingManager));
+        }
+
+        private static bool AddedDI<TModel>(IServiceCollection services)
+        {
+            return services.Any(s => s.ServiceType == typeof(ISolrInjectedConnection<TModel>));
+        }
 
         /// <summary>
         /// Method to deal with adding a basic solr core instance.
@@ -51,9 +51,10 @@ namespace SolrNet
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
             if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException(nameof(url));
-            if (addedGeneralDI && !addedNoneTyped) throw new InvalidOperationException("Non-typed Solr Core needs to be called before AddSolrNet<>().");
-            if (addedGeneralDI && addedNoneTyped) throw new InvalidOperationException("Only one non-typed Solr Core can be registered.  In order to use multiple cores, use the typed AddSolrNet<>() overload.");
-            addedNoneTyped = true;
+
+
+            var added = AddedGeneralDI(services);
+            if (added) throw new InvalidOperationException("Only one Non-typed Solr Core can be added, which needs to be called before AddSolrNet<>().");
             return BuildSolrNet(services, url, setupAction);
         }
 
@@ -81,6 +82,12 @@ namespace SolrNet
         public static IServiceCollection AddSolrNet<TModel>(this IServiceCollection services, string url, Action<SolrNetOptions> setupAction)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
+
+            if (AddedDI<TModel>(services))
+            {
+                throw new InvalidOperationException($"SolrNet was already addd for model of type {typeof(TModel).Name}");
+            }
+
             services = BuildSolrNet(services, url, setupAction);
             var connection = new BasicInjectionConnection<TModel>(new AutoSolrConnection(url));
             services.AddTransient(typeof(ISolrInjectedConnection<TModel>), (service) => connection);
@@ -95,8 +102,7 @@ namespace SolrNet
         /// <param name="setupAction">The setup action that should be used for injection purposes.</param>
         /// <returns></returns>
         private static IServiceCollection BuildSolrNet(IServiceCollection services, string url, Action<SolrNetOptions> setupAction) {
-            if (addedGeneralDI) return services;
-            addedGeneralDI = true;
+            if (AddedGeneralDI(services)) return services;
 
             services.AddSingleton<IReadOnlyMappingManager, AttributesMappingManager>();
             services.AddTransient<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>();

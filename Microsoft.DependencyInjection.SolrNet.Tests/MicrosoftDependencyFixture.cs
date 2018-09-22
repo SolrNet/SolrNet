@@ -106,6 +106,41 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             Assert.NotNull(solr);
         }
 
+        [Fact]
+        public void OnlyOneNonTypedAllowed()
+        {
+
+            var sc = new ServiceCollection();
+            sc.AddSolrNet("http://foo.com");
+            var exception = Assert.Throws<InvalidOperationException>(() => sc.AddSolrNet("http://bar.com"));
+
+            Assert.Contains("Only one Non-typed Solr Core", exception.Message);
+        }
+
+
+        [Fact]
+        public void NoDuplicateTypesAllowed()
+        {
+
+            var sc = new ServiceCollection();
+            sc.AddSolrNet<Entity>("http://foo.com");
+            sc.AddSolrNet<Object>("http://whatever.com");
+            var exception = Assert.Throws<InvalidOperationException>(() => sc.AddSolrNet<Entity>("http://bar.com"));
+
+            Assert.Equal($"SolrNet was already addd for model of type {nameof(Entity)}", exception.Message);
+        }
+
+        [Fact]
+        public void NonTypedBeforeTyped()
+        {
+
+            var sc = new ServiceCollection();
+            sc.AddSolrNet<Entity>("http://foo.com");
+            var exception = Assert.Throws<InvalidOperationException>(() => sc.AddSolrNet("http://bar.com"));
+
+            Assert.Contains("Only one Non-typed Solr Core", exception.Message);
+        }
+
 
 
         [Fact]

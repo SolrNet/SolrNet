@@ -282,5 +282,41 @@ namespace SolrNet.Tests
         {
             Assert.Throws<ArgumentNullException>(() => new AtomicUpdateCommand("id", "0", null, null));
         }
+
+        [Fact]
+        public void AtomicUpdateSerialization()
+        {
+            var conn = new Mocks.MSolrConnection();
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+                string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
+                Assert.Equal("/update", url);
+                Assert.Equal("[{"
+                    + "\"id\":\"0\","
+                    + "\"quote\":{\"set\":\"\\\"quoted\\\"\"},"
+                    + "\"backslashInText\":{\"set\":\"y\\\\n\"},"
+                    + "\"newLineInText\":{\"set\":\"line1\\nline2\"}"
+                    + "}]",
+                    text);
+                Console.WriteLine(text);
+                return null;
+            });
+            /* This document is equivalent to:
+            * {
+            *   id = 0;
+            *   quote = "quoted";
+            *   backslashInText = y\n;
+            *   newLineInText = line1
+            *   line2;
+            * }
+            */
+            var updateSpecs = new AtomicUpdateSpec[] {
+                new AtomicUpdateSpec("quote", AtomicUpdateType.Set, "\"quoted\""),
+                new AtomicUpdateSpec("backslashInText", AtomicUpdateType.Set, "y\\n"),
+                new AtomicUpdateSpec("newLineInText", AtomicUpdateType.Set, "line1\nline2")
+            };
+            var cmd = new AtomicUpdateCommand("id", "0", updateSpecs, null);
+            cmd.Execute(conn);
+            Assert.Equal(1, conn.postStream.Calls);
+        }
     }
 }

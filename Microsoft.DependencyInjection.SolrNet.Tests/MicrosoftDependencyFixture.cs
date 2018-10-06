@@ -22,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SolrNet.Impl;
 using System.Collections.Generic;
 using System.Linq;
+using SolrNet.Microsoft.DependencyInjection;
 
 namespace Microsoft.DependencyInjection.SolrNet.Tests
 {
@@ -159,6 +160,26 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             var provider = sc.BuildServiceProvider();
             var connection = provider.GetRequiredService<ISolrConnection>() as AutoSolrConnection;
 
+            Assert.NotNull(connection.HttpClient.DefaultRequestHeaders.Authorization);
+            Assert.Equal(credentialsBase64, connection.HttpClient.DefaultRequestHeaders.Authorization.Parameter);
+        }
+
+        [Fact]
+        public void SetBasicAuthenticationHeaderForTypedInstance()
+        {
+            var sc = new ServiceCollection();
+
+            //my credentials
+            var credentials = System.Text.Encoding.ASCII.GetBytes("myUsername:myPassword");
+            //in base64
+            var credentialsBase64 = Convert.ToBase64String(credentials);
+            //use the options to set the Authorization header.
+            sc.AddSolrNet<string>("http://localhost:8983/solr", options => { options.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentialsBase64); });
+
+            //test
+            var provider = sc.BuildServiceProvider();
+            var injectionConnection = provider.GetRequiredService<ISolrInjectedConnection<string>>() as BasicInjectionConnection<string>;
+            var connection = injectionConnection.Connection as AutoSolrConnection;
             Assert.NotNull(connection.HttpClient.DefaultRequestHeaders.Authorization);
             Assert.Equal(credentialsBase64, connection.HttpClient.DefaultRequestHeaders.Authorization.Parameter);
         }

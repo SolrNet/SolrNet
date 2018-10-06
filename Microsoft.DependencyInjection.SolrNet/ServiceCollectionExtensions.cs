@@ -89,7 +89,12 @@ namespace SolrNet
             }
 
             services = BuildSolrNet(services, url, setupAction);
-            var connection = new BasicInjectionConnection<TModel>(new AutoSolrConnection(url));
+            //Set custom http client setting given by user at intiliation for specific solr core
+            var autoSolrConnection = new AutoSolrConnection(url);
+            var solrOption = new SolrNetOptions(autoSolrConnection.HttpClient);
+            setupAction(solrOption);
+            var connection = new BasicInjectionConnection<TModel>(autoSolrConnection);
+
             services.AddTransient(typeof(ISolrInjectedConnection<TModel>), (service) => connection);
             return services;
         }

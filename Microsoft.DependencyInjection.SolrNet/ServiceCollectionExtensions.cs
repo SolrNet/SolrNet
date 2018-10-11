@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -11,9 +14,6 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Microsoft.DependencyInjection;
 using SolrNet.Schema;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 namespace SolrNet
 {
     public static class ServiceCollectionExtensions
@@ -91,8 +91,11 @@ namespace SolrNet
             services = BuildSolrNet(services, url, setupAction);
             //Set custom http client setting given by user at intiliation for specific solr core
             var autoSolrConnection = new AutoSolrConnection(url);
-            var solrOption = new SolrNetOptions(autoSolrConnection.HttpClient);
-            setupAction(solrOption);
+            if (setupAction != null)
+            {
+                var solrOption = new SolrNetOptions(autoSolrConnection.HttpClient);
+                setupAction(solrOption);
+            }
             var connection = new BasicInjectionConnection<TModel>(autoSolrConnection);
 
             services.AddTransient(typeof(ISolrInjectedConnection<TModel>), (service) => connection);
@@ -106,7 +109,8 @@ namespace SolrNet
         /// <param name="url">The url to be built from.</param>
         /// <param name="setupAction">The setup action that should be used for injection purposes.</param>
         /// <returns></returns>
-        private static IServiceCollection BuildSolrNet(IServiceCollection services, string url, Action<SolrNetOptions> setupAction) {
+        private static IServiceCollection BuildSolrNet(IServiceCollection services, string url, Action<SolrNetOptions> setupAction)
+        {
             if (AddedGeneralDI(services)) return services;
 
             services.AddSingleton<IReadOnlyMappingManager, AttributesMappingManager>();
@@ -148,7 +152,7 @@ namespace SolrNet
             services.AddScoped(typeof(ISolrOperations<>), typeof(SolrInjectionServer<>));
             services.AddTransient(typeof(ISolrReadOnlyOperations<>), typeof(SolrInjectionServer<>));
 
-            
+
             if (setupAction != null)
             {
                 var options = new SolrNetOptions(connection.HttpClient);

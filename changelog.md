@@ -1,6 +1,9 @@
 # Change Log
+## 1.0.12 (2018-10-11)
+- MS Dependency Injection: Allow setting Http client basic authentication header for typed instances #449 (@amitsingh5290 )
+- Fix json serialization issues in AtomicUpdateCommand #448 (@Panopto)
 
-## 1.0.11 (2018-09-)
+## 1.0.11 (2018-09-22)
 - Added SimpleInjector support #430 (@jrmartins)
 - Support multiple cores when using Microsoft Dependency Injection #432 (@tspayne87)
 - Added support for percentiles in stats queries #442 (@PulasthiSeneviratne)

@@ -16,12 +16,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace SolrNet.Commands
 {
@@ -75,40 +73,15 @@ namespace SolrNet.Commands
 
         private string GetAtomicUpdateJson()
         {
-            string json = "[{\"" + uniqueKey + "\":\"" + id + "\"";
+            string json = "[{" + JsonConvert.SerializeObject(uniqueKey) + ":" + JsonConvert.SerializeObject(id);
 
             foreach (var updateSpec in updateSpecs)
             {
-                json += ",\"" + updateSpec.Field + "\":{\"" + updateSpec.Type.ToString().ToLower() + "\":" + ParseValue(updateSpec.Value) + "}";
+                json += "," + JsonConvert.SerializeObject(updateSpec.Field) + ":{\"" + updateSpec.Type.ToString().ToLower() + "\":" + JsonConvert.SerializeObject(updateSpec.Value) + "}";
             }
 
             json += "}]";
             return json;
-        }
-
-        private string ParseValue(object value)
-        {
-            if (value is int)
-                return value.ToString();
-            if (value is string)
-                return "\"" + value + "\"";
-            if (value is string[])
-            {
-                string[] values = (string[])value;
-                string str = "[";
-                for(int i=0; i<values.Length; i++)
-                {
-                    str += "\"" + values[i] + "\"";
-                    if(i != values.Length - 1)
-                    {
-                        str += ","; // Add comma (except on the last value)
-                    }
-                }
-                str += "]";
-                return str;
-            }
-
-            throw new ArgumentNullException("Value for atomic update must be int, string or string[].");
         }
     }
 }

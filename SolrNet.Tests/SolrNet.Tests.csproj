@@ -70,6 +70,7 @@
     <None Remove="Resources\solrSchemaNoUniqueKey.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LukeResponseParserTest.cs" />
     <EmbeddedResource Include="Resources\collapseResponse.xml" />
     <EmbeddedResource Include="Resources\collapseResponse2.xml" />
     <EmbeddedResource Include="Resources\collapseWithExpandResponse.xml" />
@@ -158,5 +159,8 @@
     <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
       <Name>SolrNet.Tests.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\luke.xml" />
   </ItemGroup>
 </Project>

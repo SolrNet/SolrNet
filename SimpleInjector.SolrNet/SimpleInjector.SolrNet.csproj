@@ -7,7 +7,7 @@
     <PackageIconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</PackageIconUrl>
     <Authors>jrmartins and contributors</Authors>
     <Company />
-    <Version>1.0.12</Version>
+    <Version>1.0.13</Version>
     <PackageId>SimpleInjector.SolrNet</PackageId>
     <Product>SimpleInjector.SolrNet</Product>
     <Description>SolrNet extensions for SimpleInjector. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</Description>

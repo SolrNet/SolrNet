@@ -31,7 +31,7 @@ namespace SimpleInjector.SolrNet
         {
             if (container == null) throw new ArgumentNullException(nameof(container));
 
-            container.Register<IReadOnlyMappingManager, AttributesMappingManager>(Lifestyle.Singleton);
+            container.Register<IReadOnlyMappingManager>(() => new MemoizingMappingManager(new AttributesMappingManager()), Lifestyle.Singleton);
             container.Register<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>(Lifestyle.Transient);
             container.Register<ISolrFieldParser, DefaultFieldParser>(Lifestyle.Transient);
             container.Register(typeof(ISolrDocumentActivator<>), typeof(SolrDocumentActivator<>), Lifestyle.Transient);

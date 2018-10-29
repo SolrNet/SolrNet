@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
@@ -388,14 +389,14 @@ namespace SolrNet.Impl
             return basicServer.AtomicUpdateAsync(uniqueKey, id, updateSpecs, parameters);
         }
 
-        public Task<SolrQueryResults<T>> QueryAsync(string q) => QueryAsync(new SolrQuery(q));
+        public Task<SolrQueryResults<T>> QueryAsync(string q, CancellationToken cancellationToken = default(CancellationToken)) => QueryAsync(new SolrQuery(q),cancellationToken);
 
-        public Task<SolrQueryResults<T>> QueryAsync(string q, ICollection<SortOrder> orders) => QueryAsync(new SolrQuery(q), orders);
-        public Task<SolrQueryResults<T>> QueryAsync(string q, QueryOptions options) => QueryAsync(new SolrQuery(q), options);
+        public Task<SolrQueryResults<T>> QueryAsync(string q, ICollection<SortOrder> orders, CancellationToken cancellationToken = default(CancellationToken)) => QueryAsync(new SolrQuery(q), orders, cancellationToken);
+        public Task<SolrQueryResults<T>> QueryAsync(string q, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken)) => QueryAsync(new SolrQuery(q), options, cancellationToken);
 
-        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery q) => QueryAsync(q, new QueryOptions());
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery q, CancellationToken cancellationToken = default(CancellationToken)) => QueryAsync(q, new QueryOptions(), cancellationToken);
 
-        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, ICollection<SortOrder> orders) => QueryAsync(query, new QueryOptions() { OrderBy = orders });
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, ICollection<SortOrder> orders, CancellationToken cancellationToken = default(CancellationToken)) => QueryAsync(query, new QueryOptions() { OrderBy = orders }, cancellationToken);
 
         public async Task<ICollection<KeyValuePair<string, int>>> FacetFieldQueryAsync(SolrFacetFieldQuery facet)
         {
@@ -410,9 +411,9 @@ namespace SolrNet.Impl
             return r.FacetFields[facet.Field];
         }
 
-        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options) => basicServer.QueryAsync(query, options);
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken)) => basicServer.QueryAsync(query, options, cancellationToken);
 
-        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) => basicServer.MoreLikeThisAsync(query, options);
+        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken)) => basicServer.MoreLikeThisAsync(query, options, cancellationToken);
 
         public Task<ResponseHeader> PingAsync() => basicServer.PingAsync();
 

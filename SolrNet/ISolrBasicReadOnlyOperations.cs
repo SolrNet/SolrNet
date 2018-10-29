@@ -19,6 +19,7 @@ using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 using SolrNet.Schema;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace SolrNet
 {
@@ -42,7 +43,7 @@ namespace SolrNet
         /// <param name="query"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options);
+        Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Executes a MoreLikeThisHandler query
@@ -58,7 +59,7 @@ namespace SolrNet
         /// <param name="query"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options);
+        Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Pings the Solr server.

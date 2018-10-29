@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
@@ -323,28 +324,28 @@ namespace SolrNet.Cloud
         public Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync()
             => PerformOperation(operations => operations.EnumerateValidationResultsAsync());
 
-        public Task<SolrQueryResults<T>> QueryAsync(string q)
-            => PerformOperation(operations => operations.QueryAsync(q));
+        public Task<SolrQueryResults<T>> QueryAsync(string q, CancellationToken cancellationToken = default(CancellationToken))
+            => PerformOperation(operations => operations.QueryAsync(q, cancellationToken));
 
-        public Task<SolrQueryResults<T>> QueryAsync(string q, ICollection<SortOrder> orders)
-            => PerformOperation(operations => operations.QueryAsync(q, orders));
+        public Task<SolrQueryResults<T>> QueryAsync(string q, ICollection<SortOrder> orders, CancellationToken cancellationToken = default(CancellationToken))
+            => PerformOperation(operations => operations.QueryAsync(q, orders, cancellationToken));
 
-        public Task<SolrQueryResults<T>> QueryAsync(string q, QueryOptions options)
-            => PerformOperation(operations => operations.QueryAsync(q, options));
+        public Task<SolrQueryResults<T>> QueryAsync(string q, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
+            => PerformOperation(operations => operations.QueryAsync(q, options, cancellationToken));
 
-        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery q)
-            => PerformOperation(operations => operations.QueryAsync(q));
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery q, CancellationToken cancellationToken = default(CancellationToken))
+            => PerformOperation(operations => operations.QueryAsync(q, cancellationToken));
 
-        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, ICollection<SortOrder> orders)
-            => PerformOperation(operations => operations.QueryAsync(query, orders));
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, ICollection<SortOrder> orders, CancellationToken cancellationToken = default(CancellationToken))
+            => PerformOperation(operations => operations.QueryAsync(query, orders, cancellationToken));
 
         public Task<ICollection<KeyValuePair<string, int>>> FacetFieldQueryAsync(SolrFacetFieldQuery facets)
             => PerformOperation(operations => operations.FacetFieldQueryAsync(facets));
 
-        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options)
-            => PerformOperation(operations => operations.QueryAsync(query, options));
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
+            => PerformOperation(operations => operations.QueryAsync(query, options, cancellationToken));
 
-        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
+        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
             => PerformOperation(operations => operations.MoreLikeThisAsync(query, options));
 
         public Task<ResponseHeader> PingAsync()

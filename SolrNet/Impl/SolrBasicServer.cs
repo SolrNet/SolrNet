@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using SolrNet.Commands;
@@ -163,14 +164,14 @@ namespace SolrNet.Impl {
             return this.queryExecuter.Execute(query, options);
         }
 
-        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options)
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.queryExecuter.ExecuteAsync(query, options);
+            return this.queryExecuter.ExecuteAsync(query, options, cancellationToken);
         }
 
-        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
+        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.queryExecuter.ExecuteAsync(query, options);
+            return this.queryExecuter.ExecuteAsync(query, options, cancellationToken);
         }
 
         public Task<ResponseHeader> PingAsync()

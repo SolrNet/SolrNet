@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
@@ -127,11 +128,11 @@ namespace SolrNet.Cloud
         public Task<ExtractResponse> SendAndParseExtractAsync(ISolrCommand cmd)
             => PerformBasicOperation(operations => operations.SendAndParseExtractAsync(cmd));
 
-        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options)
-            => PerformBasicOperation(operations => operations.QueryAsync(query,options));
+        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
+            => PerformBasicOperation(operations => operations.QueryAsync(query,options,cancellationToken));
 
-        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
-            => PerformBasicOperation(operations => operations.MoreLikeThisAsync(query,options));
+        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
+            => PerformBasicOperation(operations => operations.MoreLikeThisAsync(query,options, cancellationToken));
 
         public Task<ResponseHeader> PingAsync()
             => PerformBasicOperation(operations => operations.PingAsync());

@@ -112,8 +112,7 @@ namespace SolrNet
         private static IServiceCollection BuildSolrNet(IServiceCollection services, string url, Action<SolrNetOptions> setupAction)
         {
             if (AddedGeneralDI(services)) return services;
-
-            services.AddSingleton<IReadOnlyMappingManager, AttributesMappingManager>();
+            services.AddSingleton<IReadOnlyMappingManager>(new MemoizingMappingManager(new AttributesMappingManager()));
             services.AddTransient<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>();
             services.AddTransient<ISolrFieldParser, DefaultFieldParser>();
             services.AddTransient(typeof(ISolrDocumentActivator<>), typeof(SolrDocumentActivator<>));

@@ -7,6 +7,7 @@ using System.Text;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace SolrNet.Impl
 {
@@ -85,7 +86,7 @@ namespace SolrNet.Impl
             }
         }
 
-        public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             var g = PrepareGet(relativeUrl, parameters);
             try

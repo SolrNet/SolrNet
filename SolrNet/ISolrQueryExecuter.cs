@@ -14,22 +14,23 @@
 // limitations under the License.
 #endregion
 
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
-using System.Threading.Tasks;
 
-namespace SolrNet {
-	/// <summary>
-	/// Executable query
-	/// </summary>
-	/// <typeparam name="T">Document type</typeparam>
-	public interface ISolrQueryExecuter<T>  {
-		/// <summary>
-		/// Executes the query and returns results
-		/// </summary>
-		/// <returns>query results</returns>
-		SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options);
+namespace SolrNet
+{
+    /// <summary>
+    /// Executable query
+    /// </summary>
+    /// <typeparam name="T">Document type</typeparam>
+    public interface ISolrQueryExecuter<T>
+    {
+        /// <summary>
+        /// Executes the query and returns results
+        /// </summary>
+        /// <returns>query results</returns>
+        SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options);
 
         SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options);
 
@@ -37,8 +38,8 @@ namespace SolrNet {
         /// Executes the query and returns results
         /// </summary>
         /// <returns>query results</returns>
-        Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options);
+        Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
-        Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options);
+        Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }

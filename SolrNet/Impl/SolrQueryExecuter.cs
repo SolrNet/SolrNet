@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
@@ -687,7 +688,7 @@ namespace SolrNet.Impl {
             return qr;
         }
 
-        public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options)
+        public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
             var param = GetAllParameters(q, options);
@@ -696,12 +697,14 @@ namespace SolrNet.Impl {
             XDocument xml;
             if (connection is IStreamSolrConnection  cc)
             {
-                var r = await cc.GetAsync(handler, param, System.Threading.CancellationToken.None);
-                xml = XDocument.Load(r);
+                using (var r = await cc.GetAsStreamAsync(handler, param, cancellationToken))
+                {
+                    xml = XDocument.Load(r);
+                }
             }
             else
             {
-                var r = await connection.GetAsync(handler, param);
+                var r = await connection.GetAsync(handler, param, cancellationToken);
                 xml = XDocument.Parse(r);
             }
 
@@ -709,10 +712,10 @@ namespace SolrNet.Impl {
             return results;
         }
 
-        public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options)
+        public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
-            var r = await connection.GetAsync(MoreLikeThisHandler, param);
+            var r = await connection.GetAsync(MoreLikeThisHandler, param, cancellationToken);
             var qr = mlthResultParser.Parse(r);
             return qr;
         }

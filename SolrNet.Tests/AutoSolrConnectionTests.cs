@@ -82,6 +82,25 @@ namespace SolrNet.Tests
             Assert.Single(xdoc.Root.Element("result").Elements("doc"));
         }
 
+
+        [Trait("Category", "Integration")]
+        [Fact()]
+        public async Task GetStreamAsyncAutoPost()
+        {
+            var p = new Dictionary<string, string>();
+            p["q"] = "*";
+            p["rows"] = "1";
+            p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => "a"));
+            var conn = new AutoSolrConnection(solrURL);
+            XDocument xdoc;
+            using (var response = await conn.GetAsStreamAsync("/select/", p, default(CancellationToken)))
+                xdoc = XDocument.Load(response);
+
+            Assert.Equal("0", xdoc.Root.Element("lst").Elements("int").First(el => (string)el.Attribute("name") == "status").Value);
+            Assert.True(int.Parse((string)xdoc.Root.Element("result").Attribute("numFound")) > 1);
+            Assert.Single(xdoc.Root.Element("result").Elements("doc"));
+        }
+
         [Trait("Category", "Integration")]
         [Fact()]
         public async Task GetAsyncAutoPostWithStream()
@@ -92,8 +111,11 @@ namespace SolrNet.Tests
             p["rows"] = "1";
             p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => "a"));
             var conn = new AutoSolrConnection(solrURL);
-            var response = await conn.GetAsync("/select/", p, CancellationToken.None);
-            var xdoc = XDocument.Load(response);
+            XDocument xdoc;
+            using (var response = await conn.GetAsStreamAsync("/select/", p, CancellationToken.None))
+            {
+                xdoc = XDocument.Load(response);
+            }
             Assert.Equal("0", xdoc.Root.Element("lst").Elements("int").First(el => (string)el.Attribute("name") == "status").Value);
             Assert.True(int.Parse((string)xdoc.Root.Element("result").Attribute("numFound")) > 1);
             Assert.Single(xdoc.Root.Element("result").Elements("doc"));
@@ -109,7 +131,7 @@ namespace SolrNet.Tests
             var conn = new AutoSolrConnection(solrURL);
             var tokenSource = new CancellationTokenSource(1);
 
-            await Assert.ThrowsAsync<TaskCanceledException>(() => conn.GetAsync("/select/", p, tokenSource.Token));
+            await Assert.ThrowsAsync<TaskCanceledException>(() => conn.GetAsStreamAsync("/select/", p, tokenSource.Token));
             
         }
     }

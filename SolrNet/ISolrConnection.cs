@@ -74,13 +74,13 @@ namespace SolrNet {
         /// <param name="relativeUrl">Path to get from</param>
         /// <param name="parameters">Query string parameters</param>
         /// <returns></returns>
-        Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters);
+        Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken= default(CancellationToken));
     }
 
     public interface IStreamSolrConnection : ISolrConnection
     {
-        Task<Stream> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters, CancellationToken cancellationToken);
-        Task<Stream> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken);
+        Task<Stream> PostStreamAsStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters, CancellationToken cancellationToken);
+        Task<Stream> GetAsStreamAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken);
 
     }
 }

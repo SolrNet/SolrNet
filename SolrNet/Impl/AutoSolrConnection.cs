@@ -39,7 +39,7 @@ namespace SolrNet.Impl
             this.SyncFallbackConnection = new PostSolrConnection(new SolrConnection(serverUrl), serverUrl);
             this.ServerURL = Utils.UriValidator.ValidateHTTP(serverUrl);
             this.HttpClient = httpClient;
-            
+
 
         }
 
@@ -62,9 +62,9 @@ namespace SolrNet.Impl
 
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) => SyncFallbackConnection.Get(relativeUrl, parameters);
 
-        public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var responseStream = await GetAsync(relativeUrl, parameters, CancellationToken.None);
+            using (var responseStream = await GetAsStreamAsync(relativeUrl, parameters, cancellationToken))
             using (var sr = new StreamReader(responseStream))
             {
                 return await sr.ReadToEndAsync();
@@ -72,7 +72,7 @@ namespace SolrNet.Impl
         }
 
 
-        public async Task<Stream> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken)
+        public async Task<Stream> GetAsStreamAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken)
         {
             var u = new UriBuilder(ServerURL);
             u.Path += relativeUrl;
@@ -102,7 +102,7 @@ namespace SolrNet.Impl
             var bytes = Encoding.UTF8.GetBytes(s);
             using (var content = new MemoryStream(bytes))
             {
-                var responseStream = await PostStreamAsync(relativeUrl, "text/xml; charset=utf-8", content, null, cancellationToken);
+                using (var responseStream = await PostStreamAsStreamAsync(relativeUrl, "text/xml; charset=utf-8", content, null, cancellationToken))
                 using (var sr = new StreamReader(responseStream))
                 {
                     return await sr.ReadToEndAsync();
@@ -114,7 +114,7 @@ namespace SolrNet.Impl
 
         public async Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
         {
-            var responseStream = await PostStreamAsync(relativeUrl, contentType, content, getParameters, CancellationToken.None);
+            using (var responseStream = await PostStreamAsStreamAsync(relativeUrl, contentType, content, getParameters, CancellationToken.None))
             using (var sr = new StreamReader(responseStream))
             {
                 return await sr.ReadToEndAsync();
@@ -122,7 +122,7 @@ namespace SolrNet.Impl
         }
 
 
-        public async Task<Stream> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters, CancellationToken cancellationToken)
+        public async Task<Stream> PostStreamAsStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters, CancellationToken cancellationToken)
         {
             var u = new UriBuilder(ServerURL);
             u.Path += relativeUrl;

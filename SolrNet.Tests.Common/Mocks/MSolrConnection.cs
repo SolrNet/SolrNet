@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Moroco;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace SolrNet.Tests.Mocks {
     public class MSolrConnection : ISolrConnection {
@@ -44,7 +45,7 @@ namespace SolrNet.Tests.Mocks {
             return postStreamAsync.Invoke(relativeUrl, contentType, content, getParameters);
         }
 
-        public Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        public Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             return getAsync.Invoke(relativeUrl, parameters);
         }

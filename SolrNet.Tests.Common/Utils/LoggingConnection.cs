@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SolrNet.Tests.Utils {
@@ -56,10 +57,10 @@ namespace SolrNet.Tests.Utils {
             return conn.PostStreamAsync(relativeUrl, contentType, content, parameters);
         }
 
-        public virtual  async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        public virtual  async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             Console.WriteLine("Getting Async");
-            var r =  await conn.GetAsync(relativeUrl, parameters);
+            var r =  await conn.GetAsync(relativeUrl, parameters, cancellationToken);
             Console.WriteLine("Result is:\n" + r);
             return r;
         }

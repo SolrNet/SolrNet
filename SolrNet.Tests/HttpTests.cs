@@ -16,15 +16,14 @@
 
 using System.IO;
 using System.Net;
-using MbUnit.Framework;
+using Xunit;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class HttpTests {
         private const int Reps = 100;
 
-        [Test]
-        [Ignore("performance test")]
+        [Fact(Skip = "performance test")]
         public void ReadToEnd() {
             for (int i = 0; i < Reps; i++) {
                 var req = WebRequest.Create("http://www.google.com");
@@ -35,9 +34,8 @@ namespace SolrNet.Tests {
             }
         }
 
-        [Test]
-        [Ignore("performance test")]
-        public void ReadFully() {
+        [Fact(Skip = "performance test")]
+        public void ReadFullyPerfTest() {
             for (int i = 0; i < Reps; i++) {
                 var req = WebRequest.Create("http://www.google.com");
                 using (var r = req.GetResponse())

@@ -29,10 +29,11 @@ namespace SolrNet.Tests {
         }
 
         public class TestDocWithCollections {
-            [SolrField]
-            public ICollection<string> coll {
-                get { return new[] {"one", "two"}; }
+            public TestDocWithCollections() {
+                coll = new[] {"one", "two" };
             }
+            [SolrField]
+            public ICollection<string> coll { get; set; }
         }
 
         public class TestDocWithDate  {

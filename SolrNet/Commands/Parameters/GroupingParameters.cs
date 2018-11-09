@@ -92,6 +92,13 @@ namespace SolrNet.Commands.Parameters
         public bool? Truncate { get; set; }
 
         /// <summary>
+        /// Determines whether to compute grouped facets for the specified field facets. Grouped facets are computed based on the first specified group. As with normal field faceting, fields shouldn't be tokenized (otherwise counts are computed for each token). Grouped faceting supports single and multivalued fields. Default is false.
+        /// Requires Solr 4.0+
+        /// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
+        /// </summary>
+        public bool? Facet { get; set; }
+
+        /// <summary>
         /// If > 0 enables grouping cache. Grouping is executed actual two searches. This option caches the second search. A value of 0 disables grouping caching. Default is 0. 
         /// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
         /// </summary>

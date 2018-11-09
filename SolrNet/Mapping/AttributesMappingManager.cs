@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SolrNet.Attributes;
+using SolrNet.Exceptions;
 
 namespace SolrNet.Mapping {
     /// <summary>
@@ -35,14 +36,18 @@ namespace SolrNet.Mapping {
         public IDictionary<string,SolrFieldModel> GetFields(Type type) {
             var propsAttrs = GetPropertiesWithAttribute<SolrFieldAttribute>(type);
 
-	        var fields = propsAttrs
-		        .Select(kv => new SolrFieldModel(
-			                      property : kv.Key,
-			                      fieldName : kv.Value[0].FieldName ?? kv.Key.Name,
-			                      boost : kv.Value[0].Boost))
-		        .Select(m => new KeyValuePair<string, SolrFieldModel>(m.FieldName, m))
-		        .ToDictionary(kv => kv.Key, kv => kv.Value);
-            return fields;
+            var fields = propsAttrs
+                .Select(kv => new SolrFieldModel(
+                                  property: kv.Key,
+                                  fieldName: kv.Value[0].FieldName ?? kv.Key.Name,
+                                  boost: kv.Value[0].Boost))
+                .Select(m => new KeyValuePair<string, SolrFieldModel>(m.FieldName, m));
+
+            var fieldNameCounts = fields.Select(m => m.Key).GroupBy(m => m);
+            if (fieldNameCounts.Count() != fields.Count())
+                throw new SolrNetException($"Type {type.Name} contains duplicate fields: {string.Join(", ", fieldNameCounts.Where(k=>k.Count() > 1).Select(k=>k.Key))}");
+                
+            return fields.ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
         public virtual T[] GetCustomAttributes<T>(PropertyInfo prop) where T : Attribute {
@@ -65,8 +70,15 @@ namespace SolrNet.Mapping {
             foreach (var a in AppDomain.CurrentDomain.GetAssemblies()) {
                 try {
                     foreach (var t in a.GetTypes()) {
-                        if (GetFields(t).Count > 0)
-                            types.Add(t);
+                        try
+                        {
+                            if (GetFields(t).Count > 0)
+                                types.Add(t);
+                        }
+                        catch
+                        {
+                            //just continue, since whatevers errs is not valid.
+                        }
                     }
                 } catch (ReflectionTypeLoadException) {
                     // if I can't get an assembly's types, just ignore it

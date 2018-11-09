@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <result numFound="1" start="0">
+    <doc>
+      <str name="Key">224fbdc1-12df-4520-9fbe-dd91f916eba1</str>
+    </doc>
+  </result>
+  <lst name="spellcheck">
+    <lst name="suggestions">
+      <lst name="aodit">
+        <int name="numFound">5</int>
+        <int name="startOffset">0</int>
+        <int name="endOffset">5</int>
+        <arr name="suggestion">
+          <str>audit</str>
+          <str>ao dit</str>
+          <str>addit</str>
+          <str>a od it</str>
+          <str>adoit</str>
+        </arr>
+      </lst>
+      <lst name="differencex">
+        <int name="numFound">4</int>
+        <int name="startOffset">6</int>
+        <int name="endOffset">17</int>
+        <arr name="suggestion">
+          <str>difference s</str>
+          <str>d ifferences</str>
+          <str>differ ences</str>
+          <str>differenc es</str>
+        </arr>
+      </lst>
+    </lst>
+    <lst name="collations">
+      <lst name="collation">
+        <str name="collationQuery">audit differences</str>
+        <long name="hits">1111</long>
+        <lst name="misspellingsAndCorrections">
+          <str name="aodit">audit</str>
+          <str name="differencex">differences</str>
+        </lst>
+      </lst>
+      <lst name="collation">
+        <str name="collationQuery">(ao dit) differences</str>
+        <long name="hits">1234</long>
+        <lst name="misspellingsAndCorrections">
+          <str name="aodit">ao dit</str>
+          <str name="differencex">differences</str>
+        </lst>
+      </lst>    
+    </lst>
+  </lst>
+</response>

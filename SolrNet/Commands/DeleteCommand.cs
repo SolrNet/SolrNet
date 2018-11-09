@@ -22,6 +22,7 @@ using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 using SolrNet.Utils;
+using System.Threading.Tasks;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -46,27 +47,46 @@ namespace SolrNet.Commands {
         /// </summary>
 		public bool? FromCommitted { get; set; }
 
-        public SolrQueryResponse Execute(ISolrConnection connection)
+		public SolrQueryResponse Execute(ISolrConnection connection)
         {
-			var deleteNode = new XElement("delete");
-            if (parameters != null) {
-                if (parameters.CommitWithin.HasValue) {
+            string xml = GetDeleteXml();
+
+            return connection.Post("/update", xml);
+        }
+
+        public Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
+        {
+            string xml = GetDeleteXml();
+            return connection.PostAsync("/update", xml);
+        }
+
+
+        private string GetDeleteXml()
+        {
+            var deleteNode = new XElement("delete");
+            if (parameters != null)
+            {
+                if (parameters.CommitWithin.HasValue)
+                {
                     var attr = new XAttribute("commitWithin", parameters.CommitWithin.Value.ToString(CultureInfo.InvariantCulture));
                     deleteNode.Add(attr);
                 }
             }
-		    var param = new[] {
-		        KV.Create(FromPending, "fromPending"), 
+            var param = new[] {
+                KV.Create(FromPending, "fromPending"),
                 KV.Create(FromCommitted, "fromCommitted")
-		    };
-		    foreach (var p in param) {
-				if (p.Key.HasValue) {
+            };
+            foreach (var p in param)
+            {
+                if (p.Key.HasValue)
+                {
                     var att = new XAttribute(p.Value, p.Key.Value.ToString().ToLower());
-					deleteNode.Add(att);
-				}
-			}
+                    deleteNode.Add(att);
+                }
+            }
             deleteNode.Add(deleteParam.ToXmlNode().ToArray());
-			return connection.Post("/update", deleteNode.ToString(SaveOptions.DisableFormatting));
-		}
-	}
+            var xml = deleteNode.ToString(SaveOptions.DisableFormatting);
+            return xml;
+        }
+    }
 }

@@ -82,6 +82,11 @@ namespace SolrNet {
         /// </summary>
         public SolrResponseMetaData SolrResponseMetaData { get; set; }
 
+        /// <summary>
+        /// Debug results
+        /// </summary>
+        public DebugResults Debug { set; get; }
+
         public SolrQueryResults() {
             SpellChecking = new SpellCheckResults();
             SimilarResults = new Dictionary<string, IList<T>>();

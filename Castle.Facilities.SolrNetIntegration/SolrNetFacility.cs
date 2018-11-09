@@ -33,12 +33,15 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
+using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 
-namespace Castle.Facilities.SolrNetIntegration {
+namespace Castle.Facilities.SolrNetIntegration
+{
     /// <summary>
     /// Configures SolrNet in a Windsor container
     /// </summary>
-    public class SolrNetFacility : AbstractFacility {
+    public class SolrNetFacility : AbstractFacility
+    {
         private readonly string solrURL;
 
         /// <summary>
@@ -49,18 +52,20 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// <summary>
         /// Configures SolrNet in a Windsor container
         /// </summary>
-        public SolrNetFacility() {}
+        public SolrNetFacility() { }
 
         /// <summary>
         /// Configures SolrNet in a Windsor container
         /// </summary>
         /// <param name="solrURL"></param>
-        public SolrNetFacility(string solrURL) {
+        public SolrNetFacility(string solrURL)
+        {
             ValidateUrl(solrURL);
             this.solrURL = solrURL;
         }
 
-        private string GetSolrUrl() {
+        private string GetSolrUrl()
+        {
             if (solrURL != null)
                 return solrURL;
             if (FacilityConfig == null)
@@ -73,21 +78,22 @@ namespace Castle.Facilities.SolrNetIntegration {
             return url;
         }
 
-        protected override void Init() {
+        protected override void Init()
+        {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Kernel.Register(Component.For<IReadOnlyMappingManager>().Instance(mapper));
             //Kernel.Register(Component.For<ISolrCache>().ImplementedBy<HttpRuntimeCache>());
             Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
                                 .Parameters(Parameter.ForKey("serverURL").Eq(GetSolrUrl())));
 
-            Kernel.Register(Component.For(typeof (ISolrDocumentActivator<>)).ImplementedBy(typeof(SolrDocumentActivator<>)));
+            Kernel.Register(Component.For(typeof(ISolrDocumentActivator<>)).ImplementedBy(typeof(SolrDocumentActivator<>)));
 
-            Kernel.Register(Component.For(typeof (ISolrDocumentResponseParser<>))
-                .ImplementedBy(typeof (SolrDocumentResponseParser<>)));
+            Kernel.Register(Component.For(typeof(ISolrDocumentResponseParser<>))
+                .ImplementedBy(typeof(SolrDocumentResponseParser<>)));
             Kernel.Register(Component.For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
                 .ImplementedBy<SolrDictionaryDocumentResponseParser>());
 
-            Kernel.Register(Component.For(typeof (ISolrAbstractResponseParser<>)).ImplementedBy(typeof (DefaultResponseParser<>)));
+            Kernel.Register(Component.For(typeof(ISolrAbstractResponseParser<>)).ImplementedBy(typeof(DefaultResponseParser<>)));
 
             Kernel.Register(Component.For<ISolrHeaderResponseParser>().ImplementedBy<HeaderResponseParser<string>>());
             Kernel.Register(Component.For<ISolrExtractResponseParser>().ImplementedBy<ExtractResponseParser>());
@@ -99,19 +105,20 @@ namespace Castle.Facilities.SolrNetIntegration {
             })
                 Kernel.Register(Component.For<IValidationRule>().ImplementedBy(validationRule));
             Kernel.Resolver.AddSubResolver(new StrictArrayResolver(Kernel));
+            Kernel.Resolver.AddSubResolver(new CollectionResolver(Kernel));
             Kernel.Register(Component.For(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>))
                 .ImplementedBy(typeof(SolrMoreLikeThisHandlerQueryResultsParser<>)));
-            Kernel.Register(Component.For(typeof (ISolrQueryExecuter<>)).ImplementedBy(typeof (SolrQueryExecuter<>)));
+            Kernel.Register(Component.For(typeof(ISolrQueryExecuter<>)).ImplementedBy(typeof(SolrQueryExecuter<>)));
 
-            Kernel.Register(Component.For(typeof (ISolrDocumentSerializer<>))
-                .ImplementedBy(typeof (SolrDocumentSerializer<>)));
+            Kernel.Register(Component.For(typeof(ISolrDocumentSerializer<>))
+                .ImplementedBy(typeof(SolrDocumentSerializer<>)));
             Kernel.Register(Component.For<ISolrDocumentSerializer<Dictionary<string, object>>>()
                 .ImplementedBy<SolrDictionarySerializer>());
 
-            Kernel.Register(Component.For(typeof (ISolrBasicOperations<>), typeof (ISolrBasicReadOnlyOperations<>))
-                                .ImplementedBy(typeof (SolrBasicServer<>)));
-            Kernel.Register(Component.For(typeof (ISolrOperations<>), typeof (ISolrReadOnlyOperations<>))
-                                .ImplementedBy(typeof (SolrServer<>)));
+            Kernel.Register(Component.For(typeof(ISolrBasicOperations<>), typeof(ISolrBasicReadOnlyOperations<>))
+                                .ImplementedBy(typeof(SolrBasicServer<>)));
+            Kernel.Register(Component.For(typeof(ISolrOperations<>), typeof(ISolrReadOnlyOperations<>))
+                                .ImplementedBy(typeof(SolrServer<>)));
 
             Kernel.Register(Component.For<ISolrFieldParser>()
                 .ImplementedBy<DefaultFieldParser>());
@@ -131,7 +138,8 @@ namespace Castle.Facilities.SolrNetIntegration {
             Kernel.Register(Component.For<ISolrCoreAdmin>().ImplementedBy<SolrCoreAdmin>());
 
             AddCoresFromConfig();
-            foreach (var core in cores) {
+            foreach (var core in cores)
+            {
                 RegisterCore(core);
             }
         }
@@ -141,14 +149,22 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// This method is meant to be used after the facility initialization
         /// </summary>
         /// <param name="core"></param>
-        private void RegisterCore(SolrCore core) {
-            var coreConnectionId = core.Id + typeof (SolrConnection);
-            Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
-                                .Named(coreConnectionId)
-                                .Parameters(Parameter.ForKey("serverURL").Eq(core.Url)));
+        private void RegisterCore(SolrCore core)
+        {
+            var coreConnectionId = core.Id + typeof(SolrConnection);
+            if (core.PostConnection)
+              Kernel.Register(
+                Component.For<ISolrConnection>().ImplementedBy<PostSolrConnection>()
+                         .Named(coreConnectionId)
+                         .DependsOn(Dependency.OnValue("serverURL", core.Url))
+              );
+            else
+              Kernel.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>()
+                                  .Named(coreConnectionId)
+                                  .Parameters(Parameter.ForKey("serverURL").Eq(core.Url)));
 
-            var ISolrQueryExecuter = typeof (ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
-            var SolrQueryExecuter = typeof (SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
+            var ISolrQueryExecuter = typeof(ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
+            var SolrQueryExecuter = typeof(SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
             Kernel.Register(Component.For(ISolrQueryExecuter).ImplementedBy(SolrQueryExecuter)
                                 .Named(core.Id + SolrQueryExecuter)
                                 .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId)));
@@ -162,7 +178,7 @@ namespace Castle.Facilities.SolrNetIntegration {
                                 .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(coreConnectionId),
                                     ServiceOverride.ForKey("queryExecuter").Eq(core.Id + SolrQueryExecuter)));
 
-            var ISolrOperations = typeof (ISolrOperations<>).MakeGenericType(core.DocumentType);
+            var ISolrOperations = typeof(ISolrOperations<>).MakeGenericType(core.DocumentType);
             var SolrServer = typeof(SolrServer<>).MakeGenericType(core.DocumentType);
             Kernel.Register(Component.For(ISolrOperations).ImplementedBy(SolrServer)
                                 .Named(core.Id)
@@ -174,8 +190,9 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// </summary>
         /// <param name="documentType"></param>
         /// <param name="coreUrl"></param>
-        public void AddCore(Type documentType, string coreUrl) {
-            AddCore(Guid.NewGuid().ToString(), documentType, coreUrl);
+        public void AddCore(Type documentType, string coreUrl, bool postConnection = false)
+        {
+            AddCore(Guid.NewGuid().ToString(), documentType, coreUrl, postConnection);
         }
 
         /// <summary>
@@ -184,18 +201,22 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// <param name="coreId">Component name for <see cref="ISolrOperations{T}"/></param>
         /// <param name="documentType"></param>
         /// <param name="coreUrl"></param>
-        public void AddCore(string coreId, Type documentType, string coreUrl) {
+        /// <param name="postConnection"></param>
+        public void AddCore(string coreId, Type documentType, string coreUrl, bool postConnection = false)
+        {
             ValidateUrl(coreUrl);
-            cores.Add(new SolrCore(coreId, documentType, coreUrl));
+            cores.Add(new SolrCore(coreId, documentType, coreUrl, postConnection));
         }
 
-        private void AddCoresFromConfig() {
+        private void AddCoresFromConfig()
+        {
             if (FacilityConfig == null)
                 return;
             var coresConfig = FacilityConfig.Children["cores"];
             if (coresConfig == null)
                 return;
-            foreach (var coreConfig in coresConfig.Children) {
+            foreach (var coreConfig in coresConfig.Children)
+            {
                 var id = coreConfig.Attributes["id"] ?? Guid.NewGuid().ToString();
                 var documentType = GetCoreDocumentType(coreConfig);
                 var coreUrl = GetCoreUrl(coreConfig);
@@ -203,20 +224,25 @@ namespace Castle.Facilities.SolrNetIntegration {
             }
         }
 
-        private string GetCoreUrl(IConfiguration coreConfig) {
+        private string GetCoreUrl(IConfiguration coreConfig)
+        {
             var node = coreConfig.Children["url"];
             if (node == null)
                 throw new FacilityException("Core url missing in SolrNet core configuration");
             return node.Value;
         }
 
-        private Type GetCoreDocumentType(IConfiguration coreConfig) {
+        private Type GetCoreDocumentType(IConfiguration coreConfig)
+        {
             var node = coreConfig.Children["documentType"];
             if (node == null)
                 throw new FacilityException("Document type missing in SolrNet core configuration");
-            try {
-                return Type.GetType(node.Value);                
-            } catch (Exception e) {
+            try
+            {
+                return Type.GetType(node.Value);
+            }
+            catch (Exception e)
+            {
                 throw new FacilityException(string.Format("Error getting document type '{0}'", node.Value), e);
             }
         }
@@ -226,7 +252,8 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public ISolrCoreAdmin BuildCoreAdmin(string url) {
+        public ISolrCoreAdmin BuildCoreAdmin(string url)
+        {
             var conn = new SolrConnection(url);
             return BuildCoreAdmin(conn);
         }
@@ -236,14 +263,19 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// </summary>
         /// <param name="conn"></param>
         /// <returns></returns>
-        public ISolrCoreAdmin BuildCoreAdmin(ISolrConnection conn) {
-            return new SolrCoreAdmin(conn, Kernel.Resolve<ISolrHeaderResponseParser>(), Kernel.Resolve<ISolrStatusResponseParser>());            
+        public ISolrCoreAdmin BuildCoreAdmin(ISolrConnection conn)
+        {
+            return new SolrCoreAdmin(conn, Kernel.Resolve<ISolrHeaderResponseParser>(), Kernel.Resolve<ISolrStatusResponseParser>());
         }
 
-        private static void ValidateUrl(string s) {
-            try {
+        private static void ValidateUrl(string s)
+        {
+            try
+            {
                 UriValidator.ValidateHTTP(s);
-            } catch (InvalidURLException e) {
+            }
+            catch (InvalidURLException e)
+            {
                 throw new FacilityException("", e);
             }
         }

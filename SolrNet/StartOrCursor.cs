@@ -65,6 +65,11 @@ namespace SolrNet {
         public sealed class Cursor : StartOrCursor, IEquatable<Cursor> {
             private readonly string mark;
 
+            public string Mark
+            {
+                get { return mark; }
+            }
+
             /// <summary>
             /// Starting point cursor.
             /// </summary>
@@ -76,7 +81,7 @@ namespace SolrNet {
             /// Requires Solr 4.7+
             /// </summary>
             /// <param name="mark"></param>
-            internal Cursor(string mark) {
+            public Cursor(string mark) {
                 if (mark == null)
                     throw new ArgumentNullException("mark");
                 this.mark = mark;

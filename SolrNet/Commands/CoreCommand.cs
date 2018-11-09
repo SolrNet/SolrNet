@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SolrNet.Impl;
+using System.Threading.Tasks;
 
 namespace SolrNet.Commands {
     public class CoreCommand : ISolrCommand {
@@ -15,6 +16,11 @@ namespace SolrNet.Commands {
         /// <returns>The results of the Command.</returns>
         public SolrQueryResponse Execute(ISolrConnection connection) {
             return connection.Get("/admin/cores", Parameters.ToArray());
+        }
+
+        public Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
+        {
+            return connection.GetAsync("/admin/cores", Parameters.ToArray());
         }
 
         /// <summary>

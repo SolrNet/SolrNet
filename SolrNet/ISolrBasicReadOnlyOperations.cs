@@ -18,13 +18,17 @@ using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
 using SolrNet.Schema;
+using System.Threading.Tasks;
+using System.Threading;
 
-namespace SolrNet {
+namespace SolrNet
+{
     /// <summary>
     /// Read-only operations without convenience overloads
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface ISolrBasicReadOnlyOperations<T> {
+    public interface ISolrBasicReadOnlyOperations<T>
+    {
         /// <summary>
         /// Executes a query
         /// </summary>
@@ -32,6 +36,14 @@ namespace SolrNet {
         /// <param name="options"></param>
         /// <returns></returns>
         SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options);
+
+        /// <summary>
+        /// Executes a query asynchronously
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Executes a MoreLikeThisHandler query
@@ -42,11 +54,27 @@ namespace SolrNet {
         SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options);
 
         /// <summary>
+        /// Executes a MoreLikeThisHandler query asynchronously
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
         /// Pings the Solr server.
         /// It can be used by a load balancer in front of a set of Solr servers to check response time of all the Solr servers in order to do response time based load balancing.
         /// See http://wiki.apache.org/solr/SolrConfigXml for more information.
         /// </summary>
         ResponseHeader Ping();
+
+
+        /// <summary>
+        /// Pings the Solr server asynchronously.
+        /// It can be used by a load balancer in front of a set of Solr servers to check response time of all the Solr servers in order to do response time based load balancing.
+        /// See http://wiki.apache.org/solr/SolrConfigXml for more information.
+        /// </summary>
+        Task<ResponseHeader> PingAsync();
 
         /// <summary>
         /// Gets the schema.
@@ -56,9 +84,22 @@ namespace SolrNet {
         SolrSchema GetSchema(string schemaFileName);
 
         /// <summary>
+        /// Gets the schema asynchronously.
+        /// </summary>
+        /// <param name="schemaFileName">Name of the schema file.</param>
+        /// <returns> Solr schema </returns>
+        Task<SolrSchema> GetSchemaAsync(string schemaFileName);
+
+        /// <summary>
         /// Gets the current status of the DataImportHandler.
         /// </summary>
         /// <returns>DIH status</returns>
         SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options);
+
+        /// <summary>
+        /// Gets the current status of the DataImportHandler asynchronously.
+        /// </summary>
+        /// <returns>DIH status</returns>
+        Task<SolrDIHStatus> GetDIHStatusAsync(KeyValuePair<string, string> options);
     }
 }

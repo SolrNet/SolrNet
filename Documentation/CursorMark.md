@@ -10,7 +10,7 @@ Example: Make an initial Solr query using cursor pagination:
 ISolrOperations<Document> solr = ...
 var searchResults = solr.Query(SolrQuery.All, new QueryOptions {
     Rows = 10,
-    StartOrRows = StartOrCursor.Cursor.Start, // Sets initial state of the cursormark
+    StartOrCursor = StartOrCursor.Cursor.Start, // Sets initial state of the cursormark
     OrderBy = new[] {
         new SortOrder("uniqueField", Order.DESC), // Must sort on a unique field
         new SortOrder("anyOtherField", Order.ASC), // Optionally add any other fields for sorting
@@ -22,7 +22,7 @@ var searchResults = solr.Query(SolrQuery.All, new QueryOptions {
 
 var pagedResults = solr.Query(SolrQuery.All, new QueryOptions {
     Rows = 100,
-    StartOrRows = searchResults.NextCursorMark,
+    StartOrCursor = searchResults.NextCursorMark,
     OrderBy = new[] {
         new SortOrder("uniqueField", Order.DESC), // Must sort on a unique field
         new SortOrder("anyOtherField", Order.ASC), // Optionally add any other fields for sorting

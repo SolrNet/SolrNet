@@ -63,6 +63,11 @@ namespace SolrNet {
         public double StdDev { get; set; }
 
         /// <summary>
+        /// A list of percentile values based on cut-off points specified.
+        /// </summary>
+        public IDictionary<double, double> Percentiles { get; set; }
+
+        /// <summary>
         /// Facet results.
         /// <list type="bullet">
         /// <item>Key is the facet field</item>

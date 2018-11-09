@@ -20,6 +20,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
 using SolrNet.Exceptions;
@@ -50,17 +52,12 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Default Solr query handler
         /// </summary>
-        public static readonly string DefaultHandler = "/select";
+        public string DefaultHandler { get; set; } = "/select";
 
         /// <summary>
         /// Default Solr handler for More Like This queries
         /// </summary>
         public static readonly string DefaultMoreLikeThisHandler = "/mlt";
-
-        /// <summary>
-        /// Solr query request handler to use. By default "/select"
-        /// </summary>
-        public string Handler { get; set; }
 
         /// <summary>
         /// Solr request handler to use for MoreLikeThis-handler queries. By default "/mlt"
@@ -82,7 +79,6 @@ namespace SolrNet.Impl {
             this.querySerializer = querySerializer;
             this.facetQuerySerializer = facetQuerySerializer;
             DefaultRows = ConstDefaultRows;
-            Handler = DefaultHandler;
             MoreLikeThisHandler = DefaultMoreLikeThisHandler;
         }
 
@@ -118,6 +114,9 @@ namespace SolrNet.Impl {
             if (options.ExtraParams != null)
                 foreach (var p in options.ExtraParams)
                     yield return p;
+
+            if (options.Debug) 
+                yield return KV.Create("debugQuery", "true");
         }
 
         /// <summary>
@@ -522,6 +521,9 @@ namespace SolrNet.Impl {
             if (options.Grouping.Truncate.HasValue)
                 yield return KV.Create("group.truncate", options.Grouping.Truncate.ToString().ToLowerInvariant());
 
+            if (options.Grouping.Facet.HasValue)
+                yield return KV.Create("group.facet", options.Grouping.Facet.ToString().ToLowerInvariant());
+
             if (options.Grouping.CachePercent.HasValue)
                 yield return KV.Create("group.cache.percent", options.Grouping.CachePercent.ToString());
 
@@ -664,9 +666,10 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <returns>query results</returns>
         public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
+            var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
-            var r = connection.Get(Handler, param);
+            var r = connection.Get(handler, param);
             var xml = XDocument.Parse(r.Response);
             resultParser.Parse(xml, results);
             results.SolrResponseMetaData = r.MetaData;
@@ -682,6 +685,38 @@ namespace SolrNet.Impl {
         public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options) {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
             var r = connection.Get(MoreLikeThisHandler, param);
+            var qr = mlthResultParser.Parse(r.Response);
+            return qr;
+        }
+
+        public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
+            var param = GetAllParameters(q, options);
+            var results = new SolrQueryResults<T>();
+
+            XDocument xml;
+            if (connection is IStreamSolrConnection  cc)
+            {
+                using (var r = await cc.GetAsStreamAsync(handler, param, cancellationToken))
+                {
+                    xml = XDocument.Load(r);
+                }
+            }
+            else
+            {
+                var r = await connection.GetAsync(handler, param, cancellationToken);
+                xml = XDocument.Parse(r.Response);
+            }
+
+            resultParser.Parse(xml, results);
+            return results;
+        }
+
+        public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
+            var r = await connection.GetAsync(MoreLikeThisHandler, param, cancellationToken);
             var qr = mlthResultParser.Parse(r.Response);
             return qr;
         }

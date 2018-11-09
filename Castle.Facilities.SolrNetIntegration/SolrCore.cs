@@ -25,6 +25,7 @@ namespace Castle.Facilities.SolrNetIntegration {
         public string Id { get; private set; }
         public Type DocumentType { get; private set; }
         public string Url { get; private set; }
+        public bool PostConnection { get; private set; }
 
         /// <summary>
         /// Creates a new Solr core for configuration
@@ -32,10 +33,11 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// <param name="id">Component name for <see cref="ISolrOperations{T}"/></param>
         /// <param name="documentType">Document type</param>
         /// <param name="url">Core url</param>
-        public SolrCore(string id, Type documentType, string url) {
+        public SolrCore(string id, Type documentType, string url, bool postConnection = false) {
             Id = id;
             DocumentType = documentType;
             Url = url;
+            PostConnection = postConnection;
         }
 
         /// <summary>
@@ -43,6 +45,6 @@ namespace Castle.Facilities.SolrNetIntegration {
         /// </summary>
         /// <param name="documentType">Document type</param>
         /// <param name="url">Core url</param>
-        public SolrCore(Type documentType, string url) : this(Guid.NewGuid().ToString(), documentType, url) { }
+        public SolrCore(Type documentType, string url, bool postConnection = false) : this(Guid.NewGuid().ToString(), documentType, url, postConnection) { }
     }
 }

@@ -17,13 +17,17 @@
 using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
 using SolrNet.Impl;
+using System.Threading.Tasks;
+using System.Threading;
 
-namespace SolrNet {
+namespace SolrNet
+{
     /// <summary>
     /// Read-only operations
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface ISolrReadOnlyOperations<T> : ISolrBasicReadOnlyOperations<T> {
+    public interface ISolrReadOnlyOperations<T> : ISolrBasicReadOnlyOperations<T>
+    {
         /// <summary>
         /// Executes a query
         /// </summary>
@@ -68,5 +72,51 @@ namespace SolrNet {
         /// <param name="facets"></param>
         /// <returns></returns>
         ICollection<KeyValuePair<string, int>> FacetFieldQuery(SolrFacetFieldQuery facets);
+
+        /// <summary>
+        /// Executes a query
+        /// </summary>
+        /// <param name="q">query to execute</param>
+        /// <returns>query results</returns>
+        Task<SolrQueryResults<T>> QueryAsync(string q, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Executes a query
+        /// </summary>
+        /// <param name="q"></param>
+        /// <param name="orders"></param>
+        /// <returns></returns>
+        Task<SolrQueryResults<T>> QueryAsync(string q, ICollection<SortOrder> orders, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Executes a query
+        /// </summary>
+        /// <param name="q"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        Task<SolrQueryResults<T>> QueryAsync(string q, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Executes a query
+        /// </summary>
+        /// <param name="q"></param>
+        /// <returns></returns>
+        Task<SolrQueryResults<T>> QueryAsync(ISolrQuery q, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Executes a query
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="orders"></param>
+        /// <returns></returns>
+        Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, ICollection<SortOrder> orders, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Executes a single facet field query
+        /// </summary>
+        /// <param name="facets"></param>
+        /// <returns></returns>
+        Task<ICollection<KeyValuePair<string, int>>> FacetFieldQueryAsync(SolrFacetFieldQuery facets);
+
     }
 }

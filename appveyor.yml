@@ -1,0 +1,19 @@
+version: 1.0.8.{build}
+image: Visual Studio 2017
+before_build:
+- cmd: >-
+    dotnet restore
+
+    nuget restore
+configuration: Release
+nuget:
+  project_feed: true
+build:
+  project: solrnet.sln
+  verbosity: minimal
+  publish_nuget: true
+test:
+  categories:
+    except:
+    - Integration
+    - OutDated

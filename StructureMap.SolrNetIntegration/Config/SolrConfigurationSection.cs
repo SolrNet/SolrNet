@@ -1,10 +1,11 @@
-using System.Configuration;
+﻿using System.Configuration;
 
-namespace StructureMap.SolrNetIntegration.Config {
-    public class SolrConfigurationSection : ConfigurationSection 
+namespace StructureMap.SolrNetIntegration.Config
+{
+    public class SolrConfigurationSection : ConfigurationSection
     {
         [ConfigurationProperty("", IsDefaultCollection = true)]
-        public SolrServers SolrServers 
+        public SolrServers SolrServers
         {
             get { return (SolrServers)base[""]; }
         }

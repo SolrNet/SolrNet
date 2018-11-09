@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using SolrNet.Impl;
+using System.Threading.Tasks;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -28,5 +29,9 @@ namespace SolrNet.Commands {
         {
 			return connection.Get("/admin/ping", new Dictionary<string, string>());
 		}
-	}
+        public Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
+        {
+            return connection.GetAsync("/admin/ping", new Dictionary<string, string>());
+        }
+    }
 }

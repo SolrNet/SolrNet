@@ -18,7 +18,7 @@
 
 using System;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
@@ -26,9 +26,9 @@ using SolrNet.Schema;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class MappedPropertiesIsInSolrSchemaRuleTests {
-        [Test]
+        [Fact]
         public void MappedPropertyForWhichSolrFieldExistsInSchemaShouldNotReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
@@ -42,10 +42,10 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(0, validationResults.Count);
+            Assert.Empty(validationResults);
         }
 
-        [Test]
+        [Fact]
         public void MappedPropertyForWhichDynamicFieldExistsInSchemaShouldNotReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
@@ -60,10 +60,10 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(0, validationResults.Count);
+            Assert.Empty(validationResults);
         }
 
-        [Test]
+        [Fact]
         public void MappedPropertyForWhichNoSolrFieldOrDynamicFieldExistsShouldReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("ID"), "id");
@@ -78,20 +78,20 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(1, validationResults.Count);
+            Assert.Single(validationResults);
         }
 
-        [Test]
+        [Fact]
         public void MappedPropertiesIsInSolrSchemaRule_ignores_score() {
             var rule = new MappedPropertiesIsInSolrSchemaRule();
             var mapper = new MappingManager();
             mapper.Add(typeof (SchemaMappingTestDocument).GetProperty("Score"), "score");
             var results = rule.Validate(typeof (SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
-            Assert.IsNotNull(results);
-            Assert.AreEqual(0, results.Count);
+            Assert.NotNull(results);
+            Assert.Empty(results);
         }
 
-        [Test]
+        [Fact]
         public void DictionaryFields_are_ignored() {
             var rule = new MappedPropertiesIsInSolrSchemaRule();
             var mapper = new MappingManager();
@@ -100,7 +100,7 @@ namespace SolrNet.Tests {
             var fieldType = new SolrFieldType("string", "solr.StrField");
             schema.SolrFields.Add(new SolrField("ma_uaua", fieldType));
             var results = rule.Validate(typeof(SchemaMappingTestDocument), new SolrSchema(), mapper).ToList();
-            Assert.AreEqual(0, results.Count);
+            Assert.Empty(results);
         }
     }
 }

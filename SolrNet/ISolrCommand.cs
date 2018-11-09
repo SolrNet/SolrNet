@@ -15,6 +15,7 @@
 #endregion
 
 using SolrNet.Impl;
+using System.Threading.Tasks;
 
 namespace SolrNet {
     /// <summary>
@@ -27,5 +28,7 @@ namespace SolrNet {
         /// <param name="connection"></param>
         /// <returns></returns>
         SolrQueryResponse Execute(ISolrConnection connection);
-	}
+
+        Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection);
+    }
 }

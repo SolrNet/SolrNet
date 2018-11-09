@@ -18,7 +18,7 @@
 
 using System;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
@@ -26,9 +26,9 @@ using SolrNet.Schema;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class MultivaluedMappedToCollectionRuleTests {
-        [Test]
+        [Fact]
         public void MutivaluedSolrFieldNotMappedToCollectionShouldReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("Name"), "name");
@@ -40,11 +40,11 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(1, validationResults.Count);
+            Assert.Single(validationResults);
             Console.WriteLine(validationResults[0].Message);
         }
 
-        [Test]
+        [Fact]
         public void MultivaluedSolrFieldMappedToCollectionShouldNotReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("NameCollection"), "name");
@@ -56,10 +56,10 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(0, validationResults.Count);
+            Assert.Empty(validationResults);
         }
 
-        [Test]
+        [Fact]
         public void CollectionMappedToNonMultiValuedFolrFieldShouldReturnError() {
             var mgr = new MappingManager();
             mgr.Add(typeof (SchemaMappingTestDocument).GetProperty("NameCollection"), "author");
@@ -71,7 +71,7 @@ namespace SolrNet.Tests {
             var schema = solrSchemaParser.Parse(schemaXmlDocument);
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
-            Assert.AreEqual(1, validationResults.Count);
+            Assert.Single(validationResults);
             Console.WriteLine(validationResults[0].Message);
         }
     }

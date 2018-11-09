@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using log4net.Config;
-using MbUnit.Framework;
-using Microsoft.Practices.ServiceLocation;
+using Xunit;
+using CommonServiceLocator;
 using NHibernate.Tool.hbm2ddl;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Mapping;
+using System;
 
 namespace NHibernate.SolrNet.Tests {
     /// <summary>
@@ -15,12 +16,24 @@ namespace NHibernate.SolrNet.Tests {
     /// Instead, the object model should be flattened.
     /// Do not use as reference.
     /// </summary>
-    [TestFixture]
-    [Category("Integration")]
-    public class IntegrationTests2 {
+    [Trait("Category", "Outdated")]
+    [Trait("Category","Integration")]
+    public class IntegrationTests2 : IDisposable {
         private const string _httpSolrTest = "http://localhost:8983/solr";
 
-        [Test]
+        public IntegrationTests2()
+        {
+            BasicConfigurator.Configure();
+            SetupSolr();
+
+            cfg = SetupNHibernate();
+
+            cfgHelper = new CfgHelper();
+            cfgHelper.Configure(cfg, true);
+            sessionFactory = cfg.BuildSessionFactory();
+        }
+
+        [Fact]
         public void InsertAGraph() {
             using (var session = cfgHelper.OpenSession(sessionFactory)) {
                 session.FlushMode = FlushMode.Never;
@@ -39,7 +52,7 @@ namespace NHibernate.SolrNet.Tests {
 
             var solr = ServiceLocator.Current.GetInstance<ISolrReadOnlyOperations<Dictionary<string,object>>>();
             var all = solr.Query(SolrQuery.All);
-            Assert.AreEqual(4, all.Count);
+            Assert.Equal(4, all.Count);
         }
 
         private static Configuration SetupNHibernate() {
@@ -112,21 +125,10 @@ namespace NHibernate.SolrNet.Tests {
             return mapper;
         }
 
-        [FixtureSetUp]
-        public void FixtureSetup() {
-            BasicConfigurator.Configure();
-            SetupSolr();
-
-            cfg = SetupNHibernate();
-
-            cfgHelper = new CfgHelper();
-            cfgHelper.Configure(cfg, true);
-            sessionFactory = cfg.BuildSessionFactory();
-        }
-
-        [FixtureTearDown]
-        public void FixtureTearDown() {
+        public void Dispose()
+        {
             sessionFactory.Dispose();
+
         }
 
         private Configuration cfg;

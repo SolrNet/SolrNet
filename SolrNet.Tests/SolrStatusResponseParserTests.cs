@@ -18,20 +18,20 @@
 
 using System;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl;
 using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class SolrStatusResponseParserTests {
-        [Test]
+        [Fact]
         public void ParseDocument() {
             var parser = new SolrStatusResponseParser();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithStatus.xml");
             var r = parser.Parse(xml);
-            Assert.IsNotNull(r);
-            Assert.IsTrue(r.Count > 0);
+            Assert.NotNull(r);
+            Assert.True(r.Count > 0);
         }
 
         private List<CoreResult> ParseFromResults(string xmlResource) {
@@ -41,78 +41,78 @@ namespace SolrNet.Tests {
             return r;
         }
 
-        [Test]
+        [Fact]
         public void MoreThan1CoreExists() {
             var r = ParseFromResults("Resources.responseWithStatus.xml");
-            Assert.AreNotEqual(0, r.Count);
-            Assert.AreNotEqual(1, r.Count);
-            Assert.AreNotEqual(3, r.Count);
-            Assert.AreNotEqual(4, r.Count);
-            Assert.AreNotEqual(5, r.Count);
+            Assert.NotEqual(0, r.Count);
+            Assert.NotEqual(1, r.Count);
+            Assert.NotEqual(3, r.Count);
+            Assert.NotEqual(4, r.Count);
+            Assert.NotEqual(5, r.Count);
         }
 
-        [Test]
+        [Fact]
         public void CoresExists() {
             var r = ParseFromResults("Resources.responseWithStatus.xml");
-            Assert.AreEqual(2, r.Count);
+            Assert.Equal(2, r.Count);
         }
 
-        [Test]
+        [Fact]
         public void Core1Exists() {
             var r = ParseFromResults("Resources.responseWithStatus.xml");
             var core = r[0];
-            Assert.AreEqual("core1", core.Name);
-            Assert.AreEqual(@"C:\Projects\FDO\Main\Common\solr\core1\", core.InstanceDir);
-            Assert.AreEqual(@"C:\Projects\FDO\Main\Common\solr\core1\data\", core.DataDir);
-            Assert.AreEqual(DateTime.Parse("2010-07-16T10:01:05.854Z"), core.StartTime);
-            Assert.AreEqual((long) 25133036, core.Uptime);
+            Assert.Equal("core1", core.Name);
+            Assert.Equal(@"C:\Projects\FDO\Main\Common\solr\core1\", core.InstanceDir);
+            Assert.Equal(@"C:\Projects\FDO\Main\Common\solr\core1\data\", core.DataDir);
+            Assert.Equal(DateTime.Parse("2010-07-16T10:01:05.854Z"), core.StartTime);
+            Assert.Equal((long) 25133036, core.Uptime);
         }
 
-        [Test]
+        [Fact]
         public void Core1IndexExists() {
             var r = ParseFromResults("Resources.responseWithStatus.xml");
             var coreIndex = r[0].Index;
-            Assert.AreEqual(3604, coreIndex.SearchableDocumentCount);
-            Assert.AreEqual(3604, coreIndex.TotalDocumentCount);
-            Assert.AreEqual((long) 1276170296452, coreIndex.Version);
-            Assert.IsTrue(coreIndex.IsOptimized);
-            Assert.IsTrue(coreIndex.IsCurrent);
-            Assert.IsFalse(coreIndex.HasDeletions);
-            Assert.AreEqual(@"org.apache.lucene.store.SimpleFSDirectory:org.apache.lucene.store.SimpleFSDirectory@C:\Projects\FDO\Main\Common\solr\core1\data\index", coreIndex.Directory);
-            Assert.AreEqual(DateTime.Parse("2010-07-09T08:42:11.593Z"), coreIndex.LastModified);
+            Assert.Equal(3604, coreIndex.SearchableDocumentCount);
+            Assert.Equal(3604, coreIndex.TotalDocumentCount);
+            Assert.Equal((long) 1276170296452, coreIndex.Version);
+            Assert.True(coreIndex.IsOptimized);
+            Assert.True(coreIndex.IsCurrent);
+            Assert.False(coreIndex.HasDeletions);
+            Assert.Equal(@"org.apache.lucene.store.SimpleFSDirectory:org.apache.lucene.store.SimpleFSDirectory@C:\Projects\FDO\Main\Common\solr\core1\data\index", coreIndex.Directory);
+            Assert.Equal(DateTime.Parse("2010-07-09T08:42:11.593Z"), coreIndex.LastModified);
         }
 
-        [Test]
+        [Fact]
         public void Core0Exists() {
             var r = ParseFromResults("Resources.responseWithStatus.xml");
             var core = r[1];
-            Assert.AreEqual("core0", core.Name);
-            Assert.AreEqual(@"C:\Projects\FDO\Main\Common\solr\core0\", core.InstanceDir);
-            Assert.AreEqual(@"C:\Projects\FDO\Main\Common\solr\core0\data\", core.DataDir);
-            Assert.AreEqual(DateTime.Parse("2010-07-16T16:48:15.674Z"), core.StartTime);
-            Assert.AreEqual((long) 703217, core.Uptime);
+            Assert.Equal("core0", core.Name);
+            Assert.Equal(@"C:\Projects\FDO\Main\Common\solr\core0\", core.InstanceDir);
+            Assert.Equal(@"C:\Projects\FDO\Main\Common\solr\core0\data\", core.DataDir);
+            Assert.Equal(DateTime.Parse("2010-07-16T16:48:15.674Z"), core.StartTime);
+            Assert.Equal((long) 703217, core.Uptime);
         }
 
-        [Test]
+        [Fact]
         public void Core0IndexExists() {
             var r = ParseFromResults("Resources.responseWithStatus.xml");
             var coreIndex = r[1].Index;
-            Assert.AreEqual(3610, coreIndex.SearchableDocumentCount);
-            Assert.AreEqual(3613, coreIndex.TotalDocumentCount);
-            Assert.AreEqual((long) 1276170296081, coreIndex.Version);
-            Assert.IsFalse(coreIndex.IsOptimized);
-            Assert.IsTrue(coreIndex.IsCurrent);
-            Assert.IsTrue(coreIndex.HasDeletions);
-            Assert.AreEqual(@"org.apache.lucene.store.SimpleFSDirectory:org.apache.lucene.store.SimpleFSDirectory@C:\Projects\FDO\Main\Common\solr\core0\data\index", coreIndex.Directory);
-            Assert.AreEqual(DateTime.Parse("2010-06-10T13:30:30Z"), coreIndex.LastModified);
+            Assert.Equal(3610, coreIndex.SearchableDocumentCount);
+            Assert.Equal(3613, coreIndex.TotalDocumentCount);
+            Assert.Equal((long) 1276170296081, coreIndex.Version);
+            Assert.False(coreIndex.IsOptimized);
+            Assert.True(coreIndex.IsCurrent);
+            Assert.True(coreIndex.HasDeletions);
+            Assert.Equal(@"org.apache.lucene.store.SimpleFSDirectory:org.apache.lucene.store.SimpleFSDirectory@C:\Projects\FDO\Main\Common\solr\core0\data\index", coreIndex.Directory);
+            Assert.Equal(DateTime.Parse("2010-06-10T13:30:30Z"), coreIndex.LastModified);
         }
 
-        [Test]
+        [Fact]
         public void IsDefaultCore() {
             var r = ParseFromResults("Resources.responseWithStatus2.xml");
-            Assert.AreEqual(1, r.Count);
+            Assert.Single(r);
             var core = r[0];
-            Assert.IsTrue(core.IsDefaultCore);
+            Assert.True(core.IsDefaultCore);
         }
     }
 }

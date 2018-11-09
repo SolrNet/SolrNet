@@ -15,36 +15,36 @@
 #endregion
 
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Commands.Parameters;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class QueryOptionsTests {
-        [Test]
+        [Fact]
         public void AddFields() {
             QueryOptions o = new QueryOptions().AddFields("f1", "f2");
-            Assert.AreEqual(2, o.Fields.Count);
-            Assert.AreEqual("f1", o.Fields.First());
-            Assert.AreEqual("f2", o.Fields.ElementAt(1));
+            Assert.Equal(2, o.Fields.Count);
+            Assert.Equal("f1", o.Fields.First());
+            Assert.Equal("f2", o.Fields.ElementAt(1));
         }
 
-        [Test]
+        [Fact]
         public void AddOrder() {
             QueryOptions o = new QueryOptions().AddOrder(new SortOrder("f1"), new SortOrder("f2", Order.ASC));
-            Assert.AreEqual(2, o.OrderBy.Count);
+            Assert.Equal(2, o.OrderBy.Count);
         }
 
-        [Test]
+        [Fact]
         public void AddFilterQueries() {
             QueryOptions o = new QueryOptions().AddFilterQueries(new SolrQuery("a"), new SolrQueryByField("f1", "v"));
-            Assert.AreEqual(2, o.FilterQueries.Count);  
+            Assert.Equal(2, o.FilterQueries.Count);  
         }
 
-        [Test]
+        [Fact]
         public void AddFacets() {
             QueryOptions o = new QueryOptions().AddFacets(new SolrFacetFieldQuery("f1"), new SolrFacetQuery(new SolrQuery("q")));
-            Assert.AreEqual(2, o.Facet.Queries.Count);
+            Assert.Equal(2, o.Facet.Queries.Count);
         }
     }
 }

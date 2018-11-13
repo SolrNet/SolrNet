@@ -528,7 +528,7 @@ namespace SolrNet.Tests {
         [Fact]
         public void SearchResults_ShouldBeIterable() {
             var results = new SolrQueryResults<string>();
-            Assert.IsAssignableFrom(typeof(IEnumerable<string>), results);
+            Assert.IsAssignableFrom<IEnumerable<string>>(results);
         }
 
         [Fact]

@@ -1,74 +1,31 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{931CEB14-556F-4893-A8D9-C7C6DACA444F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AutofacContrib.SolrNet</RootNamespace>
-    <AssemblyName>AutofacContrib.SolrNet</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\AutofacContrib.SolrNet.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\AutofacContrib.SolrNet.XML</DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+    <Version>1.0.7</Version>
+    <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/solrnet/solrnet</PackageProjectUrl>
+    <Description>Autofac module for SolrNet. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</Description>
+    <Authors>Mauricio Scheffer and contributors</Authors>
+    <Company />
+    <Product>SolrNet.Autofac</Product>
+    <PackageIconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</PackageIconUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>SolrNet.Autofac</PackageId>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.XML" />
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\SolrConfigurationSection.cs" />
-    <Compile Include="Config\SolrServerElement.cs" />
-    <Compile Include="Config\SolrServers.cs" />
-    <Compile Include="SolrCore.cs" />
-    <Compile Include="SolrNetModule.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Autofac" Version="4.6.2" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SolrNet\SolrNet.csproj">
-      <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>
-      <Name>SolrNet</Name>
-    </ProjectReference>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+    <Reference Include="System.Configuration" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="AutofacContrib.SolrNet.nuspec" />
-    <None Include="packages.config" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <Compile Remove="Config\SolrConfigurationSection.cs" />
+    <Compile Remove="Config\SolrServerElement.cs" />
+    <Compile Remove="Config\SolrServers.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

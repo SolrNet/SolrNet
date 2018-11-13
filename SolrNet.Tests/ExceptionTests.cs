@@ -25,7 +25,7 @@ namespace SolrNet.Tests {
         public void All_exceptions_are_serializable() {
             var allExceptions = typeof (SolrNetException).Assembly.GetTypes().Where(t => typeof (SolrNetException).IsAssignableFrom(t));
             foreach (var e in allExceptions) {
-                Assert.IsAssignableFrom(typeof(System.Runtime.Serialization.ISerializable), e);
+                Assert.IsAssignableFrom<System.Runtime.Serialization.ISerializable>(e);
             }
         }
     }

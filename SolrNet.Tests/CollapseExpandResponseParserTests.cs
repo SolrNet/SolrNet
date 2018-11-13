@@ -35,9 +35,9 @@ namespace SolrNet.Tests
             Assert.Equal(4, results.CollapseExpand.Groups.Count);
 
             var group = results.CollapseExpand.Groups.ElementAt(0);
-            Assert.Equal(group.Documents.Count, 2);
-            Assert.Equal(group.GroupValue, "First");
-            Assert.Equal(group.NumFound, 2);
+            Assert.Equal(2, group.Documents.Count);
+            Assert.Equal("First", group.GroupValue);
+            Assert.Equal(2, group.NumFound);
         }
 
         class Doc {}

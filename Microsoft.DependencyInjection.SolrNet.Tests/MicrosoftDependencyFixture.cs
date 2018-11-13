@@ -87,7 +87,7 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             //MS Dependency injection doesn't support 
             var result = DefaultServiceProvider.GetRequiredService<IEnumerable<ISolrAbstractResponseParser<Entity>>>();
             Assert.NotNull(result);
-            Assert.Equal(result.Count(), 1);
+            Assert.Single(result);
 
         }
 

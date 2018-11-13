@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SolrNet {
@@ -74,5 +75,12 @@ namespace SolrNet {
         /// <param name="parameters">Query string parameters</param>
         /// <returns></returns>
         Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters);
+    }
+
+    public interface IStreamSolrConnection : ISolrConnection
+    {
+        Task<Stream> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters, CancellationToken cancellationToken);
+        Task<Stream> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken);
+
     }
 }

@@ -1,5 +1,30 @@
 # Change Log
 
+## 1.0.7
+- Fix: Parsing error when spellcheck.extendedResults=true #398 (@ariasjose)
+- Tweaked the AutoSolrConnection `MaxUriLength`.
+- Fix: AtomicUpdate async doesn't work due to stream being closed prematurely #401
+- Use AutoSolrConnection instead of SolrConnection in StructureMap.SolrNetIntegration #400 (@chyczewski-maciej)
+
+## 1.0.6 
+- New: `AutoSolrConnection`, automatically uses `GET` or `POST` depending on uri length. Improved performance when using `async` methods. 
+- Add `netstandard 2.0` support to `Unity.SolrNetIntegration`
+
+## 1.0.5 
+- SolrNet Cloud: add checks if Zookeeper connection is valid
+
+## 1.0.4 (2018-02-04)
+- Add `netstandard 2.0` support to `Ninject.Integration.SolrNet`
+- Add `netstandard 2.0` support to `AutofacContrib.SolrNet`
+
+## 1.0.3 (2018-02-05)
+- Add `netstandard 2.0` support to `StructureMap.SolrNetIntegration` #376 (@ciprianmo)
+- Fix: Attempting to add duplicate SolrField should give a more helpful error #380
+ 
+## 1.0.2 (2018-01-24)
+- Fix: Error when collations contain duplicates #373 (@ariasjose)
+- House keeping: move to new csproj format. Merge nuspec files into csproj. #374
+
 ## 1.0.1 (2018-01-15)
 - Upgrade `Unity` from 4.0 to 5.0  #364 (@JeroenvdBurg)
 - Change Contributing guide to follow the GitHub Fork and Pull model.

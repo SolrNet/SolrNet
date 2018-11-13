@@ -27,6 +27,25 @@ There's also `AddWithBoost()` (also with single-document and `IEnumerable` overl
 ### Retrieve
 See [Querying](Querying.md)
 
+For index updates to be visible (searchable), some kind of commit must reopen a searcher to a new point-in-time view of the index.
+
+The [realtime get](https://lucene.apache.org/solr/guide/realtime-get.html)  feature allows retrieval (by unique-key) of the latest version of any documents without the associated cost of reopening a searcher. This is primarily useful when using Solr as a NoSQL data store and not just a search index.
+
+For now there is no especific method to use the real time handler, but it can be performed using the /get handler which exists implicitly in Solr
+   
+```
+ISolrOperations<Product> solr = ...
+solr.Query(SolrQuery.All,
+new QueryOptions
+{
+    RequestHandler = new RequestHandlerParameters("/get"),
+    ExtraParams = new Dictionary<string, string>
+    {
+        {"ids", id }
+    }
+});
+```
+
 ### Delete
 The ISolrOperations<T> interface has several `Delete()` overloads:
 

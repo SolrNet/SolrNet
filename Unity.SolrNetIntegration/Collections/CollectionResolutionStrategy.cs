@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Unity.Builder;
 using Unity.Builder.Strategy;
-using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
 namespace Unity.SolrNetIntegration.Collections
 {
@@ -14,9 +13,9 @@ namespace Unity.SolrNetIntegration.Collections
 
         private delegate object CollectionResolver(IBuilderContext context);
 
-        public override void PreBuildUp(IBuilderContext context)
+        public override object PreBuildUp(IBuilderContext context)
         {
-            Guard.ArgumentNotNull(context, "context");
+            if (context == null) throw new ArgumentNullException(nameof(context));
 
             Type typeToBuild = context.BuildKey.Type;
 
@@ -37,7 +36,9 @@ namespace Unity.SolrNetIntegration.Collections
                     context.Existing = resolver(context);
                     context.BuildComplete = true;
                 }
-            }          
+            }
+
+            return null;
         }
 
         private static object ResolveCollection<T>(IBuilderContext context)

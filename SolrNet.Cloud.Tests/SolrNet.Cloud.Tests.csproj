@@ -36,8 +36,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommonServiceLocator">
-      <HintPath>..\packages\CommonServiceLocator.2.0.1\lib\net45\CommonServiceLocator.dll</HintPath>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -75,6 +75,7 @@
     <Compile Include="CollectionsAdminTests.cs" />
     <Compile Include="FakeOperations.cs" />
     <Compile Include="FakeProvider.cs" />
+    <Compile Include="SolrCloudStateProviderTests.cs" />
     <Compile Include="UnityTests.cs" />
     <Compile Include="StartupTests.cs" />
     <Compile Include="SolrCloudOperationsTests.cs" />

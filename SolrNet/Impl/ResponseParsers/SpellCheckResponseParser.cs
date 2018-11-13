@@ -89,7 +89,7 @@ namespace SolrNet.Impl.ResponseParsers
                     var correctionNodes = cn.XPathSelectElements("lst[@name='misspellingsAndCorrections']");
                     foreach (var mc in correctionNodes.Elements())
                     {
-                        tempCollation.MisspellingsAndCorrections.Add(mc.Attribute("name").Value, mc.Value);
+                        tempCollation.MisspellingsAndCorrections.Add(new KeyValuePair<string, string>(mc.Attribute("name").Value, mc.Value));
                     }
                     r.Collations.Add(tempCollation);
                 }
@@ -114,11 +114,12 @@ namespace SolrNet.Impl.ResponseParsers
                     result.EndOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='endOffset']").Value);
                     result.StartOffset = Convert.ToInt32(c.XPathSelectElement("int[@name='startOffset']").Value);
                     var suggestions = new List<string>();
-                    var suggestionNodes = c.XPathSelectElements("arr[@name='suggestion']/str");
+                    var suggestionArray = c.XPathSelectElements("arr[@name='suggestion']");
+                    var suggestionNodes = suggestionArray.Descendants("str");
                     foreach (var suggestionNode in suggestionNodes)
                     {
                         suggestions.Add(suggestionNode.Value);
-                    }
+                    }                    
                     result.Suggestions = suggestions;
                     r.Add(result);
                 }

@@ -415,7 +415,7 @@ namespace SolrNet.Tests {
         [Fact]
         public void GetTermVectorParameterOptions_All() {
             var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.All).ToList();
-            Assert.Equal(1, r.Count);
+            Assert.Single(r);
             Assert.Equal("tv.all", r[0]);
         }
 
@@ -428,28 +428,28 @@ namespace SolrNet.Tests {
                 | TermVectorParameterOptions.Offsets 
                 | TermVectorParameterOptions.TermFrequency_InverseDocumentFrequency;
             var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(o).ToList();
-            Assert.Equal(1, r.Count);
+            Assert.Single(r);
             Assert.Equal("tv.all", r[0]);
         }
 
         [Fact]
         public void GetTermVectorParameterOptions_Tf() {
             var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.TermFrequency).ToList();
-            Assert.Equal(1, r.Count);
+            Assert.Single(r);
             Assert.Equal("tv.tf", r[0]);
         }
 
         [Fact]
         public void GetTermVectorParameterOptions_Df() {
             var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.DocumentFrequency).ToList();
-            Assert.Equal(1, r.Count);
+            Assert.Single(r);
             Assert.Equal("tv.df", r[0]);
         }
 
         [Fact]
         public void GetTermVectorParameterOptions_default() {
             var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.Default).ToList();
-            Assert.Equal(0, r.Count);
+            Assert.Empty(r);
         }
 
         [Fact]
@@ -466,7 +466,7 @@ namespace SolrNet.Tests {
         [Fact]
         public void GetTermVectorParameterOptions_offsets() {
             var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.Offsets).ToList();
-            Assert.Equal(1, r.Count);
+            Assert.Single(r);
             Assert.Equal("tv.offsets", r[0]);
         }
 

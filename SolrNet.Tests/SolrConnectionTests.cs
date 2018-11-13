@@ -174,13 +174,7 @@ namespace SolrNet.Tests {
             });
         }
 
-        [Fact(Skip = "unknown reason")]
-        public void Cache_performance() {
-            var conn = new SolrConnection(solrURL) {
-                Cache = new HttpRuntimeCache(),
-            };
-            TestCache(conn);
-        }
+      
 
         [Fact(Skip = "unknown reason")]
         public void NoCache_performance() {

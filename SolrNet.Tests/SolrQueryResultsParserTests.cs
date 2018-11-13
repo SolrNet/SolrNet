@@ -100,7 +100,7 @@ namespace SolrNet.Tests
         public void Parse()
         {
             var results = ParseFromResource<TestDocument>("Resources.response.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             Assert.Equal(123456, doc.Id);
         }
@@ -193,7 +193,7 @@ namespace SolrNet.Tests
         public void ParseResultsWithArrays()
         {
             var results = ParseFromResource<TestDocumentWithArrays>("Resources.responseWithArrays.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             Assert.Equal("SP2514N", doc.Id);
         }
@@ -202,7 +202,7 @@ namespace SolrNet.Tests
         public void SupportsDateTime()
         {
             var results = ParseFromResource<TestDocumentWithDate>("Resources.responseWithDate.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             Assert.Equal(new DateTime(2001, 1, 2, 3, 4, 5), doc.Fecha);
         }
@@ -225,7 +225,7 @@ namespace SolrNet.Tests
         public void SupportsNullableDateTime()
         {
             var results = ParseFromResource<TestDocumentWithNullableDate>("Resources.responseWithDate.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             Assert.Equal(new DateTime(2001, 1, 2, 3, 4, 5), doc.Fecha);
         }
@@ -234,7 +234,7 @@ namespace SolrNet.Tests
         public void SupportsIEnumerable()
         {
             var results = ParseFromResource<TestDocumentWithArrays4>("Resources.responseWithArraysSimple.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             Assert.Equal(2, new List<string>(doc.Features).Count);
         }
@@ -243,7 +243,7 @@ namespace SolrNet.Tests
         public void SupportsGuid()
         {
             var results = ParseFromResource<TestDocWithGuid>("Resources.responseWithGuid.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             //Console.WriteLine(doc.Key);
         }
@@ -252,7 +252,7 @@ namespace SolrNet.Tests
         public void SupportsEnumAsInteger()
         {
             var results = ParseFromResource<TestDocWithEnum>("Resources.responseWithEnumAsInt.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             //Console.WriteLine(doc.En);
         }
@@ -261,7 +261,7 @@ namespace SolrNet.Tests
         public void SupportsEnumAsString()
         {
             var results = ParseFromResource<TestDocWithEnum>("Resources.responseWithEnumAsString.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             //Console.WriteLine(doc.En);
         }
@@ -282,7 +282,7 @@ namespace SolrNet.Tests
         public void SupportsNullableGuidWithEmptyField()
         {
             var results = ParseFromResource<TestDocWithNullableEnum>("Resources.response.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             Assert.False(results[0].BasicView.HasValue);
         }
 
@@ -290,7 +290,7 @@ namespace SolrNet.Tests
         public void GenericDictionary_string_string()
         {
             var results = ParseFromResource<TestDocWithGenDict>("Resources.responseWithDict.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             Assert.NotNull(doc.Dict);
             Assert.Equal(2, doc.Dict.Count);
@@ -302,7 +302,7 @@ namespace SolrNet.Tests
         public void GenericDictionary_string_int()
         {
             var results = ParseFromResource<TestDocWithGenDict2>("Resources.responseWithDict.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             Assert.NotNull(doc.Dict);
             Assert.Equal(2, doc.Dict.Count);
@@ -314,7 +314,7 @@ namespace SolrNet.Tests
         public void GenericDictionary_string_float()
         {
             var results = ParseFromResource<TestDocWithGenDict3>("Resources.responseWithDictFloat.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             Assert.NotNull(doc.Dict);
             Assert.Equal(2, doc.Dict.Count);
@@ -326,7 +326,7 @@ namespace SolrNet.Tests
         public void GenericDictionary_string_decimal()
         {
             var results = ParseFromResource<TestDocWithGenDict4>("Resources.responseWithDictFloat.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
             Assert.NotNull(doc.Dict);
             Assert.Equal(2, doc.Dict.Count);
@@ -344,14 +344,14 @@ namespace SolrNet.Tests
             Assert.Equal("2.234", results[0].Dict["DictTwo"]);
             Assert.Equal(new DateTime(1, 1, 1), results[0].Dict["timestamp"]);
             Assert.Equal(92.0f, results[0].Dict["price"]);
-            Assert.IsAssignableFrom(typeof(ICollection), results[0].Dict["features"]);
+            Assert.IsAssignableFrom<ICollection>(results[0].Dict["features"]);
         }
 
         [Fact]
         public void WrongFieldDoesntThrow()
         {
             var results = ParseFromResource<TestDocumentWithDate>("Resources.responseWithArraysSimple.xml");
-            Assert.Equal(1, results.Count);
+            Assert.Single(results);
             var doc = results[0];
         }
 
@@ -426,45 +426,45 @@ namespace SolrNet.Tests
 
             //Facet Ranges
             Assert.NotNull(r.FacetRanges);
-            Assert.Equal(r.FacetRanges.Count, 2);
-            Assert.Equal(r.FacetRanges.First().Key , "date-timestamp");
-            Assert.Equal(r.FacetRanges.First().Value.Start, "2017-07-30T00:00:00Z");
-            Assert.Equal(r.FacetRanges.First().Value.End, "2017-08-30T00:00:00Z");
-            Assert.Equal(r.FacetRanges.First().Value.Gap, "+1DAY");
-            Assert.Equal(r.FacetRanges.First().Value.OtherResults[FacetRangeOther.Before], 41622120);
-            Assert.Equal(r.FacetRanges.First().Value.OtherResults[FacetRangeOther.After], 47336);
-            Assert.Equal(r.FacetRanges.First().Value.OtherResults[FacetRangeOther.Between], 75812);
-            Assert.Equal(r.FacetRanges.First().Value.RangeResults.Count,31);
-            Assert.Equal(r.FacetRanges.First().Value.RangeResults.First().Key, "2017-07-30T00:00:00Z");
-            Assert.Equal(r.FacetRanges.First().Value.RangeResults.First().Value, 222);
-            Assert.Equal(r.FacetRanges.First().Value.RangeResults.Last().Key, "2017-08-29T00:00:00Z");
-            Assert.Equal(r.FacetRanges.First().Value.RangeResults.Last().Value, 20);
+            Assert.Equal(2, r.FacetRanges.Count);
+            Assert.Equal("date-timestamp", r.FacetRanges.First().Key );
+            Assert.Equal("2017-07-30T00:00:00Z", r.FacetRanges.First().Value.Start);
+            Assert.Equal("2017-08-30T00:00:00Z", r.FacetRanges.First().Value.End);
+            Assert.Equal("+1DAY", r.FacetRanges.First().Value.Gap);
+            Assert.Equal(41622120, r.FacetRanges.First().Value.OtherResults[FacetRangeOther.Before]);
+            Assert.Equal(47336, r.FacetRanges.First().Value.OtherResults[FacetRangeOther.After]);
+            Assert.Equal(75812, r.FacetRanges.First().Value.OtherResults[FacetRangeOther.Between]);
+            Assert.Equal(31, r.FacetRanges.First().Value.RangeResults.Count);
+            Assert.Equal("2017-07-30T00:00:00Z", r.FacetRanges.First().Value.RangeResults.First().Key);
+            Assert.Equal(222, r.FacetRanges.First().Value.RangeResults.First().Value);
+            Assert.Equal("2017-08-29T00:00:00Z", r.FacetRanges.First().Value.RangeResults.Last().Key);
+            Assert.Equal(20, r.FacetRanges.First().Value.RangeResults.Last().Value);
 
-            Assert.Equal(r.FacetRanges.Last().Key, "version");
-            Assert.Equal(r.FacetRanges.Last().Value.Gap, "1000");
-            Assert.Equal(r.FacetRanges.Last().Value.RangeResults.First().Key, "1531035549990449850");
-            Assert.Equal(r.FacetRanges.Last().Value.RangeResults.First().Value, 20);
-            Assert.Equal(r.FacetRanges.Last().Value.RangeResults.Last().Key, "1531035549990659850");
-            Assert.Equal(r.FacetRanges.Last().Value.RangeResults.Last().Value, 0);
+            Assert.Equal("version", r.FacetRanges.Last().Key);
+            Assert.Equal("1000", r.FacetRanges.Last().Value.Gap);
+            Assert.Equal("1531035549990449850", r.FacetRanges.Last().Value.RangeResults.First().Key);
+            Assert.Equal(20, r.FacetRanges.Last().Value.RangeResults.First().Value);
+            Assert.Equal("1531035549990659850", r.FacetRanges.Last().Value.RangeResults.Last().Key);
+            Assert.Equal(0, r.FacetRanges.Last().Value.RangeResults.Last().Value);
 
 
             //Facet Intervals 
             Assert.NotNull(r.FacetIntervals);
-            Assert.Equal(r.FacetIntervals.Count, 2);
-            Assert.Equal(r.FacetIntervals.First().Key, "letters");
-            Assert.Equal(r.FacetIntervals.First().Value.Count, 3);
-            Assert.Equal(r.FacetIntervals.First().Value.First().Key , "[*,b]");
-            Assert.Equal(r.FacetIntervals.First().Value.First().Value , 5);
-            Assert.Equal(r.FacetIntervals.First().Value.Last().Key, "bar");
-            Assert.Equal(r.FacetIntervals.First().Value.Last().Value, 4544341);
+            Assert.Equal(2, r.FacetIntervals.Count);
+            Assert.Equal("letters", r.FacetIntervals.First().Key);
+            Assert.Equal(3, r.FacetIntervals.First().Value.Count);
+            Assert.Equal("[*,b]", r.FacetIntervals.First().Value.First().Key );
+            Assert.Equal(5, r.FacetIntervals.First().Value.First().Value );
+            Assert.Equal("bar", r.FacetIntervals.First().Value.Last().Key);
+            Assert.Equal(4544341, r.FacetIntervals.First().Value.Last().Value);
 
 
-            Assert.Equal(r.FacetIntervals.Last().Key, "number");
-            Assert.Equal(r.FacetIntervals.Last().Value.Count, 2);
-            Assert.Equal(r.FacetIntervals.Last().Value.First().Key, "[0,500]");
-            Assert.Equal(r.FacetIntervals.Last().Value.First().Value, 9);
-            Assert.Equal(r.FacetIntervals.Last().Value.Last().Key, "[500,1000]");
-            Assert.Equal(r.FacetIntervals.Last().Value.Last().Value, 123);
+            Assert.Equal("number", r.FacetIntervals.Last().Key);
+            Assert.Equal(2, r.FacetIntervals.Last().Value.Count);
+            Assert.Equal("[0,500]", r.FacetIntervals.Last().Value.First().Key);
+            Assert.Equal(9, r.FacetIntervals.Last().Value.First().Value);
+            Assert.Equal("[500,1000]", r.FacetIntervals.Last().Value.Last().Key);
+            Assert.Equal(123, r.FacetIntervals.Last().Value.Last().Value);
 
 
 
@@ -512,7 +512,7 @@ namespace SolrNet.Tests
             var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting.xml"));
             Assert.Equal(1, highlights.Count);
             var kv = highlights.First().Value;
-            Assert.Equal(1, kv.Count);
+            Assert.Single(kv);
             Assert.Equal("features", kv.First().Key);
             Assert.Equal(1, kv.First().Value.Count);
             //Console.WriteLine(kv.First().Value.First());
@@ -560,8 +560,8 @@ namespace SolrNet.Tests
         public void ParseHighlighting3()
         {
             var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting3.xml"));
-            Assert.Equal(0, highlights["e4420cc2"].Count);
-            Assert.Equal(1, highlights["e442c4cd"].Count);
+            Assert.Empty(highlights["e4420cc2"]);
+            Assert.Single(highlights["e442c4cd"]);
             Assert.Equal(1, highlights["e442c4cd"]["bodytext"].Count);
             Assert.Contains("Garia lancerer", highlights["e442c4cd"]["bodytext"].First());
         }
@@ -574,8 +574,38 @@ namespace SolrNet.Tests
             var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
             var spellChecking = parser.ParseSpellChecking(docNode);
             Assert.NotNull(spellChecking);
-            Assert.Equal("dell ultrasharp", spellChecking.Collations.First().CollationQuery);
+            //Suggestions
             Assert.Equal(2, spellChecking.Count);
+            //First suggestion - hell
+            Assert.Equal(1, spellChecking.First().Suggestions.Count);
+            Assert.Equal("dell", spellChecking.First().Suggestions.Single());
+            //Second suggestion - ultrashar
+            Assert.Equal(1, spellChecking.Last().Suggestions.Count);
+            Assert.Equal("ultrasharp", spellChecking.Last().Suggestions.Single());            
+            //Collations
+            Assert.Equal("dell ultrasharp", spellChecking.Collations.First().CollationQuery);
+            Assert.Equal(1, spellChecking.Collations.Count);
+        }
+
+        [Fact]        
+        public void ParseSpellCheckingExtendedResults()
+        {
+            var parser = new SpellCheckResponseParser<Product>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingExtended.xml");
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
+            var spellChecking = parser.ParseSpellChecking(docNode);
+            Assert.NotNull(spellChecking);
+            //Number of suggestions
+            Assert.Equal(2, spellChecking.Count);
+
+            //First suggestion - hell
+            Assert.Equal(1, spellChecking.First().Suggestions.Count);
+            Assert.Equal("dell", spellChecking.First().Suggestions.Single());
+
+            //Second suggestion - ultrashar
+            Assert.Equal(2, spellChecking.Last().Suggestions.Count);
+            Assert.Equal("ultrasharp", spellChecking.Last().Suggestions.First());
+            Assert.Equal("ultrasharps", spellChecking.Last().Suggestions.Last());
         }
 
         [Fact]
@@ -634,14 +664,14 @@ namespace SolrNet.Tests
             Assert.Equal("audit differences", spellChecking.Collations.First().CollationQuery);
             Assert.Equal(1111, spellChecking.Collations.First().Hits);
             Assert.Equal(2, spellChecking.Collations.First().MisspellingsAndCorrections.Count);
-            Assert.Equal("audit", spellChecking.Collations.First().MisspellingsAndCorrections["aodit"]);
-            Assert.Equal("differences", spellChecking.Collations.First().MisspellingsAndCorrections["differencex"]);
+            Assert.Equal("audit", spellChecking.Collations.First().MisspellingsAndCorrections.Where(mc => mc.Key == "aodit").First().Value);
+            Assert.Equal("differences", spellChecking.Collations.First().MisspellingsAndCorrections.Where(mc => mc.Key == "differencex").First().Value);
             //Second result
             Assert.Equal("(ao dit) differences", spellChecking.Collations.Last().CollationQuery);
             Assert.Equal(1234, spellChecking.Collations.Last().Hits);
             Assert.Equal(2, spellChecking.Collations.Last().MisspellingsAndCorrections.Count);
-            Assert.Equal("ao dit", spellChecking.Collations.Last().MisspellingsAndCorrections["aodit"]);
-            Assert.Equal("differences", spellChecking.Collations.Last().MisspellingsAndCorrections["differencex"]);
+            Assert.Equal("ao dit", spellChecking.Collations.Last().MisspellingsAndCorrections.Where(mc => mc.Key == "aodit").First().Value);
+            Assert.Equal("differences", spellChecking.Collations.Last().MisspellingsAndCorrections.Where(mc => mc.Key == "differencex").First().Value);
         }
 
         [Theory]
@@ -678,6 +708,37 @@ namespace SolrNet.Tests
             Assert.Equal(0, spellChecking.Collations.Last().MisspellingsAndCorrections.Count);
             InvalidOperationException ex2 = Assert.Throws<InvalidOperationException>(() => spellChecking.Collations.Last().Hits);
             Assert.Equal("Operation not supported when collateExtendedResults parameter is set to false.", ex2.Message);            
+        }
+
+        [Theory]
+        [InlineData("4-")]
+        [InlineData("5+")]
+        public void ParseSpellCheckingCollationsDuplicates(string solrVersion)
+        {
+            //Collations node now separates from collation nodes from suggestions
+            var parser = new SpellCheckResponseParser<Product>();
+            XDocument xml;
+
+            if (solrVersion.Equals("5+"))
+            {
+                xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingAndCollationsDuplicatesSolr5+.xml");
+            }
+            else
+            {
+                xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithSpellCheckingAndCollationsDuplicatesSolr4-.xml");
+            }
+
+            var docNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");
+            var spellChecking = parser.ParseSpellChecking(docNode);
+            Assert.NotNull(spellChecking);
+            Assert.NotNull(spellChecking.Collations);
+            Assert.Equal(1, spellChecking.Collations.Count);
+            //First result
+            Assert.Equal("audit audit", spellChecking.Collations.ElementAt(0).CollationQuery);
+            Assert.Equal(1111, spellChecking.Collations.ElementAt(0).Hits);
+            Assert.Equal(2, spellChecking.Collations.ElementAt(0).MisspellingsAndCorrections.Count);
+            Assert.Equal("audit", spellChecking.Collations.ElementAt(0).MisspellingsAndCorrections.ElementAt(0).Value);
+            Assert.Equal("audit", spellChecking.Collations.ElementAt(0).MisspellingsAndCorrections.ElementAt(1).Value);                     
         }
 
         [Fact]
@@ -751,7 +812,7 @@ namespace SolrNet.Tests
             var docNode = xml.XPathSelectElement("response/lst[@name='termVectors']");
             var docs = parser.ParseDocuments(docNode).ToList();
             Assert.NotNull(docs);
-            Assert.Equal(1, docs.Count);
+            Assert.Single(docs);
             Assert.Equal("20", docs[0].UniqueKey);
             var vectors = docs[0].TermVector.ToList();
             Assert.Equal(15, vectors.Count);

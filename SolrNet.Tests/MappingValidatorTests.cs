@@ -35,7 +35,7 @@ namespace SolrNet.Tests {
 
             var validationResults = mappingValidationManager.EnumerateValidationResults(typeof(SchemaMappingTestDocument), new SolrSchema()).ToList();
 
-            Assert.Equal(1, validationResults.Count);
+            Assert.Single(validationResults);
         }
     }
 

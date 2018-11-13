@@ -57,8 +57,8 @@ namespace SolrNet.Tests {
             doc.Add(new XElement("int", "31"));
             var p = new DefaultFieldParser();
             var i = p.Parse(doc.Root, typeof (int?));
-            Assert.IsAssignableFrom(typeof(int?), i);
-            Assert.IsType(typeof(int), i);
+            Assert.IsAssignableFrom<int?>(i);
+            Assert.IsType<int>(i);
             var ii = (int?) i;
             Assert.True(ii.HasValue);
             Assert.Equal(31, ii.Value);

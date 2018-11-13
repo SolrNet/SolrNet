@@ -160,8 +160,7 @@ namespace SolrNet.Cloud.Tests
             Assert.True(response.Status == 0);
         }
 
-        //[Fact]
-        // causes internal server error (one shard, two shards - doesn't matter)
+        [Fact(Skip = "causes internal server error (one shard, two shards - doesn't matter)")]
         public async Task SplitShard()
         {
             RemoveCollectionIfExists(collections, COLLECTION_NAME);

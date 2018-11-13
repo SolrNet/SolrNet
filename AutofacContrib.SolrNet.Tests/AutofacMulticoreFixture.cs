@@ -211,6 +211,7 @@ namespace AutofacContrib.SolrNet.Tests
         }
     }
 
+    public class Entity { }
     public class Entity1 { }
     public class Entity2 { }
 }

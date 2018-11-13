@@ -1,41 +1,41 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet", "SolrNet\SolrNet.csproj", "{CEEB8690-3E08-4440-B647-787A58E71CFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Tests", "SolrNet.Tests\SolrNet.Tests.csproj", "{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.Tests", "SolrNet.Tests\SolrNet.Tests.csproj", "{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.DSL", "SolrNet.DSL\SolrNet.DSL.csproj", "{385E2EC3-885B-43D5-A86B-955692058BA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.DSL", "SolrNet.DSL\SolrNet.DSL.csproj", "{385E2EC3-885B-43D5-A86B-955692058BA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.DSL.Tests", "SolrNet.DSL.Tests\SolrNet.DSL.Tests.csproj", "{58FA9DC2-97C8-4B2A-892E-B1617854401D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Castle.Facilities.SolrNetIntegration", "Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj", "{0F21F5B6-5986-4301-B0F7-FD9800DB8091}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Castle.Facilities.SolrNetIntegration.Tests", "Castle.Facilities.SolrNetIntegration.Tests\Castle.Facilities.SolrNetIntegration.Tests.csproj", "{3D3D5F34-2C51-4197-BB11-5D28EFB75E5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Castle.Facilities.SolrNetIntegration.Tests", "Castle.Facilities.SolrNetIntegration.Tests\Castle.Facilities.SolrNetIntegration.Tests.csproj", "{3D3D5F34-2C51-4197-BB11-5D28EFB75E5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Integration.SolrNet.Tests", "Ninject.Integration.SolrNet.Tests\Ninject.Integration.SolrNet.Tests.csproj", "{08D59BEE-EC70-4AC8-B6F6-3088B81A6251}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ninject.Integration.SolrNet.Tests", "Ninject.Integration.SolrNet.Tests\Ninject.Integration.SolrNet.Tests.csproj", "{08D59BEE-EC70-4AC8-B6F6-3088B81A6251}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Integration.SolrNet", "Ninject.Integration.SolrNet\Ninject.Integration.SolrNet.csproj", "{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ninject.Integration.SolrNet", "Ninject.Integration.SolrNet\Ninject.Integration.SolrNet.csproj", "{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.SolrNet.Tests", "NHibernate.SolrNet.Tests\NHibernate.SolrNet.Tests.csproj", "{10FEA661-BAD8-44F6-98CF-4D06516448D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHibernate.SolrNet.Tests", "NHibernate.SolrNet.Tests\NHibernate.SolrNet.Tests.csproj", "{10FEA661-BAD8-44F6-98CF-4D06516448D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NHibernate.SolrNet", "NHibernate.SolrNet\NHibernate.SolrNet.csproj", "{D3312CD6-C4E8-4903-9B9D-95175B85EEE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHibernate.SolrNet", "NHibernate.SolrNet\NHibernate.SolrNet.csproj", "{D3312CD6-C4E8-4903-9B9D-95175B85EEE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructureMap.SolrNetIntegration", "StructureMap.SolrNetIntegration\StructureMap.SolrNetIntegration.csproj", "{A14DE28E-596D-45E0-9BBE-4E85CD5D1B04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StructureMap.SolrNetIntegration", "StructureMap.SolrNetIntegration\StructureMap.SolrNetIntegration.csproj", "{A14DE28E-596D-45E0-9BBE-4E85CD5D1B04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructureMap.SolrNetIntegration.Tests", "StructureMap.SolrNetIntegration.Tests\StructureMap.SolrNetIntegration.Tests.csproj", "{9D497D73-1E2F-4CA2-B518-93919BCC5A6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StructureMap.SolrNetIntegration.Tests", "StructureMap.SolrNetIntegration.Tests\StructureMap.SolrNetIntegration.Tests.csproj", "{9D497D73-1E2F-4CA2-B518-93919BCC5A6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutofacContrib.SolrNet", "AutofacContrib.SolrNet\AutofacContrib.SolrNet.csproj", "{931CEB14-556F-4893-A8D9-C7C6DACA444F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutofacContrib.SolrNet", "AutofacContrib.SolrNet\AutofacContrib.SolrNet.csproj", "{931CEB14-556F-4893-A8D9-C7C6DACA444F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutofacContrib.SolrNet.Tests", "AutofacContrib.SolrNet.Tests\AutofacContrib.SolrNet.Tests.csproj", "{77E47E7C-2CEE-406A-B344-9699DA0F1851}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutofacContrib.SolrNet.Tests", "AutofacContrib.SolrNet.Tests\AutofacContrib.SolrNet.Tests.csproj", "{77E47E7C-2CEE-406A-B344-9699DA0F1851}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.SolrNetIntegration", "Unity.SolrNetIntegration\Unity.SolrNetIntegration.csproj", "{7645E009-0ADC-420E-B00D-3745934E6AB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.SolrNetIntegration", "Unity.SolrNetIntegration\Unity.SolrNetIntegration.csproj", "{7645E009-0ADC-420E-B00D-3745934E6AB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.SolrNetIntegration.Tests", "Unity.SolrNetIntegration.Tests\Unity.SolrNetIntegration.Tests.csproj", "{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.SolrNetIntegration.Tests", "Unity.SolrNetIntegration.Tests\Unity.SolrNetIntegration.Tests.csproj", "{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Tests.Integration", "SolrNet.Tests.Integration\SolrNet.Tests.Integration.csproj", "{4BC966D4-2EC0-47FF-B784-B649BFAABD81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.Tests.Integration", "SolrNet.Tests.Integration\SolrNet.Tests.Integration.csproj", "{4BC966D4-2EC0-47FF-B784-B649BFAABD81}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6488329D-ABDE-4C3A-8F9A-1E1FC838B47F}"
 	ProjectSection(SolutionItems) = preProject
@@ -44,11 +44,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{648832
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DependencyInjection.SolrNet", "Microsoft.DependencyInjection.SolrNet\Microsoft.DependencyInjection.SolrNet.csproj", "{8EED7D76-F9CA-40D5-B86E-A34A16795286}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.DependencyInjection.SolrNet.Tests", "Microsoft.DependencyInjection.SolrNet.Tests\Microsoft.DependencyInjection.SolrNet.Tests.csproj", "{042745E4-2750-41B5-9CCD-5156029CB6B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DependencyInjection.SolrNet.Tests", "Microsoft.DependencyInjection.SolrNet.Tests\Microsoft.DependencyInjection.SolrNet.Tests.csproj", "{042745E4-2750-41B5-9CCD-5156029CB6B6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonServiceLocator.SolrNet", "CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj", "{17B34150-5102-435B-A487-84DD5803A228}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonServiceLocator.SolrNet.Tests", "CommonServiceLocator.SolrNet.Tests\CommonServiceLocator.SolrNet.Tests.csproj", "{0988D6A2-04FD-4328-AFFA-677DB377432D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonServiceLocator.SolrNet.Tests", "CommonServiceLocator.SolrNet.Tests\CommonServiceLocator.SolrNet.Tests.csproj", "{0988D6A2-04FD-4328-AFFA-677DB377432D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonServiceLocator.SolrNet.Cloud", "CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj", "{63538CF2-62C5-4F5A-99B2-9F14896AFB98}"
 EndProject
@@ -56,9 +56,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.Cloud", "SolrNet.Cl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Cloud.Tests", "SolrNet.Cloud.Tests\SolrNet.Cloud.Tests.csproj", "{C4FF031C-FB88-4186-9305-B180A07EC7DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.SolrNetCloudIntegration", "Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj", "{7B507754-C877-4DE7-AE2A-19CF5191C95E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.SolrNetCloudIntegration", "Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj", "{7B507754-C877-4DE7-AE2A-19CF5191C95E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Tests.Common", "SolrNet.Tests.Common\SolrNet.Tests.Common.csproj", "{48DA5170-B96E-485C-941D-0D7797DCA0EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.Tests.Common", "SolrNet.Tests.Common\SolrNet.Tests.Common.csproj", "{48DA5170-B96E-485C-941D-0D7797DCA0EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C167AD0C-270B-4297-94C5-BE5548AA6038}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -174,8 +176,23 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F3FE6EF5-CF5C-4461-8691-4A498A463FD5} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{58FA9DC2-97C8-4B2A-892E-B1617854401D} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{3D3D5F34-2C51-4197-BB11-5D28EFB75E5D} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{08D59BEE-EC70-4AC8-B6F6-3088B81A6251} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{10FEA661-BAD8-44F6-98CF-4D06516448D6} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{9D497D73-1E2F-4CA2-B518-93919BCC5A6D} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{77E47E7C-2CEE-406A-B344-9699DA0F1851} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{4BC966D4-2EC0-47FF-B784-B649BFAABD81} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{042745E4-2750-41B5-9CCD-5156029CB6B6} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{0988D6A2-04FD-4328-AFFA-677DB377432D} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{C4FF031C-FB88-4186-9305-B180A07EC7DA} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{48DA5170-B96E-485C-941D-0D7797DCA0EF} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45
 		SolutionGuid = {BC12CF2E-A108-47A2-B60C-A17B3102D52D}
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45
 	EndGlobalSection
 EndGlobal

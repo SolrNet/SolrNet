@@ -1,6 +1,4 @@
-﻿// 
-
-using System;
+﻿using System;
 using Xunit;
 using Ninject.Integration.SolrNet.Config;
 using SolrNet;
@@ -90,5 +88,6 @@ namespace Ninject.Integration.SolrNet.Tests {
             solr2.Ping();
             Console.WriteLine("Query core 2: {0}", solr2.Query(SolrQuery.All).Count);
         }
+
     }
 }

@@ -92,7 +92,7 @@ namespace SolrNet.Tests {
             basicServer.addWithBoost += (docs, p) => {
                 Assert.Same(parameters, p);
                 var ldocs = docs.ToList();
-                Assert.Equal(1, ldocs.Count);
+                Assert.Single(ldocs);
                 var doc = ldocs[0];
                 Assert.Equal(2.1, doc.Value);
                 Assert.Same(t, doc.Key);

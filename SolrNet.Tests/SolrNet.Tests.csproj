@@ -1,381 +1,162 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-  <Import Project="..\packages\xunit.runner.visualstudio.2.3.1\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\packages\xunit.runner.visualstudio.2.3.1\build\net20\xunit.runner.visualstudio.props')" />
-  <Import Project="..\packages\xunit.core.2.3.1\build\xunit.core.props" Condition="Exists('..\packages\xunit.core.2.3.1\build\xunit.core.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SolrNet.Tests</RootNamespace>
-    <AssemblyName>SolrNet.Tests</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
+    <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.Windsor, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Windsor.4.1.0\lib\net45\Castle.Windsor.dll</HintPath>
-    </Reference>
-    <Reference Include="CommonServiceLocator, Version=2.0.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.2.0.1\lib\net45\CommonServiceLocator.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.abstractions.2.0.1\lib\net35\xunit.abstractions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="xunit.assert, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.assert.2.3.1\lib\netstandard1.1\xunit.assert.dll</HintPath>
-    </Reference>
-    <Reference Include="xunit.core, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.extensibility.core.2.3.1\lib\netstandard1.1\xunit.core.dll</HintPath>
-    </Reference>
-    <Reference Include="xunit.execution.desktop, Version=2.3.1.3858, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.extensibility.execution.2.3.1\lib\net452\xunit.execution.desktop.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AtomicUpdateCommandTests.cs" />
-    <Compile Include="CollapseExpandResponseParserTests.cs" />
-    <Compile Include="DateTimeOffsetFieldParserTests.cs" />
-    <Compile Include="DebugResponseParserTests.cs" />
-    <Compile Include="DefaultResponseParserTests.cs" />
-    <Compile Include="GenericDictionaryDocumentVisitorTests.cs" />
-    <Compile Include="LocationTests.cs" />
-    <Compile Include="MergeCommandTests.cs" />
-    <Compile Include="MoneyTests.cs" />
-    <Compile Include="ExtractCommandTests.cs" />
-    <Compile Include="AddCommandTests.cs" />
-    <Compile Include="AllPropertiesMappingManagerTests.cs" />
-    <Compile Include="AttributesMappingManagerTests.cs" />
-    <Compile Include="CollapseResponseParserTests.cs" />
-    <Compile Include="CollectionFieldSerializerTests.cs" />
-    <Compile Include="CommitCommandTests.cs" />
-    <Compile Include="DateTimeFieldParserTests.cs" />
-    <Compile Include="GenericDictionaryFieldSerializerTests.cs" />
-    <Compile Include="InferringFieldParserTests.cs" />
-    <Compile Include="DefaultFieldParserTests.cs" />
-    <Compile Include="DeleteCommandTests.cs" />
-    <Compile Include="ExceptionTests.cs" />
-    <Compile Include="FieldParserTests.cs" />
-    <Compile Include="HttpTests.cs" />
-    <Compile Include="LocalParamsTests.cs" />
-    <Compile Include="MappedPropertiesIsInSolrSchemaRuleTests.cs" />
-    <Compile Include="MappingManagerTests.cs" />
-    <Compile Include="MappingTypesAreCompatibleWithSolrTypesRuleTests.cs" />
-    <Compile Include="MemoizingMappingManagerTests.cs" />
-    <Compile Include="MoreLikeThisHandlerMatchResponseParserTests.cs" />
-    <Compile Include="MoreLikeThisTests.cs" />
-    <Compile Include="MultivaluedMappedToCollectionRuleTests.cs" />
-    <Compile Include="OperatorOverloadingTests.cs" />
-    <Compile Include="OptimizeCommandTests.cs" />
-    <Compile Include="RegularDocumentVisitorTests.cs" />
-    <Compile Include="RequiredFieldsAreMappedRuleTests.cs" />
-    <EmbeddedResource Include="Resources\responseWithSpellCheckingCollationInCollations.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="SolrCoreReplicationTests.cs" />
-    <Compile Include="SolrDIHStatusParserTest.cs" />
-    <Compile Include="SolrDictionarySerializerTests.cs" />
-    <Compile Include="MappingValidatorTests.cs" />
-    <Compile Include="SolrFacetIntervalQueryTests.cs" />
-    <Compile Include="SolrFacetRangeQueryTests.cs" />
-    <Compile Include="SolrFacetPivotQueryTest.cs" />
-    <Compile Include="SolrMoreLikeThisHandlerStreamUrlQueryTests.cs" />
-    <Compile Include="SolrConstantScoreQueryTests.cs" />
-    <Compile Include="SolrQueryByDistanceTests.cs" />
-    <Compile Include="SolrQueryByFieldRegexTests.cs" />
-    <Compile Include="SolrQuerySerializerStub.cs" />
-    <Compile Include="SolrSchemaParserTests.cs" />
-    <Compile Include="SolrStatusResponseParserTests.cs" />
-    <Compile Include="UniqueKeyMatchesMappingRuleTests.cs" />
-    <Compile Include="Utils\ProfilerTests.cs" />
-    <Compile Include="QueryOptionsTests.cs" />
-    <Compile Include="RandomSortTests.cs" />
-    <Compile Include="SolrDocumentSerializerTestsDocumentClasses.cs" />
-    <Compile Include="SolrFacetDateQueryTests.cs" />
-    <Compile Include="SolrQueryBoostTests.cs" />
-    <Compile Include="SolrConnectionTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SolrDocumentSerializerTests.cs" />
-    <Compile Include="SolrFacetFieldQueryTests.cs" />
-    <Compile Include="SolrHasValueQueryTests.cs" />
-    <Compile Include="SolrNotQueryTests.cs" />
-    <Compile Include="SolrRequiredQueryTests.cs" />
-    <Compile Include="SolrQueryExecuterTests.cs" />
-    <Compile Include="SolrFieldExample.cs" />
-    <Compile Include="SolrMultipleCriteriaQueryTests.cs" />
-    <Compile Include="SolrOperationsTests.cs" />
-    <Compile Include="SolrQueryByFieldTests.cs" />
-    <Compile Include="SolrQueryByRangeTests.cs" />
-    <Compile Include="SolrQueryInListTests.cs" />
-    <Compile Include="SolrQueryResultsParserTests.cs" />
-    <Compile Include="SolrQueryResultsParserTestsDocumentClasses.cs" />
-    <Compile Include="SolrQueryResultsTests.cs" />
-    <Compile Include="SolrServerTests.cs" />
-    <Compile Include="SortOrderTests.cs" />
-    <Compile Include="ThreadHelper.cs" />
-    <Compile Include="TypeHelperTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj">
-      <Project>{0F21F5B6-5986-4301-B0F7-FD9800DB8091}</Project>
-      <Name>Castle.Facilities.SolrNetIntegration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
-      <Project>{48da5170-b96e-485c-941d-0d7797dca0ef}</Project>
-      <Name>SolrNet.Tests.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SolrNet\SolrNet.csproj">
-      <Project>{CEEB8690-3E08-4440-B647-787A58E71CFA}</Project>
-      <Name>SolrNet</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <EmbeddedResource Include="Resources\responseWithExtractContent.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\solrSchemaBasic.xml" />
-    <EmbeddedResource Include="Resources\solrSchemaDefault.xml" />
-    <EmbeddedResource Include="Resources\solrSchemaEmptyUniqueKey.xml" />
-    <EmbeddedResource Include="Resources\solrSchemaNoUniqueKey.xml" />
-    <EmbeddedResource Include="Resources\solrSchemaMappingTypes.xml" />
-    <EmbeddedResource Include="Resources\solrSchemaMultiValuedName.xml" />
-    <EmbeddedResource Include="Resources\responseWithHighlighting.xml" />
-    <EmbeddedResource Include="Resources\responseWithHighlighting2.xml" />
-    <EmbeddedResource Include="Resources\response.xml" />
-    <EmbeddedResource Include="Resources\responseWithArrays.xml" />
-    <EmbeddedResource Include="Resources\responseWithArraysSimple.xml" />
-    <EmbeddedResource Include="Resources\responseWithDate.xml" />
-    <EmbeddedResource Include="Resources\responseWithFacet.xml" />
-    <EmbeddedResource Include="Resources\responseWithGuid.xml" />
-    <EmbeddedResource Include="Resources\responseWithEnumAsInt.xml" />
-    <EmbeddedResource Include="Resources\responseWithEnumAsString.xml" />
-    <EmbeddedResource Include="Resources\responseWithDict.xml" />
-    <EmbeddedResource Include="Resources\responseWithDictFloat.xml" />
-    <EmbeddedResource Include="Resources\responseWithSpellChecking.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\responseWithMoreLikeThis.xml" />
-    <EmbeddedResource Include="Resources\responseWithStats.xml" />
-    <EmbeddedResource Include="Resources\partialResponseWithDateFacet.xml" />
-    <EmbeddedResource Include="Resources\partialResponseWithDateFacetAndOther.xml" />
-    <EmbeddedResource Include="Resources\responseWithGroupingOnInstock.xml" />
-    <EmbeddedResource Include="Resources\responseWithFacetPivoting.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\collapseResponse2.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\solrDIHStatusBasic.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithClustering.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithTerms.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithInterestingTermsList.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithInterestingTermsDetails.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithMLTHandlerMatch.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithStatus.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithTermVector.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+    <None Remove="Resources\collapseResponse.xml" />
+    <None Remove="Resources\collapseResponse2.xml" />
+    <None Remove="Resources\collapseWithExpandResponse.xml" />
+    <None Remove="Resources\collapseWithoutExpandResponse.xml" />
+    <None Remove="Resources\docWithDynamicFields.xml" />
+    <None Remove="Resources\partialResponseWithDateFacet.xml" />
+    <None Remove="Resources\partialResponseWithDateFacetAndOther.xml" />
+    <None Remove="Resources\partialResponseWithRangeFacet.xml" />
+    <None Remove="Resources\partialResponseWithRangeFacetAndOther.xml" />
+    <None Remove="Resources\partialResponseWithStats.xml" />
+    <None Remove="Resources\response.xml" />
+    <None Remove="Resources\responseReplicationDetailsMaster.xml" />
+    <None Remove="Resources\responseReplicationDetailsSlaveIsReplicating.xml" />
+    <None Remove="Resources\responseReplicationDetailsSlaveNotReplicating.xml" />
+    <None Remove="Resources\responseReplicationIndexVersion.xml" />
+    <None Remove="Resources\responseReplicationStatusError.xml" />
+    <None Remove="Resources\responseReplicationStatusOk.xml" />
+    <None Remove="Resources\responseWithArrays.xml" />
+    <None Remove="Resources\responseWithArraysSimple.xml" />
+    <None Remove="Resources\responseWithClustering.xml" />
+    <None Remove="Resources\responseWithDate.xml" />
+    <None Remove="Resources\responseWithDict.xml" />
+    <None Remove="Resources\responseWithDictFloat.xml" />
+    <None Remove="Resources\responseWithEnumAsInt.xml" />
+    <None Remove="Resources\responseWithEnumAsString.xml" />
+    <None Remove="Resources\responseWithExtractContent.xml" />
+    <None Remove="Resources\responseWithFacet.xml" />
+    <None Remove="Resources\responseWithFacetPivoting.xml" />
+    <None Remove="Resources\responseWithGroupingOnInstock.xml" />
+    <None Remove="Resources\responseWithGuid.xml" />
+    <None Remove="Resources\responseWithHighlighting.xml" />
+    <None Remove="Resources\responseWithHighlighting2.xml" />
+    <None Remove="Resources\responseWithHighlighting3.xml" />
+    <None Remove="Resources\responseWithInterestingTermsDetails.xml" />
+    <None Remove="Resources\responseWithInterestingTermsList.xml" />
+    <None Remove="Resources\responseWithMLTHandlerMatch.xml" />
+    <None Remove="Resources\responseWithMoreLikeThis.xml" />
+    <None Remove="Resources\responseWithResultAndGroup.xml" />
+    <None Remove="Resources\responseWithSimpleDebugDetails.xml" />
+    <None Remove="Resources\responseWithSpellChecking.xml" />
+    <None Remove="Resources\responseWithSpellCheckingAndCollationsDuplicatesSolr4-.xml" />
+    <None Remove="Resources\responseWithSpellCheckingAndCollationsDuplicatesSolr5+.xml" />
+    <None Remove="Resources\responseWithSpellCheckingAndCollationsNoExtendedSolr4-.xml" />
+    <None Remove="Resources\responseWithSpellCheckingAndCollationsNoExtendedSolr5+.xml" />
+    <None Remove="Resources\responseWithSpellCheckingAndCollationsSolr4-.xml" />
+    <None Remove="Resources\responseWithSpellCheckingAndCollationsSolr5+.xml" />
+    <None Remove="Resources\responseWithSpellCheckingCollationInCollations.xml" />
+    <None Remove="Resources\responseWithSpellCheckingCollationInSuggestions.xml" />
+    <None Remove="Resources\responseWithStats.xml" />
+    <None Remove="Resources\responseWithStatus.xml" />
+    <None Remove="Resources\responseWithStatus2.xml" />
+    <None Remove="Resources\responseWithStructuredDebugDetails.xml" />
+    <None Remove="Resources\responseWithTerms.xml" />
+    <None Remove="Resources\responseWithTermVector.xml" />
+    <None Remove="Resources\responseWithTermVector2.xml" />
+    <None Remove="Resources\solrDIHStatusBasic.xml" />
+    <None Remove="Resources\solrManagedSchemaBasic.xml" />
+    <None Remove="Resources\solrManagedSchemaEmptyUniqueKey.xml" />
+    <None Remove="Resources\solrManagedSchemaNoUniqueKey.xml" />
+    <None Remove="Resources\solrSchemaBasic.xml" />
+    <None Remove="Resources\solrSchemaDefault.xml" />
+    <None Remove="Resources\solrSchemaEmptyUniqueKey.xml" />
+    <None Remove="Resources\solrSchemaMappingTypes.xml" />
+    <None Remove="Resources\solrSchemaMultiValuedName.xml" />
+    <None Remove="Resources\solrSchemaNoUniqueKey.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\collapseResponse.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithTermVector2.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithResultAndGroup.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithStatus2.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="Resources\collapseResponse2.xml" />
+    <EmbeddedResource Include="Resources\collapseWithExpandResponse.xml" />
+    <EmbeddedResource Include="Resources\collapseWithoutExpandResponse.xml" />
+    <EmbeddedResource Include="Resources\docWithDynamicFields.xml" />
+    <EmbeddedResource Include="Resources\partialResponseWithDateFacet.xml" />
+    <EmbeddedResource Include="Resources\partialResponseWithDateFacetAndOther.xml" />
+    <EmbeddedResource Include="Resources\partialResponseWithRangeFacet.xml" />
+    <EmbeddedResource Include="Resources\partialResponseWithRangeFacetAndOther.xml" />
+    <EmbeddedResource Include="Resources\partialResponseWithStats.xml" />
+    <EmbeddedResource Include="Resources\response.xml" />
     <EmbeddedResource Include="Resources\responseReplicationDetailsMaster.xml" />
     <EmbeddedResource Include="Resources\responseReplicationDetailsSlaveIsReplicating.xml" />
     <EmbeddedResource Include="Resources\responseReplicationDetailsSlaveNotReplicating.xml" />
     <EmbeddedResource Include="Resources\responseReplicationIndexVersion.xml" />
     <EmbeddedResource Include="Resources\responseReplicationStatusError.xml" />
     <EmbeddedResource Include="Resources\responseReplicationStatusOk.xml" />
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithArrays.xml" />
+    <EmbeddedResource Include="Resources\responseWithArraysSimple.xml" />
+    <EmbeddedResource Include="Resources\responseWithClustering.xml" />
+    <EmbeddedResource Include="Resources\responseWithDate.xml" />
+    <EmbeddedResource Include="Resources\responseWithDict.xml" />
+    <EmbeddedResource Include="Resources\responseWithDictFloat.xml" />
+    <EmbeddedResource Include="Resources\responseWithEnumAsInt.xml" />
+    <EmbeddedResource Include="Resources\responseWithEnumAsString.xml" />
+    <EmbeddedResource Include="Resources\responseWithExtractContent.xml" />
+    <EmbeddedResource Include="Resources\responseWithFacet.xml" />
+    <EmbeddedResource Include="Resources\responseWithFacetPivoting.xml" />
+    <EmbeddedResource Include="Resources\responseWithGroupingOnInstock.xml" />
+    <EmbeddedResource Include="Resources\responseWithGuid.xml" />
+    <EmbeddedResource Include="Resources\responseWithHighlighting.xml" />
+    <EmbeddedResource Include="Resources\responseWithHighlighting2.xml" />
     <EmbeddedResource Include="Resources\responseWithHighlighting3.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\partialResponseWithStats.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\collapseWithExpandResponse.xml" />
-    <EmbeddedResource Include="Resources\collapseWithoutExpandResponse.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithStructuredDebugDetails.xml" />
+    <EmbeddedResource Include="Resources\responseWithInterestingTermsDetails.xml" />
+    <EmbeddedResource Include="Resources\responseWithInterestingTermsList.xml" />
+    <EmbeddedResource Include="Resources\responseWithMLTHandlerMatch.xml" />
+    <EmbeddedResource Include="Resources\responseWithMoreLikeThis.xml" />
+    <EmbeddedResource Include="Resources\responseWithResultAndGroup.xml" />
     <EmbeddedResource Include="Resources\responseWithSimpleDebugDetails.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\docWithDynamicFields.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithSpellCheckingCollationInSuggestions.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\partialResponseWithRangeFacet.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\partialResponseWithRangeFacetAndOther.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\xunit.analyzers.0.7.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingExtended.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellChecking.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsDuplicatesSolr4-.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsDuplicatesSolr5+.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsNoExtendedSolr4-.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsNoExtendedSolr5+.xml" />
     <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsSolr4-.xml" />
     <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsSolr5+.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsNoExtendedSolr4-.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\responseWithSpellCheckingAndCollationsNoExtendedSolr5+.xml" />
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingCollationInCollations.xml" />
+    <EmbeddedResource Include="Resources\responseWithSpellCheckingCollationInSuggestions.xml" />
+    <EmbeddedResource Include="Resources\responseWithStats.xml" />
+    <EmbeddedResource Include="Resources\responseWithStatus.xml" />
+    <EmbeddedResource Include="Resources\responseWithStatus2.xml" />
+    <EmbeddedResource Include="Resources\responseWithStructuredDebugDetails.xml" />
+    <EmbeddedResource Include="Resources\responseWithTerms.xml" />
+    <EmbeddedResource Include="Resources\responseWithTermVector.xml" />
+    <EmbeddedResource Include="Resources\responseWithTermVector2.xml" />
+    <EmbeddedResource Include="Resources\solrDIHStatusBasic.xml" />
     <EmbeddedResource Include="Resources\solrManagedSchemaBasic.xml" />
     <EmbeddedResource Include="Resources\solrManagedSchemaEmptyUniqueKey.xml" />
     <EmbeddedResource Include="Resources\solrManagedSchemaNoUniqueKey.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaBasic.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaDefault.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaEmptyUniqueKey.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaMappingTypes.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaMultiValuedName.xml" />
+    <EmbeddedResource Include="Resources\solrSchemaNoUniqueKey.xml" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\xunit.core.2.3.1\build\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.3.1\build\xunit.core.props'))" />
-    <Error Condition="!Exists('..\packages\xunit.core.2.3.1\build\xunit.core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.core.2.3.1\build\xunit.core.targets'))" />
-    <Error Condition="!Exists('..\packages\xunit.runner.visualstudio.2.3.1\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xunit.runner.visualstudio.2.3.1\build\net20\xunit.runner.visualstudio.props'))" />
-  </Target>
-  <Import Project="..\packages\xunit.core.2.3.1\build\xunit.core.targets" Condition="Exists('..\packages\xunit.core.2.3.1\build\xunit.core.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
+    <PackageReference Include="Castle.Core" Version="4.2.1" />
+    <PackageReference Include="Castle.Windsor" Version="4.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj">
+      <Name>SolrNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj">
+      <Name>Castle.Facilities.SolrNetIntegration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
+      <Name>SolrNet.Tests.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

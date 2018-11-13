@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using SolrNet;
 using SolrNet.Cloud;
 using Unity.Injection;
@@ -18,12 +19,28 @@ namespace Unity.SolrNetCloudIntegration
             return ConfigureContainer(stateProvider, container);
         }
 
+
         /// <summary>
         /// Returns configured unity container
         /// </summary>
         public IUnityContainer ConfigureContainer(ISolrCloudStateProvider cloudStateProvider, IUnityContainer container)
         {
+            return Nito.AsyncEx.AsyncContext.Run(() => ConfigureContainerAsync(cloudStateProvider, container));
+        }
 
+        public async Task<IUnityContainer> ConfigureContainerAsync(string zookeeperConnection, IUnityContainer container)
+        {
+            var stateProvider = new SolrNet.Cloud.ZooKeeperClient.SolrCloudStateProvider(zookeeperConnection);
+
+            return await ConfigureContainerAsync(stateProvider, container);
+        }
+
+
+        /// <summary>
+        /// Returns configured unity container
+        /// </summary
+        public async Task<IUnityContainer> ConfigureContainerAsync(ISolrCloudStateProvider cloudStateProvider, IUnityContainer container)
+        {
             //add Collections support
             container.AddNewExtension<Collections.CollectionResolutionExtension>();
 
@@ -34,7 +51,8 @@ namespace Unity.SolrNetCloudIntegration
             if (container.IsRegistered<ISolrCloudStateProvider>(cloudStateProvider.Key))
                 return container;
 
-            Nito.AsyncEx.AsyncContext.Run(() => cloudStateProvider.InitAsync());
+            await cloudStateProvider.InitAsync();
+
             foreach (var collection in cloudStateProvider.GetCloudState().Collections.Keys)
             {
                 if (!container.IsRegistered<ISolrCloudStateProvider>())

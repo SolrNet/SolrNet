@@ -39,7 +39,7 @@ namespace SolrNet.Tests
         {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object>(), null);
-            Assert.Equal(xml.Nodes().Count(), 0);
+            Assert.Equal(0, xml.Nodes().Count());
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace SolrNet.Tests
 
         private static void AssertSerializedField(XElement docNode, string value)
         {
-            Assert.Equal(docNode.Nodes().Count(), 1);
+            Assert.Single(docNode.Nodes());
             var fieldNode = docNode.Element("field");
             Assert.NotNull(fieldNode);
             Assert.Equal("one", fieldNode.Attribute("name").Value);
@@ -118,7 +118,7 @@ namespace SolrNet.Tests
             var docNode = serializer.Serialize(new Dictionary<string, object> {
                 {"one", new[] {1,2,3}}
             }, null);
-            Assert.Equal(docNode.Nodes().Count(), 3);
+            Assert.Equal(3, docNode.Nodes().Count());
             var fieldNodes = docNode.Elements("field").ToList();
             Assert.Equal("1", fieldNodes[0].Value);
             Assert.Equal("2", fieldNodes[1].Value);
@@ -132,7 +132,7 @@ namespace SolrNet.Tests
             var docNode = serializer.Serialize(new Dictionary<string, object> {
                 {"one", new List<string> {"a", "b", "c"}}
             }, null);
-            Assert.Equal(docNode.Nodes().Count(), 3);
+            Assert.Equal(3, docNode.Nodes().Count());
             var fieldNodes = docNode.Elements("field").ToList();
             Assert.Equal("a", fieldNodes[0].Value);
             Assert.Equal("b", fieldNodes[1].Value);
@@ -146,7 +146,7 @@ namespace SolrNet.Tests
             var docNode = serializer.Serialize(new Dictionary<string, object> {
                 {"one", new List<string> {"a", null, "b", "c"}}
             }, null);
-            Assert.Equal(docNode.Nodes().Count(), 3);
+            Assert.Equal(3, docNode.Nodes().Count());
             var fieldNodes = docNode.Elements("field").ToList();
             Assert.Equal("a", fieldNodes[0].Value);
             Assert.Equal("b", fieldNodes[1].Value);
@@ -160,7 +160,7 @@ namespace SolrNet.Tests
             var docNode = serializer.Serialize(new Dictionary<string, object> {
                 {"one", new List<string> {null, null}}
             }, null);
-            Assert.Equal(docNode.Nodes().Count(), 0);
+            Assert.Equal(0, docNode.Nodes().Count());
         }
 
         [Fact]

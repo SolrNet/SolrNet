@@ -27,10 +27,7 @@ namespace SolrNet.Impl
         /// <summary>
         /// URL to Solr
         /// </summary>
-        public string ServerUrl
-        {
-            get { return serverUrl; }
-        }
+        public string ServerUrl => serverUrl;
 
         public string Post(string relativeUrl, string s)
         {
@@ -42,13 +39,14 @@ namespace SolrNet.Impl
             return conn.PostAsync(relativeUrl, s);
         }
 
-        public (HttpWebRequest request, string queryString) PrepareGet(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        public (HttpWebRequest request, string queryString) PrepareGet(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, SolrRequestOptions options = null)
         {
             var u = new UriBuilder(serverUrl);
             u.Path += relativeUrl;
             var request = (HttpWebRequest)WebRequest.Create(u.Uri);
             request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentType = "application/x-www-form-urlencoded";            
+            request = ApplyRequestOptions(request, options);
 
             var param = new List<KeyValuePair<string, string>>();
             if (parameters != null)
@@ -115,5 +113,19 @@ namespace SolrNet.Impl
             return conn.PostStreamAsync(relativeUrl, contentType, content, getParameters);
         }
 
+
+        #region private
+
+        private HttpWebRequest ApplyRequestOptions(HttpWebRequest request, SolrRequestOptions options = null)
+        {
+            if (options == null) return request;
+            if (options.SolrConnectionTimeout != null) request.Timeout = options.SolrConnectionTimeout();
+
+            return request;
+        }
+
+        #endregion
     }
+    
 }
+

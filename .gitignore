@@ -32,3 +32,6 @@ packages/*
 *.sln.ide
 **/.vs/*
 **/packages
+# Rider IDE
+.idea
+.idea/

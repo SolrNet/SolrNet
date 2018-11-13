@@ -9,7 +9,7 @@ namespace SolrNet.Impl
     public class SolrRequestOptions
     {
         /// <summary>
-        /// Set the timeout of the request to Solr.
+        /// Set the timeout of the request to Solr in MilliSeconds.
         /// </summary>
         public Func<int> SolrConnectionTimeout { get; set; }
 

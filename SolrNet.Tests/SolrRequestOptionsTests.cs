@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net;
 using SolrNet.Impl;
 using Xunit;
 
@@ -26,7 +27,7 @@ namespace SolrNet.Tests
         
         
         /// <summary>
-        /// Check if the SolrConnectionTimeout func can be set and read
+        /// SolrRequestOptions will not set the SolrConnectionTimeout by automation.
         /// </summary>
         [Fact]
         public void SolrConnectionTimeout_CanBeNull()
@@ -39,7 +40,8 @@ namespace SolrNet.Tests
         }
         
         /// <summary>
-        /// Check if the SolrConnectionTimeout func can be set and read
+        /// Test that <see cref="PostSolrConnection"/> will apply the <see cref="SolrRequestOptions"/>
+        /// on the <see cref="HttpWebRequest"/>
         /// </summary>
         [Fact]
         public void SolrRequestOptions_AreApplied()
@@ -62,7 +64,8 @@ namespace SolrNet.Tests
         }
         
         /// <summary>
-        /// Check if the SolrConnectionTimeout func can be set and read
+        /// Test that <see cref="PostSolrConnection"/> will not throw if <see cref="SolrRequestOptions"/>
+        /// is null on method call.
         /// </summary>
         [Fact]
         public void SolrRequestOptions_IsNull_ShouldNotThrow()
@@ -82,8 +85,10 @@ namespace SolrNet.Tests
         }
         
         /// <summary>
-        /// Check if the SolrConnectionTimeout func can be set and read
-        /// </summary>
+        /// Test that <see cref="PostSolrConnection"/> will apply <see cref="SolrRequestOptions"/>
+        /// on the <see cref="HttpWebRequest"/> but handles that  <see cref="SolrRequestOptions.SolrConnectionTimeout"/>
+        /// does not have a value.
+        /// /// </summary>
         [Fact]
         public void SolrRequestOptions_TimeoutNotSet_ShouldNotSetRequestTimeout()
         {

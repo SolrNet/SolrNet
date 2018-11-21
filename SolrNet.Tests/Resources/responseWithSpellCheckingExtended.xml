@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <result numFound="1" start="0">
+    <doc>
+      <str name="Key">224fbdc1-12df-4520-9fbe-dd91f916eba1</str>
+    </doc>
+  </result>
+  <lst name="spellcheck">
+    <lst name="suggestions">
+      <lst name="hell">
+        <int name="numFound">1</int>
+        <int name="startOffset">0</int>
+        <int name="endOffset">4</int>
+        <int name="origFreq">0</int>
+        <arr name="suggestion">          
+          <lst>
+            <str name="word">dell</str>
+            <int name="freq">10</int>
+          </lst>
+        </arr>
+      </lst>
+      <lst name="ultrashar">
+        <int name="numFound">1</int>
+        <int name="startOffset">5</int>
+        <int name="endOffset">14</int>
+        <arr name="suggestion">          
+          <lst>
+            <str name="word">ultrasharp</str>
+            <int name="freq">10</int>
+          </lst>
+          <lst>
+            <str name="word">ultrasharps</str>
+            <int name="freq">10</int>
+          </lst>
+        </arr>
+      </lst>
+      <bool name="correctlySpelled">false</bool>
+      <str name="collation">dell ultrasharp</str>
+    </lst>
+  </lst>
+</response>

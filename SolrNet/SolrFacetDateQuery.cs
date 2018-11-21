@@ -23,6 +23,7 @@ namespace SolrNet {
     /// Date facet query
     /// <see href="http://wiki.apache.org/solr/SimpleFacetParameters#Date_Faceting_Parameters"/>
     /// </summary>
+    [Obsolete("As of Solr 3.1 has been deprecated, as of Solr 6.6 unsupported.")]
     public class SolrFacetDateQuery : ISolrFacetQuery {
         private readonly string field;
         private readonly DateTime start;

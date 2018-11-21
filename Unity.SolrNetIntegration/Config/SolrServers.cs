@@ -2,7 +2,7 @@
 using System.Configuration;
 
 namespace Unity.SolrNetIntegration.Config {
-    public class SolrServers : ConfigurationElementCollection, IEnumerable<SolrServerElement> {
+    public class SolrServers : ConfigurationElementCollection, IEnumerable<ISolrServer> {
         public override ConfigurationElementCollectionType CollectionType {
             get { return ConfigurationElementCollectionType.BasicMap; }
         }
@@ -24,7 +24,7 @@ namespace Unity.SolrNetIntegration.Config {
             return solrServerElement.Url + solrServerElement.DocumentType;
         }
 
-        IEnumerator<SolrServerElement> IEnumerable<SolrServerElement>.GetEnumerator() {
+        IEnumerator<ISolrServer> IEnumerable<ISolrServer>.GetEnumerator() {
             var c = (ConfigurationElementCollection) this;
             foreach (SolrServerElement e in c) {
                 yield return e;

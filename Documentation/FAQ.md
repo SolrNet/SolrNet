@@ -42,4 +42,10 @@ double? Score { get; set; }
 
 You're hitting the GET request limit of the Solr web container (i.e. Jetty or Tomcat). You can either:
  * edit this limit in the web container configuration, or 
- * make SolrNet use POST instead of GET. You can do this by installing the SolrNet.Impl.PostSolrConnection decorator ([here's an example](http://stackoverflow.com/a/7584526/21239))
+ * make SolrNet use POST instead of GET. You can do this by installing the [SolrNet.Impl.SolrPostConnection](../SolrNet/Impl/SolrPostConnection.cs) decorator ([here's an example](http://stackoverflow.com/a/7584526/21239))
+
+#### What's the difference between `LocalParams` and `ExtraParams`?
+
+`LocalParams` annotates a query with some additional information, for example `{!type=dismax}` sets the query type/parser to `dismax`. For more information about LocalParams see the [Solr wiki](https://wiki.apache.org/solr/LocalParams) and the [reference guide](https://cwiki.apache.org/confluence/display/solr/Local+Parameters+in+Queries).
+
+`ExtraParams` represent HTTP query string parameters passed directly to the Solr URL. This is used to set options or use Solr features that are not represented in the SolrNet object model. `ExtraParams` is a property of type `IEnumerable<KeyValuePair<string, string>>`, thus it doesn't enforce uniqueness of keys, you can send duplicate query string keys to Solr.

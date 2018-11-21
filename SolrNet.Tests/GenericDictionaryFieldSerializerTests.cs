@@ -18,20 +18,20 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldSerializers;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class GenericDictionaryFieldSerializerTests {
-        [Test]
+        [Fact]
         public void Serialize_null_returns_empty() {
             var s = new GenericDictionaryFieldSerializer(new DefaultFieldSerializer());
             var l = s.Serialize(null).ToList();
-            Assert.AreEqual(0, l.Count);
+            Assert.Empty(l);
         }
 
-        [Test]
+        [Fact]
         public void Serialize_dict_with_null_elements() {
             var s = new GenericDictionaryFieldSerializer(new DefaultFieldSerializer());
             var dict = new Dictionary<string, string> {
@@ -39,7 +39,7 @@ namespace SolrNet.Tests {
                 {"two",null},
             };
             var l = s.Serialize(dict).ToList();
-            Assert.AreEqual(2, l.Count);
+            Assert.Equal(2, l.Count);
         }
     }
 }

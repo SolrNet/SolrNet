@@ -1,31 +1,31 @@
 ﻿using System;
 using SolrNet.Impl;
 using SolrNet.Tests.Utils;
-using MbUnit.Framework;
+using Xunit;
 
 namespace SolrNet.Tests
 {
-    [TestFixture]
+    
     public class SolrDIHStatusParserTest {
-        [Test]
+        [Fact]
         public void SolrDIHStatusParsing() {
             var DIHStatusParser = new SolrDIHStatusParser();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.solrDIHStatusBasic.xml");
             SolrDIHStatus dihStatusDoc = DIHStatusParser.Parse(xml);
 
-            Assert.AreEqual(1, dihStatusDoc.TotalRequestToDataSource);
-            Assert.AreEqual(DateTime.Parse("2010-12-09 00:00:00"), dihStatusDoc.Committed);
-            Assert.AreEqual(DateTime.Parse("2010-12-09 00:00:00"), dihStatusDoc.FullDumpStarted);
-            Assert.AreEqual("", dihStatusDoc.ImportResponse);
-            Assert.AreEqual(DateTime.Parse("2010-12-09 00:00:00"), dihStatusDoc.Optimized);
-            Assert.AreEqual(DIHStatus.IDLE, dihStatusDoc.Status);
-            Assert.AreEqual("Indexing completed. Added/Updated: 764648 documents. Deleted 0 documents.", dihStatusDoc.Summary.Trim());
-            Assert.AreEqual(new TimeSpan(), dihStatusDoc.TimeElapsed);
-            Assert.AreEqual(new TimeSpan(0, 0, 9, 48, 65), dihStatusDoc.TimeTaken);
-            Assert.AreEqual(735352, dihStatusDoc.TotalDocumentsFailed);
-            Assert.AreEqual(764648, dihStatusDoc.TotalDocumentsProcessed);
-            Assert.AreEqual(0, dihStatusDoc.TotalDocumentsSkipped);
-            Assert.AreEqual(1500000, dihStatusDoc.TotalRowsFetched);
+            Assert.Equal(1, dihStatusDoc.TotalRequestToDataSource);
+            Assert.Equal(DateTime.Parse("2010-12-09 00:00:00"), dihStatusDoc.Committed);
+            Assert.Equal(DateTime.Parse("2010-12-09 00:00:00"), dihStatusDoc.FullDumpStarted);
+            Assert.Equal("", dihStatusDoc.ImportResponse);
+            Assert.Equal(DateTime.Parse("2010-12-09 00:00:00"), dihStatusDoc.Optimized);
+            Assert.Equal(DIHStatus.IDLE, dihStatusDoc.Status);
+            Assert.Equal("Indexing completed. Added/Updated: 764648 documents. Deleted 0 documents.", dihStatusDoc.Summary.Trim());
+            Assert.Equal(new TimeSpan(), dihStatusDoc.TimeElapsed);
+            Assert.Equal(new TimeSpan(0, 0, 9, 48, 65), dihStatusDoc.TimeTaken);
+            Assert.Equal(735352, dihStatusDoc.TotalDocumentsFailed);
+            Assert.Equal(764648, dihStatusDoc.TotalDocumentsProcessed);
+            Assert.Equal(0, dihStatusDoc.TotalDocumentsSkipped);
+            Assert.Equal(1500000, dihStatusDoc.TotalRowsFetched);
         }
 
     }

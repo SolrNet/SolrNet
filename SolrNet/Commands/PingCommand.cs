@@ -15,6 +15,8 @@
 #endregion
 
 using System.Collections.Generic;
+using SolrNet.Impl;
+using System.Threading.Tasks;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -23,8 +25,13 @@ namespace SolrNet.Commands {
     /// </summary>
     /// <seealso href="http://wiki.apache.org/solr/SolrConfigXml"/>
 	public class PingCommand : ISolrCommand {
-		public string Execute(ISolrConnection connection) {
+        public SolrQueryResponse Execute(ISolrConnection connection)
+        {
 			return connection.Get("/admin/ping", new Dictionary<string, string>());
 		}
-	}
+        public Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
+        {
+            return connection.GetAsync("/admin/ping", new Dictionary<string, string>());
+        }
+    }
 }

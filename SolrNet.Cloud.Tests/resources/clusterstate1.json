@@ -1,0 +1,52 @@
+{
+    "offers": {
+        "shards": {
+            "shard1": {
+                "range": null,
+                "state": "active",
+                "parent": null,
+                "replicas": {
+                    "core_node1": {
+                        "state": "active",
+                        "core": "offers",
+                        "node_name": "A01SOLR001.cdweb.biz:8080_solr",
+                        "base_url": "http://A01SOLR001.cdweb.biz:8080/solr",
+                        "leader": "true"
+                    },
+                    "core_node2": {
+                        "state": "down",
+                        "base_url": "http://A01SOLRLT002.cdweb.biz:8080/solr",
+                        "core": "offers",
+                        "node_name": "A01SOLRLT002.cdweb.biz:8080_solr"
+                    },
+                    "core_node3": {
+                        "state": "down",
+                        "base_url": "http://A01SOLRLT001.cdweb.biz:8080/solr",
+                        "core": "offers",
+                        "node_name": "A01SOLRLT001.cdweb.biz:8080_solr"
+                    }
+                }
+            }
+        },
+        "router": { "name": "implicit" }
+    },
+    "offers_a": {
+        "shards": {
+            "shard1": {
+                "range": null,
+                "state": "active",
+                "parent": null,
+                "replicas": {
+                    "core_node1": {
+                        "state": "active",
+                        "core": "offers_a",
+                        "node_name": "A01SOLR001.cdweb.biz:8080_solr",
+                        "base_url": "http://A01SOLR001.cdweb.biz:8080/solr",
+                        "leader": "true"
+                    }
+                }
+            }
+        },
+        "router": { "name": "implicit" }
+    }
+}

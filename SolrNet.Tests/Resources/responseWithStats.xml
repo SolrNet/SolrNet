@@ -16,6 +16,10 @@
         <double name="sumOfSquares">6038619.160300001</double>
         <double name="mean">350.08466666666664</double>
         <double name="stddev">547.737557906113</double>
+        <lst name="percentiles">
+          <double name="50.0">36000.0</double>
+          <double name="75.0">38495.0</double>
+        </lst>
         <lst name="facets">
           <lst name="inStock">
             <lst name="false">
@@ -40,6 +44,16 @@
             </lst>
           </lst>
         </lst>
+      </lst>
+      <lst name="zeroResults">
+        <null name="min"/>
+        <null name="max"/>
+        <long name="count">0</long>
+        <long name="missing">0</long>
+        <double name="sum">0.0</double>
+        <double name="sumOfSquares">0.0</double>
+        <double name="mean">NaN</double>
+        <double name="stddev">0.0</double>
       </lst>
     </lst>
   </lst>

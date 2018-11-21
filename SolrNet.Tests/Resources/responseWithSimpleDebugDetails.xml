@@ -1,0 +1,83 @@
+﻿<response>
+  <lst name="responseHeader">
+    <int name="status">0</int>
+    <int name="QTime">2</int>
+    <lst name="params">
+      <str name="lowercaseOperators">true</str>
+      <str name="debugQuery">true</str>
+      <str name="indent">true</str>
+      <str name="q">*:*</str>
+      <str name="qf">id title^2</str>
+      <str name="wt">xml</str>
+      <str name="defType">edismax</str>
+    </lst>
+  </lst>
+  <lst name="debug">
+    <str name="rawquerystring">*:*</str>
+    <str name="querystring">*:*</str>
+    <str name="parsedquery">MatchAllDocsQuery(*:*)</str>
+    <str name="parsedquery_toString">*:*</str>
+    <lst name="explain">
+      <str name="first">
+        1.0 = (MATCH) MatchAllDocsQuery, product of:
+        1.0 = queryNorm
+      </str>
+      <str name="second">
+        1.0 = (MATCH) MatchAllDocsQuery, product of:
+        1.0 = queryNorm
+      </str>
+    </lst>
+    <str name="QParser">LuceneQParser</str>
+    <lst name="timing">
+      <double name="time">15.0</double>
+      <lst name="prepare">
+        <double name="time">7.0</double>
+        <lst name="query">
+          <double name="time">3.0</double>
+        </lst>
+        <lst name="facet">
+          <double name="time">2.0</double>
+        </lst>
+        <lst name="mlt">
+          <double name="time">0.0</double>
+        </lst>
+        <lst name="highlight">
+          <double name="time">0.0</double>
+        </lst>
+        <lst name="stats">
+          <double name="time">0.0</double>
+        </lst>
+        <lst name="expand">
+          <double name="time">0.0</double>
+        </lst>
+        <lst name="debug">
+          <double name="time">2.0</double>
+        </lst>
+      </lst>
+      <lst name="process">
+        <double name="time">8.0</double>
+        <lst name="query">
+          <double name="time">4.0</double>
+        </lst>
+        <lst name="facet">
+          <double name="time">0.0</double>
+        </lst>
+        <lst name="mlt">
+          <double name="time">0.0</double>
+        </lst>
+        <lst name="highlight">
+          <double name="time">0.0</double>
+        </lst>
+        <lst name="stats">
+          <double name="time">0.0</double>
+        </lst>
+        <lst name="expand">
+          <double name="time">0.0</double>
+        </lst>
+        <lst name="debug">
+          <double name="time">4.0</double>
+        </lst>
+      </lst>
+    </lst>
+  </lst>
+</response>

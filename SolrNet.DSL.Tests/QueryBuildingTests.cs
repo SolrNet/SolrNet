@@ -15,12 +15,11 @@
 #endregion
 
 using System;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 
 namespace SolrNet.DSL.Tests {
-    [TestFixture]
     public class QueryBuildingTests {
 
         public string Serialize(object q) {
@@ -29,66 +28,66 @@ namespace SolrNet.DSL.Tests {
         }
 
 
-        [Test]
+        [Fact]
         public void Simple() {
             var q = Query.Simple("name:solr");
-            Assert.AreEqual("name:solr", q.Query);
+            Assert.Equal("name:solr", q.Query);
         }
 
-        [Test]
+        [Fact]
         public void FieldValue() {
             var q = Query.Field("name").Is("solr");
-            Assert.AreEqual("name:(solr)", Serialize(q));
+            Assert.Equal("name:(solr)", Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void FieldValueDecimal() {
             var q = Query.Field("price").Is(400);
-            Assert.AreEqual("price:(400)", Serialize(q));
+            Assert.Equal("price:(400)", Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void FieldValueEmpty() {
             var q = Query.Field("price").Is("");
-            Assert.AreEqual("price:(\"\")", Serialize(q));
+            Assert.Equal("price:(\"\")", Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void FieldValueNot() {
             var q = Query.Field("name").Is("solr").Not();
-            Assert.AreEqual("-name:(solr)", Serialize(q));
+            Assert.Equal("-name:(solr)", Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void FieldValueRequired() {
             var q = Query.Field("name").Is("solr").Required();
-            Assert.AreEqual("+name:(solr)", Serialize(q));
+            Assert.Equal("+name:(solr)", Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void Range() {
             var q = Query.Field("price").From(10).To(20);
-            Assert.AreEqual("price:[10 TO 20]", Serialize(q));
+            Assert.Equal("price:[10 TO 20]", Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void InList() {
             var q = Query.Field("price").In(10, 20, 30);
-            Assert.AreEqual("(price:((10) OR (20) OR (30)))", Serialize(q));
+            Assert.Equal("(price:((10) OR (20) OR (30)))", Serialize(q));
         }
 
-        [Test]
+        [Fact]
         public void InList_empty_is_ignored() {
             var q = Query.Field("price").In(new string[0]) && Query.Field("id").Is(123);
             var query = Serialize(q);
             Console.WriteLine(query);
-            Assert.AreEqual("(id:(123))", query);
+            Assert.Equal("(id:(123))", query);
         }
 
-        [Test]
+        [Fact]
         public void HasValue() {
             var q = Query.Field("name").HasAnyValue();
-            Assert.AreEqual("name:[* TO *]", Serialize(q));
+            Assert.Equal("name:[* TO *]", Serialize(q));
         }
     }
 }

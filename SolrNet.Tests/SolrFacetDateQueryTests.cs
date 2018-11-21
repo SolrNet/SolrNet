@@ -17,18 +17,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
 using SolrNet.Utils;
 
-namespace SolrNet.Tests {
-    [TestFixture]
-    public class SolrFacetDateQueryTests {
-        [Test]
-        public void Serialize() {
-            var q = new SolrFacetDateQuery("timestamp", new DateTime(2009,1,1), new DateTime(2009,2,2), "+1DAY") {
+namespace SolrNet.Tests
+{
+
+    public class SolrFacetDateQueryTests
+    {
+
+        [Fact]
+#pragma warning disable xUnit1024 // Test methods cannot have overloads
+        public void Serialize()
+        {
+            var q = new SolrFacetDateQuery("timestamp", new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc), new DateTime(2009, 2, 2, 0, 0, 0, DateTimeKind.Utc), "+1DAY")
+            {
                 HardEnd = true,
                 MinCount = 2,
                 Other = new[] {FacetDateOther.After},
@@ -44,10 +50,12 @@ namespace SolrNet.Tests {
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.other", "after"));
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.include", "lower"));
         }
-        
-        [Test]
-        public void IgnoresLocalParams() {
-            var q = new SolrFacetDateQuery(new LocalParams { { "ex", "cat" } } + "timestamp", new DateTime(2009, 1, 1), new DateTime(2009, 2, 2), "+1DAY") {
+
+        [Fact]
+        public void IgnoresLocalParams()
+        {
+            var q = new SolrFacetDateQuery(new LocalParams { { "ex", "cat" } } + "timestamp", new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc), new DateTime(2009, 2, 2, 0, 0, 0, DateTimeKind.Utc), "+1DAY")
+            {
                 HardEnd = true,
                 MinCount = 2,
                 Other = new[] { FacetDateOther.After },
@@ -64,7 +72,8 @@ namespace SolrNet.Tests {
             Assert.Contains(r, KV.Create("f.timestamp.facet.date.include", "lower"));
         }
 
-        private static IList<KeyValuePair<string, string>> Serialize(object o) {
+        private static IList<KeyValuePair<string, string>> Serialize(object o)
+        {
             var fieldSerializer = new DefaultFieldSerializer();
             var serializer = new DefaultFacetQuerySerializer(new DefaultQuerySerializer(fieldSerializer), fieldSerializer);
             return serializer.Serialize(o).ToList();

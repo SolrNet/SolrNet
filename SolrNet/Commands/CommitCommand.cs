@@ -16,7 +16,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml.Linq;
+using SolrNet.Impl;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -48,29 +50,46 @@ namespace SolrNet.Commands {
         /// </summary>
         public int? MaxSegments { get; set; }
 
-		public string Execute(ISolrConnection connection) {
-			var node = new XElement("commit");
+		public SolrQueryResponse Execute(ISolrConnection connection)
+        {
+            string xml = GetCommitXml();
+            return connection.Post("/update", xml);
+        }
 
-		    var keyValuePairs = new[] {
-		        new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), 
-                new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), 
+        public Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
+        {
+            string xml = GetCommitXml();
+            return connection.PostAsync("/update", xml);
+        }
+
+        private string GetCommitXml()
+        {
+            var node = new XElement("commit");
+
+            var keyValuePairs = new[] {
+                new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"),
+                new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"),
                 new KeyValuePair<bool?, string>(ExpungeDeletes, "expungeDeletes")
-		    };
+            };
 
-		    foreach (var p in keyValuePairs) {
-                if (!p.Key.HasValue) 
+            foreach (var p in keyValuePairs)
+            {
+                if (!p.Key.HasValue)
                     continue;
 
                 var att = new XAttribute(p.Value, p.Key.Value.ToString().ToLower());
                 node.Add(att);
             }
 
-            if (MaxSegments.HasValue) {
+            if (MaxSegments.HasValue)
+            {
                 var att = new XAttribute("maxSegments", MaxSegments.ToString());
                 node.Add(att);
             }
 
-			return connection.Post("/update", node.ToString(SaveOptions.DisableFormatting));
-		}
-	}
+            var xml = node.ToString(SaveOptions.DisableFormatting);
+            return xml;
+        }
+
+    }
 }

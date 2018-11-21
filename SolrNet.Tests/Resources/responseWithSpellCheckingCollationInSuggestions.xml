@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<response>
+  <result numFound="1" start="0">
+    <doc>
+      <str name="Key">224fbdc1-12df-4520-9fbe-dd91f916eba1</str>
+    </doc>
+  </result>
+ 	<lst name="spellcheck">
+		<lst name="suggestions">
+			<lst name="audt">
+				<int name="numFound">4</int>
+				<int name="startOffset">1</int>
+				<int name="endOffset">5</int>
+				<arr name="suggestion">
+					<str>aud t</str>
+					<str>audit</str>
+					<str>au dt</str>
+					<str>audi</str>
+				</arr>
+			</lst>
+			<lst name="collation">
+				<int name="numFound">4</int>
+				<int name="startOffset">1</int>
+				<int name="endOffset">5</int>
+				<arr name="suggestion">
+					<str>aud t</str>
+					<str>audit</str>
+					<str>au dt</str>
+					<str>audi</str>
+				</arr>
+			</lst>
+			<lst name="collation">
+				<str name="collationQuery">audit</str>
+				<int name="hits">6327</int>
+				<lst name="misspellingsAndCorrections">
+					<str name="audt">audit</str>
+				</lst>
+			</lst>
+			<lst name="collation">
+				<str name="collationQuery">au dt</str>
+				<int name="hits">5</int>
+				<lst name="misspellingsAndCorrections">
+					<str name="audt">au dt</str>
+				</lst>
+			</lst>
+		</lst>
+	</lst>
+</response>

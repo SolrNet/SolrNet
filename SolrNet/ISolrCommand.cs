@@ -14,6 +14,9 @@
 // limitations under the License.
 #endregion
 
+using SolrNet.Impl;
+using System.Threading.Tasks;
+
 namespace SolrNet {
     /// <summary>
     /// Command interface
@@ -24,6 +27,8 @@ namespace SolrNet {
         /// </summary>
         /// <param name="connection"></param>
         /// <returns></returns>
-		string Execute(ISolrConnection connection);
-	}
+        SolrQueryResponse Execute(ISolrConnection connection);
+
+        Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection);
+    }
 }

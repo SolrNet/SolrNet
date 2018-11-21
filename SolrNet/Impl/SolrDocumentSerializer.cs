@@ -17,7 +17,6 @@
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Web.UI;
 using System.Xml.Linq;
 
 namespace SolrNet.Impl {
@@ -69,8 +68,11 @@ namespace SolrNet.Impl {
                         fieldNode.Add(boostAtt);
                     }
 
-                    fieldNode.Value = RemoveControlCharacters(n.FieldValue);
-                    docNode.Add(fieldNode);
+                    var v = RemoveControlCharacters(n.FieldValue);
+                    if (v != null) {
+                        fieldNode.Value = v;
+                        docNode.Add(fieldNode);
+                    }
                 }
             }
             return docNode;

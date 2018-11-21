@@ -4,7 +4,8 @@ namespace AutofacContrib.SolrNet.Config {
     /// <summary>
     /// Solr instance or core config
     /// </summary>
-    public class SolrServerElement : ConfigurationElement {
+    public class SolrServerElement : ConfigurationElement, ISolrServer
+    {
         private const string ID = "id";
         private const string URL = "url";
         private const string DOCUMENT_TYPE = "documentType";

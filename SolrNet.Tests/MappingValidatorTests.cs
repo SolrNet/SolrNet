@@ -19,23 +19,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Mapping;
 using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 
 namespace SolrNet.Tests {
-    [TestFixture]
+    
     public class MappingValidatorTests {
-        [Test]
+        [Fact]
         public void ValidatingRuleSetReturnsValidationResults() {
             var mappingManager = new MappingManager();
             var mappingValidationManager = new MappingValidator(mappingManager, new[] {new DummyValidationRuleError()});
 
             var validationResults = mappingValidationManager.EnumerateValidationResults(typeof(SchemaMappingTestDocument), new SolrSchema()).ToList();
 
-            Assert.AreEqual(1, validationResults.Count);
+            Assert.Single(validationResults);
         }
     }
 

@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using Ninject.Integration.SolrNet.Config;
 using Ninject.Modules;
 using SolrNet;
 using SolrNet.Impl;
@@ -33,11 +32,13 @@ using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
 
-namespace Ninject.Integration.SolrNet {
+namespace Ninject.Integration.SolrNet
+{
     /// <summary>
     /// Configures SolrNet in a Ninject kernel
     /// </summary>
-    public class SolrNetModule : NinjectModule {
+    public class SolrNetModule : NinjectModule
+    {
         private readonly string serverURL;
         private readonly List<SolrCore> cores = new List<SolrCore>();
         private const string CoreId = "CoreId";
@@ -51,7 +52,8 @@ namespace Ninject.Integration.SolrNet {
         /// Configures SolrNet in a Ninject kernel
         /// </summary>
         /// <param name="serverURL"></param>
-        public SolrNetModule(string serverURL) {
+        public SolrNetModule(string serverURL)
+        {
             this.serverURL = serverURL;
         }
 
@@ -59,16 +61,19 @@ namespace Ninject.Integration.SolrNet {
         /// Configures SolrNet in a Ninject kernel with multiple servers/cores
         /// </summary>
         /// <param name="solrServers"></param>
-        public SolrNetModule(SolrServers solrServers) {
-            AddCoresFromConfig(solrServers);            
+        public SolrNetModule(IEnumerable<ISolrServer> solrServers)
+        {
+            AddCoresFromConfig(solrServers);
         }
 
-        private void AddCoresFromConfig(SolrServers solrServers) {
-            if (solrServers == null) {
+        private void AddCoresFromConfig(IEnumerable<ISolrServer> solrServers)
+        {
+            if (solrServers == null)
+            {
                 return;
             }
 
-            foreach (SolrServerElement server in solrServers)
+            foreach (var server in solrServers)
             {
                 var solrCore = GetCoreFrom(server);
                 cores.Add(solrCore);
@@ -76,7 +81,8 @@ namespace Ninject.Integration.SolrNet {
 
         }
 
-        private static SolrCore GetCoreFrom(SolrServerElement server) {
+        private static SolrCore GetCoreFrom(ISolrServer server)
+        {
             var id = server.Id ?? Guid.NewGuid().ToString();
             var documentType = GetCoreDocumentType(server);
             var coreUrl = GetCoreUrl(server);
@@ -84,20 +90,20 @@ namespace Ninject.Integration.SolrNet {
             return new SolrCore(id, documentType, coreUrl);
         }
 
-        private static string GetCoreUrl(SolrServerElement server)
+        private static string GetCoreUrl(ISolrServer server)
         {
             var url = server.Url;
             if (string.IsNullOrEmpty(url))
-                throw new ConfigurationErrorsException("Core url missing in SolrNet core configuration");
+                throw new Ninject.ActivationException("Core url missing in SolrNet core configuration");
             return url;
         }
 
-        private static Type GetCoreDocumentType(SolrServerElement server)
+        private static Type GetCoreDocumentType(ISolrServer server)
         {
             var documentType = server.DocumentType;
 
             if (string.IsNullOrEmpty(documentType))
-                throw new ConfigurationErrorsException("Document type missing in SolrNet core configuration");
+                throw new Ninject.ActivationException("Document type missing in SolrNet core configuration");
 
             Type type;
 
@@ -107,16 +113,17 @@ namespace Ninject.Integration.SolrNet {
             }
             catch (Exception e)
             {
-                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType), e);
+                throw new Ninject.ActivationException(string.Format("Error getting document type '{0}'", documentType), e);
             }
 
             if (type == null)
-                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType));
+                throw new Ninject.ActivationException(string.Format("Error getting document type '{0}'", documentType));
 
             return type;
         }
 
-        private void RegisterCore(SolrCore core) {
+        private void RegisterCore(SolrCore core)
+        {
             string coreConnectionId = core.Id;
 
             Bind<ISolrConnection>().ToConstant(new SolrConnection(core.Url))
@@ -160,19 +167,20 @@ namespace Ninject.Integration.SolrNet {
                 .WithConstructorArgument("basicServer", ctx => ctx.Kernel.Get(solrBasicReadOnlyOperations, bindingMetaData => bindingMetaData.Has(CoreId) && bindingMetaData.Get<string>(CoreId).Equals(coreConnectionId)));
         }
 
-        public override void Load() {
+        public override void Load()
+        {
             var mapper = Mapper ?? new MemoizingMappingManager(new AttributesMappingManager());
             Bind<IReadOnlyMappingManager>().ToConstant(mapper);
             //Bind<ISolrCache>().To<HttpRuntimeCache>();
             Bind<ISolrDocumentPropertyVisitor>().To<DefaultDocumentVisitor>();
             Bind<ISolrFieldParser>().To<DefaultFieldParser>();
-            Bind(typeof (ISolrDocumentActivator<>)).To(typeof (SolrDocumentActivator<>));
+            Bind(typeof(ISolrDocumentActivator<>)).To(typeof(SolrDocumentActivator<>));
             Bind(typeof(ISolrDocumentResponseParser<>)).To(typeof(SolrDocumentResponseParser<>));
             Bind<ISolrDocumentResponseParser<Dictionary<string, object>>>().To<SolrDictionaryDocumentResponseParser>();
             Bind<ISolrFieldSerializer>().To<DefaultFieldSerializer>();
             Bind<ISolrQuerySerializer>().To<DefaultQuerySerializer>();
             Bind<ISolrFacetQuerySerializer>().To<DefaultFacetQuerySerializer>();
-            Bind(typeof (ISolrAbstractResponseParser<>)).To(typeof (DefaultResponseParser<>));
+            Bind(typeof(ISolrAbstractResponseParser<>)).To(typeof(DefaultResponseParser<>));
             Bind<ISolrHeaderResponseParser>().To<HeaderResponseParser<string>>();
             Bind<ISolrExtractResponseParser>().To<ExtractResponseParser>();
             foreach (var p in new[] {
@@ -200,14 +208,15 @@ namespace Ninject.Integration.SolrNet {
                     RegisterCore(solrCore);
                 }
             }
-            else {
+            else
+            {
                 //Bind single type to a single url, prevent breaking existing functionality
                 Bind<ISolrConnection>().ToConstant(new SolrConnection(serverURL));
-                Bind(typeof (ISolrQueryExecuter<>)).To(typeof (SolrQueryExecuter<>));
-                Bind(typeof (ISolrBasicOperations<>)).To(typeof (SolrBasicServer<>));
-                Bind(typeof (ISolrBasicReadOnlyOperations<>)).To(typeof (SolrBasicServer<>));
-                Bind(typeof (ISolrOperations<>)).To(typeof (SolrServer<>));
-                Bind(typeof (ISolrReadOnlyOperations<>)).To(typeof (SolrServer<>));
+                Bind(typeof(ISolrQueryExecuter<>)).To(typeof(SolrQueryExecuter<>));
+                Bind(typeof(ISolrBasicOperations<>)).To(typeof(SolrBasicServer<>));
+                Bind(typeof(ISolrBasicReadOnlyOperations<>)).To(typeof(SolrBasicServer<>));
+                Bind(typeof(ISolrOperations<>)).To(typeof(SolrServer<>));
+                Bind(typeof(ISolrReadOnlyOperations<>)).To(typeof(SolrServer<>));
             }
         }
     }

@@ -85,7 +85,12 @@ namespace SolrNet.Commands.Parameters {
         /// </summary>
         public ClusteringParameters Clustering { get; set; }
 
-	    public QueryOptions() {
+        /// <summary>
+        /// Request handler parameters
+        /// </summary>
+        public RequestHandlerParameters RequestHandler { get; set; }
+
+        public QueryOptions() {
 			OrderBy = new List<SortOrder>();
 		}
 	}

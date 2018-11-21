@@ -60,5 +60,9 @@ namespace SolrNet.Commands.Parameters {
         /// </summary>
         public IEnumerable<KeyValuePair<string, string>> ExtraParams { get; set; }
 
+        /// <summary>
+        /// Requests debug information: timing and explain of score calculation
+        /// </summary>
+        public bool Debug { get; set; }
     }
 }

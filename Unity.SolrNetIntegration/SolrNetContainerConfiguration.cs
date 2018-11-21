@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using Microsoft.Practices.Unity;
 using SolrNet;
-using SolrNet.Exceptions;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -18,11 +15,15 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
-using Unity.SolrNetIntegration.Config;
+using Unity.Injection;
 
 namespace Unity.SolrNetIntegration {
     public class SolrNetContainerConfiguration {
-        public IUnityContainer ConfigureContainer(SolrServers solrServers, IUnityContainer container) {
+        public IUnityContainer ConfigureContainer(IEnumerable<ISolrServer> solrServers, IUnityContainer container) {
+
+            //add Collections support
+            container.AddNewExtension<Collections.CollectionResolutionExtension>();
+
             container.RegisterType<IReadOnlyMappingManager, MemoizingMappingManager>(new InjectionConstructor(new ResolvedParameter(typeof (AttributesMappingManager))));
             container.RegisterType(typeof (ISolrDocumentActivator<>), typeof (SolrDocumentActivator<>));
             container.RegisterType(typeof (ISolrQueryExecuter<>), typeof (SolrQueryExecuter<>));
@@ -144,7 +145,7 @@ namespace Unity.SolrNetIntegration {
             return coreId + typeof (SolrConnection);
         }
 
-        private void AddCoresFromConfig(IEnumerable<SolrServerElement> solrServers, IUnityContainer container) {
+        private void AddCoresFromConfig(IEnumerable<ISolrServer> solrServers, IUnityContainer container) {
             if (solrServers == null) {
                 return;
             }
@@ -156,7 +157,7 @@ namespace Unity.SolrNetIntegration {
             }
         }
 
-        private static SolrCore GetCore(SolrServerElement server) {
+        private static SolrCore GetCore(ISolrServer server) {
             var id = server.Id ?? Guid.NewGuid().ToString();
             var documentType = GetCoreDocumentType(server);
             var coreUrl = GetCoreUrl(server);
@@ -164,19 +165,19 @@ namespace Unity.SolrNetIntegration {
             return new SolrCore(id, documentType, coreUrl);
         }
 
-        private static string GetCoreUrl(SolrServerElement server) {
+        private static string GetCoreUrl(ISolrServer server) {
             var url = server.Url;
             if (string.IsNullOrEmpty(url)) {
-                throw new ConfigurationErrorsException("Core url missing in SolrNet core configuration");
+                throw new ArgumentNullException("Core url missing in SolrNet core configuration");
             }
             return url;
         }
 
-        private static Type GetCoreDocumentType(SolrServerElement server) {
+        private static Type GetCoreDocumentType(ISolrServer server) {
             var documentType = server.DocumentType;
 
             if (string.IsNullOrEmpty(documentType)) {
-                throw new ConfigurationErrorsException("Document type missing in SolrNet core configuration");
+                throw new ArgumentNullException("Document type missing in SolrNet core configuration");
             }
 
             Type type;
@@ -184,11 +185,11 @@ namespace Unity.SolrNetIntegration {
             try {
                 type = Type.GetType(documentType);
             } catch (Exception e) {
-                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType), e);
+                throw new InvalidOperationException(string.Format("Error getting document type '{0}'", documentType), e);
             }
 
             if (type == null)
-                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType));
+                throw new InvalidOperationException(string.Format("Error getting document type '{0}'", documentType));
 
             return type;
         }

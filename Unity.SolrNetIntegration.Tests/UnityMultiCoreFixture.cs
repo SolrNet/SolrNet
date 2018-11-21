@@ -1,52 +1,46 @@
-using System.Configuration;
-using MbUnit.Framework;
-using Microsoft.Practices.Unity;
+﻿using System.Configuration;
+using Xunit;
 using SolrNet;
 using Unity.SolrNetIntegration.Config;
+using System;
 
 namespace Unity.SolrNetIntegration.Tests {
-    [TestFixture]
-    public class UnityMultiCoreFixture {
+    public class UnityMultiCoreFixture : IDisposable {
         private IUnityContainer container;
 
-        [SetUp]
-        public void SetUp() {
+        
+        public  UnityMultiCoreFixture() {
             var solrConfig = (SolrConfigurationSection) ConfigurationManager.GetSection("solr");
 
             container = new UnityContainer();
             new SolrNetContainerConfiguration().ConfigureContainer(solrConfig.SolrServers, container);
         }
 
-        [TearDown]
-        public void Teardown() {
-            container.Dispose();
-        }
-
-        [Test]
+        [Fact]
         public void Get_SolrOperations_for_Entity() {
             var solrOperations = container.Resolve<ISolrOperations<Entity>>();
-            Assert.IsNotNull(solrOperations);
+            Assert.NotNull(solrOperations);
         }
 
-        [Test]
+        [Fact]
         public void Get_SolrOperations_for_Entity2() {
             var solrOperations2 = container.Resolve<ISolrOperations<Entity2>>();
-            Assert.IsNotNull(solrOperations2);
+            Assert.NotNull(solrOperations2);
         }
 
-        [Test]
+        [Fact]
         public void Get_named_SolrOperations_for_Entity() {
             var solrOperations = container.Resolve<ISolrOperations<Entity>>("entity");
-            Assert.IsNotNull(solrOperations);
+            Assert.NotNull(solrOperations);
         }
 
-        [Test]
+        [Fact]
         public void Get_named_SolrOperations_for_Entity2() {
             var solrOperations2 = container.Resolve<ISolrOperations<Entity2>>("entity2");
-            Assert.IsNotNull(solrOperations2);
+            Assert.NotNull(solrOperations2);
         }
 
-        [Test]
+        [Fact]
         public void Same_document_type_different_core_url() {
             var cores = new SolrServers {
                 new SolrServerElement {
@@ -65,6 +59,11 @@ namespace Unity.SolrNetIntegration.Tests {
             new SolrNetContainerConfiguration().ConfigureContainer(cores, container);
             var core1 = container.Resolve<ISolrOperations<Entity>>("core1");
             var core2 = container.Resolve<ISolrOperations<Entity>>("core2");
+        }
+
+        public void Dispose()
+        {
+            container.Dispose();
         }
     }
 }

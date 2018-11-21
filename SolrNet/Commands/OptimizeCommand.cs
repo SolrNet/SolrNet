@@ -15,7 +15,9 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml.Linq;
+using SolrNet.Impl;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -53,12 +55,27 @@ namespace SolrNet.Commands {
         /// </summary>
         /// <param name="connection"></param>
         /// <returns></returns>
-		public string Execute(ISolrConnection connection) {
-			var node = new XElement("optimize");
+		public SolrQueryResponse Execute(ISolrConnection connection)
+        {
+            string xml = GetOptimizeXml();
+
+            return connection.Post("/update", xml);
+        }
+
+        public Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
+        {
+            string xml = GetOptimizeXml();
+
+            return connection.PostAsync("/update", xml);
+        }
+
+        private string GetOptimizeXml()
+        {
+            var node = new XElement("optimize");
 
             var ps = new[] {
-                new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"), 
-                new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"), 
+                new KeyValuePair<bool?, string>(WaitSearcher, "waitSearcher"),
+                new KeyValuePair<bool?, string>(WaitFlush, "waitFlush"),
                 new KeyValuePair<bool?, string>(ExpungeDeletes, "expungeDeletes")
             };
 
@@ -70,12 +87,13 @@ namespace SolrNet.Commands {
                 node.Add(att);
             }
 
-            if (MaxSegments.HasValue) {
+            if (MaxSegments.HasValue)
+            {
                 var att = new XAttribute("maxSegments", MaxSegments.ToString());
                 node.Add(att);
             }
-
-			return connection.Post("/update", node.ToString(SaveOptions.DisableFormatting));
-		}
-	}
+            var xml = node.ToString(SaveOptions.DisableFormatting);
+            return xml;
+        }
+    }
 }

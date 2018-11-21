@@ -45,5 +45,7 @@
   -->
   <cores adminPath="/admin/cores" defaultCoreName="collection1" host="${host:}" hostPort="${jetty.port:}">
     <core name="collection1" instanceDir="." />
+    <core name="core0" instanceDir="." />
+    <core name="core1" instanceDir="." />
   </cores>
 </solr>

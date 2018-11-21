@@ -64,34 +64,52 @@ namespace SolrNet.Impl.ResponseParsers {
             return r;
         }
 
+        /// <summary>
+        /// Parses percentiles node.
+        /// </summary>
+        /// <param name="node">Percentile node.</param>
+        /// <returns></returns>
+        public IDictionary<double, double> ParsePercentilesNode(XElement node) {
+            var r = new Dictionary<double, double>();
+
+            foreach (var n in node.Elements()) {
+                var percentile = Convert.ToDouble(n.Attribute("name").Value, CultureInfo.InvariantCulture);
+                r.Add(percentile, GetDoubleValue(n));
+            }
+            return r;
+        }
+
         public StatsResult ParseStatsNode(XElement node) {
             var r = new StatsResult();
             foreach (var statNode in node.Elements()) {
                 var name = statNode.Attribute("name").Value;
                 switch (name) {
                     case "min":
-						r.Min = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Min = GetDoubleValue(statNode);
                         break;
                     case "max":
-						r.Max = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Max = GetDoubleValue(statNode);
                         break;
                     case "sum":
-						r.Sum = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Sum = GetDoubleValue(statNode);
                         break;
                     case "sumOfSquares":
-						r.SumOfSquares = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.SumOfSquares = GetDoubleValue(statNode);
                         break;
                     case "mean":
-						r.Mean = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Mean = GetDoubleValue(statNode);
                         break;
                     case "stddev":
-						r.StdDev = Convert.ToDouble( statNode.Value, CultureInfo.InvariantCulture );
+                        r.StdDev = GetDoubleValue(statNode);
                         break;
                     case "count":
-						r.Count = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Count = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
                         break;
                     case "missing":
-						r.Missing = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
+                        r.Missing = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
+                        break;
+                    case "percentiles":
+                        r.Percentiles = ParsePercentilesNode(statNode);
                         break;
                     default:
                         r.FacetResults = ParseFacetNode(statNode);
@@ -99,6 +117,13 @@ namespace SolrNet.Impl.ResponseParsers {
                 }
             }
             return r;
+        }
+
+        private static double GetDoubleValue(XElement statNode) {
+            double parsedValue;
+            if (!double.TryParse(statNode.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedValue))
+                parsedValue = double.NaN;
+            return parsedValue;
         }
     }
 }

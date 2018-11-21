@@ -1,30 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl.FieldParsers;
 
-namespace SolrNet.Tests {
-    public static class MoneyTests {
-        [StaticTestFactory]
-        public static IEnumerable<Test> Tests() {
-            var moneys = new[] {
-                new { money = new Money(12, null), toString = "12", },
-                new { money = new Money(12.45m, "USD"), toString = "12.45,USD", },
-                new { money = new Money(52.66m, "EUR"), toString = "52.66,EUR", },
+namespace SolrNet.Tests
+{
+    public class MoneyTests
+    {
+
+        public static IEnumerable<object[]> moneys = new[] {
+               new  object[] { new Money(12, null),  "12" },
+                new object[] {  new Money(12.45m, "USD"),  "12.45,USD", },
+                new object[] {  new Money(52.66m, "EUR"),  "52.66,EUR", },
             };
 
-            foreach (var m in moneys) {
-                var x = m;
-                yield return new TestCase("ToString " + x.toString, 
-                    () => Assert.AreEqual(x.toString, x.money.ToString()));
 
-                yield return new TestCase("Parse " + x.toString, () => {
-                    var parsedMoney = MoneyFieldParser.Parse(x.toString);
-                    Assert.AreEqual(x.money.Currency, parsedMoney.Currency);
-                    Assert.AreEqual(x.money.Value, parsedMoney.Value);
-                });
-            }
+        [Theory]
+        [MemberData(nameof(moneys))]
+        public void ToStringRepresentation(Money money, string stringRepresentation)
+        {
+            Assert.Equal(stringRepresentation, money.ToString());
+        }
+
+        [Theory]
+        [MemberData(nameof(moneys))]
+        public void Parse(Money money, string stringRepresentation)
+        {
+            var parsedMoney = MoneyFieldParser.Parse(stringRepresentation);
+            Assert.Equal(money.Currency, parsedMoney.Currency);
+            Assert.Equal(money.Value, parsedMoney.Value);
 
         }
+
     }
 }
+

@@ -1,8 +1,8 @@
 ﻿using System.Configuration;
 
-namespace StructureMap.SolrNetIntegration.Config 
+namespace StructureMap.SolrNetIntegration.Config
 {
-    public class SolrServerElement : ConfigurationElement 
+    public class SolrServerElement : ConfigurationElement, ISolrServer
     {
         private const string ID = "id";
         private const string URL = "url";
@@ -16,7 +16,7 @@ namespace StructureMap.SolrNetIntegration.Config
         }
 
         [ConfigurationProperty(URL, IsKey = true, IsRequired = true)]
-        public string Url 
+        public string Url
         {
             get { return base[URL].ToString(); }
             set { base[URL] = value; }
@@ -29,7 +29,7 @@ namespace StructureMap.SolrNetIntegration.Config
             set { base[DOCUMENT_TYPE] = value; }
         }
 
-        public override string ToString() 
+        public override string ToString()
         {
             return string.Format("Id: {0} Url: {1} DocType: {2}", Id, Url, DocumentType);
         }

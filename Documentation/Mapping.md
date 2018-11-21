@@ -1,4 +1,7 @@
-Solr fields defined in your schema.xml must be mapped to properties in a .NET class. There are currently three built-in ways to map fields:
+Solr fields defined in your schema.xml must be mapped to properties in a .NET class.
+SolrNet does not write the schema.xml based on .NET code. It's up to you to keep this in sync. Note that sometimes you might not want to have things *exactly* in sync, as some fields might be represented differently in .NET and Solr or you might want to have additional fields in Solr for other use cases.
+
+In SolrNet there are currently three built-in ways to map fields:
 
 ### Attributes (default)
 With this method you decorate the properties you want to map with the `SolrField` and `SolrUniqueKey` attributes. The attribute parameter indicates the corresponding Solr field name.

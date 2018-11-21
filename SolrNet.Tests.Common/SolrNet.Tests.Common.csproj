@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net46</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+      <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
+      <PackageReference Include="Castle.Core" Version="4.2.1" />
+      <PackageReference Include="Castle.Windsor" Version="4.1.0" />
+      <PackageReference Include="xunit.assert" Version="2.3.1" />
+      
+</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj">
+      <Name>SolrNet</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

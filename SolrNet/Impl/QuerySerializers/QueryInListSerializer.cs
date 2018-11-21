@@ -31,7 +31,7 @@ namespace SolrNet.Impl.QuerySerializers {
             if (string.IsNullOrEmpty(q.FieldName) || q.List == null || !q.List.Any())
                 return null;
 
-            var array = q.List.Select(x =>"(" + QueryByFieldSerializer.Quote(x) + ")").ToArray();
+            var array = q.List.Select(x =>"(" + (q.Quoted ? QueryByFieldSerializer.Quote(x) : x) + ")").ToArray();
             return "(" + serializer.Serialize(new SolrQueryByField(QueryByFieldSerializer.EscapeSpaces(q.FieldName),string.Join(" OR ",array)){Quoted = false}) + ")";
         }
     }

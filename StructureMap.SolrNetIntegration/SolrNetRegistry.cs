@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using SolrNet;
-using SolrNet.Exceptions;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -15,17 +13,38 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Utils;
-using StructureMap.SolrNetIntegration.Config;
+using StructureMap.Pipeline;
 
 namespace StructureMap.SolrNetIntegration
 {
-    public class SolrNetRegistry : Configuration.DSL.Registry
+    public class SolrNetRegistry : Registry
     {
-        public SolrNetRegistry(SolrServers solrServers)
-        {          
+        // Constructor should not be used to create SolrNetRegistry we use virtual methods during the initialization. Use Initialize instead.       
+        protected SolrNetRegistry()
+        {
+
+        }
+
+        [Obsolete("Use static Create method instead. This constructor shouldn't be used from child classes at it may cause unexpected behaviour (it won't not use overriden methods).")]
+        public SolrNetRegistry(IEnumerable<ISolrServer> solrServers)
+        {
+
+#warning This is unsafe! This will cause troubles on inheritance!
+            this.Initialize(solrServers);
+        }
+
+        public static SolrNetRegistry Create(IEnumerable<ISolrServer> solrServers)
+        {
+            var registry = new SolrNetRegistry();
+            registry.Initialize(solrServers);
+            return registry;
+        }
+
+        protected virtual void Initialize(IEnumerable<ISolrServer> solrServers)
+        {
             For<IReadOnlyMappingManager>().Use<MemoizingMappingManager>()
                 .Ctor<IReadOnlyMappingManager>("mapper").Is(new AttributesMappingManager());
-            For(typeof (ISolrDocumentActivator<>)).Use(typeof (SolrDocumentActivator<>));
+            For(typeof(ISolrDocumentActivator<>)).Use(typeof(SolrDocumentActivator<>));
             For(typeof(ISolrQueryExecuter<>)).Use(typeof(SolrQueryExecuter<>));
             For<ISolrDocumentPropertyVisitor>().Use<DefaultDocumentVisitor>();
             For<IMappingValidator>().Use<MappingValidator>();
@@ -35,11 +54,11 @@ namespace StructureMap.SolrNetIntegration
             RegisterValidationRules();
             RegisterSerializers();
             RegisterOperations();
-
-            AddCoresFromConfig(solrServers);
+            RegisterServers(solrServers);
         }
 
-        private void RegisterValidationRules() {
+        protected virtual void RegisterValidationRules()
+        {
             var validationRules = new[] {
                                             typeof(MappedPropertiesIsInSolrSchemaRule),
                                             typeof(RequiredFieldsAreMappedRule),
@@ -47,10 +66,11 @@ namespace StructureMap.SolrNetIntegration
                                             typeof(MultivaluedMappedToCollectionRule),
                                         };
             foreach (var validationRule in validationRules)
-                For(typeof (IValidationRule)).Use(validationRule);
+                For(typeof(IValidationRule)).Use(validationRule);
         }
 
-        private void RegisterSerializers() {
+        protected virtual void RegisterSerializers()
+        {
             For(typeof(ISolrDocumentSerializer<>)).Use(typeof(SolrDocumentSerializer<>));
             For(typeof(ISolrDocumentSerializer<Dictionary<string, object>>)).Use(typeof(SolrDictionarySerializer));
             For<ISolrFieldSerializer>().Use<DefaultFieldSerializer>();
@@ -58,20 +78,22 @@ namespace StructureMap.SolrNetIntegration
             For<ISolrFacetQuerySerializer>().Use<DefaultFacetQuerySerializer>();
         }
 
-        private void RegisterOperations() {
+        public virtual void RegisterOperations()
+        {
             For(typeof(ISolrBasicReadOnlyOperations<>)).Use(typeof(SolrBasicServer<>));
             For(typeof(ISolrBasicOperations<>)).Use(typeof(SolrBasicServer<>));
             For(typeof(ISolrReadOnlyOperations<>)).Use(typeof(SolrServer<>));
             For(typeof(ISolrOperations<>)).Use(typeof(SolrServer<>));
         }
 
-        private void RegisterParsers() {
+        protected virtual void RegisterParsers()
+        {
             For(typeof(ISolrDocumentResponseParser<>)).Use(typeof(SolrDocumentResponseParser<>));
 
             For<ISolrDocumentResponseParser<Dictionary<string, object>>>()
                 .Use<SolrDictionaryDocumentResponseParser>();
 
-            For(typeof (ISolrAbstractResponseParser<>)).Use(typeof (DefaultResponseParser<>));
+            For(typeof(ISolrAbstractResponseParser<>)).Use(typeof(DefaultResponseParser<>));
 
             For<ISolrHeaderResponseParser>().Use<HeaderResponseParser<string>>();
             For<ISolrExtractResponseParser>().Use<ExtractResponseParser>();
@@ -87,95 +109,80 @@ namespace StructureMap.SolrNetIntegration
         /// Registers a new core in the container.
         /// This method is meant to be used after the facility initialization
         /// </summary>
-        /// <param name="core"></param>
-        private void RegisterCore(SolrCore core) {
-            var coreConnectionId = core.Id + typeof(SolrConnection);
+        protected virtual void RegisterCore(string id, Type documentType, string coreUrl)
+        {
+            var coreConnectionId = id + typeof(SolrConnection);
 
-            For<ISolrConnection>().Add<SolrConnection>()
-                .Named(coreConnectionId)
-                .Ctor<string>("serverURL").Is(core.Url)
-                .Setter(c => c.Cache).IsTheDefault();
+            For<ISolrConnection>().Use(() => new AutoSolrConnection(coreUrl))
+                .Named(coreConnectionId);
 
-            var ISolrQueryExecuter = typeof(ISolrQueryExecuter<>).MakeGenericType(core.DocumentType);
-            var SolrQueryExecuter = typeof(SolrQueryExecuter<>).MakeGenericType(core.DocumentType);
+            var ISolrQueryExecuter = typeof(ISolrQueryExecuter<>).MakeGenericType(documentType);
+            var SolrQueryExecuter = typeof(SolrQueryExecuter<>).MakeGenericType(documentType);
 
-            For(ISolrQueryExecuter).Add(SolrQueryExecuter).Named(core.Id + SolrQueryExecuter)
-                .CtorDependency<ISolrConnection>("connection").IsNamedInstance(coreConnectionId);
+            For(ISolrQueryExecuter).Add(SolrQueryExecuter).Named(id + SolrQueryExecuter)
+                .Ctor<ISolrConnection>("connection").IsNamedInstance(coreConnectionId);
 
-            var ISolrBasicOperations = typeof(ISolrBasicOperations<>).MakeGenericType(core.DocumentType);
-            var ISolrBasicReadOnlyOperations = typeof(ISolrBasicReadOnlyOperations<>).MakeGenericType(core.DocumentType);
-            var SolrBasicServer = typeof(SolrBasicServer<>).MakeGenericType(core.DocumentType);
+            var ISolrBasicOperations = typeof(ISolrBasicOperations<>).MakeGenericType(documentType);
+            var ISolrBasicReadOnlyOperations = typeof(ISolrBasicReadOnlyOperations<>).MakeGenericType(documentType);
+            var SolrBasicServer = typeof(SolrBasicServer<>).MakeGenericType(documentType);
 
-            For(ISolrBasicOperations).Add(SolrBasicServer).Named(core.Id + SolrBasicServer)
-                .CtorDependency<ISolrConnection>("connection").IsNamedInstance(coreConnectionId)
-                .Child("queryExecuter").IsNamedInstance(core.Id + SolrQueryExecuter);
+            For(ISolrBasicOperations).Add(SolrBasicServer).Named(id + SolrBasicServer)
+                .Ctor<ISolrConnection>("connection").IsNamedInstance(coreConnectionId)
+                .Dependencies.Add("queryExecuter", new ReferencedInstance(id + SolrQueryExecuter));
 
-            For(ISolrBasicReadOnlyOperations).Add(SolrBasicServer).Named(core.Id + SolrBasicServer)
-                .CtorDependency<ISolrConnection>("connection").IsNamedInstance(coreConnectionId)
-                .Child("queryExecuter").IsNamedInstance(core.Id + SolrQueryExecuter);
 
-            var ISolrOperations = typeof(ISolrOperations<>).MakeGenericType(core.DocumentType);
-            var SolrServer = typeof(SolrServer<>).MakeGenericType(core.DocumentType);
-            For(ISolrOperations).Add(SolrServer).Named(core.Id)
-                .Child("basicServer").IsNamedInstance(core.Id + SolrBasicServer);
+            For(ISolrBasicReadOnlyOperations).Add(SolrBasicServer).Named(id + SolrBasicServer)
+                .Ctor<ISolrConnection>("connection").IsNamedInstance(coreConnectionId)
+                .Dependencies.Add("queryExecuter", new ReferencedInstance(id + SolrQueryExecuter));
+
+
+            var ISolrOperations = typeof(ISolrOperations<>).MakeGenericType(documentType);
+            var SolrServer = typeof(SolrServer<>).MakeGenericType(documentType);
+            For(ISolrOperations).Add(SolrServer).Named(id)
+                 .Dependencies.Add("basicServer", new ReferencedInstance(id + SolrBasicServer));
         }
 
-        private void AddCoresFromConfig(SolrServers solrServers)
+        protected virtual void RegisterServers(IEnumerable<ISolrServer> servers)
         {
-            if (solrServers == null)
-                return;
-
-            var cores = new List<SolrCore>();
-
-            foreach (SolrServerElement server in solrServers) {
-                var solrCore = GetCoreFrom(server);
-                cores.Add(solrCore);
-            }
-
-            foreach (var core in cores) {
-                RegisterCore(core);
+            foreach (var server in servers)
+            {
+                RegisterCore(server.Id ?? Guid.NewGuid().ToString(), GetCoreDocumentType(server), GetCoreUrl(server));
             }
         }
 
-        private static SolrCore GetCoreFrom(SolrServerElement server)
-        {
-            var id = server.Id ?? Guid.NewGuid().ToString();
-            var documentType = GetCoreDocumentType(server);
-            var coreUrl = GetCoreUrl(server);
-            UriValidator.ValidateHTTP(coreUrl);
-            return new SolrCore(id, documentType, coreUrl);
-        }
-
-        private static string GetCoreUrl(SolrServerElement server) 
+        protected virtual string GetCoreUrl(ISolrServer server)
         {
             var url = server.Url;
             if (string.IsNullOrEmpty(url))
-                throw new ConfigurationErrorsException("Core url missing in SolrNet core configuration");
+                throw new StructureMapConfigurationException("Core url missing in SolrNet core configuration");
+
+            UriValidator.ValidateHTTP(url);
             return url;
         }
 
-        private static Type GetCoreDocumentType(SolrServerElement server) 
+        protected virtual Type GetCoreDocumentType(ISolrServer server)
         {
             var documentType = server.DocumentType;
-            
+
             if (string.IsNullOrEmpty(documentType))
-                throw new ConfigurationErrorsException("Document type missing in SolrNet core configuration");
-            
+                throw new StructureMapConfigurationException("Document type missing in SolrNet core configuration");
+
             Type type;
-            
-            try 
+
+            try
             {
                 type = Type.GetType(documentType);
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
-                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType), e);
+                throw new StructureMapConfigurationException($"Error getting document type '{documentType}'", e);
             }
-            
+
             if (type == null)
-                throw new ConfigurationErrorsException(string.Format("Error getting document type '{0}'", documentType));
-            
+                throw new StructureMapConfigurationException($"Error getting document type '{documentType}'");
+
             return type;
         }
+
     }
 }

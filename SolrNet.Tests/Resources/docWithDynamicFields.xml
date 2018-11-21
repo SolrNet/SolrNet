@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://github.com/mausch/SolrNet/issues/211 -->
+<doc>
+  <arr name="attr_6">
+    <int>31</int>
+  </arr>
+  <arr name="attr_2">
+    <int>63</int>
+    <int>64</int>
+    <int>65</int>
+    <int>66</int>
+    <int>102</int>
+  </arr>
+  <arr name="attr_1">
+    <int>69</int>
+  </arr>
+  <arr name="attr_9">
+    <int>224</int>
+  </arr>
+  <arr name="attr_5">
+    <int>226</int>
+  </arr>
+  <arr name="attr_8">
+    <int>236</int>
+  </arr>
+  <arr name="attr_11">
+    <int>243</int>
+  </arr>
+  <arr name="attr_20">
+    <int>557</int>
+  </arr>
+  <arr name="attr_4">
+    <int>1349</int>
+  </arr>
+  <arr name="attr_3">
+    <int>2144</int>
+  </arr>
+  <arr name="attr_23">
+    <int>2472</int>
+  </arr>
+  <arr name="attr_13">
+    <int>2556</int>
+  </arr>
+  <arr name="attr_18">
+    <int>2894</int>
+  </arr>
+  <arr name="attr_22">
+    <int>3881</int>
+  </arr>
+  <arr name="attr_21">
+    <int>3882</int>
+  </arr>
+  <arr name="attr_26">
+    <int>3998</int>
+  </arr>
+</doc>

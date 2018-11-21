@@ -24,55 +24,51 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Castle.Windsor.Configuration.Interpreters;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet;
 using SolrNet.Impl;
 using SolrNet.Mapping.Validation;
 using SolrNet.Tests.Mocks;
 
 namespace Castle.Facilities.SolrNetIntegration.Tests {
-    [TestFixture]
     public class CastleFixture {
-        [Test]
-        [ExpectedException(typeof(FacilityException))]
+        [Fact]
         public void NoConfig_throws() {
             var container = new WindsorContainer();
-            container.AddFacility<SolrNetFacility>();
+          Assert.Throws< FacilityException> (() => container.AddFacility<SolrNetFacility>());
         }
 
-        [Test]
-        [ExpectedException(typeof(FacilityException))]
+        [Fact]
         public void InvalidUrl_throws() {
             var configStore = new DefaultConfigurationStore();
             var configuration = new MutableConfiguration("facility");
-            configuration.Attributes.Add("type", typeof(SolrNetFacility).FullName);
+            configuration.Attributes.Add("type", typeof(SolrNetFacility).AssemblyQualifiedName);
             configuration.CreateChild("solrURL", "123");
             configStore.AddFacilityConfiguration(typeof(SolrNetFacility).FullName, configuration);
-            new WindsorContainer(configStore);
+            Assert.Throws<FacilityException>(() => new WindsorContainer(configStore));
         }
 
-        [Test]
-        [ExpectedException(typeof(FacilityException))]
+        [Fact]
         public void InvalidProtocol_throws() {
             var configStore = new DefaultConfigurationStore();
             var configuration = new MutableConfiguration("facility");
             configuration.Attribute("type", typeof(SolrNetFacility).AssemblyQualifiedName);
             configuration.CreateChild("solrURL", "ftp://localhost");
             configStore.AddFacilityConfiguration(typeof(SolrNetFacility).FullName, configuration);
-            new WindsorContainer(configStore);
+            Assert.Throws<FacilityException>(() => new WindsorContainer(configStore));
         }
 
-        [Test]
+        [Fact]
         public void ReplacingMapper() {
             var mapper = new MReadOnlyMappingManager();
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr") {Mapper = mapper};
             var container = new WindsorContainer();
             container.AddFacility("solr", solrFacility);
             var m = container.Resolve<IReadOnlyMappingManager>();
-            Assert.AreSame(m, mapper);
+            Assert.Same(m, mapper);
         }
 
-        [Test]
+        [Fact]
         public void Container_has_ISolrFieldParser() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
@@ -80,7 +76,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Resolve<ISolrFieldParser>();
         }
 
-        [Test]
+        [Fact]
         public void Container_has_ISolrFieldSerializer() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
@@ -88,7 +84,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Resolve<ISolrFieldSerializer>();
         }
 
-        [Test]
+        [Fact]
         public void Container_has_ISolrDocumentPropertyVisitor() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
@@ -96,7 +92,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Resolve<ISolrDocumentPropertyVisitor>();
         }
 
-        [Test]
+        [Fact]
         public void Resolve_ISolrOperations() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
@@ -105,7 +101,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         }
 
 
-        [Test]
+        [Fact]
         public void MultiCore() {
             const string core0url = "http://localhost:8983/solr/core0";
             const string core1url = "http://localhost:8983/solr/core1";
@@ -127,9 +123,9 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Kernel.DependencyResolving += (client, model, dep) => {
                 if (model.TargetType == typeof(ISolrConnection)) {
                     if (client.Services.Contains(typeof(ISolrBasicOperations<Core1Entity>)) || client.Services.Contains(typeof(ISolrQueryExecuter<Core1Entity>)))
-                        Assert.AreEqual(core1url, ((SolrConnection) dep).ServerURL);
+                        Assert.Equal(core1url, ((SolrConnection) dep).ServerURL);
                     if (client.Services.Contains(typeof(ISolrBasicOperations<Document>)) || client.Services.Contains(typeof(ISolrQueryExecuter<Document>)))
-                        Assert.AreEqual(core0url, ((SolrConnection) dep).ServerURL);
+                        Assert.Equal(core0url, ((SolrConnection) dep).ServerURL);
                 }
             };
 
@@ -137,7 +133,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Resolve<ISolrOperations<Document>>();
         }
 
-        [Test]
+        [Fact]
         public void AddCore() {
             const string core0url = "http://localhost:8983/solr/core0";
             const string core1url = "http://localhost:8983/solr/core1";
@@ -151,7 +147,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             TestCores(container);
         }
 
-        [Test]
+        [Fact]
         public void AddCoreFromXML() {
             var container = new WindsorContainer(new XmlInterpreter(new StaticContentResource(@"<castle>
 <facilities>
@@ -182,22 +178,57 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Kernel.DependencyResolving += (client, model, dep) => {
                 if (model.TargetType == typeof(ISolrConnection)) {
                     if (client.Name.StartsWith("core0-id"))
-                        Assert.AreEqual("http://localhost:8983/solr/core0", ((SolrConnection)dep).ServerURL);
+                        Assert.Equal("http://localhost:8983/solr/core0", ((SolrConnection)dep).ServerURL);
                     if (client.Name.StartsWith("core1-id"))
-                        Assert.AreEqual("http://localhost:8983/solr/core1", ((SolrConnection)dep).ServerURL);
+                        Assert.Equal("http://localhost:8983/solr/core1", ((SolrConnection)dep).ServerURL);
                     if (client.Name.StartsWith("core2-id"))
-                        Assert.AreEqual("http://localhost:8983/solr/core1", ((SolrConnection)dep).ServerURL);
+                        Assert.Equal("http://localhost:8983/solr/core1", ((SolrConnection)dep).ServerURL);
                 }
             };
 
-            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core0-id"));
-            Assert.IsInstanceOfType<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core1-id"));
-            Assert.IsInstanceOfType<ISolrOperations<Core1Entity>>(container.Resolve<ISolrOperations<Core1Entity>>("core2-id"));
+            Assert.IsAssignableFrom<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core0-id"));
+            Assert.IsAssignableFrom<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core1-id"));
+            Assert.IsAssignableFrom<ISolrOperations<Core1Entity>>(container.Resolve<ISolrOperations<Core1Entity>>("core2-id"));
+        }
+
+        [Fact]
+        public void AddCoreWithPostConnections()
+        {
+          const string core0url = "http://localhost:8983/solr/core0";
+          const string core1url = "http://localhost:8983/solr/core1";
+          var solrFacility = new SolrNetFacility("http://localhost:8983/solr/defaultCore");
+          solrFacility.AddCore("core0-id", typeof(Document), core0url, true);
+          solrFacility.AddCore("core1-id", typeof(Document), core1url, true);
+          solrFacility.AddCore("core2-id", typeof(Core1Entity), core1url, true);
+          var container = new WindsorContainer();
+          container.AddFacility(solrFacility);
+
+          TestCoresWithPostConnections(container);
+        }
+
+        private void TestCoresWithPostConnections(IWindsorContainer container)
+        {
+          // assert that everything is correctly wired
+          container.Kernel.DependencyResolving += (client, model, dep) =>
+          {
+            if (model.TargetType != typeof(ISolrConnection) ||
+                client.Implementation.Name == typeof(PostSolrConnection).Name) return;
+
+            if (client.Name.StartsWith("core0-id"))
+              Assert.Equal("http://localhost:8983/solr/core0", ((PostSolrConnection)dep).ServerUrl);
+            if (client.Name.StartsWith("core1-id"))
+              Assert.Equal("http://localhost:8983/solr/core1", ((PostSolrConnection)dep).ServerUrl);
+            if (client.Name.StartsWith("core2-id"))
+              Assert.Equal("http://localhost:8983/solr/core1", ((PostSolrConnection)dep).ServerUrl);
+          };
+
+          Assert.IsAssignableFrom<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core0-id"));
+          Assert.IsAssignableFrom<ISolrOperations<Document>>(container.Resolve<ISolrOperations<Document>>("core1-id"));
+          Assert.IsAssignableFrom<ISolrOperations<Core1Entity>>(container.Resolve<ISolrOperations<Core1Entity>>("core2-id"));
         }
 
 
-
-        [Test]
+        [Fact]
         public void DictionaryDocument_Operations() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
@@ -205,25 +236,25 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.Resolve<ISolrOperations<Dictionary<string, object>>>();
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument_ResponseParser() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
             container.AddFacility("solr", solrFacility);
             var parser = container.Resolve<ISolrDocumentResponseParser<Dictionary<string, object>>>();
-            Assert.IsInstanceOfType<SolrDictionaryDocumentResponseParser>(parser);
+            Assert.IsType<SolrDictionaryDocumentResponseParser>(parser);
         }
 
-        [Test]
+        [Fact]
         public void DictionaryDocument_Serializer() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
             container.AddFacility("solr", solrFacility);
             var serializer = container.Resolve<ISolrDocumentSerializer<Dictionary<string, object>>>();
-            Assert.IsInstanceOfType<SolrDictionarySerializer>(serializer);
+            Assert.IsType<SolrDictionarySerializer>(serializer);
         }
 
-        [Test]
+        [Fact]
         public void MappingValidationManager() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
@@ -231,7 +262,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             var validator = container.Resolve<IMappingValidator>();
         }
 
-        [Test]
+        [Fact]
         public void SetConnectionTimeoutInMulticore() {
             const string core0url = "http://localhost:8983/solr/core0";
             const string core1url = "http://localhost:8983/solr/core1";
@@ -247,7 +278,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             container.AddFacility("solr", solrFacility);
             var allTimeouts = container.ResolveAll<ISolrConnection>().Cast<SolrConnection>().Select(x => x.Timeout);
             foreach (var t in allTimeouts)
-                Assert.AreEqual(2000, t);
+                Assert.Equal(2000, t);
         }
 
         public class Document {}

@@ -1,5 +1,5 @@
 using System.Linq;
-using MbUnit.Framework;
+using Xunit;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FieldParsers;
@@ -9,10 +9,10 @@ using SolrNet.Tests.Utils;
 
 namespace SolrNet.Tests
 {
-    [TestFixture]
+    
     public class CollapseExpandResponseParserTests
     {
-        [Test]
+        [Fact]
         public void Parse()
         {
             var mapper = new AttributesMappingManager();
@@ -20,10 +20,10 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.collapseWithoutExpandResponse.xml");
             var results = new SolrQueryResults<Doc>();
             parser.Parse(xml, results);
-            Assert.IsNull(results.CollapseExpand);
+            Assert.Null(results.CollapseExpand);
         }
 
-        [Test]
+        [Fact]
         public void Parse2()
         {
             var mapper = new AttributesMappingManager();
@@ -31,13 +31,13 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.collapseWithExpandResponse.xml");
             var results = new SolrQueryResults<Doc>();
             parser.Parse(xml, results);
-            Assert.IsNotNull(results.CollapseExpand);
-            Assert.AreEqual(4, results.CollapseExpand.Groups.Count);
+            Assert.NotNull(results.CollapseExpand);
+            Assert.Equal(4, results.CollapseExpand.Groups.Count);
 
             var group = results.CollapseExpand.Groups.ElementAt(0);
-            Assert.AreEqual(group.Documents.Count, 2);
-            Assert.AreEqual(group.GroupValue, "First");
-            Assert.AreEqual(group.NumFound, 2);
+            Assert.Equal(2, group.Documents.Count);
+            Assert.Equal("First", group.GroupValue);
+            Assert.Equal(2, group.NumFound);
         }
 
         class Doc {}

@@ -41,14 +41,14 @@ namespace SolrNet.Tests
                 Include = new[] { FacetDateInclude.Lower },
             };
             var r = Serialize(q);
-            Assert.Contains(r, KV.Create("facet.date", "timestamp"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.start", "2009-01-01T00:00:00Z"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.gap", "+1DAY"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.hardend", "true"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.mincount", "2"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.other", "after"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.include", "lower"));
+            Assert.Contains(KV.Create("facet.date", "timestamp"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.start", "2009-01-01T00:00:00Z"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.gap", "+1DAY"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.hardend", "true"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.mincount", "2"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.other", "after"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.include", "lower"), r);
         }
 
         [Fact]
@@ -62,14 +62,14 @@ namespace SolrNet.Tests
                 Include = new[] { FacetDateInclude.Lower },
             };
             var r = Serialize(q);
-            Assert.Contains(r, KV.Create("facet.date", "{!ex=cat}timestamp"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.start", "2009-01-01T00:00:00Z"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.gap", "+1DAY"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.hardend", "true"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.mincount", "2"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.other", "after"));
-            Assert.Contains(r, KV.Create("f.timestamp.facet.date.include", "lower"));
+            Assert.Contains(KV.Create("facet.date", "{!ex=cat}timestamp"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.start", "2009-01-01T00:00:00Z"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.gap", "+1DAY"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.hardend", "true"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.mincount", "2"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.other", "after"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.date.include", "lower"), r);
         }
 
         private static IList<KeyValuePair<string, string>> Serialize(object o)

@@ -94,7 +94,7 @@ namespace SolrNet.Tests
             var conn = new AutoSolrConnection(solrURL);
             XDocument xdoc;
             using (var response = await conn.GetAsStreamAsync("/select/", p, default(CancellationToken)))
-                xdoc = XDocument.Load(response);
+                xdoc = XDocument.Load(response.Response);
 
             Assert.Equal("0", xdoc.Root.Element("lst").Elements("int").First(el => (string)el.Attribute("name") == "status").Value);
             Assert.True(int.Parse((string)xdoc.Root.Element("result").Attribute("numFound")) > 1);
@@ -114,7 +114,7 @@ namespace SolrNet.Tests
             XDocument xdoc;
             using (var response = await conn.GetAsStreamAsync("/select/", p, CancellationToken.None))
             {
-                xdoc = XDocument.Load(response);
+                xdoc = XDocument.Load(response.Response);
             }
             Assert.Equal("0", xdoc.Root.Element("lst").Elements("int").First(el => (string)el.Attribute("name") == "status").Value);
             Assert.True(int.Parse((string)xdoc.Root.Element("result").Attribute("numFound")) > 1);

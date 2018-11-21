@@ -66,7 +66,7 @@ namespace SolrNet.Impl
         public async Task<SolrQueryResponse> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             var queryParameters = parameters?.ToList();
-            using (var responseStream = await GetAsStreamAsync(relativeUrl, queryParameters, cancellationToken))
+            using (var responseStream = (await GetAsStreamAsync(relativeUrl, queryParameters, cancellationToken)).Response)
             using (var sr = new StreamReader(responseStream))
             {
                 var response = new SolrQueryResponse(await sr.ReadToEndAsync());
@@ -76,7 +76,7 @@ namespace SolrNet.Impl
         }
 
 
-        public async Task<Stream> GetAsStreamAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken)
+        public async Task<SolrQueryResponse<Stream>> GetAsStreamAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken)
         {
             var u = new UriBuilder(ServerURL);
             u.Path += relativeUrl;
@@ -94,8 +94,15 @@ namespace SolrNet.Impl
 
             if (!response.IsSuccessStatusCode)
                 throw new SolrConnectionException($"{response.StatusCode}: {response.ReasonPhrase}", null, u.Uri.ToString());
+            var solrResponse = new SolrQueryResponse<Stream>(await response.Content.ReadAsStreamAsync())
+            {
+                MetaData =
+                {
+                    OriginalQuery = u.Query
+                }
+            };
 
-            return await response.Content.ReadAsStreamAsync();
+            return solrResponse;
 
         }
         public SolrQueryResponse Post(string relativeUrl, string s) => SyncFallbackConnection.Post(relativeUrl, s);
@@ -107,7 +114,7 @@ namespace SolrNet.Impl
             var bytes = Encoding.UTF8.GetBytes(s);
             using (var content = new MemoryStream(bytes))
             {
-                using (var responseStream = await PostStreamAsStreamAsync(relativeUrl, "text/xml; charset=utf-8", content, null, cancellationToken))
+                using (var responseStream = (await PostStreamAsStreamAsync(relativeUrl, "text/xml; charset=utf-8", content, null, cancellationToken)).Response)
                 using (var sr = new StreamReader(responseStream))
                 {
                     var response = new SolrQueryResponse(await sr.ReadToEndAsync());
@@ -122,7 +129,7 @@ namespace SolrNet.Impl
         public async Task<SolrQueryResponse> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
         {
             var queryParameters = getParameters?.ToList();
-            using (var responseStream = await PostStreamAsStreamAsync(relativeUrl, contentType, content, queryParameters, CancellationToken.None))
+            using (var responseStream = (await PostStreamAsStreamAsync(relativeUrl, contentType, content, queryParameters, CancellationToken.None)).Response)
             using (var sr = new StreamReader(responseStream))
             {
                 var response = new SolrQueryResponse(await sr.ReadToEndAsync());
@@ -132,7 +139,7 @@ namespace SolrNet.Impl
         }
 
 
-        public async Task<Stream> PostStreamAsStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters, CancellationToken cancellationToken)
+        public async Task<SolrQueryResponse<Stream>> PostStreamAsStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters, CancellationToken cancellationToken)
         {
             var u = new UriBuilder(ServerURL);
             u.Path += relativeUrl;
@@ -146,7 +153,9 @@ namespace SolrNet.Impl
             if (!response.IsSuccessStatusCode)
                 throw new SolrConnectionException($"{response.StatusCode}: {response.ReasonPhrase}", null, u.Uri.ToString());
 
-            return await response.Content.ReadAsStreamAsync();
+            var solrResponse = new SolrQueryResponse<Stream>(await response.Content.ReadAsStreamAsync());
+            solrResponse.MetaData.OriginalQuery = u.Query;
+            return solrResponse;
         }
 
 

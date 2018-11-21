@@ -700,7 +700,7 @@ namespace SolrNet.Impl {
             {
                 using (var r = await cc.GetAsStreamAsync(handler, param, cancellationToken))
                 {
-                    xml = XDocument.Load(r);
+                    xml = XDocument.Load(r.Response);
                 }
             }
             else

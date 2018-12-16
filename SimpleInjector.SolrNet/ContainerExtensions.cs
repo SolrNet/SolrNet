@@ -32,19 +32,19 @@ namespace SimpleInjector.SolrNet
             if (container == null) throw new ArgumentNullException(nameof(container));
 
             container.Register<IReadOnlyMappingManager>(() => new MemoizingMappingManager(new AttributesMappingManager()), Lifestyle.Singleton);
-            container.Register<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>(Lifestyle.Transient);
-            container.Register<ISolrFieldParser, DefaultFieldParser>(Lifestyle.Transient);
-            container.Register(typeof(ISolrDocumentActivator<>), typeof(SolrDocumentActivator<>), Lifestyle.Transient);
+            container.Register<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>();
+            container.Register<ISolrFieldParser, DefaultFieldParser>();
+            container.Register(typeof(ISolrDocumentActivator<>), typeof(SolrDocumentActivator<>));
             container.RegisterConditional(typeof(ISolrDocumentResponseParser<>), typeof(SolrDocumentResponseParser<>), c => !c.Handled);
 
-            container.Register<ISolrDocumentResponseParser<Dictionary<string, object>>, SolrDictionaryDocumentResponseParser>(Lifestyle.Transient);
-            container.Register<ISolrFieldSerializer, DefaultFieldSerializer>(Lifestyle.Transient);
-            container.Register<ISolrQuerySerializer, DefaultQuerySerializer>(Lifestyle.Transient);
-            container.Register<ISolrFacetQuerySerializer, DefaultFacetQuerySerializer>(Lifestyle.Transient);
-            container.Register(typeof(ISolrAbstractResponseParser<>), typeof(DefaultResponseParser<>), Lifestyle.Transient);
+            container.Register<ISolrDocumentResponseParser<Dictionary<string, object>>, SolrDictionaryDocumentResponseParser>();
+            container.Register<ISolrFieldSerializer, DefaultFieldSerializer>();
+            container.Register<ISolrQuerySerializer, DefaultQuerySerializer>();
+            container.Register<ISolrFacetQuerySerializer, DefaultFacetQuerySerializer>();
+            container.Register(typeof(ISolrAbstractResponseParser<>), typeof(DefaultResponseParser<>));
             container.Collection.Register(typeof(ISolrAbstractResponseParser<>), new[] { typeof(DefaultResponseParser<>) });
-            container.Register<ISolrHeaderResponseParser, HeaderResponseParser<string>>(Lifestyle.Transient);
-            container.Register<ISolrExtractResponseParser, ExtractResponseParser>(Lifestyle.Transient);
+            container.Register<ISolrHeaderResponseParser, HeaderResponseParser<string>>();
+            container.Register<ISolrExtractResponseParser, ExtractResponseParser>();
             var p = new[] {
                 typeof(MappedPropertiesIsInSolrSchemaRule),
                 typeof(RequiredFieldsAreMappedRule),
@@ -52,13 +52,13 @@ namespace SimpleInjector.SolrNet
                 typeof(MultivaluedMappedToCollectionRule),
             };
             container.Collection.Register(typeof(IValidationRule), p);
-            container.Register(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>), typeof(SolrMoreLikeThisHandlerQueryResultsParser<>), Lifestyle.Transient);
+            container.Register(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>), typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
             container.RegisterConditional(typeof(ISolrDocumentSerializer<>), typeof(SolrDocumentSerializer<>), c => !c.Handled);
-            container.Register<ISolrDocumentSerializer<Dictionary<string, object>>, SolrDictionarySerializer>(Lifestyle.Transient);
+            container.Register<ISolrDocumentSerializer<Dictionary<string, object>>, SolrDictionarySerializer>();
 
-            container.Register<ISolrSchemaParser, SolrSchemaParser>(Lifestyle.Transient);
-            container.Register<ISolrDIHStatusParser, SolrDIHStatusParser>(Lifestyle.Transient);
-            container.Register<IMappingValidator, MappingValidator>(Lifestyle.Transient);
+            container.Register<ISolrSchemaParser, SolrSchemaParser>();
+            container.Register<ISolrDIHStatusParser, SolrDIHStatusParser>();
+            container.Register<IMappingValidator, MappingValidator>();
 
             if (!cores.Any()) return container;
 
@@ -70,12 +70,12 @@ namespace SimpleInjector.SolrNet
             var connection = new AutoSolrConnection(cores.Single().Url);
             //Bind single type to a single url, prevent breaking existing functionality
             container.Register<ISolrConnection>(() => connection, Lifestyle.Singleton);
-            container.Register(typeof(ISolrQueryExecuter<>), typeof(SolrQueryExecuter<>), Lifestyle.Transient);
-            container.Register(typeof(ISolrBasicOperations<>), typeof(SolrBasicServer<>), Lifestyle.Transient);
-            container.Register(typeof(ISolrBasicReadOnlyOperations<>), typeof(SolrBasicServer<>), Lifestyle.Transient);
-            container.Register(typeof(ISolrOperations<>), typeof(SolrServer<>), Lifestyle.Transient);
-            container.Register(typeof(ISolrReadOnlyOperations<>), typeof(SolrServer<>), Lifestyle.Transient);
-            
+            container.Register(typeof(ISolrQueryExecuter<>), typeof(SolrQueryExecuter<>));
+            container.Register(typeof(ISolrBasicOperations<>), typeof(SolrBasicServer<>));
+            container.Register(typeof(ISolrBasicReadOnlyOperations<>), typeof(SolrBasicServer<>));
+            container.Register(typeof(ISolrOperations<>), typeof(SolrServer<>));
+            container.Register(typeof(ISolrReadOnlyOperations<>), typeof(SolrServer<>));
+
             if (setupAction != null)
             {
                 var options = new SolrNetOptions(connection.HttpClient);

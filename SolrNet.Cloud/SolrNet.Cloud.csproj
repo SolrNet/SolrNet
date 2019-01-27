@@ -31,7 +31,7 @@ This is the SolrNet.Cloud.Core package, and should be used in combination with a
   <!-- NET 4.6 STUFF: -->
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
-    <PackageReference Include="ZooKeeperNetEx" Version="3.4.10.1" />
+    <PackageReference Include="ZooKeeperNetEx" Version="3.4.12.1" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
   

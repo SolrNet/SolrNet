@@ -24,6 +24,6 @@
     <PackageReference Include="Microsoft.Bcl.Build" Version="1.0.21" />
     <PackageReference Include="Nito.AsyncEx" Version="4.0.1" />
     <PackageReference Include="Unity" Version="5.0.0" />
-    <PackageReference Include="ZooKeeperNetEx" Version="3.4.10.1" />
+    <PackageReference Include="ZooKeeperNetEx" Version="3.4.12.1" />
   </ItemGroup>
 </Project>

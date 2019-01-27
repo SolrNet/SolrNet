@@ -1,4 +1,8 @@
 # Change Log
+## 1.0.14 (2019-01-27)
+- Updated ZooKeeperNetEx version to 3.4.12.1 #467 (@karlomedallo)
+- Fix SimpleInjector registration improvement fix issue #461 (@kaink4)
+
 ## 1.0.13 (2018-10-29)
 - Perf Fix: have Microsoft Dependency Injection and SimpleInjector use MemoizingMappingManager. #452 
 - Various AutoSolrConnection improvements.

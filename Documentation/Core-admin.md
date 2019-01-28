@@ -50,7 +50,7 @@ solrCoreAdmin.Swap("core0", "core1");
 ## Unload
 
 ```
-solrCoreAdmin.Swap("core0", UnloadCommand.Delete.Data);
+solrCoreAdmin.Unload("core0", UnloadCommand.Delete.Data);
 ```
 
 ## Merge

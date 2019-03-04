@@ -72,7 +72,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void Container_has_ISolrFieldParser() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
             container.Resolve<ISolrFieldParser>();
         }
 
@@ -80,7 +80,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void Container_has_ISolrFieldSerializer() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
             container.Resolve<ISolrFieldSerializer>();
         }
 
@@ -88,7 +88,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void Container_has_ISolrDocumentPropertyVisitor() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
             container.Resolve<ISolrDocumentPropertyVisitor>();
         }
 
@@ -96,7 +96,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void Resolve_ISolrOperations() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
             container.Resolve<ISolrOperations<Document>>();
         }
 
@@ -107,17 +107,17 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             const string core1url = "http://localhost:8983/solr/core1";
             var solrFacility = new SolrNetFacility(core0url);
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
 
             // override core1 components
             const string core1Connection = "core1.connection";
             container.Register(Component.For<ISolrConnection>().ImplementedBy<SolrConnection>().Named(core1Connection)
-                                   .Parameters(Parameter.ForKey("serverURL").Eq(core1url)));
+                                   .DependsOn(Dependency.OnValue("serverURL", core1url)));
             container.Register(Component.For(typeof (ISolrBasicOperations<Core1Entity>), typeof (ISolrBasicReadOnlyOperations<Core1Entity>))
                                    .ImplementedBy<SolrBasicServer<Core1Entity>>()
-                                   .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(core1Connection)));
+                                   .DependsOn(Dependency.OnComponent("connection", core1Connection)));
             container.Register(Component.For<ISolrQueryExecuter<Core1Entity>>().ImplementedBy<SolrQueryExecuter<Core1Entity>>()
-                                   .ServiceOverrides(ServiceOverride.ForKey("connection").Eq(core1Connection)));
+                                   .DependsOn(Dependency.OnComponent("connection", core1Connection)));
 
             // assert that everything is correctly wired
             container.Kernel.DependencyResolving += (client, model, dep) => {
@@ -142,7 +142,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             solrFacility.AddCore("core1-id", typeof(Document), core1url);
             solrFacility.AddCore("core2-id", typeof(Core1Entity), core1url);
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
 
             TestCores(container);
         }
@@ -232,7 +232,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void DictionaryDocument_Operations() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
             container.Resolve<ISolrOperations<Dictionary<string, object>>>();
         }
 
@@ -240,7 +240,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void DictionaryDocument_ResponseParser() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
             var parser = container.Resolve<ISolrDocumentResponseParser<Dictionary<string, object>>>();
             Assert.IsType<SolrDictionaryDocumentResponseParser>(parser);
         }
@@ -249,7 +249,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void DictionaryDocument_Serializer() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
             var serializer = container.Resolve<ISolrDocumentSerializer<Dictionary<string, object>>>();
             Assert.IsType<SolrDictionarySerializer>(serializer);
         }
@@ -258,7 +258,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         public void MappingValidationManager() {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
             var validator = container.Resolve<IMappingValidator>();
         }
 
@@ -275,7 +275,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
                 if (model.Implementation == typeof(SolrConnection))
                     model.Parameters.Add("Timeout", "2000");
             };
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
             var allTimeouts = container.ResolveAll<ISolrConnection>().Cast<SolrConnection>().Select(x => x.Timeout);
             foreach (var t in allTimeouts)
                 Assert.Equal(2000, t);

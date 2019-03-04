@@ -29,7 +29,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
             var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
             var results = solr.Query(SolrQuery.All);
             Assert.True(results.Count> 0);
@@ -46,7 +46,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         {
             var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
             var container = new WindsorContainer();
-            container.AddFacility("solr", solrFacility);
+            container.AddFacility(solrFacility);
             var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
             solr.Add(new Dictionary<string, object> {
                 {"id", "ababa"},

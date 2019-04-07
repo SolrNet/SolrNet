@@ -15,6 +15,7 @@
 #endregion
 
 using System.Collections.Generic;
+using SolrNet.Impl;
 
 namespace SolrNet.Commands.Parameters {
     /// <summary>
@@ -89,6 +90,12 @@ namespace SolrNet.Commands.Parameters {
         /// Request handler parameters
         /// </summary>
         public RequestHandlerParameters RequestHandler { get; set; }
+
+        /// <summary>
+        /// Request body content - eg. JSON query. Ignored by SolrQueryExecuter;
+        /// use SolrPostQueryExecuter (or similar) to POST a query body.
+        /// </summary>
+        public ISolrQueryBody QueryBody { get; set; }
 
         public QueryOptions() {
 			OrderBy = new List<SortOrder>();

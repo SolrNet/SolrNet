@@ -16,7 +16,6 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -64,7 +63,7 @@ namespace SolrNet.Tests {
             var q = new Dictionary<string, string>();
             q["q"] = queryString;
             q["handler"] = "/update";
-            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["rows"] = AbstractSolrQueryExecuter.ConstDefaultRows.ToString();
             var queryOptions = new QueryOptions {
                 RequestHandler = new RequestHandlerParameters("/update")
             };
@@ -83,7 +82,7 @@ namespace SolrNet.Tests {
             const string queryString = "id:123456";
             var q = new Dictionary<string, string>();
             q["q"] = queryString;
-            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["rows"] = AbstractSolrQueryExecuter.ConstDefaultRows.ToString();
             q["sort"] = "id asc";
             var conn = new MockConnection(q);
             var querySerializer = new SolrQuerySerializerStub(queryString);
@@ -101,7 +100,7 @@ namespace SolrNet.Tests {
             const string queryString = "id:123456";
             var q = new Dictionary<string, string>();
             q["q"] = queryString;
-            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["rows"] = AbstractSolrQueryExecuter.ConstDefaultRows.ToString();
             q["sort"] = "id asc,name desc";
             var conn = new MockConnection(q);
 
@@ -122,7 +121,7 @@ namespace SolrNet.Tests {
             const string queryString = "id:123456";
             var q = new Dictionary<string, string>();
             q["q"] = queryString;
-            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["rows"] = AbstractSolrQueryExecuter.ConstDefaultRows.ToString();
             q["fl"] = "id,name";
             var conn = new MockConnection(q);
             var querySerializer = new SolrQuerySerializerStub(queryString);
@@ -139,7 +138,7 @@ namespace SolrNet.Tests {
         public void Facets() {
             var q = new Dictionary<string, string>();
             q["q"] = "";
-            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["rows"] = AbstractSolrQueryExecuter.ConstDefaultRows.ToString();
             q["facet"] = "true";
             q["facet.field"] = "Id";
             q["facet.query"] = "id:[1 TO 5]";
@@ -164,7 +163,7 @@ namespace SolrNet.Tests {
         public void MultipleFacetFields() {
             var conn = new MockConnection(new[] {
                 KV.Create("q", ""),
-                KV.Create("rows", SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString()),
+                KV.Create("rows", AbstractSolrQueryExecuter.ConstDefaultRows.ToString()),
                 KV.Create("facet", "true"),
                 KV.Create("facet.field", "Id"),
                 KV.Create("facet.field", "OtherField"),
@@ -197,7 +196,7 @@ namespace SolrNet.Tests {
             var highlightQuery = new SolrQuery(query);
             var q = new Dictionary<string, string>();
             q["q"] = "";
-            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["rows"] = AbstractSolrQueryExecuter.ConstDefaultRows.ToString();
             q["hl"] = "true";
             q["hl.q"] = query;
             q["hl.fl"] = highlightedField;
@@ -255,7 +254,7 @@ namespace SolrNet.Tests {
 
             var q = new Dictionary<string, string>();
             q["q"] = "";
-            q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
+            q["rows"] = AbstractSolrQueryExecuter.ConstDefaultRows.ToString();
             q["hl"] = "true";
             q["hl.tag.pre"] = beforeTerm;
             q["hl.tag.post"] = afterTerm;
@@ -344,7 +343,7 @@ namespace SolrNet.Tests {
 
         [Fact]
         public void TermsSingleField() {
-            var p = SolrQueryExecuter<TestDocument>.GetTermsParameters(new QueryOptions {
+            var p = AbstractSolrQueryExecuter.GetTermsParameters(new QueryOptions {
                 Terms = new TermsParameters("text") {
                     Limit = 10,
                     Lower = "lower",
@@ -378,7 +377,7 @@ namespace SolrNet.Tests {
 
         [Fact]
         public void TermsMultipleFields() {
-            var p = SolrQueryExecuter<TestDocument>.GetTermsParameters(new QueryOptions {
+            var p = AbstractSolrQueryExecuter.GetTermsParameters(new QueryOptions {
                 Terms = new TermsParameters(new List<string> { "text", "text2", "text3" }) {
                     Limit = 10,
                     Lower = "lower",
@@ -414,7 +413,7 @@ namespace SolrNet.Tests {
 
         [Fact]
         public void GetTermVectorParameterOptions_All() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.All).ToList();
+            var r = AbstractSolrQueryExecuter.GetTermVectorParameterOptions(TermVectorParameterOptions.All).ToList();
             Assert.Single(r);
             Assert.Equal("tv.all", r[0]);
         }
@@ -427,28 +426,28 @@ namespace SolrNet.Tests {
                 | TermVectorParameterOptions.Positions 
                 | TermVectorParameterOptions.Offsets 
                 | TermVectorParameterOptions.TermFrequency_InverseDocumentFrequency;
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(o).ToList();
+            var r = AbstractSolrQueryExecuter.GetTermVectorParameterOptions(o).ToList();
             Assert.Single(r);
             Assert.Equal("tv.all", r[0]);
         }
 
         [Fact]
         public void GetTermVectorParameterOptions_Tf() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.TermFrequency).ToList();
+            var r = AbstractSolrQueryExecuter.GetTermVectorParameterOptions(TermVectorParameterOptions.TermFrequency).ToList();
             Assert.Single(r);
             Assert.Equal("tv.tf", r[0]);
         }
 
         [Fact]
         public void GetTermVectorParameterOptions_Df() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.DocumentFrequency).ToList();
+            var r = AbstractSolrQueryExecuter.GetTermVectorParameterOptions(TermVectorParameterOptions.DocumentFrequency).ToList();
             Assert.Single(r);
             Assert.Equal("tv.df", r[0]);
         }
 
         [Fact]
         public void GetTermVectorParameterOptions_default() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.Default).ToList();
+            var r = AbstractSolrQueryExecuter.GetTermVectorParameterOptions(TermVectorParameterOptions.Default).ToList();
             Assert.Empty(r);
         }
 
@@ -457,7 +456,7 @@ namespace SolrNet.Tests {
             const TermVectorParameterOptions o =
                 TermVectorParameterOptions.DocumentFrequency
                 | TermVectorParameterOptions.TermFrequency;
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(o).ToList();
+            var r = AbstractSolrQueryExecuter.GetTermVectorParameterOptions(o).ToList();
             Assert.Equal(2, r.Count);
             Assert.Contains( "tv.df",r);
             Assert.Contains( "tv.tf",r);
@@ -465,14 +464,14 @@ namespace SolrNet.Tests {
 
         [Fact]
         public void GetTermVectorParameterOptions_offsets() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.Offsets).ToList();
+            var r = AbstractSolrQueryExecuter.GetTermVectorParameterOptions(TermVectorParameterOptions.Offsets).ToList();
             Assert.Single(r);
             Assert.Equal("tv.offsets", r[0]);
         }
 
         [Fact]
         public void GetTermVectorParameterOptions_tfidf() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.TermFrequency_InverseDocumentFrequency).ToList();
+            var r = AbstractSolrQueryExecuter.GetTermVectorParameterOptions(TermVectorParameterOptions.TermFrequency_InverseDocumentFrequency).ToList();
             Assert.Equal(3, r.Count);
             Assert.Contains( "tv.df",r);
             Assert.Contains( "tv.tf",r);
@@ -481,7 +480,7 @@ namespace SolrNet.Tests {
 
 		[Fact]
 		public void TermVector() {
-            var p = SolrQueryExecuter<TestDocument>.GetTermVectorQueryOptions(new QueryOptions {
+            var p = AbstractSolrQueryExecuter.GetTermVectorQueryOptions(new QueryOptions {
 				TermVector = new TermVectorParameters {
                     Fields = new[] {"text"},
                     Options = TermVectorParameterOptions.All,

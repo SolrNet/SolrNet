@@ -16,15 +16,12 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
-using SolrNet.Exceptions;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl {
@@ -37,32 +34,11 @@ namespace SolrNet.Impl {
         private readonly ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser;
         private readonly ISolrConnection connection;
         private readonly ISolrQuerySerializer querySerializer;
-        private readonly ISolrFacetQuerySerializer facetQuerySerializer;
-
-        /// <summary>
-        /// When the row count is not defined, use this row count by default
-        /// </summary>
-        public int DefaultRows { get; set; }
-
-        /// <summary>
-        /// When row limit is not defined, this value is used
-        /// </summary>
-        public static readonly int ConstDefaultRows = 100000000;
 
         /// <summary>
         /// Default Solr query handler
         /// </summary>
         public string DefaultHandler { get; set; } = "/select";
-
-        /// <summary>
-        /// Default Solr handler for More Like This queries
-        /// </summary>
-        public static readonly string DefaultMoreLikeThisHandler = "/mlt";
-
-        /// <summary>
-        /// Solr request handler to use for MoreLikeThis-handler queries. By default "/mlt"
-        /// </summary>
-        public string MoreLikeThisHandler { get; set; }
 
         /// <summary>
         /// Constructor
@@ -79,9 +55,6 @@ namespace SolrNet.Impl {
             this.mlthResultParser = mlthResultParser;
             this.connection = connection;
             this.querySerializer = querySerializer;
-            this.facetQuerySerializer = facetQuerySerializer;
-            DefaultRows = ConstDefaultRows;
-            MoreLikeThisHandler = DefaultMoreLikeThisHandler;
         }
 
         /// <summary>

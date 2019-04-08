@@ -43,6 +43,8 @@ namespace SolrNet.Impl
         {
             this.querySerializer = querySerializer;
             this.facetQuerySerializer = facetQuerySerializer;
+            DefaultRows = ConstDefaultRows;
+            MoreLikeThisHandler = DefaultMoreLikeThisHandler;
         }
 
         /// <summary>

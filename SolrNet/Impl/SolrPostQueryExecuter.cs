@@ -18,29 +18,32 @@ namespace SolrNet.Impl
     /// <typeparam name="T">Document type</typeparam>
     public class SolrPostQueryExecuter<T> : AbstractSolrQueryExecuter, ISolrQueryExecuter<T>
     {
-        private readonly ISolrConnection _connection;
-        private readonly ISolrAbstractResponseParser<T> _resultParser;
-        private readonly ISolrQuerySerializer _querySerializer;
+        private readonly ISolrConnection connection;
+        private readonly ISolrAbstractResponseParser<T> resultParser;
+        private readonly ISolrQuerySerializer querySerializer;
+        private readonly ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser;
 
         public SolrPostQueryExecuter(ISolrAbstractResponseParser<T> resultParser, ISolrConnection connection,
             ISolrQuerySerializer querySerializer, ISolrFacetQuerySerializer facetQuerySerializer,
-            ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser) 
+            ISolrMoreLikeThisHandlerQueryResultsParser<T> mlthResultParser)
             : base(querySerializer, facetQuerySerializer)
         {
-            this._connection = connection;
-            this._resultParser = resultParser;
-            this._querySerializer = querySerializer;
+            this.connection = connection;
+            this.resultParser = resultParser;
+            this.querySerializer = querySerializer;
+            this.mlthResultParser = mlthResultParser;
         }
 
         /// <summary>
         /// Return parameters suitable for a JSON POST query.
         /// </summary>
-        /// <param name="Query">The incoming Query, to populate the q parameter.</param>
+        /// <param name="query">The incoming query, to populate the q parameter.</param>
         /// <param name="options">The query options.</param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetPostParameters(ISolrQuery Query, QueryOptions options)
+        public override IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery query,
+            QueryOptions options)
         {
-            var q = _querySerializer.Serialize(_querySerializer.Serialize(Query));
+            var q = querySerializer.Serialize(query);
             if (q.Length > 0)
                 yield return KV.Create("q", q);
 
@@ -62,7 +65,8 @@ namespace SolrNet.Impl
             foreach (var p in GetTermsParameters(options))
                 yield return p;
 
-            if (options.MoreLikeThis != null) {
+            if (options.MoreLikeThis != null)
+            {
                 foreach (var p in GetMoreLikeThisParameters(options.MoreLikeThis))
                     yield return p;
             }
@@ -79,58 +83,113 @@ namespace SolrNet.Impl
             foreach (var p in GetGroupingQueryOptions(options))
                 yield return p;
 
-            foreach (var p in GetCollapseExpandOptions(options.CollapseExpand, _querySerializer.Serialize))
+            foreach (var p in GetCollapseExpandOptions(options.CollapseExpand, querySerializer.Serialize))
                 yield return p;
 
             foreach (var p in GetClusteringParameters(options))
                 yield return p;
         }
 
-        public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options) {
+        public override IEnumerable<KeyValuePair<string, string>> GetAllMoreLikeThisHandlerParameters(
+            SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
+        {
+            var qq = query.Switch(
+                query: q => KV.Create("q", querySerializer.Serialize(q)),
+                streamBody: body => new KeyValuePair<string, string>(string.Empty, string.Empty),
+                streamUrl: url => KV.Create("stream.url", url.ToString()));
+            if (!qq.Key.Equals(string.Empty))
+                yield return qq;
+
+            if (options == null)
+                yield break;
+
+            foreach (var p in GetCommonParameters(options))
+                yield return p;
+
+            foreach (var p in GetMoreLikeThisHandlerParameters(options.Parameters))
+                yield return p;
+        }
+
+        public SolrQueryResults<T> Execute(ISolrQuery q, QueryOptions options)
+        {
             var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
-            var param = GetPostParameters(q, options);
+            var param = GetAllParameters(q, options);
             var body = options?.QueryBody?.serialize() ?? String.Empty;
             var results = new SolrQueryResults<T>();
-            var r = _connection.PostStream(handler, options?.QueryBody?.mimeType ?? SimpleJsonQueryBody.ApplicationJson, new MemoryStream(Encoding.UTF8.GetBytes(body)), param);
+            var r = connection.PostStream(handler, options?.QueryBody?.mimeType ?? SimpleJsonQueryBody.ApplicationJson,
+                new MemoryStream(Encoding.UTF8.GetBytes(body)), param);
             var xml = XDocument.Parse(r);
-            _resultParser.Parse(xml, results);
+            resultParser.Parse(xml, results);
             return results;
         }
 
-        public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
-            var param = GetPostParameters(q, options);
+            var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
             var body = options?.QueryBody?.serialize() ?? String.Empty;
 
             XDocument xml;
-            if (_connection is IStreamSolrConnection  cc)
+            if (connection is IStreamSolrConnection cc)
             {
-                using (var r = await cc.PostStreamAsStreamAsync(handler, options?.QueryBody.mimeType ?? SimpleJsonQueryBody.ApplicationJson, new MemoryStream(Encoding.UTF8.GetBytes(body)), param, cancellationToken))
+                using (var r = await cc.PostStreamAsStreamAsync(handler,
+                    options?.QueryBody.mimeType ?? SimpleJsonQueryBody.ApplicationJson,
+                    new MemoryStream(Encoding.UTF8.GetBytes(body)), param, cancellationToken))
                 {
                     xml = XDocument.Load(r);
                 }
             }
             else
             {
-                var r = await _connection.PostStreamAsync(handler, options?.QueryBody?.mimeType ?? SimpleJsonQueryBody.ApplicationJson, new MemoryStream(Encoding.UTF8.GetBytes(body)), param);
+                var r = await connection.PostStreamAsync(handler,
+                    options?.QueryBody?.mimeType ?? SimpleJsonQueryBody.ApplicationJson,
+                    new MemoryStream(Encoding.UTF8.GetBytes(body)), param);
                 xml = XDocument.Parse(r);
             }
 
-            _resultParser.Parse(xml, results);
+            resultParser.Parse(xml, results);
             return results;
         }
 
         public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
         {
-            throw new NotImplementedException();
+            var param = GetAllMoreLikeThisHandlerParameters(query, options).ToList();
+            var body = GetMoreLikeThisBodyContent(query, options);
+            var r = connection.PostStream(MoreLikeThisHandler, body.mimeType,
+                new MemoryStream(Encoding.UTF8.GetBytes(body.serialize())), param);
+            var qr = mlthResultParser.Parse(r);
+            return qr;
         }
 
-        public Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options,
+        public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery query,
+            MoreLikeThisHandlerQueryOptions options,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            throw new NotImplementedException();
+            var param = GetAllMoreLikeThisHandlerParameters(query, options).ToList();
+            var body = GetMoreLikeThisBodyContent(query, options);
+            var r = await connection.PostStreamAsync(MoreLikeThisHandler, body.mimeType,
+                new MemoryStream(Encoding.UTF8.GetBytes(body.serialize())), param);
+            var qr = mlthResultParser.Parse(r);
+            return qr;
+        }
+
+        private ISolrQueryBody GetMoreLikeThisBodyContent(SolrMLTQuery query,
+            MoreLikeThisHandlerQueryOptions options)
+        {
+            if (options?.QueryBody != null)
+            {
+                return options.QueryBody;
+            }
+            else if (query is SolrMoreLikeThisHandlerStreamBodyQuery bodyQuery)
+            {
+                return new PlainTextQueryBody(bodyQuery.Body);
+            }
+            else
+            {
+                return new PlainTextQueryBody(string.Empty);
+            }
         }
     }
 }

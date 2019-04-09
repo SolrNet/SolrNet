@@ -60,11 +60,11 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Gets Solr parameters for all defined query options
         /// </summary>
-        /// <param name="Query"></param>
+        /// <param name="query"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery Query, QueryOptions options) {
-            yield return KV.Create("q", querySerializer.Serialize(Query));
+        public override IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery query, QueryOptions options) {
+            yield return KV.Create("q", querySerializer.Serialize(query));
             if (options == null)
                 yield break;
 
@@ -113,7 +113,7 @@ namespace SolrNet.Impl {
         /// <param name="query"></param>
         /// <param name="options"></param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<string, string>> GetAllMoreLikeThisHandlerParameters(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
+        public override IEnumerable<KeyValuePair<string, string>> GetAllMoreLikeThisHandlerParameters(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options) {
             yield return
                 query.Switch<KeyValuePair<string, string>>(
                              query: q => KV.Create("q", querySerializer.Serialize(q)),

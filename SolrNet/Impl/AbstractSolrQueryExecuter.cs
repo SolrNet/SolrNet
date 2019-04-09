@@ -48,6 +48,24 @@ namespace SolrNet.Impl
         }
 
         /// <summary>
+        /// Get all parameters for executing the current query style.
+        /// </summary>
+        /// <param name="query">The query to execute.</param>
+        /// <param name="options">The query options.</param>
+        /// <returns>An enumerable of query parameters.</returns>
+        public abstract IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery query,
+            QueryOptions options);
+
+        /// <summary>
+        /// Get all parameters for executing the MLT query.
+        /// </summary>
+        /// <param name="query">The query to execute.</param>
+        /// <param name="options">The MLT query options.</param>
+        /// <returns>An enumerable of query parameters.</returns>
+        public abstract IEnumerable<KeyValuePair<string, string>> GetAllMoreLikeThisHandlerParameters(SolrMLTQuery query,
+            MoreLikeThisHandlerQueryOptions options);
+
+        /// <summary>
         /// Serializes common query parameters
         /// </summary>
         /// <param name="options"></param>

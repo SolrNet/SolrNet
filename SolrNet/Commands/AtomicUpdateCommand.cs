@@ -77,7 +77,7 @@ namespace SolrNet.Commands
 
             foreach (var updateSpec in updateSpecs)
             {
-                json += "," + JsonConvert.SerializeObject(updateSpec.Field) + ":{\"" + updateSpec.Type.ToString().ToLower() + "\":" + JsonConvert.SerializeObject(updateSpec.Value) + "}";
+                json += "," + JsonConvert.SerializeObject(updateSpec.Field) + ":{\"" + updateSpec.Type.ToString().ToLowerInvariant() + "\":" + JsonConvert.SerializeObject(updateSpec.Value) + "}";
             }
 
             json += "}]";

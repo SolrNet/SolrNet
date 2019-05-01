@@ -21,21 +21,37 @@ namespace SolrNet {
     /// Stats results
     /// <see href="http://wiki.apache.org/solr/StatsComponent"/>
     /// </summary>
-    public class StatsResult {
+    public class StatsResult
+    {
+        private readonly TypedStatsResult<string> stringValues;
+        private readonly TypedStatsResult<double> doubleValues;
+
         /// <summary>
         /// Minimum value
         /// </summary>
-        public double Min { get; set; }
+        public double Min
+        {
+            get => doubleValues.Min;
+            set => doubleValues.Min = value;
+        }
 
         /// <summary>
         /// Maximum value
         /// </summary>
-        public double Max { get; set; }
+        public double Max
+        {
+            get => doubleValues.Max;
+            set => doubleValues.Max = value;
+        }
 
         /// <summary>
         /// Sum of all values
         /// </summary>
-        public double Sum { get; set; }
+        public double Sum
+        {
+            get => doubleValues.Sum;
+            set => doubleValues.Sum = value;
+        }
 
         /// <summary>
         /// How many (non-null) values
@@ -50,17 +66,29 @@ namespace SolrNet {
         /// <summary>
         /// Sum of all values squared (useful for stddev)
         /// </summary>
-        public double SumOfSquares { get; set; }
+        public double SumOfSquares
+        {
+            get => doubleValues.SumOfSquares;
+            set => doubleValues.SumOfSquares = value;
+        }
 
         /// <summary>
         /// The average (v1+v2...+vN)/N
         /// </summary>
-        public double Mean { get; set; }
+        public double Mean
+        {
+            get => doubleValues.Mean;
+            set => doubleValues.Mean = value;
+        }
 
         /// <summary>
         /// Standard deviation
         /// </summary>
-        public double StdDev { get; set; }
+        public double StdDev
+        {
+            get => doubleValues.StdDev;
+            set => doubleValues.StdDev = value;
+        }
 
         /// <summary>
         /// A list of percentile values based on cut-off points specified.
@@ -82,9 +110,30 @@ namespace SolrNet {
         public IDictionary<string, Dictionary<string, StatsResult>> FacetResults { get; set; }
 
         /// <summary>
+        /// Returns a `TypedStatsResult`.
+        ///
+        /// In case T is string, the instance's `TypedStatsResultString` is returned.
+        /// In case T is double, the instance's `TypedStatsResultDouble` is returned.
+        /// Otherwise a `TypedStatsResultCast` is returned.
+        /// </summary>
+        /// <typeparam name="T">The type to cast the `StatsResult` to.</typeparam>
+        public TypedStatsResult<T> GetTyped<T>()
+        {
+            var type = typeof(T);
+            if (type == typeof(string))
+                return stringValues as TypedStatsResult<T>;
+            if (type == typeof(double))
+                return doubleValues as TypedStatsResult<T>;
+            return new TypedStatsResultCast<T>(stringValues);
+        }
+        
+        /// <summary>
         /// Stats results
         /// </summary>
-        public StatsResult() {
+        public StatsResult(TypedStatsResult<string> stringValues)
+        {
+            this.stringValues = stringValues;
+            doubleValues = new TypedStatsResultDouble(stringValues);
             FacetResults = new Dictionary<string, Dictionary<string, StatsResult>>();
         }
     }

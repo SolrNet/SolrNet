@@ -74,33 +74,35 @@ namespace SolrNet.Impl.ResponseParsers {
 
             foreach (var n in node.Elements()) {
                 var percentile = Convert.ToDouble(n.Attribute("name").Value, CultureInfo.InvariantCulture);
-                r.Add(percentile, GetDoubleValue(n));
+                r.Add(percentile, GetDoubleValue(n.Value));
             }
             return r;
         }
 
-        public StatsResult ParseStatsNode(XElement node) {
-            var r = new StatsResult();
+        public StatsResult ParseStatsNode(XElement node)
+        {
+            var stringValues = new TypedStatsResultString();
+            var r = new StatsResult(stringValues);
             foreach (var statNode in node.Elements()) {
                 var name = statNode.Attribute("name").Value;
                 switch (name) {
                     case "min":
-                        r.Min = GetDoubleValue(statNode);
+                        stringValues.Min = statNode.Value;
                         break;
                     case "max":
-                        r.Max = GetDoubleValue(statNode);
+                        stringValues.Max = statNode.Value;
                         break;
                     case "sum":
-                        r.Sum = GetDoubleValue(statNode);
+                        stringValues.Sum = statNode.Value;
                         break;
                     case "sumOfSquares":
-                        r.SumOfSquares = GetDoubleValue(statNode);
+                        stringValues.SumOfSquares = statNode.Value;
                         break;
                     case "mean":
-                        r.Mean = GetDoubleValue(statNode);
+                        stringValues.Mean = statNode.Value;
                         break;
                     case "stddev":
-                        r.StdDev = GetDoubleValue(statNode);
+                        stringValues.StdDev = statNode.Value;
                         break;
                     case "count":
                         r.Count = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
@@ -119,9 +121,10 @@ namespace SolrNet.Impl.ResponseParsers {
             return r;
         }
 
-        private static double GetDoubleValue(XElement statNode) {
+        public static double GetDoubleValue(string value)
+        {
             double parsedValue;
-            if (!double.TryParse(statNode.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedValue))
+            if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedValue))
                 parsedValue = double.NaN;
             return parsedValue;
         }

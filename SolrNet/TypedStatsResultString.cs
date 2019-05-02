@@ -3,15 +3,15 @@ using System.Collections.Generic;
 namespace SolrNet
 {
     /// <summary>
-    /// Contains the string values of a `TypedStatsResult`.
+    /// Contains the string values of a typed StatsResult.
     /// </summary>
-    public class TypedStatsResultString : TypedStatsResult<string>
+    public class TypedStatsResultString : ITypedStatsResult<string>
     {
-        public override string Min { get; set; }
-        public override string Max { get; set; }
-        public override string Sum { get; set; }
-        public override string SumOfSquares { get; set; }
-        public override string Mean { get; set; }
-        public override string StdDev { get; set; }
+        public string Min { get; set; }
+        public string Max { get; set; }
+        public string Sum { get; set; }
+        public string SumOfSquares { get; set; }
+        public string Mean { get; set; }
+        public string StdDev { get; set; }
     }
 }

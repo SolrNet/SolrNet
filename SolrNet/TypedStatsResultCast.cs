@@ -1,97 +1,47 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 namespace SolrNet
 {
-    
     /// <summary>
-    /// Performs lazy casts of `TypedStatsResultString` fields to type T.
+    /// Performs lazy casts of typed StatsResult fields to type T.
     /// </summary>
     /// <typeparam name="T">The type to cast the `StatsResult` fields to.</typeparam>
-    public class TypedStatsResultCast<T> : TypedStatsResult<T>
+    public class TypedStatsResultCast<T> : ITypedStatsResult<T>
     {
-        private readonly TypedStatsResult<string> stringValues;
+        private Lazy<T> min;
+        private Lazy<T> max;
+        private Lazy<T> sum;
+        private Lazy<T> sumOfSquares;
+        private Lazy<T> mean;
+        private Lazy<T> stdDev;
+
+        public T Min => min.Value;
         
-        private T min;
-        private T max;
-        private T sum;
-        private T sumOfSquares;
-        private T mean;
-        private T stdDev;
-
-        public override T Min
+        public T Max => max.Value;
+        
+        public T Sum => sum.Value;
+        
+        public T SumOfSquares => sumOfSquares.Value;
+        
+        public T Mean => mean.Value;
+        
+        public T StdDev => stdDev.Value;
+        
+        public TypedStatsResultCast(ITypedStatsResult<string> stringValues)
         {
-            get
-            {
-                if (IsDefault(min))
-                    min = (T) Convert.ChangeType(stringValues.Min, typeof(T));
-                return min;
-            }
-            set => min = value;
+            min = new Lazy<T>(() => GetValue(stringValues.Min));
+            max = new Lazy<T>(() => GetValue(stringValues.Max));
+            sum = new Lazy<T>(() => GetValue(stringValues.Sum));
+            sumOfSquares = new Lazy<T>(() => GetValue(stringValues.SumOfSquares));
+            mean = new Lazy<T>(() => GetValue(stringValues.Mean));
+            stdDev = new Lazy<T>(() => GetValue(stringValues.StdDev));
         }
+        
+        private static readonly TypeConverter Converter = TypeDescriptor.GetConverter(typeof(T));
 
-        public override T Max
-        {
-            get
-            {
-                if (IsDefault(max))
-                    max = (T) Convert.ChangeType(stringValues.Max, typeof(T));
-                return max;
-            }
-            set => max = value;
-        }
-
-        public override T Sum
-        {
-            get
-            {
-                if (IsDefault(sum))
-                    sum = (T) Convert.ChangeType(stringValues.Sum, typeof(T));
-                return sum;
-            }
-            set => sum = value;
-        }
-
-        public override T SumOfSquares
-        {
-            get
-            {
-                if (IsDefault(sumOfSquares))
-                    sumOfSquares = (T) Convert.ChangeType(stringValues.SumOfSquares, typeof(T));
-                return sumOfSquares;
-            }
-            set => sumOfSquares = value;
-        }
-
-        public override T Mean
-        {
-            get
-            {
-                if (IsDefault(mean))
-                    mean = (T) Convert.ChangeType(stringValues.Mean, typeof(T));
-                return mean;
-            }
-            set => mean = value;
-        }
-
-        public override T StdDev
-        {
-            get
-            {
-                if (IsDefault(stdDev))
-                    stdDev = (T) Convert.ChangeType(stringValues.StdDev, typeof(T));
-                return stdDev;
-            }
-            set => stdDev = value;
-        }
-
-        public TypedStatsResultCast(TypedStatsResult<string> stringValues)
-        {
-            this.stringValues = stringValues;
-        }
-
-        private static readonly IEqualityComparer<T> _comparer = EqualityComparer<T>.Default;
-
-        private static bool IsDefault(T value) => _comparer.Equals(value, default(T));
+        private static T GetValue(string stringValue) => stringValue != null ? (T) Converter.ConvertFromString(stringValue) : default(T);
     }
 }

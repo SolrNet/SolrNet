@@ -83,26 +83,31 @@ namespace SolrNet.Impl.ResponseParsers {
         {
             var stringValues = new TypedStatsResultString();
             var r = new StatsResult(stringValues);
-            foreach (var statNode in node.Elements()) {
-                var name = statNode.Attribute("name").Value;
-                switch (name) {
+            foreach (var statNode in node.Elements())
+            {
+                var nodeName = statNode.Name.LocalName;
+                var nameAttr = statNode.Attribute("name").Value;
+                var value = statNode.Value;
+                if (nodeName == "null")
+                    value = null;
+                switch (nameAttr) {
                     case "min":
-                        stringValues.Min = statNode.Value;
+                        stringValues.Min = value;
                         break;
                     case "max":
-                        stringValues.Max = statNode.Value;
+                        stringValues.Max = value;
                         break;
                     case "sum":
-                        stringValues.Sum = statNode.Value;
+                        stringValues.Sum = value;
                         break;
                     case "sumOfSquares":
-                        stringValues.SumOfSquares = statNode.Value;
+                        stringValues.SumOfSquares = value;
                         break;
                     case "mean":
-                        stringValues.Mean = statNode.Value;
+                        stringValues.Mean = value;
                         break;
                     case "stddev":
-                        stringValues.StdDev = statNode.Value;
+                        stringValues.StdDev = value;
                         break;
                     case "count":
                         r.Count = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );

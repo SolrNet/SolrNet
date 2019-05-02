@@ -14,7 +14,9 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
+using static SolrNet.Impl.ResponseParsers.StatsResponseParser<double>;
 
 namespace SolrNet {
     /// <summary>
@@ -23,34 +25,58 @@ namespace SolrNet {
     /// </summary>
     public class StatsResult
     {
-        private readonly TypedStatsResult<string> stringValues;
-        private readonly TypedStatsResult<double> doubleValues;
+        private readonly ITypedStatsResult<string> stringValues;
+        
+        private double min;
+        private double max;
+        private double sum;
+        private double sumOfSquares;
+        private double mean;
+        private double stdDev;
 
         /// <summary>
         /// Minimum value
         /// </summary>
+        [Obsolete("Deprecated, please use `GetTyped<double>().Min` instead.")]
         public double Min
         {
-            get => doubleValues.Min;
-            set => doubleValues.Min = value;
+            get
+            {
+                if (min == default(double))
+                    min = GetDoubleValue(stringValues.Min);
+                return min;
+            }
+            set => min = value;
         }
 
         /// <summary>
         /// Maximum value
         /// </summary>
+        [Obsolete("Deprecated, please use `GetTyped<double>().Max` instead.")]
         public double Max
         {
-            get => doubleValues.Max;
-            set => doubleValues.Max = value;
+            get
+            {
+                if (max == default(double))
+                    max = GetDoubleValue(stringValues.Max);
+                return max;
+            }
+            set => max = value;
         }
 
         /// <summary>
         /// Sum of all values
         /// </summary>
+        [Obsolete("Deprecated, please use `GetTyped<double>().Sum` instead.")]
         public double Sum
         {
-            get => doubleValues.Sum;
-            set => doubleValues.Sum = value;
+            get
+            {
+                if (sum == default(double))
+                    sum = GetDoubleValue(stringValues.Sum);
+                return sum;
+            }
+            set => sum = value;
         }
 
         /// <summary>
@@ -66,28 +92,46 @@ namespace SolrNet {
         /// <summary>
         /// Sum of all values squared (useful for stddev)
         /// </summary>
+        [Obsolete("Deprecated, please use `GetTyped<double>().SumOfSquares` instead.")]
         public double SumOfSquares
         {
-            get => doubleValues.SumOfSquares;
-            set => doubleValues.SumOfSquares = value;
+            get
+            {
+                if (sumOfSquares == default(double))
+                    sumOfSquares = GetDoubleValue(stringValues.SumOfSquares);
+                return sumOfSquares;
+            }
+            set => sumOfSquares = value;
         }
 
         /// <summary>
         /// The average (v1+v2...+vN)/N
         /// </summary>
+        [Obsolete("Deprecated, please use `GetTyped<double>().Mean` instead.")]
         public double Mean
         {
-            get => doubleValues.Mean;
-            set => doubleValues.Mean = value;
+            get
+            {
+                if (mean == default(double))
+                    mean = GetDoubleValue(stringValues.Mean);
+                return mean;
+            }
+            set => mean = value;
         }
 
         /// <summary>
         /// Standard deviation
         /// </summary>
+        [Obsolete("Deprecated, please use `GetTyped<double>().StdDev` instead.")]
         public double StdDev
         {
-            get => doubleValues.StdDev;
-            set => doubleValues.StdDev = value;
+            get
+            {
+                if (stdDev == default(double))
+                    stdDev = GetDoubleValue(stringValues.StdDev);
+                return stdDev;
+            }
+            set => stdDev = value;
         }
 
         /// <summary>
@@ -113,27 +157,23 @@ namespace SolrNet {
         /// Returns a `TypedStatsResult`.
         ///
         /// In case T is string, the instance's `TypedStatsResultString` is returned.
-        /// In case T is double, the instance's `TypedStatsResultDouble` is returned.
         /// Otherwise a `TypedStatsResultCast` is returned.
         /// </summary>
-        /// <typeparam name="T">The type to cast the `StatsResult` to.</typeparam>
-        public TypedStatsResult<T> GetTyped<T>()
+        /// <typeparam name="T">The type to cast the `StatsResult` properties to.</typeparam>
+        public ITypedStatsResult<T> GetTyped<T>()
         {
             var type = typeof(T);
             if (type == typeof(string))
-                return stringValues as TypedStatsResult<T>;
-            if (type == typeof(double))
-                return doubleValues as TypedStatsResult<T>;
+                return stringValues as ITypedStatsResult<T>;
             return new TypedStatsResultCast<T>(stringValues);
         }
         
         /// <summary>
         /// Stats results
         /// </summary>
-        public StatsResult(TypedStatsResult<string> stringValues)
+        public StatsResult(ITypedStatsResult<string> stringValues)
         {
             this.stringValues = stringValues;
-            doubleValues = new TypedStatsResultDouble(stringValues);
             FacetResults = new Dictionary<string, Dictionary<string, StatsResult>>();
         }
     }

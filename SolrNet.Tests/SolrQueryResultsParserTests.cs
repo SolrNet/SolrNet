@@ -920,6 +920,33 @@ namespace SolrNet.Tests
         }
 
         [Fact]
+        public void ParseTypedStatsResult()
+        {
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithStats.xml");
+            var parser = new StatsResponseParser<Product>();
+            var stats = parser.ParseStats(xml.Root, "stats_fields");
+
+            Assert.NotNull(stats);
+            Assert.Contains("stringField", stats.Keys);
+            Assert.Contains("dateField", stats.Keys);
+            Assert.Contains("nullField", stats.Keys);
+
+            var stringField = stats["stringField"].GetTyped<string>();
+            Assert.Equal("Test", stringField.Min);
+            Assert.Equal("Test string", stringField.Max);
+
+            var dateField = stats["dateField"].GetTyped<DateTimeOffset>();
+            Assert.Equal(DateTimeOffset.Parse("2013-12-20T00:00:00Z"), dateField.Min);
+            Assert.Equal(DateTimeOffset.Parse("2013-12-23T00:00:00Z"), dateField.Max);
+            Assert.Equal(DateTimeOffset.Parse("2057-12-10T23:59:59.999Z"), dateField.Sum);
+            Assert.Equal(DateTimeOffset.Parse("2013-12-21T11:59:59.999Z"), dateField.Mean);
+            
+            Assert.Null(stats["nullField"].GetTyped<string>().Min);
+            Assert.Null(stats["nullField"].GetTyped<DateTimeOffset?>().Min);
+            Assert.Equal(default(DateTimeOffset), stats["nullField"].GetTyped<DateTimeOffset>().Min);
+        }
+
+        [Fact]
         public void ParseFacetDateResults()
         {
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithDateFacet.xml");

@@ -9,7 +9,7 @@ namespace SolrNet
     /// Performs lazy casts of typed StatsResult fields to type T.
     /// </summary>
     /// <typeparam name="T">The type to cast the `StatsResult` fields to.</typeparam>
-    public class TypedStatsResultCast<T> : ITypedStatsResult<T>
+    public class TypedStatsResult<T> : ITypedStatsResult<T>
     {
         private Lazy<T> min;
         private Lazy<T> max;
@@ -30,7 +30,7 @@ namespace SolrNet
         
         public T StdDev => stdDev.Value;
         
-        public TypedStatsResultCast(ITypedStatsResult<string> stringValues)
+        public TypedStatsResult(ITypedStatsResult<string> stringValues)
         {
             min = new Lazy<T>(() => GetValue(stringValues.Min));
             max = new Lazy<T>(() => GetValue(stringValues.Max));

@@ -1,4 +1,4 @@
-﻿#region license
+#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -931,19 +931,19 @@ namespace SolrNet.Tests
             Assert.Contains("dateField", stats.Keys);
             Assert.Contains("nullField", stats.Keys);
 
-            var stringField = stats["stringField"].GetTyped<string>();
+            var stringField = stats["stringField"].AsType<string>();
             Assert.Equal("Test", stringField.Min);
             Assert.Equal("Test string", stringField.Max);
 
-            var dateField = stats["dateField"].GetTyped<DateTimeOffset>();
+            var dateField = stats["dateField"].AsType<DateTimeOffset>();
             Assert.Equal(DateTimeOffset.Parse("2013-12-20T00:00:00Z"), dateField.Min);
             Assert.Equal(DateTimeOffset.Parse("2013-12-23T00:00:00Z"), dateField.Max);
             Assert.Equal(DateTimeOffset.Parse("2057-12-10T23:59:59.999Z"), dateField.Sum);
             Assert.Equal(DateTimeOffset.Parse("2013-12-21T11:59:59.999Z"), dateField.Mean);
             
-            Assert.Null(stats["nullField"].GetTyped<string>().Min);
-            Assert.Null(stats["nullField"].GetTyped<DateTimeOffset?>().Min);
-            Assert.Equal(default(DateTimeOffset), stats["nullField"].GetTyped<DateTimeOffset>().Min);
+            Assert.Null(stats["nullField"].AsType<string>().Min);
+            Assert.Null(stats["nullField"].AsType<DateTimeOffset?>().Min);
+            Assert.Equal(default(DateTimeOffset), stats["nullField"].AsType<DateTimeOffset>().Min);
         }
 
         [Fact]

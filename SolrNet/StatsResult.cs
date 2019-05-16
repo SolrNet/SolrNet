@@ -1,4 +1,4 @@
-﻿#region license
+﻿﻿#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,70 +14,35 @@
 // limitations under the License.
 #endregion
 
-using System;
-using System.Collections.Generic;
-using static SolrNet.Impl.ResponseParsers.StatsResponseParser<double>;
+ using System;
+ using System.Collections.Generic;
 
 namespace SolrNet {
     /// <summary>
     /// Stats results
     /// <see href="http://wiki.apache.org/solr/StatsComponent"/>
     /// </summary>
-    public class StatsResult
-    {
-        private readonly ITypedStatsResult<string> stringValues;
+    public class StatsResult {
         
-        private double min;
-        private double max;
-        private double sum;
-        private double sumOfSquares;
-        private double mean;
-        private double stdDev;
-
+        private readonly ITypedStatsResult<string> statsResult;
+        
         /// <summary>
         /// Minimum value
         /// </summary>
-        [Obsolete("Deprecated, please use `GetTyped<double>().Min` instead.")]
-        public double Min
-        {
-            get
-            {
-                if (min == default(double))
-                    min = GetDoubleValue(stringValues.Min);
-                return min;
-            }
-            set => min = value;
-        }
+        [Obsolete("Use `AsType<double?>().Min` instead.")]
+        public double Min { get; set; }
 
         /// <summary>
         /// Maximum value
         /// </summary>
-        [Obsolete("Deprecated, please use `GetTyped<double>().Max` instead.")]
-        public double Max
-        {
-            get
-            {
-                if (max == default(double))
-                    max = GetDoubleValue(stringValues.Max);
-                return max;
-            }
-            set => max = value;
-        }
+        [Obsolete("Use `AsType<double?>().Max` instead.")]
+        public double Max { get; set; }
 
         /// <summary>
         /// Sum of all values
         /// </summary>
-        [Obsolete("Deprecated, please use `GetTyped<double>().Sum` instead.")]
-        public double Sum
-        {
-            get
-            {
-                if (sum == default(double))
-                    sum = GetDoubleValue(stringValues.Sum);
-                return sum;
-            }
-            set => sum = value;
-        }
+        [Obsolete("Use `AsType<double?>().Sum` instead.")]
+        public double Sum { get; set; }
 
         /// <summary>
         /// How many (non-null) values
@@ -92,47 +57,20 @@ namespace SolrNet {
         /// <summary>
         /// Sum of all values squared (useful for stddev)
         /// </summary>
-        [Obsolete("Deprecated, please use `GetTyped<double>().SumOfSquares` instead.")]
-        public double SumOfSquares
-        {
-            get
-            {
-                if (sumOfSquares == default(double))
-                    sumOfSquares = GetDoubleValue(stringValues.SumOfSquares);
-                return sumOfSquares;
-            }
-            set => sumOfSquares = value;
-        }
+        [Obsolete("Use `AsType<double?>().SumOfSquares` instead.")]
+        public double SumOfSquares { get; set; }
 
         /// <summary>
         /// The average (v1+v2...+vN)/N
         /// </summary>
-        [Obsolete("Deprecated, please use `GetTyped<double>().Mean` instead.")]
-        public double Mean
-        {
-            get
-            {
-                if (mean == default(double))
-                    mean = GetDoubleValue(stringValues.Mean);
-                return mean;
-            }
-            set => mean = value;
-        }
+        [Obsolete("Use `AsType<double?>().Mean` instead.")]
+        public double Mean { get; set; }
 
         /// <summary>
         /// Standard deviation
         /// </summary>
-        [Obsolete("Deprecated, please use `GetTyped<double>().StdDev` instead.")]
-        public double StdDev
-        {
-            get
-            {
-                if (stdDev == default(double))
-                    stdDev = GetDoubleValue(stringValues.StdDev);
-                return stdDev;
-            }
-            set => stdDev = value;
-        }
+        [Obsolete("Use `AsType<double?>().StdDev` instead.")]
+        public double StdDev { get; set; }
 
         /// <summary>
         /// A list of percentile values based on cut-off points specified.
@@ -154,26 +92,23 @@ namespace SolrNet {
         public IDictionary<string, Dictionary<string, StatsResult>> FacetResults { get; set; }
 
         /// <summary>
-        /// Returns a `TypedStatsResult`.
-        ///
-        /// In case T is string, the instance's `TypedStatsResultString` is returned.
-        /// Otherwise a `TypedStatsResultCast` is returned.
+        /// Returns type specific properties of this stats instance (like Min, Max) converted to the specified type T.
         /// </summary>
-        /// <typeparam name="T">The type to cast the `StatsResult` properties to.</typeparam>
-        public ITypedStatsResult<T> GetTyped<T>()
+        /// <typeparam name="T">A ITypedStatsResult containing the type specific properties of this stats instance.</typeparam>
+        public ITypedStatsResult<T> AsType<T>()
         {
             var type = typeof(T);
             if (type == typeof(string))
-                return stringValues as ITypedStatsResult<T>;
-            return new TypedStatsResultCast<T>(stringValues);
+                return statsResult as ITypedStatsResult<T>;
+            return new TypedStatsResult<T>(statsResult);
         }
         
         /// <summary>
         /// Stats results
         /// </summary>
-        public StatsResult(ITypedStatsResult<string> stringValues)
+        public StatsResult(ITypedStatsResult<string> statsResult)
         {
-            this.stringValues = stringValues;
+            this.statsResult = statsResult;
             FacetResults = new Dictionary<string, Dictionary<string, StatsResult>>();
         }
     }

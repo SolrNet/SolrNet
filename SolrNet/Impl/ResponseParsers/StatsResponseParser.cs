@@ -1,4 +1,4 @@
-﻿#region license
+﻿﻿#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,9 +27,19 @@ namespace SolrNet.Impl.ResponseParsers {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class StatsResponseParser<T> : ISolrResponseParser<T> {
+        private class TypedStatsResult : ITypedStatsResult<string>
+        {
+            public string Min { get; set; }
+            public string Max { get; set; }
+            public string Sum { get; set; }
+            public string SumOfSquares { get; set; }
+            public string Mean { get; set; }
+            public string StdDev { get; set; }
+        }
+        
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             results.Switch(query: r => Parse(xml, r),
-                           moreLikeThis: F.DoNothing);
+                moreLikeThis: F.DoNothing);
         }
 
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
@@ -74,40 +84,41 @@ namespace SolrNet.Impl.ResponseParsers {
 
             foreach (var n in node.Elements()) {
                 var percentile = Convert.ToDouble(n.Attribute("name").Value, CultureInfo.InvariantCulture);
-                r.Add(percentile, GetDoubleValue(n.Value));
+                r.Add(percentile, GetDoubleValue(n));
             }
             return r;
         }
 
-        public StatsResult ParseStatsNode(XElement node)
-        {
-            var stringValues = new TypedStatsResultString();
-            var r = new StatsResult(stringValues);
-            foreach (var statNode in node.Elements())
-            {
-                var nodeName = statNode.Name.LocalName;
-                var nameAttr = statNode.Attribute("name").Value;
-                var value = statNode.Value;
-                if (nodeName == "null")
-                    value = null;
-                switch (nameAttr) {
+        public StatsResult ParseStatsNode(XElement node) {
+            var typedStatsResult = new TypedStatsResult();
+            var r = new StatsResult(typedStatsResult);
+            foreach (var statNode in node.Elements()) {
+                var name = statNode.Attribute("name").Value;
+                var value = statNode.Name.LocalName.Equals("null") ? null : statNode.Value;
+                switch (name) {
                     case "min":
-                        stringValues.Min = value;
+                        r.Min = GetDoubleValue(statNode);
+                        typedStatsResult.Min = value;
                         break;
                     case "max":
-                        stringValues.Max = value;
+                        r.Max = GetDoubleValue(statNode);
+                        typedStatsResult.Max = value;
                         break;
                     case "sum":
-                        stringValues.Sum = value;
+                        r.Sum = GetDoubleValue(statNode);
+                        typedStatsResult.Sum = value;
                         break;
                     case "sumOfSquares":
-                        stringValues.SumOfSquares = value;
+                        r.SumOfSquares = GetDoubleValue(statNode);
+                        typedStatsResult.SumOfSquares = value;
                         break;
                     case "mean":
-                        stringValues.Mean = value;
+                        r.Mean = GetDoubleValue(statNode);
+                        typedStatsResult.Mean = value;
                         break;
                     case "stddev":
-                        stringValues.StdDev = value;
+                        r.StdDev = GetDoubleValue(statNode);
+                        typedStatsResult.StdDev = value;
                         break;
                     case "count":
                         r.Count = Convert.ToInt64( statNode.Value, CultureInfo.InvariantCulture );
@@ -126,10 +137,9 @@ namespace SolrNet.Impl.ResponseParsers {
             return r;
         }
 
-        public static double GetDoubleValue(string value)
-        {
+        private static double GetDoubleValue(XElement statNode) {
             double parsedValue;
-            if (!double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedValue))
+            if (!double.TryParse(statNode.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out parsedValue))
                 parsedValue = double.NaN;
             return parsedValue;
         }

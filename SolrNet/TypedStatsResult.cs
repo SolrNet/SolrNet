@@ -42,6 +42,6 @@ namespace SolrNet
         
         private static readonly TypeConverter Converter = TypeDescriptor.GetConverter(typeof(T));
 
-        private static T GetValue(string stringValue) => stringValue != null ? (T) Converter.ConvertFromString(stringValue) : default(T);
+        private static T GetValue(string stringValue) => stringValue != null ? (T) Converter.ConvertFromInvariantString(stringValue) : default(T);
     }
 }

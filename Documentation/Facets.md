@@ -25,7 +25,8 @@ Querying by field is handled by the `SolrFacetFieldQuery` class. Results are ava
 
 Example: print all categories sorted by popularity.
 
-```c#
+```c# 
+TODO: Saludar ya!
 ISolrOperations<Document> solr = ...
 var r = solr.Query(SolrQuery.All, new QueryOptions {
     Rows = 0,

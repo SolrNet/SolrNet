@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using SolrNet.Impl;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,36 +29,39 @@ namespace SolrNet.Tests.Utils {
             this.conn = conn;
         }
 
-        public string Post(string relativeUrl, string s) {
+        public SolrQueryResponse Post(string relativeUrl, string s)
+        {
             Console.WriteLine("Posting {0}", s);
             return conn.Post(relativeUrl, s);
         }
 
-        public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public SolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
             Console.WriteLine("Posting Binary");
             return conn.PostStream(relativeUrl, contentType, content, parameters);
         }
 
-        public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) {
+        public SolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        {
             Console.WriteLine("Getting");
             var r = conn.Get(relativeUrl, parameters);
             Console.WriteLine("Result is:\n" + r);
             return r;
         }
 
-        public virtual Task<string> PostAsync(string relativeUrl, string s)
+        public virtual Task<SolrQueryResponse> PostAsync(string relativeUrl, string s)
         {
             Console.WriteLine("Posting Async {0}", s);
             return conn.PostAsync(relativeUrl, s);
         }
 
-        public virtual Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
+        public virtual Task<SolrQueryResponse> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             Console.WriteLine("Posting Binary Async");
             return conn.PostStreamAsync(relativeUrl, contentType, content, parameters);
         }
 
-        public virtual  async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual  async Task<SolrQueryResponse> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             Console.WriteLine("Getting Async");
             var r =  await conn.GetAsync(relativeUrl, parameters, cancellationToken);

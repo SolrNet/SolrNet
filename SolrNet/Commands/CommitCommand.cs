@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using SolrNet.Impl;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -49,13 +50,13 @@ namespace SolrNet.Commands {
         /// </summary>
         public int? MaxSegments { get; set; }
 
-		public string Execute(ISolrConnection connection)
+		public SolrQueryResponse Execute(ISolrConnection connection)
         {
             string xml = GetCommitXml();
             return connection.Post("/update", xml);
         }
 
-        public Task<string> ExecuteAsync(ISolrConnection connection)
+        public Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
         {
             string xml = GetCommitXml();
             return connection.PostAsync("/update", xml);

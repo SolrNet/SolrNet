@@ -36,7 +36,8 @@ namespace SolrNet.Tests
             var q = new SolrFacetDateQuery("timestamp", new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc), new DateTime(2009, 2, 2, 0, 0, 0, DateTimeKind.Utc), "+1DAY")
             {
                 HardEnd = true,
-                Other = new[] { FacetDateOther.After },
+                MinCount = 2,
+                Other = new[] {FacetDateOther.After},
                 Include = new[] { FacetDateInclude.Lower },
             };
             var r = Serialize(q);
@@ -45,6 +46,7 @@ namespace SolrNet.Tests
             Assert.Contains(KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"), r);
             Assert.Contains(KV.Create("f.timestamp.facet.date.gap", "+1DAY"), r);
             Assert.Contains(KV.Create("f.timestamp.facet.date.hardend", "true"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.mincount", "2"), r);
             Assert.Contains(KV.Create("f.timestamp.facet.date.other", "after"), r);
             Assert.Contains(KV.Create("f.timestamp.facet.date.include", "lower"), r);
         }
@@ -55,6 +57,7 @@ namespace SolrNet.Tests
             var q = new SolrFacetDateQuery(new LocalParams { { "ex", "cat" } } + "timestamp", new DateTime(2009, 1, 1, 0, 0, 0, DateTimeKind.Utc), new DateTime(2009, 2, 2, 0, 0, 0, DateTimeKind.Utc), "+1DAY")
             {
                 HardEnd = true,
+                MinCount = 2,
                 Other = new[] { FacetDateOther.After },
                 Include = new[] { FacetDateInclude.Lower },
             };
@@ -64,6 +67,7 @@ namespace SolrNet.Tests
             Assert.Contains(KV.Create("f.timestamp.facet.date.end", "2009-02-02T00:00:00Z"), r);
             Assert.Contains(KV.Create("f.timestamp.facet.date.gap", "+1DAY"), r);
             Assert.Contains(KV.Create("f.timestamp.facet.date.hardend", "true"), r);
+            Assert.Contains(KV.Create("f.timestamp.facet.mincount", "2"), r);
             Assert.Contains(KV.Create("f.timestamp.facet.date.other", "after"), r);
             Assert.Contains(KV.Create("f.timestamp.facet.date.include", "lower"), r);
         }

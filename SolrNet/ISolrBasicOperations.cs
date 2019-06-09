@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 using System.Threading.Tasks;
 
 namespace SolrNet {
@@ -109,14 +110,14 @@ namespace SolrNet {
         /// </summary>
         /// <param name="cmd">command to send</param>
         /// <returns>solr response</returns>
-        string Send(ISolrCommand cmd);
+        SolrQueryResponse Send(ISolrCommand cmd);
 
         /// <summary>
         /// Sends a custom command
         /// </summary>
         /// <param name="cmd">command to send</param>
         /// <returns>solr response</returns>
-        Task<string> SendAsync(ISolrCommand cmd);
+        Task<SolrQueryResponse> SendAsync(ISolrCommand cmd);
 
         /// <summary>
         /// Sends a custom command, returns parsed header from xml response

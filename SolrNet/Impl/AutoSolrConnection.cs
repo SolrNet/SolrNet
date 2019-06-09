@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using SolrNet.Exceptions;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl
 {
@@ -60,73 +61,89 @@ namespace SolrNet.Impl
         /// </summary>
         public int MaxUriLength { get; set; } = 7600;
 
-        public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) => SyncFallbackConnection.Get(relativeUrl, parameters);
+        public SolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) => SyncFallbackConnection.Get(relativeUrl, parameters);
 
-        public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SolrQueryResponse> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            using (var responseStream = await GetAsStreamAsync(relativeUrl, parameters, cancellationToken))
+            var queryParameters = parameters?.ToList();
+            using (var responseStream = (await GetAsStreamAsync(relativeUrl, queryParameters, cancellationToken)).Response)
             using (var sr = new StreamReader(responseStream))
             {
-                return await sr.ReadToEndAsync();
+                var response = new SolrQueryResponse(await sr.ReadToEndAsync());
+                response.MetaData.OriginalQuery = QueryBuilder.GetQuery(queryParameters);
+                return response;
             }
         }
 
 
-        public async Task<Stream> GetAsStreamAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken)
+        public async Task<SolrQueryResponse<Stream>> GetAsStreamAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken)
         {
             var u = new UriBuilder(ServerURL);
             u.Path += relativeUrl;
-            u.Query = GetQuery(parameters);
+            var queryParameters = parameters?.ToList();
+            u.Query = QueryBuilder.GetQuery(queryParameters, version);
 
             HttpResponseMessage response;
             if (u.Uri.ToString().Length > MaxUriLength)
             {
                 u.Query = null;
-                response = await HttpClient.PostAsync(u.Uri, new FormUrlEncodedContent(parameters), cancellationToken);
+                response = await HttpClient.PostAsync(u.Uri, new FormUrlEncodedContent(queryParameters), cancellationToken);
             }
             else
                 response = await HttpClient.GetAsync(u.Uri, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new SolrConnectionException($"{response.StatusCode}: {response.ReasonPhrase}", null, u.Uri.ToString());
+            var solrResponse = new SolrQueryResponse<Stream>(await response.Content.ReadAsStreamAsync())
+            {
+                MetaData =
+                {
+                    OriginalQuery = u.Query
+                }
+            };
 
-            return await response.Content.ReadAsStreamAsync();
+            return solrResponse;
 
         }
-        public string Post(string relativeUrl, string s) => SyncFallbackConnection.Post(relativeUrl, s);
+        public SolrQueryResponse Post(string relativeUrl, string s) => SyncFallbackConnection.Post(relativeUrl, s);
 
-        public Task<string> PostAsync(string relativeUrl, string s) => PostAsync(relativeUrl, s, CancellationToken.None);
+        public Task<SolrQueryResponse> PostAsync(string relativeUrl, string s) => PostAsync(relativeUrl, s, CancellationToken.None);
 
-        public async Task<string> PostAsync(string relativeUrl, string s, CancellationToken cancellationToken)
+        public async Task<SolrQueryResponse> PostAsync(string relativeUrl, string s, CancellationToken cancellationToken)
         {
             var bytes = Encoding.UTF8.GetBytes(s);
             using (var content = new MemoryStream(bytes))
             {
-                using (var responseStream = await PostStreamAsStreamAsync(relativeUrl, "text/xml; charset=utf-8", content, null, cancellationToken))
+                using (var responseStream = (await PostStreamAsStreamAsync(relativeUrl, "text/xml; charset=utf-8", content, null, cancellationToken)).Response)
                 using (var sr = new StreamReader(responseStream))
                 {
-                    return await sr.ReadToEndAsync();
+                    var response = new SolrQueryResponse(await sr.ReadToEndAsync());
+                    response.MetaData.OriginalQuery = s;
+                    return response;
                 }
             }
         }
 
-        public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters) => SyncFallbackConnection.PostStream(relativeUrl, contentType, content, getParameters);
+        public SolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters) => SyncFallbackConnection.PostStream(relativeUrl, contentType, content, getParameters);
 
-        public async Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
+        public async Task<SolrQueryResponse> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
         {
-            using (var responseStream = await PostStreamAsStreamAsync(relativeUrl, contentType, content, getParameters, CancellationToken.None))
+            var queryParameters = getParameters?.ToList();
+            using (var responseStream = (await PostStreamAsStreamAsync(relativeUrl, contentType, content, queryParameters, CancellationToken.None)).Response)
             using (var sr = new StreamReader(responseStream))
             {
-                return await sr.ReadToEndAsync();
+                var response = new SolrQueryResponse(await sr.ReadToEndAsync());
+                response.MetaData.OriginalQuery = QueryBuilder.GetQuery(queryParameters, version);
+                return response;
             }
         }
 
 
-        public async Task<Stream> PostStreamAsStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters, CancellationToken cancellationToken)
+        public async Task<SolrQueryResponse<Stream>> PostStreamAsStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters, CancellationToken cancellationToken)
         {
             var u = new UriBuilder(ServerURL);
             u.Path += relativeUrl;
-            u.Query = GetQuery(getParameters);
+            u.Query = QueryBuilder.GetQuery(getParameters, version);
 
             var sc = new StreamContent(content);
             sc.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(contentType);
@@ -136,22 +153,13 @@ namespace SolrNet.Impl
             if (!response.IsSuccessStatusCode)
                 throw new SolrConnectionException($"{response.StatusCode}: {response.ReasonPhrase}", null, u.Uri.ToString());
 
-            return await response.Content.ReadAsStreamAsync();
+            var solrResponse = new SolrQueryResponse<Stream>(await response.Content.ReadAsStreamAsync());
+            solrResponse.MetaData.OriginalQuery = u.Query;
+            return solrResponse;
         }
 
 
-        private string GetQuery(IEnumerable<KeyValuePair<string, string>> parameters)
-        {
-            var param = new List<KeyValuePair<string, string>>();
-            if (parameters != null)
-                param.AddRange(parameters);
 
-            param.Add(new KeyValuePair<string, string>("version", version));
-            param.Add(new KeyValuePair<string, string>("wt", "xml"));
-
-            return string.Join("&", param.Select(kv => $"{WebUtility.UrlEncode(kv.Key)}={WebUtility.UrlEncode(kv.Value)}"));
-
-        }
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

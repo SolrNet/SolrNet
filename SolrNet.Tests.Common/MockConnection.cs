@@ -1,4 +1,5 @@
 ﻿#region license
+
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,14 +13,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using SolrNet.Impl;
 using Xunit;
 
 namespace SolrNet.Tests
@@ -27,6 +29,7 @@ namespace SolrNet.Tests
     public class MockConnection : ISolrConnection
     {
         private readonly ICollection<KeyValuePair<string, string>> expectations;
+
         private const string response =
             @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
@@ -47,22 +50,22 @@ namespace SolrNet.Tests
 
         public virtual Encoding XmlEncoding { get; set; }
 
-        public virtual string Post(string relativeUrl, string s)
+        public virtual SolrQueryResponse Post(string relativeUrl, string s)
         {
-            return string.Empty;
+            return new SolrQueryResponse(string.Empty);
         }
 
-        public virtual Task<string> PostAsync (string relativeUrl, string s)
+        public virtual Task<SolrQueryResponse> PostAsync (string relativeUrl, string s)
         {
             return Task.FromResult(Post(relativeUrl, s));
         }
 
-        public virtual string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
+        public virtual SolrQueryResponse PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
         {
-            return string.Empty;
+            return new SolrQueryResponse(string.Empty);
         }
 
-        public virtual Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
+        public virtual Task<SolrQueryResponse> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             return Task.FromResult(PostStream(relativeUrl, contentType, content, parameters));
         }
@@ -78,7 +81,7 @@ namespace SolrNet.Tests
             return DumpParams(new List<KeyValuePair<string, string>>(parameters));
         }
 
-        public virtual string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        public virtual SolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             var param = new List<KeyValuePair<string, string>>(parameters);
             foreach (var e in expectations)
@@ -92,9 +95,9 @@ namespace SolrNet.Tests
             Assert.Equal(expectations.Count, param.Count);
             foreach (var p in param)
                 Assert.True(expectations.Contains(p));
-            return response;
+            return new SolrQueryResponse(response);
         }
-        public virtual Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
+        public virtual Task<SolrQueryResponse> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             return Task.FromResult(Get(relativeUrl, parameters));
         }

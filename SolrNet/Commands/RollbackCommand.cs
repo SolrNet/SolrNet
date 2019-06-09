@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using SolrNet.Impl;
 using System.Threading.Tasks;
 
 namespace SolrNet.Commands {
@@ -22,11 +23,12 @@ namespace SolrNet.Commands {
     /// Rollbacks all add/deletes made to the index since the last commit.
     /// </summary>
     public class RollbackCommand : ISolrCommand {
-        public string Execute(ISolrConnection connection) {
+        public SolrQueryResponse Execute(ISolrConnection connection)
+        {
             return connection.Post("/update", "<rollback/>");
         }
 
-        public Task<string> ExecuteAsync(ISolrConnection connection)
+        public Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
         {
             return connection.PostAsync("/update", "<rollback/>");
         }

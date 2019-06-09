@@ -20,6 +20,7 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using SolrNet.Commands.Parameters;
+using SolrNet.Impl;
 using SolrNet.Utils;
 using System.Threading.Tasks;
 
@@ -46,14 +47,14 @@ namespace SolrNet.Commands {
         /// </summary>
 		public bool? FromCommitted { get; set; }
 
-		public string Execute(ISolrConnection connection)
+		public SolrQueryResponse Execute(ISolrConnection connection)
         {
             string xml = GetDeleteXml();
 
             return connection.Post("/update", xml);
         }
 
-        public Task<string> ExecuteAsync(ISolrConnection connection)
+        public Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
         {
             string xml = GetDeleteXml();
             return connection.PostAsync("/update", xml);

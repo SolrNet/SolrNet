@@ -670,8 +670,9 @@ namespace SolrNet.Impl {
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
             var r = connection.Get(handler, param);
-            var xml = XDocument.Parse(r);
+            var xml = XDocument.Parse(r.Response);
             resultParser.Parse(xml, results);
+            results.SolrResponseMetaData = r.MetaData;
             return results;
         }
 
@@ -684,7 +685,7 @@ namespace SolrNet.Impl {
         public SolrMoreLikeThisHandlerResults<T> Execute(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options) {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
             var r = connection.Get(MoreLikeThisHandler, param);
-            var qr = mlthResultParser.Parse(r);
+            var qr = mlthResultParser.Parse(r.Response);
             return qr;
         }
 
@@ -699,13 +700,13 @@ namespace SolrNet.Impl {
             {
                 using (var r = await cc.GetAsStreamAsync(handler, param, cancellationToken))
                 {
-                    xml = XDocument.Load(r);
+                    xml = XDocument.Load(r.Response);
                 }
             }
             else
             {
                 var r = await connection.GetAsync(handler, param, cancellationToken);
-                xml = XDocument.Parse(r);
+                xml = XDocument.Parse(r.Response);
             }
 
             resultParser.Parse(xml, results);
@@ -716,7 +717,7 @@ namespace SolrNet.Impl {
         {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
             var r = await connection.GetAsync(MoreLikeThisHandler, param, cancellationToken);
-            var qr = mlthResultParser.Parse(r);
+            var qr = mlthResultParser.Parse(r.Response);
             return qr;
         }
     }

@@ -120,7 +120,7 @@ namespace SolrNet.Impl {
         public ExtractResponse SendAndParseExtract(ISolrCommand cmd)
         {
             var r = Send(cmd);
-            var xml = XDocument.Parse(r);
+            var xml = XDocument.Parse(r.Response);
             return extractResponseParser.Parse(xml);
 
         }
@@ -128,7 +128,7 @@ namespace SolrNet.Impl {
         public async Task<ExtractResponse> SendAndParseExtractAsync(ISolrCommand cmd)
         {
             var r = await SendAsync(cmd);
-            var xml = XDocument.Parse(r);
+            var xml = XDocument.Parse(r.Response);
             return extractResponseParser.Parse(xml);
         }
 
@@ -148,14 +148,14 @@ namespace SolrNet.Impl {
         }
 
         public SolrSchema GetSchema(string schemaFileName) {
-            string schemaXml = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
-            var schema = XDocument.Parse(schemaXml);
+            SolrQueryResponse r = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
+            var schema = XDocument.Parse(r.Response);
             return schemaParser.Parse(schema);
         }
 
         public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options) {
-            var response = connection.Get("/dataimport", null);
-            var dihstatus = XDocument.Parse(response);
+            var qr = connection.Get("/dataimport", null);
+            var dihstatus = XDocument.Parse(qr.Response);
             return dihStatusParser.Parse(dihstatus);
         }
 
@@ -181,15 +181,15 @@ namespace SolrNet.Impl {
 
         public async Task<SolrSchema> GetSchemaAsync(string schemaFileName)
         {
-            string schemaXml = await connection.GetAsync("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
-            var schema = XDocument.Parse(schemaXml);
+            var schemaXml = await connection.GetAsync("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
+            var schema = XDocument.Parse(schemaXml.Response);
             return schemaParser.Parse(schema);
         }
 
         public async Task<SolrDIHStatus> GetDIHStatusAsync(KeyValuePair<string, string> options)
         {
             var response = await connection.GetAsync("/dataimport", null);
-            var dihstatus = XDocument.Parse(response);
+            var dihstatus = XDocument.Parse(response.Response);
             return dihStatusParser.Parse(dihstatus);
         }
 
@@ -246,12 +246,12 @@ namespace SolrNet.Impl {
             return XDocument.Parse(r);
         }
 
-        public string Send(ISolrCommand cmd)
+        public SolrQueryResponse Send(ISolrCommand cmd)
         {
             return cmd.Execute(connection);
         }
 
-        public Task<string> SendAsync(ISolrCommand cmd)
+        public Task<SolrQueryResponse> SendAsync(ISolrCommand cmd)
         {
             return cmd.ExecuteAsync(connection);
         }
@@ -259,28 +259,28 @@ namespace SolrNet.Impl {
         public ResponseHeader SendAndParseHeader(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
         {
             var r = connection.Get(handler, solrParams);
-            var xml = XDocument.Parse(r);
+            var xml = XDocument.Parse(r.Response);
             return headerParser.Parse(xml);
         }
 
         public ResponseHeader SendAndParseHeader(ISolrCommand cmd)
         {
             var r = Send(cmd);
-            var xml = XDocument.Parse(r);
+            var xml = XDocument.Parse(r.Response);
             return headerParser.Parse(xml);
         }
 
         public async Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)
         {
             var r = await SendAsync(cmd);
-            var xml = XDocument.Parse(r);
+            var xml = XDocument.Parse(r.Response);
             return headerParser.Parse(xml);
         }
 
         public string SendRaw(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
         {
             var r = connection.Get(handler, solrParams);
-            return r;
+            return r.Response;
         }
 
      

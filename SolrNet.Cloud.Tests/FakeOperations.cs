@@ -276,7 +276,7 @@ namespace SolrNet.Cloud.Tests
             return null;
         }
 
-        public string Send(ISolrCommand cmd)
+        public SolrQueryResponse Send(ISolrCommand cmd)
         {
             SetLastOperation();
             return null;
@@ -366,10 +366,10 @@ namespace SolrNet.Cloud.Tests
             return Task.FromResult<ResponseHeader>(null);
         }
 
-        public Task<string> SendAsync(ISolrCommand cmd)
+        public Task<SolrQueryResponse> SendAsync(ISolrCommand cmd)
         {
             SetLastOperation();
-            return Task.FromResult<string>(null);
+            return Task.FromResult<SolrQueryResponse>(null);
         }
 
         public Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)

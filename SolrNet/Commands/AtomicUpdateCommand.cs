@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
+using SolrNet.Impl;
 
 namespace SolrNet.Commands
 {
@@ -41,7 +42,7 @@ namespace SolrNet.Commands
             this.parameters = parameters;
         }
 
-        public string Execute(ISolrConnection connection)
+        public SolrQueryResponse Execute(ISolrConnection connection)
         {
             string json = GetAtomicUpdateJson();
             var bytes = Encoding.UTF8.GetBytes(json);
@@ -49,7 +50,7 @@ namespace SolrNet.Commands
                 return connection.PostStream("/update", "text/json; charset=utf-8", content, GetParamsAsKvp());
         }
 
-        public async Task<string> ExecuteAsync(ISolrConnection connection)
+        public async Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
         {
             string json = GetAtomicUpdateJson();
             var bytes = Encoding.UTF8.GetBytes(json);

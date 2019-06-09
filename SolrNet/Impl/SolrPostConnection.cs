@@ -33,12 +33,12 @@ namespace SolrNet.Impl
             get { return serverUrl; }
         }
 
-        public string Post(string relativeUrl, string s)
+        public SolrQueryResponse Post(string relativeUrl, string s)
         {
             return conn.Post(relativeUrl, s);
         }
 
-        public Task<string> PostAsync(string relativeUrl, string s)
+        public Task<SolrQueryResponse> PostAsync(string relativeUrl, string s)
         {
             return conn.PostAsync(relativeUrl, s);
         }
@@ -51,15 +51,7 @@ namespace SolrNet.Impl
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
 
-            var param = new List<KeyValuePair<string, string>>();
-            if (parameters != null)
-                param.AddRange(parameters);
-
-            param.Add(KV.Create("wt", "xml"));
-            var qs = string.Join("&", param
-                  .Select(kv => string.Format("{0}={1}", HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
-                  .ToArray());
-
+            var qs = QueryBuilder.GetQuery(parameters);
             request.ContentLength = Encoding.UTF8.GetByteCount(qs);
             request.ProtocolVersion = HttpVersion.Version11;
             request.KeepAlive = true;
@@ -67,9 +59,10 @@ namespace SolrNet.Impl
             return (request, qs);
         }
 
-        public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        public SolrQueryResponse Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
         {
-            var g = PrepareGet(relativeUrl, parameters);
+            var queryParameters = parameters?.ToList();
+            var g = PrepareGet(relativeUrl, queryParameters);
             try
             {
                 using (var postParams = g.request.GetRequestStream())
@@ -78,7 +71,11 @@ namespace SolrNet.Impl
                 using (var response = g.request.GetResponse())
                 using (var responseStream = response.GetResponseStream())
                 using (var sr = new StreamReader(responseStream, Encoding.UTF8, true))
-                    return sr.ReadToEnd();
+                {
+                    var solrResponse = new SolrQueryResponse(sr.ReadToEnd());
+                    solrResponse.MetaData.OriginalQuery = g.queryString;
+                    return solrResponse;
+                }
             }
             catch (WebException e)
             {
@@ -86,9 +83,10 @@ namespace SolrNet.Impl
             }
         }
 
-        public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SolrQueryResponse> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var g = PrepareGet(relativeUrl, parameters);
+            var queryParameters = parameters?.ToList();
+            var g = PrepareGet(relativeUrl, queryParameters);
             try
             {
                 using (var postParams = await g.request.GetRequestStreamAsync())
@@ -97,7 +95,11 @@ namespace SolrNet.Impl
                 using (var response = await g.request.GetResponseAsync())
                 using (var responseStream = response.GetResponseStream())
                 using (var sr = new StreamReader(responseStream, Encoding.UTF8, true))
-                    return await sr.ReadToEndAsync();
+                {
+                    var solrResponse = new SolrQueryResponse(await sr.ReadToEndAsync());
+                    solrResponse.MetaData.OriginalQuery = g.queryString;
+                    return solrResponse;
+                }
             }
             catch (WebException e)
             {
@@ -105,13 +107,11 @@ namespace SolrNet.Impl
             }
         }
 
-
-        public string PostStream(string relativeUrl, string contentType, System.IO.Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
-        {
-            return conn.PostStream(relativeUrl, contentType, content, getParameters);
-        }
-
-        public Task<string> PostStreamAsync(string relativeUrl, string contentType, System.IO.Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
+     public SolrQueryResponse PostStream(string relativeUrl, string contentType, System.IO.Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
+     {
+			return conn.PostStream(relativeUrl, contentType, content, getParameters);
+		}
+        public Task<SolrQueryResponse> PostStreamAsync(string relativeUrl, string contentType, System.IO.Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
         {
             return conn.PostStreamAsync(relativeUrl, contentType, content, getParameters);
         }

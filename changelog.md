@@ -1,4 +1,10 @@
 # Change Log
+## 1.0.16 (2019-06-09)
+- Provide support for date and string fields in stats result. #484 (@Jaap-van-Hengstum)
+- Bug fix: SolrCloud still sends traffic to dead nodes #479 (@karlomedallo)
+- Bug fix: Atomic Update Command Name Bugfix #482 (@1dot44mb)
+- Documentation Autofac multicore example #477 (@meanin)
+
 ## 1.0.15 (2019-03-19)
 - Update Castle Windsor integration fixes issues #472 (@hesamkashefi)
 

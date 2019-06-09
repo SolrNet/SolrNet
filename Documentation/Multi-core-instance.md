@@ -42,6 +42,37 @@ class SampleController {
 }
 ```
 
+### With Autofac and SolrNet.Autofac
+Code config:
+```C#
+var builder = new ContainerBuilder();
+builder.RegisterModule(new SolrNetModule(new List<ISolrServer>
+{
+	new SolrServer("core0-id", "http://localhost:8983/solr/product", typeof(Person).AssemblyQualifiedName),
+	new SolrServer("core1-id", "http://localhost:8983/solr/product2", typeof(Person).AssemblyQualifiedName)
+}));
+var container = builder.Build();
+```
+
+Resolve manually:
+```C#
+var core0 = container.ResolveNamed<ISolrOperations<Person>>("core0-id");
+var core1 = container.ResolveNamed<ISolrOperations<Person>>("core1-id");
+```
+
+Dependency injection:
+```C#
+public class Test
+{
+    private ISolrOperations<Person> _core0;
+
+    public Test(IIndex<string, ISolrOperations<Person>> solrCoresDictionary)
+    {
+        _core0 = solrCoresDictionary["core0-id"];
+    }
+}
+```
+
 ### With Windsor facility
 Code config:
 

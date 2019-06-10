@@ -13,7 +13,7 @@ namespace SolrNet.Impl
         /// Convert the body into a string to send to Solr.
         /// </summary>
         /// <returns></returns>
-        string serialize();
+        string Serialize();
 
         /// <summary>
         /// The MimeType to use when sending the request.

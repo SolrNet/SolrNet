@@ -24,11 +24,11 @@ namespace SolrNet.Impl
         }
 
 
-        public string serialize()
+        public string Serialize()
         {
             return Text;
         }
 
-        public string mimeType => MediaTypeNames.Text.Plain;
+        public string MimeType => MediaTypeNames.Text.Plain;
     }
 }

@@ -114,9 +114,9 @@ namespace SolrNet.Impl
         {
             var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
             var param = GetAllParameters(q, options);
-            var body = options?.QueryBody?.serialize() ?? String.Empty;
+            var body = options?.QueryBody?.Serialize() ?? String.Empty;
             var results = new SolrQueryResults<T>();
-            var r = connection.PostStream(handler, options?.QueryBody?.mimeType ?? SimpleJsonQueryBody.ApplicationJson,
+            var r = connection.PostStream(handler, options?.QueryBody?.MimeType ?? SimpleJsonQueryBody.ApplicationJson,
                 new MemoryStream(Encoding.UTF8.GetBytes(body)), param);
             var xml = XDocument.Parse(r);
             resultParser.Parse(xml, results);
@@ -129,13 +129,13 @@ namespace SolrNet.Impl
             var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
             var param = GetAllParameters(q, options);
             var results = new SolrQueryResults<T>();
-            var body = options?.QueryBody?.serialize() ?? String.Empty;
+            var body = options?.QueryBody?.Serialize() ?? String.Empty;
 
             XDocument xml;
             if (connection is IStreamSolrConnection cc)
             {
                 using (var r = await cc.PostStreamAsStreamAsync(handler,
-                    options?.QueryBody.mimeType ?? SimpleJsonQueryBody.ApplicationJson,
+                    options?.QueryBody.MimeType ?? SimpleJsonQueryBody.ApplicationJson,
                     new MemoryStream(Encoding.UTF8.GetBytes(body)), param, cancellationToken))
                 {
                     xml = XDocument.Load(r);
@@ -144,7 +144,7 @@ namespace SolrNet.Impl
             else
             {
                 var r = await connection.PostStreamAsync(handler,
-                    options?.QueryBody?.mimeType ?? SimpleJsonQueryBody.ApplicationJson,
+                    options?.QueryBody?.MimeType ?? SimpleJsonQueryBody.ApplicationJson,
                     new MemoryStream(Encoding.UTF8.GetBytes(body)), param);
                 xml = XDocument.Parse(r);
             }
@@ -157,8 +157,8 @@ namespace SolrNet.Impl
         {
             var param = GetAllMoreLikeThisHandlerParameters(query, options).ToList();
             var body = GetMoreLikeThisBodyContent(query, options);
-            var r = connection.PostStream(MoreLikeThisHandler, body.mimeType,
-                new MemoryStream(Encoding.UTF8.GetBytes(body.serialize())), param);
+            var r = connection.PostStream(MoreLikeThisHandler, body.MimeType,
+                new MemoryStream(Encoding.UTF8.GetBytes(body.Serialize())), param);
             var qr = mlthResultParser.Parse(r);
             return qr;
         }
@@ -169,8 +169,8 @@ namespace SolrNet.Impl
         {
             var param = GetAllMoreLikeThisHandlerParameters(query, options).ToList();
             var body = GetMoreLikeThisBodyContent(query, options);
-            var r = await connection.PostStreamAsync(MoreLikeThisHandler, body.mimeType,
-                new MemoryStream(Encoding.UTF8.GetBytes(body.serialize())), param);
+            var r = await connection.PostStreamAsync(MoreLikeThisHandler, body.MimeType,
+                new MemoryStream(Encoding.UTF8.GetBytes(body.Serialize())), param);
             var qr = mlthResultParser.Parse(r);
             return qr;
         }

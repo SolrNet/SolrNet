@@ -18,6 +18,6 @@ namespace SolrNet.Impl
         /// <summary>
         /// The MimeType to use when sending the request.
         /// </summary>
-        string mimeType { get; }
+        string MimeType { get; }
     }
 }

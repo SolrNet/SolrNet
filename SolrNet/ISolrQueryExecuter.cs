@@ -40,6 +40,22 @@ namespace SolrNet
         /// <returns>query results</returns>
         Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
 
+        /// <summary>
+        /// Executes the query with a body and returns results
+        /// </summary>
+        /// <returns>query results</returns>
+        Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, ISolrQueryBody body, QueryOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
         Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+
+        /// <summary>
+        /// Executes a MoreLikeThis query, taking a body to compare, and returns results.
+        /// </summary>
+        /// <param name="query">The query text</param>
+        /// <param name="body">The body to compare against.</param>
+        /// <param name="options">Additional query options.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns></returns>
+        Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery query, ISolrQueryBody body, MoreLikeThisHandlerQueryOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
 }

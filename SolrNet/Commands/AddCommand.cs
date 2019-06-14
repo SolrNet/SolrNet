@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using SolrNet.Impl;
 using SolrNet.Utils;
 using System.Threading.Tasks;
 
@@ -72,12 +73,13 @@ namespace SolrNet.Commands {
             return addElement.ToString(SaveOptions.DisableFormatting);
         }
 
-	    public string Execute(ISolrConnection connection) {
+        public SolrQueryResponse Execute(ISolrConnection connection)
+        {
 	        var xml = ConvertToXml();
 			return connection.Post("/update", xml);
 		}
 
-        public Task<string> ExecuteAsync(ISolrConnection connection)
+        public Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
         {
             var xml = ConvertToXml();
             return connection.PostAsync("/update", xml);

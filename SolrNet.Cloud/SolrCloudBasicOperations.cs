@@ -74,7 +74,7 @@ namespace SolrNet.Cloud
             return PerformBasicOperation(operations => operations.Delete(ids, q, parameters));
         }
 
-        public string Send(ISolrCommand cmd)
+        public SolrQueryResponse Send(ISolrCommand cmd)
         {
             return PerformBasicOperation(operations => operations.Send(cmd));
         }
@@ -119,7 +119,7 @@ namespace SolrNet.Cloud
         public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
             => PerformBasicOperation(operations => operations.DeleteAsync(ids, q, parameters));
 
-        public Task<string> SendAsync(ISolrCommand cmd) 
+        public Task<SolrQueryResponse> SendAsync(ISolrCommand cmd) 
             => PerformBasicOperation(operations => operations.SendAsync(cmd));
 
         public Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)

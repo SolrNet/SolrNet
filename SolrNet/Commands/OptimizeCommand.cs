@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using SolrNet.Impl;
 
 namespace SolrNet.Commands {
     /// <summary>
@@ -54,14 +55,14 @@ namespace SolrNet.Commands {
         /// </summary>
         /// <param name="connection"></param>
         /// <returns></returns>
-		public string Execute(ISolrConnection connection)
+		public SolrQueryResponse Execute(ISolrConnection connection)
         {
             string xml = GetOptimizeXml();
 
             return connection.Post("/update", xml);
         }
 
-        public Task<string> ExecuteAsync(ISolrConnection connection)
+        public Task<SolrQueryResponse> ExecuteAsync(ISolrConnection connection)
         {
             string xml = GetOptimizeXml();
 

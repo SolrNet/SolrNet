@@ -91,7 +91,7 @@ namespace SolrNet.Impl {
         /// The STATUS action returns the status of all running cores.
         /// </summary>
         public List<CoreResult> Status() {
-            return ParseStatusResponse(Send(new StatusCommand()));
+            return ParseStatusResponse(Send(new StatusCommand()).Response);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace SolrNet.Impl {
         /// </summary>
         /// <param name="coreName">The name of a core, as listed in the "name" attribute of a &lt;core&gt; element in solr.xml.</param>
         public CoreResult Status(string coreName) {
-            return ParseStatusResponse(Send(new StatusCommand(coreName))).FirstOrDefault();
+            return ParseStatusResponse(Send(new StatusCommand(coreName)).Response).FirstOrDefault();
         }
 
         /// <summary>
@@ -176,6 +176,7 @@ namespace SolrNet.Impl {
         }
 
         /// <summary>
+        
         /// Parses the status response.
         /// </summary>
         /// <param name="responseXml">The response XML.</param>

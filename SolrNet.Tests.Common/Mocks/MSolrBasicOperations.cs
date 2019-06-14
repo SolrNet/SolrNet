@@ -59,7 +59,7 @@ namespace SolrNet.Tests.Mocks {
             throw new NotImplementedException();
         }
 
-        public string Send(ISolrCommand cmd) {
+        public SolrQueryResponse Send(ISolrCommand cmd) {
             throw new NotImplementedException();
         }
 
@@ -122,7 +122,7 @@ namespace SolrNet.Tests.Mocks {
             throw new NotImplementedException();
         }
 
-        public Task<string> SendAsync(ISolrCommand cmd)
+        public Task<SolrQueryResponse> SendAsync(ISolrCommand cmd)
         {
             throw new NotImplementedException();
         }

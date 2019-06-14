@@ -21,6 +21,7 @@ using Xunit;
 using SolrNet.Commands;
 using SolrNet.Tests.Mocks;
 using SolrNet.Utils;
+using SolrNet.Impl;
 
 namespace SolrNet.Tests {
     
@@ -29,14 +30,14 @@ namespace SolrNet.Tests {
         public void Execute() {
             var parameters = new ExtractParameters(null, "1", "text.doc");
             var conn = new MSolrConnection();
-            conn.postStream += new Moroco.MFunc<string, string, System.IO.Stream, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>>, string>( (url, b, stream, kvs) => {
+            conn.postStream += new Moroco.MFunc<string, string, System.IO.Stream, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>>, SolrQueryResponse>((url, b, stream, kvs) => {
                 Assert.Equal("/update/extract", url);
                 var p = new[] {
                     KV.Create("literal.id", parameters.Id),
                     KV.Create("resource.name", parameters.ResourceName),
                 };
                 Assert.Equal(p, kvs); //ignore order should be added
-                return "";
+                return new SolrQueryResponse("");
             });
             var cmd = new ExtractCommand(parameters);
             cmd.Execute(conn);
@@ -47,7 +48,7 @@ namespace SolrNet.Tests {
         public void ExecuteWithAllParameters() {
             var parameters = new ExtractParameters(null, "1", "text.doc");
             var conn = new MSolrConnection();
-            conn.postStream += new Moroco.MFunc<string, string, System.IO.Stream, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>>, string>( (url, type, stream, kvs) => {
+            conn.postStream += new Moroco.MFunc<string, string, System.IO.Stream, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>>, SolrQueryResponse>((url, type, stream, kvs) => {
                 Assert.Equal("/update/extract", url);
                 Assert.Equal("application/word-document", type);
 
@@ -70,7 +71,7 @@ namespace SolrNet.Tests {
 
 
                 Assert.Equal(p, kvs); //ignore order should be added
-                return "";
+                return new SolrQueryResponse("");
             });
 
             var cmd = new ExtractCommand(new ExtractParameters(null, "1", "text.doc") {

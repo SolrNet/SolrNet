@@ -21,6 +21,7 @@ using SolrNet;
 using System.Configuration;
 using SolrNet.Exceptions;
 using SolrNet.Tests.Mocks;
+using SolrNet.Impl;
 
 namespace Ninject.Integration.SolrNet.Tests
 {
@@ -100,11 +101,11 @@ namespace Ninject.Integration.SolrNet.Tests
             };
             kernel.Load(new SolrNetModule(solrServers));
 
-            const string Response = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+             var Response = new SolrQueryResponse(@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
 <lst name=""responseHeader""><int name=""status"">0</int><int name=""QTime"">0</int><lst name=""params""><str name=""q"">id:123456</str><str name=""?""/><str name=""version"">2.2</str></lst></lst><result name=""response"" numFound=""1"" start=""0""><doc></doc></result>
 </response>
-";
+");
 
             var solr1 = kernel.Get<ISolrOperations<Entity>>("core-0");
             Assert.NotNull(solr1);

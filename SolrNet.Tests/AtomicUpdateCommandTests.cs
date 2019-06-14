@@ -21,20 +21,25 @@ using Moroco;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using SolrNet.Impl;
+
 
 namespace SolrNet.Tests
 {
-    public class AtomicUpdateCommandTests {
-		[Fact]
-		public void AtomicUpdateSet() {
-		    var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+    public class AtomicUpdateCommandTests
+    {
+        [Fact]
+        public void AtomicUpdateSet()
+        {
+            var conn = new Mocks.MSolrConnection();
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
-		        Assert.Equal("[{\"id\":\"0\",\"animal\":{\"set\":\"squirrel\"}}]", text);
-		        Console.WriteLine(text);
+                Assert.Equal("[{\"id\":\"0\",\"animal\":{\"set\":\"squirrel\"}}]", text);
+                Console.WriteLine(text);
                 return null;
-		    });
+            });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, "squirrel") };
             var cmd = new AtomicUpdateCommand("id", "0", updateSpecs, null);
             cmd.Execute(conn);
@@ -44,14 +49,15 @@ namespace SolrNet.Tests
         public void AtomicUpdateSetArray()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"animal\":{\"set\":[\"squirrel\",\"fox\"]}}]", text);
                 Console.WriteLine(text);
                 return null;
             });
-            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, new string[] {"squirrel", "fox"}) };
+            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, new string[] { "squirrel", "fox" }) };
             var cmd = new AtomicUpdateCommand("id", "0", updateSpecs, null);
             cmd.Execute(conn);
             Assert.Equal(1, conn.postStream.Calls);
@@ -60,14 +66,15 @@ namespace SolrNet.Tests
         public void AtomicUpdateSetEmptyArray()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"animal\":{\"set\":[]}}]", text);
                 Console.WriteLine(text);
                 return null;
             });
-            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, new string[] {}) };
+            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, new string[] { }) };
             var cmd = new AtomicUpdateCommand("id", "0", updateSpecs, null);
             cmd.Execute(conn);
             Assert.Equal(1, conn.postStream.Calls);
@@ -77,7 +84,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateAdd()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"add\":\"nuts\"}}]", text);
@@ -94,7 +102,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateAddArray()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"add\":[\"nuts\",\"seeds\",\"berries\"]}}]", text);
@@ -111,7 +120,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateAddEmptyArray()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"add\":[]}}]", text);
@@ -128,7 +138,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateRemove()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"remove\":\"nuts\"}}]", text);
@@ -145,7 +156,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateRemoveArray()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"remove\":[\"nuts\",\"seeds\",\"berries\"]}}]", text);
@@ -162,7 +174,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateRemoveEmptyArray()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"remove\":[]}}]", text);
@@ -179,7 +192,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateRemoveRegex()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"removeregex\":\"nu.*\"}}]", text);
@@ -196,7 +210,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateRemoveRegexArray()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"removeregex\":[\"nu.*\",\"seeds\",\"berr.+\"]}}]", text);
@@ -213,7 +228,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateRemoveRegexEmptyArray()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"removeregex\":[]}}]", text);
@@ -230,7 +246,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateInc()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"count\":{\"inc\":3}}]", text);
@@ -247,11 +264,12 @@ namespace SolrNet.Tests
         public void AtomicUpdateWithParameter()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("commitwithin", ((KeyValuePair<string, string>[])param)[0].Key);
-                Assert.Equal("4343", ((KeyValuePair<string, string>[]) param)[0].Value);
+                Assert.Equal("4343", ((KeyValuePair<string, string>[])param)[0].Value);
                 Assert.Equal("[{\"id\":\"0\",\"count\":{\"inc\":3}}]", text);
                 Console.WriteLine(text);
                 return null;
@@ -287,7 +305,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateSerialization()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{"
@@ -323,7 +342,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateNullStringValue()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"set\":null}}]", text);
@@ -340,7 +360,8 @@ namespace SolrNet.Tests
         public void AtomicUpdateNullStringArrayValue()
         {
             var conn = new Mocks.MSolrConnection();
-            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, SolrQueryResponse>((url, contentType, content, param) =>
+            {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"set\":null}}]", text);

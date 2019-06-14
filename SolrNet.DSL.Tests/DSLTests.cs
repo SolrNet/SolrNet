@@ -37,12 +37,11 @@ namespace SolrNet.DSL.Tests {
             public int Id { get; set; }
         }
 
-        private const string response =
-            @"<?xml version=""1.0"" encoding=""UTF-8""?>
+        private SolrQueryResponse response = new SolrQueryResponse(@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
 <lst name=""responseHeader""><int name=""status"">0</int><int name=""QTime"">0</int><lst name=""params""><str name=""q"">id:123456</str><str name=""?""/><str name=""version"">2.2</str></lst></lst><result name=""response"" numFound=""1"" start=""0""><doc></doc></result>
 </response>
-";
+");
 
         public delegate string Writer(string s, IDictionary<string, string> q);
 
@@ -234,11 +233,11 @@ namespace SolrNet.DSL.Tests {
 
         [Fact]
         public void Query_InvalidField_ShouldNOTThrow() {
-            const string response =
+            var response = new SolrQueryResponse(
                 @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
 <lst name=""responseHeader""><int name=""status"">0</int><int name=""QTime"">0</int><lst name=""params""><str name=""q"">id:123456</str><str name=""?""/><str name=""version"">2.2</str></lst></lst><result name=""response"" numFound=""1"" start=""0""><doc><str name=""advancedview""/><str name=""basicview""/><int name=""id"">123456</int></doc></result>
-</response>";
+</response>");
             var conn = new MSolrConnection();
             conn.get &= x => x.Return(response);
             Solr.Connection = conn;

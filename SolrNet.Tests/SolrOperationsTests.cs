@@ -464,7 +464,7 @@ namespace SolrNet.Tests {
             connection.get += new MFunc<string, IEnumerable<KeyValuePair<string, string>>, string>( (url, param) => {
                 Assert.Equal("/select", url);
                 var expectedParams = new Dictionary<string, string> {
-                    {"q", ""},
+                    {"q", "*:*"},
                     {"rows", SolrQueryExecuter<TestDocumentWithUniqueKey>.ConstDefaultRows.ToString()},
                     {"facet", "true"},
                     {"facet.query", "id:1"},
@@ -479,7 +479,7 @@ namespace SolrNet.Tests {
             parser.parse &= x => x.Stub();
             var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(parser, connection, querySerializer, facetQuerySerializer, null);
             var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, null, null, null, null, null, null);
-            var r = solr.Query(new SolrQuery(""), new QueryOptions {
+            var r = solr.Query(new SolrQuery("*:*"), new QueryOptions {
                 Facet = new FacetParameters {
                     Queries = new ISolrFacetQuery[] {
                         new SolrFacetQuery(new SolrQuery("id:1")),
@@ -496,7 +496,7 @@ namespace SolrNet.Tests {
             connection.get += new MFunc<string, IEnumerable<KeyValuePair<string, string>>, string>((url, param) => {
                 Assert.Equal("/select", url);
                 var expectedParams = new Dictionary<string, string> {
-                    {"q", ""},
+                    {"q", "*:*"},
                     {"rows", SolrQueryExecuter<TestDocumentWithUniqueKey>.ConstDefaultRows.ToString()},
                     {"facet", "true"},
                     {"facet.field", "id"},
@@ -509,12 +509,12 @@ namespace SolrNet.Tests {
             var parser = new MSolrAbstractResponseParser<TestDocumentWithUniqueKey>();
             parser.parse &= x => x.Stub();
             var querySerializer = new MSolrQuerySerializer();
-            querySerializer.serialize += _ => "";
+            querySerializer.serialize += _ => "*:*";
             var facetQuerySerializer = new DefaultFacetQuerySerializer(querySerializer, new DefaultFieldSerializer());
 
             var executer = new SolrQueryExecuter<TestDocumentWithUniqueKey>(parser, connection, querySerializer, facetQuerySerializer, null);
             var solr = new SolrBasicServer<TestDocumentWithUniqueKey>(connection, executer, null, null, null, null, null, null);
-            var r = solr.Query(new SolrQuery(""), new QueryOptions {
+            var r = solr.Query(new SolrQuery("*:*"), new QueryOptions {
                 Facet = new FacetParameters {
                     Queries = new ISolrFacetQuery[] {
                             new SolrFacetFieldQuery("id") {Limit = 3},

@@ -19,7 +19,10 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -126,7 +129,10 @@ namespace SolrNet.Impl {
         /// <param name="options"></param>
         /// <returns></returns>
         public IEnumerable<KeyValuePair<string, string>> GetAllParameters(ISolrQuery Query, QueryOptions options) {
-            yield return KV.Create("q", querySerializer.Serialize(Query));
+            var q = querySerializer.Serialize(Query);
+            if (q.Length > 0)
+                yield return KV.Create("q", q);
+
             if (options == null)
                 yield break;
 
@@ -712,10 +718,52 @@ namespace SolrNet.Impl {
             return results;
         }
 
+        public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, ISolrQueryBody body, QueryOptions options,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
+            var param = GetAllParameters(q, options);
+            var results = new SolrQueryResults<T>();
+            var serializedBody = body?.Serialize() ?? String.Empty;
+
+            XDocument xml;
+            if (connection is IStreamSolrConnection cc)
+            {
+                using (var r = await cc.PostStreamAsStreamAsync(handler,
+                    body?.MimeType ?? SimpleJsonQueryBody.ApplicationJson,
+                    new MemoryStream(Encoding.UTF8.GetBytes(serializedBody)), param, cancellationToken))
+                {
+                    xml = XDocument.Load(r);
+                }
+            }
+            else
+            {
+                var r = await connection.PostStreamAsync(handler,
+                    body?.MimeType ?? SimpleJsonQueryBody.ApplicationJson,
+                    new MemoryStream(Encoding.UTF8.GetBytes(serializedBody)), param);
+                xml = XDocument.Parse(r);
+            }
+
+            resultParser.Parse(xml, results);
+            return results;
+        }
+        
         public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
             var r = await connection.GetAsync(MoreLikeThisHandler, param, cancellationToken);
+            var qr = mlthResultParser.Parse(r);
+            return qr;
+        }
+
+        public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery query, ISolrQueryBody body,
+            MoreLikeThisHandlerQueryOptions options,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var param = GetAllMoreLikeThisHandlerParameters(query, options).ToList();
+            var serializedBody = body?.Serialize() ?? String.Empty;
+            var r = await connection.PostStreamAsync(MoreLikeThisHandler, body?.MimeType ?? MediaTypeNames.Text.Plain,
+                new MemoryStream(Encoding.UTF8.GetBytes(serializedBody)), param);
             var qr = mlthResultParser.Parse(r);
             return qr;
         }

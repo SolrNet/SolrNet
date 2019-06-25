@@ -16,9 +16,9 @@
 
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using Xunit;
 using Moroco;
 using SolrNet.Attributes;
@@ -54,6 +54,23 @@ namespace SolrNet.Tests {
 
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, serializer, null, null);
             var r = queryExecuter.Execute(new SolrQuery(queryString), null);
+            Assert.Equal(1, serializer.serialize.Calls);
+        }
+
+        [Fact]
+        public void ExecuteAsyncWithBodyContent()
+        {
+            const string queryJson = "{ \"query\": \"id:123456\" }";
+            var q = new Dictionary<string, string>();
+            q["rows"] = SolrQueryExecuter<SolrQueryExecuterTests.TestDocument>.ConstDefaultRows.ToString();
+            var conn = new MockConnection(q, SimpleJsonQueryBody.ApplicationJson, queryJson);
+            var serializer = new MSolrQuerySerializer();
+            serializer.serialize += _ => string.Empty;
+            var parser = new MSolrAbstractResponseParser<SolrQueryExecuterTests.TestDocument>();
+            parser.parse &= x => x.Stub();
+
+            var queryExecuter = new SolrQueryExecuter<SolrQueryExecuterTests.TestDocument>(parser, conn, serializer, null, null);
+            var r = queryExecuter.ExecuteAsync(new SolrQuery(null), new SimpleJsonQueryBody(queryJson), new QueryOptions());
             Assert.Equal(1, serializer.serialize.Calls);
         }
 
@@ -138,7 +155,6 @@ namespace SolrNet.Tests {
         [Fact]
         public void Facets() {
             var q = new Dictionary<string, string>();
-            q["q"] = "";
             q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
             q["facet"] = "true";
             q["facet.field"] = "Id";
@@ -163,7 +179,6 @@ namespace SolrNet.Tests {
         [Fact]
         public void MultipleFacetFields() {
             var conn = new MockConnection(new[] {
-                KV.Create("q", ""),
                 KV.Create("rows", SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString()),
                 KV.Create("facet", "true"),
                 KV.Create("facet.field", "Id"),
@@ -196,7 +211,7 @@ namespace SolrNet.Tests {
             const string query = "mausch";
             var highlightQuery = new SolrQuery(query);
             var q = new Dictionary<string, string>();
-            q["q"] = "";
+            q["q"] = "*";
             q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
             q["hl"] = "true";
             q["hl.q"] = query;
@@ -224,7 +239,7 @@ namespace SolrNet.Tests {
             var parser = new MSolrAbstractResponseParser<TestDocument>();
             parser.parse &= x => x.Stub();
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null, null);
-            queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
+            queryExecuter.Execute(new SolrQuery("*"), new QueryOptions {
                 Highlight = new HighlightingParameters {
                     Fields = new[] { highlightedField },
                     AfterTerm = afterTerm,
@@ -252,9 +267,10 @@ namespace SolrNet.Tests {
         public void HighlightingWithoutFieldsOutputsPrePost() {
             const string afterTerm = "after";
             const string beforeTerm = "before";
+            const string query = "*";
 
             var q = new Dictionary<string, string>();
-            q["q"] = "";
+            q["q"] = query;
             q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
             q["hl"] = "true";
             q["hl.tag.pre"] = beforeTerm;
@@ -262,12 +278,12 @@ namespace SolrNet.Tests {
             q["hl.useFastVectorHighlighter"] = "true";
 
             var conn = new MockConnection(q);
-            var querySerializer = new SolrQuerySerializerStub("");
+            var querySerializer = new SolrQuerySerializerStub(query);
 
             var parser = new MSolrAbstractResponseParser<TestDocument>();
             parser.parse &= x => x.Stub();
             var queryExecuter = new SolrQueryExecuter<TestDocument>(parser, conn, querySerializer, null, null);
-            queryExecuter.Execute(new SolrQuery(""), new QueryOptions {
+            queryExecuter.Execute(new SolrQuery(query), new QueryOptions {
                 Highlight = new HighlightingParameters {
                     AfterTerm = afterTerm,
                     BeforeTerm = beforeTerm,
@@ -414,7 +430,7 @@ namespace SolrNet.Tests {
 
         [Fact]
         public void GetTermVectorParameterOptions_All() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.All).ToList();
+            var r = SolrQueryExecuter<TestDocument>.GetTermVectorParameterOptions(TermVectorParameterOptions.All).ToList();
             Assert.Single(r);
             Assert.Equal("tv.all", r[0]);
         }
@@ -427,28 +443,28 @@ namespace SolrNet.Tests {
                 | TermVectorParameterOptions.Positions 
                 | TermVectorParameterOptions.Offsets 
                 | TermVectorParameterOptions.TermFrequency_InverseDocumentFrequency;
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(o).ToList();
+            var r = SolrQueryExecuter<TestDocument>.GetTermVectorParameterOptions(o).ToList();
             Assert.Single(r);
             Assert.Equal("tv.all", r[0]);
         }
 
         [Fact]
         public void GetTermVectorParameterOptions_Tf() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.TermFrequency).ToList();
+            var r = SolrQueryExecuter<TestDocument>.GetTermVectorParameterOptions(TermVectorParameterOptions.TermFrequency).ToList();
             Assert.Single(r);
             Assert.Equal("tv.tf", r[0]);
         }
 
         [Fact]
         public void GetTermVectorParameterOptions_Df() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.DocumentFrequency).ToList();
+            var r = SolrQueryExecuter<TestDocument>.GetTermVectorParameterOptions(TermVectorParameterOptions.DocumentFrequency).ToList();
             Assert.Single(r);
             Assert.Equal("tv.df", r[0]);
         }
 
         [Fact]
         public void GetTermVectorParameterOptions_default() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.Default).ToList();
+            var r = SolrQueryExecuter<TestDocument>.GetTermVectorParameterOptions(TermVectorParameterOptions.Default).ToList();
             Assert.Empty(r);
         }
 
@@ -457,7 +473,7 @@ namespace SolrNet.Tests {
             const TermVectorParameterOptions o =
                 TermVectorParameterOptions.DocumentFrequency
                 | TermVectorParameterOptions.TermFrequency;
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(o).ToList();
+            var r = SolrQueryExecuter<TestDocument>.GetTermVectorParameterOptions(o).ToList();
             Assert.Equal(2, r.Count);
             Assert.Contains( "tv.df",r);
             Assert.Contains( "tv.tf",r);
@@ -465,14 +481,14 @@ namespace SolrNet.Tests {
 
         [Fact]
         public void GetTermVectorParameterOptions_offsets() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.Offsets).ToList();
+            var r = SolrQueryExecuter<TestDocument>.GetTermVectorParameterOptions(TermVectorParameterOptions.Offsets).ToList();
             Assert.Single(r);
             Assert.Equal("tv.offsets", r[0]);
         }
 
         [Fact]
         public void GetTermVectorParameterOptions_tfidf() {
-            var r = SolrQueryExecuter<object>.GetTermVectorParameterOptions(TermVectorParameterOptions.TermFrequency_InverseDocumentFrequency).ToList();
+            var r = SolrQueryExecuter<TestDocument>.GetTermVectorParameterOptions(TermVectorParameterOptions.TermFrequency_InverseDocumentFrequency).ToList();
             Assert.Equal(3, r.Count);
             Assert.Contains( "tv.df",r);
             Assert.Contains( "tv.tf",r);
@@ -626,6 +642,108 @@ namespace SolrNet.Tests {
                         Fields = new[] { "one", "two", "three" },
                     }).ToList();
             Assert.Contains( KV.Create("stream.url", "http://wiki.apache.org/solr/MoreLikeThisHandler"),p);
+        }
+
+        [Fact]
+        public void ExecuteMLT_with_stream_body_query() {
+            var parser = new MSolrMoreLikeThisHandlerQueryResultsParser<SolrQueryExecuterTests.TestDocument>();
+            var q = new Dictionary<string, string>();
+            q["mlt"] = "true";
+            q["mlt.fl"] = "one,three";
+            q["mlt.match.include"] = "false";
+            q["mlt.match.offset"] = "5";
+            q["mlt.interestingTerms"] = InterestingTerms.None.ToString().ToLowerInvariant();
+            q["start"] = "0";
+            q["rows"] = "5";
+            q["fl"] = "one,two,three";
+            var conn = new MockConnection(q, MediaTypeNames.Text.Plain, "one two three");
+
+            var qe = new SolrQueryExecuter<SolrQueryExecuterTests.TestDocument>(null, conn, null, null, parser);
+            var r = qe.ExecuteAsync(new SolrMoreLikeThisHandlerStreamBodyQuery("one two three"),
+                new MoreLikeThisHandlerQueryOptions(
+                    new MoreLikeThisHandlerParameters(new[] {"one", "three"})
+                    {
+                        MatchInclude = false,
+                        MatchOffset = 5,
+                        ShowTerms = InterestingTerms.None,
+                    })
+                {
+                    Start = 0,
+                    Rows = 5,
+                    Fields = new[] {"one", "two", "three"},
+                });
+        }
+
+        [Fact]
+        public void ExecuteMLT_with_stream_body_option()
+        {
+            const string queryString = "my query";
+
+            var parser = new MSolrMoreLikeThisHandlerQueryResultsParser<SolrQueryExecuterTests.TestDocument>();
+            var q = new Dictionary<string, string>();
+            q["q"] = queryString;
+            q["mlt"] = "true";
+            q["mlt.fl"] = "one,three";
+            q["mlt.match.include"] = "false";
+            q["mlt.match.offset"] = "5";
+            q["mlt.interestingTerms"] = InterestingTerms.None.ToString().ToLowerInvariant();
+            q["start"] = "0";
+            q["rows"] = "5";
+            q["fl"] = "one,two,three";
+            var conn = new MockConnection(q, MediaTypeNames.Text.Plain, "one two three");
+
+            var serializer = new MSolrQuerySerializer();
+            serializer.serialize += _ => queryString;
+            var qe = new SolrQueryExecuter<SolrQueryExecuterTests.TestDocument>(null, conn, serializer, null, parser);
+            var r = qe.ExecuteAsync(new SolrMoreLikeThisHandlerQuery(new SolrQuery(queryString)), new PlainTextQueryBody("one two three"),
+                new MoreLikeThisHandlerQueryOptions(
+                    new MoreLikeThisHandlerParameters(new[] {"one", "three"})
+                    {
+                        MatchInclude = false,
+                        MatchOffset = 5,
+                        ShowTerms = InterestingTerms.None,
+                    })
+                {
+                    Start = 0,
+                    Rows = 5,
+                    Fields = new[] {"one", "two", "three"}
+                });
+        }
+
+        [Fact]
+        public void ExecuteMLT_with_no_body()
+        {
+            const string queryString = "my query";
+
+            var parser = new MSolrMoreLikeThisHandlerQueryResultsParser<SolrQueryExecuterTests.TestDocument>();
+            var q = new Dictionary<string, string>();
+            q["q"] = queryString;
+            q["mlt"] = "true";
+            q["mlt.fl"] = "one,three";
+            q["mlt.match.include"] = "false";
+            q["mlt.match.offset"] = "5";
+            q["mlt.interestingTerms"] = InterestingTerms.None.ToString().ToLowerInvariant();
+            q["start"] = "0";
+            q["rows"] = "5";
+            q["fl"] = "one,two,three";
+            var conn = new MockConnection(q, MediaTypeNames.Text.Plain, string.Empty);
+
+            var serializer = new MSolrQuerySerializer();
+            serializer.serialize += _ => queryString;
+            var qe = new SolrQueryExecuter<SolrQueryExecuterTests.TestDocument>(null, conn, serializer, null, parser);
+            var r = qe.ExecuteAsync(new SolrMoreLikeThisHandlerQuery(new SolrQuery(queryString)), 
+                new MoreLikeThisHandlerQueryOptions(
+                    new MoreLikeThisHandlerParameters(new[] {"one", "three"})
+                    {
+                        MatchInclude = false,
+                        MatchOffset = 5,
+                        ShowTerms = InterestingTerms.None,
+                    })
+                {
+                    Start = 0,
+                    Rows = 5,
+                    Fields = new[] {"one", "two", "three"},
+                });
         }
 
         [Fact]

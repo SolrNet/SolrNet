@@ -27,6 +27,9 @@ namespace SolrNet.Tests
     public class MockConnection : ISolrConnection
     {
         private readonly ICollection<KeyValuePair<string, string>> expectations;
+        private readonly string mimetype;
+        private readonly string body;
+
         private const string response =
             @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <response>
@@ -36,9 +39,13 @@ namespace SolrNet.Tests
 
         public MockConnection() { }
 
-        public MockConnection(ICollection<KeyValuePair<string, string>> expectations)
+        public MockConnection(ICollection<KeyValuePair<string, string>> expectations) : this(expectations, null, null) { }
+
+        public MockConnection(ICollection<KeyValuePair<string, string>> expectations, string mimetype, string body)
         {
             this.expectations = expectations;
+            this.mimetype = mimetype;
+            this.body = body;
         }
 
         public virtual string ServerURL { get; set; }
@@ -59,7 +66,15 @@ namespace SolrNet.Tests
 
         public virtual string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
         {
-            return string.Empty;
+            // Verify the content and type match our expectations
+            Assert.Equal(mimetype, contentType);
+            using (StreamReader r = new StreamReader(content))
+            {
+                var b = r.ReadToEnd();
+                Assert.Equal(body, b);
+            }
+
+            return Get(relativeUrl, parameters);
         }
 
         public virtual Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SolrNet.Impl;
 
 namespace SolrNet.Commands.Parameters {
     /// <summary>

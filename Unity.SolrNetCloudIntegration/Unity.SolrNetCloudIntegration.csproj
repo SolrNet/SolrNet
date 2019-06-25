@@ -20,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="EnterpriseLibrary.Common" Version="6.0.1304.0" />
     <PackageReference Include="Microsoft.Bcl" Version="1.1.10" />
-    <PackageReference Include="Microsoft.Bcl.Async" Version="1.0.178" />
+    <PackageReference Include="Microsoft.Bcl.Async" Version="1.0.168" />
     <PackageReference Include="Microsoft.Bcl.Build" Version="1.0.21" />
     <PackageReference Include="Nito.AsyncEx" Version="4.0.1" />
     <PackageReference Include="Unity" Version="5.0.0" />

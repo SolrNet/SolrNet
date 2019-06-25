@@ -221,10 +221,19 @@ namespace Castle.Facilities.SolrNetIntegration
                 var id = coreConfig.Attributes["id"] ?? Guid.NewGuid().ToString();
                 var documentType = GetCoreDocumentType(coreConfig);
                 var coreUrl = GetCoreUrl(coreConfig);
-                AddCore(id, documentType, coreUrl);
+                var isPostConnection = IsPostConnection(coreConfig);
+                AddCore(id, documentType, coreUrl, isPostConnection);
             }
         }
 
+
+        private bool IsPostConnection(IConfiguration coreConfig)
+        {
+            var node = coreConfig.Children["postConnection"];
+            if (node == null)
+                return false;
+            return node.Value=="true";
+        }
         private string GetCoreUrl(IConfiguration coreConfig)
         {
             var node = coreConfig.Children["url"];

@@ -1,4 +1,7 @@
 # Change Log
+## 1.0.17 (2019-06-25)
+- Provide support for adding request body (eg. JSON) in Solr query #481 (@mattflax)
+
 ## 1.0.16 (2019-06-09)
 - Provide support for date and string fields in stats result. #484 (@Jaap-van-Hengstum)
 - Bug fix: SolrCloud still sends traffic to dead nodes #479 (@karlomedallo)

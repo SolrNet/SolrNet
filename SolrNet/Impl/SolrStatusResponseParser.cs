@@ -4,6 +4,8 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
+
+Thisi is a change
 namespace SolrNet.Impl {
     /// <summary>
     /// Parses the results of a Core Status command.
@@ -22,6 +24,8 @@ namespace SolrNet.Impl {
             var results = statusNode.Elements().Select(ParseCore).ToList();
             return results;
         }
+
+this is a change
 
         /// <summary>
         /// Parses the details of a <see cref="CoreResult"/> that could be parsed.
@@ -131,3 +135,4 @@ namespace SolrNet.Impl {
         }
     }
 }
+thgis is a change

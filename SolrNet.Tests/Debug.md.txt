@@ -1,0 +1,2 @@
+# Debug Explain
+Solr provides information purposes. SolrNet exposes the debug-explain object when debug Query=true is passed.

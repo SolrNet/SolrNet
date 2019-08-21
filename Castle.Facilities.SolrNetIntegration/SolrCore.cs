@@ -28,6 +28,8 @@ namespace Castle.Facilities.SolrNetIntegration {
 
         public int MyProperty { get; set; }
 
+        public int MyNewProperty { get; set; }
+
         /// <summary>
         /// Creates a new Solr core for configuration
         /// </summary>

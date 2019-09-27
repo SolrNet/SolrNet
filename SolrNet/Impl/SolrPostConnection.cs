@@ -8,6 +8,7 @@ using SolrNet.Exceptions;
 using SolrNet.Utils;
 using System.Threading.Tasks;
 using System.Threading;
+using HttpWebAdapters;
 
 namespace SolrNet.Impl
 {
@@ -19,10 +20,16 @@ namespace SolrNet.Impl
         private readonly ISolrConnection conn;
         private readonly string serverUrl;
 
+        /// <summary>
+        /// HTTP request factory
+        /// </summary>
+        public IHttpWebRequestFactory HttpWebRequestFactory { get; set; }
+
         public PostSolrConnection(ISolrConnection conn, string serverUrl)
         {
             this.conn = conn;
             this.serverUrl = serverUrl;
+            HttpWebRequestFactory = new HttpWebRequestFactory();
         }
 
         /// <summary>
@@ -43,12 +50,12 @@ namespace SolrNet.Impl
             return conn.PostAsync(relativeUrl, s);
         }
 
-        public (HttpWebRequest request, string queryString) PrepareGet(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        public (IHttpWebRequest request, string queryString) PrepareGet(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             var u = new UriBuilder(serverUrl);
             u.Path += relativeUrl;
-            var request = (HttpWebRequest)WebRequest.Create(u.Uri);
-            request.Method = "POST";
+            var request = HttpWebRequestFactory.Create(u.Uri);
+            request.Method = HttpWebRequestMethod.POST;
             request.ContentType = "application/x-www-form-urlencoded";
 
             var param = new List<KeyValuePair<string, string>>();

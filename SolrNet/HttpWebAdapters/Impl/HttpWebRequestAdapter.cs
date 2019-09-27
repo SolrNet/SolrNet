@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace HttpWebAdapters.Adapters {
 	public class HttpWebRequestAdapter : IHttpWebRequest {
@@ -52,7 +53,17 @@ namespace HttpWebAdapters.Adapters {
             return request.EndGetRequestStream(result);
         }
 
-		///<summary>
+        public Task<Stream> GetRequestStreamAsync()
+        {
+            return request.GetRequestStreamAsync();
+        }
+
+        public Task<WebResponse> GetResponseAsync()
+        {
+            return request.GetResponseAsync();
+        }
+
+        ///<summary>
 		///Gets a <see cref="T:System.IO.Stream"></see> object to use to write request data.
 		///</summary>
 		///

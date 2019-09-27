@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace HttpWebAdapters {
 	public interface IHttpWebRequest {
@@ -454,5 +455,8 @@ namespace HttpWebAdapters {
 	    IHttpWebResponse EndGetResponse(IAsyncResult result);
 	    IAsyncResult BeginGetRequestStream(AsyncCallback callback, object state);
 	    Stream EndGetRequestStream(IAsyncResult result);
-	}
+
+        Task<Stream> GetRequestStreamAsync();
+        Task<WebResponse> GetResponseAsync();
+    }
 }

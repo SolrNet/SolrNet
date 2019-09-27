@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 using HttpWebAdapters;
 
 namespace SolrNet.Tests.Mocks {
@@ -205,6 +206,16 @@ namespace SolrNet.Tests.Mocks {
         }
 
         public Stream EndGetRequestStream(IAsyncResult result) {
+            throw new NotImplementedException();
+        }
+
+        public Task<Stream> GetRequestStreamAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<WebResponse> GetResponseAsync()
+        {
             throw new NotImplementedException();
         }
     }

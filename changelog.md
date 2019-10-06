@@ -1,4 +1,8 @@
 # Change Log
+## 1.0.18 (2019-10-06)
+- Update SolrPostConnection to use IHttpWebRequestFactory #502 (@YevhenLukomskyi)
+- Autofac Integration for SolrNet.Cloud #498 (@femiadebayo)
+
 ## 1.0.17 (2019-06-25)
 - Provide support for adding request body (eg. JSON) in Solr query #481 (@mattflax)
 

@@ -283,7 +283,13 @@ namespace SolrNet.Impl
                 param.AddRange(parameters);
 
             param.Add(KV.Create("version", version));
-            param.Add(KV.Create("wt", "xml"));
+
+            if (param.All(x => x.Key != "wt"))
+            {
+                // only set wt=xml if wt wasn't already set by the caller
+                param.Add(KV.Create("wt", "xml"));
+            }
+
             return string.Join("&", param
                 .Select(kv => KV.Create(HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
                 .Select(kv => string.Format("{0}={1}", kv.Key, kv.Value))

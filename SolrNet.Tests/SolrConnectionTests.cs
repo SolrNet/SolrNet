@@ -79,7 +79,91 @@ namespace SolrNet.Tests {
             Assert.Equal("hello world", r);
 		}
 
-		[Fact]
+        [Fact]
+        public void WithWtXml_Get()
+        {
+            var expected = "https://pepe/?wt=xml&version=2.2";
+
+            var cache = new Mocks.MSolrCache();
+            cache.get += url => new SolrCacheEntity(url, "etag", "hello xml world");
+            cache.add &= x => x.Stub();
+
+            var headers = new WebHeaderCollection
+            {
+                {HttpResponseHeader.ETag, "etag"}, {HttpResponseHeader.CacheControl, "cache"}
+            };
+            var response = new Mocks.HttpWebResponse
+            {
+                dispose = () => { },
+                headers = () => headers,
+                getResponseStream = () => new MemoryStream(Encoding.UTF8.GetBytes("hello xml world")),
+            };
+
+            var request = new Mocks.HttpWebRequest
+            {
+                getResponse = () => response,
+                Headers = new WebHeaderCollection()
+            };
+
+            var reqFactory = new Mocks.HttpWebRequestFactory
+            {
+                create = _ => request
+            };
+            var conn = new SolrConnection("https://pepe")
+            {
+                HttpWebRequestFactory = reqFactory,
+                Cache = cache
+            };
+
+            var r = conn.Get("", new Dictionary<string, string>( ));
+            var actual = conn.Cache[expected];
+            Assert.Equal("hello xml world", r);
+            Assert.Equal(actual.Url, expected);
+        }
+
+        [Fact]
+        public void WithWtJson_Get()
+        {
+            var expected = "https://pepe/?wt=json&version=2.2";
+
+            var cache = new Mocks.MSolrCache();
+            cache.get += url => new SolrCacheEntity(url, "", "");
+            cache.add &= x => x.Stub();
+
+            var headers = new WebHeaderCollection
+            {
+                {HttpResponseHeader.ETag, "etag"}, {HttpResponseHeader.CacheControl, "cache"}
+            };
+            var response = new Mocks.HttpWebResponse
+            {
+                dispose = () => { },
+                headers = () => headers,
+                getResponseStream = () => new MemoryStream(Encoding.UTF8.GetBytes("hello json world")),
+            };
+
+            var request = new Mocks.HttpWebRequest
+            {
+                getResponse = () => response, 
+                Headers = new WebHeaderCollection()
+            };
+
+            var reqFactory = new Mocks.HttpWebRequestFactory
+            {
+                create = _ => request
+            };
+            var conn = new SolrConnection("https://pepe")
+            {
+                HttpWebRequestFactory = reqFactory,
+                Cache = cache
+            };
+
+            var r = conn.Get("", new Dictionary<string, string> { {"wt", "json"} });
+            var actual = conn.Cache[expected];
+            Assert.Equal("hello json world", r);
+            Assert.Equal(actual.Url, expected);
+        }
+
+        [Fact]
 		public void InvalidHostGet_ShouldThrowException() {
 		    var reqFactory = new Mocks.HttpWebRequestFactory {
 		        create = _ => new Mocks.HttpWebRequest {

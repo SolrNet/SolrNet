@@ -1,4 +1,7 @@
 # Change Log
+## 1.0.19 (2019-11-21)
+- Support overriding the default wt=xml parameter in order to support JSON response. #509 (@LCHarold)
+
 ## 1.0.18 (2019-10-06)
 - Update SolrPostConnection to use IHttpWebRequestFactory #502 (@YevhenLukomskyi)
 - Autofac Integration for SolrNet.Cloud #498 (@femiadebayo)

@@ -77,15 +77,26 @@ namespace SolrNet.Impl
             var u = new UriBuilder(ServerURL);
             u.Path += relativeUrl;
             u.Query = GetQuery(parameters);
-
+            
             HttpResponseMessage response;
-            if (u.Uri.ToString().Length > MaxUriLength)
+        
+            try
             {
+                if (u.Uri.ToString().Length > MaxUriLength)
+                {
+                    u.Query = null;
+                    response = await HttpClient.PostAsync(u.Uri, new FormUrlEncodedContent(parameters), cancellationToken);
+                }
+                else 
+                    response = await HttpClient.GetAsync(u.Uri, cancellationToken);
+            }
+            catch (UriFormatException)
+            {
+                // Assume query was so long it broke the Uri() constructor
                 u.Query = null;
                 response = await HttpClient.PostAsync(u.Uri, new FormUrlEncodedContent(parameters), cancellationToken);
             }
-            else
-                response = await HttpClient.GetAsync(u.Uri, cancellationToken);
+            
 
             if (!response.IsSuccessStatusCode)
                 throw new SolrConnectionException($"{response.StatusCode}: {response.ReasonPhrase}", null, u.Uri.ToString());

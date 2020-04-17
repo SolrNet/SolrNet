@@ -90,7 +90,7 @@ namespace SolrNet.Tests
             var p = new Dictionary<string, string>();
             p["q"] = "*";
             p["rows"] = "1";
-            p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => "a"));
+            p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => Guid.NewGuid().ToString()));
             var conn = new AutoSolrConnection(solrURL);
             XDocument xdoc;
             using (var response = await conn.GetAsStreamAsync("/select/", p, default(CancellationToken)))
@@ -109,7 +109,7 @@ namespace SolrNet.Tests
             var p = new Dictionary<string, string>();
             p["q"] = "*";
             p["rows"] = "1";
-            p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => "a"));
+            p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => Guid.NewGuid().ToString()));
             var conn = new AutoSolrConnection(solrURL);
             XDocument xdoc;
             using (var response = await conn.GetAsStreamAsync("/select/", p, CancellationToken.None))

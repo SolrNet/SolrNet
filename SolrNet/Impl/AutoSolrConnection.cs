@@ -147,7 +147,12 @@ namespace SolrNet.Impl
                 param.AddRange(parameters);
 
             param.Add(new KeyValuePair<string, string>("version", version));
-            param.Add(new KeyValuePair<string, string>("wt", "xml"));
+
+            if (param.All(x => x.Key != "wt"))
+            {
+                // only set wt=xml if wt wasn't already set by the caller
+                param.Add(new KeyValuePair<string, string>("wt", "xml"));
+            }
 
             return string.Join("&", param.Select(kv => $"{WebUtility.UrlEncode(kv.Key)}={WebUtility.UrlEncode(kv.Value)}"));
 

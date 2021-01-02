@@ -32,3 +32,5 @@ packages/*
 *.sln.ide
 **/.vs/*
 **/packages
+.idea
+

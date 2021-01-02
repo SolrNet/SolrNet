@@ -53,7 +53,6 @@ You can find the latest builds on our AppVeyor build service: [![Build status](h
  * [Field collapsing / grouping](Documentation/Field-collapsing.md)
  * [Core admin](Documentation/Core-admin.md)
  * [Overriding the default mapper](Documentation/Overriding-mapper.md)
- * [NHibernate integration](Documentation/NHibernate-integration.md)
  * [Accessing multiple Solr cores / instances](Documentation/Multi-core-instance.md)
  * [Mapping validation](Documentation/Schema-Mapping-validation.md)
  * [Binary document upload](Documentation/Extract.md)

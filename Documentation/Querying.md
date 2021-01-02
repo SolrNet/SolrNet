@@ -131,9 +131,6 @@ var q = new SolrQuery("name:desc").Boost(2); // (name:desc)^2
 
 See the [Lucene docs](http://lucene.apache.org/core/2_9_4/queryparsersyntax.html#Boosting%20a%20Term) for more information about boosting.
 
-### DSL
-See the fluent API documentation for an alternative way of expressing queries.
-
 ### Filter queries
 Filter queries can be used to specify a query that can be used to restrict the super set of documents that can be returned, without influencing score.
 

@@ -29,11 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.SolrNetIntegration.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.Tests.Integration", "SolrNet.Tests.Integration\SolrNet.Tests.Integration.csproj", "{4BC966D4-2EC0-47FF-B784-B649BFAABD81}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6488329D-ABDE-4C3A-8F9A-1E1FC838B47F}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DependencyInjection.SolrNet", "Microsoft.DependencyInjection.SolrNet\Microsoft.DependencyInjection.SolrNet.csproj", "{8EED7D76-F9CA-40D5-B86E-A34A16795286}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DependencyInjection.SolrNet.Tests", "Microsoft.DependencyInjection.SolrNet.Tests\Microsoft.DependencyInjection.SolrNet.Tests.csproj", "{042745E4-2750-41B5-9CCD-5156029CB6B6}"

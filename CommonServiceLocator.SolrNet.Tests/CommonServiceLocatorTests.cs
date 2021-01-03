@@ -117,47 +117,6 @@ namespace CommonServiceLocator.SolrNet.Tests
             }
         }
 
-
-        [Fact(Skip = "don't know how to test this!")]
-        public void WebRequest() {
-            var container = new Container();
-            container.Register(c => HttpContextLocal<IService>.Set(() => new ServiceImpl()));
-            var id = ((ServiceImpl) container.GetInstance<IService>()).Id;
-            var id3 = ((ServiceImpl) container.GetInstance<IService>()).Id;
-            Assert.Equal(id, id3);
-            var t = new Thread(() => {
-                try {
-                    var id2 = ((ServiceImpl) container.GetInstance<IService>()).Id;
-                    Assert.NotEqual(id, id2);
-                } catch (Exception ex) {
-                    Assert.True(false,ex.ToString());
-                }
-            });
-            t.Start();
-            t.Join();
-        }
-
-        public class HttpContextLocal<T> where T : class {
-            private static readonly object key = new object();
-
-            private static FactoryDelegate<T> factory;
-
-            public delegate S FactoryDelegate<S>();
-
-            public static T Set(FactoryDelegate<T> factoryMethod) {
-                factory = factoryMethod;
-                return Instance;
-            }
-
-            public static T Instance {
-                get {
-                    if (HttpContext.Current.Items[key] == null)
-                        HttpContext.Current.Items[key] = factory();
-                    return (T) HttpContext.Current.Items[key];
-                }
-            }
-        }
-
         [Fact]
         public void NoInterface() {
             var container = new Container();

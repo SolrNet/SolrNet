@@ -44,9 +44,6 @@
     <Compile Remove="Impl\HttpRuntimeCache.cs" />
   </ItemGroup>-->
   <ItemGroup>
-    <None Include="SolrFacetRangeQuery.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,10 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
   <ItemGroup>
       <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
       <PackageReference Include="Castle.Core" Version="4.2.1" />

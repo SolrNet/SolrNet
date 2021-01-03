@@ -1,11 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
     <PackageReference Include="Castle.Core" Version="4.2.1" />
@@ -13,6 +9,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0"/>
   </ItemGroup>
  
   <ItemGroup>
@@ -43,5 +40,9 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
- 
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\testhost.dll.config" />
+    <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\testhost.x86.dll.config" />
+    <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\ReSharperTestRunner64.dll.config" />
+  </Target> 
 </Project>

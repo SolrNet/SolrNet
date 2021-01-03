@@ -10,7 +10,8 @@ namespace Unity.SolrNetIntegration.Tests {
 
         
         public  UnityMultiCoreFixture() {
-            var solrConfig = (SolrConfigurationSection) ConfigurationManager.GetSection("solr");
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var solrConfig = (SolrConfigurationSection) config.GetSection("solr");
 
             container = new UnityContainer();
             new SolrNetContainerConfiguration().ConfigureContainer(solrConfig.SolrServers, container);

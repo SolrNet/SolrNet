@@ -37,15 +37,18 @@ namespace SolrNet.Tests.Integration
     public class IntegrationFixtureAsync
     {
         private readonly ITestOutputHelper testOutputHelper;
-        private static readonly string serverURL = ConfigurationManager.AppSettings["solr"];
+
+        private static readonly Lazy<Configuration> config = new(() => ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
+        private static readonly Lazy<string> serverURL = new (() => config.Value.AppSettings.Settings["solr"].Value);
+        
         private static readonly System.Lazy<object> init = new System.Lazy<object>(() =>
         {
-            Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL)));
+            Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL.Value)));
             return null;
         });
         private static readonly System.Lazy<object> initDict = new System.Lazy<object>(() =>
         {
-            Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL)));
+            Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL.Value)));
             return null;
         });
 
@@ -560,7 +563,7 @@ namespace SolrNet.Tests.Integration
 
         private static readonly Lazy<object> initLoose = new Lazy<object>(() =>
         {
-            Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL)));
+            Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL.Value)));
             return null;
         });
 
@@ -613,7 +616,7 @@ namespace SolrNet.Tests.Integration
         {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             var connection = ServiceLocator.Current.GetInstance<ISolrConnection>();
-            var files = Directory.GetFiles(@"..\..\exampledocs", "*.xml");
+            var files = Directory.GetFiles("exampledocs", "*.xml");
             foreach (var file in files)
             {
                 connection.Post("/update", File.ReadAllText(file, Encoding.UTF8));

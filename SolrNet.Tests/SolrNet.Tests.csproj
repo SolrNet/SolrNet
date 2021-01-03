@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\collapseResponse.xml" />
@@ -136,9 +136,6 @@
     <EmbeddedResource Include="Resources\solrSchemaMappingTypes.xml" />
     <EmbeddedResource Include="Resources\solrSchemaMultiValuedName.xml" />
     <EmbeddedResource Include="Resources\solrSchemaNoUniqueKey.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommonServiceLocator" Version="2.0.2" />

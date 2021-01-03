@@ -38,8 +38,8 @@ namespace StructureMap.SolrNetIntegration.Tests
         [Fact]
         public void RegistersSolrConnectionWithAppConfigServerUrl()
         {
-
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var solrConfig = (SolrConfigurationSection)config.GetSection("solr");
             var container = new Container(c => c.IncludeRegistry(SolrNetRegistry.Create(solrConfig.SolrServers)));
 
             var instanceKey = "entity" + typeof(SolrConnection);
@@ -53,8 +53,8 @@ namespace StructureMap.SolrNetIntegration.Tests
         [Fact]
         public void CheckParseAppConfig()
         {
-
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var solrConfig = (SolrConfigurationSection)config.GetSection("solr");
             var servers = solrConfig.SolrServers;
 
             Assert.Equal("entity", servers.First().Id);

@@ -51,7 +51,9 @@ namespace Ninject.Integration.SolrNet.Tests
         [Fact]
         public void Resolve_MultiCore_FromConfig()
         {
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            
+            var solrConfig = (SolrConfigurationSection)config.GetSection("solr");
             kernel.Load(new SolrNetModule(solrConfig.SolrServers));
 
             var solrOperations = kernel.Get<ISolrOperations<Entity>>();

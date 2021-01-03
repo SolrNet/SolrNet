@@ -16,25 +16,12 @@
   </ItemGroup>
  
   <ItemGroup>
-    <ProjectReference Include="..\CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj">
-      <Name>CommonServiceLocator.SolrNet.Cloud</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj">
-      <Project>{bda98c34-3b00-4b1f-b850-9c776fede8e3}</Project>
-      <Name>SolrNet.Cloud</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj">
-      <Name>CommonServiceLocator.SolrNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
-      <Name>SolrNet.Tests.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SolrNet\SolrNet.csproj">
-      <Name>SolrNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj">
-      <Name>Unity.SolrNetCloudIntegration</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj"/>
+    <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj"/>
+    <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj"/>
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj"/>
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj"/>
+    <ProjectReference Include="..\Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj"/>
   </ItemGroup>
 
   <ItemGroup>

@@ -11,11 +11,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj">
-      <Name>Castle.Facilities.SolrNetIntegration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
-      <Name>SolrNet.Tests.Common</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj"/>
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj"/>
   </ItemGroup>
 </Project>

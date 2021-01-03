@@ -13,12 +13,8 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-       <ProjectReference Include="..\Ninject.Integration.SolrNet\Ninject.Integration.SolrNet.csproj">
-      <Name>Ninject.Integration.SolrNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj">
-      <Name>SolrNet.Tests.Common</Name>
-    </ProjectReference>
+       <ProjectReference Include="..\Ninject.Integration.SolrNet\Ninject.Integration.SolrNet.csproj"/>
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <None Update="cores.json">

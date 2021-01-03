@@ -13,8 +13,6 @@
       
 </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SolrNet\SolrNet.csproj">
-      <Name>SolrNet</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj"/>
   </ItemGroup>
 </Project>

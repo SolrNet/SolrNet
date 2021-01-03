@@ -1,4 +1,4 @@
-﻿﻿#region license
+﻿#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");

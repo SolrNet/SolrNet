@@ -24,7 +24,6 @@ using HttpWebAdapters;
 using HttpWebAdapters.Adapters;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
-using HttpUtility = SolrNet.Utils.HttpUtility;
 using System.Threading.Tasks;
 using System.Threading;
 
@@ -291,7 +290,7 @@ namespace SolrNet.Impl
             }
 
             return string.Join("&", param
-                .Select(kv => KV.Create(HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
+                .Select(kv => KV.Create(WebUtility.UrlEncode(kv.Key), WebUtility.UrlEncode(kv.Value)))
                 .Select(kv => string.Format("{0}={1}", kv.Key, kv.Value))
                 .ToArray());
         }

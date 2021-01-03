@@ -64,7 +64,7 @@ namespace SolrNet.Impl
 
             param.Add(KV.Create("wt", "xml"));
             var qs = string.Join("&", param
-                  .Select(kv => string.Format("{0}={1}", HttpUtility.UrlEncode(kv.Key), HttpUtility.UrlEncode(kv.Value)))
+                  .Select(kv => string.Format("{0}={1}", WebUtility.UrlEncode(kv.Key), WebUtility.UrlEncode(kv.Value)))
                   .ToArray());
 
             request.ContentLength = Encoding.UTF8.GetByteCount(qs);

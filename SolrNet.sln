@@ -7,10 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet", "SolrNet\SolrNet.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.Tests", "SolrNet.Tests\SolrNet.Tests.csproj", "{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.DSL", "SolrNet.DSL\SolrNet.DSL.csproj", "{385E2EC3-885B-43D5-A86B-955692058BA0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.DSL.Tests", "SolrNet.DSL.Tests\SolrNet.DSL.Tests.csproj", "{58FA9DC2-97C8-4B2A-892E-B1617854401D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Castle.Facilities.SolrNetIntegration", "Castle.Facilities.SolrNetIntegration\Castle.Facilities.SolrNetIntegration.csproj", "{0F21F5B6-5986-4301-B0F7-FD9800DB8091}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Castle.Facilities.SolrNetIntegration.Tests", "Castle.Facilities.SolrNetIntegration.Tests\Castle.Facilities.SolrNetIntegration.Tests.csproj", "{3D3D5F34-2C51-4197-BB11-5D28EFB75E5D}"
@@ -18,10 +14,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ninject.Integration.SolrNet.Tests", "Ninject.Integration.SolrNet.Tests\Ninject.Integration.SolrNet.Tests.csproj", "{08D59BEE-EC70-4AC8-B6F6-3088B81A6251}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ninject.Integration.SolrNet", "Ninject.Integration.SolrNet\Ninject.Integration.SolrNet.csproj", "{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHibernate.SolrNet.Tests", "NHibernate.SolrNet.Tests\NHibernate.SolrNet.Tests.csproj", "{10FEA661-BAD8-44F6-98CF-4D06516448D6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHibernate.SolrNet", "NHibernate.SolrNet\NHibernate.SolrNet.csproj", "{D3312CD6-C4E8-4903-9B9D-95175B85EEE8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StructureMap.SolrNetIntegration", "StructureMap.SolrNetIntegration\StructureMap.SolrNetIntegration.csproj", "{A14DE28E-596D-45E0-9BBE-4E85CD5D1B04}"
 EndProject
@@ -36,11 +28,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.SolrNetIntegration.Tests", "Unity.SolrNetIntegration.Tests\Unity.SolrNetIntegration.Tests.csproj", "{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.Tests.Integration", "SolrNet.Tests.Integration\SolrNet.Tests.Integration.csproj", "{4BC966D4-2EC0-47FF-B784-B649BFAABD81}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6488329D-ABDE-4C3A-8F9A-1E1FC838B47F}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DependencyInjection.SolrNet", "Microsoft.DependencyInjection.SolrNet\Microsoft.DependencyInjection.SolrNet.csproj", "{8EED7D76-F9CA-40D5-B86E-A34A16795286}"
 EndProject
@@ -82,14 +69,6 @@ Global
 		{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3FE6EF5-CF5C-4461-8691-4A498A463FD5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{385E2EC3-885B-43D5-A86B-955692058BA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{385E2EC3-885B-43D5-A86B-955692058BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{385E2EC3-885B-43D5-A86B-955692058BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{385E2EC3-885B-43D5-A86B-955692058BA0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58FA9DC2-97C8-4B2A-892E-B1617854401D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58FA9DC2-97C8-4B2A-892E-B1617854401D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58FA9DC2-97C8-4B2A-892E-B1617854401D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58FA9DC2-97C8-4B2A-892E-B1617854401D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0F21F5B6-5986-4301-B0F7-FD9800DB8091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0F21F5B6-5986-4301-B0F7-FD9800DB8091}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F21F5B6-5986-4301-B0F7-FD9800DB8091}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -106,14 +85,6 @@ Global
 		{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E5FBF52-EB19-4F68-AD7E-78DACDDF627D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{10FEA661-BAD8-44F6-98CF-4D06516448D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10FEA661-BAD8-44F6-98CF-4D06516448D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10FEA661-BAD8-44F6-98CF-4D06516448D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10FEA661-BAD8-44F6-98CF-4D06516448D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3312CD6-C4E8-4903-9B9D-95175B85EEE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3312CD6-C4E8-4903-9B9D-95175B85EEE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3312CD6-C4E8-4903-9B9D-95175B85EEE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3312CD6-C4E8-4903-9B9D-95175B85EEE8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A14DE28E-596D-45E0-9BBE-4E85CD5D1B04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A14DE28E-596D-45E0-9BBE-4E85CD5D1B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A14DE28E-596D-45E0-9BBE-4E85CD5D1B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -196,10 +167,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F3FE6EF5-CF5C-4461-8691-4A498A463FD5} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
-		{58FA9DC2-97C8-4B2A-892E-B1617854401D} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{3D3D5F34-2C51-4197-BB11-5D28EFB75E5D} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{08D59BEE-EC70-4AC8-B6F6-3088B81A6251} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
-		{10FEA661-BAD8-44F6-98CF-4D06516448D6} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{9D497D73-1E2F-4CA2-B518-93919BCC5A6D} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{77E47E7C-2CEE-406A-B344-9699DA0F1851} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{3E29AED1-1680-4EC0-9499-F6B8FB8C1CC9} = {C167AD0C-270B-4297-94C5-BE5548AA6038}

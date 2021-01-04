@@ -24,10 +24,6 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <Compile Remove="Config\SolrConfigurationSection.cs" />
-    <Compile Remove="Config\SolrServerElement.cs" />
-    <Compile Remove="Config\SolrServers.cs" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0"/>
   </ItemGroup>
-
-
 </Project>

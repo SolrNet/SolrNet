@@ -41,6 +41,7 @@ namespace SolrNet.Tests
             Assert.Equal(1, conn.postStream.Calls);
         }
 
+        [Fact]
         public void AtomicUpdateSetArray()
         {
             var conn = new Mocks.MSolrConnection();
@@ -57,6 +58,7 @@ namespace SolrNet.Tests
             Assert.Equal(1, conn.postStream.Calls);
         }
 
+        [Fact]
         public void AtomicUpdateSetEmptyArray()
         {
             var conn = new Mocks.MSolrConnection();

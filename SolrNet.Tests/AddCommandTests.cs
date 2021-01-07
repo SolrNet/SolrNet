@@ -24,11 +24,19 @@ using SolrNet.Impl;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Mapping;
 using SolrNet.Tests.Utils;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests {
 	
 	public class AddCommandTests {
-		public class SampleDoc  {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public AddCommandTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
+        public class SampleDoc  {
 			[SolrField]
 			public string Id {
 				get { return "id"; }
@@ -75,7 +83,7 @@ namespace SolrNet.Tests {
 		    conn.post += (url, content) => {
 		        Assert.Equal("/update", url);
 		        Assert.Equal("<add><doc><field name=\"Id\">id</field><field name=\"Flower\">23.5</field></doc></add>", content);
-		        Console.WriteLine(content);
+		        testOutputHelper.WriteLine(content);
 		        return null;
 		    };
 		    var docSerializer = new SolrDocumentSerializer<SampleDoc>(new AttributesMappingManager(), new DefaultFieldSerializer());
@@ -93,7 +101,7 @@ namespace SolrNet.Tests {
             conn.post += (url, content) => {
                 Assert.Equal("/update", url);
                 Assert.Equal("<add><doc boost=\"2.1\" /></add>", content);
-                Console.WriteLine(content);
+                testOutputHelper.WriteLine(content);
                 return null;
             };
             var docSerializer = new SolrDocumentSerializer<TestDocWithString>(new AttributesMappingManager(), new DefaultFieldSerializer());

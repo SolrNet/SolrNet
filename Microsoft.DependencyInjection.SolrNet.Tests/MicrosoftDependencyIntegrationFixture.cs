@@ -5,16 +5,19 @@ using Xunit;
 using SolrNet;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using Xunit.Abstractions;
 
 namespace Microsoft.DependencyInjection.SolrNet.Tests
 {
     
     [Trait("Category","Integration")]
     public class MicrosoftDependencyIntegrationFixture {
+        private readonly ITestOutputHelper testOutputHelper;
         private readonly IServiceProvider DefaultServiceProvider;
 
-        public MicrosoftDependencyIntegrationFixture()
+        public MicrosoftDependencyIntegrationFixture(ITestOutputHelper testOutputHelper)
         {
+            this.testOutputHelper = testOutputHelper;
             var sc = new ServiceCollection();
             
             sc.AddSolrNet("http://localhost:8983/solr");
@@ -28,7 +31,7 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
         {
             var solr = DefaultServiceProvider.GetService<ISolrOperations<MicrosoftDependencyFixture.Entity>>();
             solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine(solr.Query(SolrQuery.All).Count.ToString());
         }
 
         [Fact]
@@ -36,7 +39,7 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
         {
             var solr = DefaultServiceProvider.GetService<ISolrOperations<MicrosoftDependencyFixture.Entity>>();
             solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine(solr.Query(SolrQuery.All).Count.ToString());
         }
 
     }

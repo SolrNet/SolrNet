@@ -1,6 +1,7 @@
 ﻿using SolrNet;
 using System;
 using Xunit;
+using Xunit.Abstractions;
 using static SimpleInjector.SolrNet.Tests.SimpleInjectorFixture;
 
 namespace SimpleInjector.SolrNet.Tests
@@ -8,10 +9,12 @@ namespace SimpleInjector.SolrNet.Tests
     [Trait("Category", "Integration")]
     public class SimpleInjectorIntegrationFixture
     {
+        private readonly ITestOutputHelper testOutputHelper;
         private readonly Container Container;
 
-        public SimpleInjectorIntegrationFixture()
+        public SimpleInjectorIntegrationFixture(ITestOutputHelper testOutputHelper)
         {
+            this.testOutputHelper = testOutputHelper;
             Container = new Container();
 
             // collection needs to exist
@@ -23,7 +26,7 @@ namespace SimpleInjector.SolrNet.Tests
         {
             var solr = Container.GetInstance<ISolrOperations<Entity>>();
             solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine(solr.Query(SolrQuery.All).Count.ToString());
         }
 
         [Fact]
@@ -31,7 +34,7 @@ namespace SimpleInjector.SolrNet.Tests
         {
             var solr = Container.GetInstance<ISolrOperations<Entity>>();
             solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine(solr.Query(SolrQuery.All).Count.ToString());
         }
     }
 }

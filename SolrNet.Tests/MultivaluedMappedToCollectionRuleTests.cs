@@ -24,10 +24,18 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Tests.Utils;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests {
     
     public class MultivaluedMappedToCollectionRuleTests {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public MultivaluedMappedToCollectionRuleTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         [Fact]
         public void MutivaluedSolrFieldNotMappedToCollectionShouldReturnError() {
             var mgr = new MappingManager();
@@ -41,7 +49,7 @@ namespace SolrNet.Tests {
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
             Assert.Single(validationResults);
-            Console.WriteLine(validationResults[0].Message);
+            testOutputHelper.WriteLine(validationResults[0].Message);
         }
 
         [Fact]
@@ -72,7 +80,7 @@ namespace SolrNet.Tests {
 
             var validationResults = schemaManager.EnumerateValidationResults(typeof (SchemaMappingTestDocument), schema).ToList();
             Assert.Single(validationResults);
-            Console.WriteLine(validationResults[0].Message);
+            testOutputHelper.WriteLine(validationResults[0].Message);
         }
     }
 }

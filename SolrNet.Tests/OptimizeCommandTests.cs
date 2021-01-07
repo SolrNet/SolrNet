@@ -2,17 +2,25 @@ using System;
 using Xunit;
 using SolrNet.Commands;
 using SolrNet.Tests.Mocks;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests {
     
     public class OptimizeCommandTests {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public OptimizeCommandTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         [Fact]
         public void ExecuteBasic() {
             var conn = new MSolrConnection();
             conn.post += (url, content) => {
                 Assert.Equal("/update", url);
                 Assert.Equal("<optimize />", content);
-                Console.WriteLine(content);
+                testOutputHelper.WriteLine(content);
                 return null;
             };
             var cmd = new OptimizeCommand();
@@ -26,7 +34,7 @@ namespace SolrNet.Tests {
             conn.post += (url, content) => {
                 Assert.Equal("/update", url);
                 Assert.Equal("<optimize waitSearcher=\"true\" waitFlush=\"true\" />", content);
-                Console.WriteLine(content);
+                testOutputHelper.WriteLine(content);
                 return null;
             };
             var cmd = new OptimizeCommand {
@@ -43,7 +51,7 @@ namespace SolrNet.Tests {
             conn.post += (url, content) => {
                 Assert.Equal("/update", url);
                 Assert.Equal("<optimize waitSearcher=\"true\" waitFlush=\"true\" expungeDeletes=\"true\" maxSegments=\"2\" />", content);
-                Console.WriteLine(content);
+                testOutputHelper.WriteLine(content);
                 return null;
             };
             var cmd = new OptimizeCommand {

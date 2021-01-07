@@ -24,10 +24,18 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Schema;
 using SolrNet.Tests.Utils;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests {
     
     public class UniqueKeyMatchesMappingRuleTests {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public UniqueKeyMatchesMappingRuleTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         [Fact]
         public void NonMatchingUniqueKeyMappingShouldReturnError() {
             var mgr = new MappingManager();
@@ -71,7 +79,7 @@ namespace SolrNet.Tests {
             Assert.NotNull(validations);
             Assert.Single(validations);
             foreach (var v in validations)
-                Console.WriteLine("{0}: {1}", v.GetType(), v.Message);
+                testOutputHelper.WriteLine("{0}: {1}", v.GetType(), v.Message);
             Assert.IsType<ValidationError>(validations[0]);
         }
 
@@ -83,7 +91,7 @@ namespace SolrNet.Tests {
             Assert.NotNull(validations);
             Assert.Single(validations);
             foreach (var v in validations)
-                Console.WriteLine("{0}: {1}", v.GetType(), v.Message);
+                testOutputHelper.WriteLine("{0}: {1}", v.GetType(), v.Message);
             Assert.IsType<ValidationWarning>(validations[0]);
         }
 

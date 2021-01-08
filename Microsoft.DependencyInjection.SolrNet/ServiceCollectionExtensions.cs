@@ -14,32 +14,11 @@ using SolrNet.Mapping.Validation;
 using SolrNet.Mapping.Validation.Rules;
 using SolrNet.Microsoft.DependencyInjection;
 using SolrNet.Schema;
+
 namespace SolrNet
 {
     public static class ServiceCollectionExtensions
     {
-        private static bool AddedGeneralDI(IServiceCollection services)
-        {
-            return services.Any(s => s.ServiceType == typeof(IReadOnlyMappingManager));
-        }
-
-        private static bool AddedDI<TModel>(IServiceCollection services)
-        {
-            return services.Any(s => s.ServiceType == typeof(ISolrInjectedConnection<TModel>));
-        }
-
-        /// <summary>
-        /// Method to deal with adding a basic solr core instance.
-        /// </summary>
-        /// <param name="services">The dependency injection service.</param>
-        /// <param name="url">The url for the solr core.</param>
-        /// <returns>The dependency injection service.</returns>
-        public static IServiceCollection AddSolrNet(this IServiceCollection services, string url)
-        {
-            if (services == null) throw new ArgumentNullException(nameof(services));
-            return services.AddSolrNet(url, null);
-        }
-
         /// <summary>
         /// Method to deal with adding a basic solr core instance.
         /// </summary>
@@ -47,30 +26,32 @@ namespace SolrNet
         /// <param name="url">The url for the solr core.</param>
         /// <param name="setupAction">Allow for custom headers to be injected.</param>
         /// <returns>The dependency injection service.</returns>
-        public static IServiceCollection AddSolrNet(this IServiceCollection services, string url, Action<SolrNetOptions> setupAction)
+        public static IServiceCollection AddSolrNet(this IServiceCollection services, string url,
+            Action<SolrNetOptions> setupAction = null)
         {
-            if (services == null) throw new ArgumentNullException(nameof(services));
             if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException(nameof(url));
 
-
-            var added = AddedGeneralDI(services);
-            if (added) throw new InvalidOperationException("Only one Non-typed Solr Core can be added, which needs to be called before AddSolrNet<>().");
-            return BuildSolrNet(services, url, setupAction);
+            return AddSolrNet(services, sp => url, setupAction);
         }
-
+        
         /// <summary>
-        /// Method to deal with adding a second core into Microsoft's dependency injection system.
+        /// Method to deal with adding a basic solr core instance.
         /// </summary>
         /// <param name="services">The dependency injection service.</param>
-        /// <param name="url">The url for the second core.</param>
-        /// <typeparam name="TModel">The type of model that should be used for this core.</typeparam>
+        /// <param name="urlRetriever">The function to retrieve a url for the solr core.</param>
+        /// <param name="setupAction">Allow for custom headers to be injected.</param>
         /// <returns>The dependency injection service.</returns>
-        public static IServiceCollection AddSolrNet<TModel>(this IServiceCollection services, string url)
+        public static IServiceCollection AddSolrNet(this IServiceCollection services,
+            Func<IServiceProvider, string> urlRetriever,
+            Action<SolrNetOptions> setupAction = null)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            return AddSolrNet<TModel>(services, url, null);
-        }
+            if (urlRetriever == null) throw new ArgumentNullException(nameof(urlRetriever));
+            if (AddedGeneralDi(services)) throw new InvalidOperationException("Only one non-typed Solr Core can be added, which needs to be called before AddSolrNet<>().");
 
+            return BuildSolrNet(services, urlRetriever, setupAction);
+        }
+        
         /// <summary>
         /// Method to deal with adding a second core into Microsoft's dependency injection system.
         /// </summary>
@@ -79,39 +60,52 @@ namespace SolrNet
         /// <param name="setupAction">Allow for custom headers to be injected.</param>
         /// <typeparam name="TModel">The type of model that should be used for this core.</typeparam>
         /// <returns>The dependency injection service.</returns>
-        public static IServiceCollection AddSolrNet<TModel>(this IServiceCollection services, string url, Action<SolrNetOptions> setupAction)
+        public static IServiceCollection AddSolrNet<TModel>(this IServiceCollection services, string url,
+            Action<SolrNetOptions> setupAction = null)
+        {
+            if (string.IsNullOrWhiteSpace(url)) throw new ArgumentNullException(nameof(url));
+
+            return AddSolrNet<TModel>(services, sp => url, setupAction);
+        }
+
+        /// <summary>
+        /// Method to deal with adding a second core into Microsoft's dependency injection system.
+        /// </summary>
+        /// <param name="services">The dependency injection service.</param>
+        /// <param name="urlRetriever">The function to retrieve a url for the second core.</param>
+        /// <param name="setupAction">Allow for custom headers to be injected.</param>
+        /// <typeparam name="TModel">The type of model that should be used for this core.</typeparam>
+        /// <returns>The dependency injection service.</returns>
+        public static IServiceCollection AddSolrNet<TModel>(this IServiceCollection services,
+            Func<IServiceProvider, string> urlRetriever,
+            Action<SolrNetOptions> setupAction = null)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
+            if (urlRetriever == null) throw new ArgumentNullException(nameof(urlRetriever));
+            if (AddedDi<TModel>(services)) throw new InvalidOperationException($"SolrNet was already added for model of type {typeof(TModel).Name}");
 
-            if (AddedDI<TModel>(services))
+            services = BuildSolrNet(services, urlRetriever, setupAction);
+
+            services.AddTransient(typeof(ISolrInjectedConnection<TModel>), serviceProvider =>
             {
-                throw new InvalidOperationException($"SolrNet was already addd for model of type {typeof(TModel).Name}");
-            }
-
-            services = BuildSolrNet(services, url, setupAction);
-            //Set custom http client setting given by user at intiliation for specific solr core
-            var autoSolrConnection = new AutoSolrConnection(url);
-            if (setupAction != null)
-            {
-                var solrOption = new SolrNetOptions(autoSolrConnection.HttpClient);
-                setupAction(solrOption);
-            }
-            var connection = new BasicInjectionConnection<TModel>(autoSolrConnection);
-
-            services.AddTransient(typeof(ISolrInjectedConnection<TModel>), (service) => connection);
+                // Set custom http client setting given by user at initialization for specific solr core.
+                var autoSolrConnection = CreateAutoSolrConnection(serviceProvider, urlRetriever, setupAction);
+                return new BasicInjectionConnection<TModel>(autoSolrConnection);
+            });
             return services;
         }
 
         /// <summary>
-        /// Method is mean to add in the basic solr net DI to deal with multiple cores.
+        /// Method adds the basic solr net DI to deal with multiple cores.
         /// </summary>
         /// <param name="services">The dependency injection service.</param>
-        /// <param name="url">The url to be built from.</param>
+        /// <param name="urlRetriever">The function that retrieves url to be built from.</param>
         /// <param name="setupAction">The setup action that should be used for injection purposes.</param>
         /// <returns></returns>
-        private static IServiceCollection BuildSolrNet(IServiceCollection services, string url, Action<SolrNetOptions> setupAction)
+        private static IServiceCollection BuildSolrNet(IServiceCollection services,
+            Func<IServiceProvider, string> urlRetriever, Action<SolrNetOptions> setupAction)
         {
-            if (AddedGeneralDI(services)) return services;
+            if (AddedGeneralDi(services)) return services;
             services.AddSingleton<IReadOnlyMappingManager>(new MemoizingMappingManager(new AttributesMappingManager()));
             services.AddTransient<ISolrDocumentPropertyVisitor, DefaultDocumentVisitor>();
             services.AddTransient<ISolrFieldParser, DefaultFieldParser>();
@@ -140,9 +134,8 @@ namespace SolrNet
             services.AddTransient<ISolrDIHStatusParser, SolrDIHStatusParser>();
             services.AddTransient<IMappingValidator, MappingValidator>();
 
-            var connection = new AutoSolrConnection(url);
-            //Bind single type to a single url, prevent breaking existing functionality
-            services.AddSingleton<ISolrConnection>(connection);
+            // Bind single type to a single url, prevent breaking existing functionality
+            services.AddSingleton<ISolrConnection>(s => CreateAutoSolrConnection(s, urlRetriever, setupAction));
 
             services.AddTransient(typeof(ISolrInjectedConnection<>), typeof(BasicInjectionConnection<>));
             services.AddTransient(typeof(ISolrQueryExecuter<>), typeof(SolrInjectionQueryExecuter<>));
@@ -151,15 +144,32 @@ namespace SolrNet
             services.AddScoped(typeof(ISolrOperations<>), typeof(SolrInjectionServer<>));
             services.AddTransient(typeof(ISolrReadOnlyOperations<>), typeof(SolrInjectionServer<>));
 
-
-            if (setupAction != null)
-            {
-                var options = new SolrNetOptions(connection.HttpClient);
-                //allow for custom headers to be injected.
-                setupAction(options);
-            }
-
             return services;
+        }
+
+        private static bool AddedGeneralDi(IServiceCollection services)
+        {
+            return services.Any(s => s.ServiceType == typeof(IReadOnlyMappingManager));
+        }
+
+        private static bool AddedDi<TModel>(IServiceCollection services)
+        {
+            return services.Any(s => s.ServiceType == typeof(ISolrInjectedConnection<TModel>));
+        }
+
+        private static ISolrConnection CreateAutoSolrConnection(IServiceProvider serviceProvider,
+            Func<IServiceProvider, string> urlRetriever, Action<SolrNetOptions> setupAction)
+        {
+            var solrUrl = urlRetriever(serviceProvider);
+            if (string.IsNullOrWhiteSpace(solrUrl)) throw new ArgumentNullException(nameof(solrUrl));
+
+            var connection = new AutoSolrConnection(solrUrl);
+            if (setupAction == null) return connection;
+
+            // Allow for custom headers to be injected.
+            var options = new SolrNetOptions(connection.HttpClient);
+            setupAction(options);
+            return connection;
         }
     }
 }

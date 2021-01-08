@@ -17,27 +17,20 @@
 using System;
 using Xunit;
 using SolrNet;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using SolrNet.Impl;
 using System.Collections.Generic;
-using System.Linq;
 using SolrNet.Microsoft.DependencyInjection;
 
 namespace Microsoft.DependencyInjection.SolrNet.Tests
 {
-
     public class MicrosoftDependencyFixture
     {
-
-
         private readonly IServiceProvider DefaultServiceProvider;
 
         public MicrosoftDependencyFixture()
         {
-
             var sc = new ServiceCollection();
-
             sc.AddSolrNet("http://localhost:8983/solr");
             DefaultServiceProvider = sc.BuildServiceProvider();
         }
@@ -55,7 +48,6 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             var mapper = DefaultServiceProvider.GetService<IEnumerable<IReadOnlyMappingManager>>();
             Assert.NotNull(mapper);
         }
-
 
         [Fact]
         public void ResolveSolrDocumentActivator()
@@ -78,9 +70,7 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             Assert.Throws<InvalidOperationException>(() =>
                 DefaultServiceProvider.GetRequiredService<ISolrAbstractResponseParser<Entity>[]>()
             );
-
         }
-
 
         [Fact]
         public void ResolveSolrAbstractResponseParsersViaEnumerable()
@@ -89,7 +79,6 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             var result = DefaultServiceProvider.GetRequiredService<IEnumerable<ISolrAbstractResponseParser<Entity>>>();
             Assert.NotNull(result);
             Assert.Single(result);
-
         }
 
         [Fact]
@@ -99,7 +88,6 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             Assert.NotNull(solr);
         }
 
-
         [Fact]
         public void ResolveSolrOperations()
         {
@@ -108,41 +96,86 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
         }
 
         [Fact]
+        public void ServiceCollectionIsRequired()
+        {
+            var expectedMessage = $"Value cannot be null.{Environment.NewLine}Parameter name: services";
+
+            var exception1 = Assert.Throws<ArgumentNullException>(() => ServiceCollectionExtensions.AddSolrNet(null, "http://bar.com"));
+            var exception2 = Assert.Throws<ArgumentNullException>(() => ServiceCollectionExtensions.AddSolrNet<Entity>(null, "http://bar.com"));
+
+            Assert.Equal(expectedMessage, exception1.Message);
+            Assert.Equal(expectedMessage, exception2.Message);
+        }
+
+        [Fact]
+        public void UrlIsRequired()
+        {
+            var sc = new ServiceCollection();
+            var expectedMessage = $"Value cannot be null.{Environment.NewLine}Parameter name: url";
+            
+            var exception1 = Assert.Throws<ArgumentNullException>(() => sc.AddSolrNet((string) null));
+            var exception2 = Assert.Throws<ArgumentNullException>(() => sc.AddSolrNet<Entity>((string) null));
+
+            Assert.Equal(expectedMessage, exception1.Message);
+            Assert.Equal(expectedMessage, exception2.Message);
+        }
+
+        [Fact]
+        public void UrlRetrieverIsRequired()
+        {
+            var sc = new ServiceCollection();
+            var expectedMessage = $"Value cannot be null.{Environment.NewLine}Parameter name: urlRetriever";
+
+            var exception1 = Assert.Throws<ArgumentNullException>(() => sc.AddSolrNet((Func<IServiceProvider, string>) null));
+            var exception2 = Assert.Throws<ArgumentNullException>(() => sc.AddSolrNet<Entity>((Func<IServiceProvider, string>) null));
+
+            Assert.Equal(expectedMessage, exception1.Message);
+            Assert.Equal(expectedMessage, exception2.Message);
+        }
+
+        [Fact]
+        public void UrlRetrieverMustReturnValidUrl()
+        {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddSolrNet(sp => null);
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            var expectedMessage = $"Value cannot be null.{Environment.NewLine}Parameter name: solrUrl";
+
+            var exception = Assert.Throws<ArgumentNullException>(() => serviceProvider.GetService<ISolrOperations<Entity>>());
+       
+            Assert.Equal(expectedMessage, exception.Message);
+        }
+
+        [Fact]
         public void OnlyOneNonTypedAllowed()
         {
-
             var sc = new ServiceCollection();
             sc.AddSolrNet("http://foo.com");
             var exception = Assert.Throws<InvalidOperationException>(() => sc.AddSolrNet("http://bar.com"));
 
-            Assert.Contains("Only one Non-typed Solr Core", exception.Message);
+            Assert.Contains("Only one non-typed Solr Core", exception.Message);
         }
-
 
         [Fact]
         public void NoDuplicateTypesAllowed()
         {
-
             var sc = new ServiceCollection();
             sc.AddSolrNet<Entity>("http://foo.com");
-            sc.AddSolrNet<Object>("http://whatever.com");
+            sc.AddSolrNet<object>("http://whatever.com");
             var exception = Assert.Throws<InvalidOperationException>(() => sc.AddSolrNet<Entity>("http://bar.com"));
 
-            Assert.Equal($"SolrNet was already addd for model of type {nameof(Entity)}", exception.Message);
+            Assert.Equal($"SolrNet was already added for model of type {nameof(Entity)}", exception.Message);
         }
 
         [Fact]
         public void NonTypedBeforeTyped()
         {
-
             var sc = new ServiceCollection();
             sc.AddSolrNet<Entity>("http://foo.com");
             var exception = Assert.Throws<InvalidOperationException>(() => sc.AddSolrNet("http://bar.com"));
 
-            Assert.Contains("Only one Non-typed Solr Core", exception.Message);
+            Assert.Contains("Only one non-typed Solr Core", exception.Message);
         }
-
-
 
         [Fact]
         public void SetBasicAuthenticationHeader()

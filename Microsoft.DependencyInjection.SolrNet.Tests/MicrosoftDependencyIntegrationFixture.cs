@@ -3,12 +3,10 @@
 using System;
 using Xunit;
 using SolrNet;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.DependencyInjection.SolrNet.Tests
 {
-    
     [Trait("Category","Integration")]
     public class MicrosoftDependencyIntegrationFixture {
         private readonly IServiceProvider DefaultServiceProvider;
@@ -16,12 +14,9 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
         public MicrosoftDependencyIntegrationFixture()
         {
             var sc = new ServiceCollection();
-            
             sc.AddSolrNet("http://localhost:8983/solr");
-
             DefaultServiceProvider = sc.BuildServiceProvider();
         }
-
 
         [Fact]
         public void Ping_And_Query()

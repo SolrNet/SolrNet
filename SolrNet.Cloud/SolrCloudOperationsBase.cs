@@ -52,7 +52,7 @@ namespace SolrNet.Cloud {
         }
 
         /// <summary>
-        /// Performs basic operataion
+        /// Performs basic operation
         /// </summary>
         protected TResult PerformBasicOperation<TResult>(Func<ISolrBasicOperations<T>, TResult> operation, bool leader = false)
         {

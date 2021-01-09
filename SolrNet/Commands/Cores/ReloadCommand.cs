@@ -2,7 +2,7 @@
 
 namespace SolrNet.Commands.Cores {
     /// <summary>
-    /// Load a new core from the same configuration as an existing registered core. While the "new" core is initalizing, the "old" one will continue to accept requests. 
+    /// Load a new core from the same configuration as an existing registered core. While the "new" core is initializing, the "old" one will continue to accept requests. 
     /// Once it has finished, all new request will go to the "new" core, and the "old" core will be unloaded.
     /// </summary>
     /// <remarks>

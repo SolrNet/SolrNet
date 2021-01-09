@@ -30,7 +30,7 @@ namespace SolrNet {
         }
 
         /// <summary>
-        /// Negates this query
+        /// Requires this query
         /// </summary>
         /// <returns></returns>
         public AbstractSolrQuery Required() {

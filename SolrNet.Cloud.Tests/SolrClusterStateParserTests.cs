@@ -5,23 +5,23 @@ using Xunit;
 namespace SolrNet.Cloud.Tests {
     public class SolrClusterStateParserTests {
         private string EmptyJson {
-            get { return File.ReadAllText(@"resources\empty.json"); }
+            get { return File.ReadAllText($"resources{Path.DirectorySeparatorChar}empty.json"); }
         }
 
         private string NotEmptyJson {
-            get { return File.ReadAllText(@"resources\not-empty.json"); }
+            get { return File.ReadAllText($"resources{Path.DirectorySeparatorChar}not-empty.json"); }
         }
 
         private string InternalCollectionsState {
-            get { return File.ReadAllText(@"resources\clusterstate1.json"); }
+            get { return File.ReadAllText($"resources{Path.DirectorySeparatorChar}clusterstate1.json"); }
         }
 
         private string FirstExternalCollectionState {
-            get { return File.ReadAllText(@"resources\externalstate1.json"); }
+            get { return File.ReadAllText($"resources{Path.DirectorySeparatorChar}externalstate1.json"); }
         }
 
         private string SecondExternalCollectionState {
-            get { return File.ReadAllText(@"resources\externalstate2.json"); }
+            get { return File.ReadAllText($"resources{Path.DirectorySeparatorChar}externalstate2.json"); }
         }
 
         [Fact]

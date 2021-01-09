@@ -19,12 +19,20 @@ using System.Linq;
 using Xunit;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests
 {
 
     public class OperatorOverloadingTests
     {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public OperatorOverloadingTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         public string Serialize(object q)
         {
             var serializer = new DefaultQuerySerializer(new DefaultFieldSerializer());
@@ -102,7 +110,7 @@ namespace SolrNet.Tests
         public void AndNot()
         {
             var q = new SolrQuery("a") && !new SolrQuery("b");
-            Console.WriteLine(Serialize(q));
+            testOutputHelper.WriteLine(Serialize(q));
             Assert.Equal("(a AND -b)", Serialize(q));
         }
 

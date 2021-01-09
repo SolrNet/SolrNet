@@ -29,12 +29,14 @@ using SolrNet.Tests.Integration.Sample;
 using SolrNet.Tests;
 using SolrNet.Tests.Utils;
 using System.Threading.Tasks;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests.Integration
 {
     [Trait("Category", "Integration")]
     public class IntegrationFixtureAsync
     {
+        private readonly ITestOutputHelper testOutputHelper;
         private static readonly string serverURL = ConfigurationManager.AppSettings["solr"];
         private static readonly System.Lazy<object> init = new System.Lazy<object>(() =>
         {
@@ -47,8 +49,9 @@ namespace SolrNet.Tests.Integration
             return null;
         });
 
-        public IntegrationFixtureAsync()
+        public IntegrationFixtureAsync(ITestOutputHelper testOutputHelper)
         {
+            this.testOutputHelper = testOutputHelper;
             var x = init.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             solr.Delete(SolrQuery.All);
@@ -108,7 +111,7 @@ namespace SolrNet.Tests.Integration
             Assert.Equal(150m, products[0].Prices["regular"]);
             Assert.Equal(100m, products[0].Prices["afterrebate"]);
             Assert.NotNull(products.Header);
-            Console.WriteLine("QTime is {0}", products.Header.QTime);
+            testOutputHelper.WriteLine("QTime is {0}", products.Header.QTime);
         }
 
         private static readonly IEnumerable<Product> products = new[] {
@@ -220,7 +223,7 @@ namespace SolrNet.Tests.Integration
             Assert.Equal(1, results.Highlights.Count);
             foreach (var h in results.Highlights[results[0].Id])
             {
-                Console.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.ToArray()));
+                testOutputHelper.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.ToArray()));
             }
         }
 
@@ -240,7 +243,7 @@ namespace SolrNet.Tests.Integration
             Assert.Equal(1, results.Highlights.Count);
             foreach (var h in results.Highlights[results[0].Id].Snippets)
             {
-                Console.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.ToArray()));
+                testOutputHelper.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.ToArray()));
             }
         }
 
@@ -263,8 +266,8 @@ namespace SolrNet.Tests.Integration
                 }
             });
             var dateFacetResult = results.FacetDates["timestamp"];
-            Console.WriteLine(dateFacetResult.DateResults[0].Key);
-            Console.WriteLine(dateFacetResult.DateResults[0].Value);
+            testOutputHelper.WriteLine(dateFacetResult.DateResults[0].Key.ToString());
+            testOutputHelper.WriteLine(dateFacetResult.DateResults[0].Value.ToString());
         }
 
         [Fact]
@@ -299,7 +302,7 @@ namespace SolrNet.Tests.Integration
             });
             foreach (var product in r)
             {
-                Console.WriteLine(product.Id);
+                testOutputHelper.WriteLine(product.Id);
             }
         }
 
@@ -313,20 +316,19 @@ namespace SolrNet.Tests.Integration
             {
                 SpellCheck = new SpellCheckingParameters(),
             });
-            Console.WriteLine("Products:");
+            testOutputHelper.WriteLine("Products:");
             foreach (var product in r)
             {
-                Console.WriteLine(product.Id);
+                testOutputHelper.WriteLine(product.Id);
             }
-            Console.WriteLine();
-            Console.WriteLine("Spell checking:");
+            testOutputHelper.WriteLine("Spell checking:");
             Assert.True(r.SpellChecking.Count > 0);
             foreach (var sc in r.SpellChecking)
             {
-                Console.WriteLine(sc.Query);
+                testOutputHelper.WriteLine(sc.Query);
                 foreach (var s in sc.Suggestions)
                 {
-                    Console.WriteLine(s);
+                    testOutputHelper.WriteLine(s);
                 }
             }
         }
@@ -340,7 +342,7 @@ namespace SolrNet.Tests.Integration
                 OrderBy = new[] { new RandomSortOrder("random") }
             });
             foreach (var r in results)
-                Console.WriteLine(r.Manufacturer);
+                testOutputHelper.WriteLine(r.Manufacturer);
         }
 
         [Fact]
@@ -375,10 +377,9 @@ namespace SolrNet.Tests.Integration
             Assert.True(results.SimilarResults.Count > 0);
             foreach (var r in results.SimilarResults)
             {
-                Console.WriteLine("Similar documents to {0}", r.Key);
+                testOutputHelper.WriteLine("Similar documents to {0}", r.Key);
                 foreach (var similar in r.Value)
-                    Console.WriteLine(similar.Id);
-                Console.WriteLine();
+                    testOutputHelper.WriteLine(similar.Id);
             }
         }
 
@@ -402,7 +403,7 @@ namespace SolrNet.Tests.Integration
             Assert.NotNull(results.Stats);
             foreach (var kv in results.Stats)
             {
-                Console.WriteLine("Field {0}: ", kv.Key);
+                testOutputHelper.WriteLine("Field {0}: ", kv.Key);
                 DumpStats(kv.Value, 1);
             }
         }
@@ -471,11 +472,11 @@ namespace SolrNet.Tests.Integration
             foreach (var r in results)
                 foreach (var kv in r)
                 {
-                    Console.WriteLine("{0} ({1}): {2}", kv.Key, TypeOrNull(kv.Value), kv.Value);
+                    testOutputHelper.WriteLine("{0} ({1}): {2}", kv.Key, TypeOrNull(kv.Value), kv.Value);
                     if (kv.Value is IList)
                     {
                         foreach (var e in (IList)kv.Value)
-                            Console.WriteLine("\t{0} ({1})", e, TypeOrNull(e));
+                            testOutputHelper.WriteLine("\t{0} ({1})", e, TypeOrNull(e));
                     }
                 }
         }
@@ -511,7 +512,7 @@ namespace SolrNet.Tests.Integration
                     MaxDocs = 1,
                 }
             });
-            Console.WriteLine("CollapsedDocuments.Count {0}", results.Collapsing.CollapsedDocuments.Count);
+            testOutputHelper.WriteLine("CollapsedDocuments.Count {0}", results.Collapsing.CollapsedDocuments.Count);
         }
 
 
@@ -529,7 +530,7 @@ namespace SolrNet.Tests.Integration
                 }
             });
 
-            Console.WriteLine("Group.Count {0}", results.Grouping.Count);
+            testOutputHelper.WriteLine("Group.Count {0}", results.Grouping.Count);
             Assert.Equal(1, results.Grouping.Count);
             Assert.True(results.Grouping.ContainsKey("manu_exact"));
             Assert.True(results.Grouping["manu_exact"].Groups.Count >= 1);
@@ -549,7 +550,7 @@ namespace SolrNet.Tests.Integration
                 }
             });
 
-            Console.WriteLine("Group.Count {0}", results.Grouping.Count);
+            testOutputHelper.WriteLine("Group.Count {0}", results.Grouping.Count);
             Assert.Equal(2, results.Grouping.Count);
             Assert.True(results.Grouping.ContainsKey("manu_exact"));
             Assert.True(results.Grouping.ContainsKey("name"));
@@ -579,9 +580,9 @@ namespace SolrNet.Tests.Integration
             Assert.Null(product.SKU);
             Assert.NotNull(product.Name);
             Assert.NotNull(product.OtherFields);
-            Console.WriteLine(product.OtherFields.Count);
+            testOutputHelper.WriteLine(product.OtherFields.Count.ToString());
             foreach (var field in product.OtherFields)
-                Console.WriteLine("{0}: {1} ({2})", field.Key, field.Value, TypeOrNull(field.Value));
+                testOutputHelper.WriteLine("{0}: {1} ({2})", field.Key, field.Value, TypeOrNull(field.Value));
             Assert.IsType<DateTime>(product.OtherFields["timestamp"]);
             Assert.Equal(new DateTime(1, 1, 1), product.OtherFields["timestamp"]);
             Assert.IsAssignableFrom<ICollection>(product.OtherFields["features"]);
@@ -603,7 +604,7 @@ namespace SolrNet.Tests.Integration
                     ExtractOnly = true,
                     ExtractFormat = ExtractFormat.Text,
                 });
-                Console.WriteLine(response.Content);
+                testOutputHelper.WriteLine(response.Content);
                 Assert.Equal("Your PDF viewing software works!\n\n\n", response.Content);
             }
         }
@@ -642,7 +643,7 @@ namespace SolrNet.Tests.Integration
             Assert.True(results.InterestingTerms.Count > 0);
             foreach (var t in results.InterestingTerms)
             {
-                Console.WriteLine("Interesting term: {0} ({1})", t.Key, t.Value);
+                testOutputHelper.WriteLine("Interesting term: {0} ({1})", t.Key, t.Value);
             }
 
         }

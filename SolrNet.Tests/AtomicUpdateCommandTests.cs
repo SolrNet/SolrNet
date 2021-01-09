@@ -21,18 +21,26 @@ using Moroco;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests
 {
     public class AtomicUpdateCommandTests {
-		[Fact]
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public AtomicUpdateCommandTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
+        [Fact]
 		public void AtomicUpdateSet() {
 		    var conn = new Mocks.MSolrConnection();
             conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
 		        Assert.Equal("[{\"id\":\"0\",\"animal\":{\"set\":\"squirrel\"}}]", text);
-		        Console.WriteLine(text);
+		        testOutputHelper.WriteLine(text);
                 return null;
 		    });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, "squirrel") };
@@ -41,6 +49,7 @@ namespace SolrNet.Tests
             Assert.Equal(1, conn.postStream.Calls);
         }
 
+        [Fact]
         public void AtomicUpdateSetArray()
         {
             var conn = new Mocks.MSolrConnection();
@@ -48,7 +57,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"animal\":{\"set\":[\"squirrel\",\"fox\"]}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, new string[] {"squirrel", "fox"}) };
@@ -57,6 +66,7 @@ namespace SolrNet.Tests
             Assert.Equal(1, conn.postStream.Calls);
         }
 
+        [Fact]
         public void AtomicUpdateSetEmptyArray()
         {
             var conn = new Mocks.MSolrConnection();
@@ -64,7 +74,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"animal\":{\"set\":[]}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, new string[] {}) };
@@ -81,7 +91,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"add\":\"nuts\"}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.Add, "nuts") };
@@ -98,7 +108,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"add\":[\"nuts\",\"seeds\",\"berries\"]}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.Add, new string[] { "nuts", "seeds", "berries" }) };
@@ -115,7 +125,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"add\":[]}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.Add, new string[] { }) };
@@ -132,7 +142,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"remove\":\"nuts\"}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.Remove, "nuts") };
@@ -149,7 +159,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"remove\":[\"nuts\",\"seeds\",\"berries\"]}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.Remove, new string[] { "nuts", "seeds", "berries" }) };
@@ -166,7 +176,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"remove\":[]}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.Remove, new string[] { }) };
@@ -183,7 +193,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"removeregex\":\"nu.*\"}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.RemoveRegex, "nu.*") };
@@ -200,7 +210,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"removeregex\":[\"nu.*\",\"seeds\",\"berr.+\"]}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.RemoveRegex, new string[] { "nu.*", "seeds", "berr.+" }) };
@@ -217,7 +227,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"removeregex\":[]}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.RemoveRegex, new string[] { }) };
@@ -234,7 +244,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"count\":{\"inc\":3}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("count", AtomicUpdateType.Inc, 3) };
@@ -253,7 +263,7 @@ namespace SolrNet.Tests
                 Assert.Equal("commitwithin", ((KeyValuePair<string, string>[])param)[0].Key);
                 Assert.Equal("4343", ((KeyValuePair<string, string>[]) param)[0].Value);
                 Assert.Equal("[{\"id\":\"0\",\"count\":{\"inc\":3}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var parameters = new AtomicUpdateParameters { CommitWithin = 4343 };
@@ -297,7 +307,7 @@ namespace SolrNet.Tests
                     + "\"newLineInText\":{\"set\":\"line1\\nline2\"}"
                     + "}]",
                     text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             /* This document is equivalent to:
@@ -327,7 +337,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"set\":null}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.Set, (String)null) };
@@ -344,7 +354,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"food\":{\"set\":null}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.Set, (String[])null) };
@@ -361,7 +371,7 @@ namespace SolrNet.Tests
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
                 Assert.Equal("[{\"id\":\"0\",\"count\":{\"inc\":1}}]", text);
-                Console.WriteLine(text);
+                testOutputHelper.WriteLine(text);
                 return null;
             });
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("count", AtomicUpdateType.Inc, 1) };

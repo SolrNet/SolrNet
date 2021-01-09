@@ -16,15 +16,23 @@
 
 using System;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests {
     
     public class RandomSortTests {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public RandomSortTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         [Fact]
         public void Random() {
             var r = new RandomSortOrder("random");
             var rndSort = r.ToString();
-            Console.WriteLine(rndSort);
+            testOutputHelper.WriteLine(rndSort);
             Assert.Matches("random_\\d+ asc", rndSort);
         }
 
@@ -33,7 +41,7 @@ namespace SolrNet.Tests {
             const string seed = "234asd";
             var r = new RandomSortOrder("random", seed);
             var rndSort = r.ToString();
-            Console.WriteLine(rndSort);
+            testOutputHelper.WriteLine(rndSort);
             Assert.Equal(rndSort, string.Format("random_{0} asc", seed), true,true,true);
         }
 
@@ -41,7 +49,7 @@ namespace SolrNet.Tests {
         public void RandomWithOrder() {
             var r = new RandomSortOrder("random", Order.DESC);
             var rndSort = r.ToString();
-            Console.WriteLine(rndSort);
+            testOutputHelper.WriteLine(rndSort);
             Assert.Matches("random_\\d+ desc", rndSort );
         }
 
@@ -50,7 +58,7 @@ namespace SolrNet.Tests {
             const string seed = "234asd";
             var r = new RandomSortOrder("random", seed, Order.DESC);
             var rndSort = r.ToString();
-            Console.WriteLine(rndSort);
+            testOutputHelper.WriteLine(rndSort);
             Assert.Equal(rndSort, string.Format("random_{0} desc", seed), true, true, true);
         }
     }

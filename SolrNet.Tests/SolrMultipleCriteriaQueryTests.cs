@@ -19,10 +19,18 @@ using System.Linq;
 using Xunit;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests {
     
     public class SolrMultipleCriteriaQueryTests {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public SolrMultipleCriteriaQueryTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         public class TestDocument  {}
 
         public string Serialize(object q) {
@@ -44,7 +52,7 @@ namespace SolrNet.Tests {
             var q1 = new SolrQuery("1");
             var q2 = new SolrQueryByField("f", "v");
             var qm = new SolrMultipleCriteriaQuery(new ISolrQuery[] {q1, q2});
-            Console.WriteLine(Serialize(qm));
+            testOutputHelper.WriteLine(Serialize(qm));
             Assert.Equal("(1  f:(v))", Serialize(qm));
         }
 

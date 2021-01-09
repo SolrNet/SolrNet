@@ -25,10 +25,18 @@ using Xunit;
 using Moroco;
 using SolrNet.Exceptions;
 using SolrNet.Impl;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests {
 	
 	public class SolrConnectionTests {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public SolrConnectionTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         private const string solrURL = "http://localhost:8983/solr";
 
         [Fact(Skip = "unknown reason")]
@@ -39,7 +47,7 @@ namespace SolrNet.Tests {
 			p["version"] = "2.1";
 			p["indent"] = "on";
 			p["q"] = "+video +price:[* TO 400]";
-			Console.WriteLine(conn.Get("/select/", p));
+			testOutputHelper.WriteLine(conn.Get("/select/", p));
 		}
 
 		[Trait("Category", "Integration")]
@@ -54,8 +62,8 @@ namespace SolrNet.Tests {
                 conn.Get("/select/", p);
                 Assert.True(false, "Should have thrown");
             } catch (SolrConnectionException e) {
-                Console.WriteLine(e);
-                Console.WriteLine(e.Url);
+                testOutputHelper.WriteLine(e.ToString());
+                testOutputHelper.WriteLine(e.Url);
             }
 		}
 

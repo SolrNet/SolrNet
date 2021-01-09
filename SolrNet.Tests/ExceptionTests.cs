@@ -14,7 +14,9 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Linq;
+using System.Runtime.Serialization;
 using Xunit;
 using SolrNet.Exceptions;
 
@@ -25,7 +27,7 @@ namespace SolrNet.Tests {
         public void All_exceptions_are_serializable() {
             var allExceptions = typeof (SolrNetException).Assembly.GetTypes().Where(t => typeof (SolrNetException).IsAssignableFrom(t));
             foreach (var e in allExceptions) {
-                Assert.IsAssignableFrom<System.Runtime.Serialization.ISerializable>(e);
+                Assert.True(typeof(ISerializable).IsAssignableFrom(e), $"{e} is not serializable");
             }
         }
     }

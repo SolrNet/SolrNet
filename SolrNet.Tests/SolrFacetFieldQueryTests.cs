@@ -21,10 +21,18 @@ using Xunit;
 using SolrNet.Impl.FacetQuerySerializers;
 using SolrNet.Impl.FieldSerializers;
 using SolrNet.Impl.QuerySerializers;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests {
     
     public class SolrFacetFieldQueryTests {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public SolrFacetFieldQueryTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         public IList<KeyValuePair<string, string>> Serialize(object o) {
             var fieldSerializer = new DefaultFieldSerializer();
             var serializer = new DefaultFacetQuerySerializer(new DefaultQuerySerializer(fieldSerializer), fieldSerializer);
@@ -36,7 +44,7 @@ namespace SolrNet.Tests {
             var fq = new SolrFacetFieldQuery("pepe");
             var q = Serialize(fq);
             Assert.Equal(1, q.Count);
-            Console.WriteLine(q[0]);
+            testOutputHelper.WriteLine(q[0].ToString());
             Assert.Equal("facet.field", q[0].Key);
             Assert.Equal("pepe", q[0].Value);
         }

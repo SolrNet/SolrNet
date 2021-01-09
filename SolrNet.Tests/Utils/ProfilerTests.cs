@@ -21,10 +21,18 @@ using System.Reflection;
 using System.Threading;
 using Castle.MicroKernel.Registration;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests.Utils {
     
     public class ProfilerTests {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public ProfilerTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         public class NonProxyable {
             public void LongOperation() {
                 Thread.Sleep(1000);
@@ -67,7 +75,7 @@ namespace SolrNet.Tests.Utils {
             container.Resolve<Proxyable>().LongOperation();
             var profile = container.GetProfile();
             Assert.Single(profile.Children);
-            Console.WriteLine("{0}: {1}", profile.Children[0].Value.Key, profile.Children[0].Value.Value);
+            testOutputHelper.WriteLine("{0}: {1}", profile.Children[0].Value.Key, profile.Children[0].Value.Value);
             var fProfile = Flatten(profile);
             var q = from n in fProfile
                     group n.Value by n.Key into x
@@ -76,7 +84,7 @@ namespace SolrNet.Tests.Utils {
                     select kv;
 
             foreach (var i in q)
-                Console.WriteLine("{0}: {1}", i.Key, i.Value);
+                testOutputHelper.WriteLine("{0}: {1}", i.Key, i.Value);
 
             //Console.WriteLine(profile.Values.ToList()[0][0].TotalMilliseconds);
         }

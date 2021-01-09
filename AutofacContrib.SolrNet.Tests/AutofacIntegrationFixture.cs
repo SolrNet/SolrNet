@@ -5,10 +5,18 @@ using System.Collections.Generic;
 using Autofac;
 using SolrNet;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace AutofacContrib.SolrNet.Tests {
     [Trait("Category","Integration")]
     public class AutofacIntegrationFixture {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public AutofacIntegrationFixture(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         [Fact]      
         public void Ping_And_Query()
         {
@@ -17,7 +25,7 @@ namespace AutofacContrib.SolrNet.Tests {
             var container = builder.Build();
             var solr = container.Resolve<ISolrOperations<AutofacFixture.Entity>>();
             solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine(solr.Query(SolrQuery.All).Count.ToString());
         }
 
         [Fact]
@@ -33,7 +41,7 @@ namespace AutofacContrib.SolrNet.Tests {
             {
                 Assert.True(d.Count> 0);
                 foreach (var kv in d)
-                    Console.WriteLine("{0}: {1}", kv.Key, kv.Value);
+                    testOutputHelper.WriteLine("{0}: {1}", kv.Key, kv.Value);
             }
         }
 

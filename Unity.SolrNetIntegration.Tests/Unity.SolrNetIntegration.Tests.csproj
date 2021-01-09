@@ -11,9 +11,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Unity.SolrNetIntegration\Unity.SolrNetIntegration.csproj">
-      <Name>Unity.SolrNetIntegration</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Unity.SolrNetIntegration\Unity.SolrNetIntegration.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <None Update="App.config">

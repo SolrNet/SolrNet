@@ -5,10 +5,18 @@ using Xunit;
 using Moroco;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Tests.Mocks;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests {
     
     public class RegularDocumentVisitorTests {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public RegularDocumentVisitorTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         [Fact]
         public void InvalidCastReportsFieldName() {
             var mapper = new MReadOnlyMappingManager();
@@ -37,7 +45,7 @@ namespace SolrNet.Tests {
                 Assert.True(false,"Should have failed with invalid cast");
             } catch (ArgumentException e) {
                 Assert.Contains("property 'Id'", e.Message);
-                Console.WriteLine(e.Message);
+                testOutputHelper.WriteLine(e.Message);
             }
 
             mapper.getFields.Verify();

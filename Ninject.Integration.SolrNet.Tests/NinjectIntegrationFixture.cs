@@ -2,15 +2,18 @@
 using Xunit;
 using Ninject.Integration.SolrNet.Config;
 using SolrNet;
+using Xunit.Abstractions;
 
 namespace Ninject.Integration.SolrNet.Tests {
     
     [Trait("Category","Integration")]
     public class NinjectIntegrationFixture {
+        private readonly ITestOutputHelper testOutputHelper;
         private StandardKernel kernel;
 
-        public NinjectIntegrationFixture()
+        public NinjectIntegrationFixture(ITestOutputHelper testOutputHelper)
         {
+            this.testOutputHelper = testOutputHelper;
             kernel = new StandardKernel();
         }
 
@@ -21,7 +24,7 @@ namespace Ninject.Integration.SolrNet.Tests {
             c.Load(new SolrNetModule("http://localhost:8983/solr"));
             var solr = c.Get<ISolrOperations<NinjectFixture.Entity>>();
             solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine(solr.Query(SolrQuery.All).Count.ToString());
         }
 
         [Fact]
@@ -37,7 +40,7 @@ namespace Ninject.Integration.SolrNet.Tests {
             kernel.Load(new SolrNetModule(solrServers));
             var solr = kernel.Get<ISolrOperations<Entity>>();
             solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine(solr.Query(SolrQuery.All).Count.ToString());
         }
 
         [Fact]
@@ -58,10 +61,10 @@ namespace Ninject.Integration.SolrNet.Tests {
             kernel.Load(new SolrNetModule(solrServers));
             var solr1 = kernel.Get<ISolrOperations<Entity>>();
             solr1.Ping();
-            Console.WriteLine("Query core 1: {0}", solr1.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine("Query core 1: {0}", solr1.Query(SolrQuery.All).Count);
             var solr2 = kernel.Get<ISolrOperations<Entity2>>();
             solr2.Ping();
-            Console.WriteLine("Query core 2: {0}", solr2.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine("Query core 2: {0}", solr2.Query(SolrQuery.All).Count);
         }
 
         [Fact]
@@ -82,11 +85,11 @@ namespace Ninject.Integration.SolrNet.Tests {
             kernel.Load(new SolrNetModule(solrServers));
             var solr1 = kernel.Get<ISolrOperations<Entity>>("core-0");
             Assert.NotNull(solr1);
-            Console.WriteLine("Query core 1: {0}", solr1.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine("Query core 1: {0}", solr1.Query(SolrQuery.All).Count);
             var solr2 = kernel.Get<ISolrOperations<Entity2>>("core-1");
             Assert.NotNull(solr2);
             solr2.Ping();
-            Console.WriteLine("Query core 2: {0}", solr2.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine("Query core 2: {0}", solr2.Query(SolrQuery.All).Count);
         }
 
     }

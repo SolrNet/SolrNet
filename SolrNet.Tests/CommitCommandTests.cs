@@ -1,17 +1,25 @@
 using System;
 using Xunit;
 using SolrNet.Commands;
+using Xunit.Abstractions;
 
 namespace SolrNet.Tests {
     
     public class CommitCommandTests {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public CommitCommandTests(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         [Fact]
         public void ExecuteBasic() {
             var conn = new Mocks.MSolrConnection();
             conn.post += (url, content) => {
                 Assert.Equal("/update", url);
                 Assert.Equal("<commit />", content);
-                Console.WriteLine(content);
+                testOutputHelper.WriteLine(content);
                 return null;
             };
             var cmd = new CommitCommand();
@@ -25,7 +33,7 @@ namespace SolrNet.Tests {
             conn.post += (url, content) => {
                 Assert.Equal("/update", url);
                 Assert.Equal("<commit waitSearcher=\"true\" waitFlush=\"true\" />", content);
-                Console.WriteLine(content);
+                testOutputHelper.WriteLine(content);
                 return null;
             };
             var cmd = new CommitCommand { WaitFlush = true, WaitSearcher = true };
@@ -39,7 +47,7 @@ namespace SolrNet.Tests {
             conn.post += (url, content) => {
                 Assert.Equal("/update", url);
                 Assert.Equal("<commit waitSearcher=\"true\" waitFlush=\"true\" expungeDeletes=\"true\" maxSegments=\"2\" />", content);
-                Console.WriteLine(content);
+                testOutputHelper.WriteLine(content);
                 return null;
             };
 

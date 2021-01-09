@@ -5,10 +5,18 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Xunit;
 using SolrNet;
+using Xunit.Abstractions;
 
 namespace Castle.Facilities.SolrNetIntegration.Tests {
     [Trait("Category","Integration")]
     public class CastleIntegrationFixture {
+        private readonly ITestOutputHelper testOutputHelper;
+
+        public CastleIntegrationFixture(ITestOutputHelper testOutputHelper)
+        {
+            this.testOutputHelper = testOutputHelper;
+        }
+
         [Fact]
         public void Ping_Query()
         {
@@ -21,7 +29,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
 
             var solr = container.Resolve<ISolrOperations<CastleFixture.Document>>();
             solr.Ping();
-            Console.WriteLine(solr.Query(SolrQuery.All).Count);
+            testOutputHelper.WriteLine(solr.Query(SolrQuery.All).Count.ToString());
         }
 
         [Fact]
@@ -37,7 +45,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             {
                 Assert.True(d.Count > 0);
                 foreach (var kv in d)
-                    Console.WriteLine("{0}: {1}", kv.Key, kv.Value);
+                    testOutputHelper.WriteLine("{0}: {1}", kv.Key, kv.Value);
             }
         }
 

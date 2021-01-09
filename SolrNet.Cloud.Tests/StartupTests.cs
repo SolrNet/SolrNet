@@ -80,6 +80,7 @@ namespace SolrNet.Cloud.Tests
         [Fact]
         public async Task ShouldResolveReadOnlyOperationsFromStartupContainer()
         {
+            await PrepareContainerAsync();
             Assert.NotNull(
                 Startup.Container.GetInstance<ISolrReadOnlyOperations<FakeEntity>>());
         }

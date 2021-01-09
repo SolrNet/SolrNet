@@ -54,8 +54,6 @@ namespace SolrNet.Impl.ResponseParsers
         /// <summary>
         /// Parses collapsed document.ids and their counts
         /// </summary>
-        /// <param name="node"></param>
-        /// <returns></returns>
         public ICollection<Group<T>> ParseGroup(IEnumerable<XElement> nodes)
         {
             var groups = new List<Group<T>>();

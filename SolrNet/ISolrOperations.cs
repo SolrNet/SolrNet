@@ -289,6 +289,7 @@ namespace SolrNet
         /// <exception cref="SolrNetException">throws if document type doesn't have a unique key or document has null unique key</exception>
         ResponseHeader Delete(IEnumerable<T> docs, DeleteParameters parameters);
 
+        /// <summary>
         /// Deletes several documents (requires the document type to have a unique key defined with non-null value)
         /// </summary>
         /// <param name="docs"></param>

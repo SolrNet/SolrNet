@@ -53,7 +53,6 @@ namespace SolrNet.Impl {
         /// Builds a document from the corresponding response xml node
         /// </summary>
         /// <param name="node">response xml node</param>
-        /// <param name="fields">document fields</param>
         /// <returns>populated document</returns>
         public T ParseDocument(XElement node) {
             var doc = activator.Create();

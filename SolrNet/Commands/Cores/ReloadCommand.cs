@@ -7,7 +7,7 @@ namespace SolrNet.Commands.Cores {
     /// </summary>
     /// <remarks>
     /// This can be useful when (backwards compatible) changes have been made to your solrconfig.xml or schema.xml files 
-    /// (e.g. new <field> declarations, changed default params for a <requestHandler>, etc...) and you want to start using 
+    /// (e.g. new &lt;field&gt; declarations, changed default params for a &gt;requestHandler&lt;, etc...) and you want to start using 
     /// them without stopping and restarting your whole Servlet Container.
     /// </remarks>
     public class ReloadCommand : CoreCommand {

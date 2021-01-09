@@ -73,6 +73,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="relativeUrl">Path to get from</param>
         /// <param name="parameters">Query string parameters</param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken= default(CancellationToken));
     }

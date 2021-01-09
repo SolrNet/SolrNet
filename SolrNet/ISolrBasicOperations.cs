@@ -93,6 +93,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="ids">document ids to delete</param>
         /// <param name="q">query to match</param>
+        /// <param name="parameters"/>
         /// <returns></returns>
         ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters);
 
@@ -101,6 +102,7 @@ namespace SolrNet {
         /// </summary>
         /// <param name="ids">document ids to delete</param>
         /// <param name="q">query to match</param>
+        /// <param name="parameters"/>
         /// <returns></returns>
         Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters);
 

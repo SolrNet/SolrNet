@@ -77,6 +77,7 @@ namespace SolrNet
         /// Executes a query
         /// </summary>
         /// <param name="q">query to execute</param>
+        /// <param name="cancellationToken"></param>
         /// <returns>query results</returns>
         Task<SolrQueryResults<T>> QueryAsync(string q, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -85,6 +86,7 @@ namespace SolrNet
         /// </summary>
         /// <param name="q"></param>
         /// <param name="orders"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<SolrQueryResults<T>> QueryAsync(string q, ICollection<SortOrder> orders, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -93,6 +95,7 @@ namespace SolrNet
         /// </summary>
         /// <param name="q"></param>
         /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<SolrQueryResults<T>> QueryAsync(string q, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -100,6 +103,7 @@ namespace SolrNet
         /// Executes a query
         /// </summary>
         /// <param name="q"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<SolrQueryResults<T>> QueryAsync(ISolrQuery q, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -108,6 +112,7 @@ namespace SolrNet
         /// </summary>
         /// <param name="query"></param>
         /// <param name="orders"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, ICollection<SortOrder> orders, CancellationToken cancellationToken = default(CancellationToken));
 

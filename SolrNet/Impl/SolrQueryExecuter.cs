@@ -576,8 +576,6 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Gets the solr parameters for collapse-expand queries
         /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
         public static IEnumerable<KeyValuePair<string, string>> GetCollapseExpandOptions(CollapseExpandParameters options, Func<ISolrQuery, string> serializer)
         {
             if (options == null)

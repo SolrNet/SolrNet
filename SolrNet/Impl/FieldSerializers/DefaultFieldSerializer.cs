@@ -24,6 +24,9 @@ namespace SolrNet.Impl.FieldSerializers {
     public class DefaultFieldSerializer : ISolrFieldSerializer {
         private readonly AggregateFieldSerializer serializer;
 
+        /// <summary>
+        /// Aggregates the default <see cref="ISolrFieldSerializer"/>s
+        /// </summary>
         public DefaultFieldSerializer() {
             serializer = new AggregateFieldSerializer(new ISolrFieldSerializer[] {
                 new CollectionFieldSerializer(this),
@@ -37,10 +40,12 @@ namespace SolrNet.Impl.FieldSerializers {
             });
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return serializer.CanHandleType(t);
         }
 
+        /// <inheritdoc />
         public IEnumerable<PropertyNode> Serialize(object obj) {
             return serializer.Serialize(obj);
         }

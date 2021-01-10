@@ -28,10 +28,14 @@ namespace SolrNet.Impl.FieldSerializers {
     public class CollectionFieldSerializer : ISolrFieldSerializer {
         private readonly ISolrFieldSerializer valueSerializer;
 
+        /// <summary>
+        ///   Serializes 1-dimensional collections
+        /// </summary>
         public CollectionFieldSerializer(ISolrFieldSerializer valueSerializer) {
             this.valueSerializer = valueSerializer;
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return t != typeof (string) &&
                    typeof (IEnumerable).IsAssignableFrom(t) &&
@@ -39,6 +43,7 @@ namespace SolrNet.Impl.FieldSerializers {
                    !TypeHelper.IsGenericAssignableFrom(typeof (IDictionary<,>), t);
         }
 
+        /// <inheritdoc />
         public IEnumerable<PropertyNode> Serialize(object obj) {
             if (obj == null)
                 yield break;

@@ -30,6 +30,7 @@ namespace SolrNet.Impl.FieldSerializers {
             this.serializer = serializer;
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return TypeHelper.IsGenericAssignableFrom(typeof (IDictionary<,>), t);
         }
@@ -52,6 +53,7 @@ namespace SolrNet.Impl.FieldSerializers {
             return kv.GetType().GetProperty("Value").GetValue(kv, null);
         }
 
+        /// <inheritdoc />
         public IEnumerable<PropertyNode> Serialize(object obj) {
             if (obj == null)
                 yield break;

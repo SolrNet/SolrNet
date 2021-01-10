@@ -30,34 +30,42 @@ namespace SolrNet.Impl {
 
         private readonly ICollection<SpellCheckResult> SpellChecks = new List<SpellCheckResult>();
 
+        /// <inheritdoc />
         public IEnumerator<SpellCheckResult> GetEnumerator() {
             return SpellChecks.GetEnumerator();
         }
 
+        /// <inheritdoc />
         public void Add(SpellCheckResult item) {
             SpellChecks.Add(item);
         }
 
+        /// <inheritdoc />
         public void Clear() {
             SpellChecks.Clear();
         }
 
+        /// <inheritdoc />
         public bool Contains(SpellCheckResult item) {
             return SpellChecks.Contains(item);
         }
 
+        /// <inheritdoc />
         public void CopyTo(SpellCheckResult[] array, int arrayIndex) {
             SpellChecks.CopyTo(array, arrayIndex);
         }
 
+        /// <inheritdoc />
         public bool Remove(SpellCheckResult item) {
             return SpellChecks.Remove(item);
         }
 
+        /// <inheritdoc />
         public int Count {
             get { return SpellChecks.Count; }
         }
 
+        /// <inheritdoc />
         public bool IsReadOnly {
             get { return SpellChecks.IsReadOnly; }
         }

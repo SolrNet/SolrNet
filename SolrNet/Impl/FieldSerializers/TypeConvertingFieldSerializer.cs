@@ -23,11 +23,13 @@ namespace SolrNet.Impl.FieldSerializers {
     /// Serializes using <see cref="TypeConverter"/>s
     /// </summary>
     public class TypeConvertingFieldSerializer : ISolrFieldSerializer {
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             var converter = TypeDescriptor.GetConverter(t);
             return converter.CanConvertTo(typeof (string));
         }
 
+        /// <inheritdoc />
         public IEnumerable<PropertyNode> Serialize(object obj) {
             if (obj == null)
                 yield break;

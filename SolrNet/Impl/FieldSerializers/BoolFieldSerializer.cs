@@ -25,6 +25,7 @@ namespace SolrNet.Impl.FieldSerializers {
             return o.ToString().ToLowerInvariant();
         }
 
+        /// <inheritdoc />
         public override IEnumerable<PropertyNode> Parse(bool obj) {
             yield return new PropertyNode {
                 FieldValue = SerializeBool(obj),

@@ -26,6 +26,7 @@ namespace SolrNet.Mapping.Validation.Rules {
     /// Checks schema type of properties with <see cref="decimal"/> type
     /// </summary>
     public class DecimalSolrFieldTypeChecker : ISolrFieldTypeChecker {
+        /// <inheritdoc />
         public ValidationResult Validate(SolrFieldType solrFieldType, string propertyName, Type propertyType) {
             if (new[] { "solr.TextField", "solr.StrField" }.Any(st => st == solrFieldType.Type))
                 return new ValidationWarning(String.Format("Property '{0}' of type '{1}' is mapped to a solr field of type '{2}'. These types are not fully compatible. You won't be able to use this field for range queries.", propertyName, propertyType.FullName, solrFieldType.Name));
@@ -34,6 +35,7 @@ namespace SolrNet.Mapping.Validation.Rules {
             return new ValidationError(String.Format("Property '{0}' of type '{1}' cannot be stored in solr field type '{2}'.", propertyName, propertyType.FullName, solrFieldType.Name));
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type propertyType) {
             return propertyType == typeof (decimal) ||
                 propertyType == typeof(decimal?);

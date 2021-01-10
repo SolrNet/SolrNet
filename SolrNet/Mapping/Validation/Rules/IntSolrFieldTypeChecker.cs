@@ -30,6 +30,7 @@ namespace SolrNet.Mapping.Validation.Rules {
             : base(new[] {"solr.TrieIntField", "solr.IntField", "solr.SortableIntField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}
 
+        /// <inheritdoc />
         public override bool CanHandleType(Type propertyType) {
             return propertyType == typeof (int) ||
                 propertyType == typeof(int?);

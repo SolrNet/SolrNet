@@ -17,6 +17,7 @@ namespace SolrNet.Commands {
             return connection.Get("/admin/cores", Parameters.ToArray());
         }
 
+        /// <inheritdoc />
         public Task<string> ExecuteAsync(ISolrConnection connection)
         {
             return connection.GetAsync("/admin/cores", Parameters.ToArray());

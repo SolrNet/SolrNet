@@ -60,6 +60,7 @@ namespace SolrNet
             get { return new FacetRangeInclude("all"); }
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             var o = obj as FacetRangeInclude;
@@ -68,11 +69,13 @@ namespace SolrNet
             return o.value == value;
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return value.GetHashCode();
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return value;

@@ -24,6 +24,7 @@ namespace SolrNet.Impl.QuerySerializers {
             this.serializer = serializer;
         }
 
+        /// <inheritdoc />
         public override string Serialize(SolrMultipleCriteriaQuery q) {
             var queryBuilder = new StringBuilder();
             foreach (var query in q.Queries) {

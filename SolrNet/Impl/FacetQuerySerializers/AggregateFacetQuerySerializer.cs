@@ -27,10 +27,12 @@ namespace SolrNet.Impl.FacetQuerySerializers {
             this.serializers = serializers;
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return serializers.Any(s => s.CanHandleType(t));
         }
 
+        /// <inheritdoc />
         public IEnumerable<KeyValuePair<string, string>> Serialize(object q) {
             if (q == null)
                 yield break;

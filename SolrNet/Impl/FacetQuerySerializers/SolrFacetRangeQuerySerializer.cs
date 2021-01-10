@@ -22,6 +22,9 @@ using SolrNet.Utils;
 
 namespace SolrNet.Impl.FacetQuerySerializers
 {
+    /// <summary>
+    /// Serializes <see cref="SolrFacetRangeQuery"/>
+    /// </summary>
     public class SolrFacetRangeQuerySerializer : SingleTypeFacetQuerySerializer<SolrFacetRangeQuery>
     {
 
@@ -29,6 +32,9 @@ namespace SolrNet.Impl.FacetQuerySerializers
 
         private readonly ISolrFieldSerializer fieldSerializer;
 
+        /// <summary>
+        /// Serializes <see cref="SolrFacetRangeQuery"/>
+        /// </summary>
         public SolrFacetRangeQuerySerializer(ISolrFieldSerializer fieldSerializer)
         {
             this.fieldSerializer = fieldSerializer;
@@ -39,6 +45,7 @@ namespace SolrNet.Impl.FacetQuerySerializers
             return fieldSerializer.Serialize(o).First().FieldValue;
         }
 
+        /// <inheritdoc />
         public override IEnumerable<KeyValuePair<string, string>> Serialize(SolrFacetRangeQuery q)
         {
             var fieldWithoutLocalParams = localParamsRx.Replace(q.Field, "");

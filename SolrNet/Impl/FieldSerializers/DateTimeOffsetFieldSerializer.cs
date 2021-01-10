@@ -8,6 +8,7 @@ namespace SolrNet.Impl.FieldSerializers {
             return dt.ToUniversalTime().ToString(DateTimeFieldSerializer.DateTimeFormat, CultureInfo.InvariantCulture);
         }
 
+        /// <inheritdoc />
         public override IEnumerable<PropertyNode> Parse(DateTimeOffset obj) {
             yield return new PropertyNode {
                 FieldValue = Serialize(obj),

@@ -49,12 +49,14 @@ namespace SolrNet.Commands {
         /// </summary>
         public int? MaxSegments { get; set; }
 
+        /// <inheritdoc />
 		public string Execute(ISolrConnection connection)
         {
             string xml = GetCommitXml();
             return connection.Post("/update", xml);
         }
 
+        /// <inheritdoc />
         public Task<string> ExecuteAsync(ISolrConnection connection)
         {
             string xml = GetCommitXml();

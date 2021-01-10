@@ -26,6 +26,7 @@ namespace SolrNet.Impl.ResponseParsers {
             });
         }
 
+        /// <inheritdoc />
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             parser.Parse(xml, results);
         }

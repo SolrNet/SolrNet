@@ -102,16 +102,19 @@ namespace SolrNet.Commands.Parameters {
             }
         }
 
+        /// <inheritdoc />
         public bool Equals(RegexFlag other) {
             if (other == null)
                 return false;
             return ToString() == other.ToString();
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj) {
             return Equals(obj as RegexFlag);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode() {
             return ToString().GetHashCode();
         }

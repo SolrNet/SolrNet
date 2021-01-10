@@ -24,11 +24,13 @@ namespace SolrNet.Impl
             this.Json = json;
         }
 
+        /// <inheritdoc />
         public string Serialize()
         {
             return Json;
         }
 
+        /// <inheritdoc />
         public string MimeType => ApplicationJson;
     }
 }

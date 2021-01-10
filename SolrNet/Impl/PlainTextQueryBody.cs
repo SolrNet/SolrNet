@@ -23,12 +23,13 @@ namespace SolrNet.Impl
             this.Text = text;
         }
 
-
+        /// <inheritdoc />
         public string Serialize()
         {
             return Text;
         }
 
+        /// <inheritdoc />
         public string MimeType => MediaTypeNames.Text.Plain;
     }
 }

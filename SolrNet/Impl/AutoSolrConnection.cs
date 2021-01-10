@@ -60,8 +60,10 @@ namespace SolrNet.Impl
         /// </summary>
         public int MaxUriLength { get; set; } = 7600;
 
+        /// <inheritdoc />
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters) => SyncFallbackConnection.Get(relativeUrl, parameters);
 
+        /// <inheritdoc />
         public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             using (var responseStream = await GetAsStreamAsync(relativeUrl, parameters, cancellationToken))
@@ -70,8 +72,8 @@ namespace SolrNet.Impl
                 return await sr.ReadToEndAsync();
             }
         }
-
-
+        
+        /// <inheritdoc />
         public async Task<Stream> GetAsStreamAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken)
         {
             var u = new UriBuilder(ServerURL);
@@ -93,10 +95,14 @@ namespace SolrNet.Impl
             return await response.Content.ReadAsStreamAsync();
 
         }
+        
+        /// <inheritdoc />
         public string Post(string relativeUrl, string s) => SyncFallbackConnection.Post(relativeUrl, s);
 
+        /// <inheritdoc />
         public Task<string> PostAsync(string relativeUrl, string s) => PostAsync(relativeUrl, s, CancellationToken.None);
 
+        /// <inheritdoc />
         public async Task<string> PostAsync(string relativeUrl, string s, CancellationToken cancellationToken)
         {
             var bytes = Encoding.UTF8.GetBytes(s);
@@ -110,8 +116,10 @@ namespace SolrNet.Impl
             }
         }
 
+        /// <inheritdoc />
         public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters) => SyncFallbackConnection.PostStream(relativeUrl, contentType, content, getParameters);
 
+        /// <inheritdoc />
         public async Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
         {
             using (var responseStream = await PostStreamAsStreamAsync(relativeUrl, contentType, content, getParameters, CancellationToken.None))
@@ -122,6 +130,7 @@ namespace SolrNet.Impl
         }
 
 
+        /// <inheritdoc />
         public async Task<Stream> PostStreamAsStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> getParameters, CancellationToken cancellationToken)
         {
             var u = new UriBuilder(ServerURL);
@@ -169,6 +178,7 @@ namespace SolrNet.Impl
         }
 
 
+        /// <inheritdoc />
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

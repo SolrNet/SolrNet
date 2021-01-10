@@ -29,12 +29,14 @@ namespace SolrNet.Impl.ResponseParsers
     /// <typeparam name="T">Document type</typeparam>
     public class SpellCheckResponseParser<T> : ISolrResponseParser<T>
     {
+        /// <inheritdoc />
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results)
         {
             results.Switch(query: r => Parse(xml, r),
                            moreLikeThis: F.DoNothing);
         }
 
+        /// <inheritdoc />
         public void Parse(XDocument xml, SolrQueryResults<T> results)
         {
             var spellCheckingNode = xml.XPathSelectElement("response/lst[@name='spellcheck']");

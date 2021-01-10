@@ -32,11 +32,13 @@ namespace SolrNet.Commands {
             this.parameters = parameters;
         }
 
+        /// <inheritdoc />
         public string Execute(ISolrConnection connection) {
             var queryParameters = ConvertToQueryParameters();
             return connection.PostStream("/update/extract", parameters.StreamType, parameters.Content, queryParameters);
         }
 
+        /// <inheritdoc />
         public Task<string> ExecuteAsync(ISolrConnection connection)
         {
             var queryParameters = ConvertToQueryParameters();

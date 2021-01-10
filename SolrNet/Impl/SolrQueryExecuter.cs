@@ -692,6 +692,7 @@ namespace SolrNet.Impl {
             return qr;
         }
 
+        /// <inheritdoc />
         public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
@@ -716,6 +717,7 @@ namespace SolrNet.Impl {
             return results;
         }
 
+        /// <inheritdoc />
         public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, ISolrQueryBody body, QueryOptions options,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -746,6 +748,7 @@ namespace SolrNet.Impl {
             return results;
         }
         
+        /// <inheritdoc />
         public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
@@ -754,6 +757,7 @@ namespace SolrNet.Impl {
             return qr;
         }
 
+        /// <inheritdoc />
         public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery query, ISolrQueryBody body,
             MoreLikeThisHandlerQueryOptions options,
             CancellationToken cancellationToken = default(CancellationToken))

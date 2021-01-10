@@ -44,10 +44,12 @@ namespace SolrNet.Mapping {
             return memoGetFields(type);
         }
 
+        /// <inheritdoc />
         public SolrFieldModel GetUniqueKey(Type type) {
             return memoGetUniqueKey(type);
         }
 
+        /// <inheritdoc />
         public ICollection<Type> GetRegisteredTypes() {
             lock (registeredTypesLock) {
                 if (registeredTypes == null)

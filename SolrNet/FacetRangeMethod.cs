@@ -39,6 +39,7 @@ namespace SolrNet {
             get { return new FacetRangeMethod("dv"); }
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj) {
             var o = obj as FacetRangeMethod;
             if (o == null)
@@ -46,10 +47,12 @@ namespace SolrNet {
             return o.value == value;
         }
 
+        /// <inheritdoc />
         public override int GetHashCode() {
             return value.GetHashCode();
         }
 
+        /// <inheritdoc />
         public override string ToString() {
             return value;
         }

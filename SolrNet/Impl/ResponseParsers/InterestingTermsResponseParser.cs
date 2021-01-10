@@ -7,6 +7,7 @@ using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     public class InterestingTermsResponseParser<T> : ISolrMoreLikeThisHandlerResponseParser<T> {
+        /// <inheritdoc />
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             results.Switch(query: F.DoNothing,
                            moreLikeThis: r => Parse(xml, r));
@@ -41,6 +42,7 @@ namespace SolrNet.Impl.ResponseParsers {
             return ParseDetails(xml).ToList();
         }
 
+        /// <inheritdoc />
         public void Parse(XDocument xml, SolrMoreLikeThisHandlerResults<T> results) {
             results.InterestingTerms = ParseListOrDetails(xml);
         }

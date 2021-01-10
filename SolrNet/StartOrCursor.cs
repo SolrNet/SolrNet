@@ -10,6 +10,7 @@ namespace SolrNet {
 
         public abstract T Switch<T>(Func<Start, T> start, Func<Cursor, T> cursor);
 
+        /// <inheritdoc />
         public bool Equals(StartOrCursor other) {
             if (other == null) return false;
             return other.Switch(
@@ -38,19 +39,23 @@ namespace SolrNet {
                 this.row = row;
             }
 
+            /// <inheritdoc />
             public override T Switch<T>(Func<Start, T> start, Func<Cursor, T> cursor) {
                 return start(this);
             }
 
+            /// <inheritdoc />
             public bool Equals(Start other) {
                 if (other == null) return false;
                 return other.Row == Row;
             }
 
+            /// <inheritdoc />
             public override bool Equals(object obj) {
                 return Equals(obj as Start);
             }
 
+            /// <inheritdoc />
             public override int GetHashCode() {
                 return row.GetHashCode();
             }
@@ -87,23 +92,28 @@ namespace SolrNet {
                 this.mark = mark;
             }
 
+            /// <inheritdoc />
             public override T Switch<T>(Func<Start, T> start, Func<Cursor, T> cursor) {
                 return cursor(this);
             }
 
+            /// <inheritdoc />
             public bool Equals(Cursor other) {
                 if (other == null) return false;
                 return other.mark.Equals(mark);
             }
 
+            /// <inheritdoc />
             public override bool Equals(object obj) {
                 return Equals(obj as Cursor);
             }
 
+            /// <inheritdoc />
             public override int GetHashCode() {
                 return mark.GetHashCode();
             }
 
+            /// <inheritdoc />
             public override string ToString() {
                 return mark;
             }

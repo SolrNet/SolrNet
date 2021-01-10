@@ -30,6 +30,7 @@ namespace SolrNet.Impl {
             this.serializer = serializer;
         }
 
+        /// <inheritdoc />
         public XElement Serialize(Dictionary<string, object> doc, double? boost) {
             if (doc == null)
                 throw new ArgumentNullException("doc");

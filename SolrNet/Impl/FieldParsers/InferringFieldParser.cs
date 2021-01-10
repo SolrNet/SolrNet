@@ -30,10 +30,12 @@ namespace SolrNet.Impl.FieldParsers {
             this.parser = parser;
         }
 
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return true;
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return true;
         }
@@ -53,6 +55,7 @@ namespace SolrNet.Impl.FieldParsers {
             };
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             var type = solrTypes[field.Name.LocalName];
             return parser.Parse(field, type);

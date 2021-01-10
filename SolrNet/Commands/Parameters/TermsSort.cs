@@ -29,16 +29,19 @@ namespace SolrNet.Commands.Parameters {
             }
         }
 
+        /// <inheritdoc />
         public bool Equals(TermsSort other) {
             if (other == null)
                 return false;
             return ToString() == other.ToString();
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj) {
             return Equals(obj as TermsSort);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode() {
             return ToString().GetHashCode();
         }

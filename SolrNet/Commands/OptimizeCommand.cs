@@ -61,6 +61,9 @@ namespace SolrNet.Commands {
             return connection.Post("/update", xml);
         }
 
+        /// <summary>
+        /// Executes this command
+        /// </summary>
         public Task<string> ExecuteAsync(ISolrConnection connection)
         {
             string xml = GetOptimizeXml();

@@ -18,15 +18,26 @@ using System;
 using System.Collections.Generic;
 
 namespace SolrNet.Impl.FacetQuerySerializers {
+    /// <summary>
+    /// Serializes a single concrete facet query type.
+    /// </summary>
+    /// <typeparam name="T">Facet query type</typeparam>
     public abstract class SingleTypeFacetQuerySerializer<T> : ISolrFacetQuerySerializer {
+        /// <inheritdoc/>
         public bool CanHandleType(Type t) {
             return t == typeof (T);
         }
 
+        /// <inheritdoc/>
         public IEnumerable<KeyValuePair<string, string>> Serialize(object q) {
             return Serialize((T) q);
         }
 
+        /// <summary>
+        /// Serializes a facet query
+        /// </summary>
+        /// <param name="q">Facet query to serialize</param>
+        /// <returns>KeyValue pair representing serialized facet query</returns>
         public abstract IEnumerable<KeyValuePair<string, string>> Serialize(T q);
     }
 }

@@ -22,10 +22,12 @@ namespace SolrNet.Commands {
     /// Rollbacks all add/deletes made to the index since the last commit.
     /// </summary>
     public class RollbackCommand : ISolrCommand {
+        /// <inheritdoc />
         public string Execute(ISolrConnection connection) {
             return connection.Post("/update", "<rollback/>");
         }
 
+        /// <inheritdoc />
         public Task<string> ExecuteAsync(ISolrConnection connection)
         {
             return connection.PostAsync("/update", "<rollback/>");

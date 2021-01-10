@@ -19,14 +19,17 @@ using System.Xml.Linq;
 
 namespace SolrNet.Impl.FieldParsers {
     public class GuidFieldParser : ISolrFieldParser {
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return solrType == "str";
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return t == typeof(Guid);
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             return new Guid(field.Value);
         }

@@ -28,6 +28,11 @@ namespace SolrNet {
         /// <returns></returns>
 		string Execute(ISolrConnection connection);
 
+        /// <summary>
+        /// Executes this command
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <returns></returns>
         Task<string> ExecuteAsync(ISolrConnection connection);
     }
 }

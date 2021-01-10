@@ -25,6 +25,7 @@ namespace HttpWebAdapters {
             return Create(new Uri(url));
         }
 
+        /// <inheritdoc />
         public IHttpWebRequest Create(Uri url) {
             var req = (HttpWebRequest) WebRequest.Create(url);
             var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(username + ":" + password));

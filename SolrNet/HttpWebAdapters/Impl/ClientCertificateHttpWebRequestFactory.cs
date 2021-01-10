@@ -18,6 +18,7 @@ namespace HttpWebAdapters {
             this.certificate = certificate;
         }
 
+        /// <inheritdoc />
         public IHttpWebRequest Create(Uri url) {
             var req = (HttpWebRequest) WebRequest.Create(url);
             req.ClientCertificates.Add(certificate);

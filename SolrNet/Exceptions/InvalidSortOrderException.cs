@@ -23,10 +23,29 @@ namespace SolrNet.Exceptions {
     /// </summary>
     [Serializable]
     public class InvalidSortOrderException : SolrNetException {
+        /// <summary>
+        /// Error parsing <see cref="SortOrder"/> 
+        /// </summary>
         public InvalidSortOrderException() {}
+
+        /// <summary>
+        /// Error parsing <see cref="SortOrder"/> 
+        /// </summary>
         public InvalidSortOrderException(string message) : base(message) {}
+
+        /// <summary>
+        /// Error parsing <see cref="SortOrder"/> 
+        /// </summary>
         public InvalidSortOrderException(string message, Exception innerException) : base(message, innerException) {}
+
+        /// <summary>
+        /// Error parsing <see cref="SortOrder"/> 
+        /// </summary>
         public InvalidSortOrderException(Exception innerException) : base(innerException) {}
+        
+        /// <summary>
+        /// Error parsing <see cref="SortOrder"/> 
+        /// </summary>
         protected InvalidSortOrderException(SerializationInfo info, StreamingContext context) : base(info, context) {}
     }
 }

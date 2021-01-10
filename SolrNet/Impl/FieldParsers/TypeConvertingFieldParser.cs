@@ -24,10 +24,12 @@ namespace SolrNet.Impl.FieldParsers {
     /// Parses using <see cref="TypeConverter"/>
     /// </summary>
     public class TypeConvertingFieldParser: ISolrFieldParser {
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return solrTypes.ContainsKey(solrType);
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return solrTypes.Values.Contains(t);
         }
@@ -57,6 +59,7 @@ namespace SolrNet.Impl.FieldParsers {
             return solrTypes[field.Name.LocalName];
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             var converter = TypeDescriptor.GetConverter(GetUnderlyingType(field, t));
             if (converter != null && converter.CanConvertFrom(typeof(string)))

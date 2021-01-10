@@ -46,6 +46,12 @@ namespace SolrNet.Exceptions {
         /// <param name="message"></param>
         /// <param name="innerException"></param>
 		public SolrNetException(string message, Exception innerException) : base(message, innerException) {}
+        
+        /// <summary>
+        /// Base exception for all exceptions thrown by SolrNet
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected SolrNetException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

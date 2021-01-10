@@ -25,6 +25,9 @@ namespace SolrNet.Exceptions {
 	public class SolrConnectionException : SolrNetException {
         private readonly string url;
 
+        /// <summary>
+        /// Solr URL
+        /// </summary>
         public string Url {
             get { return url; }
         }
@@ -71,6 +74,10 @@ namespace SolrNet.Exceptions {
         /// Error connecting to Solr.
         /// </summary>
 		public SolrConnectionException() {}
+
+        /// <summary>
+        /// Error connecting to Solr.
+        /// </summary>
         protected SolrConnectionException(SerializationInfo info, StreamingContext context) : base(info, context) {}
 	}
 }

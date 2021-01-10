@@ -28,14 +28,19 @@ namespace SolrNet.Impl.FieldParsers {
     public class CollectionFieldParser : ISolrFieldParser {
         private readonly ISolrFieldParser valueParser;
 
+        /// <summary>
+        /// Parses 1-dimensional fields
+        /// </summary>
         public CollectionFieldParser(ISolrFieldParser valueParser) {
             this.valueParser = valueParser;
         }
 
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return solrType == "arr";
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return t != typeof (string) &&
                    typeof (IEnumerable).IsAssignableFrom(t) &&
@@ -43,6 +48,7 @@ namespace SolrNet.Impl.FieldParsers {
                    !TypeHelper.IsGenericAssignableFrom(typeof (IDictionary<,>), t);
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             var genericTypes = t.GetGenericArguments();
             if (genericTypes.Length == 1) {

@@ -43,6 +43,7 @@ namespace SolrNet.Impl {
             return ControlCharacters.Replace(xml, "");
         }
 
+        /// <inheritdoc />
         public XElement Serialize(T doc, double? boost) {
             var docNode = new XElement("doc");
             if (boost.HasValue) {

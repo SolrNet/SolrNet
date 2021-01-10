@@ -18,13 +18,20 @@ using System;
 using System.Collections.Generic;
 
 namespace SolrNet.Impl.FacetQuerySerializers {
+    /// <summary>
+    /// Serializes <see cref="SolrFacetQuery"/>
+    /// </summary>
     public class SolrFacetQuerySerializer : SingleTypeFacetQuerySerializer<SolrFacetQuery> {
         private readonly ISolrQuerySerializer serializer;
 
+        /// <summary>
+        /// Serializes <see cref="SolrFacetQuery"/>
+        /// </summary>
         public SolrFacetQuerySerializer(ISolrQuerySerializer serializer) {
             this.serializer = serializer;
         }
 
+        /// <inheritdoc />
         public override IEnumerable<KeyValuePair<string, string>> Serialize(SolrFacetQuery q) {
             yield return new KeyValuePair<string, string>("facet.query", serializer.Serialize(q.Query));
         }

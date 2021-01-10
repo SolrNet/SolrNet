@@ -18,8 +18,22 @@ using System;
 using System.Collections.Generic;
 
 namespace SolrNet.Impl {
+    /// <summary>
+    /// Serializes a facet query
+    /// </summary>
     public interface ISolrFacetQuerySerializer {
+        /// <summary>
+        /// Determines if this serializer can handle a facet query type.
+        /// </summary>
+        /// <param name="t">Type of the facet query to test</param>
+        /// <returns>True if this serializer can handle this facet query, otherwise false.</returns>
         bool CanHandleType(Type t);
+        
+        /// <summary>
+        /// Serializes a facet query
+        /// </summary>
+        /// <param name="q">Facet query to serialize</param>
+        /// <returns>KeyValue pair representing serialized facet query</returns>
         IEnumerable<KeyValuePair<string, string>> Serialize(object q);
     }
 }

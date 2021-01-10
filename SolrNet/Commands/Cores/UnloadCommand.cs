@@ -39,6 +39,7 @@ namespace SolrNet.Commands.Cores {
                 this.tag = tag;
             }
 
+            /// <inheritdoc />
             public bool Equals(Delete other) {
                 if (ReferenceEquals(null, other))
                     return false;
@@ -47,6 +48,7 @@ namespace SolrNet.Commands.Cores {
                 return tag == other.tag;
             }
 
+            /// <inheritdoc />
             public override bool Equals(object obj) {
                 if (ReferenceEquals(null, obj))
                     return false;
@@ -55,6 +57,7 @@ namespace SolrNet.Commands.Cores {
                 return obj is Delete && Equals((Delete) obj);
             }
 
+            /// <inheritdoc />
             public override int GetHashCode() {
                 return tag;
             }

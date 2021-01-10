@@ -28,11 +28,13 @@ namespace SolrNet.Impl.ResponseParsers {
 	/// </summary>
 	/// <typeparam name="T">Document type</typeparam>
 	public class TermVectorResultsParser<T> : ISolrResponseParser<T> {
+        /// <inheritdoc />
 		public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
 			results.Switch(query: r => Parse(xml, r),
 						   moreLikeThis: F.DoNothing);
 		}
 
+        /// <inheritdoc />
 		public void Parse(XDocument xml, SolrQueryResults<T> results) {
 			var rootNode = xml.XPathSelectElement("response/lst[@name='termVectors']");
 			if (rootNode != null)

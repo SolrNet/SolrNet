@@ -106,6 +106,7 @@ namespace SolrNet.Commands.Parameters
                 get { return policy; }
             }
 
+            /// <inheritdoc />
             public override string ToString() {
                 return policy;
             }
@@ -125,6 +126,7 @@ namespace SolrNet.Commands.Parameters
             /// </summary>
             public static readonly NullPolicyType Collapse = new NullPolicyType("collapse");
 
+            /// <inheritdoc />
             public bool Equals(NullPolicyType other) {
                 if (ReferenceEquals(null, other))
                     return false;
@@ -133,6 +135,7 @@ namespace SolrNet.Commands.Parameters
                 return string.Equals(policy, other.policy);
             }
 
+            /// <inheritdoc />
             public override bool Equals(object obj) {
                 if (ReferenceEquals(null, obj))
                     return false;
@@ -143,6 +146,7 @@ namespace SolrNet.Commands.Parameters
                 return Equals((NullPolicyType) obj);
             }
 
+            /// <inheritdoc />
             public override int GetHashCode() {
                 return (policy != null ? policy.GetHashCode() : 0);
             }

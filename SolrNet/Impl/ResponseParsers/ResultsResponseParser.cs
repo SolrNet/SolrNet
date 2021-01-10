@@ -60,6 +60,7 @@ namespace SolrNet.Impl.ResponseParsers {
             return new StartOrCursor.Cursor(nextCursorMarkElement.Value);
         }
 
+        /// <inheritdoc/>
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             var resultNode = GetMainResultNode(xml) ?? GetGroupResultNode(xml);
             if (resultNode == null)

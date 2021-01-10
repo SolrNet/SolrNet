@@ -62,10 +62,12 @@ namespace SolrNet {
             return null;
         }
 
+        /// <inheritdoc />
         public override string ToString() {
             return string.Format(CultureInfo.InvariantCulture, "{0},{1}", Latitude, Longitude);
         }
 
+        /// <inheritdoc />
         public bool Equals(Location other) {
             if (ReferenceEquals(null, other))
                 return false;
@@ -74,6 +76,7 @@ namespace SolrNet {
             return Latitude.Equals(other.Latitude) && Longitude.Equals(other.Longitude);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj) {
             if (ReferenceEquals(null, obj))
                 return false;
@@ -84,12 +87,14 @@ namespace SolrNet {
             return Equals((Location) obj);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode() {
             unchecked {
                 return (Latitude.GetHashCode()*397) ^ Longitude.GetHashCode();
             }
         }
 
+        /// <inheritdoc />
         public string ToString(string format, IFormatProvider formatProvider) {
             return ToString();
         }

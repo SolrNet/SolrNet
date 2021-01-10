@@ -37,11 +37,13 @@ namespace SolrNet.Impl.ResponseParsers {
             public string StdDev { get; set; }
         }
         
+        /// <inheritdoc />
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             results.Switch(query: r => Parse(xml, r),
                 moreLikeThis: F.DoNothing);
         }
 
+        /// <inheritdoc />
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
             var statsNode = xml.XPathSelectElement("response/lst[@name='stats']");
             if (statsNode != null)

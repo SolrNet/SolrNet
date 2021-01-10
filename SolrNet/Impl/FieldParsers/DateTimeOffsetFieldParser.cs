@@ -22,14 +22,17 @@ namespace SolrNet.Impl.FieldParsers {
     /// Parses <see cref="DateTimeOffset"/> fields
     /// </summary>
     public class DateTimeOffsetFieldParser : ISolrFieldParser {
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return solrType == "date";
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return t == typeof (DateTimeOffset);
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             return Parse(field.Value);
         }

@@ -26,14 +26,19 @@ namespace SolrNet.Impl.FieldSerializers {
     public class AggregateFieldSerializer : ISolrFieldSerializer {
         private readonly IEnumerable<ISolrFieldSerializer> serializers;
 
+        /// <summary>
+        /// Aggregates <see cref="ISolrFieldSerializer"/>s
+        /// </summary>
         public AggregateFieldSerializer(IEnumerable<ISolrFieldSerializer> serializers) {
             this.serializers = serializers;
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return serializers.Any(s => s.CanHandleType(t));
         }
 
+        /// <inheritdoc />
         public IEnumerable<PropertyNode> Serialize(object obj) {
             if (obj == null)
                 return null;

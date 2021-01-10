@@ -23,14 +23,17 @@ namespace SolrNet.Impl.FieldParsers {
     /// Parses <see cref="decimal"/> fields
     /// </summary>
     public class DecimalFieldParser : ISolrFieldParser {
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return true;
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return t == typeof (decimal);
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             return decimal.Parse(field.Value, NumberStyles.Any, CultureInfo.InvariantCulture.NumberFormat);
         }

@@ -71,11 +71,13 @@ namespace SolrNet.Commands {
             return addElement.ToString(SaveOptions.DisableFormatting);
         }
 
+        /// <inheritdoc />
 	    public string Execute(ISolrConnection connection) {
 	        var xml = ConvertToXml();
 			return connection.Post("/update", xml);
 		}
 
+        /// <inheritdoc />
         public Task<string> ExecuteAsync(ISolrConnection connection)
         {
             var xml = ConvertToXml();

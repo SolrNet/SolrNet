@@ -28,11 +28,13 @@ namespace SolrNet.Impl.ResponseParsers {
     /// </summary>
     /// <typeparam name="T">Document type</typeparam>
     public class CollapseResponseParser<T> : ISolrResponseParser<T> {
+        /// <inheritdoc />
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             if (results is SolrQueryResults<T>)
                 Parse(xml, (SolrQueryResults<T>) results);
         }
 
+        /// <inheritdoc />
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
             var mainCollapseNode = xml.Element("response")
                 .Elements("lst")

@@ -25,10 +25,14 @@ namespace SolrNet.Impl {
     public class SolrDictionaryDocumentResponseParser: ISolrDocumentResponseParser<Dictionary<string, object>> {
         private readonly ISolrFieldParser fieldParser;
 
+        /// <summary>
+        /// Parses a solr result into a dictionary of (string, object)
+        /// </summary>
         public SolrDictionaryDocumentResponseParser(ISolrFieldParser fieldParser) {
             this.fieldParser = fieldParser;
         }
 
+        /// <inheritdoc />
         public IList<Dictionary<string, object>> ParseResults(XElement parentNode) {
             var results = new List<Dictionary<string, object>>();
             if (parentNode == null)

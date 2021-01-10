@@ -27,6 +27,7 @@ namespace SolrNet.Mapping {
     public class AllPropertiesMappingManager : IReadOnlyMappingManager {
         private readonly IDictionary<Type, PropertyInfo> uniqueKeys = new Dictionary<Type, PropertyInfo>();
 
+        /// <inheritdoc />
         public IDictionary<string,SolrFieldModel> GetFields(Type type) {
             var props = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
             var fldProps = props
@@ -36,6 +37,7 @@ namespace SolrNet.Mapping {
             return fldProps;
         }
 
+        /// <inheritdoc />
         public SolrFieldModel GetUniqueKey(Type type) {
             try {
                 var propertyInfo = uniqueKeys[type];
@@ -45,6 +47,7 @@ namespace SolrNet.Mapping {
             }
         }
 
+        /// <inheritdoc />
         public ICollection<Type> GetRegisteredTypes() {
             return new List<Type>();
         }

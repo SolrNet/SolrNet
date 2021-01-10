@@ -24,6 +24,7 @@ namespace SolrNet.Impl.QuerySerializers {
             this.serializer = serializer;
         }
 
+        /// <inheritdoc />
         public override string Serialize(LocalParams.LocalParamsQuery q) {
             return q.Local + serializer.Serialize(q.Query);
         }

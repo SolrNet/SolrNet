@@ -46,6 +46,7 @@ namespace SolrNet.Commands {
         /// </summary>
 		public bool? FromCommitted { get; set; }
 
+        /// <inheritdoc />
 		public string Execute(ISolrConnection connection)
         {
             string xml = GetDeleteXml();
@@ -53,6 +54,7 @@ namespace SolrNet.Commands {
             return connection.Post("/update", xml);
         }
 
+        /// <inheritdoc />
         public Task<string> ExecuteAsync(ISolrConnection connection)
         {
             string xml = GetDeleteXml();

@@ -33,6 +33,7 @@ namespace SolrNet.Mapping.Validation.Rules {
             this.warningTypes = warningTypes;
         }
 
+        /// <inheritdoc/>
         public virtual ValidationResult Validate(SolrFieldType solrFieldType, string propertyName, Type propertyType) {
             // Check if the type is in the safe or warning types and otherwise return a error
             if (safeTypes != null && safeTypes.Contains(solrFieldType.Type))

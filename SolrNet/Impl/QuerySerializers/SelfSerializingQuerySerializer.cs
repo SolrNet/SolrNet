@@ -18,10 +18,12 @@ using System;
 
 namespace SolrNet.Impl.QuerySerializers {
     public class SelfSerializingQuerySerializer : ISolrQuerySerializer {
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return typeof (ISelfSerializingQuery).IsAssignableFrom(t);
         }
 
+        /// <inheritdoc />
         public string Serialize(object q) {
             var sq = (ISelfSerializingQuery)q;
             return sq.Query;

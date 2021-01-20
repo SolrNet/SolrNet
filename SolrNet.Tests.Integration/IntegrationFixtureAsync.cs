@@ -37,25 +37,11 @@ namespace SolrNet.Tests.Integration
     public class IntegrationFixtureAsync
     {
         private readonly ITestOutputHelper testOutputHelper;
-
-        private static readonly Lazy<Configuration> config = new(() => ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
-        private static readonly Lazy<string> serverURL = new (() => config.Value.AppSettings.Settings["solr"].Value);
         
-        private static readonly System.Lazy<object> init = new System.Lazy<object>(() =>
-        {
-            Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL.Value)));
-            return null;
-        });
-        private static readonly System.Lazy<object> initDict = new System.Lazy<object>(() =>
-        {
-            Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL.Value)));
-            return null;
-        });
-
         public IntegrationFixtureAsync(ITestOutputHelper testOutputHelper)
         {
             this.testOutputHelper = testOutputHelper;
-            var x = init.Value;
+            var x = IntegrationFixture.init.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             solr.Delete(SolrQuery.All);
             solr.Commit();
@@ -462,7 +448,7 @@ namespace SolrNet.Tests.Integration
         public async Task LooseMappingAsync()
         {
             await Add_then_queryAsync();
-            var _ = initDict.Value;
+            var _ = IntegrationFixture.initDict.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
             var results = await solr.QueryAsync(SolrQuery.All);
             Assert.IsType<ArrayList>(results[0]["cat"]);
@@ -487,7 +473,7 @@ namespace SolrNet.Tests.Integration
         [Fact(Skip = "Registering the connection in the container causes a side effect.")]
         public async Task LooseMappingAddAsync()
         {
-            var _ = initDict.Value;
+            var _ = IntegrationFixture.initDict.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
             await solr.AddAsync(new Dictionary<string, object> {
                 {"id", "id1234"},
@@ -565,18 +551,11 @@ namespace SolrNet.Tests.Integration
             Assert.True(results.Grouping["name"].Groups.Count >= 1);
         }
 
-        private static readonly Lazy<object> initLoose = new Lazy<object>(() =>
-        {
-            Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL.Value)));
-            return null;
-        });
-
-
         [Fact]
         public async Task SemiLooseMappingAsync()
         {
             await Add_then_queryAsync();
-            var _ = initLoose.Value;
+            var _ = IntegrationFixture.initLoose.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<ProductLoose>>();
             var products = await solr.QueryAsync(SolrQuery.All, new QueryOptions { Fields = new[] { "*", "score" } });
             Assert.Single(products);

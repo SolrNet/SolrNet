@@ -38,14 +38,21 @@ namespace SolrNet.Tests.Integration {
         private readonly ITestOutputHelper testOutputHelper;
         private static readonly Lazy<Configuration> config = new(() => ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
         private static readonly Lazy<string> serverURL = new (() => config.Value.AppSettings.Settings["solr"].Value);
-        private static readonly System.Lazy<object> init = new System.Lazy<object>(() => {
+        public static readonly System.Lazy<object> init = new System.Lazy<object>(() => {
             Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL.Value)));
             return null;
         });
-        private static readonly System.Lazy<object> initDict = new System.Lazy<object>(() => {
+        public static readonly System.Lazy<object> initDict = new System.Lazy<object>(() => {
             Startup.Init<Dictionary<string, object>>(new LoggingConnection(new SolrConnection(serverURL.Value)));
             return null;
         });
+        
+        public static readonly Lazy<object> initLoose = new Lazy<object>(() => {
+            Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL.Value)));
+            return null;
+        });
+
+
             
         public  IntegrationFixture(ITestOutputHelper testOutputHelper) {
             this.testOutputHelper = testOutputHelper;
@@ -509,12 +516,6 @@ namespace SolrNet.Tests.Integration {
             Assert.True (results.Grouping["manu_exact"].Groups.Count >= 1);
             Assert.True(results.Grouping["name"].Groups.Count >= 1);
         }
-
-        private static readonly Lazy<object> initLoose = new Lazy<object>(() => {
-            Startup.Init<ProductLoose>(new LoggingConnection(new SolrConnection(serverURL.Value)));
-            return null;
-        });
-            
             
         [Fact]
         public void SemiLooseMapping() {

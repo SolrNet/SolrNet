@@ -197,7 +197,7 @@
          More details on the nuances of each LockFactory...
          http://wiki.apache.org/lucene-java/AvailableLockFactories
     -->
-    <!-- <lockType>native</lockType> -->
+    <lockType>simple</lockType>
 
     <!-- Unlock On Startup
 
@@ -208,9 +208,7 @@
 
          This is not needed if lock type is 'none' or 'single'
      -->
-    <!--
-    <unlockOnStartup>false</unlockOnStartup>
-      -->
+    <unlockOnStartup>true</unlockOnStartup>
     
     <!-- Expert: Controls how often Lucene loads terms into memory
          Default is 128 and is likely good for most everyone.

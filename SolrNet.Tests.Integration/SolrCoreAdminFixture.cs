@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Configuration;
-using Xunit;
 using SolrNet.Commands.Cores;
 using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
+using Xunit;
 
-namespace SolrNet.Tests {
+namespace SolrNet.Tests.Integration {
     [Trait("Category", "Integration")]
     public class SolrCoreAdminFixture {
         /*

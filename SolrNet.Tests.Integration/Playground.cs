@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
-using SolrNet.Attributes;
-using SolrNet.Cloud.ZooKeeperClient;
-using CloudStartup = SolrNet.Cloud.Startup;
-using Xunit;
 using System.Threading.Tasks;
 using CommonServiceLocator;
+using SolrNet.Attributes;
+using SolrNet.Cloud.ZooKeeperClient;
+using Xunit;
+using CloudStartup = SolrNet.Cloud.Startup;
 
-namespace SolrNet.Unity.Tests
+namespace SolrNet.Tests.Integration
 {
     [Trait("Category", "Integration")]
     public class Test

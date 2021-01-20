@@ -11,7 +11,7 @@ namespace SolrNet.Tests.Integration
     [Trait("Category", "Integration")]
     public class Test
     {
-        [Fact]
+        [Fact(Skip = "TODO move to SolrNet.Cloud.Tests?")]
         public async Task TestSolrCloud()
         {
             using (var provider = new SolrCloudStateProvider("10.26.11.30:9983"))
@@ -55,7 +55,7 @@ namespace SolrNet.Tests.Integration
 
 
 
-        [Fact]
+        [Fact(Skip = "TODO move to SolrNet.Cloud.Tests?")]
         public async Task AddRemoveTest()
         {
             const int DocumentCount = 1000;

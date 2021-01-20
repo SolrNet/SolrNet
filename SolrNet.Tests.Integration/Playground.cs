@@ -12,7 +12,7 @@ namespace SolrNet.Tests.Integration
     public class Test
     {
         [Fact]
-        public async Task TestSorlCloud()
+        public async Task TestSolrCloud()
         {
             using (var provider = new SolrCloudStateProvider("10.26.11.30:9983"))
             {

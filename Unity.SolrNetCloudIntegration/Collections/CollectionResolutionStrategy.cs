@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Unity.Builder;
 using Unity.Builder.Strategy;
-using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
 
 namespace Unity.SolrNetCloudIntegration.Collections
@@ -18,7 +17,8 @@ namespace Unity.SolrNetCloudIntegration.Collections
 
         public override void PreBuildUp(IBuilderContext context)
         {
-            Guard.ArgumentNotNull(context, "context");
+            if (context is null)
+                throw new ArgumentNullException(nameof(context));
 
             Type typeToBuild = context.BuildKey.Type;
 

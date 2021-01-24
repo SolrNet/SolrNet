@@ -230,7 +230,7 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task HighlightingWrappedWithClassAsync()
         {
-            Add_then_queryAsync();
+            await Add_then_queryAsync();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = await solr.QueryAsync(new SolrQueryByField("features", "fluid"), new QueryOptions
             {

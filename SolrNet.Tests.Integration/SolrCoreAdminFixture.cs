@@ -105,10 +105,17 @@ namespace SolrNet.Tests.Integration {
         [Fact]
         public void CreateSwapCore() {
             var coreName = "core-swap";
+            
             var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
-            var createResponseHeader = solrCoreAdmin.Create(coreName, instanceDir);
-            Assert.Equal(0, createResponseHeader.Status);
+            try {
+                var createResponseHeader = solrCoreAdmin.Create(coreName, ".", null, null, null);
+            } catch (ArgumentException) {
+                // Should get an Exception here because instance directory was not specified.
+                var createResponseHeader = solrCoreAdmin.Create(coreName, instanceDir);
+                Assert.Equal(0, createResponseHeader.Status);
+            }
+
             var result = solrCoreAdmin.Status(coreName);
             Assert.NotNull(result);
             Assert.NotEmpty(result.Name);

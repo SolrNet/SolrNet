@@ -33,4 +33,5 @@ packages/*
 **/.vs/*
 **/packages
 .idea
+*.swp
 

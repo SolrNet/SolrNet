@@ -33,6 +33,7 @@ using Xunit.Abstractions;
 
 namespace SolrNet.Tests.Integration {
     [Trait("Category","Integration")]
+    [TestCaseOrderer(MethodDefTestCaseOrderer.Type, MethodDefTestCaseOrderer.Assembly)]
     public class IntegrationFixture
     {
         private readonly ITestOutputHelper testOutputHelper;

@@ -7,6 +7,7 @@ using Xunit;
 
 namespace SolrNet.Tests.Integration {
     [Trait("Category", "Integration")]
+    [TestCaseOrderer(MethodDefTestCaseOrderer.Type, MethodDefTestCaseOrderer.Assembly)]
     public class SolrCoreAdminFixture {
         /*
         CREATE

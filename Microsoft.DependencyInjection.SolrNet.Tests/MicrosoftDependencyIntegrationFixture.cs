@@ -20,7 +20,7 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             this.testOutputHelper = testOutputHelper;
             var sc = new ServiceCollection();
             
-            sc.AddSolrNet("http://localhost:8983/solr");
+            sc.AddSolrNet("http://solr:8983/solr");
 
             DefaultServiceProvider = sc.BuildServiceProvider();
         }

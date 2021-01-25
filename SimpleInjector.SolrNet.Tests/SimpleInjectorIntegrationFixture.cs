@@ -18,7 +18,7 @@ namespace SimpleInjector.SolrNet.Tests
             Container = new Container();
 
             // collection needs to exist
-            Container.AddSolrNet("http://localhost:8983/solr/FilesCollection");
+            Container.AddSolrNet("http://solr:8983/solr/FilesCollection");
         }
         
         [Fact]

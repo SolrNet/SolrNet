@@ -23,7 +23,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             var configStore = new DefaultConfigurationStore();
             var configuration = new MutableConfiguration("facility");
             configuration.Attribute("type", typeof(SolrNetFacility).AssemblyQualifiedName);
-            configuration.CreateChild("solrURL", "http://localhost:8983/solr");
+            configuration.CreateChild("solrURL", "http://solr:8983/solr");
             configStore.AddFacilityConfiguration(typeof(SolrNetFacility).FullName, configuration);
             var container = new WindsorContainer(configStore);
 
@@ -35,7 +35,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         [Fact]
         public void DictionaryDocument()
         {
-            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var solrFacility = new SolrNetFacility("http://solr:8983/solr");
             var container = new WindsorContainer();
             container.AddFacility(solrFacility);
             var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
@@ -52,7 +52,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
         [Fact]
         public void DictionaryDocument_add()
         {
-            var solrFacility = new SolrNetFacility("http://localhost:8983/solr");
+            var solrFacility = new SolrNetFacility("http://solr:8983/solr");
             var container = new WindsorContainer();
             container.AddFacility(solrFacility);
             var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();

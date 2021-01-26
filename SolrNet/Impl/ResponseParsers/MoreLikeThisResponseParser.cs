@@ -27,6 +27,7 @@ namespace SolrNet.Impl.ResponseParsers {
     public class MoreLikeThisResponseParser<T> : ISolrResponseParser<T> {
         private readonly ISolrDocumentResponseParser<T> docParser;
 
+        /// <inheritdoc />
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             results.Switch(query: r => Parse(xml, r), 
                            moreLikeThis: F.DoNothing);
@@ -36,6 +37,7 @@ namespace SolrNet.Impl.ResponseParsers {
             this.docParser = docParser;
         }
 
+        /// <inheritdoc />
         public void Parse(XDocument xml, SolrQueryResults<T> results) {
             var moreLikeThis = xml.XPathSelectElement("response/lst[@name='moreLikeThis']");
             if (moreLikeThis != null)

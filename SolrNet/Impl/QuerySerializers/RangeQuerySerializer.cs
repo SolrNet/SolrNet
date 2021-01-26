@@ -26,6 +26,7 @@ namespace SolrNet.Impl.QuerySerializers {
             this.fieldSerializer = fieldSerializer;
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return typeof (ISolrQueryByRange).IsAssignableFrom(t);
         }
@@ -49,6 +50,7 @@ namespace SolrNet.Impl.QuerySerializers {
             return fieldSerializer.Serialize(o).First().FieldValue;
         }
 
+        /// <inheritdoc />
         public string Serialize(object q) {
             var query = (ISolrQueryByRange) q;
             return BuildRange(query.FieldName, 

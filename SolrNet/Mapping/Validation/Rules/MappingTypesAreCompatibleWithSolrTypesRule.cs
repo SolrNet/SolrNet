@@ -28,6 +28,7 @@ namespace SolrNet.Mapping.Validation.Rules {
             this.fieldTypeCheckers = fieldTypeCheckers;
         }
 
+        /// <inheritdoc />
         public IEnumerable<ValidationResult> Validate(Type documentType, SolrSchema solrSchema, IReadOnlyMappingManager mappingManager) {
             foreach (var x in mappingManager.GetFields(documentType)) {
                 var solrField = solrSchema.FindSolrFieldByName(x.Key);

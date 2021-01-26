@@ -50,6 +50,7 @@ namespace SolrNet.Impl {
             this.dihStatusParser = dihStatusParser;
         }
 
+        /// <inheritdoc />
         public ResponseHeader Commit(CommitOptions options)
         {
             CommitCommand cmd = GetCommitCommand(options);
@@ -69,6 +70,7 @@ namespace SolrNet.Impl {
             return cmd;
         }
 
+        /// <inheritdoc />
         public ResponseHeader Optimize(CommitOptions options)
         {
             OptimizeCommand cmd = GetOptimizeCommand( options);
@@ -88,20 +90,24 @@ namespace SolrNet.Impl {
             return cmd;
         }
 
+        /// <inheritdoc />
         public ResponseHeader Rollback() {
             return SendAndParseHeader(new RollbackCommand());
         }
 
+        /// <inheritdoc />
         public ResponseHeader AddWithBoost(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters) {
             var cmd = new AddCommand<T>(docs, documentSerializer, parameters);
             return SendAndParseHeader(cmd);
         }
 
+        /// <inheritdoc />
         public ExtractResponse Extract(ExtractParameters parameters) {
             var cmd = new ExtractCommand(parameters);
             return SendAndParseExtract(cmd);
         }
 
+        /// <inheritdoc />
         public ResponseHeader Delete(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
         {
             var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), parameters);
@@ -113,10 +119,12 @@ namespace SolrNet.Impl {
             return SendAndParseHeader(delete);
         }
 
+        /// <inheritdoc />
         public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
             return queryExecuter.Execute(query, options);
         }
 
+        /// <inheritdoc />
         public ExtractResponse SendAndParseExtract(ISolrCommand cmd)
         {
             var r = Send(cmd);
@@ -125,6 +133,7 @@ namespace SolrNet.Impl {
 
         }
 
+        /// <inheritdoc />
         public async Task<ExtractResponse> SendAndParseExtractAsync(ISolrCommand cmd)
         {
             var r = await SendAsync(cmd);
@@ -132,53 +141,63 @@ namespace SolrNet.Impl {
             return extractResponseParser.Parse(xml);
         }
 
+        /// <inheritdoc />
         public ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters){
             var atomicUpdate = new AtomicUpdateCommand(uniqueKey, id, updateSpecs, parameters);
             return SendAndParseHeader(atomicUpdate);
         }
 
+        /// <inheritdoc />
         public Task<ResponseHeader> AtomicUpdateAsync(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
             var atomicUpdate = new AtomicUpdateCommand(uniqueKey, id, updateSpecs, parameters);
             return SendAndParseHeaderAsync(atomicUpdate);
         }
 
+        /// <inheritdoc />
         public ResponseHeader Ping() {
             return SendAndParseHeader(new PingCommand());
         }
 
+        /// <inheritdoc />
         public SolrSchema GetSchema(string schemaFileName) {
             string schemaXml = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
             var schema = XDocument.Parse(schemaXml);
             return schemaParser.Parse(schema);
         }
 
+        /// <inheritdoc />
         public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options) {
             var response = connection.Get("/dataimport", null);
             var dihstatus = XDocument.Parse(response);
             return dihStatusParser.Parse(dihstatus);
         }
 
+        /// <inheritdoc />
         public SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
         {
             return this.queryExecuter.Execute(query, options);
         }
 
+        /// <inheritdoc />
         public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             return this.queryExecuter.ExecuteAsync(query, options, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             return this.queryExecuter.ExecuteAsync(query, options, cancellationToken);
         }
 
+        /// <inheritdoc />
         public Task<ResponseHeader> PingAsync()
         {
             return SendAndParseHeaderAsync(new PingCommand());
         }
 
+        /// <inheritdoc />
         public async Task<SolrSchema> GetSchemaAsync(string schemaFileName)
         {
             string schemaXml = await connection.GetAsync("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
@@ -186,6 +205,7 @@ namespace SolrNet.Impl {
             return schemaParser.Parse(schema);
         }
 
+        /// <inheritdoc />
         public async Task<SolrDIHStatus> GetDIHStatusAsync(KeyValuePair<string, string> options)
         {
             var response = await connection.GetAsync("/dataimport", null);
@@ -193,35 +213,41 @@ namespace SolrNet.Impl {
             return dihStatusParser.Parse(dihstatus);
         }
 
+        /// <inheritdoc />
         public Task<ResponseHeader> CommitAsync(CommitOptions options)
         {
             var cmd = GetCommitCommand(options);
             return SendAndParseHeaderAsync(cmd);
         }
 
+        /// <inheritdoc />
         public Task<ResponseHeader> OptimizeAsync(CommitOptions options)
         {
             var cmd = GetOptimizeCommand(options);
             return SendAndParseHeaderAsync(cmd);
         }
 
+        /// <inheritdoc />
         public Task<ResponseHeader> RollbackAsync()
         {
             return SendAndParseHeaderAsync(new RollbackCommand());
         }
 
+        /// <inheritdoc />
         public Task<ResponseHeader> AddWithBoostAsync(IEnumerable<KeyValuePair<T, double?>> docs, AddParameters parameters)
         {
             var cmd = new AddCommand<T>(docs, documentSerializer, parameters);
             return SendAndParseHeaderAsync(cmd);
         }
 
+        /// <inheritdoc />
         public Task<ExtractResponse> ExtractAsync(ExtractParameters parameters)
         {
             var cmd = new ExtractCommand(parameters);
             return SendAndParseExtractAsync(cmd);
         }
 
+        /// <inheritdoc />
         public Task<ResponseHeader> DeleteAsync(IEnumerable<string> ids, ISolrQuery q, DeleteParameters parameters)
         {
             var delete = new DeleteCommand(new DeleteByIdAndOrQueryParam(ids, q, querySerializer), parameters);
@@ -239,7 +265,7 @@ namespace SolrNet.Impl {
             this.headerParser = parser ?? new ResponseParsers.HeaderResponseParser();
             this.connection = connection;
         }
-
+        
         public XDocument Send(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
         {
             var r = SendRaw(handler, solrParams);

@@ -28,6 +28,7 @@ namespace SolrNet.Impl.ResponseParsers
     /// <typeparam name="T">Document type</typeparam>
     public class HeaderResponseParser<T> : HeaderResponseParser, ISolrAbstractResponseParser<T>
     {
+        /// <inheritdoc />
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results)
         {
             var header = Parse(xml);
@@ -64,6 +65,7 @@ namespace SolrNet.Impl.ResponseParsers
             return r;
         }
 
+        /// <inheritdoc />
         public ResponseHeader Parse(XDocument response)
         {
             var responseHeaderNode = response.XPathSelectElement("response/lst[@name='responseHeader']");

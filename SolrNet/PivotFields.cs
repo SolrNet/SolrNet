@@ -14,6 +14,7 @@ namespace SolrNet {
             Rest = rest;
         }
 
+        /// <inheritdoc/>
         public IEnumerator<string> GetEnumerator() {
             yield return First;
             yield return Second;

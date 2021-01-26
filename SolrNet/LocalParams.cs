@@ -38,6 +38,7 @@ namespace SolrNet {
         /// <param name="dictionary"></param>
         public LocalParams(IDictionary<string, string> dictionary) : base(dictionary) {}
 
+        /// <inheritdoc />
         public override string ToString() {
             if (Count == 0)
                 return string.Empty;

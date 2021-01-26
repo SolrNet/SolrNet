@@ -22,6 +22,10 @@ namespace SolrNet {
     public class FacetDateOther {
         protected readonly string value;
 
+        /// <summary>
+        /// Indicates that in addition to the counts for each date range constraint between facet.date.start and facet.date.end, 
+        /// counts should also be computed for other
+        /// </summary>
         protected FacetDateOther(string value) {
             this.value = value;
         }
@@ -61,6 +65,7 @@ namespace SolrNet {
             get { return new FacetDateOther("all"); }
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj) {
             var o = obj as FacetDateOther;
             if (o == null)
@@ -68,10 +73,12 @@ namespace SolrNet {
             return o.value == value;
         }
 
+        /// <inheritdoc />
         public override int GetHashCode() {
             return value.GetHashCode();
         }
 
+        /// <inheritdoc />
         public override string ToString() {
             return value;
         }

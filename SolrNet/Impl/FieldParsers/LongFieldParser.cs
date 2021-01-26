@@ -23,14 +23,17 @@ namespace SolrNet.Impl.FieldParsers {
     /// Parses <see cref="long"/> fields
     /// </summary>
     public class LongFieldParser : ISolrFieldParser {
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return solrType == "long";
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return t == typeof (long);
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             return long.Parse(field.Value, CultureInfo.InvariantCulture.NumberFormat);
         }

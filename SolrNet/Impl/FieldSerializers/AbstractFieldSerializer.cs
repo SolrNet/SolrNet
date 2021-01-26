@@ -25,10 +25,12 @@ namespace SolrNet.Impl.FieldSerializers {
     public abstract class AbstractFieldSerializer<T> : ISolrFieldSerializer {
         public abstract IEnumerable<PropertyNode> Parse(T obj);
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return t == typeof (T);
         }
 
+        /// <inheritdoc />
         public IEnumerable<PropertyNode> Serialize(object obj) {
             return Parse((T) obj);
         }

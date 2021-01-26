@@ -44,7 +44,7 @@ namespace SolrNet.Commands.Parameters {
 
         /// <summary>
         /// When this flag is specified then two characters will be considered to match if, and only if, their full canonical decompositions match. 
-        /// The expression "a\u030A", for example, will match the string "å" when this flag is specified. 
+        /// The expression "a\u030A", for example, will match the string "ï¿½" when this flag is specified. 
         /// By default, matching does not take canonical equivalence into account.
         /// </summary>
         public static readonly RegexFlag CanonEq = new RegexFlagCanonEq();
@@ -102,16 +102,19 @@ namespace SolrNet.Commands.Parameters {
             }
         }
 
+        /// <inheritdoc />
         public bool Equals(RegexFlag other) {
             if (other == null)
                 return false;
             return ToString() == other.ToString();
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj) {
             return Equals(obj as RegexFlag);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode() {
             return ToString().GetHashCode();
         }

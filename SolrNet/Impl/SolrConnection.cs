@@ -85,6 +85,7 @@ namespace SolrNet.Impl
         /// </summary>
         public int Timeout { get; set; }
 
+        /// <inheritdoc />
         public string Post(string relativeUrl, string s)
         {
             var bytes = Encoding.UTF8.GetBytes(s);
@@ -92,6 +93,7 @@ namespace SolrNet.Impl
                 return PostStream(relativeUrl, "text/xml; charset=utf-8", content, null);
         }
 
+        /// <inheritdoc />
         public async Task<string> PostAsync(string relativeUrl, string s)
         {
             var bytes = Encoding.UTF8.GetBytes(s);
@@ -122,6 +124,7 @@ namespace SolrNet.Impl
             return request;
         }
 
+        /// <inheritdoc />
         public string PostStream(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
         {
 
@@ -148,6 +151,7 @@ namespace SolrNet.Impl
             }
         }
 
+        /// <inheritdoc />
         public async Task<string> PostStreamAsync(string relativeUrl, string contentType, Stream content, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             var request = PreparePostStreamWebRequest(relativeUrl, contentType, content, parameters);
@@ -204,6 +208,8 @@ namespace SolrNet.Impl
             }
             return (request, u,cached);
         }
+        
+        /// <inheritdoc />
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             var wr  = PrepareGetWebRequest(relativeUrl, parameters);
@@ -237,6 +243,7 @@ namespace SolrNet.Impl
             }
         }
 
+        /// <inheritdoc />
         public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             var wr = PrepareGetWebRequest(relativeUrl, parameters);

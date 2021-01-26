@@ -18,10 +18,12 @@ using System;
 
 namespace SolrNet.Impl.QuerySerializers {
     public abstract class SingleTypeQuerySerializer<T> : ISolrQuerySerializer {
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return t == typeof (T);
         }
 
+        /// <inheritdoc />
         public string Serialize(object q) {
             return Serialize((T)q);
         }

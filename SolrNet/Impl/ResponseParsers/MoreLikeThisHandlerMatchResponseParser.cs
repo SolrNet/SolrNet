@@ -10,11 +10,13 @@ namespace SolrNet.Impl.ResponseParsers {
             this.docParser = docParser;
         }
 
+        /// <inheritdoc />
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             results.Switch(query: F.DoNothing,
                            moreLikeThis: r => Parse(xml, r));
         }
 
+        /// <inheritdoc />
         public void Parse(XDocument xml, SolrMoreLikeThisHandlerResults<T> results) {
             var resultNode = xml
                 .Element("response")

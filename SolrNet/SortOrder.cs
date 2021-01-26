@@ -59,6 +59,7 @@ namespace SolrNet {
             get { return order; }
         }
 
+        /// <inheritdoc />
         public override string ToString() {
 			return string.Format("{0} {1}", FieldName, Order.ToString().ToLower());
 		}
@@ -84,7 +85,7 @@ namespace SolrNet {
 				throw new InvalidSortOrderException(e);
 			}
 		}
-
+        
         public bool Equals(SortOrder other) {
             if (ReferenceEquals(null, other)) {
                 return false;
@@ -95,6 +96,7 @@ namespace SolrNet {
             return Equals(other.fieldName, fieldName) && Equals(other.order, order);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj) {
             if (ReferenceEquals(null, obj)) {
                 return false;
@@ -108,6 +110,7 @@ namespace SolrNet {
             return Equals((SortOrder) obj);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode() {
             unchecked {
                 return ((fieldName != null ? fieldName.GetHashCode() : 0)*397) ^ order.GetHashCode();

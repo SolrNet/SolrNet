@@ -5,10 +5,12 @@ using SolrNet.Exceptions;
 
 namespace SolrNet.Impl.FieldParsers {
     public class LocationFieldParser: ISolrFieldParser {
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return solrType == "str";
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return t == typeof(Location);
         }
@@ -30,6 +32,7 @@ namespace SolrNet.Impl.FieldParsers {
             return new Location(latitude, longitude);
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             return Parse(field.Value);
         }

@@ -36,6 +36,7 @@ namespace SolrNet.Impl.DocumentPropertyVisitors {
             this.mapper = mapper;
         }
 
+        /// <inheritdoc />
         public void Visit(object doc, string fieldName, XElement field) {
             var allFields = mapper.GetFields(doc.GetType());
             SolrFieldModel thisField;

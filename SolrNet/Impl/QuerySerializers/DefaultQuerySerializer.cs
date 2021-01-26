@@ -39,10 +39,12 @@ namespace SolrNet.Impl.QuerySerializers {
             });
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return serializer.CanHandleType(t);
         }
 
+        /// <inheritdoc />
         public string Serialize(object q) {
             return serializer.Serialize(q);
         }

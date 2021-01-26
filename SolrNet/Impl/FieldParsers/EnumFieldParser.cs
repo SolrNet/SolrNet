@@ -19,14 +19,17 @@ using System.Xml.Linq;
 
 namespace SolrNet.Impl.FieldParsers {
     public class EnumFieldParser : ISolrFieldParser {
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return solrType == "str" || solrType == "int";
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return t.IsEnum;
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             if (field == null)
                 throw new ArgumentNullException("field");

@@ -29,14 +29,17 @@ namespace SolrNet.Impl.FieldParsers {
             this.parser = parser;
         }
 
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return parser.CanHandleSolrType(solrType);
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return parser.CanHandleType(t) || parser.CanHandleType(TypeHelper.GetUnderlyingNullableType(t));
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             if (string.IsNullOrEmpty(field.Value) && TypeHelper.IsNullableType(t))
                 return null;

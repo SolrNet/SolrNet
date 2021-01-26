@@ -24,6 +24,7 @@ namespace SolrNet.Impl.QuerySerializers {
             this.serializer = serializer;
         }
 
+        /// <inheritdoc />
         public override string Serialize(SolrRequiredQuery q) {
             return "+" + serializer.Serialize(q.Query);
         }

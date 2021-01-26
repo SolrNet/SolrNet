@@ -31,6 +31,7 @@ namespace SolrNet.Impl.FieldSerializers {
             return true;
         }
 
+        /// <inheritdoc />
         public IEnumerable<PropertyNode> Serialize(object obj) {
             if (obj == null)
                 yield break;

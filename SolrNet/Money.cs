@@ -27,6 +27,7 @@ namespace SolrNet {
             Currency = currency;
         }
 
+        /// <inheritdoc />
         public override string ToString() {
             return string.Format(CultureInfo.InvariantCulture, "{0}{1}{2}", Value, string.IsNullOrEmpty(Currency) ? "" : ",", Currency);
         }

@@ -47,6 +47,10 @@ namespace SolrNet.Exceptions {
         /// Solr did not understand one the specified fields
         /// </summary>
 		public InvalidFieldException() {}
+        
+        /// <summary>
+        /// Solr did not understand one the specified fields
+        /// </summary>
         protected InvalidFieldException(SerializationInfo info, StreamingContext context) : base(info, context) {}
 	}
 }

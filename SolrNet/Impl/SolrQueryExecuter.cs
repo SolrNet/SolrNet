@@ -576,8 +576,6 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Gets the solr parameters for collapse-expand queries
         /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
         public static IEnumerable<KeyValuePair<string, string>> GetCollapseExpandOptions(CollapseExpandParameters options, Func<ISolrQuery, string> serializer)
         {
             if (options == null)
@@ -694,6 +692,7 @@ namespace SolrNet.Impl {
             return qr;
         }
 
+        /// <inheritdoc />
         public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             var handler = options?.RequestHandler?.HandlerUrl ?? DefaultHandler;
@@ -718,6 +717,7 @@ namespace SolrNet.Impl {
             return results;
         }
 
+        /// <inheritdoc />
         public async Task<SolrQueryResults<T>> ExecuteAsync(ISolrQuery q, ISolrQueryBody body, QueryOptions options,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -748,6 +748,7 @@ namespace SolrNet.Impl {
             return results;
         }
         
+        /// <inheritdoc />
         public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery q, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
             var param = GetAllMoreLikeThisHandlerParameters(q, options).ToList();
@@ -756,6 +757,7 @@ namespace SolrNet.Impl {
             return qr;
         }
 
+        /// <inheritdoc />
         public async Task<SolrMoreLikeThisHandlerResults<T>> ExecuteAsync(SolrMLTQuery query, ISolrQueryBody body,
             MoreLikeThisHandlerQueryOptions options,
             CancellationToken cancellationToken = default(CancellationToken))

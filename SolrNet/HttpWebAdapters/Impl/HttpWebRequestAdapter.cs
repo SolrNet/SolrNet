@@ -28,36 +28,44 @@ namespace HttpWebAdapters.Adapters {
 			this.request = request;
 		}
 
+        /// <inheritdoc />
 		public HttpWebRequestMethod Method {
 			get { return HttpWebRequestMethod.Parse(request.Method); }
 			set { request.Method = value.ToString(); }
 		}
 
+        /// <inheritdoc />
 		public IHttpWebResponse GetResponse() {
 			return new HttpWebResponseAdapter(request.GetResponse());
 		}
 
+        /// <inheritdoc />
         public IAsyncResult BeginGetResponse(AsyncCallback callback, object state) {
             return request.BeginGetResponse(callback, state);
         }
 
+        /// <inheritdoc />
         public IHttpWebResponse EndGetResponse(IAsyncResult result) {
             return new HttpWebResponseAdapter(request.EndGetResponse(result));
         }
 
+        /// <inheritdoc />
         public IAsyncResult BeginGetRequestStream(AsyncCallback callback, object state) {
             return request.BeginGetRequestStream(callback, state);
         }
 
+        /// <inheritdoc />
         public Stream EndGetRequestStream(IAsyncResult result) {
             return request.EndGetRequestStream(result);
         }
 
+        /// <inheritdoc />
         public Task<Stream> GetRequestStreamAsync()
         {
             return request.GetRequestStreamAsync();
         }
 
+        /// <inheritdoc />
         public Task<WebResponse> GetResponseAsync()
         {
             return request.GetResponseAsync();

@@ -7,6 +7,7 @@ using SolrNet.Utils;
 
 namespace SolrNet.Impl.ResponseParsers {
     public class ClusterResponseParser<T> : ISolrResponseParser<T> {
+        /// <inheritdoc/>
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
             results.Switch(query: r => Parse(xml, r), 
                            moreLikeThis: F.DoNothing);

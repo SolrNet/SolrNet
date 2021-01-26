@@ -37,6 +37,7 @@ namespace SolrNet.Mapping
             _useReflectedTypeOnly = useReflectedTypeOnly;
         }
 
+        /// <inheritdoc />
         public void Add(PropertyInfo property)
         {
             if (property == null)
@@ -45,6 +46,7 @@ namespace SolrNet.Mapping
             Add(property, property.Name);
         }
 
+        /// <inheritdoc />
         public void Add(PropertyInfo property, string fieldName)
         {
             Add(property, fieldName, null, _useReflectedTypeOnly);
@@ -55,6 +57,7 @@ namespace SolrNet.Mapping
             Add(property, fieldName, null, useReflectedTypeOnly);
         }
 
+        /// <inheritdoc />
         public void Add(PropertyInfo property, string fieldName, float? boost)
         {
             Add(property, fieldName, boost, _useReflectedTypeOnly);
@@ -112,6 +115,7 @@ namespace SolrNet.Mapping
                 .ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
+        /// <inheritdoc />
         public void SetUniqueKey(PropertyInfo property)
         {
             SetUniqueKey(property, _useReflectedTypeOnly);
@@ -142,6 +146,7 @@ namespace SolrNet.Mapping
             uniqueKeys[declaringType] = theSolrFieldModel;
         }
 
+        /// <inheritdoc />
         public SolrFieldModel GetUniqueKey(Type type)
         {
             if (type == null)
@@ -155,6 +160,7 @@ namespace SolrNet.Mapping
             return prop;
         }
 
+        /// <inheritdoc />
         public ICollection<Type> GetRegisteredTypes()
         {
             return mappings.Select(k => k.Key).ToList();

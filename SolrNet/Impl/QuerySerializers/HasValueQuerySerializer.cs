@@ -24,6 +24,7 @@ namespace SolrNet.Impl.QuerySerializers {
             this.serializer = serializer;
         }
 
+        /// <inheritdoc />
         public override string Serialize(SolrHasValueQuery q) {
             return serializer.Serialize(new SolrQueryByRange<string>(q.Field, "*", "*"));
         }

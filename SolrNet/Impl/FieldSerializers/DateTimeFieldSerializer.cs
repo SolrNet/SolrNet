@@ -29,6 +29,7 @@ namespace SolrNet.Impl.FieldSerializers {
             return dt.ToUniversalTime().ToString(DateTimeFormat, CultureInfo.InvariantCulture);
         }
 
+        /// <inheritdoc />
         public override IEnumerable<PropertyNode> Parse(DateTime obj) {
             yield return new PropertyNode {
                 FieldValue = SerializeDate(obj),

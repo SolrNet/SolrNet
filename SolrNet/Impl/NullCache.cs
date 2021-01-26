@@ -20,10 +20,12 @@ namespace SolrNet.Impl {
     /// Use it when you want to disable http caching.
     /// </summary>
     public class NullCache : ISolrCache {
+        /// <inheritdoc />
         public SolrCacheEntity this[string url] {
             get { return null; }
         }
 
+        /// <inheritdoc />
         public void Add(SolrCacheEntity e) {}
     }
 }

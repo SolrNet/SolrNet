@@ -46,7 +46,6 @@ namespace SolrNet.Commands {
         /// <summary>
         /// Removes UTF control characters, not valid in XML
         /// </summary>
-        /// <param name="xml"></param>
         /// <returns></returns>
         /// <seealso href="http://cse-mjmcl.cse.bris.ac.uk/blog/2007/02/14/1171465494443.html#comment1221120563572"/>
         /// <summary>
@@ -72,11 +71,13 @@ namespace SolrNet.Commands {
             return addElement.ToString(SaveOptions.DisableFormatting);
         }
 
+        /// <inheritdoc />
 	    public string Execute(ISolrConnection connection) {
 	        var xml = ConvertToXml();
 			return connection.Post("/update", xml);
 		}
 
+        /// <inheritdoc />
         public Task<string> ExecuteAsync(ISolrConnection connection)
         {
             var xml = ConvertToXml();

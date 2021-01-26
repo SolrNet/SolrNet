@@ -23,10 +23,12 @@ namespace SolrNet.Impl.FieldParsers {
     /// Parses float values
     /// </summary>
     public class FloatFieldParser : ISolrFieldParser {
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return solrType == "float" || solrType == "int";
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return t == typeof (float);
         }
@@ -41,6 +43,7 @@ namespace SolrNet.Impl.FieldParsers {
             return Parse(field.Value);
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             return Parse(field);
         }

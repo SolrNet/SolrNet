@@ -56,6 +56,7 @@ namespace SolrNet
         /// </summary>
         public LocalParams LocalParams { get; set; } = new LocalParams();
 
+        /// <inheritdoc />
         public override string ToString()
         {
 
@@ -89,10 +90,13 @@ namespace SolrNet
             }
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return ToString().GetHashCode();
         }
+        
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             return this.ToString().Equals(obj?.ToString());

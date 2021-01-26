@@ -26,6 +26,7 @@ namespace HttpWebAdapters {
 			method = m;
 		}
 
+        /// <inheritdoc />
 		public override string ToString() {
 			return method;
 		}

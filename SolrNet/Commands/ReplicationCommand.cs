@@ -25,6 +25,11 @@ namespace SolrNet.Commands
             return connection.Get("/replication", Parameters.ToArray());
         }
 
+        /// <summary>
+        /// Executes a Replication command
+        /// </summary>
+        /// <param name="connection">The SolrConnection to use.</param>
+        /// <returns>The results of the Command.</returns>
         public Task<string> ExecuteAsync(ISolrConnection connection)
         {
             return connection.GetAsync("/replication", Parameters.ToArray());

@@ -14,6 +14,7 @@ namespace SolrNet.Impl.ResponseParsers
             this.headerResponseParser = headerResponseParser;
         }
 
+        /// <inheritdoc />
         public ExtractResponse Parse(XDocument response) {
             var responseHeader = headerResponseParser.Parse(response);
 

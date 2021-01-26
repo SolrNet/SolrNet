@@ -33,6 +33,7 @@ namespace SolrNet.Mapping {
             return propsAttrs;
         }
 
+        /// <inheritdoc />
         public IDictionary<string,SolrFieldModel> GetFields(Type type) {
             var propsAttrs = GetPropertiesWithAttribute<SolrFieldAttribute>(type);
 
@@ -54,6 +55,7 @@ namespace SolrNet.Mapping {
             return (T[]) prop.GetCustomAttributes(typeof (T), true);
         }
 
+        /// <inheritdoc />
         public SolrFieldModel GetUniqueKey(Type type) {
             var propsAttrs = GetPropertiesWithAttribute<SolrUniqueKeyAttribute>(type);
 	        var fields = propsAttrs.Select(
@@ -65,6 +67,7 @@ namespace SolrNet.Mapping {
             return fields.FirstOrDefault();
         }
 
+        /// <inheritdoc />
         public ICollection<Type> GetRegisteredTypes() {
             var types = new List<Type>();
             foreach (var a in AppDomain.CurrentDomain.GetAssemblies()) {

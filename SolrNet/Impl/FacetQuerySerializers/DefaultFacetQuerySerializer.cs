@@ -18,9 +18,15 @@ using System;
 using System.Collections.Generic;
 
 namespace SolrNet.Impl.FacetQuerySerializers {
+    /// <summary>
+    /// Default facet query serializer
+    /// </summary>
     public class DefaultFacetQuerySerializer : ISolrFacetQuerySerializer {
         private readonly AggregateFacetQuerySerializer serializer;
 
+        /// <summary>
+        /// Default facet query serializer
+        /// </summary>
         public DefaultFacetQuerySerializer(ISolrQuerySerializer querySerializer, ISolrFieldSerializer fieldSerializer) {
             serializer = new AggregateFacetQuerySerializer(new ISolrFacetQuerySerializer[] {
                 new SolrFacetQuerySerializer(querySerializer),
@@ -32,10 +38,12 @@ namespace SolrNet.Impl.FacetQuerySerializers {
             });
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return serializer.CanHandleType(t);
         }
 
+        /// <inheritdoc />
         public IEnumerable<KeyValuePair<string, string>> Serialize(object q) {
             return serializer.Serialize(q);
         }

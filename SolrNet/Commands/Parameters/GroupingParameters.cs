@@ -28,8 +28,9 @@ namespace SolrNet.Commands.Parameters
 	/// (Only SOLR 4.0)
 	/// 
 	/// group.func  AND group.query parameters are missing
-	/// <see cref="http://wiki.apache.org/solr/FieldCollapsing"/>
-	/// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
+	/// See:
+	/// http://wiki.apache.org/solr/FieldCollapsing
+	/// http://wiki.apache.org/solr/FieldCollapsing#parameters
 	/// </summary>
 	public class GroupingParameters
 	{
@@ -80,27 +81,27 @@ namespace SolrNet.Commands.Parameters
 	
 		/// <summary>
 		/// Controls the way the group is formatted in the output
-		/// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
+		/// See http://wiki.apache.org/solr/FieldCollapsing#parameters
 		/// </summary>
 		public GroupingFormat Format { get; set; }
 
         /// <summary>
         /// If true, facet counts are based on the most relevant document of each group matching the query. Same applies for StatsComponent. Default is false. 
         /// Requires Solr 3.4+
-        /// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
+        /// See http://wiki.apache.org/solr/FieldCollapsing#parameters
         /// </summary>
         public bool? Truncate { get; set; }
 
         /// <summary>
         /// Determines whether to compute grouped facets for the specified field facets. Grouped facets are computed based on the first specified group. As with normal field faceting, fields shouldn't be tokenized (otherwise counts are computed for each token). Grouped faceting supports single and multivalued fields. Default is false.
         /// Requires Solr 4.0+
-        /// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
+        /// See http://wiki.apache.org/solr/FieldCollapsing#parameters
         /// </summary>
         public bool? Facet { get; set; }
 
         /// <summary>
         /// If > 0 enables grouping cache. Grouping is executed actual two searches. This option caches the second search. A value of 0 disables grouping caching. Default is 0. 
-        /// <see cref="http://wiki.apache.org/solr/FieldCollapsing#parameters"/>
+        /// See http://wiki.apache.org/solr/FieldCollapsing#parameters
         /// </summary>
         public int? CachePercent { get; set; }
 

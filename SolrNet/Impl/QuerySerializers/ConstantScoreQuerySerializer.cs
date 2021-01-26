@@ -25,6 +25,7 @@ namespace SolrNet.Impl.QuerySerializers {
             this.serializer = serializer;
         }
 
+        /// <inheritdoc />
         public override string Serialize(SolrConstantScoreQuery q) {
             return string.Format("({0})^={1}", serializer.Serialize(q.Query), q.Score.ToString(CultureInfo.InvariantCulture.NumberFormat));
         }

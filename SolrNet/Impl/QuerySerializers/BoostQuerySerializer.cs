@@ -25,6 +25,7 @@ namespace SolrNet.Impl.QuerySerializers {
             this.serializer = serializer;
         }
 
+        /// <inheritdoc />
         public override string Serialize(SolrQueryBoost q) {
             return string.Format("({0})^{1}", serializer.Serialize(q.Query), q.Factor.ToString(CultureInfo.InvariantCulture.NumberFormat));
         }

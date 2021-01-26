@@ -42,6 +42,7 @@ namespace SolrNet
         /// </summary>
         /// <param name="query"></param>
         /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -58,6 +59,7 @@ namespace SolrNet
         /// </summary>
         /// <param name="query"></param>
         /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken));
 

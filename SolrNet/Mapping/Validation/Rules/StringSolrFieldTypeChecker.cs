@@ -30,6 +30,7 @@ namespace SolrNet.Mapping.Validation.Rules {
             : base(new[] {"solr.StrField", "solr.TextField"},
                    null) {}
 
+        /// <inheritdoc />
         public override bool CanHandleType(Type propertyType) {
             return propertyType == typeof (string);
         }

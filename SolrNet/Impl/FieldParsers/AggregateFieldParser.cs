@@ -35,14 +35,17 @@ namespace SolrNet.Impl.FieldParsers {
             this.parsers = parsers;
         }
 
+        /// <inheritdoc />
         public bool CanHandleSolrType(string solrType) {
             return parsers.Any(p => p.CanHandleSolrType(solrType));
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return parsers.Any(p => p.CanHandleType(t));
         }
 
+        /// <inheritdoc />
         public object Parse(XElement field, Type t) {
             return parsers
                 .Where(p => p.CanHandleType(t) && p.CanHandleSolrType(field.Name.LocalName))

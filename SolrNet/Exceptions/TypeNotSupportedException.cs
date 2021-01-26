@@ -18,12 +18,34 @@ using System;
 using System.Runtime.Serialization;
 
 namespace SolrNet.Exceptions {
+    /// <summary>
+    /// Document field type not supported by configured serializers
+    /// </summary>
     [Serializable]
     public class TypeNotSupportedException : SolrNetException {
+        /// <summary>
+        /// Document field type not supported by configured serializers
+        /// </summary>
         public TypeNotSupportedException(Exception innerException) : base(innerException) {}
+        
+        /// <summary>
+        /// Document field type not supported by configured serializers
+        /// </summary>
         public TypeNotSupportedException(string message) : base(message) {}
+        
+        /// <summary>
+        /// Document field type not supported by configured serializers
+        /// </summary>
         public TypeNotSupportedException() {}
+        
+        /// <summary>
+        /// Document field type not supported by configured serializers
+        /// </summary>
         public TypeNotSupportedException(string message, Exception innerException) : base(message, innerException) {}
+        
+        /// <summary>
+        /// Document field type not supported by configured serializers
+        /// </summary>
         protected TypeNotSupportedException(SerializationInfo info, StreamingContext context) : base(info, context) {}
     }
 }

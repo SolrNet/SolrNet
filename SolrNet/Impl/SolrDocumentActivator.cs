@@ -22,6 +22,7 @@ namespace SolrNet.Impl {
     /// </summary>
     /// <typeparam name="T">document type</typeparam>
     public class SolrDocumentActivator<T> : ISolrDocumentActivator<T> {
+        /// <inheritdoc />
         public T Create() {
             return Activator.CreateInstance<T>();
         }

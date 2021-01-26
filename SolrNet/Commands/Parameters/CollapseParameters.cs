@@ -47,8 +47,8 @@ namespace SolrNet.Commands.Parameters {
     }
 
     /// <summary>
-    /// Parameters to query collapse
-    /// <see cref="https://issues.apache.org/jira/browse/SOLR-236"/>
+    /// Parameters to query collapse.
+    /// See https://issues.apache.org/jira/browse/SOLR-236
     /// </summary>
     [Obsolete("Use result grouping instead")]
     public class CollapseParameters {

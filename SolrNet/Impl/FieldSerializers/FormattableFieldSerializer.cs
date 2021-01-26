@@ -23,10 +23,12 @@ namespace SolrNet.Impl.FieldSerializers {
     /// Serializes objects that implement <see cref="IFormattable"/>
     /// </summary>
     public class FormattableFieldSerializer : ISolrFieldSerializer {
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return typeof (IFormattable).IsAssignableFrom(t);
         }
 
+        /// <inheritdoc />
         public IEnumerable<PropertyNode> Serialize(object obj) {
             if (obj == null)
                 yield break;

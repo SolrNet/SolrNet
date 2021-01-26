@@ -25,14 +25,19 @@ namespace SolrNet.Impl.FieldSerializers {
     public class NullableFieldSerializer : ISolrFieldSerializer {
         private readonly ISolrFieldSerializer serializer;
 
+        /// <summary>
+        /// Wraps a <see cref="ISolrFieldSerializer"/> making it support the corresponding <see cref="Nullable{T}"/> type
+        /// </summary>
         public NullableFieldSerializer(ISolrFieldSerializer serializer) {
             this.serializer = serializer;
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return serializer.CanHandleType(t) || serializer.CanHandleType(TypeHelper.GetUnderlyingNullableType(t));
         }
 
+        /// <inheritdoc />
         public IEnumerable<PropertyNode> Serialize(object obj) {
             if (obj == null)
                 yield break;

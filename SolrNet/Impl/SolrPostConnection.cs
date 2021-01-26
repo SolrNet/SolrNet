@@ -40,11 +40,13 @@ namespace SolrNet.Impl
             get { return serverUrl; }
         }
 
+        /// <inheritdoc />
         public string Post(string relativeUrl, string s)
         {
             return conn.Post(relativeUrl, s);
         }
 
+        /// <inheritdoc />
         public Task<string> PostAsync(string relativeUrl, string s)
         {
             return conn.PostAsync(relativeUrl, s);
@@ -74,6 +76,7 @@ namespace SolrNet.Impl
             return (request, qs);
         }
 
+        /// <inheritdoc />
         public string Get(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             var g = PrepareGet(relativeUrl, parameters);
@@ -93,6 +96,7 @@ namespace SolrNet.Impl
             }
         }
 
+        /// <inheritdoc />
         public async Task<string> GetAsync(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             var g = PrepareGet(relativeUrl, parameters);
@@ -112,12 +116,13 @@ namespace SolrNet.Impl
             }
         }
 
-
+        /// <inheritdoc />
         public string PostStream(string relativeUrl, string contentType, System.IO.Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
         {
             return conn.PostStream(relativeUrl, contentType, content, getParameters);
         }
 
+        /// <inheritdoc />
         public Task<string> PostStreamAsync(string relativeUrl, string contentType, System.IO.Stream content, IEnumerable<KeyValuePair<string, string>> getParameters)
         {
             return conn.PostStreamAsync(relativeUrl, contentType, content, getParameters);

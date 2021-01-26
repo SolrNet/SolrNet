@@ -27,6 +27,7 @@ namespace SolrNet.Impl.QuerySerializers {
             this.serializer = serializer;
         }
 
+        /// <inheritdoc/>
         public override string Serialize(SolrQueryInList q) {
             if (string.IsNullOrEmpty(q.FieldName) || q.List == null || !q.List.Any())
                 return null;

@@ -26,10 +26,12 @@ namespace SolrNet.Impl.QuerySerializers {
             this.serializers = serializers;
         }
 
+        /// <inheritdoc />
         public bool CanHandleType(Type t) {
             return serializers.Any(s => s.CanHandleType(t));
         }
 
+        /// <inheritdoc />
         public string Serialize(object q) {
             if (q == null)
                 return string.Empty;

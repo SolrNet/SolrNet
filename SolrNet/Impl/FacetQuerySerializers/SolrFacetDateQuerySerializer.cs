@@ -21,6 +21,9 @@ using System.Text.RegularExpressions;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl.FacetQuerySerializers {
+    /// <summary>
+    /// Serializes <see cref="SolrFacetDateQuery"/>
+    /// </summary>
     [Obsolete("As of Solr 3.1 has been deprecated, as of Solr 6.6 unsupported.")]
     public class SolrFacetDateQuerySerializer : SingleTypeFacetQuerySerializer<SolrFacetDateQuery> {
 
@@ -28,6 +31,9 @@ namespace SolrNet.Impl.FacetQuerySerializers {
 
         private readonly ISolrFieldSerializer fieldSerializer;
 
+        /// <summary>
+        /// Serializes <see cref="SolrFacetDateQuery"/>
+        /// </summary>
         public SolrFacetDateQuerySerializer(ISolrFieldSerializer fieldSerializer) {
             this.fieldSerializer = fieldSerializer;
         }
@@ -36,6 +42,7 @@ namespace SolrNet.Impl.FacetQuerySerializers {
             return fieldSerializer.Serialize(o).First().FieldValue;
         }
 
+        /// <inheritdoc />
         public override IEnumerable<KeyValuePair<string, string>> Serialize(SolrFacetDateQuery q) {
             var fieldWithoutLocalParams = localParamsRx.Replace(q.Field, ""); 
             yield return KV.Create("facet.date", q.Field);

@@ -30,6 +30,7 @@ namespace SolrNet.Mapping.Validation.Rules {
             : base(new[] {"solr.TrieDoubleField", "solr.SortableDoubleField", "solr.DoubleField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}
 
+        /// <inheritdoc />
         public override bool CanHandleType(Type propertyType) {
             return propertyType == typeof (double) ||
                 propertyType == typeof(double?);

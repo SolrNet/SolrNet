@@ -13,12 +13,16 @@ namespace SolrNet.Impl.ResponseParsers
     {
         private readonly ISolrDocumentResponseParser<T> docParser;
 
+        /// <inheritdoc />
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results)
         {
             results.Switch(query: r => Parse(xml, r),
                            moreLikeThis: F.DoNothing);
         }
 
+        /// <summary>
+        /// Parses collapse results from query response
+        /// </summary>
         public CollapseExpandResponseParser(ISolrDocumentResponseParser<T> docParser)
         {
             this.docParser = docParser;
@@ -54,8 +58,6 @@ namespace SolrNet.Impl.ResponseParsers
         /// <summary>
         /// Parses collapsed document.ids and their counts
         /// </summary>
-        /// <param name="node"></param>
-        /// <returns></returns>
         public ICollection<Group<T>> ParseGroup(IEnumerable<XElement> nodes)
         {
             var groups = new List<Group<T>>();

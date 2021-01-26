@@ -30,7 +30,7 @@ namespace SolrNet {
         }
 
         /// <summary>
-        /// Negates this query
+        /// Requires this query
         /// </summary>
         /// <returns></returns>
         public AbstractSolrQuery Required() {
@@ -46,6 +46,9 @@ namespace SolrNet {
             return new SolrQueryBoost(this, factor);
         }
 
+        /// <summary>
+        /// AND operation between two queries
+        /// </summary>
         public static AbstractSolrQuery operator & (AbstractSolrQuery a, AbstractSolrQuery b) {
             if (a == null)
                 throw new ArgumentNullException("a");
@@ -54,6 +57,13 @@ namespace SolrNet {
             return new SolrMultipleCriteriaQuery(new[] {a, b}, "AND");
         }
 
+        /// <summary>
+        /// OR operation between two queries
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static AbstractSolrQuery operator | (AbstractSolrQuery a, AbstractSolrQuery b) {
             if (a == null)
                 throw new ArgumentNullException("a");
@@ -62,6 +72,9 @@ namespace SolrNet {
             return new SolrMultipleCriteriaQuery(new[] { a, b }, "OR");
         }
 
+        /// <summary>
+        /// Concatenates two queries
+        /// </summary>
         public static AbstractSolrQuery operator + (AbstractSolrQuery a, AbstractSolrQuery b) {
             if (a == null)
                 throw new ArgumentNullException("a");
@@ -70,6 +83,9 @@ namespace SolrNet {
             return new SolrMultipleCriteriaQuery(new[] { a, b });
         }
 
+        /// <summary>
+        /// Concatenates two queries with the second one being negated
+        /// </summary>
         public static AbstractSolrQuery operator - (AbstractSolrQuery a, AbstractSolrQuery b) {
             if (a == null)
                 throw new ArgumentNullException("a");
@@ -78,14 +94,23 @@ namespace SolrNet {
             return new SolrMultipleCriteriaQuery(new[] { a, b.Not() });
         }
 
+        /// <summary>
+        /// Supports logical operations between queries 
+        /// </summary>
         public static bool operator false (AbstractSolrQuery a) {
             return false;
         }
 
+        /// <summary>
+        /// Supports logical operations between queries
+        /// </summary>
         public static bool operator true (AbstractSolrQuery a) {
             return false;
         }
 
+        /// <summary>
+        /// Supports logical operations between queries
+        /// </summary>
         public static AbstractSolrQuery operator !(AbstractSolrQuery a) {
             if (a == null)
                 throw new ArgumentNullException("a");

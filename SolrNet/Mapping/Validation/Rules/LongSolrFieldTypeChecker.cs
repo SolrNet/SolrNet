@@ -30,6 +30,7 @@ namespace SolrNet.Mapping.Validation.Rules {
             : base(new[] {"solr.TrieLongField", "solr.LongField", "solr.SortableLongField"},
                    new[] {"solr.TextField", "solr.StrField"}) {}
 
+        /// <inheritdoc />
         public override bool CanHandleType(Type propertyType) {
             return propertyType == typeof (long) ||
                 propertyType == typeof(long?);

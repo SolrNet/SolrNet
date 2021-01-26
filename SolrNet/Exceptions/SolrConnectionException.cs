@@ -25,6 +25,9 @@ namespace SolrNet.Exceptions {
 	public class SolrConnectionException : SolrNetException {
         private readonly string url;
 
+        /// <summary>
+        /// Solr URL
+        /// </summary>
         public string Url {
             get { return url; }
         }
@@ -45,6 +48,7 @@ namespace SolrNet.Exceptions {
         /// Error connecting to Solr.
         /// </summary>
         /// <param name="innerException"></param>
+        /// <param name="url"></param>
         public SolrConnectionException(Exception innerException, string url) : base(innerException) {
             this.url = url;
         }
@@ -61,6 +65,7 @@ namespace SolrNet.Exceptions {
         /// </summary>
         /// <param name="message"></param>
         /// <param name="innerException"></param>
+        /// <param name="url">Solr URL</param>
         public SolrConnectionException(string message, Exception innerException, string url) : base(message, innerException) {
             this.url = url;
         }
@@ -69,6 +74,10 @@ namespace SolrNet.Exceptions {
         /// Error connecting to Solr.
         /// </summary>
 		public SolrConnectionException() {}
+
+        /// <summary>
+        /// Error connecting to Solr.
+        /// </summary>
         protected SolrConnectionException(SerializationInfo info, StreamingContext context) : base(info, context) {}
 	}
 }

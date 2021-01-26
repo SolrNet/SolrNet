@@ -31,6 +31,9 @@ namespace SolrNet.Utils {
             };
         }
 
+        /// <summary>
+        /// Converts an action to a function
+        /// </summary>
         public static Func<A, B, Unit> ToFunc<A, B>(this Action<A, B> action) {
             return (a, b) => {
                 action(a, b);
@@ -38,6 +41,9 @@ namespace SolrNet.Utils {
             };
         }
 
+        /// <summary>
+        /// Converts a function to an action
+        /// </summary>
         public static Action<A, B> ToAction<A, B>(this Func<A, B, Unit> f) {
             return (a, b) => f(a, b);
         }

@@ -23,6 +23,7 @@ namespace SolrNet.Impl.FacetQuerySerializers {
     public class SolrFacetFieldQuerySerializer : SingleTypeFacetQuerySerializer<SolrFacetFieldQuery> {
         private static readonly Regex localParamsRx = new Regex(@"\{![^\}]+\}", RegexOptions.Compiled);
 
+        /// <inheritdoc />
         public override IEnumerable<KeyValuePair<string, string>> Serialize(SolrFacetFieldQuery q) {
             yield return KV.Create("facet.field", q.Field);
             var fieldWithoutLocalParams = localParamsRx.Replace(q.Field, "");

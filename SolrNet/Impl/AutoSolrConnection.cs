@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using SolrNet.Exceptions;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl
 {
@@ -81,7 +82,7 @@ namespace SolrNet.Impl
             u.Query = GetQuery(parameters);
 
             HttpResponseMessage response;
-            if (u.Uri.ToString().Length > MaxUriLength)
+            if (UriValidator.UriLength(u) > MaxUriLength)
             {
                 u.Query = null;
                 response = await HttpClient.PostAsync(u.Uri, new FormUrlEncodedContent(parameters), cancellationToken);

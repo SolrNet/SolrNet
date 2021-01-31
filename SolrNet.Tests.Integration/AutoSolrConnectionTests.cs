@@ -14,6 +14,7 @@
 // limitations under the License.
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -61,7 +62,7 @@ namespace SolrNet.Tests.Integration
             var p = new Dictionary<string, string>();
             p["q"] = "*";
             p["rows"] = "1";
-            p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => "a"));
+            p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => Guid.NewGuid().ToString()));
             var conn = new AutoSolrConnection(solrURL);
             var response = await conn.GetAsync("/select/", p);
             var xdoc = XDocument.Parse(response);
@@ -74,7 +75,7 @@ namespace SolrNet.Tests.Integration
             var p = new Dictionary<string, string>();
             p["q"] = "*";
             p["rows"] = "1";
-            p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => "a"));
+            p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => Guid.NewGuid().ToString()));
             var conn = new AutoSolrConnection(solrURL);
             XDocument xdoc;
             using (var response = await conn.GetAsStreamAsync("/select/", p, default(CancellationToken)))
@@ -90,7 +91,7 @@ namespace SolrNet.Tests.Integration
             var p = new Dictionary<string, string>();
             p["q"] = "*";
             p["rows"] = "1";
-            p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => "a"));
+            p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => Guid.NewGuid().ToString()));
             var conn = new AutoSolrConnection(solrURL);
             XDocument xdoc;
             using (var response = await conn.GetAsStreamAsync("/select/", p, CancellationToken.None))

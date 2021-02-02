@@ -138,7 +138,8 @@ namespace SolrNet.Impl
             u.Query = GetQuery(getParameters);
 
             var sc = new StreamContent(content);
-            sc.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(contentType);
+            if(contentType != null)
+                sc.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(contentType);
 
             var response = await HttpClient.PostAsync(u.Uri, sc);
 

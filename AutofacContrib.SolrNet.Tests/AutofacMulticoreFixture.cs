@@ -196,9 +196,10 @@ namespace AutofacContrib.SolrNet.Tests
         public void ResolveSolrOperations_fromConfigSection()
         {
             // Arrange 
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var builder = new ContainerBuilder();
 
-            var solrConfig = (SolrConfigurationSection)ConfigurationManager.GetSection("solr");
+            var solrConfig = (SolrConfigurationSection)config.GetSection("solr");
             builder.RegisterModule(new SolrNetModule(solrConfig.SolrServers));
 
             var container = builder.Build();

@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
-using SolrNet.Attributes;
-using SolrNet.Cloud.ZooKeeperClient;
-using CloudStartup = SolrNet.Cloud.Startup;
-using Xunit;
 using System.Threading.Tasks;
 using CommonServiceLocator;
+using SolrNet.Attributes;
+using SolrNet.Cloud.ZooKeeperClient;
+using Xunit;
+using CloudStartup = SolrNet.Cloud.Startup;
 
-namespace SolrNet.Unity.Tests
+namespace SolrNet.Tests.Integration
 {
     [Trait("Category", "Integration")]
     public class Test
     {
-        [Fact]
-        public async Task TestSorlCloud()
+        [Fact(Skip = "TODO move to SolrNet.Cloud.Tests?")]
+        public async Task TestSolrCloud()
         {
             using (var provider = new SolrCloudStateProvider("10.26.11.30:9983"))
             {
@@ -55,7 +55,7 @@ namespace SolrNet.Unity.Tests
 
 
 
-        [Fact]
+        [Fact(Skip = "TODO move to SolrNet.Cloud.Tests?")]
         public async Task AddRemoveTest()
         {
             const int DocumentCount = 1000;

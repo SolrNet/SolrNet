@@ -1,0 +1,13 @@
+name: SolrNet
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        # with:
+        #  fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+      - name: Unit tests
+        run: ./unit_tests.sh
+      - name: Integration tests
+        run: ./integration_tests.sh

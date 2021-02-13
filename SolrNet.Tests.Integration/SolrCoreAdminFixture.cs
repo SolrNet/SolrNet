@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Configuration;
-using Xunit;
 using SolrNet.Commands.Cores;
 using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
+using Xunit;
 
-namespace SolrNet.Tests {
+namespace SolrNet.Tests.Integration {
     [Trait("Category", "Integration")]
+    [TestCaseOrderer(MethodDefTestCaseOrderer.Type, MethodDefTestCaseOrderer.Assembly)]
     public class SolrCoreAdminFixture {
         /*
         CREATE
@@ -31,8 +32,13 @@ namespace SolrNet.Tests {
         http://localhost:8983/solr/admin/cores?action=UNLOAD&core=core0
         */
 
-        private static readonly string solrUrl = ConfigurationManager.AppSettings["solr"];
+        private readonly string solrUrl;
         private const string instanceDir = "/apps/solr";
+        
+        public SolrCoreAdminFixture() {
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            solrUrl = config.AppSettings.Settings["solr"].Value;
+        }
 
         [Fact]
         public void GetStatusForAllCores() {
@@ -100,10 +106,17 @@ namespace SolrNet.Tests {
         [Fact]
         public void CreateSwapCore() {
             var coreName = "core-swap";
+            
             var solrCoreAdmin = new SolrCoreAdmin( new SolrConnection( solrUrl ), GetHeaderParser(), GetStatusResponseParser() );
 
-            var createResponseHeader = solrCoreAdmin.Create(coreName, instanceDir);
-            Assert.Equal(0, createResponseHeader.Status);
+            try {
+                var createResponseHeader = solrCoreAdmin.Create(coreName, ".", null, null, null);
+            } catch (ArgumentException) {
+                // Should get an Exception here because instance directory was not specified.
+                var createResponseHeader = solrCoreAdmin.Create(coreName, instanceDir);
+                Assert.Equal(0, createResponseHeader.Status);
+            }
+
             var result = solrCoreAdmin.Status(coreName);
             Assert.NotNull(result);
             Assert.NotEmpty(result.Name);

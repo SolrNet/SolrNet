@@ -103,7 +103,8 @@ namespace Unity.SolrNetIntegration.Tests {
         }
 
         internal static IUnityContainer SetupContainer() {
-            var solrConfig = (SolrConfigurationSection) ConfigurationManager.GetSection("solr");
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var solrConfig = (SolrConfigurationSection) config.GetSection("solr");
             var container = new UnityContainer();
             new SolrNetContainerConfiguration().ConfigureContainer(solrConfig.SolrServers, container);
             return container;

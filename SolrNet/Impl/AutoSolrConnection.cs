@@ -91,7 +91,7 @@ namespace SolrNet.Impl
                 response = await HttpClient.GetAsync(u.Uri, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
-                throw new SolrConnectionException($"{response.StatusCode}: {response.ReasonPhrase}", null, u.Uri.ToString());
+                throw new SolrConnectionException(await response.Content.ReadAsStringAsync(), null, u.Uri.ToString());
 
             return await response.Content.ReadAsStreamAsync();
 
@@ -144,7 +144,7 @@ namespace SolrNet.Impl
             var response = await HttpClient.PostAsync(u.Uri, sc);
 
             if (!response.IsSuccessStatusCode)
-                throw new SolrConnectionException($"{response.StatusCode}: {response.ReasonPhrase}", null, u.Uri.ToString());
+                throw new SolrConnectionException(await response.Content.ReadAsStringAsync(), null, u.Uri.ToString());
 
             return await response.Content.ReadAsStreamAsync();
         }

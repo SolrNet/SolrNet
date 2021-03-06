@@ -86,7 +86,7 @@ namespace SolrNet
 
             services = BuildSolrNet(services, urlRetriever, setupAction);
 
-            services.AddTransient(typeof(ISolrInjectedConnection<TModel>), serviceProvider =>
+            services.AddSingleton(typeof(ISolrInjectedConnection<TModel>), serviceProvider =>
             {
                 // Set custom http client setting given by user at initialization for specific solr core.
                 var autoSolrConnection = CreateAutoSolrConnection(serviceProvider, urlRetriever, setupAction);

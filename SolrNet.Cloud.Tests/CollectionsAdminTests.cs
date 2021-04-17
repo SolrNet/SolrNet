@@ -23,12 +23,12 @@ namespace SolrNet.Cloud.Tests
         private const string CLUSTER_PROPERTY_NAME = "autoAddReplicas";
         private const string COLLECTION_ALIAS = "test_alias";
 
-        private string SOLR_CONNECTION_URL = "http://localhost:8983/solr";
+        private string SOLR_CONNECTION_URL = "http://solr:8983/solr";
         private SolrConnection solrconnection;
 
         private SolrCollectionsAdmin collections;
 
-        private const string ZOOKEEPER_CONNECTION = "127.0.0.1:9983";
+        private const string ZOOKEEPER_CONNECTION = "zoo:9983";
         private const int ZOOKEEPER_REFRESH_PERIOD_MSEC = 2000;
         private ISolrCloudStateProvider solrCloudStateProvider = null;
 

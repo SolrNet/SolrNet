@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  solr:
+    image: solr:8.7.0
+    container_name: solr
+    logging:
+      driver: none
+    ports:
+      - "8983:8983"
+    environment:
+      ZK_HOST: zoo:9983
+    depends_on:
+      - zoo
+  zoo:
+    image: zookeeper
+    container_name: zoo
+    logging:
+      driver: none
+    hostname: zoo
+    ports:
+      - "9983:9983"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zoo:2888:3888;9983
+      ZOO_4LW_COMMANDS_WHITELIST: mntr, conf, ruok
+      ZOO_CFG_EXTRA: "metricsProvider.className=org.apache.zookeeper.metrics.prometheus.PrometheusMetricsProvider metricsProvider.httpPort=7000 metricsProvider.exportJvmInfo=true"
+  integration_tests:
+    image: mcr.microsoft.com/dotnet/sdk:5.0-alpine
+    depends_on:
+    - solr
+    volumes:
+    - .:/code
+    - $HOME/.nuget:/root/.nuget
+    working_dir: /code
+    command: dotnet test SolrNet.Cloud.Tests --filter 'Category=Integration'
+
+
+

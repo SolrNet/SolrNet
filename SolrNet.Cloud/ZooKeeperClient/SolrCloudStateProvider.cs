@@ -94,8 +94,6 @@ namespace SolrNet.Cloud.ZooKeeperClient
                 if (!isInitialized)
                 {
                     await UpdateAsync().ConfigureAwait(false);
-                    if (zooKeeper.getState() != ZooKeeper.States.CONNECTED && zooKeeper.getState() != ZooKeeper.States.CONNECTEDREADONLY)
-                        throw new Exceptions.SolrNetCloudConnectionException($"Cannot connect to the Zookeeper instance {zooKeeperConnection}. Current state: {zooKeeper.getState()} ");
 
                     isInitialized = true;
                 }

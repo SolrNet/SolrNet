@@ -28,13 +28,19 @@ namespace SolrNet.Cloud.Tests
             }            
         }
 
-        public async Task PrepareContainerAsync()
+        private bool containerPrepared = false;
+        async Task PrepareContainerAsync()
         {
+            if (containerPrepared)
+                return;
+            
             var collectionNames = new[] { "data", "hosts" };
             PrepareCollections(collectionNames);            
 
             await Startup.InitAsync<FakeEntity>(new SolrCloudStateProvider("zoo:9983"), collectionNames[0], true);
             await Startup.InitAsync<FakeEntity1>(new SolrCloudStateProvider("zoo:9983"), collectionNames[1]);
+            
+            containerPrepared = true;
         }
 
         [Fact]

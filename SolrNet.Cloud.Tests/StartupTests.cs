@@ -33,16 +33,15 @@ namespace SolrNet.Cloud.Tests
             var collectionNames = new[] { "data", "hosts" };
             PrepareCollections(collectionNames);            
 
-        await    Startup.InitAsync<FakeEntity>(new SolrCloudStateProvider("127.0.0.1:9983"), collectionNames[0], true);
-        await    Startup.InitAsync<FakeEntity1>(new SolrCloudStateProvider("127.0.0.1:9983"), collectionNames[1]);
+            await Startup.InitAsync<FakeEntity>(new SolrCloudStateProvider("127.0.0.1:9983"), collectionNames[0], true);
+            await Startup.InitAsync<FakeEntity1>(new SolrCloudStateProvider("127.0.0.1:9983"), collectionNames[1]);
         }
 
         [Fact]
         public async Task ShouldResolveBasicOperationsFromStartupContainer()
         {
             await PrepareContainerAsync();
-            Assert.NotNull(
-                Startup.Container.GetInstance<ISolrBasicOperations<FakeEntity>>());
+            Assert.NotNull(Startup.Container.GetInstance<ISolrBasicOperations<FakeEntity>>());
 
             var a = Startup.Container.GetInstance<ISolrOperations<FakeEntity>>();
             var b = Startup.Container.GetInstance<ISolrOperations<FakeEntity1>>();
@@ -56,8 +55,7 @@ namespace SolrNet.Cloud.Tests
         {
             await PrepareContainerAsync();
 
-            Assert.NotNull(
-                Startup.Container.GetInstance<ISolrBasicReadOnlyOperations<FakeEntity>>());
+            Assert.NotNull(Startup.Container.GetInstance<ISolrBasicReadOnlyOperations<FakeEntity>>());
         }
 
 
@@ -65,24 +63,21 @@ namespace SolrNet.Cloud.Tests
         public async Task ShouldResolveOperationsFromStartupContainer() {
 
             await PrepareContainerAsync();
-            Assert.NotNull(
-                Startup.Container.GetInstance<ISolrOperations<FakeEntity>>());
+            Assert.NotNull(Startup.Container.GetInstance<ISolrOperations<FakeEntity>>());
         }
 
         [Fact]
         public async Task ShouldResolveOperationsProviderFromStartupContainer()
         {
             await PrepareContainerAsync();
-            Assert.NotNull(
-                Startup.Container.GetInstance<ISolrOperationsProvider>());
+            Assert.NotNull(Startup.Container.GetInstance<ISolrOperationsProvider>());
         }
 
         [Fact]
         public async Task ShouldResolveReadOnlyOperationsFromStartupContainer()
         {
             await PrepareContainerAsync();
-            Assert.NotNull(
-                Startup.Container.GetInstance<ISolrReadOnlyOperations<FakeEntity>>());
+            Assert.NotNull(Startup.Container.GetInstance<ISolrReadOnlyOperations<FakeEntity>>());
         }
     }
 }

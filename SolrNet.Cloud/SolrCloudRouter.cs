@@ -11,12 +11,12 @@
         /// <summary>
         /// Explicit router
         /// </summary>
-        public static string Explicit = "explicit";
+        public static readonly string Explicit = "explicit";
 
         /// <summary>
         /// CompositeId router
         /// </summary>
-        public static string CompositId = "compositeId";
+        public static readonly string CompositId = "compositeId";
 
         /// <summary>
         /// Constructor

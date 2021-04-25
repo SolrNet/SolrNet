@@ -103,17 +103,13 @@ namespace SolrNet.Cloud
 
         private static bool IsActiveReplica(string state, string nodeName, ICollection<string> liveNodes)
         {
-            var isLiveNode = liveNodes != null
-                ? liveNodes.Contains(nodeName)
-                : true;
+            var isLiveNode = liveNodes?.Contains(nodeName) ?? true;
             return isLiveNode && IsActive(state);
         }
 
         private static bool IsActiveShard(string state, IDictionary<string, SolrCloudReplica> solrCloudReplicas, ICollection<string> liveNodes)
         {
-            var isLiveNode = liveNodes != null
-                ? solrCloudReplicas.Any(pair => pair.Value.IsActive && pair.Value.IsLeader)
-                : true;
+            var isLiveNode = liveNodes == null || solrCloudReplicas.Any(pair => pair.Value.IsActive && pair.Value.IsLeader);
 
             return isLiveNode && IsActive(state);
         }

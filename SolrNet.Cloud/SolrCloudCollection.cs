@@ -9,17 +9,17 @@ namespace SolrNet.Cloud {
         /// <summary>
         /// Collection name
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// Collection router type
         /// </summary>
-        public SolrCloudRouter Router { get; set; }
+        public SolrCloudRouter Router { get; }
 
         /// <summary>
         /// Collection shards
         /// </summary>
-        public IDictionary<string, SolrCloudShard> Shards { get; set; }
+        public IDictionary<string, SolrCloudShard> Shards { get; }
 
         /// <summary>
         /// Constructor

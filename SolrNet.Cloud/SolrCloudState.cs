@@ -9,7 +9,7 @@ namespace SolrNet.Cloud {
         /// <summary>
         /// State collections
         /// </summary>
-        public IDictionary<string, SolrCloudCollection> Collections { get; private set; }
+        public IDictionary<string, SolrCloudCollection> Collections { get; }
 
         /// <summary>
         /// Constructor

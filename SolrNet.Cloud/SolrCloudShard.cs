@@ -9,27 +9,27 @@ namespace SolrNet.Cloud {
         /// <summary>
         /// Is active
         /// </summary>
-        public bool IsActive { get; private set; }
+        public bool IsActive { get; }
 
         /// <summary>
         /// Shard name
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// Shard range end
         /// </summary>
-        public int? RangeEnd { get; private set; }
+        public int? RangeEnd { get; }
 
         /// <summary>
         /// Shard range start
         /// </summary>
-        public int? RangeStart { get; private set; }
+        public int? RangeStart { get; }
 
         /// <summary>
         /// Shard replicas
         /// </summary>
-        public IDictionary<string, SolrCloudReplica> Replicas { get; set; }
+        public IDictionary<string, SolrCloudReplica> Replicas { get; }
 
         /// <summary>
         /// Constructor

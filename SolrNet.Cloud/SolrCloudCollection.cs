@@ -19,12 +19,12 @@ namespace SolrNet.Cloud {
         /// <summary>
         /// Collection shards
         /// </summary>
-        public IDictionary<string, SolrCloudShard> Shards { get; }
+        public IReadOnlyDictionary<string, SolrCloudShard> Shards { get; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SolrCloudCollection(string name, SolrCloudRouter router, IDictionary<string, SolrCloudShard> shards) {
+        public SolrCloudCollection(string name, SolrCloudRouter router, IReadOnlyDictionary<string, SolrCloudShard> shards) {
             if (router == null)
                 throw new ArgumentNullException("router");
             if (shards == null)

@@ -29,12 +29,12 @@ namespace SolrNet.Cloud {
         /// <summary>
         /// Shard replicas
         /// </summary>
-        public IDictionary<string, SolrCloudReplica> Replicas { get; }
+        public IReadOnlyDictionary<string, SolrCloudReplica> Replicas { get; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SolrCloudShard(bool isActive, string name, int? rangeEnd, int? rangeStart, IDictionary<string, SolrCloudReplica> replicas) {
+        public SolrCloudShard(bool isActive, string name, int? rangeEnd, int? rangeStart, IReadOnlyDictionary<string, SolrCloudReplica> replicas) {
             if (replicas == null)
                 throw new ArgumentNullException("replicas");
             IsActive = isActive;

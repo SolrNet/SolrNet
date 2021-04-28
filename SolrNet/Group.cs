@@ -14,7 +14,7 @@ namespace SolrNet {
         /// <summary>
         /// Returns the number of matching documents that are found for this groupValue
         /// </summary>
-        public int NumFound { get; set; }
+        public long NumFound { get; set; }
 
         /// <summary>
         /// The actual documents in the group.

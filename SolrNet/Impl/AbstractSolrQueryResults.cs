@@ -13,12 +13,12 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Total documents found
         /// </summary>
-        public int NumFound { get; set; }
+        public long NumFound { get; set; }
 
         /// <summary>
         /// Start of the results
         /// </summary>
-        public int Start { get; set; }
+        public long Start { get; set; }
 
         /// <summary>
         /// Max score in these results

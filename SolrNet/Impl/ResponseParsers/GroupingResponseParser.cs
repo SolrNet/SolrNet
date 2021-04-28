@@ -75,7 +75,7 @@ namespace SolrNet.Impl.ResponseParsers {
                                      : //These are the results that do not match the grouping
                                  groupValueNode.Value
                 let resultNode = docNode.Elements("result").First(X.AttrEq("name", "doclist"))
-                let numFound = Convert.ToInt32(resultNode.Attribute("numFound").Value)
+                let numFound = Convert.ToInt64(resultNode.Attribute("numFound").Value)
                 let docs = docParser.ParseResults(resultNode).ToList()
                 select new Group<T> {
                     GroupValue = groupValue,

@@ -34,7 +34,7 @@ namespace SolrNet.Cloud.Tests
 
     
         [Fact]
-        public async Task ReloadColection()
+        public async Task ReloadCollection()
         {
             CreateCollectionIfNotExists(collections, COLLECTION_NAME);
 
@@ -49,7 +49,7 @@ namespace SolrNet.Cloud.Tests
         }
 
         [Fact]
-        public async Task CreateRemoveCollectionExcplicitRouter()
+        public async Task CreateRemoveCollectionExplicitRouter()
         {
 
             RemoveCollectionIfExists(collections, COLLECTION_NAME);

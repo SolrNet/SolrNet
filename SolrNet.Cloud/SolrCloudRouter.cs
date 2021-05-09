@@ -16,7 +16,7 @@
         /// <summary>
         /// CompositeId router
         /// </summary>
-        public static readonly string CompositId = "compositeId";
+        public static readonly string CompositeId = "compositeId";
 
         /// <summary>
         /// Constructor

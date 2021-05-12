@@ -9,22 +9,22 @@ namespace SolrNet.Cloud {
         /// <summary>
         /// Collection name
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// Collection router type
         /// </summary>
-        public SolrCloudRouter Router { get; set; }
+        public SolrCloudRouter Router { get; }
 
         /// <summary>
         /// Collection shards
         /// </summary>
-        public IDictionary<string, SolrCloudShard> Shards { get; set; }
+        public IReadOnlyDictionary<string, SolrCloudShard> Shards { get; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SolrCloudCollection(string name, SolrCloudRouter router, IDictionary<string, SolrCloudShard> shards) {
+        public SolrCloudCollection(string name, SolrCloudRouter router, IReadOnlyDictionary<string, SolrCloudShard> shards) {
             if (router == null)
                 throw new ArgumentNullException("router");
             if (shards == null)

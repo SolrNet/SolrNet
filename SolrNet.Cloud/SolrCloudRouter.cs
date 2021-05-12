@@ -6,17 +6,17 @@
         /// <summary>
         /// Router name
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; }
 
         /// <summary>
         /// Explicit router
         /// </summary>
-        public static string Explicit = "explicit";
+        public static readonly string Explicit = "explicit";
 
         /// <summary>
         /// CompositeId router
         /// </summary>
-        public static string CompositId = "compositeId";
+        public static readonly string CompositeId = "compositeId";
 
         /// <summary>
         /// Constructor

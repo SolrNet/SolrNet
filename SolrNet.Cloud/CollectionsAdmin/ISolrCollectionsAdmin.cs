@@ -79,7 +79,7 @@ namespace SolrNet.Cloud.CollectionsAdmin
             string createNodeSet = null,
             bool? createNodeSetShuffle = null,
             string rooterField = null,
-            IDictionary<string, string> coreProperties = null,
+            IReadOnlyDictionary<string, string> coreProperties = null,
             bool? autoAddReplicas = null,
             string rule = null,
             string snitch = null);
@@ -110,7 +110,7 @@ namespace SolrNet.Cloud.CollectionsAdmin
         /// for details on supported properties and values.
         /// </param>
         /// <returns>Operation response header</returns>
-        ResponseHeader CreateShard(string collection, string shard, string createNodeSet = null, IDictionary<string, string> coreProperties = null);
+        ResponseHeader CreateShard(string collection, string shard, string createNodeSet = null, IReadOnlyDictionary<string, string> coreProperties = null);
 
         /// <summary>
         /// Deleting a shard will unload all replicas of the shard and remove them from clusterstate.json.
@@ -203,7 +203,7 @@ namespace SolrNet.Cloud.CollectionsAdmin
             string shard,
             string ranges = null,
             string splitKey = null,
-            IDictionary<string, string> coreProperties = null);
+            IReadOnlyDictionary<string, string> coreProperties = null);
 
         /// <summary>
         /// Create or modify an Alias for a Collection.
@@ -283,7 +283,7 @@ namespace SolrNet.Cloud.CollectionsAdmin
             string node = null,
             bool? instanceDir = null,
             bool? dataDir = null,
-            IDictionary<string, string> coreProperties = null);
+            IReadOnlyDictionary<string, string> coreProperties = null);
 
         /// <summary>
         /// Cluster Properties.
@@ -320,7 +320,7 @@ namespace SolrNet.Cloud.CollectionsAdmin
            string targetCollection,
            string splitKey,
            int? forwardTimeout = null,
-           IDictionary<string, string> coreProperties = null);
+           IReadOnlyDictionary<string, string> coreProperties = null);
 
         /// <summary>
         /// Add Role.

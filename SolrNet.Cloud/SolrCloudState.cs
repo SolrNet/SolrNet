@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace SolrNet.Cloud {
@@ -9,29 +10,31 @@ namespace SolrNet.Cloud {
         /// <summary>
         /// State collections
         /// </summary>
-        public IDictionary<string, SolrCloudCollection> Collections { get; private set; }
+        public IReadOnlyDictionary<string, SolrCloudCollection> Collections { get; }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        public SolrCloudState(IDictionary<string, SolrCloudCollection> collections) {
+        public SolrCloudState(IReadOnlyDictionary<string, SolrCloudCollection> collections) {
             Collections = collections;
         }
 
         /// <summary>
         /// Returns merged cloud states
         /// </summary>
+        [Pure]
         public SolrCloudState Merge(SolrCloudState state)
         {
             if (state == null || state.Collections == null || !state.Collections.Any())
                 return this;
 
+            var r = Collections.ToDictionary(kv => kv.Key, kv => kv.Value);
             foreach (var element in state.Collections)
             {
-                Collections.Add(element);
+                r.Add(element.Key, element.Value);
             }
 
-            return this;
+            return new SolrCloudState(r);
         }
     }
 }

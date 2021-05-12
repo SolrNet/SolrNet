@@ -16,7 +16,7 @@ namespace SolrNet.Cloud
         /// Returns parsed solr cloud state
         /// If liveNodes is passed then it will only consider shards and replicas that are live
         /// </summary>
-        public static SolrCloudState Parse(string json, ICollection<string> liveNodes = null)
+        public static SolrCloudState Parse(string json, IReadOnlyCollection<string> liveNodes = null)
         {
             return new SolrCloudState(
                 JObject.Parse(json).Properties()
@@ -27,7 +27,7 @@ namespace SolrNet.Cloud
         /// <summary>
         /// Builds cloud collection model from json object
         /// </summary>
-        private static SolrCloudCollection BuildCollection(JProperty json, ICollection<string> liveNodes)
+        private static SolrCloudCollection BuildCollection(JProperty json, IReadOnlyCollection<string> liveNodes)
         {
             var shards = (JObject)json.Value["shards"];
             return new SolrCloudCollection(
@@ -41,7 +41,7 @@ namespace SolrNet.Cloud
         /// <summary>
         /// Builds cloud replica model from json object
         /// </summary>
-        private static SolrCloudReplica BuildReplica(string collection, JProperty json, ICollection<string> liveNodes)
+        private static SolrCloudReplica BuildReplica(string collection, JProperty json, IReadOnlyCollection<string> liveNodes)
         {
             var baseUrl = (string)json.Value["base_url"];
             var leader = json.Value["leader"];
@@ -67,7 +67,7 @@ namespace SolrNet.Cloud
         /// <summary>
         /// Builds cloud shard model from json object
         /// </summary>
-        private static SolrCloudShard BuildShard(string collection, JProperty json, ICollection<string> liveNodes)
+        private static SolrCloudShard BuildShard(string collection, JProperty json, IReadOnlyCollection<string> liveNodes)
         {
             var state = (string)json.Value["state"];
             var range = (string)json.Value["range"];
@@ -101,19 +101,15 @@ namespace SolrNet.Cloud
             return "active".Equals(state, StringComparison.OrdinalIgnoreCase);
         }
 
-        private static bool IsActiveReplica(string state, string nodeName, ICollection<string> liveNodes)
+        private static bool IsActiveReplica(string state, string nodeName, IReadOnlyCollection<string> liveNodes)
         {
-            var isLiveNode = liveNodes != null
-                ? liveNodes.Contains(nodeName)
-                : true;
+            var isLiveNode = liveNodes?.Contains(nodeName) ?? true;
             return isLiveNode && IsActive(state);
         }
 
-        private static bool IsActiveShard(string state, IDictionary<string, SolrCloudReplica> solrCloudReplicas, ICollection<string> liveNodes)
+        private static bool IsActiveShard(string state, IReadOnlyDictionary<string, SolrCloudReplica> solrCloudReplicas, IReadOnlyCollection<string> liveNodes)
         {
-            var isLiveNode = liveNodes != null
-                ? solrCloudReplicas.Any(pair => pair.Value.IsActive && pair.Value.IsLeader)
-                : true;
+            var isLiveNode = liveNodes == null || solrCloudReplicas.Any(pair => pair.Value.IsActive && pair.Value.IsLeader);
 
             return isLiveNode && IsActive(state);
         }

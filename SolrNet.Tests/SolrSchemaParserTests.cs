@@ -77,6 +77,12 @@ namespace SolrNet.Tests
 
             Assert.Single(schemaDoc.SolrDynamicFields);
             Assert.Equal("*_s", schemaDoc.SolrDynamicFields[0].Name);
+            Assert.False(schemaDoc.SolrDynamicFields[0].IsRequired);
+            Assert.False(schemaDoc.SolrDynamicFields[0].IsMultiValued);
+            Assert.True(schemaDoc.SolrDynamicFields[0].IsIndexed);
+            Assert.True(schemaDoc.SolrDynamicFields[0].IsStored);
+            Assert.False(schemaDoc.SolrDynamicFields[0].IsDocValues);
+            Assert.Equal("string", schemaDoc.SolrDynamicFields[0].Type.Name);
         }
 
         [Fact]
@@ -171,6 +177,12 @@ namespace SolrNet.Tests
 
             Assert.Single(schemaDoc.SolrDynamicFields);
             Assert.Equal("*_s", schemaDoc.SolrDynamicFields[0].Name);
+            Assert.False(schemaDoc.SolrDynamicFields[0].IsRequired);
+            Assert.False(schemaDoc.SolrDynamicFields[0].IsMultiValued);
+            Assert.True(schemaDoc.SolrDynamicFields[0].IsIndexed);
+            Assert.True(schemaDoc.SolrDynamicFields[0].IsStored);
+            Assert.False(schemaDoc.SolrDynamicFields[0].IsDocValues);
+            Assert.Equal("string", schemaDoc.SolrDynamicFields[0].Type.Name);
         }
 
         [Fact]

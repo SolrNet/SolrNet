@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
@@ -54,18 +54,18 @@ namespace SolrNet.Schema {
                 if (fieldType == null)
                     throw new SolrNetException(string.Format("Field type '{0}' not found", fieldTypeName));
                 var field = new SolrField(fieldNode.Attribute("name").Value, fieldType);
-                field.IsRequired = fieldNode.Attribute("required") != null ? fieldNode.Attribute("required").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
-                field.IsMultiValued = fieldNode.Attribute("multiValued") != null ? fieldNode.Attribute("multiValued").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
-                field.IsStored = fieldNode.Attribute("stored") != null ? fieldNode.Attribute("stored").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
-                field.IsIndexed = fieldNode.Attribute("indexed") != null ? fieldNode.Attribute("indexed").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
-                field.IsDocValues = fieldNode.Attribute("docValues") != null ? fieldNode.Attribute("docValues").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false; 
-
+                ParseSolrFieldAttribute(field, fieldNode);
                 result.SolrFields.Add(field);
             }
 
-            foreach (var dynamicFieldNode in fieldsElem.Elements("dynamicField")) {
-                var dynamicField = new SolrDynamicField(dynamicFieldNode.Attribute("name").Value);
-                result.SolrDynamicFields.Add(dynamicField);
+            foreach (var dynamiFieldNode in fieldsElem.Elements("dynamicField")){
+                var fieldTypeName = dynamiFieldNode.Attribute("type").Value;
+                var fieldType = result.FindSolrFieldTypeByName(fieldTypeName);
+                if (fieldType == null)
+                    throw new SolrNetException(string.Format("Field type '{0}' not found", fieldTypeName));
+                var field = new SolrDynamicField(dynamiFieldNode.Attribute("name").Value, fieldType);
+                ParseSolrFieldAttribute(field, dynamiFieldNode);
+                result.SolrDynamicFields.Add(field);
             }
 
             foreach (var copyFieldNode in schemaElem.Elements("copyField")) {
@@ -79,6 +79,14 @@ namespace SolrNet.Schema {
             }
 
             return result;
+        }
+
+        private void ParseSolrFieldAttribute(SolrField field, XElement fieldNode){
+            field.IsRequired = fieldNode.Attribute("required") != null ? fieldNode.Attribute("required").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
+            field.IsMultiValued = fieldNode.Attribute("multiValued") != null ? fieldNode.Attribute("multiValued").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
+            field.IsStored = fieldNode.Attribute("stored") != null ? fieldNode.Attribute("stored").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
+            field.IsIndexed = fieldNode.Attribute("indexed") != null ? fieldNode.Attribute("indexed").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
+            field.IsDocValues = fieldNode.Attribute("docValues") != null ? fieldNode.Attribute("docValues").Value.ToLower().Equals(Boolean.TrueString.ToLower()) : false;
         }
     }
 }

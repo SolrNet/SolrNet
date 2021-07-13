@@ -23,12 +23,6 @@ namespace SolrNet.Tests.Integration.Sample {
 		[SolrUniqueKey("id")]
 		public string Id { get; set; }
 
-        [SolrField("guid")]
-        public Guid Guid { get; set; }
-
-		[SolrField("sku")]
-		public string SKU { get; set; }
-
 		[SolrField("name")]
 		public string Name { get; set; }
 
@@ -41,14 +35,8 @@ namespace SolrNet.Tests.Integration.Sample {
 		[SolrField("features")]
 		public ICollection<string> Features { get; set; }
 
-		[SolrField("includes")]
-		public string Includes { get; set; }
-
 		[SolrField("weight")]
 		public float Weight { get; set; }
-
-		[SolrField("price")]
-		public decimal Price { get; set; }
 
 		[SolrField("popularity")]
 		public int Popularity { get; set; }
@@ -56,19 +44,7 @@ namespace SolrNet.Tests.Integration.Sample {
 		[SolrField("inStock")]
 		public bool InStock { get; set; }
 
-		[SolrField("word")]
-		public string Word { get; set; }
-
-		[SolrField("timestamp")]
-		public DateTime Timestamp { get; set; }
-
         [SolrField("price_c")]
         public Money PriceMoney { get; set; }
-
-        [SolrField("value_")]
-        public IDictionary<string, decimal> Prices { get; set; }
-
-        [SolrField("ca")]
-        public IDictionary<string, ICollection<string>> DynCategories { get; set; }
 	}
 }

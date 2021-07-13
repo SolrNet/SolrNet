@@ -13,7 +13,7 @@ namespace SolrNet.Cloud.Tests
     {
         private void PrepareCollections(string[] collectionNames)
         {
-            const string solrUrl = "http://solr:8983/solr";
+            const string solrUrl = "http://localhost:8983/solr";
             
             //var headerParser = ServiceLocator.Current.GetInstance<ISolrHeaderResponseParser>();
             var headerParser = new HeaderResponseParser();
@@ -37,8 +37,8 @@ namespace SolrNet.Cloud.Tests
             var collectionNames = new[] { "data", "hosts" };
             PrepareCollections(collectionNames);            
 
-            await Startup.InitAsync<FakeEntity>(new SolrCloudStateProvider("zoo:9983"), collectionNames[0], true);
-            await Startup.InitAsync<FakeEntity1>(new SolrCloudStateProvider("zoo:9983"), collectionNames[1]);
+            await Startup.InitAsync<FakeEntity>(new SolrCloudStateProvider("localhost:9983"), collectionNames[0], true);
+            await Startup.InitAsync<FakeEntity1>(new SolrCloudStateProvider("localhost:9983"), collectionNames[1]);
             
             containerPrepared = true;
         }

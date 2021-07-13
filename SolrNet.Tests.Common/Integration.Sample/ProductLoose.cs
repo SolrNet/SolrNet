@@ -6,9 +6,6 @@ namespace SolrNet.Tests.Integration.Sample {
         [SolrUniqueKey("id")]
         public string Id { get; set; }
 
-        [SolrField("sku")]
-        public string SKU { get; set; }
-
         [SolrField("name")]
         public string Name { get; set; }
 

@@ -37,7 +37,7 @@ namespace SolrNet.Tests {
             this.testOutputHelper = testOutputHelper;
         }
 
-        private const string solrURL = "http://localhost:8983/solr";
+        private const string solrURL = "http://localhost:8983/solr/techproducts";
 
         [Fact(Skip = "unknown reason")]
         [Trait("Category", "Integration")]
@@ -218,7 +218,7 @@ namespace SolrNet.Tests {
         public void Cache_mocked() {
             var cache = new Mocks.MSolrCache();
             cache.get += url => {
-                Assert.Equal("http://localhost:8983/solr/select/?q=*:*&version=2.2", url);
+                Assert.Equal("http://localhost:8983/solr/techproducts/select/?q=*:*&version=2.2", url);
                 return new SolrCacheEntity(url, "", "");
             };
             cache.add &= x => x.Stub();

@@ -47,12 +47,12 @@ namespace Unity.SolrNetIntegration.Tests {
                 new SolrServerElement {
                     Id = "core1",
                     DocumentType = typeof (Entity).AssemblyQualifiedName,
-                    Url = "http://localhost:8983/solr/entity1",
+                    Url = "http://localhost:8983/solr/techproducts/entity1",
                 },
                 new SolrServerElement {
                     Id = "core2",
                     DocumentType = typeof (Entity).AssemblyQualifiedName,
-                    Url = "http://localhost:8983/solr/entity2",
+                    Url = "http://localhost:8983/solr/techproducts/entity2",
                 }
             };
 

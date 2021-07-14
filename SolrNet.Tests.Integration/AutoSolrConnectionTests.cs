@@ -30,7 +30,7 @@ namespace SolrNet.Tests.Integration
     [TestCaseOrderer(MethodDefTestCaseOrderer.Type, MethodDefTestCaseOrderer.Assembly)]
     public class AutoSolrConnectionTests
     {
-        private const string solrURL = "http://localhost:8983/solr";
+        private const string solrURL = "http://localhost:8983/solr/techproducts";
 
         [Fact]
         public void SimpleGet()

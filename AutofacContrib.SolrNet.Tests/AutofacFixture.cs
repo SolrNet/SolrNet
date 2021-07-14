@@ -33,7 +33,7 @@ namespace AutofacContrib.SolrNet.Tests {
         public void ReplaceMapper() {
             var builder = new ContainerBuilder();
             var mapper = new MReadOnlyMappingManager();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr") {Mapper = mapper});
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr/techproducts") {Mapper = mapper});
             var container = builder.Build();
             var m = container.Resolve<IReadOnlyMappingManager>();
             Assert.Same(mapper, m);
@@ -63,7 +63,7 @@ namespace AutofacContrib.SolrNet.Tests {
                     Headers = new WebHeaderCollection(),
                 },
             };
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr") { HttpWebRequestFactory = factory });
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr/techproducts") { HttpWebRequestFactory = factory });
             var container = builder.Build();
             var operations = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
             var results = operations.Query(new SolrQuery("q:*"));
@@ -74,7 +74,7 @@ namespace AutofacContrib.SolrNet.Tests {
         [Fact]
         public void ResolveSolrOperations() {
             var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr/techproducts"));
             var container = builder.Build();
             var m = container.Resolve<ISolrOperations<Entity>>();
         }
@@ -86,7 +86,7 @@ namespace AutofacContrib.SolrNet.Tests {
         [Fact]
         public void ResolveSolrBasicOperationsAndSolrBasicReadOnlyOperationsUseSameEntity() {
             var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr/techproducts"));
             var container = builder.Build();
             var basic = container.Resolve<ISolrBasicOperations<Entity>>();
             var basicReadonly = container.Resolve<ISolrBasicReadOnlyOperations<Entity>>();
@@ -97,7 +97,7 @@ namespace AutofacContrib.SolrNet.Tests {
         public void DictionaryDocument_Operations()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr/techproducts"));
             var container = builder.Build();
             var m = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
         }
@@ -106,7 +106,7 @@ namespace AutofacContrib.SolrNet.Tests {
         public void DictionaryDocument_ResponseParser()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr/techproducts"));
             var container = builder.Build();
             var parser = container.Resolve<ISolrDocumentResponseParser<Dictionary<string, object>>>();
             Assert.IsType<SolrDictionaryDocumentResponseParser>(parser);
@@ -116,7 +116,7 @@ namespace AutofacContrib.SolrNet.Tests {
         public void DictionaryDocument_Serializer()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr"));
+            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr/techproducts"));
             var container = builder.Build();
             var serializer = container.Resolve<ISolrDocumentSerializer<Dictionary<string, object>>>();
             Assert.IsType<SolrDictionarySerializer>(serializer);

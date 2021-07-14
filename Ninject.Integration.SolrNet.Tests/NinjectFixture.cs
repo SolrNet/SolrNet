@@ -26,7 +26,7 @@ namespace Ninject.Integration.SolrNet.Tests {
         public void ReplaceMapper() {
             var c = new StandardKernel();
             var mapper = new global::SolrNet.Tests.Mocks.MReadOnlyMappingManager();
-            c.Load(new SolrNetModule("http://localhost:8983/solr") {Mapper = mapper});
+            c.Load(new SolrNetModule("http://localhost:8983/solr/techproducts") {Mapper = mapper});
             var m = c.Get<IReadOnlyMappingManager>();
             Assert.Same(mapper, m);
         }
@@ -34,7 +34,7 @@ namespace Ninject.Integration.SolrNet.Tests {
         [Fact]
         public void ResolveSolrOperations() {
             var c = new StandardKernel();
-            c.Load(new SolrNetModule("http://localhost:8983/solr"));
+            c.Load(new SolrNetModule("http://localhost:8983/solr/techproducts"));
             var m = c.Get<ISolrOperations<Entity>>();
         }
 

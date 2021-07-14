@@ -26,7 +26,7 @@ namespace AutofacContrib.SolrNet.Tests
             var container = builder.Build();
             var solrConnection = (SolrConnection)container.ResolveNamed<ISolrConnection>("entitySolrNet.Impl.SolrConnection");
 
-            Assert.Equal("http://localhost:8983/solr/collection1", solrConnection.ServerURL);
+            Assert.Equal("http://localhost:8983/solr/techproducts/collection1", solrConnection.ServerURL);
         }
 
 
@@ -43,11 +43,11 @@ namespace AutofacContrib.SolrNet.Tests
 
             Assert.Equal(3, servers.Count);
             Assert.Equal("entity", servers.First().Id);
-            Assert.Equal("http://localhost:8983/solr/collection1", servers.First().Url);
+            Assert.Equal("http://localhost:8983/solr/techproducts/collection1", servers.First().Url);
             Assert.Equal("AutofacContrib.SolrNet.Tests.Entity, AutofacContrib.SolrNet.Tests", servers.First().DocumentType);
 
             Assert.Equal("entity3", servers.Last().Id);
-            Assert.Equal("http://localhost:8983/solr/core1", servers.Last().Url);
+            Assert.Equal("http://localhost:8983/solr/techproducts/core1", servers.Last().Url);
             Assert.Equal("AutofacContrib.SolrNet.Tests.Entity2, AutofacContrib.SolrNet.Tests", servers.Last().DocumentType);
 
         }

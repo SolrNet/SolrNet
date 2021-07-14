@@ -23,12 +23,12 @@ namespace SolrNet.Cloud.Tests
         }
 
         public SolrCloudState GetCloudState() {
-            var replica1 = new SolrCloudReplica(true, true, "leader1", "http://localhost:8983/solr1/collection1");
-            var replica2 = new SolrCloudReplica(true, false, "replica1", "http://localhost:8983/solr2/collection1");
-            var replica3 = new SolrCloudReplica(false, false, "replica2", "http://localhost:8983/solr3/collection1");
-            var replica4 = new SolrCloudReplica(true, true, "leader2", "http://localhost:8983/solr2/collection2");
-            var replica5 = new SolrCloudReplica(true, false, "replica3", "http://localhost:8983/solr1/collection2");
-            var replica6 = new SolrCloudReplica(false, false, "replica4", "http://localhost:8983/solr3/collection2");
+            var replica1 = new SolrCloudReplica(true, true, "leader1", "http://localhost:8983/solr/techproducts1/collection1");
+            var replica2 = new SolrCloudReplica(true, false, "replica1", "http://localhost:8983/solr/techproducts2/collection1");
+            var replica3 = new SolrCloudReplica(false, false, "replica2", "http://localhost:8983/solr/techproducts3/collection1");
+            var replica4 = new SolrCloudReplica(true, true, "leader2", "http://localhost:8983/solr/techproducts2/collection2");
+            var replica5 = new SolrCloudReplica(true, false, "replica3", "http://localhost:8983/solr/techproducts1/collection2");
+            var replica6 = new SolrCloudReplica(false, false, "replica4", "http://localhost:8983/solr/techproducts3/collection2");
             var shard1 = new SolrCloudShard(true, "shard1", null, null,
                 new Dictionary<string, SolrCloudReplica>(StringComparer.OrdinalIgnoreCase) {
                     {replica1.Name, replica1},

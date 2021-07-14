@@ -13,28 +13,28 @@ namespace SolrNet.Tests
         /*
 
         EnableReplication
-        http://localhost:8983/solr/collection1/replication?command=enablereplication
+        http://localhost:8983/solr/techproducts/collection1/replication?command=enablereplication
 
         DisableReplication
-        http://localhost:8983/solr/collection1/replication?command=disablereplication
+        http://localhost:8983/solr/techproducts/collection1/replication?command=disablereplication
          
         IndexVersion
-        http://localhost:8983/solr/collection1/replication?command=indexversion
+        http://localhost:8983/solr/techproducts/collection1/replication?command=indexversion
          
         Details
-        http://localhost:8983/solr/collection1/replication?command=details
+        http://localhost:8983/solr/techproducts/collection1/replication?command=details
 
         AbortFetch
-        http://localhost:8983/solr/collection1/replication?command=abortfetch
+        http://localhost:8983/solr/techproducts/collection1/replication?command=abortfetch
          
         FetchIndex
-        http://localhost:8983/solr/collection1/replication?command=fetchindex         
+        http://localhost:8983/solr/techproducts/collection1/replication?command=fetchindex         
          
         EnablePoll
-        http://localhost:8983/solr/collection1/replication?command=enablepoll
+        http://localhost:8983/solr/techproducts/collection1/replication?command=enablepoll
          
         DisablePoll
-        http://localhost:8983/solr/collection1/replication?command=disablepoll
+        http://localhost:8983/solr/techproducts/collection1/replication?command=disablepoll
 
         */
 

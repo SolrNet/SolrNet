@@ -37,7 +37,7 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
 
             var sc = new ServiceCollection();
 
-            sc.AddSolrNet("http://localhost:8983/solr");
+            sc.AddSolrNet("http://localhost:8983/solr/techproducts");
             DefaultServiceProvider = sc.BuildServiceProvider();
         }
 
@@ -200,7 +200,7 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             //in base64
             var credentialsBase64 = Convert.ToBase64String(credentials);
             //use the options to set the Authorization header.
-            sc.AddSolrNet("http://localhost:8983/solr", options => { options.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentialsBase64); });
+            sc.AddSolrNet("http://localhost:8983/solr/techproducts", options => { options.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentialsBase64); });
 
             //test
             var provider = sc.BuildServiceProvider();
@@ -220,7 +220,7 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             //in base64
             var credentialsBase64 = Convert.ToBase64String(credentials);
             //use the options to set the Authorization header.
-            sc.AddSolrNet<string>("http://localhost:8983/solr", options => { options.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentialsBase64); });
+            sc.AddSolrNet<string>("http://localhost:8983/solr/techproducts", options => { options.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentialsBase64); });
 
             //test
             var provider = sc.BuildServiceProvider();

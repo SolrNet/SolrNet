@@ -35,7 +35,7 @@ namespace AutofacContrib.SolrNet.Tests
                                 new SolrServerElement {
                                         Id = "entity1",
                                         DocumentType = typeof (Entity1).AssemblyQualifiedName,
-                                        Url = "http://localhost:8983/solr/coreEntity1",
+                                        Url = "http://localhost:8983/solr/techproducts/coreEntity1",
                                     },
                             };
 
@@ -58,7 +58,7 @@ namespace AutofacContrib.SolrNet.Tests
                                 new SolrServerElement {
                                         Id = "entity1",
                                         DocumentType = typeof (Entity1).AssemblyQualifiedName,
-                                        Url = "http://localhost:8983/solr/coreEntity1",
+                                        Url = "http://localhost:8983/solr/techproducts/coreEntity1",
                                     },
                             };
 
@@ -81,12 +81,12 @@ namespace AutofacContrib.SolrNet.Tests
                                 new SolrServerElement {
                                         Id = "entity1",
                                         DocumentType = typeof (Entity1).AssemblyQualifiedName,
-                                        Url = "http://localhost:8983/solr/coreEntity1",
+                                        Url = "http://localhost:8983/solr/techproducts/coreEntity1",
                                     },
                                new SolrServerElement {
                                         Id = "entity2",
                                         DocumentType = typeof (Entity2).AssemblyQualifiedName,
-                                        Url = "http://localhost:8983/solr/coreEntity2",
+                                        Url = "http://localhost:8983/solr/techproducts/coreEntity2",
                                 },
                             };
 
@@ -111,12 +111,12 @@ namespace AutofacContrib.SolrNet.Tests
                                 new SolrServerElement {
                                         Id = "entity1",
                                         DocumentType = typeof (Entity1).AssemblyQualifiedName,
-                                        Url = "http://localhost:8983/solr/coreEntity1",
+                                        Url = "http://localhost:8983/solr/techproducts/coreEntity1",
                                     },
                                new SolrServerElement {
                                         Id = "entity2",
                                         DocumentType = typeof (Entity2).AssemblyQualifiedName,
-                                        Url = "http://localhost:8983/solr/coreEntity2",
+                                        Url = "http://localhost:8983/solr/techproducts/coreEntity2",
                                 },
                             };
 
@@ -141,12 +141,12 @@ namespace AutofacContrib.SolrNet.Tests
                                 new SolrServerElement {
                                         Id = "dictionary1",
                                         DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
-                                        Url = "http://localhost:8983/solr/coreDictionaryEntity1",
+                                        Url = "http://localhost:8983/solr/techproducts/coreDictionaryEntity1",
                                     },
                                new SolrServerElement {
                                         Id = "dictionary2",
                                         DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
-                                        Url = "http://localhost:8983/solr/coreDictionaryEntity2",
+                                        Url = "http://localhost:8983/solr/techproducts/coreDictionaryEntity2",
                                 },
                             };
 
@@ -171,12 +171,12 @@ namespace AutofacContrib.SolrNet.Tests
                                 new SolrServerElement {
                                         Id = "dictionary1",
                                         DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
-                                        Url = "http://localhost:8983/solr/coreDictionaryEntity1",
+                                        Url = "http://localhost:8983/solr/techproducts/coreDictionaryEntity1",
                                     },
                                new SolrServerElement {
                                         Id = "dictionary2",
                                         DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
-                                        Url = "http://localhost:8983/solr/coreDictionaryEntity2",
+                                        Url = "http://localhost:8983/solr/techproducts/coreDictionaryEntity2",
                                 },
                             };
 

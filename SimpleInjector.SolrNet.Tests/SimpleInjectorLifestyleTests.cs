@@ -17,7 +17,7 @@ namespace SimpleInjector.SolrNet.Tests
             var container = new Container();
             container.Options.DefaultLifestyle = Lifestyle.Transient;
 
-            container.AddSolrNet("http://localhost:8983/solr");
+            container.AddSolrNet("http://localhost:8983/solr/techproducts");
 
             container.Verify();
 
@@ -32,7 +32,7 @@ namespace SimpleInjector.SolrNet.Tests
                 container.Options.DefaultLifestyle = Lifestyle.Scoped;
                 container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
 
-                container.AddSolrNet("http://localhost:8983/solr");
+                container.AddSolrNet("http://localhost:8983/solr/techproducts");
 
                 container.Verify();
 
@@ -51,7 +51,7 @@ namespace SimpleInjector.SolrNet.Tests
                 container.Options.DefaultLifestyle = Lifestyle.Scoped;
                 container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
 
-                container.AddSolrNet("http://localhost:8983/solr");
+                container.AddSolrNet("http://localhost:8983/solr/techproducts");
 
                 container.Verify();
 
@@ -69,7 +69,7 @@ namespace SimpleInjector.SolrNet.Tests
             {
                 container.Options.DefaultLifestyle = Lifestyle.Singleton;
 
-                container.AddSolrNet("http://localhost:8983/solr");
+                container.AddSolrNet("http://localhost:8983/solr/techproducts");
 
                 container.Verify();
 

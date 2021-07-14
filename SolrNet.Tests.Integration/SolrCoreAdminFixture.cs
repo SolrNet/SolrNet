@@ -6,7 +6,7 @@ using SolrNet.Impl.ResponseParsers;
 using Xunit;
 
 namespace SolrNet.Tests.Integration {
-    [Trait("Category", "Integration")]
+    [Trait("Category", "Integration2")]
     [TestCaseOrderer(MethodDefTestCaseOrderer.Type, MethodDefTestCaseOrderer.Assembly)]
     public class SolrCoreAdminFixture {
         /*

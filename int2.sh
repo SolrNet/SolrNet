@@ -39,10 +39,10 @@ create_solr() {
 output=$(mktemp)
 trap "rm $output" EXIT
 
-# create_solr "run_tests stop $output" &
-create_solr "true" &
+create_solr "run_tests stop $output" &
+# create_solr "true" &
 tests=$!
 
-docker run --rm -it -p 8983:8983 --name solr_cloud solr:8.8.2 solr start -cloud -f >/dev/null
-# cat $output
+docker run --rm -it -p 8983:8983 --name solr_cloud solr:8.8.2 solr start -cloud -f >solr_output.txt
+cat $output
 wait $tests

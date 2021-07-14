@@ -13,7 +13,7 @@ namespace SolrNet.Cloud.Tests
     {
         private void PrepareCollections(string[] collectionNames)
         {
-            const string solrUrl = "http://solr:8983/solr";
+            const string solrUrl = "http://localhost:8983/solr";
             
             //var headerParser = ServiceLocator.Current.GetInstance<ISolrHeaderResponseParser>();
             var headerParser = new HeaderResponseParser();

@@ -23,7 +23,7 @@ namespace SolrNet.Cloud.Tests
         private const string CLUSTER_PROPERTY_NAME = "autoAddReplicas";
         private const string COLLECTION_ALIAS = "test_alias";
 
-        private string SOLR_CONNECTION_URL = "http://solr:8983/solr";
+        private string SOLR_CONNECTION_URL = "http://localhost:8983/solr";
         private SolrConnection solrconnection;
 
         private SolrCollectionsAdmin collections;

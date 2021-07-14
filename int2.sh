@@ -30,6 +30,7 @@ create_solr() {
   echo -e "\n\rSetting up Solr collection and documents..."
   docker exec solr_cloud solr create_collection -c techproducts -d sample_techproducts_configs 1>/dev/null 2>/dev/null
   docker exec solr_cloud post -c techproducts 'example/exampledocs/' 1>/dev/null 2>/dev/null
+  echo -e "\n\rSolr available at http://localhost:8983\n\r"
 
   set -x
   $next
@@ -38,9 +39,10 @@ create_solr() {
 output=$(mktemp)
 trap "rm $output" EXIT
 
-create_solr "run_tests stop $output" &
+# create_solr "run_tests stop $output" &
+create_solr "true" &
 tests=$!
 
 docker run --rm -it -p 8983:8983 --name solr_cloud solr:8.8.2 solr start -cloud -f >/dev/null
-cat $output
+# cat $output
 wait $tests

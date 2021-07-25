@@ -32,7 +32,7 @@ using System.Threading;
 using Xunit.Abstractions;
 
 namespace SolrNet.Tests.Integration {
-    [Trait("Category","Integration")]
+    [Trait("Category","Integration2")]
     [TestCaseOrderer(MethodDefTestCaseOrderer.Type, MethodDefTestCaseOrderer.Assembly)]
     public class IntegrationFixture
     {

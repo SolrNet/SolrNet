@@ -44,51 +44,7 @@ namespace SolrNet.Tests.Integration
             this.testOutputHelper = testOutputHelper;
             var x = IntegrationFixture.init.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-            solr.Delete(SolrQuery.All);
             solr.Commit();
-        }
-
-        [Fact]
-        public async Task Add_then_queryAsync()
-        {
-            const string name = "Samsuñg SpinPoint P120 SP2514N - hárd drívè - 250 GB - ÁTÀ-133";
-            var guid = new Guid("{78D734ED-12F8-44E0-8AA3-8CA3F353998D}");
-            var p = new Product
-            {
-                Id = "SP2514N",
-                Name = name,
-                // testing UTF
-                Manufacturer = "Samsung Electronics Co. Ltd.",
-                Categories = new[] {
-                    "electronics",
-                    "hard drive",
-                },
-                Features = new[] {
-                    "7200RPM, 8MB cache, IDE Ultra ATA-133",
-                    "NoiseGuard, SilentSeek technology, Fluid Dynamic Bearing (FDB) motor",
-                    "áéíóúñç & two", // testing UTF
-                    @"ÚóÁ⌠╒""ĥÛē…<>ܐóジャストシステムは、日本で初めてユニコードベースのワードプロセ ッサーを開発しました。このことにより、10年以上も前から、日本のコンピューターユーザーはユニコード、特に日中韓の統合漢 字の恩恵を享受してきました。ジャストシステムは現在、”xfy”というJava環境で稼働する 先進的なXML関連製品の世界市場への展開を積極的に推進していますが、ユニコードを基盤としているために、”xfy”は初めから国際化されているのです。ジャストシステムは、ユニコードの普遍的な思想とアーキテクチャに 感謝するとともに、その第5版の刊行を心から歓迎します",
-                    @"control" + (char)0x07 + (char)0x01 + (char)0x0E +(char)0x1F + (char)0xFFFE, // testing control chars
-                },
-                Price = 92,
-                PriceMoney = new Money(92m, "USD"),
-                Popularity = 6,
-                InStock = true,
-            };
-
-            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-            await solr.DeleteAsync(SolrQuery.All);
-            await solr.AddWithBoostAsync(p, 2.2);
-            await solr.CommitAsync();
-
-            await solr.QueryAsync(new SolrQueryByField("name", @"3;Furniture"));
-            var products = await solr.QueryAsync(new SolrQueryByRange<decimal>("price", 10m, 100m).Boost(2));
-            Assert.Single(products);
-            Assert.Equal(name, products[0].Name);
-            Assert.Equal("SP2514N", products[0].Id);
-            Assert.Equal(92m, products[0].Price);
-            Assert.NotNull(products.Header);
-            testOutputHelper.WriteLine("QTime is {0}", products.Header.QTime);
         }
 
         private static readonly IEnumerable<Product> products = new[] {
@@ -175,7 +131,6 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task HighlightingAsync()
         {
-            await Add_then_queryAsync();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = await solr.QueryAsync(new SolrQueryByField("features", "fluid"), new QueryOptions
             {
@@ -195,7 +150,6 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task HighlightingWrappedWithClassAsync()
         {
-            await Add_then_queryAsync();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = await solr.QueryAsync(new SolrQueryByField("features", "fluid"), new QueryOptions
             {
@@ -215,7 +169,6 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task DateFacetAsync()
         {
-            await Add_then_queryAsync();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = await solr.QueryAsync(SolrQuery.All, new QueryOptions
             {
@@ -245,7 +198,6 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task DismaxAsync()
         {
-            await Add_then_queryAsync();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var products = await solr.QueryAsync(new SolrQuery("samsung"), new QueryOptions
             {
@@ -274,8 +226,6 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task SpellCheckingAsync()
         {
-            await Add_then_queryAsync();
-            await AddSampleDocsAsync();
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var r = await solr.QueryAsync(new SolrQueryByField("name", "hell untrasharp"), new QueryOptions
             {
@@ -313,7 +263,7 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task MoreLikeThisAsync()
         {
-            await Add_then_queryAsync();
+            
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             await solr.AddAsync(new Product
             {
@@ -351,7 +301,7 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task StatsAsync()
         {
-            await Add_then_queryAsync();
+            
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = await solr.QueryAsync(SolrQuery.All, new QueryOptions
             {
@@ -398,7 +348,7 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task LocalParamsAsync()
         {
-            await Add_then_queryAsync();
+            
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             var results = await solr.QueryAsync(new LocalParams { { "q.op", "AND" } } + "solr ipod");
             Assert.Empty(results);
@@ -407,7 +357,7 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task LocalParams2Async()
         {
-            await Add_then_queryAsync();
+            
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             await solr.QueryAsync(new LocalParams { { "tag", "pp" } } + new SolrQueryByField("cat", "bla"));
         }
@@ -415,7 +365,7 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task LocalParams3Async()
         {
-            await Add_then_queryAsync();
+            
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
             await solr.QueryAsync(new LocalParams { { "tag", "pp" } } + new SolrQuery("cat:bla"));
         }
@@ -423,7 +373,7 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task LooseMappingAsync()
         {
-            await Add_then_queryAsync();
+            
             var _ = IntegrationFixture.initDict.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
             var results = await solr.QueryAsync(SolrQuery.All);
@@ -530,7 +480,7 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task SemiLooseMappingAsync()
         {
-            await Add_then_queryAsync();
+            
             var _ = IntegrationFixture.initLoose.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<ProductLoose>>();
             var products = await solr.QueryAsync(SolrQuery.All, new QueryOptions { Fields = new[] { "*", "score" } });
@@ -569,26 +519,10 @@ namespace SolrNet.Tests.Integration
                 Assert.Equal("Your PDF viewing software works!\n\n\n", response.Content);
             }
         }
-
-        public async Task AddSampleDocsAsync()
-        {
-            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-            var connection = ServiceLocator.Current.GetInstance<ISolrConnection>();
-            var files = Directory.GetFiles("exampledocs", "*.xml");
-            foreach (var file in files)
-            {
-                connection.Post("/update", File.ReadAllText(file, Encoding.UTF8));
-            }
-            await solr.CommitAsync();
-        }
-
         [Fact]
         public async Task MoreLikeThisHandlerAsync()
         {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-            await solr.DeleteAsync(SolrQuery.All);
-            await solr.CommitAsync();
-            await AddSampleDocsAsync();
             var mltParams = new MoreLikeThisHandlerParameters(new[] { "cat", "name" })
             {
                 MatchInclude = true,

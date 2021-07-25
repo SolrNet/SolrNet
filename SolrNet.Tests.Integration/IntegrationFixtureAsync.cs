@@ -519,7 +519,8 @@ namespace SolrNet.Tests.Integration
                 Assert.Equal("Your PDF viewing software works!\n\n\n", response.Content);
             }
         }
-        [Fact]
+        
+        [Fact(Skip = "MoreLikeThisHandler not available for the sample Solr schema")]
         public async Task MoreLikeThisHandlerAsync()
         {
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();

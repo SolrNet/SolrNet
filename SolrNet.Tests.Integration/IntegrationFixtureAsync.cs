@@ -254,7 +254,7 @@ namespace SolrNet.Tests.Integration
                 OrderBy = new[] { new RandomSortOrder("random") }
             });
             foreach (var r in results)
-                testOutputHelper.WriteLine(r.Manufacturer);
+                testOutputHelper.WriteLine(r.Id);
         }
 
         [Fact]

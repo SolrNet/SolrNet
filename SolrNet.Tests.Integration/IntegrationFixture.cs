@@ -83,7 +83,6 @@ namespace SolrNet.Tests.Integration {
                     @"ÚóÁ⌠╒""ĥÛē…<>ܐóジャストシステムは、日本で初めてユニコードベースのワードプロセ ッサーを開発しました。このことにより、10年以上も前から、日本のコンピューターユーザーはユニコード、特に日中韓の統合漢 字の恩恵を享受してきました。ジャストシステムは現在、”xfy”というJava環境で稼働する 先進的なXML関連製品の世界市場への展開を積極的に推進していますが、ユニコードを基盤としているために、”xfy”は初めから国際化されているのです。ジャストシステムは、ユニコードの普遍的な思想とアーキテクチャに 感謝するとともに、その第5版の刊行を心から歓迎します",
                     @"control" + (char)0x07 + (char)0x01 + (char)0x0E +(char)0x1F + (char)0xFFFE, // testing control chars
                 },
-                Price = 92,
                 PriceMoney = new Money(92m, "USD"),
                 Popularity = 6,
                 InStock = true,
@@ -99,7 +98,7 @@ namespace SolrNet.Tests.Integration {
             Assert.Single(products);
             Assert.Equal(name, products[0].Name);
             Assert.Equal("SP2514N", products[0].Id);
-            Assert.Equal(92m, products[0].Price);
+            Assert.Equal(92m, products[0].PriceMoney.Value);
             Assert.NotNull(products.Header);
             testOutputHelper.WriteLine("QTime is {0}", products.Header.QTime);
         }
@@ -117,7 +116,6 @@ namespace SolrNet.Tests.Integration {
                     "feature 1",
                     "feature 2",
                 },
-                Price = 92,
                 PriceMoney = new Money(123.44m, "EUR"),
                 Popularity = 6,
                 InStock = false,
@@ -134,7 +132,6 @@ namespace SolrNet.Tests.Integration {
                     "feature 1",
                     "feature 3",
                 },
-                Price = 92,
                 PriceMoney = new Money(123.44m, "ARS"),
                 Popularity = 6,
                 InStock = false,
@@ -151,7 +148,6 @@ namespace SolrNet.Tests.Integration {
                     "feature 1",
                     "feature 3",
                 },
-                Price = 92,
                 PriceMoney = new Money(123.44m, "GBP"),
                 Popularity = 6,
                 InStock = false,
@@ -589,7 +585,7 @@ namespace SolrNet.Tests.Integration {
             Assert.True(productAfterUpdate.Features.Contains("Feature 3"));
             Assert.True(productAfterUpdate.Features.Contains("Feature 4"));
             Assert.Equal("MyCo", productAfterUpdate.Manufacturer);
-            Assert.Equal(93, productAfterUpdate.Price);
+            Assert.Equal(93, productAfterUpdate.PriceMoney.Value);
             Assert.False(productAfterUpdate.Features.Contains("hard drive"));
         }
     }

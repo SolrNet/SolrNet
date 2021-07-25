@@ -38,9 +38,6 @@ namespace SolrNet.Tests.Integration.Sample {
 		[SolrField("weight")]
 		public float Weight { get; set; }
 
-		[SolrField("price")]
-		public decimal Price { get; set; }
-
 		[SolrField("popularity")]
 		public int Popularity { get; set; }
 

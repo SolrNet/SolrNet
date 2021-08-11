@@ -479,7 +479,7 @@ namespace SolrNet.Tests.Integration
             
             var _ = IntegrationFixture.initLoose.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<ProductLoose>>();
-            var products = await solr.QueryAsync(SolrQuery.All, new QueryOptions { Fields = new[] { "*", "score" } });
+            var products = await solr.QueryAsync(new SolrQueryByField("id", "SP2514N"), new QueryOptions { Fields = new[] { "*", "score" } });
             Assert.Single(products);
             var product = products[0];
             Assert.Equal("SP2514N", product.Id);
@@ -490,8 +490,8 @@ namespace SolrNet.Tests.Integration
             testOutputHelper.WriteLine(product.OtherFields.Count.ToString());
             foreach (var field in product.OtherFields)
                 testOutputHelper.WriteLine("{0}: {1} ({2})", field.Key, field.Value, TypeOrNull(field.Value));
-            Assert.IsType<DateTime>(product.OtherFields["timestamp"]);
-            Assert.Equal(new DateTime(1, 1, 1), product.OtherFields["timestamp"]);
+            var manufacturedate = Assert.IsType<DateTime>(product.OtherFields["manufacturedate_dt"]);
+            Assert.Equal(new DateTime(2006, 02, 13), manufacturedate.Date);
             Assert.IsAssignableFrom<ICollection>(product.OtherFields["features"]);
             product.OtherFields["timestamp"] = new DateTime(2010, 1, 1);
             product.OtherFields["features"] = new[] { "a", "b", "c" };

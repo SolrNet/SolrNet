@@ -166,6 +166,11 @@ namespace SolrNet.Tests.Integration
         [Fact]
         public async Task DateFacetAsync()
         {
+            if (SolrVersion > new Version(6, 6))
+            {
+                testOutputHelper.WriteLine($"Date facet not available in Solr {SolrVersion}, skipping test");
+                return;
+            }
             var solr = ServiceLocator.Current.GetInstance<ISolrBasicOperations<Product>>();
             var results = await solr.QueryAsync(SolrQuery.All, new QueryOptions
             {
@@ -540,5 +545,7 @@ namespace SolrNet.Tests.Integration
             }
 
         }
+
+        private static readonly Version SolrVersion = Version.Parse(Environment.GetEnvironmentVariable("SOLR_VERSION") ?? "0.0");
     }
 }

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export SOLR_VERSION=8.8.2
+
 run_tests() {
   local stop="$1"
   local output="$2"
@@ -52,6 +54,6 @@ create_solr "run_tests stop $output" &
 # create_solr "true" &
 tests=$!
 
-docker run --rm -it -p 8983:8983 --name solr_cloud solr:8.8.2 solr start -cloud -f >solr_output.txt
+docker run --rm -it -p 8983:8983 --name solr_cloud solr:$SOLR_VERSION solr start -cloud -f >solr_output.txt
 cat $output
 wait $tests

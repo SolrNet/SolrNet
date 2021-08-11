@@ -379,7 +379,6 @@ namespace SolrNet.Tests.Integration
             Assert.IsType<bool>(results[0]["inStock"]);
             Assert.IsType<int>(results[0]["popularity"]);
             Assert.IsType<float>(results[0]["price"]);
-            Assert.IsType<DateTime>(results[0]["timestamp"]);
             Assert.IsType<string>(((IList)results[0]["cat"])[0]);
             foreach (var r in results)
                 foreach (var kv in r)

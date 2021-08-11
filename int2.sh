@@ -30,6 +30,15 @@ create_solr() {
   echo -e "\n\rSetting up Solr collection and documents..."
   docker exec solr_cloud solr create_collection -c techproducts -d sample_techproducts_configs 1>/dev/null 2>/dev/null
   docker exec solr_cloud post -c techproducts 'example/exampledocs/' 1>/dev/null 2>/dev/null
+
+  curl -s -X POST -H 'Content-type:application/json' -d '{
+    "update-requesthandler": {
+      "name": "/select",
+      "class": "solr.SearchHandler",
+      "last-components": ["spellcheck"]
+    }
+  }' http://localhost:8983/solr/techproducts/config >/dev/null
+  
   echo -e "\n\rSolr available at http://localhost:8983\n\r"
 
   set -x

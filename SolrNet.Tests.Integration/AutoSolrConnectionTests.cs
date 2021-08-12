@@ -36,6 +36,7 @@ namespace SolrNet.Tests.Integration
         public void SimpleGet()
         {
             var p = new Dictionary<string, string>();
+            p["wt"] = "xml";
             p["q"] = "*";
             p["rows"] = "1";
             var conn = new AutoSolrConnection(solrURL);
@@ -48,6 +49,7 @@ namespace SolrNet.Tests.Integration
         public async Task SimpleGetAsync()
         {
             var p = new Dictionary<string, string>();
+            p["wt"] = "xml";
             p["q"] = "*";
             p["rows"] = "1";
             var conn = new AutoSolrConnection(solrURL);
@@ -60,6 +62,7 @@ namespace SolrNet.Tests.Integration
         public async Task GetAsyncAutoPost()
         {
             var p = new Dictionary<string, string>();
+            p["wt"] = "xml";
             p["q"] = "*";
             p["rows"] = "1";
             p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => Guid.NewGuid().ToString()));
@@ -73,6 +76,7 @@ namespace SolrNet.Tests.Integration
         public async Task GetStreamAsyncAutoPost()
         {
             var p = new Dictionary<string, string>();
+            p["wt"] = "xml";
             p["q"] = "*";
             p["rows"] = "1";
             p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => Guid.NewGuid().ToString()));
@@ -89,6 +93,7 @@ namespace SolrNet.Tests.Integration
         {
             //No mocking yet of HTTPClient, so checked with Fiddler if indeed POST-ed
             var p = new Dictionary<string, string>();
+            p["wt"] = "xml";
             p["q"] = "*";
             p["rows"] = "1";
             p["test"] = string.Join("", Enumerable.Range(0, 9000).Select(a => Guid.NewGuid().ToString()));

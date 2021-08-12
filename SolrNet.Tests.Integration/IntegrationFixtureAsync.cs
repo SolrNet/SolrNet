@@ -378,7 +378,7 @@ namespace SolrNet.Tests.Integration
             
             var _ = IntegrationFixture.initDict.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
-            var results = await solr.QueryAsync(SolrQuery.All);
+            var results = await solr.QueryAsync(new SolrQueryByField("id", "TWINX2048-3200PRO"));
             Assert.IsType<ArrayList>(results[0]["cat"]);
             Assert.IsType<string>(results[0]["id"]);
             Assert.IsType<bool>(results[0]["inStock"]);

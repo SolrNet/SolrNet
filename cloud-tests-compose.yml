@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   solr:
-    image: solr:8.7.0
+    image: solr:8.8.2
     container_name: solr
     logging:
       driver: none

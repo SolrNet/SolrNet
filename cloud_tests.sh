@@ -5,11 +5,9 @@ run_tests() {
 
   echo -e "\n\rWaiting for Solr to start..."
   until docker container inspect solr 1>/dev/null 2>/dev/null; do
-    echo try 1
     sleep 0.5
   done
   until curl -s http://localhost:8983 1>/dev/null 2>/dev/null; do
-    echo try 2
     sleep 0.5
   done
 

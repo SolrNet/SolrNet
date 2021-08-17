@@ -14,8 +14,8 @@ services:
     image: zookeeper
     container_name: zoo
     network_mode: host
-    logging:
-      driver: none
+    # logging:
+    #  driver: none
     environment:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=zoo:2888:3888;9983

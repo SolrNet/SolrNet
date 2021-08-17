@@ -31,7 +31,8 @@ trap "rm $output" EXIT
 run_tests "$output" &
 tests=$!
 
-docker-compose -f cloud-tests-compose.yml up --abort-on-container-exit --force-recreate --remove-orphans --renew-anon-volumes
+nix run -f https://github.com/NixOS/nixpkgs/archive/bed08131cd29a85f19716d9351940bdc34834492.tar.gz docker-compose -c \
+  docker-compose -f cloud-tests-compose.yml up --abort-on-container-exit --force-recreate --remove-orphans --renew-anon-volumes
 
 cat $output
 wait $tests

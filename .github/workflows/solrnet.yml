@@ -11,6 +11,6 @@ jobs:
       - name: Unit tests
         run: ./unit_tests.sh
       - name: Integration tests
-        run: ./int2.sh
+        run: ./integration_tests.sh
       - name: SolrCloud tests
         run: ./cloud_tests.sh

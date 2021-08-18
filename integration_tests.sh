@@ -7,8 +7,7 @@ run_tests() {
   local output="$2"
 
   echo -e "\n\rRunning integration tests..."
-  nix run -f https://github.com/NixOS/nixpkgs/archive/3b6c3bee9174dfe56fd0e586449457467abe7116.tar.gz dotnet-sdk_5 -c \
-    dotnet test SolrNet.Tests.Integration --filter 'Category=Integration' 1>$output 2>$output
+  nix run -c dotnet test SolrNet.Tests.Integration --filter 'Category=Integration' 1>$output 2>$output
   ret=$?
 
   if [ -n "$stop" ]; then

@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   solr:
-    image: solr:8.8.2
+    image: solr:${SOLR_VERSION}
     container_name: solr
     network_mode: host
     # logging:

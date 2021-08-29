@@ -194,14 +194,14 @@ namespace SolrNet.Tests.Integration
                 Facet = new FacetParameters
                 {
                     Queries = new[] {
-                        new SolrFacetDateQuery("timestamp", DateTime.Now.AddHours(-1), DateTime.Now.AddHours(1), "+1DAY") {
+                        new SolrFacetDateQuery("manufacturedate_dt", DateTime.Now.AddHours(-1), DateTime.Now.AddHours(1), "+1DAY") {
                             HardEnd = true,
                             Other = new[] {FacetDateOther.After, FacetDateOther.Before}
                         },
                     }
                 }
             });
-            var dateFacetResult = results.FacetDates["timestamp"];
+            var dateFacetResult = results.FacetDates["manufacturedate_dt"];
             testOutputHelper.WriteLine(dateFacetResult.DateResults[0].Key.ToString());
             testOutputHelper.WriteLine(dateFacetResult.DateResults[0].Value.ToString());
         }

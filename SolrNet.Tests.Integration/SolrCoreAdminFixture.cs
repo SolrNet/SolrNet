@@ -6,30 +6,30 @@ using SolrNet.Impl.ResponseParsers;
 using Xunit;
 
 namespace SolrNet.Tests.Integration {
-    [Trait("Category", "Integration")]
+    [Trait("Category", "Integration2")]
     [TestCaseOrderer(MethodDefTestCaseOrderer.Type, MethodDefTestCaseOrderer.Assembly)]
     public class SolrCoreAdminFixture {
         /*
         CREATE
-        http://localhost:8983/solr/admin/cores?action=CREATE&name=core0&instanceDir=path_to_instance_directory
+        http://localhost:8983/solr/techproducts/admin/cores?action=CREATE&name=core0&instanceDir=path_to_instance_directory
 
         RENAME
-        http://localhost:8983/solr/admin/cores?action=RENAME&core=core0&other=core5
+        http://localhost:8983/solr/techproducts/admin/cores?action=RENAME&core=core0&other=core5
 
         RELOAD
-        http://localhost:8983/solr/admin/cores?action=RELOAD&core=core0
+        http://localhost:8983/solr/techproducts/admin/cores?action=RELOAD&core=core0
 
         ALIAS
-        http://localhost:8983/solr/admin/cores?action=ALIAS&core=core0&other=corefoo
+        http://localhost:8983/solr/techproducts/admin/cores?action=ALIAS&core=core0&other=corefoo
 
         SWAP
-        http://localhost:8983/solr/admin/cores?action=SWAP&core=core1&other=core0
+        http://localhost:8983/solr/techproducts/admin/cores?action=SWAP&core=core1&other=core0
          
         STATUS
-        http://localhost:8983/solr/admin/cores?action=STATUS&core=core0
+        http://localhost:8983/solr/techproducts/admin/cores?action=STATUS&core=core0
         
         UNLOAD
-        http://localhost:8983/solr/admin/cores?action=UNLOAD&core=core0
+        http://localhost:8983/solr/techproducts/admin/cores?action=UNLOAD&core=core0
         */
 
         private readonly string solrUrl;

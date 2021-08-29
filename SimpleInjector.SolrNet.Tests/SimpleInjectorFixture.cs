@@ -12,7 +12,7 @@ namespace SimpleInjector.SolrNet.Tests
         public SimpleInjectorFixture()
         {
             Container = new Container();
-            Container.AddSolrNet("http://localhost:8983/solr");
+            Container.AddSolrNet("http://localhost:8983/solr/techproducts");
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace SimpleInjector.SolrNet.Tests
             //in base64
             var credentialsBase64 = Convert.ToBase64String(credentials);
             //use the options to set the Authorization header.
-            c.AddSolrNet("http://localhost:8983/solr", options => { options.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentialsBase64); });
+            c.AddSolrNet("http://localhost:8983/solr/techproducts", options => { options.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", credentialsBase64); });
 
             //test
             var connection = c.GetInstance<ISolrConnection>() as AutoSolrConnection;

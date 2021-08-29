@@ -23,20 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="exampledocs\hd.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\ipod_other.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\ipod_video.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\mem.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\monitor.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\monitor2.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\mp500.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\sd500.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\solr.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\utf8-example.xml" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="exampledocs\vidcard.xml" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="app.config">
       <SubType>Designer</SubType>
     </None>

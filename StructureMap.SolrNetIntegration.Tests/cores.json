@@ -3,17 +3,17 @@
     "servers": [
       {
         "id": "entity",
-        "url": "http://localhost:8983/solr/collection1",
+        "url": "http://localhost:8983/solr/techproducts/collection1",
         "documentType": "StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests"
       },
       {
         "id": "entity2",
-        "url": "http://localhost:8983/solr/core0",
+        "url": "http://localhost:8983/solr/techproducts/core0",
         "documentType": "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"
       },
       {
         "id": "entity3",
-        "url": "http://localhost:8983/solr/core1",
+        "url": "http://localhost:8983/solr/techproducts/core1",
         "documentType": "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"
       }
     ]

@@ -28,7 +28,7 @@ namespace Ninject.Integration.SolrNet.Tests
 
             var solrConnection = (SolrConnection)kernel.Get<ISolrConnection>((bm) => bm.Get<string>("CoreId") == "entity", new Parameters.IParameter[] { });
 
-            Assert.Equal("http://localhost:8983/solr/collection1", solrConnection.ServerURL);
+            Assert.Equal("http://localhost:8983/solr/techproducts/collection1", solrConnection.ServerURL);
         }
 
 
@@ -45,11 +45,11 @@ namespace Ninject.Integration.SolrNet.Tests
 
             Assert.Equal(3, servers.Count);
             Assert.Equal("entity", servers.First().Id);
-            Assert.Equal("http://localhost:8983/solr/collection1", servers.First().Url);
+            Assert.Equal("http://localhost:8983/solr/techproducts/collection1", servers.First().Url);
             Assert.Equal("Ninject.Integration.SolrNet.Tests.Entity, Ninject.Integration.SolrNet.Tests", servers.First().DocumentType);
 
             Assert.Equal("entity3", servers.Last().Id);
-            Assert.Equal("http://localhost:8983/solr/core1", servers.Last().Url);
+            Assert.Equal("http://localhost:8983/solr/techproducts/core1", servers.Last().Url);
             Assert.Equal("Ninject.Integration.SolrNet.Tests.Entity2, Ninject.Integration.SolrNet.Tests", servers.Last().DocumentType);
 
         }

@@ -2,6 +2,11 @@
 
 export SOLR_VERSION=${SOLR_VERSION:-8.8.2}
 
+if nix run -c dpkg --compare-versions "$SOLR_VERSION" lt 7; then
+  echo "Cloud tests not set up yet for Solr $SOLR_VERSION"
+  exit 0
+fi
+
 run_tests() {
   local output="$1"
 

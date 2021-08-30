@@ -1,9 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.19</Version>
     <Authors>Mauricio Scheffer and contributors</Authors>
     <Company />
     <Product>SolrNet</Product>
@@ -11,11 +9,6 @@
       SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.
       This is the SolrNet.Core package, and should be used in combination with any of our easy to use Dependency Injection SolrNet integration libraries.
     </Description>
-    <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/solrnet/solrnet</PackageProjectUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageIconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</PackageIconUrl>
     <PackageId>SolrNet.Core</PackageId>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)'=='Release|netstandard2.0'">

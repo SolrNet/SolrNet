@@ -1,17 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-    <Version>1.0.19</Version>
-    <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/solrnet/solrnet</PackageProjectUrl>
     <PackageId>SolrNet.Windsor</PackageId>
     <Product>SolrNet.Windsor</Product>
     <Authors>Mauricio Scheffer and contributors</Authors>
     <Company />
     <Description>Windsor facility for SolrNet. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</Description>
-    <PackageIconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</PackageIconUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>

@@ -1,20 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net46</TargetFrameworks>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <AssemblyName>CommonServiceLocator.SolrNet</AssemblyName>
     <RootNamespace>CommonServiceLocator.SolrNet</RootNamespace>
-    <Version>1.0.19</Version>
-    <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/solrnet/solrnet</PackageProjectUrl>
     <PackageId>SolrNet</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Mauricio Scheffer and contributors</Authors>
     <Company />
     <Product>SolrNet</Product>
     <Description>SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x. This package comes with a build in easy to use Dependency Injection for SolrNet.Core.</Description>
-    <PackageIconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</PackageIconUrl>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />

@@ -32,6 +32,7 @@ The easiest way to get going is to use our NuGet packages:
 |[SolrNet.Cloud.Core](https://www.nuget.org/packages/SolrNet.Cloud.Core/) | Core library, best used with one of the DI integration packages | 4.6 | 2.0 |
 |[SolrNet.Cloud](https://www.nuget.org/packages/SolrNet.Cloud/)| [Lightweight DI - commonservicelocator](https://github.com/unitycontainer/commonservicelocator) | 4.6 | 2.0 |
 |[SolrNet.Cloud.Unity](https://www.nuget.org/packages/SolrNet.Cloud.Unity/)| [Unity](https://github.com/unitycontainer/unity) | 4.6 | 2.0 |
+|[SolrNet.Cloud.Autofac](https://www.nuget.org/packages/SolrNet.Cloud.Autofac/)| [Autofac](https://autofac.org) | 4.6 | 2.0 |
 
 
 ### Documentation index

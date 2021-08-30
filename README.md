@@ -5,8 +5,6 @@ SolrNet does not attempt to abstract much over Solr, it's assumed that you know 
 
 If you're not familiar with Solr, take your time to follow the [Solr tutorial](http://lucene.apache.org/solr/tutorial.html), see the [FAQ](http://wiki.apache.org/solr/FAQ) and the [docs](http://wiki.apache.org/solr/FrontPage ). Consider getting a [book](http://lucene.apache.org/solr/books.html).
 
-<!-- This page documents SolrNet features in the master branch. For version-specific documentation, see the Documentation directory on the corresponding version branch. For example https://github.com/mausch/SolrNet/blob/0.4.x/Documentation/README.md -->
-
 ### Downloads
 
 The easiest way to get going is to use our NuGet packages:
@@ -23,8 +21,7 @@ The easiest way to get going is to use our NuGet packages:
 |[SolrNet.Ninject](https://www.nuget.org/packages/SolrNet.Ninject/)| [Ninject](http://www.ninject.org/)  | 4.6 | 2.0 |
 |[SolrNet.Unity](https://www.nuget.org/packages/SolrNet.Unity/)| [Unity](https://github.com/unitycontainer/unity) | 4.6 | 2.0 |
 |[SolrNet.Autofac](https://www.nuget.org/packages/SolrNet.Autofac/)| [Autofac](https://autofac.org/) | 4.6 | 2.0 |
-|[SolrNet.NHibernate](https://www.nuget.org/packages/SolrNet.NHibernate/)| [NHibernate](http://nhibernate.info/) | 4.6 | - |
-|[SolrNet.SimpleInjector](https://www.nuget.org/packages/SolrNet.SimpleInjector/)| [SimpleInjector](https://simpleinjector.org/) | 4.6 | 2.0 |
+|[SolrNet.SimpleInjector](https://www.nuget.org/packages/SimpleInjector.SolrNet/)| [SimpleInjector](https://simpleinjector.org/) | 4.6 | 2.0 |
 
 #### SolrCloud 
 
@@ -33,8 +30,7 @@ The easiest way to get going is to use our NuGet packages:
 |[SolrNet.Cloud.Core](https://www.nuget.org/packages/SolrNet.Cloud.Core/) | Core library, best used with one of the DI integration packages | 4.6 | 2.0 |
 |[SolrNet.Cloud](https://www.nuget.org/packages/SolrNet.Cloud/)| [Lightweight DI - commonservicelocator](https://github.com/unitycontainer/commonservicelocator) | 4.6 | 2.0 |
 |[SolrNet.Cloud.Unity](https://www.nuget.org/packages/SolrNet.Cloud.Unity/)| [Unity](https://github.com/unitycontainer/unity) | 4.6 | 2.0 |
-
-You can find the latest builds on our AppVeyor build service: [![Build status](https://ci.appveyor.com/api/projects/status/0oj6vqpnoyw08jtq?svg=true)](https://ci.appveyor.com/project/XavierMorera/solrnet-crl26). <!--The build server also has a NuGet feed with these nightly builds: https://ci.appveyor.com/nuget/solrnet-022x5w7kmuba -->
+|[SolrNet.Cloud.Autofac](https://www.nuget.org/packages/SolrNet.Cloud.Autofac/)| [Autofac](https://autofac.org) | 4.6 | 2.0 |
 
 
 ### Documentation index

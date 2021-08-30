@@ -3,12 +3,11 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-      <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
-      <PackageReference Include="Castle.Core" Version="4.2.1" />
-      <PackageReference Include="Castle.Windsor" Version="4.1.0" />
-      <PackageReference Include="xunit.assert" Version="2.4.1" />
-      
-</ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
+    <PackageReference Include="Castle.Core" Version="4.2.1" />
+    <PackageReference Include="Castle.Windsor" Version="4.1.0" />
+    <PackageReference Include="xunit.assert" Version="2.4.1" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj"/>
   </ItemGroup>

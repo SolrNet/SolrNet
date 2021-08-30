@@ -3,9 +3,9 @@
     <TargetFramework>net46</TargetFramework>
     <Authors>Mauricio Scheffer and contributors</Authors>
     <PackageId>SolrNet.Cloud.Unity</PackageId>
+    <IsPackable>true</IsPackable>
     <Company />
     <Product>SolrNet.Cloud.Unity</Product>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Unity integration for SolrNet.Cloud. This version of SolrNet.Cloud is compatible with Solr 1.x to Solr 7.x.</Description>
   </PropertyGroup>
   <ItemGroup>

@@ -3,10 +3,10 @@
     <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
     <Authors>Mauricio Scheffer and contributors</Authors>
     <PackageId>SolrNet.Unity</PackageId>
+    <IsPackable>true</IsPackable>
     <Company />
     <Product>SolrNet.Unity</Product>
     <Description>Unity integration for SolrNet. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />

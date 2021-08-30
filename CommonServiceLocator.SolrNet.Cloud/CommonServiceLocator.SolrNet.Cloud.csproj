@@ -4,6 +4,7 @@
     <AssemblyName>CommonServiceLocator.SolrNet.Cloud</AssemblyName>
     <RootNamespace>CommonServiceLocator.SolrNet.Cloud</RootNamespace>
     <PackageId>SolrNet.Cloud</PackageId>
+    <IsPackable>true</IsPackable>
     <Product>SolrNet.Cloud</Product>
     <Authors>Mauricio Scheffer and contributors</Authors>
     <Company />

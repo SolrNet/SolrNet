@@ -4,7 +4,7 @@
     <AssemblyName>CommonServiceLocator.SolrNet</AssemblyName>
     <RootNamespace>CommonServiceLocator.SolrNet</RootNamespace>
     <PackageId>SolrNet</PackageId>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
     <Authors>Mauricio Scheffer and contributors</Authors>
     <Company />
     <Product>SolrNet</Product>

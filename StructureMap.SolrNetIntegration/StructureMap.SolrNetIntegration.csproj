@@ -3,9 +3,9 @@
     <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
     <Authors>Mauricio Scheffer and contributors</Authors>
     <PackageId>SolrNet.StructureMap</PackageId>
+    <IsPackable>true</IsPackable>
     <Company />
     <Product>SolrNet.StructureMap</Product>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>StructureMap registry for SolrNet. SolrNet is a .NET Open Source client for Apache Solr. This version of SolrNet is compatible with Solr 1.x to Solr 7.x.</Description>
   </PropertyGroup>
   <ItemGroup>

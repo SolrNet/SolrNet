@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env -S nix run -c sh
 
 export SOLR_VERSION=${SOLR_VERSION:-8.8.2}
 
@@ -7,7 +7,7 @@ run_tests() {
   local output="$2"
 
   echo -e "\n\rRunning integration tests..."
-  nix run -c dotnet test SolrNet.Tests.Integration --filter 'Category=Integration' 1>$output 2>$output
+  dotnet test SolrNet.Tests.Integration --filter 'Category=Integration' 1>$output 2>$output
   ret=$?
 
   if [ -n "$stop" ]; then

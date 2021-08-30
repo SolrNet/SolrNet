@@ -34,8 +34,6 @@ The easiest way to get going is to use our NuGet packages:
 |[SolrNet.Cloud](https://www.nuget.org/packages/SolrNet.Cloud/)| [Lightweight DI - commonservicelocator](https://github.com/unitycontainer/commonservicelocator) | 4.6 | 2.0 |
 |[SolrNet.Cloud.Unity](https://www.nuget.org/packages/SolrNet.Cloud.Unity/)| [Unity](https://github.com/unitycontainer/unity) | 4.6 | 2.0 |
 
-You can find the latest builds on our AppVeyor build service: [![Build status](https://ci.appveyor.com/api/projects/status/0oj6vqpnoyw08jtq?svg=true)](https://ci.appveyor.com/project/XavierMorera/solrnet-crl26). <!--The build server also has a NuGet feed with these nightly builds: https://ci.appveyor.com/nuget/solrnet-022x5w7kmuba -->
-
 
 ### Documentation index
 

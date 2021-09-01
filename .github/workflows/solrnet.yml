@@ -9,8 +9,6 @@ jobs:
         solr_version: [8.8.2, 7.7.0, 6.6.6, 5.5.5]
     steps:
       - uses: actions/checkout@v2
-        # with:
-        #  fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
       - uses: cachix/install-nix-action@v13
       - name: Unit tests
         run: ./unit_tests.sh
@@ -24,3 +22,21 @@ jobs:
         env:
           SOLR_VERSION: ${{ matrix.solr_version }}
         timeout-minutes: 5
+  pack:
+    runs-on: ubuntu-20.04
+    needs: test
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+         fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+      - uses: cachix/install-nix-action@v13
+      - name: Pack
+        run: ./pack.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Git tag
+        uses: mathieudutour/github-tag-action@v5.6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ env.VersionTag }}

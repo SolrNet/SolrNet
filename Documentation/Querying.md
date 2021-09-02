@@ -68,10 +68,10 @@ var q = new SolrQueryByDistance("store", pointLatitude = 45.15, pointLongitude =
 See the [Solr wiki](http://wiki.apache.org/solr/SpatialSearch) for more information.
 
 ### Query operators
-You can use the `&&` and `||` operators to connect queries, with the expected results:
+You can use the `&` and `|` operators to connect queries, with the expected results:
 
 ```
-var q = new SolrQuery("solr") && new SolrQuery("name:desc");
+var q = new SolrQuery("solr") & new SolrQuery("name:desc");
 ```
 
 generates the query `solr AND name:desc`

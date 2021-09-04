@@ -4,6 +4,8 @@
     <Version Condition="'$(Version)' == ''">1.0.20</Version>
     <RepositoryUrl>https://github.com/solrnet/solrnet</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsPackable>false</IsPackable>
     <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>

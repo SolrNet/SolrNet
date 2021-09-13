@@ -8,6 +8,8 @@ services:
     #  driver: none
     environment:
       ZK_HOST: localhost:9983
+      # https://issues.apache.org/jira/browse/SOLR-15139?focusedCommentId=17279628&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-17279628
+      SOLR_OPTS: "-Dsolr.jetty.http.idleTimeout=60000 -DsocketTimeout=60000 -DconnTimeout=60000"
     depends_on:
       - zoo
   zoo:

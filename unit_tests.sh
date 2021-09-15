@@ -1,2 +1,2 @@
-#!/usr/bin/env sh
-nix run -c dotnet test --filter 'Category!~Integration'
+#!/usr/bin/env -S nix run -c sh
+dotnet test --filter 'Category!~Integration'

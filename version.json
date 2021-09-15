@@ -1,0 +1,7 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/v3.4.231/src/NerdBank.GitVersioning/version.schema.json",
+  "version": "1.0.20-alpha.{height}",
+  "publicReleaseRefSpec": [
+    "^refs/tags/\\d+\\.\\d+\\.\\d+"
+  ]
+}

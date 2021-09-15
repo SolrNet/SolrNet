@@ -45,21 +45,21 @@
       },
       "Hedgehog": {
         "type": "Direct",
-        "requested": "[0.9.0, )",
-        "resolved": "0.9.0",
-        "contentHash": "MIY5SK9K+kyEIXKqI7rqAcyvE3MTAMt51fSC6c/QxIJAVDcDHH+beVHFb0IwMEKfRNkyWjbg8RILcJyj+CJINQ==",
+        "requested": "[0.10.0, )",
+        "resolved": "0.10.0",
+        "contentHash": "NHKdHP5yX02OK9+VQ5Yw3MZVwUoMMJG2fmTlTsY/33kRKgvv10B7eFuAbylqq/hGTtBTrNupbzIpUTY4PfXZoQ==",
         "dependencies": {
           "FSharp.Core": "4.1.17"
         }
       },
       "Hedgehog.Experimental": {
         "type": "Direct",
-        "requested": "[0.3.0, )",
-        "resolved": "0.3.0",
-        "contentHash": "eLbJRDHNtC9do94/UDnKDs4cX2W14t9R6/BzTW5s+wd+Q7NOjU9HAMkVCkQfzmwfFehuO7WddWa8bvmUhU2C4A==",
+        "requested": "[0.4.0, )",
+        "resolved": "0.4.0",
+        "contentHash": "zVchyAB12Pf2+xs7PVRmOMQZxhTNWsm8ZKVl7PoD1L5fcOIh5gBCSY5TcFS544LgM/gqsfLYNHHcBy82apb8eA==",
         "dependencies": {
           "FSharp.Core": "4.3.4",
-          "Hedgehog": "0.9.0",
+          "Hedgehog": "0.10.0",
           "TypeShape": "9.0.0"
         }
       },

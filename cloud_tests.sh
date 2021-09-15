@@ -30,7 +30,11 @@ run_tests() {
 }
 
 output=$(mktemp)
-trap "rm $output" EXIT
+if [ -n "$GITHUB_ENV" ]; then
+  echo "CLOUD_TEST_OUTPUT=$output" >> $GITHUB_ENV
+else
+  trap "rm $output" EXIT
+fi
 
 run_tests "$output" &
 tests=$!

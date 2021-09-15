@@ -22,6 +22,12 @@ jobs:
         env:
           SOLR_VERSION: ${{ matrix.solr_version }}
         timeout-minutes: 5
+      - name: Archive test output
+        uses: actions/upload-artifact@v2
+        if: ${{ env.CLOUD_TEST_OUTPUT }}
+        with:
+          name: test-output
+          path: ${{ env.CLOUD_TEST_OUTPUT }}
   pack:
     runs-on: ubuntu-20.04
     needs: test

@@ -4,8 +4,8 @@ services:
     image: solr:${SOLR_VERSION}
     container_name: solr
     network_mode: host
-    # logging:
-    #  driver: none
+    logging:
+      driver: none
     environment:
       ZK_HOST: localhost:9983
       # https://issues.apache.org/jira/browse/SOLR-15139?focusedCommentId=17279628&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-17279628
@@ -16,8 +16,8 @@ services:
     image: zookeeper:3.6.3
     container_name: zoo
     network_mode: host
-    # logging:
-    #  driver: none
+    logging:
+      driver: none
     environment:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=zoo:2888:3888;9983

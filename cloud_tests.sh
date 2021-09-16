@@ -19,7 +19,7 @@ run_tests() {
   done
 
   echo -e "\n\rRunning integration tests..."
-  dotnet test SolrNet.Cloud.Tests --filter 'Category=Integration' 1>$output 2>$output
+  dotnet test SolrNet.Cloud.Tests --filter 'Category=Integration'
   ret=$?
 
   echo -e "\n\rStopping Solr..."

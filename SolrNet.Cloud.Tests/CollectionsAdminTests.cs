@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using Xunit;
 using SolrNet.Cloud.CollectionsAdmin;
 using SolrNet.Impl;
@@ -8,6 +9,7 @@ using SolrNet.Cloud.ZooKeeperClient;
 using System.Threading;
 using System.Threading.Tasks;
 using SolrNet.Tests.Integration;
+using Xunit.Abstractions;
 
 namespace SolrNet.Cloud.Tests
 {
@@ -34,6 +36,14 @@ namespace SolrNet.Cloud.Tests
         private const int ZOOKEEPER_REFRESH_PERIOD_MSEC = 2000;
         private ISolrCloudStateProvider solrCloudStateProvider = null;
 
+        public CollectionsAdminTests(ITestOutputHelper output)
+        {
+            // https://github.com/xunit/xunit/issues/416#issuecomment-378512739
+            var type = output.GetType();
+            var testMember = type.GetField("test", BindingFlags.Instance | BindingFlags.NonPublic);
+            var test = (ITest)testMember.GetValue(output);
+            Console.WriteLine("Starting " + test.DisplayName);
+        }
     
         [Fact]
         public async Task ReloadCollection()

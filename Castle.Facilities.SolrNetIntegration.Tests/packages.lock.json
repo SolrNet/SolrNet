@@ -1956,7 +1956,7 @@
           "Castle.Core": "4.2.1",
           "Castle.Windsor": "4.1.0",
           "CommonServiceLocator": "2.0.2",
-          "SolrNet.Core": "1.0.19",
+          "SolrNet.Core": "1.0.20",
           "xunit.assert": "2.4.1"
         }
       },
@@ -1964,7 +1964,7 @@
         "type": "Project",
         "dependencies": {
           "Castle.Windsor": "4.1.0",
-          "SolrNet.Core": "1.0.19"
+          "SolrNet.Core": "1.0.20"
         }
       }
     }

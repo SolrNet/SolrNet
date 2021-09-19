@@ -1184,7 +1184,7 @@
         "type": "Project",
         "dependencies": {
           "SimpleInjector": "4.3.0",
-          "SolrNet.Core": "1.0.19"
+          "SolrNet.Core": "1.0.20"
         }
       },
       "SolrNet.Core": {

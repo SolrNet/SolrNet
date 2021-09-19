@@ -1245,7 +1245,7 @@
       "SolrNet.Unity": {
         "type": "Project",
         "dependencies": {
-          "SolrNet.Core": "1.0.19",
+          "SolrNet.Core": "1.0.20",
           "System.Configuration.ConfigurationManager": "5.0.0",
           "Unity": "5.5.0"
         }

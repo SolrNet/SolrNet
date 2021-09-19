@@ -379,7 +379,7 @@
         "type": "Project",
         "dependencies": {
           "Newtonsoft.Json": "10.0.3",
-          "SolrNet.Core": "1.0.19",
+          "SolrNet.Core": "1.0.20",
           "ZooKeeperNetEx": "3.4.12.1"
         }
       },

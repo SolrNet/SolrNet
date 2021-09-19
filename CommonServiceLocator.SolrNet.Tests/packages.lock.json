@@ -1875,7 +1875,7 @@
         "type": "Project",
         "dependencies": {
           "CommonServiceLocator": "2.0.2",
-          "SolrNet.Core": "1.0.19"
+          "SolrNet.Core": "1.0.20"
         }
       },
       "SolrNet.Core": {

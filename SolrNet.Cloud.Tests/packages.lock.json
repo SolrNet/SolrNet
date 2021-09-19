@@ -1899,23 +1899,23 @@
         "type": "Project",
         "dependencies": {
           "CommonServiceLocator": "2.0.2",
-          "SolrNet.Core": "1.0.19"
+          "SolrNet.Core": "1.0.20"
         }
       },
       "SolrNet.Cloud": {
         "type": "Project",
         "dependencies": {
           "CommonServiceLocator": "2.0.2",
-          "SolrNet": "1.0.19",
-          "SolrNet.Cloud.Core": "1.0.19",
-          "SolrNet.Core": "1.0.19"
+          "SolrNet": "1.0.20",
+          "SolrNet.Cloud.Core": "1.0.20",
+          "SolrNet.Core": "1.0.20"
         }
       },
       "SolrNet.Cloud.Core": {
         "type": "Project",
         "dependencies": {
           "Newtonsoft.Json": "10.0.3",
-          "SolrNet.Core": "1.0.19",
+          "SolrNet.Core": "1.0.20",
           "ZooKeeperNetEx": "3.4.12.1"
         }
       },

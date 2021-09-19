@@ -1355,7 +1355,7 @@
       "SolrNet.StructureMap": {
         "type": "Project",
         "dependencies": {
-          "SolrNet.Core": "1.0.19",
+          "SolrNet.Core": "1.0.20",
           "StructureMap": "4.6.1",
           "System.Configuration.ConfigurationManager": "5.0.0"
         }

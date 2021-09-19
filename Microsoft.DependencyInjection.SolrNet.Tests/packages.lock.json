@@ -1194,7 +1194,7 @@
         "type": "Project",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "2.0.0",
-          "SolrNet.Core": "1.0.19"
+          "SolrNet.Core": "1.0.20"
         }
       }
     }

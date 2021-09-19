@@ -31,6 +31,7 @@
     <ProjectReference Include="..\CommonServiceLocator.SolrNet\CommonServiceLocator.SolrNet.csproj" />
     <ProjectReference Include="..\CommonServiceLocator.SolrNet.Cloud\CommonServiceLocator.SolrNet.Cloud.csproj" />
     <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj" />
+    <ProjectReference Include="..\SolrNet.Tests.Integration\SolrNet.Tests.Integration.csproj" />
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
     <ProjectReference Include="..\Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj" />
   </ItemGroup>

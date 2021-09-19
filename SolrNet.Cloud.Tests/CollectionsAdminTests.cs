@@ -7,10 +7,12 @@ using SolrNet.Impl.ResponseParsers;
 using SolrNet.Cloud.ZooKeeperClient;
 using System.Threading;
 using System.Threading.Tasks;
+using SolrNet.Tests.Integration;
 
 namespace SolrNet.Cloud.Tests
 {
     [Trait("Category", "Integration")]
+    [TestCaseOrderer(MethodDefTestCaseOrderer.Type, MethodDefTestCaseOrderer.Assembly)]
     public class CollectionsAdminTests : IAsyncLifetime
     {
         private const string COLLECTION_NAME = "test";

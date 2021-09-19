@@ -7,5 +7,6 @@ in
   pkgs.curl
   pkgs.findutils
   pkgs.ripgrep
+  pkgs.bashInteractive
   (import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/bed08131cd29a85f19716d9351940bdc34834492.tar.gz") {}).docker-compose
 ]

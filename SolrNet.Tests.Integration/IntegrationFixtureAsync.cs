@@ -113,6 +113,30 @@ namespace SolrNet.Tests.Integration
                 InStock = false,
             }
         };
+        
+        [Fact]
+        public async Task AddAndQueryUnicode() {
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
+            var id = Guid.NewGuid().ToString();
+            const string name = "aşı ★✴カ";
+            await solr.AddAsync(new Product
+            {
+                Id = id,
+                Name = name,
+            });
+            await solr.CommitAsync();
+            try
+            {
+                var results = await solr.QueryAsync(new SolrQueryByField("id", id));
+                Assert.Single(results);
+                Assert.Equal(id, results[0].Id);
+                Assert.Equal(name, results[0].Name);
+            }
+            finally
+            {
+                await solr.DeleteAsync(id);
+            }
+        }
 
         [Fact]
         public async Task QueryByRangeMoneyAsync()

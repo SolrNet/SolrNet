@@ -13,7 +13,9 @@ jobs:
         - 5.5.5
     steps:
       - uses: actions/checkout@v2
-      - uses: cachix/install-nix-action@v13
+      - uses: cachix/install-nix-action@v15
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.3.16/install
       - name: Unit tests
         run: ./unit_tests.sh
       - name: Integration tests
@@ -40,7 +42,9 @@ jobs:
       - uses: actions/checkout@v2
         with:
          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
-      - uses: cachix/install-nix-action@v13
+      - uses: cachix/install-nix-action@v15
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.3.16/install
       - name: Pack
         run: ./pack.sh
         env:

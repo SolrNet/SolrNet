@@ -62,7 +62,7 @@ namespace SolrNet.Commands
             if(parameters != null && parameters.CommitWithin.HasValue)
             {
                 KeyValuePair<string, string>[] kvps = new KeyValuePair<string, string>[1];
-                kvps[0] = new KeyValuePair<string, string>("commitwithin", parameters.CommitWithin.ToString());
+                kvps[0] = new KeyValuePair<string, string>("commitWithin", parameters.CommitWithin.ToString());
                 return kvps;
             }
             else

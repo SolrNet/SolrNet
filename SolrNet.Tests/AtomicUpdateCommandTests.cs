@@ -260,7 +260,7 @@ namespace SolrNet.Tests
             conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
                 string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
                 Assert.Equal("/update", url);
-                Assert.Equal("commitwithin", ((KeyValuePair<string, string>[])param)[0].Key);
+                Assert.Equal("commitWithin", ((KeyValuePair<string, string>[])param)[0].Key);
                 Assert.Equal("4343", ((KeyValuePair<string, string>[]) param)[0].Value);
                 Assert.Equal("[{\"id\":\"0\",\"count\":{\"inc\":3}}]", text);
                 testOutputHelper.WriteLine(text);

@@ -25,11 +25,29 @@ namespace SolrNet.Impl
         /// </summary>
         public IHttpWebRequestFactory HttpWebRequestFactory { get; set; }
 
-        public PostSolrConnection(ISolrConnection conn, string serverUrl)
+        /// <summary>
+        /// Manages HTTP connection with Solr using HTTP POST.
+        /// 
+        /// Note that this constructor uses <see cref="HttpWebAdapters.HttpWebRequestFactory"/> and thus doesn't support basic authentication and such
+        /// Please use <see cref="PostSolrConnection(ISolrConnection, string, IHttpWebRequestFactory)"/>
+        /// </summary>
+        /// <param name="conn">SolrConnection instance to handle HTTP requests</param>
+        /// <param name="serverUrl">URL to Solr</param>
+        public PostSolrConnection(ISolrConnection conn, string serverUrl) : this(conn, serverUrl, new HttpWebRequestFactory())
+        {
+        }
+
+        /// <summary>
+        /// Manages HTTP connection with Solr using HTTP POST.
+        /// </summary>
+        /// <param name="conn">SolrConnection instance to handle HTTP requests</param>
+        /// <param name="serverUrl">URL to Solr</param>
+        /// <param name="httpWebRequestFactory">Request factory to be used in HTTP requests</param>
+        public PostSolrConnection(ISolrConnection conn, string serverUrl, IHttpWebRequestFactory httpWebRequestFactory)
         {
             this.conn = conn;
             this.serverUrl = serverUrl;
-            HttpWebRequestFactory = new HttpWebRequestFactory();
+            this.HttpWebRequestFactory = httpWebRequestFactory;
         }
 
         /// <summary>

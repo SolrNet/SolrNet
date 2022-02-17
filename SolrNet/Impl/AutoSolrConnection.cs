@@ -7,22 +7,46 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using HttpWebAdapters;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
 
 namespace SolrNet.Impl
 {
+    /// <summary>
+    /// Manages asynchronous and synchronous connections with Solr.
+    /// </summary>
     public class AutoSolrConnection : IStreamSolrConnection, IDisposable
     {
         private const string version = "2.2";
 
+        /// <summary>
+        /// Manages HTTP connection with Solr
+        /// </summary>
+        /// <param name="serverUrl">URL to Solr</param>
         public AutoSolrConnection(string serverUrl) : this(serverUrl, credentials: null)
         {
-
-
         }
 
-        public AutoSolrConnection(string serverUrl, ICredentials credentials) : this(serverUrl, httpClient: null)
+        /// <summary>
+        /// Manages HTTP connection with Solr
+        /// 
+        /// Note that this constructor uses <see cref="HttpWebAdapters.HttpWebRequestFactory"/> and thus doesn't support basic authentication and such
+        /// Please use <see cref="AutoSolrConnection(string, ICredentials, IHttpWebRequestFactory)"/>
+        /// </summary>
+        /// <param name="serverUrl">URL to Solr</param>
+        /// <param name="credentials">Credentials to be used in asynchronous calls</param>
+        public AutoSolrConnection(string serverUrl, ICredentials credentials) : this(serverUrl, credentials, new HttpWebRequestFactory())
+        {
+        }
+
+        /// <summary>
+        /// Manages HTTP connection with Solr
+        /// </summary>
+        /// <param name="serverUrl">URL to Solr</param>
+        /// <param name="credentials">Credentials to be used in asynchronous calls</param>
+        /// <param name="httpWebRequestFactory">Request factory to be used in synchronous fallback connections</param>
+        public AutoSolrConnection(string serverUrl, ICredentials credentials, IHttpWebRequestFactory httpWebRequestFactory)
         {
             var httpClientHandler = new HttpClientHandler
             {
@@ -32,18 +56,38 @@ namespace SolrNet.Impl
 
             this.HttpClient = new HttpClient(httpClientHandler);
 
+            this.SyncFallbackConnection = new PostSolrConnection(new SolrConnection(serverUrl, httpWebRequestFactory), serverUrl, httpWebRequestFactory);
+            this.ServerURL = Utils.UriValidator.ValidateHTTP(serverUrl);
         }
 
-
-        public AutoSolrConnection(string serverUrl, HttpClient httpClient)
+        /// <summary>
+        /// Manages HTTP connection with Solr
+        /// 
+        /// Note that this constructor uses <see cref="HttpWebAdapters.HttpWebRequestFactory"/> and thus doesn't support basic authentication and such
+        /// Please use <see cref="AutoSolrConnection(string, HttpClient, IHttpWebRequestFactory)"/>
+        /// </summary>
+        /// <param name="serverUrl">URL to Solr</param>
+        /// <param name="httpClient">HttpClient used in asynchronous connections</param>
+        public AutoSolrConnection(string serverUrl, HttpClient httpClient) : this(serverUrl, httpClient, new HttpWebRequestFactory())
         {
-            this.SyncFallbackConnection = new PostSolrConnection(new SolrConnection(serverUrl), serverUrl);
+        }
+
+        /// <summary>
+        /// Manages HTTP connection with Solr
+        /// </summary>
+        /// <param name="serverUrl">URL to Solr</param>
+        /// <param name="httpClient">HttpClient used in asynchronous connections</param>
+        /// <param name="httpWebRequestFactory">Request factory to be used in synchronous fallback connections</param>
+        public AutoSolrConnection(string serverUrl, HttpClient httpClient, IHttpWebRequestFactory httpWebRequestFactory)
+        {
+            this.SyncFallbackConnection = new PostSolrConnection(new SolrConnection(serverUrl, httpWebRequestFactory), serverUrl, httpWebRequestFactory);
             this.ServerURL = Utils.UriValidator.ValidateHTTP(serverUrl);
             this.HttpClient = httpClient;
-
-
         }
 
+        /// <summary>
+        /// Connection used in synchrounous calls.
+        /// </summary>
         private PostSolrConnection SyncFallbackConnection { get; }
 
         /// <summary>

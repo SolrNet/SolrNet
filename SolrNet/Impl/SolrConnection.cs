@@ -51,12 +51,21 @@ namespace SolrNet.Impl
         /// Manages HTTP connection with Solr
         /// </summary>
         /// <param name="serverURL">URL to Solr</param>
-        public SolrConnection(string serverURL)
+        public SolrConnection(string serverURL) : this(serverURL, new HttpWebRequestFactory())
+        {
+        }
+
+        /// <summary>
+        /// Manages HTTP connection with Solr
+        /// </summary>
+        /// <param name="serverURL">URL to Solr</param>
+        /// <param name="httpWebRequestFactory">Request factory to be used in synchronous fallback connections</param>
+        public SolrConnection(string serverURL, IHttpWebRequestFactory httpWebRequestFactory)
         {
             ServerURL = serverURL;
             Timeout = -1;
             Cache = new NullCache();
-            HttpWebRequestFactory = new HttpWebRequestFactory();
+            HttpWebRequestFactory = httpWebRequestFactory;
         }
 
         /// <summary>

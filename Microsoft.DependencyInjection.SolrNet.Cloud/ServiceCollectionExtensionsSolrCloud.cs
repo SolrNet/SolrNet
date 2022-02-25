@@ -33,9 +33,9 @@ namespace SolrNet.Cloud
         /// <param name="zooKeeperUrl">The ZooKeeper URL for SolrCloud.</param>
         /// <param name="collection">The collection name.</param>
         /// <returns>The dependency injection service.</returns>
-        public static IServiceCollection AddSolrNetCloud<TModel>(this IServiceCollection services, string zooKeeperUrl, string collection)
+        public static IServiceCollection AddSolrNetCloud<TModel>(this IServiceCollection services, string zooKeeperUrl, string collection, bool isPostConnection = false)
         {
-            return AddSolrNetCloudAsync<TModel>(services, zooKeeperUrl, collection).GetAwaiter().GetResult();
+            return AddSolrNetCloudAsync<TModel>(services, zooKeeperUrl, collection, isPostConnection).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace SolrNet.Cloud
         /// <param name="zooKeeperUrl">The ZooKeeper URL for SolrCloud.</param>
         /// <param name="collection">The collection name.</param>
         /// <returns>The dependency injection service.</returns>
-        public static async Task<IServiceCollection> AddSolrNetCloudAsync<TModel>(this IServiceCollection services, string zooKeeperUrl, string collection)
+        public static async Task<IServiceCollection> AddSolrNetCloudAsync<TModel>(this IServiceCollection services, string zooKeeperUrl, string collection, bool isPostConnection = false)
         {
             if (services == null) 
                 throw new ArgumentNullException(nameof(services));            
@@ -61,7 +61,7 @@ namespace SolrNet.Cloud
                 throw new InvalidOperationException($"SolrNet was already added for model of type {typeof(TModel).Name}");
 
             AddCommon(services);
-            await AddCloud<TModel>(services, zooKeeperUrl, collection, false);
+            await AddCloud<TModel>(services, zooKeeperUrl, collection, isPostConnection);
             return services;
         }
 
@@ -131,7 +131,7 @@ namespace SolrNet.Cloud
             return cloudStateProvider;
         }
 
-        private static async Task AddCloud<T>(IServiceCollection services, string zooKeeperUrl, string collection, bool isPostConnection = false)
+        private static async Task AddCloud<T>(IServiceCollection services, string zooKeeperUrl, string collection, bool isPostConnection)
         {
             var cloudStateProvider = await EnsureCloudRegistration(services, zooKeeperUrl);
             var sp = services.BuildServiceProvider();

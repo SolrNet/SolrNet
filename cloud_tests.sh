@@ -1,4 +1,5 @@
-#!/usr/bin/env -S nix run -c sh
+#!/usr/bin/env nix-shell
+#! nix-shell -i sh
 
 export SOLR_VERSION=${SOLR_VERSION:-8.8.2}
 

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>LightInject.SolrNet</AssemblyName>
+    <RootNamespace>SolrNet</RootNamespace>
+    <PackageIconUrl>https://github.com/solrnet/solrnet/raw/master/Documentation/solr.png</PackageIconUrl>
+    <Authors>https://github.com/jevgenigeurtsen</Authors>
+    <Company>https://github.com/jevgenigeurtsen</Company>
+    <PackageId>SolrNet.LightInject</PackageId>
+    <IsPackable>true</IsPackable>
+    <Product>SolrNet.LightInject</Product>
+    <Description>SolrNet extensions for LightInject.</Description>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/SolrNet/SolrNet</PackageProjectUrl>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LightInject" Version="6.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
+  </ItemGroup>
+
+</Project>

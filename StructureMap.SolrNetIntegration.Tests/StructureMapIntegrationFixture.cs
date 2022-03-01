@@ -25,9 +25,9 @@ namespace StructureMap.SolrNetIntegration.Tests {
             this.testOutputHelper = testOutputHelper;
             var servers = new List<SolrServer>
             {
-                new SolrServer ("entity","http://localhost:8983/solr/techproducts/collection1", "StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests"),
-                new SolrServer ("entity2","http://localhost:8983/solr/techproducts/core0", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"),
-                new SolrServer ("entity3","http://localhost:8983/solr/techproducts/core1", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests")
+                new SolrServer ("entity","http://localhost:8983/solr/entity1", "StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity2","http://localhost:8983/solr/core0", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity3","http://localhost:8983/solr/core1", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests")
             };
             Container = new Container(c => c.IncludeRegistry(SolrNetRegistry.Create(servers)));
         }
@@ -47,7 +47,7 @@ namespace StructureMap.SolrNetIntegration.Tests {
                 new SolrServerElement {
                     Id = "entity1dict",
                     DocumentType = typeof(Dictionary<string, object>).AssemblyQualifiedName,
-                    Url = "http://localhost:8983/solr/techproducts/core1",
+                    Url = "http://localhost:8983/solr/core1",
                 }
             };
 
@@ -71,7 +71,7 @@ namespace StructureMap.SolrNetIntegration.Tests {
                 new SolrServerElement {
                     Id = "entity1dict",
                     DocumentType = typeof(Dictionary<string, object>).AssemblyQualifiedName,
-                    Url = "http://localhost:8983/solr/techproducts/core1",
+                    Url = "http://localhost:8983/solr/core1",
                 }
             };
 
@@ -83,8 +83,7 @@ namespace StructureMap.SolrNetIntegration.Tests {
             {
                 {"id", "ababa"},
                 {"manu", "who knows"},
-                {"popularity", 55},
-                {"timestamp", DateTime.UtcNow},
+                {"popularity", 55}
             });
         }
     }

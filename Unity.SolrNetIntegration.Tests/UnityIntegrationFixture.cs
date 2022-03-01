@@ -17,17 +17,17 @@ namespace Unity.SolrNetIntegration.Tests {
             new SolrServerElement {
                 Id = "entity",
                 DocumentType = typeof (Entity).AssemblyQualifiedName,
-                Url = "http://localhost:8983/solr/techproducts/core0",
+                Url = "http://localhost:8983/solr/core0",
             },
             new SolrServerElement {
                 Id = "entity2Dict",
                 DocumentType = typeof (Dictionary<string, object>).AssemblyQualifiedName,
-                Url = "http://localhost:8983/solr/techproducts/core1",
+                Url = "http://localhost:8983/solr/core1",
             },
             new SolrServerElement {
                 Id = "entity2",
                 DocumentType = typeof (Entity2).AssemblyQualifiedName,
-                Url = "http://localhost:8983/solr/techproducts/entity2",
+                Url = "http://localhost:8983/solr/entity2",
             },
         };
 
@@ -71,8 +71,7 @@ namespace Unity.SolrNetIntegration.Tests {
                 solr.Add(new Dictionary<string, object> {
                     {"id", "5"},
                     {"manu", "who knows"},
-                    {"popularity", 55},
-                    {"timestamp", DateTime.UtcNow},
+                    {"popularity", 55}
                 });
             }
         }

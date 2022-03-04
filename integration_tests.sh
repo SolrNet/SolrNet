@@ -95,10 +95,6 @@ create_solr_auth() {
   echo -e "\n\rSetting up Solr_BasicAuth collection and documents..."
   
   setupSolrCore techproducts solr_cloud_auth 8984
-  setupSolrCore core0 solr_cloud_auth 8984
-  setupSolrCore core1 solr_cloud_auth 8984
-  setupSolrCore entity1 solr_cloud_auth 8984
-  setupSolrCore entity2 solr_cloud_auth 8984
   
   # enable basic auth after setup of collections has completed
   echo -e "\n\rSetting up Zookeeper in Solr_BasicAuth..." 

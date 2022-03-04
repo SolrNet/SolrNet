@@ -1,5 +1,4 @@
 ﻿#region license
-
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,17 +12,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 #endregion
 
-using System;
+using SolrNet;
+using SolrNet.Impl;
+using SolrNet.Mapping.Validation;
 
-namespace SolrNet.Schema {
+namespace LightInject.SolrNet {
     /// <summary>
-    /// Represents a Solr dynamic field.
+    /// Overridden Class to include the wrapper connection so that we can use the dependency injection system for two seperate cores.
     /// </summary>
-    public class SolrDynamicField : SolrField{
-        public SolrDynamicField(string name, SolrFieldType type) : base(name, type){
-        }
+    /// <typeparam name="TModel">The model being used for the specific core.</typeparam>
+    public class SolrInjectionServer<TModel> : SolrServer<TModel> {
+        public SolrInjectionServer(ISolrBasicOperations<TModel> basicServer, IReadOnlyMappingManager mappingManager, IMappingValidator _schemaMappingValidator)
+            : base(basicServer, mappingManager, _schemaMappingValidator) { }
     }
 }

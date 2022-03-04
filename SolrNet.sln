@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
@@ -58,6 +58,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.DependencyInjection.SolrNet.Cloud", "Microsoft.DependencyInjection.SolrNet.Cloud\Microsoft.DependencyInjection.SolrNet.Cloud.csproj", "{2AD0FD19-258C-41AF-90C8-06609B797C41}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.DependencyInjection.SolrNet.Cloud.Tests", "Microsoft.DependencyInjection.SolrNet.Cloud.Tests\Microsoft.DependencyInjection.SolrNet.Cloud.Tests.csproj", "{293E3A89-783E-4EDE-B695-082F197BC006}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightInject.SolrNet.Tests", "LightInject.SolrNet.Tests\LightInject.SolrNet.Tests.csproj", "{82DB35C4-2E5B-44CD-81A2-9E66C9AC933C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightInject.SolrNet", "LightInject.SolrNet\LightInject.SolrNet.csproj", "{99F980E6-E337-47E5-A39E-CD78B5EAC374}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,6 +177,14 @@ Global
 		{293E3A89-783E-4EDE-B695-082F197BC006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{293E3A89-783E-4EDE-B695-082F197BC006}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{293E3A89-783E-4EDE-B695-082F197BC006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82DB35C4-2E5B-44CD-81A2-9E66C9AC933C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82DB35C4-2E5B-44CD-81A2-9E66C9AC933C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82DB35C4-2E5B-44CD-81A2-9E66C9AC933C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82DB35C4-2E5B-44CD-81A2-9E66C9AC933C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99F980E6-E337-47E5-A39E-CD78B5EAC374}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99F980E6-E337-47E5-A39E-CD78B5EAC374}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99F980E6-E337-47E5-A39E-CD78B5EAC374}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99F980E6-E337-47E5-A39E-CD78B5EAC374}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -191,6 +203,7 @@ Global
 		{48DA5170-B96E-485C-941D-0D7797DCA0EF} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{110F4D69-8F08-42F5-97DB-B0A42B3107AC} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{293E3A89-783E-4EDE-B695-082F197BC006} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{82DB35C4-2E5B-44CD-81A2-9E66C9AC933C} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC12CF2E-A108-47A2-B60C-A17B3102D52D}

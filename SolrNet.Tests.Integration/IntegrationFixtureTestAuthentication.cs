@@ -19,71 +19,73 @@ using System.Text;
 using Xunit;
 using System.Threading.Tasks;
 using HttpWebAdapters;
+using LightInject;
 using SolrNet.Exceptions;
+using SolrNet.Tests.Integration.Sample;
 using Xunit.Abstractions;
 
 namespace SolrNet.Tests.Integration
 {
     [Trait("Category", "Integration")]
-    [TestCaseOrderer(MethodDefTestCaseOrderer.Type, MethodDefTestCaseOrderer.Assembly)]
     public class IntegrationFixtureTestAuthentication
     {
-        //private readonly ITestOutputHelper testOutputHelper;
-        //private readonly IServiceProvider defaultServiceProviderAuth_WithSyncAuth;
-        //private readonly IServiceProvider defaultServiceProviderAuth_WithSyncAndAsyncAuth;
-        //private readonly IServiceProvider defaultServiceProviderAuth_WithoutAuth;     
+        private readonly IServiceContainer defaultServiceProviderAuth_WithSyncAuth;
+        private readonly IServiceContainer defaultServiceProviderAuth_WithSyncAndAsyncAuth;
+        private readonly IServiceContainer defaultServiceProviderAuth_WithoutAuth;
 
-        //public IntegrationFixtureTestAuthentication(ITestOutputHelper testOutputHelper)
-        //{
-        //    var sc = new ServiceCollection();
-        //    this.defaultServiceProviderAuth_WithSyncAuth.AddSolrNet("http://localhost:8984/solr/techproducts",
-        //        null,
-        //        () => new BasicAuthHttpWebRequestFactory("solr", "SolrRocks"));
+        public IntegrationFixtureTestAuthentication()
+        {
+            this.defaultServiceProviderAuth_WithSyncAuth = new ServiceContainer();
+            this.defaultServiceProviderAuth_WithSyncAuth.AddSolrNet<Product>("http://localhost:8984/solr/techproducts",
+                null,
+                () => new BasicAuthHttpWebRequestFactory("solr", "SolrRocks"));
 
-        //    this.defaultServiceProviderAuth_WithSyncAndAsyncAuth = new ServiceContainer();
-        //    this.defaultServiceProviderAuth_WithSyncAndAsyncAuth.AddSolrNet("http://localhost:8984/solr/techproducts",
-        //        (options) => options.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"solr:SolrRocks"))),
-        //        () => new BasicAuthHttpWebRequestFactory("solr", "SolrRocks"));
+            this.defaultServiceProviderAuth_WithSyncAndAsyncAuth = new ServiceContainer();
+            this.defaultServiceProviderAuth_WithSyncAndAsyncAuth.AddSolrNet<Product>("http://localhost:8984/solr/techproducts",
+                (options) => options.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"solr:SolrRocks"))),
+                () => new BasicAuthHttpWebRequestFactory("solr", "SolrRocks"));
 
 
-        //    this.defaultServiceProviderAuth_WithoutAuth = new ServiceContainer();
-        //    this.defaultServiceProviderAuth_WithoutAuth.AddSolrNet("http://localhost:8984/solr/techproducts");     
-        //}
+            this.defaultServiceProviderAuth_WithoutAuth = new ServiceContainer();
+            this.defaultServiceProviderAuth_WithoutAuth.AddSolrNet<Product>("http://localhost:8984/solr/techproducts");
+        }
 
-        //[Fact]
-        //public void Test_SolrWithAuth_ServiceContainerSyncAuth_Ping()
-        //{
-        //    var solr = defaultServiceProviderAuth_WithSyncAuth.GetInstance<ISolrOperations<LightInjectFixture.Entity>>();
-        //    solr.Ping();
-        //    testOutputHelper.WriteLine(solr.Query(SolrQuery.All).Count.ToString());
-        //}
+        [Fact]
+        public void Test_SolrWithAuth_ServiceContainerSyncAuth_Ping()
+        {
+            var solr = defaultServiceProviderAuth_WithSyncAuth.GetInstance<ISolrOperations<Product>>();
+            solr.Ping();
+            Assert.InRange(solr.Query(SolrQuery.All).Count, 1, int.MaxValue);
+        }
 
-        //[Fact]
-        //public void Test_SolrWithAuth_ServiceContainerASyncAuth_Ping()
-        //{
-        //    var solr = defaultServiceProviderAuth_WithSyncAndAsyncAuth.GetInstance<ISolrOperations<LightInjectFixture.Entity>>();
-        //    Task.Run(async () => await solr.PingAsync());
-        //    testOutputHelper.WriteLine(Task.Run(async () => await solr.QueryAsync(SolrQuery.All)).Result.Count.ToString());
-        //}
+        [Fact]
+        public void Test_SolrWithAuth_ServiceContainerASyncAuth_Ping()
+        {
+            var solr = defaultServiceProviderAuth_WithSyncAndAsyncAuth.GetInstance<ISolrOperations<Product>>();
+            Task.Run(async () => await solr.PingAsync());
+            Assert.InRange(Task.Run(async () => await solr.QueryAsync(SolrQuery.All)).Result.Count, 1, int.MaxValue);
+        }
 
-        //[Fact]
-        //public void Test_SolrWithAuth_ServiceContainerSyncAuth_AsyncPingFails()
-        //{
-        //    var solr = defaultServiceProviderAuth_WithSyncAuth.GetInstance<ISolrOperations<LightInjectFixture.Entity>>();
-        //    var ex = Assert.ThrowsAsync<SolrConnectionException>(async () => {
-        //        await solr.PingAsync();
-        //    });
-        //    Assert.Contains("401", ex.Result.Message.ToLower());
-        //}
+        [Fact]
+        public void Test_SolrWithAuth_ServiceContainerSyncAuth_AsyncPingFails()
+        {
+            var solr = defaultServiceProviderAuth_WithSyncAuth.GetInstance<ISolrOperations<Product>>();
+            var ex = Assert.ThrowsAsync<SolrConnectionException>(async () =>
+            {
+                await solr.PingAsync();
+            });
+            Assert.Contains("401", ex.Result.Message.ToLower());
+        }
 
-        //[Fact]
-        //public void Test_SolrWithAuth_ServiceContainerWithoutAuth_PingFails()
-        //{
-        //    var solr = defaultServiceProviderAuth_WithoutAuth.GetInstance<ISolrOperations<LightInjectFixture.Entity>>();
-        //    var ex = Assert.Throws<SolrConnectionException>(() => {
-        //        solr.Ping();
-        //    });
-        //    Assert.Contains("401", ex.Message.ToLower());
-        //}
+        [Fact]
+        public void Test_SolrWithAuth_ServiceContainerWithoutAuth_PingFails()
+        {
+            var solr = defaultServiceProviderAuth_WithoutAuth.GetInstance<ISolrOperations<Product>>();
+            var ex = Assert.Throws<SolrConnectionException>(() =>
+            {
+                solr.Ping();
+            });
+            Assert.Contains("401", ex.Message.ToLower());
+        }
     }
 }

@@ -101,7 +101,7 @@ create_solr_auth() {
   setupSolrCore entity2 solr_cloud_auth 8984
   
   # enable basic auth after setup of collections has completed
-  echo -e "\n\rSettings up Zookeeper in Solr_BasicAuth..." 
+  echo -e "\n\rSetting up Zookeeper in Solr_BasicAuth..." 
   if [ "${SOLR_VERSION}" = "5.5.5" ]; then
 	docker exec solr_cloud_auth server/scripts/cloud-scripts/zkcli.sh -zkhost localhost:9983 -cmd putfile /security.json /security.json
   else

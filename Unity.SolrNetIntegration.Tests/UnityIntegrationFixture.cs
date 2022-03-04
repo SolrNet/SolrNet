@@ -39,8 +39,9 @@ namespace Unity.SolrNetIntegration.Tests {
         [Fact]
         public void Ping_And_Query()
         {
-            using (var container = UnityFixture.SetupContainer())
+            using (var container = new UnityContainer())
             {
+                new SolrNetContainerConfiguration().ConfigureContainer(TestServers, container);
                 var solr = container.Resolve<ISolrOperations<Entity>>();
                 solr.Ping();
                 testOutputHelper.WriteLine(solr.Query(SolrQuery.All).Count.ToString());

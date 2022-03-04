@@ -1,2 +1,3 @@
-#!/usr/bin/env -S nix run -c sh
+#!/usr/bin/env nix-shell
+#! nix-shell -i sh
 dotnet test --filter 'Category!~Integration'

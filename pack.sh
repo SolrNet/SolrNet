@@ -1,4 +1,5 @@
-#!/usr/bin/env -S nix run -c bash
+#!/usr/bin/env nix-shell
+#! nix-shell -i sh
 
 set -e
 set -o pipefail

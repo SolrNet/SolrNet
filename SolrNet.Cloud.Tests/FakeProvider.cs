@@ -62,6 +62,11 @@ namespace SolrNet.Cloud.Tests
             return Task.CompletedTask;
         }
 
+        public Task<SolrCloudState> GetFreshCloudStateAsync()
+        {
+            return Task.FromResult(GetCloudState());
+        }
+
         public ISolrBasicOperations<T> GetBasicOperations<T>(string url, bool isPostConnection = false)
         {
             LastUrl = url;

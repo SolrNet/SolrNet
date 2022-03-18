@@ -19,6 +19,13 @@ namespace SolrNet.Cloud
         SolrCloudState GetCloudState();
 
         /// <summary>
+        /// Reinitialize connection and get fresh cloud state.
+        /// </summary>
+        /// <remarks>Attention: This causes reloading all cloud data and maybe slow!</remarks>
+        /// <returns>Refreshed Solr Cloud state</returns>
+        Task<SolrCloudState> GetFreshCloudStateAsync();
+
+        /// <summary>
         /// Provider initialization
         /// </summary>
         Task InitAsync();

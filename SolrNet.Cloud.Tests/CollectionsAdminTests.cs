@@ -322,7 +322,7 @@ namespace SolrNet.Cloud.Tests
 
         private Task<SolrCloudState> GetFreshCloudStateAsync()
         {
-            return (solrCloudStateProvider as SolrCloudStateProvider).GetFreshCloudStateAsync();
+            return solrCloudStateProvider.GetFreshCloudStateAsync();
         }
 
         private async Task<SolrCloudCollection> AssertCollectionPresenceByCloudStateAsync(string collectionName)

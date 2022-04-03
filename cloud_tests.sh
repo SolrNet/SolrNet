@@ -21,7 +21,7 @@ run_tests() {
 
   dotnet build -v=quiet
   echo -e "\n\rRunning integration tests..."
-  dotnet test SolrNet.Cloud.Tests --filter 'Category=Integration' --no-build --logger "console;verbosity=detailed"
+  dotnet test SolrNet.Cloud.Tests --filter 'Category=Integration' --no-build --logger "console;verbosity=detailed;html"
   ret=$?
 
   echo -e "\n\rStopping Solr..."

@@ -23,6 +23,10 @@ jobs:
         env:
           SOLR_VERSION: ${{ matrix.solr_version }}
         timeout-minutes: 5
+      - uses: actions/upload-artifact@v3
+        with:
+          name: test-results ${{ matrix.solr_version }}
+          path: "*/TestResults/*"
       # - name: SolrCloud tests
       #   run: ./cloud_tests.sh
       #   env:

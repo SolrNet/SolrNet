@@ -35,3 +35,4 @@ packages/*
 .idea
 *.swp
 solr_output.txt
+*/TestResults/*

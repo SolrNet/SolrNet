@@ -9,6 +9,13 @@ version_js="$(dotnet tool run nbgv get-version --format json)"
 export Version=$(echo $version_js | jq -r '.AssemblyInformationalVersion')
 echo Tag: $Version
 export PackageVersion=$(echo $version_js | jq -r '.NuGetPackageVersion')
+
+public_tag=$(git tag --points-at HEAD)
+if [ -n "$public_tag" ]; then
+  export PackageVersion=$(echo $version_js | jq -r '.SimpleVersion')
+  echo "Public release $public_tag"
+fi
+
 dotnet pack
 
 if [ -n "$GITHUB_TOKEN" ]; then

@@ -43,6 +43,30 @@
           "Microsoft.NETCore.App": "1.0.5"
         }
       },
+      "LightInject": {
+        "type": "Direct",
+        "requested": "[4.1.1, )",
+        "resolved": "4.1.1",
+        "contentHash": "h7iB/TB2uYgOLkDZLrrHsleAg/IQu5vgA2vr9iw5AC0EZ6QYB28Zz7ObO/BFGPwc9O9BRqidjo430Vjhg4zOdw==",
+        "dependencies": {
+          "System.Collections": "4.0.11",
+          "System.Collections.Concurrent": "4.0.12",
+          "System.Diagnostics.Tools": "4.0.1",
+          "System.IO": "4.1.0",
+          "System.Linq": "4.1.0",
+          "System.Linq.Expressions": "4.1.0",
+          "System.Reflection": "4.1.0",
+          "System.Reflection.Emit": "4.0.1",
+          "System.Reflection.Emit.Lightweight": "4.0.1",
+          "System.Reflection.Extensions": "4.0.1",
+          "System.Reflection.TypeExtensions": "4.1.0",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Text.Encoding": "4.0.11",
+          "System.Text.RegularExpressions": "4.1.0",
+          "System.Threading": "4.0.11"
+        }
+      },
       "Microsoft.NET.Test.Sdk": {
         "type": "Direct",
         "requested": "[16.11.0, )",
@@ -2029,6 +2053,13 @@
         "type": "Project",
         "dependencies": {
           "Newtonsoft.Json": "10.0.3"
+        }
+      },
+      "SolrNet.LightInject": {
+        "type": "Project",
+        "dependencies": {
+          "LightInject": "4.1.1",
+          "SolrNet.Core": "1.0.20"
         }
       },
       "solrnet.tests.common": {

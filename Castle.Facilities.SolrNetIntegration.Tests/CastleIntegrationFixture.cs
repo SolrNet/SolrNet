@@ -59,8 +59,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             solr.Add(new Dictionary<string, object> {
                 {"id", "ababa"},
                 {"manu", "who knows"},
-                {"popularity", 55},
-                {"timestamp", DateTime.UtcNow},
+                {"popularity", 55}
             });
         }
     }

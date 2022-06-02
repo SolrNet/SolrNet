@@ -414,7 +414,7 @@ namespace SolrNet.Cloud.CollectionsAdmin
         /// </summary>
         /// <param name="collection">The name of the collection to rebalance preferredLeaders on.</param>
         /// <param name="maxAtOnce">
-        /// The maximum number of reassignments to have queue up at once. Values &lte 0 are use the default value Integer.MAX_VALUE. 
+        /// The maximum number of reassignments to have queue up at once. Values &lt;= 0 are use the default value Integer.MAX_VALUE. 
         /// When this number is reached, the process waits for one or more leaders to be successfully assigned before adding more to the queue.
         /// </param>
         /// <param name="maxWaitSeconds">

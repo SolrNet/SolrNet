@@ -31,7 +31,7 @@ namespace SolrNet.Cloud.CollectionsAdmin {
             int? replicationFactor = null,
             string createNodeSet = null,
             bool? createNodeSetShuffle = null,
-            string rooterField = null,
+            string routerField = null,
             IReadOnlyDictionary<string, string> coreProperties = null,
             bool? autoAddReplicas = null,
             string rule = null,
@@ -48,7 +48,7 @@ namespace SolrNet.Cloud.CollectionsAdmin {
                 .AddOptional("replicationFactor", replicationFactor)
                 .AddOptional("createNodeSet", createNodeSet)
                 .AddOptional("createNodeSet.shuffle", createNodeSetShuffle)
-                .AddOptional("rooter.field", rooterField)
+                .AddOptional("router.field", routerField)
                 .AddOptional(CORE_PROPERTY_KEY_PREFIX, coreProperties)
                 .AddOptional("autoAddReplicas", autoAddReplicas)
                 .AddOptional("rule", rule)

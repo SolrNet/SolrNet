@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.1.1
+
+- Fix typo in "router.field" parameter #595 (@Jure-BB)
+
 ## 1.1.0
  - Add LightInject support (@jevgenigeurtsen)
  - Support basic auth in non-async operations (@jevgenigeurtsen)

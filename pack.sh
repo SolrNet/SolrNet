@@ -22,7 +22,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
   dotnet nuget add source --username mausch --password "$GITHUB_TOKEN" --store-password-in-clear-text --name github "https://nuget.pkg.github.com/SolrNet/index.json"
   for nupkg in "$(find | rg nupkg)"; do
     echo "Publishing $nupkg to github"
-    dotnet nuget push --source "github" $nupkg &
+    dotnet nuget push --source "github" $nupkg --skip-duplicate &
   done
   wait
   if [ -n "$GITHUB_ENV" ]; then
@@ -33,9 +33,14 @@ else
 fi
 
 if [ -n "$NUGET_API_KEY" ]; then
+  for nupkg in "$(find | rg '[^s]nupkg')"; do
+    echo "Publishing $nupkg to nuget.org"
+    dotnet nuget push $nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate &
+  done
+  wait
   for nupkg in "$(find | rg nupkg)"; do
     echo "Publishing $nupkg to nuget.org"
-    dotnet nuget push $nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json &
+    dotnet nuget push $nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate &
   done
   wait
 else

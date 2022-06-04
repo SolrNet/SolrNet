@@ -12,7 +12,7 @@ or
 public void FixtureSetup() {
 	var zookeeperConnectionString = "127.0.0.1:2181";
 	var collectionName = "collection_name";
-	Startup.Init<Product>(new SolrCloudStateProvider(zookeeperConnectionString), collectionName);
+	Startup.InitAsync<Product>(new SolrCloudStateProvider(zookeeperConnectionString), collectionName);
 }
 ```
 

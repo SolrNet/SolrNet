@@ -170,7 +170,7 @@ namespace SolrNet
 
         private static ISolrConnection CreateAutoSolrConnection(IServiceProvider serviceProvider,
             Func<IServiceProvider, string> urlRetriever, Action<SolrNetOptions> setupAction, 
-            Func<string, AutoSolrConnection> createConnectionAction = null)
+            Func<string, AutoSolrConnection> createConnectionAction)
         {
             var solrUrl = urlRetriever(serviceProvider);
             if (string.IsNullOrWhiteSpace(solrUrl)) throw new ArgumentNullException(nameof(solrUrl));

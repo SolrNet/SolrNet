@@ -4,11 +4,11 @@
     ".NETFramework,Version=v4.6": {
       "Microsoft.NETFramework.ReferenceAssemblies": {
         "type": "Direct",
-        "requested": "[1.0.0, )",
-        "resolved": "1.0.0",
-        "contentHash": "7D2TMufjGiowmt0E941kVoTIS+GTNzaPopuzM1/1LSaJAdJdBrVP0SkZW7AgDd0a2U1DjsIeaKG1wxGVBNLDMw==",
+        "requested": "[1.0.2, )",
+        "resolved": "1.0.2",
+        "contentHash": "5/cSEVld+px/CuRrbohO/djfg6++eR6zGpy88MgqloXvkj//WXWpFZyu/OpkXPN0u5m+dN/EVwLNYFUxD4h2+A==",
         "dependencies": {
-          "Microsoft.NETFramework.ReferenceAssemblies.net46": "1.0.0"
+          "Microsoft.NETFramework.ReferenceAssemblies.net46": "1.0.2"
         }
       },
       "Newtonsoft.Json": {
@@ -25,8 +25,8 @@
       },
       "Microsoft.NETFramework.ReferenceAssemblies.net46": {
         "type": "Transitive",
-        "resolved": "1.0.0",
-        "contentHash": "Zhtz+rFItjyGS3jMl9F011VJYLKyW6hwEUMsH/KfM2w0YrxoeFc8gO9iaOxCdN+bJFs/p2a+kHF1vNJ4y2+LfQ=="
+        "resolved": "1.0.2",
+        "contentHash": "ja03PYUrlY0wDsqAanq+r9vOnuYR5n2pd5S/sIDtC6v+BUvd34ftz0ayAb7F72lduT4qCSKtkS2EZC80/NBNMA=="
       }
     },
     ".NETStandard,Version=v2.0": {

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETCoreApp,Version=v5.0": {
+    "net6.0": {
       "Castle.Core": {
         "type": "Direct",
         "requested": "[4.2.1, )",
@@ -1983,24 +1983,24 @@
       "SolrNet.Core": {
         "type": "Project",
         "dependencies": {
-          "Newtonsoft.Json": "10.0.3"
+          "Newtonsoft.Json": "[10.0.3, )"
         }
       },
       "solrnet.tests.common": {
         "type": "Project",
         "dependencies": {
-          "Castle.Core": "4.2.1",
-          "Castle.Windsor": "4.1.0",
-          "CommonServiceLocator": "2.0.2",
-          "SolrNet.Core": "1.0.20",
-          "xunit.assert": "2.4.1"
+          "Castle.Core": "[4.2.1, )",
+          "Castle.Windsor": "[4.1.0, )",
+          "CommonServiceLocator": "[2.0.2, )",
+          "SolrNet.Core": "[1.0.20, )",
+          "xunit.assert": "[2.4.1, )"
         }
       },
       "SolrNet.Windsor": {
         "type": "Project",
         "dependencies": {
-          "Castle.Windsor": "4.1.0",
-          "SolrNet.Core": "1.0.20"
+          "Castle.Windsor": "[4.1.0, )",
+          "SolrNet.Core": "[1.0.20, )"
         }
       }
     }

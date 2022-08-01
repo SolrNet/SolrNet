@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETCoreApp,Version=v5.0": {
+    "net6.0": {
       "Microsoft.NET.Test.Sdk": {
         "type": "Direct",
         "requested": "[16.11.0, )",
@@ -1183,14 +1183,14 @@
       "simpleinjector.solrnet": {
         "type": "Project",
         "dependencies": {
-          "SimpleInjector": "4.3.0",
-          "SolrNet.Core": "1.0.20"
+          "SimpleInjector": "[4.3.0, )",
+          "SolrNet.Core": "[1.0.20, )"
         }
       },
       "SolrNet.Core": {
         "type": "Project",
         "dependencies": {
-          "Newtonsoft.Json": "10.0.3"
+          "Newtonsoft.Json": "[10.0.3, )"
         }
       }
     }

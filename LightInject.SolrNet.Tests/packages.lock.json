@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETCoreApp,Version=v5.0": {
+    "net6.0": {
       "LightInject": {
         "type": "Direct",
         "requested": "[4.1.1, )",
@@ -1197,14 +1197,14 @@
       "SolrNet.Core": {
         "type": "Project",
         "dependencies": {
-          "Newtonsoft.Json": "10.0.3"
+          "Newtonsoft.Json": "[10.0.3, )"
         }
       },
       "SolrNet.LightInject": {
         "type": "Project",
         "dependencies": {
-          "LightInject": "4.1.1",
-          "SolrNet.Core": "1.0.20"
+          "LightInject": "[4.1.1, )",
+          "SolrNet.Core": "[1.0.20, )"
         }
       }
     }

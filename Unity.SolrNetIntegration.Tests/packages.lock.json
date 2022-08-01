@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETCoreApp,Version=v5.0": {
+    "net6.0": {
       "Microsoft.NET.Test.Sdk": {
         "type": "Direct",
         "requested": "[16.11.0, )",
@@ -1239,15 +1239,15 @@
       "SolrNet.Core": {
         "type": "Project",
         "dependencies": {
-          "Newtonsoft.Json": "10.0.3"
+          "Newtonsoft.Json": "[10.0.3, )"
         }
       },
       "SolrNet.Unity": {
         "type": "Project",
         "dependencies": {
-          "SolrNet.Core": "1.0.20",
-          "System.Configuration.ConfigurationManager": "5.0.0",
-          "Unity": "5.5.0"
+          "SolrNet.Core": "[1.0.20, )",
+          "System.Configuration.ConfigurationManager": "[5.0.0, )",
+          "Unity": "[5.5.0, )"
         }
       }
     }

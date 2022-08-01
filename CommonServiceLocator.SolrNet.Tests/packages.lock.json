@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETCoreApp,Version=v5.0": {
+    "net6.0": {
       "Microsoft.NET.Test.Sdk": {
         "type": "Direct",
         "requested": "[16.11.0, )",
@@ -1874,14 +1874,14 @@
       "SolrNet": {
         "type": "Project",
         "dependencies": {
-          "CommonServiceLocator": "2.0.2",
-          "SolrNet.Core": "1.0.20"
+          "CommonServiceLocator": "[2.0.2, )",
+          "SolrNet.Core": "[1.0.20, )"
         }
       },
       "SolrNet.Core": {
         "type": "Project",
         "dependencies": {
-          "Newtonsoft.Json": "10.0.3"
+          "Newtonsoft.Json": "[10.0.3, )"
         }
       }
     }

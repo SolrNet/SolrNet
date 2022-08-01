@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    ".NETCoreApp,Version=v5.0": {
+    "net6.0": {
       "CommonServiceLocator": {
         "type": "Direct",
         "requested": "[2.0.2, )",
@@ -130,6 +130,27 @@
           "System.Text.RegularExpressions": "4.1.0",
           "System.Threading": "4.0.11"
         }
+      },
+      "Microsoft.Bcl": {
+        "type": "Transitive",
+        "resolved": "1.1.10",
+        "contentHash": "+tTqoh/M1pyL8El3qLy30EcwnAtyvFoDZJtdG9Cbg/WdFbh4N8kyrq198XHuEL7lnJbeD0DRO8jcX5IIOh05cQ==",
+        "dependencies": {
+          "Microsoft.Bcl.Build": "1.0.14"
+        }
+      },
+      "Microsoft.Bcl.Async": {
+        "type": "Transitive",
+        "resolved": "1.0.168",
+        "contentHash": "tUNC02eBwDKpGre0BcNIvblLv1q0Q3DnS/vtkRHj2FE1sXwt386HAudztyl5C0U88hllrqHDvtlz8bK0Y8cHDA==",
+        "dependencies": {
+          "Microsoft.Bcl": "1.1.8"
+        }
+      },
+      "Microsoft.Bcl.Build": {
+        "type": "Transitive",
+        "resolved": "1.0.21",
+        "contentHash": "sgHu4mIt0+NVGyI12Bj4hLPypNK55UOH+ologj2LqDCjxq3EbIxe/uAtHjY+fEwbE1dtsAHG8SXHf+V/EYbKTg=="
       },
       "Microsoft.CodeAnalysis.Analyzers": {
         "type": "Transitive",
@@ -467,6 +488,16 @@
           "System.Runtime.Serialization.Formatters": "4.3.0",
           "System.Runtime.Serialization.Primitives": "4.3.0",
           "System.Xml.XmlDocument": "4.3.0"
+        }
+      },
+      "Nito.AsyncEx": {
+        "type": "Transitive",
+        "resolved": "4.0.1",
+        "contentHash": "QR0qD+WtSMK8o5WUzbRXXBNT1TTwvaIbq3w1gpEyN+5hoYHpQsJm1atUu8MiORYE1QohksGff4GQwX1lJ8KjmQ==",
+        "dependencies": {
+          "Microsoft.Bcl": "1.1.10",
+          "Microsoft.Bcl.Async": "1.0.168",
+          "Microsoft.Bcl.Build": "1.0.21"
         }
       },
       "NuGet.Frameworks": {
@@ -2018,28 +2049,35 @@
         "type": "Project",
         "dependencies": {
           "CommonServiceLocator": "2.0.2",
-          "SolrNet.Core": "1.1.1"
+          "SolrNet.Core": "1.0.20"
         }
       },
       "SolrNet.Cloud": {
         "type": "Project",
         "dependencies": {
           "CommonServiceLocator": "2.0.2",
-          "SolrNet": "1.1.1",
-          "SolrNet.Cloud.Core": "1.1.1",
-          "SolrNet.Core": "1.1.1"
+          "SolrNet": "1.0.20",
+          "SolrNet.Cloud.Core": "1.0.20",
+          "SolrNet.Core": "1.0.20"
         }
       },
       "SolrNet.Cloud.Core": {
         "type": "Project",
         "dependencies": {
           "Newtonsoft.Json": "10.0.3",
-          "SolrNet.Core": "1.1.1",
+          "SolrNet.Core": "1.0.20",
           "ZooKeeperNetEx": "3.4.12.1"
         }
       },
       "SolrNet.Cloud.Unity": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "Nito.AsyncEx": "4.0.1",
+          "SolrNet.Cloud.Core": "1.0.20",
+          "SolrNet.Core": "1.0.20",
+          "Unity": "5.0.0",
+          "ZooKeeperNetEx": "3.4.12.1"
+        }
       },
       "SolrNet.Core": {
         "type": "Project",
@@ -2051,7 +2089,7 @@
         "type": "Project",
         "dependencies": {
           "LightInject": "4.1.1",
-          "SolrNet.Core": "1.1.1"
+          "SolrNet.Core": "1.0.20"
         }
       },
       "solrnet.tests.common": {
@@ -2060,7 +2098,7 @@
           "Castle.Core": "4.2.1",
           "Castle.Windsor": "4.1.0",
           "CommonServiceLocator": "2.0.2",
-          "SolrNet.Core": "1.1.1",
+          "SolrNet.Core": "1.0.20",
           "xunit.assert": "2.4.1"
         }
       },
@@ -2072,13 +2110,13 @@
           "CommonServiceLocator": "2.0.2",
           "LightInject": "4.1.1",
           "Microsoft.NET.Test.Sdk": "16.11.0",
-          "SolrNet": "1.1.1",
-          "SolrNet.Cloud": "1.1.1",
-          "SolrNet.Cloud.Core": "1.1.1",
-          "SolrNet.Cloud.Unity": "1.1.1",
-          "SolrNet.Core": "1.1.1",
-          "SolrNet.LightInject": "1.1.1",
-          "SolrNet.Tests.Common": "1.1.1",
+          "SolrNet": "1.0.20",
+          "SolrNet.Cloud": "1.0.20",
+          "SolrNet.Cloud.Core": "1.0.20",
+          "SolrNet.Cloud.Unity": "1.0.20",
+          "SolrNet.Core": "1.0.20",
+          "SolrNet.LightInject": "1.0.20",
+          "SolrNet.Tests.Common": "1.0.20",
           "System.Configuration.ConfigurationManager": "5.0.0",
           "xunit": "2.4.1",
           "xunit.runner.visualstudio": "2.4.1"

@@ -1,5 +1,4 @@
-﻿using System;
-using HttpWebAdapters;
+﻿using HttpWebAdapters;
 
 namespace SolrNet.Cloud
 {
@@ -9,56 +8,50 @@ namespace SolrNet.Cloud
     public class ClientCertificateSolrOperationsProvider : ISolrOperationsProvider
     {
         private readonly IHttpWebRequestFactory _requestFactory;
-        private readonly int _timeOutSeconds;
+        private readonly int _timeOutInMilliseconds;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="requestFactory">The request factory</param>
-        /// <param name="timeOutSeconds">the timeout in seconds</param>
-        public ClientCertificateSolrOperationsProvider(IHttpWebRequestFactory requestFactory, int timeOutSeconds)
+        /// <param name="timeOutInMilliseconds">The timeout in milliseconds</param>
+        public ClientCertificateSolrOperationsProvider(IHttpWebRequestFactory requestFactory, int timeOutInMilliseconds)
         {
             _requestFactory = requestFactory;
-            _timeOutSeconds = timeOutSeconds;
+            _timeOutInMilliseconds = timeOutInMilliseconds;
         }
 
 
         public ISolrBasicOperations<T> GetBasicOperations<T>(string url, bool isPostConnection = false)
         {
-            var connection = new Impl.SolrConnection(url);
-            connection.HttpWebRequestFactory = _requestFactory;
-            connection.Timeout = (int)TimeSpan.FromSeconds(_timeOutSeconds).TotalMilliseconds;
-
-            if (!isPostConnection)
-            {
-                return SolrNet.GetBasicServer<T>(connection);
-            }
-            else
-            {
-                var postConnection = new Impl.PostSolrConnection(connection, url);
-                postConnection.HttpWebRequestFactory = _requestFactory;
-                return SolrNet.GetBasicServer<T>(postConnection);
-            }
+            var connection = GetConnection(url, isPostConnection);
+            return SolrNet.GetBasicServer<T>(connection);
         }
-
 
 
         public ISolrOperations<T> GetOperations<T>(string url, bool isPostConnection = false)
         {
+            var connection = GetConnection(url, isPostConnection);
+            return SolrNet.GetServer<T>(connection);
+        }
+
+
+        private ISolrConnection GetConnection(string url, bool isPostConnection)
+        {
             var connection = new Impl.SolrConnection(url);
             connection.HttpWebRequestFactory = _requestFactory;
-            connection.Timeout = (int)TimeSpan.FromSeconds(_timeOutSeconds).TotalMilliseconds;
+            connection.Timeout = _timeOutInMilliseconds;
 
-            if (!isPostConnection)
-            {
-                return SolrNet.GetServer<T>(connection);
-            }
-            else
+            if (isPostConnection)
             {
                 var postConnection = new Impl.PostSolrConnection(connection, url);
                 postConnection.HttpWebRequestFactory = _requestFactory;
-                return SolrNet.GetServer<T>(postConnection);
+                postConnection.Timeout = _timeOutInMilliseconds;
+                return postConnection;
             }
+
+            return connection;
         }
+
     }
 }

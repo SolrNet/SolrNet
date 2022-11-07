@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using HttpWebAdapters;
 using SolrNet;
 using SolrNet.Cloud;
 using Unity.Injection;
@@ -61,7 +62,10 @@ namespace Unity.SolrNetCloudIntegration
             }
             container.RegisterInstance(cloudStateProvider.Key, cloudStateProvider);
             if (!container.IsRegistered<ISolrOperationsProvider>())
-                container.RegisterInstance<ISolrOperationsProvider>(new OperationsProvider());
+            {
+                var httpWebRequestFactory = container.Resolve<IHttpWebRequestFactory>();
+                container.RegisterInstance<ISolrOperationsProvider>(new OperationsProvider(httpWebRequestFactory));
+            }
             return container;
         }
 
@@ -97,14 +101,24 @@ namespace Unity.SolrNetCloudIntegration
 
         private class OperationsProvider : ISolrOperationsProvider
         {
+            public IHttpWebRequestFactory WebRequestFactory
+            {
+                get; set;
+            }
+
+            internal OperationsProvider(IHttpWebRequestFactory webRequestFactory)
+            {
+                WebRequestFactory = webRequestFactory;
+            }
+
             public ISolrBasicOperations<T> GetBasicOperations<T>(string url, bool isPostConnection = false)
             {
-                return SolrNet.SolrNet.GetBasicServer<T>(url, isPostConnection);
+                return SolrNet.SolrNet.GetBasicServer<T>(url, isPostConnection, WebRequestFactory);
             }
 
             public ISolrOperations<T> GetOperations<T>(string url, bool isPostConnection = false)
             {
-                return SolrNet.SolrNet.GetServer<T>(url, isPostConnection);
+                return SolrNet.SolrNet.GetServer<T>(url, isPostConnection, WebRequestFactory);
             }
         }
     }

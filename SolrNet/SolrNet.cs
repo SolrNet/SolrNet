@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HttpWebAdapters;
 using SolrNet.Impl;
 using SolrNet.Impl.DocumentPropertyVisitors;
 using SolrNet.Impl.FacetQuerySerializers;
@@ -23,17 +24,32 @@ namespace SolrNet
         /// <summary>
         /// Gets basic server instance
         /// </summary>
-        public static ISolrBasicOperations<T> GetBasicServer<T>(string url, bool isPostConnection) {
-            var connection = new SolrConnection(url);
-            return !isPostConnection ? GetBasicServer<T>(connection) : GetBasicServer<T>(new PostSolrConnection(connection, url));
+        public static ISolrBasicOperations<T> GetBasicServer<T>(string url, bool isPostConnection, IHttpWebRequestFactory httpWebRequestFactory) {
+            var connection = new SolrConnection(url, httpWebRequestFactory);
+            if (isPostConnection) {
+                if (httpWebRequestFactory != null)
+                    return GetBasicServer<T>(new PostSolrConnection(connection, url, httpWebRequestFactory));
+                else
+                    return GetBasicServer<T>(new PostSolrConnection(connection, url));
+            }
+            else
+                return GetBasicServer<T>(connection);
         }
 
         /// <summary>
         /// Gets server instance
         /// </summary>
-        public static ISolrOperations<T> GetServer<T>(string url, bool isPostConnection) {
-            var connection = new SolrConnection(url);
-            return !isPostConnection ? GetServer<T>(connection) : GetServer<T>(new PostSolrConnection(connection, url));
+        public static ISolrOperations<T> GetServer<T>(string url, bool isPostConnection, IHttpWebRequestFactory httpWebRequestFactory) {
+            var connection = new SolrConnection(url, httpWebRequestFactory);
+            if (isPostConnection)
+            {
+                if (httpWebRequestFactory != null)
+                    return GetServer<T>(new PostSolrConnection(connection, url, httpWebRequestFactory));
+                else
+                    return GetServer<T>(new PostSolrConnection(connection, url));
+            }
+            else
+                return GetServer<T>(connection);
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SolrNet.Utils;
 using Parent = SolrNet.Startup;
 using System.Threading.Tasks;
+using HttpWebAdapters;
 
 namespace SolrNet.Cloud
 {
@@ -125,7 +126,11 @@ namespace SolrNet.Cloud
         private static async Task EnsureRegistrationAsync(ISolrCloudStateProvider cloudStateProvider)
         {
             if (Providers.Count == 0)
-                Parent.Container.Register<ISolrOperationsProvider>(c => new OperationsProvider());
+                Parent.Container.Register<ISolrOperationsProvider>(c => {
+                    var httpWebFactory = c.GetInstance<IHttpWebRequestFactory>();
+                    return new OperationsProvider(httpWebFactory);
+                });
+
             if (Providers.ContainsKey(cloudStateProvider.Key))
                 return;
             await cloudStateProvider.InitAsync();
@@ -135,14 +140,24 @@ namespace SolrNet.Cloud
 
         private class OperationsProvider : ISolrOperationsProvider
         {
+            public IHttpWebRequestFactory WebRequestFactory
+            {
+                get; set;
+            }
+
+            internal OperationsProvider(IHttpWebRequestFactory webRequestFactory)
+            {
+                WebRequestFactory = webRequestFactory;
+            }
+
             public ISolrBasicOperations<T> GetBasicOperations<T>(string url, bool isPostConnection = false)
             {
-                return SolrNet.GetBasicServer<T>(url, isPostConnection);
+                return SolrNet.GetBasicServer<T>(url, isPostConnection, WebRequestFactory);
             }
 
             public ISolrOperations<T> GetOperations<T>(string url, bool isPostConnection = false)
             {
-                return SolrNet.GetServer<T>(url, isPostConnection);
+                return SolrNet.GetServer<T>(url, isPostConnection, WebRequestFactory);
             }
         }
     }

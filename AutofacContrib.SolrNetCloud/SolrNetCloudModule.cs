@@ -7,6 +7,7 @@ using SolrNet.Cloud;
 using SolrNet;
 using SolrNet.Cloud.ZooKeeperClient;
 using Autofac.Core;
+using HttpWebAdapters;
 
 namespace AutofacContrib.SolrNetCloud
 {
@@ -89,14 +90,24 @@ namespace AutofacContrib.SolrNetCloud
 
         private class OperationsProvider : ISolrOperationsProvider
         {
+            public IHttpWebRequestFactory WebRequestFactory
+            {
+                get; set;
+            }
+
+            internal OperationsProvider(IHttpWebRequestFactory webRequestFactory)
+            {
+                WebRequestFactory = webRequestFactory;
+            }
+
             public ISolrBasicOperations<T> GetBasicOperations<T>(string url, bool isPostConnection = false)
             {
-                return SolrNet.SolrNet.GetBasicServer<T>(url, isPostConnection);
+                return SolrNet.SolrNet.GetBasicServer<T>(url, isPostConnection, WebRequestFactory);
             }
 
             public ISolrOperations<T> GetOperations<T>(string url, bool isPostConnection = false)
             {
-                return SolrNet.SolrNet.GetServer<T>(url, isPostConnection);
+                return SolrNet.SolrNet.GetServer<T>(url, isPostConnection, WebRequestFactory);
             }
         }
     }

@@ -304,6 +304,9 @@ namespace SolrNet.Impl {
                     param["hl.fl"] = string.Join(",", h.Fields.ToArray());
                 }
 
+                if (!string.IsNullOrEmpty(h.Method))
+                    param["hl.method"] = h.Method;
+
                 if (h.Snippets.HasValue)
                     param["hl.snippets"] = h.Snippets.Value.ToString();
 

@@ -209,12 +209,14 @@ namespace SolrNet.Tests {
             const string alt = "alt";
             const int fragsize = 7;
             const string query = "mausch";
+            const string method = "fastVector";
             var highlightQuery = new SolrQuery(query);
             var q = new Dictionary<string, string>();
             q["q"] = "*";
             q["rows"] = SolrQueryExecuter<TestDocument>.ConstDefaultRows.ToString();
             q["hl"] = "true";
             q["hl.q"] = query;
+            q["hl.method"] = method;
             q["hl.fl"] = highlightedField;
             q["hl.snippets"] = snippets.ToString();
             q["hl.fragsize"] = fragsize.ToString();
@@ -242,6 +244,7 @@ namespace SolrNet.Tests {
             queryExecuter.Execute(new SolrQuery("*"), new QueryOptions {
                 Highlight = new HighlightingParameters {
                     Fields = new[] { highlightedField },
+                    Method = method,
                     AfterTerm = afterTerm,
                     BeforeTerm = beforeTerm,
                     Query = highlightQuery,
@@ -304,6 +307,30 @@ namespace SolrNet.Tests {
                     UseFastVectorHighlighter = true,
                 }
             });
+            Assert.Equal("true", p["hl.useFastVectorHighlighter"]);
+            Assert.Equal("before", p["hl.tag.pre"]);
+            Assert.Equal("after", p["hl.tag.post"]);
+            Assert.False(p.ContainsKey("hl.simple.pre"));
+            Assert.False(p.ContainsKey("hl.simple.post"));
+            Assert.False(p.ContainsKey("hl.method"));
+        }
+
+        [Fact]
+        public void HighlightingWithMethod()
+        {
+            var e = new SolrQueryExecuter<TestDocument>(null, null, null, null, null);
+            var p = e.GetHighlightingParameters(new QueryOptions
+            {
+                Highlight = new HighlightingParameters
+                {
+                    Fields = new[] { "a" },
+                    Method = "unified",
+                    AfterTerm = "after",
+                    BeforeTerm = "before",
+                    UseFastVectorHighlighter = true,
+                }
+            });
+            Assert.Equal("unified", p["hl.method"]);
             Assert.Equal("true", p["hl.useFastVectorHighlighter"]);
             Assert.Equal("before", p["hl.tag.pre"]);
             Assert.Equal("after", p["hl.tag.post"]);

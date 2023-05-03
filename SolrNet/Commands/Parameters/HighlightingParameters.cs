@@ -29,12 +29,18 @@ namespace SolrNet.Commands.Parameters {
 		/// </summary>
 		public ICollection<string> Fields { get; set; }
 
-		/// <summary>
-		/// The maximum number of highlighted snippets to generate per field. 
-		/// It is possible for any number of snippets from zero to this value to be generated.
-		/// If left null, it will use whatever default Solr sets (1 for Solr 1.3)
-		/// </summary>
-		public int? Snippets { get; set; }
+        /// <summary>
+        /// Highlighting method to be used.
+        /// If left null/blank, it's not sent and will use default set in Solr
+        /// </summary>
+        public string Method { get; set; }
+
+        /// <summary>
+        /// The maximum number of highlighted snippets to generate per field. 
+        /// It is possible for any number of snippets from zero to this value to be generated.
+        /// If left null, it will use whatever default Solr sets (1 for Solr 1.3)
+        /// </summary>
+        public int? Snippets { get; set; }
 
 		/// <summary>
 		/// The size, in characters, of fragments to consider for highlighting. 

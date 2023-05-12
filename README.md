@@ -40,6 +40,7 @@ The easiest way to get going is to use our NuGet packages:
  * [Mapping](Documentation/Mapping.md)
  * [Initialization](Documentation/Initialization.md)
  * [Create/Update/Delete](Documentation/CRUD.md)
+ * [Atomic updates](Documentation/Atomic-updates.md)
  * [Querying](Documentation/Querying.md)
  * [Faceting](Documentation/Facets.md)
  * [Highlighting](Documentation/Highlighting.md)

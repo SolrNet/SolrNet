@@ -1,5 +1,4 @@
-#!/usr/bin/env nix-shell
-#! nix-shell -i sh
+#!/usr/bin/env -S nix --extra-experimental-features "nix-command flakes" shell .# -c sh
 
 export SOLR_VERSION=${SOLR_VERSION:-8.8.2}
 

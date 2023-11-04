@@ -5,6 +5,13 @@ For those without any GitHub knowledge: [Paul Bouwer has written an excellent gu
 
 You can contribute to SolrNet with issues and PRs. Simply filing issues for problems you encounter is a great way to contribute and of course contributing implementations is greatly appreciated.
 
+## Development environment
+
+As usual, you can use your favourite .net IDE (Rider / VS).<br>
+If you [install Nix](https://github.com/DeterminateSystems/nix-installer/blob/main/README.md) you can run `nix develop --impure` and get everything you need in a VSCodium editor.
+Nix is also currently necessary to run integration tests (`./integration_tests.sh`).
+
+
 ## Workflow
 
 We use and recommend the standard GitHub [Fork and Pull](https://gist.github.com/Chaser324/ce0505fbed06b947d962]) workflow:

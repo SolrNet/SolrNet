@@ -24,14 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="app.config">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
-  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
-    <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\testhost.dll.config" />
-    <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\testhost.x86.dll.config" />
-    <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\ReSharperTestRunner64.dll.config" />
-  </Target> 
 </Project>

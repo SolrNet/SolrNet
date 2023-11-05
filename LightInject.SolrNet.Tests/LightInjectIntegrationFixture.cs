@@ -3,6 +3,7 @@
 using System;
 using Xunit;
 using SolrNet;
+using SolrNet.Tests.Common;
 using Xunit.Abstractions;
 
 namespace LightInject.SolrNet.Tests
@@ -19,7 +20,7 @@ namespace LightInject.SolrNet.Tests
             this.testOutputHelper = testOutputHelper;
             
             this.defaultServiceProvider = new ServiceContainer();
-            this.defaultServiceProvider.AddSolrNet("http://localhost:8983/solr/techproducts");
+            this.defaultServiceProvider.AddSolrNet($"{TestContainers.BaseUrl}solr/techproducts");
         }
 
 

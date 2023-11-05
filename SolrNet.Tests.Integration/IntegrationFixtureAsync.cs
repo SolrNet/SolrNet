@@ -29,6 +29,7 @@ using SolrNet.Tests.Integration.Sample;
 using SolrNet.Tests;
 using SolrNet.Tests.Utils;
 using System.Threading.Tasks;
+using SolrNet.Tests.Common;
 using Xunit.Abstractions;
 
 namespace SolrNet.Tests.Integration
@@ -39,8 +40,7 @@ namespace SolrNet.Tests.Integration
     {
         private readonly ITestOutputHelper testOutputHelper;
         
-        private static readonly Lazy<Configuration> config = new(() => ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None));
-        private static readonly Lazy<string> serverURL = new (() => config.Value.AppSettings.Settings["solr"].Value);
+        private static readonly Lazy<string> serverURL = new (() => $"{TestContainers.BaseUrl}solr/techproducts");
         public static readonly System.Lazy<object> init = new System.Lazy<object>(() => {
             Startup.Init<Product>(new LoggingConnection(new SolrConnection(serverURL.Value)));
             return null;
@@ -586,6 +586,6 @@ namespace SolrNet.Tests.Integration
 
         }
 
-        private static readonly Version SolrVersion = Version.Parse(Environment.GetEnvironmentVariable("SOLR_VERSION") ?? "0.0");
+        private static readonly Version SolrVersion = Version.Parse(TestContainers.SolrVersion ?? "0.0");
     }
 }

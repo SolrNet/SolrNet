@@ -10,5 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightInject.SolrNet\LightInject.SolrNet.csproj" />
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj" />
   </ItemGroup>
 </Project>

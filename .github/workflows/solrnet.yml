@@ -23,7 +23,7 @@ jobs:
         run: ./integration_tests.sh
         env:
           SOLR_VERSION: ${{ matrix.solr_version }}
-        timeout-minutes: 5
+        timeout-minutes: 7
       - uses: actions/upload-artifact@v3
         with:
           name: test-results ${{ matrix.solr_version }}

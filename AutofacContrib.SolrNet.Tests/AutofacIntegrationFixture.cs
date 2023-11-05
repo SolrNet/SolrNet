@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Autofac;
 using SolrNet;
+using SolrNet.Tests.Common;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -21,7 +22,7 @@ namespace AutofacContrib.SolrNet.Tests {
         public void Ping_And_Query()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr/techproducts"));
+            builder.RegisterModule(new SolrNetModule($"{TestContainers.BaseUrl}solr/techproducts"));
             var container = builder.Build();
             var solr = container.Resolve<ISolrOperations<AutofacFixture.Entity>>();
             solr.Ping();
@@ -32,7 +33,7 @@ namespace AutofacContrib.SolrNet.Tests {
         public void DictionaryDocument()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr/techproducts"));
+            builder.RegisterModule(new SolrNetModule($"{TestContainers.BaseUrl}solr/techproducts"));
             var container = builder.Build();
             var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
             var results = solr.Query(SolrQuery.All);
@@ -49,7 +50,7 @@ namespace AutofacContrib.SolrNet.Tests {
         public void DictionaryDocument_add()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterModule(new SolrNetModule("http://localhost:8983/solr/techproducts"));
+            builder.RegisterModule(new SolrNetModule($"{TestContainers.BaseUrl}solr/techproducts"));
             var container = builder.Build();
             var solr = container.Resolve<ISolrOperations<Dictionary<string, object>>>();
             solr.Add(new Dictionary<string, object> {

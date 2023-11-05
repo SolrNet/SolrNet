@@ -1,5 +1,6 @@
 ﻿using SolrNet;
 using System;
+using SolrNet.Tests.Common;
 using Xunit;
 using Xunit.Abstractions;
 using static SimpleInjector.SolrNet.Tests.SimpleInjectorFixture;
@@ -18,7 +19,7 @@ namespace SimpleInjector.SolrNet.Tests
             Container = new Container();
 
             // collection needs to exist
-            Container.AddSolrNet("http://localhost:8983/solr/entity1");
+            Container.AddSolrNet($"{TestContainers.BaseUrl}solr/entity1");
         }
         
         [Fact]

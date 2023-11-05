@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SolrNet;
+using SolrNet.Tests.Common;
 using Xunit;
 #if NETCOREAPP2_0 || NETSTANDARD2_0
 using Microsoft.Extensions.Configuration;
@@ -25,9 +26,9 @@ namespace StructureMap.SolrNetIntegration.Tests {
             this.testOutputHelper = testOutputHelper;
             var servers = new List<SolrServer>
             {
-                new SolrServer ("entity","http://localhost:8983/solr/entity1", "StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests"),
-                new SolrServer ("entity2","http://localhost:8983/solr/core0", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"),
-                new SolrServer ("entity3","http://localhost:8983/solr/core1", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests")
+                new SolrServer ("entity", $"{TestContainers.BaseUrl}solr/entity1", "StructureMap.SolrNetIntegration.Tests.Entity, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity2", $"{TestContainers.BaseUrl}solr/core0", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests"),
+                new SolrServer ("entity3", $"{TestContainers.BaseUrl}solr/core1", "StructureMap.SolrNetIntegration.Tests.Entity2, StructureMap.SolrNetIntegration.Tests")
             };
             Container = new Container(c => c.IncludeRegistry(SolrNetRegistry.Create(servers)));
         }
@@ -47,7 +48,7 @@ namespace StructureMap.SolrNetIntegration.Tests {
                 new SolrServerElement {
                     Id = "entity1dict",
                     DocumentType = typeof(Dictionary<string, object>).AssemblyQualifiedName,
-                    Url = "http://localhost:8983/solr/core1",
+                    Url = $"{TestContainers.BaseUrl}solr/core1",
                 }
             };
 
@@ -71,7 +72,7 @@ namespace StructureMap.SolrNetIntegration.Tests {
                 new SolrServerElement {
                     Id = "entity1dict",
                     DocumentType = typeof(Dictionary<string, object>).AssemblyQualifiedName,
-                    Url = "http://localhost:8983/solr/core1",
+                    Url = $"{TestContainers.BaseUrl}solr/core1",
                 }
             };
 

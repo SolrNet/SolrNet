@@ -3,6 +3,7 @@ using System.Configuration;
 using SolrNet.Commands.Cores;
 using SolrNet.Impl;
 using SolrNet.Impl.ResponseParsers;
+using SolrNet.Tests.Common;
 using Xunit;
 
 namespace SolrNet.Tests.Integration {
@@ -32,14 +33,9 @@ namespace SolrNet.Tests.Integration {
         http://localhost:8983/solr/techproducts/admin/cores?action=UNLOAD&core=core0
         */
 
-        private readonly string solrUrl;
+        private readonly string solrUrl = $"{TestContainers.BaseUrl}solr";
         private const string instanceDir = "/apps/solr";
         
-        public SolrCoreAdminFixture() {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            solrUrl = config.AppSettings.Settings["solr"].Value;
-        }
-
         [Fact]
         public void GetStatusForAllCores() {
             var solrCoreAdmin = new SolrCoreAdmin(new SolrConnection(solrUrl), GetHeaderParser(), GetStatusResponseParser());

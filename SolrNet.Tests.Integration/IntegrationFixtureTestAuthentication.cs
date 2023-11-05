@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using HttpWebAdapters;
 using LightInject;
 using SolrNet.Exceptions;
+using SolrNet.Tests.Common;
 using SolrNet.Tests.Integration.Sample;
 using Xunit.Abstractions;
 
@@ -35,19 +36,20 @@ namespace SolrNet.Tests.Integration
 
         public IntegrationFixtureTestAuthentication()
         {
+            var solrUrl = $"{TestContainers.BaseUrlWithAuth}solr/techproducts";
             this.defaultServiceProviderAuth_WithSyncAuth = new ServiceContainer();
-            this.defaultServiceProviderAuth_WithSyncAuth.AddSolrNet<Product>("http://localhost:8984/solr/techproducts",
+            this.defaultServiceProviderAuth_WithSyncAuth.AddSolrNet<Product>(solrUrl,
                 null,
                 () => new BasicAuthHttpWebRequestFactory("solr", "SolrRocks"));
 
             this.defaultServiceProviderAuth_WithSyncAndAsyncAuth = new ServiceContainer();
-            this.defaultServiceProviderAuth_WithSyncAndAsyncAuth.AddSolrNet<Product>("http://localhost:8984/solr/techproducts",
+            this.defaultServiceProviderAuth_WithSyncAndAsyncAuth.AddSolrNet<Product>(solrUrl,
                 (options) => options.HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"solr:SolrRocks"))),
                 () => new BasicAuthHttpWebRequestFactory("solr", "SolrRocks"));
 
 
             this.defaultServiceProviderAuth_WithoutAuth = new ServiceContainer();
-            this.defaultServiceProviderAuth_WithoutAuth.AddSolrNet<Product>("http://localhost:8984/solr/techproducts");
+            this.defaultServiceProviderAuth_WithoutAuth.AddSolrNet<Product>(solrUrl);
         }
 
         [Fact]

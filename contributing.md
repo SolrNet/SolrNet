@@ -8,8 +8,8 @@ You can contribute to SolrNet with issues and PRs. Simply filing issues for prob
 ## Development environment
 
 As usual, you can use your favourite .net IDE (Rider / VS).<br>
-If you [install Nix](https://github.com/DeterminateSystems/nix-installer/blob/main/README.md) you can run `nix develop --impure` and get everything you need in a VSCodium editor.
-Nix is also currently necessary to run integration tests (`./integration_tests.sh`).
+If you [install Nix](https://github.com/DeterminateSystems/nix-installer/blob/main/README.md) you can run `nix develop --impure` and get everything you need in a VSCodium editor.<br>
+To run integration tests you need Docker. 
 
 
 ## Workflow

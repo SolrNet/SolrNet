@@ -5,6 +5,7 @@ using Xunit;
 using SolrNet;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using SolrNet.Tests.Common;
 using Xunit.Abstractions;
 
 namespace Microsoft.DependencyInjection.SolrNet.Tests
@@ -20,7 +21,7 @@ namespace Microsoft.DependencyInjection.SolrNet.Tests
             this.testOutputHelper = testOutputHelper;
             var sc = new ServiceCollection();
             
-            sc.AddSolrNet("http://localhost:8983/solr/techproducts");
+            sc.AddSolrNet($"{TestContainers.BaseUrl}solr/techproducts");
 
             DefaultServiceProvider = sc.BuildServiceProvider();
         }

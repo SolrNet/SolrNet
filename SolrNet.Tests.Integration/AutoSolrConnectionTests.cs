@@ -21,6 +21,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using SolrNet.Impl;
+using SolrNet.Tests.Common;
 using Xunit;
 
 namespace SolrNet.Tests.Integration
@@ -30,7 +31,7 @@ namespace SolrNet.Tests.Integration
     [TestCaseOrderer(MethodDefTestCaseOrderer.Type, MethodDefTestCaseOrderer.Assembly)]
     public class AutoSolrConnectionTests
     {
-        private const string solrURL = "http://localhost:8983/solr/techproducts";
+        private static readonly string solrURL = $"{TestContainers.BaseUrl}solr/techproducts";
 
         [Fact]
         public void SimpleGet()

@@ -8,6 +8,7 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj" />
     <ProjectReference Include="..\Unity.SolrNetIntegration\Unity.SolrNetIntegration.csproj"/>
   </ItemGroup>
   <ItemGroup>
@@ -19,5 +20,6 @@
     <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\testhost.dll.config" />
     <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\testhost.x86.dll.config" />
     <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\ReSharperTestRunner64.dll.config" />
+    <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\ReSharperTestRunner.dll.config" />
   </Target>
 </Project>

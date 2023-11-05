@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleInjector.SolrNet\SimpleInjector.SolrNet.csproj" />
+    <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj" />
     
   </ItemGroup>
 </Project>

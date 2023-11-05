@@ -7,12 +7,11 @@ using System;
 namespace Unity.SolrNetIntegration.Tests {
     public class UnityMultiCoreFixture : IDisposable {
         private IUnityContainer container;
-
         
         public  UnityMultiCoreFixture() {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var solrConfig = (SolrConfigurationSection) config.GetSection("solr");
-
+            
             container = new UnityContainer();
             new SolrNetContainerConfiguration().ConfigureContainer(solrConfig.SolrServers, container);
         }

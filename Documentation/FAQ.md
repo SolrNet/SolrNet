@@ -6,7 +6,9 @@ No, SolrNet is a HTTP client so you can talk to Solr from your .NET application.
 
 #### What version of Solr do I need? Does SolrNet work with the latest release of Solr?
 
-It's very uncommon for Solr to make breaking changes in core functionality between releases, so SolrNet should work with any fairly recent version of Solr (3.1+). Note that it's up to you to use features that are supported by your Solr version. For example, you will get an error if you try to use grouping with Solr 3.1
+It's very uncommon for Solr to make breaking changes in core functionality between releases, so SolrNet should work with any fairly recent version of Solr (3.1+). Note that it's up to you to use features that are supported by your Solr version. For example, you will get an error if you try to use grouping with Solr 3.1 .
+
+You can see what concrete versions of Solr are tested in [../.github/workflows/solrnet.yml]()
 
 #### I'm getting a Bad Request error when calling `Commit()`
 

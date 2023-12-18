@@ -138,7 +138,7 @@
     <EmbeddedResource Include="Resources\solrSchemaNoUniqueKey.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
+    <PackageReference Include="CommonServiceLocator" Version="2.0.4" />
     <PackageReference Include="Castle.Core" Version="4.2.1" />
     <PackageReference Include="Castle.Windsor" Version="4.1.0" />
     <PackageReference Include="Hedgehog" Version="0.10.0" />

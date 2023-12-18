@@ -39,7 +39,7 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommonServiceLocator" Version="2.0.2" />
+    <PackageReference Include="CommonServiceLocator" Version="2.0.4" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />

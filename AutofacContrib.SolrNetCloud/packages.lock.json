@@ -10,11 +10,11 @@
       },
       "Microsoft.NETFramework.ReferenceAssemblies": {
         "type": "Direct",
-        "requested": "[1.0.2, )",
-        "resolved": "1.0.2",
-        "contentHash": "5/cSEVld+px/CuRrbohO/djfg6++eR6zGpy88MgqloXvkj//WXWpFZyu/OpkXPN0u5m+dN/EVwLNYFUxD4h2+A==",
+        "requested": "[1.0.3, )",
+        "resolved": "1.0.3",
+        "contentHash": "vUc9Npcs14QsyOD01tnv/m8sQUnGTGOw1BCmKcv77LBJY7OxhJ+zJF7UD/sCL3lYNFuqmQEVlkfS4Quif6FyYg==",
         "dependencies": {
-          "Microsoft.NETFramework.ReferenceAssemblies.net46": "1.0.2"
+          "Microsoft.NETFramework.ReferenceAssemblies.net46": "1.0.3"
         }
       },
       "Microsoft.NETCore.Platforms": {
@@ -24,8 +24,8 @@
       },
       "Microsoft.NETFramework.ReferenceAssemblies.net46": {
         "type": "Transitive",
-        "resolved": "1.0.2",
-        "contentHash": "ja03PYUrlY0wDsqAanq+r9vOnuYR5n2pd5S/sIDtC6v+BUvd34ftz0ayAb7F72lduT4qCSKtkS2EZC80/NBNMA=="
+        "resolved": "1.0.3",
+        "contentHash": "NiiK1wNEKbDFxF08ybLkjwEn8g6SuIrUl/Y+jlAMcf3NsTtlU0JFRWFPJENV9yyZkW6nBxk/pniBlyZtE5fHwQ=="
       },
       "Microsoft.Win32.Primitives": {
         "type": "Transitive",

@@ -90,7 +90,7 @@ namespace SolrNet.Impl
         }
 
         /// <summary>
-        /// HTTP connection timeout
+        /// HTTP connection timeout in milliseconds
         /// </summary>
         public int Timeout { get; set; }
 

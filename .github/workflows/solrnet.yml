@@ -2,7 +2,7 @@ name: SolrNet
 on: [push, pull_request]
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -13,10 +13,10 @@ jobs:
         - 6.6.6
         - 5.5.5
     steps:
-      - uses: actions/checkout@v2
-      - uses: cachix/install-nix-action@v15
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.13.6/install
+          install_url: https://releases.nixos.org/nix/nix-2.23.3/install
       - name: Unit tests
         run: ./unit_tests.sh
       - name: Integration tests
@@ -24,7 +24,7 @@ jobs:
         env:
           SOLR_VERSION: ${{ matrix.solr_version }}
         timeout-minutes: 7
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: test-results ${{ matrix.solr_version }}
           path: "*/TestResults/*"
@@ -40,16 +40,16 @@ jobs:
       #     name: test-output
       #     path: ${{ env.CLOUD_TEST_OUTPUT }}
   pack:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: test
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
-      - uses: cachix/install-nix-action@v15
+      - uses: cachix/install-nix-action@v27
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.13.6/install
+          install_url: https://releases.nixos.org/nix/nix-2.23.3/install
       - name: Pack
         run: ./pack.sh
         env:

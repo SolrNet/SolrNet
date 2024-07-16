@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.2
+
+- Test on Solr 9
+- Add support for highlighter methods (@SirMrDexter)
+- Fix warning NETSDK1206
+
 ## 1.1.1
 
 - Fix typo in "router.field" parameter #595 (@Jure-BB)

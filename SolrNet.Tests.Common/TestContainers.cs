@@ -81,7 +81,7 @@ public static class TestContainers
             "entity1",
             "entity2",
         };
-        await Parallel.ForEachAsync(cores, async (core, cancel) =>
+        foreach (var core in cores)
         {
             await container.ExecWithCheck($"Error creating Solr collection for core '{core}'",
                 "/opt/solr/bin/solr", "create_collection", 
@@ -104,7 +104,7 @@ public static class TestContainers
                 "-c", core,
                 "example/exampledocs/"
             );
-        });
+        }
         return container;
     }
 

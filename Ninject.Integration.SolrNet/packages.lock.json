@@ -17,6 +17,11 @@
         "resolved": "3.3.4",
         "contentHash": "CmbWW97FfJuh4LEOVZM/spqXl4KAulRUjqeMwRd5J9rDMQArmIYaDMU3pyzXXHT062tbF0OPIMwI7tSOtprPfg=="
       },
+      "Microsoft.CSharp": {
+        "type": "Transitive",
+        "resolved": "4.7.0",
+        "contentHash": "pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA=="
+      },
       "Microsoft.NETFramework.ReferenceAssemblies.net46": {
         "type": "Transitive",
         "resolved": "1.0.3",
@@ -35,6 +40,7 @@
       "SolrNet.Core": {
         "type": "Project",
         "dependencies": {
+          "Microsoft.CSharp": "[4.7.0, )",
           "Newtonsoft.Json": "[13.0.3, )",
           "System.ValueTuple": "[4.4.0, )"
         }
@@ -69,6 +75,11 @@
           "System.Security.Cryptography.ProtectedData": "5.0.0",
           "System.Security.Permissions": "5.0.0"
         }
+      },
+      "Microsoft.CSharp": {
+        "type": "Transitive",
+        "resolved": "4.7.0",
+        "contentHash": "pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA=="
       },
       "Microsoft.NETCore.Platforms": {
         "type": "Transitive",
@@ -226,6 +237,7 @@
       "SolrNet.Core": {
         "type": "Project",
         "dependencies": {
+          "Microsoft.CSharp": "[4.7.0, )",
           "Newtonsoft.Json": "[13.0.3, )"
         }
       }

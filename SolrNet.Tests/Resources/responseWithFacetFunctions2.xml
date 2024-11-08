@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <lst name="responseHeader">
+    <int name="status">0</int>
+    <int name="QTime">7</int>
+    <lst name="params">
+      <str name="q">*</str>
+      <str name="json.facet">
+      {
+	      categories: {
+		      type : terms
+		      field : _language, 
+		      facet: {
+			      unique_guid : 'unique(_group)', 
+			      sum_boost : 'min(__boost)'
+		      }
+	      }
+      }
+      </str>
+      <str name="rows">0</str>
+      <str name="wt">xml</str>
+    </lst>
+  </lst>
+  <result name="response" numFound="150009" start="0">
+  </result>
+  <lst name="facets">
+    <int name="count">150009</int>
+    <lst name="categories">
+      <arr name="buckets">
+        <lst>
+          <str name="val">en</str>
+          <int name="count">30003</int>
+          <int name="unique_guid">30002</int>
+          <double name="sum_boost">0.0</double>
+        </lst>
+        <lst>
+          <str name="val">pl-PL</str>
+          <int name="count">30003</int>
+          <int name="unique_guid">30002</int>
+          <double name="sum_boost">0.0</double>
+        </lst>
+        <lst>
+          <str name="val">da</str>
+          <int name="count">30001</int>
+          <int name="unique_guid">30001</int>
+          <double name="sum_boost">0.0</double>
+        </lst>
+        <lst>
+          <str name="val">es-ES</str>
+          <int name="count">30001</int>
+          <int name="unique_guid">30001</int>
+          <double name="sum_boost">0.0</double>
+        </lst>
+        <lst>
+          <str name="val">ja-JP</str>
+          <int name="count">30001</int>
+          <int name="unique_guid">30001</int>
+          <double name="sum_boost">0.0</double>
+        </lst>
+      </arr>
+    </lst>
+  </lst>
+</response>

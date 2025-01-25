@@ -8,6 +8,7 @@ using System.IO;
 using System.Configuration;
 using StructureMap.SolrNetIntegration.Config;
 using System.Linq;
+using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 namespace StructureMap.SolrNetIntegration.Tests
 {

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
     <Authors>Mauricio Scheffer and contributors</Authors>
     <PackageId>SolrNet.Cloud.Unity</PackageId>
     <IsPackable>true</IsPackable>

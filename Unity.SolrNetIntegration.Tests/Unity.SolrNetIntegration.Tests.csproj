@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
@@ -9,7 +9,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj" />
-    <ProjectReference Include="..\Unity.SolrNetIntegration\Unity.SolrNetIntegration.csproj"/>
+    <ProjectReference Include="..\Unity.SolrNetIntegration\Unity.SolrNetIntegration.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="App.config">

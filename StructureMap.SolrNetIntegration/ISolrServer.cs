@@ -1,4 +1,4 @@
-﻿#if NET46
+﻿#if NET462
 #endif
 
 namespace StructureMap.SolrNetIntegration

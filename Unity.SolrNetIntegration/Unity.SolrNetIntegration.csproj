@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
     <Authors>Mauricio Scheffer and contributors</Authors>
     <PackageId>SolrNet.Unity</PackageId>
     <IsPackable>true</IsPackable>
@@ -15,7 +15,7 @@
     <!--<PackageReference Include="EnterpriseLibrary.Common" Version="6.0.1304.0" />-->
     <PackageReference Include="Unity" Version="5.5.0" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">

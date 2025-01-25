@@ -41,7 +41,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonServiceLocator.SolrNe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.Cloud", "SolrNet.Cloud\SolrNet.Cloud.csproj", "{BDA98C34-3B00-4B1F-B850-9C776FEDE8E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolrNet.Cloud.Tests", "SolrNet.Cloud.Tests\SolrNet.Cloud.Tests.csproj", "{C4FF031C-FB88-4186-9305-B180A07EC7DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolrNet.Cloud.Tests", "SolrNet.Cloud.Tests\SolrNet.Cloud.Tests.csproj", "{C4FF031C-FB88-4186-9305-B180A07EC7DA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unity.SolrNetCloudIntegration", "Unity.SolrNetCloudIntegration\Unity.SolrNetCloudIntegration.csproj", "{7B507754-C877-4DE7-AE2A-19CF5191C95E}"
 EndProject

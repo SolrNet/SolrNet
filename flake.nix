@@ -14,7 +14,7 @@
     let
       forEachSystem = nixpkgs.lib.genAttrs (import systems);
       packagesf = pkgs: with pkgs; [
-        dotnet-sdk_6
+        dotnet-sdk
         dpkg
         jq
         curl

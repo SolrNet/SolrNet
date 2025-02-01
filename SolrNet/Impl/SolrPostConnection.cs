@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,6 +10,7 @@ using SolrNet.Utils;
 using System.Threading.Tasks;
 using System.Threading;
 using HttpWebAdapters;
+using SolrNet.Diagnostics;
 
 namespace SolrNet.Impl
 {
@@ -70,7 +72,7 @@ namespace SolrNet.Impl
             return conn.PostAsync(relativeUrl, s);
         }
 
-        public (IHttpWebRequest request, string queryString) PrepareGet(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        private (IHttpWebRequest request, string queryString) PrepareGet(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             var u = new UriBuilder(serverUrl);
             u.Path += relativeUrl;
@@ -86,11 +88,14 @@ namespace SolrNet.Impl
             var qs = string.Join("&", param
                   .Select(kv => string.Format("{0}={1}", WebUtility.UrlEncode(kv.Key), WebUtility.UrlEncode(kv.Value)))
                   .ToArray());
+            
+            DiagnosticsUtil.EnrichCurrentActivity(param);
 
             request.ContentLength = Encoding.UTF8.GetByteCount(qs);
             request.ProtocolVersion = HttpVersion.Version11;
             request.KeepAlive = true;
-
+            
+            DiagnosticsUtil.EnrichCurrentActivity(request);
             return (request, qs);
         }
 
@@ -110,6 +115,7 @@ namespace SolrNet.Impl
             }
             catch (WebException e)
             {
+                DiagnosticsUtil.EnrichCurrentActivityWithError(e);
                 throw new SolrConnectionException(e);
             }
         }
@@ -130,6 +136,7 @@ namespace SolrNet.Impl
             }
             catch (WebException e)
             {
+                DiagnosticsUtil.EnrichCurrentActivityWithError(e);
                 throw new SolrConnectionException(e);
             }
         }

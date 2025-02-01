@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttpWebAdapters;
+using SolrNet.Diagnostics;
 using SolrNet.Exceptions;
 using SolrNet.Utils;
 
@@ -129,13 +132,21 @@ namespace SolrNet.Impl
             if (UriValidator.UriLength(u) > MaxUriLength)
             {
                 u.Query = null;
+                DiagnosticsUtil.EnrichCurrentActivity("POST", u.Uri);
                 response = await HttpClient.PostAsync(u.Uri, new FormUrlEncodedContent(parameters), cancellationToken);
             }
             else
+            {
+                DiagnosticsUtil.EnrichCurrentActivity("GET", u.Uri);
                 response = await HttpClient.GetAsync(u.Uri, cancellationToken);
+            }
 
             if (!response.IsSuccessStatusCode)
-                throw new SolrConnectionException(await response.Content.ReadAsStringAsync(), null, u.Uri.ToString());
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                DiagnosticsUtil.EnrichCurrentActivityWithError(errorMessage);
+                throw new SolrConnectionException(errorMessage, null, u.Uri.ToString());
+            }
 
             return await response.Content.ReadAsStreamAsync();
 
@@ -186,10 +197,15 @@ namespace SolrNet.Impl
             if(contentType != null)
                 sc.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(contentType);
 
+            DiagnosticsUtil.EnrichCurrentActivity("POST", u.Uri);
             var response = await HttpClient.PostAsync(u.Uri, sc);
 
             if (!response.IsSuccessStatusCode)
-                throw new SolrConnectionException(await response.Content.ReadAsStringAsync(), null, u.Uri.ToString());
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                DiagnosticsUtil.EnrichCurrentActivityWithError(errorMessage);
+                throw new SolrConnectionException(errorMessage, null, u.Uri.ToString());
+            }
 
             return await response.Content.ReadAsStreamAsync();
         }
@@ -204,8 +220,9 @@ namespace SolrNet.Impl
             param.Add(new KeyValuePair<string, string>("version", version));
             param.Add(new KeyValuePair<string, string>("wt", "xml"));
 
+            DiagnosticsUtil.EnrichCurrentActivity(param);
+            
             return string.Join("&", param.Select(kv => $"{WebUtility.UrlEncode(kv.Key)}={WebUtility.UrlEncode(kv.Value)}"));
-
         }
 
         #region IDisposable Support

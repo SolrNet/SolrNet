@@ -16,12 +16,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using SolrNet.Commands;
 using SolrNet.Commands.Parameters;
+using SolrNet.Diagnostics;
 using SolrNet.Schema;
+using SolrNet.Utils;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -120,25 +125,40 @@ namespace SolrNet.Impl {
         }
 
         /// <inheritdoc />
-        public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) {
-            return queryExecuter.Execute(query, options);
+        public SolrQueryResults<T> Query(ISolrQuery query, QueryOptions options) 
+        {
+            using (DiagnosticsUtil.StartSolrActivity(query))
+            {
+                var results = queryExecuter.Execute(query, options);
+                DiagnosticsUtil.EnrichCurrentActivity(results.Header);
+                return results;
+            }
         }
 
         /// <inheritdoc />
         public ExtractResponse SendAndParseExtract(ISolrCommand cmd)
         {
-            var r = Send(cmd);
-            var xml = XDocument.Parse(r);
-            return extractResponseParser.Parse(xml);
-
+            using (DiagnosticsUtil.StartSolrActivity(cmd))
+            {
+                var r = Send(cmd);
+                var xml = XDocument.Parse(r);
+                var response = extractResponseParser.Parse(xml);
+                DiagnosticsUtil.EnrichCurrentActivity(response.ResponseHeader);
+                return response;    
+            }
         }
 
         /// <inheritdoc />
         public async Task<ExtractResponse> SendAndParseExtractAsync(ISolrCommand cmd)
         {
-            var r = await SendAsync(cmd);
-            var xml = XDocument.Parse(r);
-            return extractResponseParser.Parse(xml);
+            using (DiagnosticsUtil.StartSolrActivity(cmd))
+            {
+                var r = await SendAsync(cmd);
+                var xml = XDocument.Parse(r);
+                var response = extractResponseParser.Parse(xml);
+                DiagnosticsUtil.EnrichCurrentActivity(response.ResponseHeader);
+                return response;
+            }
         }
 
         /// <inheritdoc />
@@ -160,35 +180,58 @@ namespace SolrNet.Impl {
         }
 
         /// <inheritdoc />
-        public SolrSchema GetSchema(string schemaFileName) {
-            string schemaXml = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
-            var schema = XDocument.Parse(schemaXml);
-            return schemaParser.Parse(schema);
+        public SolrSchema GetSchema(string schemaFileName) 
+        {
+            using (DiagnosticsUtil.StartSolrActivity("schema"))
+            {
+                var schemaXml = connection.Get("/admin/file", new[] { new KeyValuePair<string, string>("file", schemaFileName) });
+                var schema = XDocument.Parse(schemaXml);
+                return schemaParser.Parse(schema);    
+            }
         }
 
         /// <inheritdoc />
-        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options) {
-            var response = connection.Get("/dataimport", null);
-            var dihstatus = XDocument.Parse(response);
-            return dihStatusParser.Parse(dihstatus);
+        public SolrDIHStatus GetDIHStatus(KeyValuePair<string, string> options) 
+        {
+            using (DiagnosticsUtil.StartSolrActivity("dataimport"))
+            {
+                var response = connection.Get("/dataimport", null);
+                var dihstatus = XDocument.Parse(response);
+                return dihStatusParser.Parse(dihstatus);    
+            }
         }
 
         /// <inheritdoc />
         public SolrMoreLikeThisHandlerResults<T> MoreLikeThis(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options)
         {
-            return this.queryExecuter.Execute(query, options);
+            using (DiagnosticsUtil.StartSolrActivity(query))
+            {
+                var results = queryExecuter.Execute(query, options);
+                DiagnosticsUtil.EnrichCurrentActivity(results.Header);
+                return results;
+            }
         }
 
         /// <inheritdoc />
-        public Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SolrQueryResults<T>> QueryAsync(ISolrQuery query, QueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.queryExecuter.ExecuteAsync(query, options, cancellationToken);
+            using (DiagnosticsUtil.StartSolrActivity(query))
+            {
+                var results = await queryExecuter.ExecuteAsync(query, options, cancellationToken);
+                DiagnosticsUtil.EnrichCurrentActivity(results.Header);
+                return results;
+            }
         }
 
         /// <inheritdoc />
-        public Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<SolrMoreLikeThisHandlerResults<T>> MoreLikeThisAsync(SolrMLTQuery query, MoreLikeThisHandlerQueryOptions options, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return this.queryExecuter.ExecuteAsync(query, options, cancellationToken);
+            using (DiagnosticsUtil.StartSolrActivity(query))
+            {
+                var results = await queryExecuter.ExecuteAsync(query, options, cancellationToken);
+                DiagnosticsUtil.EnrichCurrentActivity(results.Header);
+                return results;
+            }
         }
 
         /// <inheritdoc />
@@ -268,8 +311,11 @@ namespace SolrNet.Impl {
         
         public XDocument Send(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
         {
-            var r = SendRaw(handler, solrParams);
-            return XDocument.Parse(r);
+            using (DiagnosticsUtil.StartSolrActivity(solrParams))
+            {
+                var r = SendRaw(handler, solrParams);
+                return XDocument.Parse(r);    
+            }
         }
 
         public string Send(ISolrCommand cmd)
@@ -284,31 +330,47 @@ namespace SolrNet.Impl {
 
         public ResponseHeader SendAndParseHeader(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
         {
-            var r = connection.Get(handler, solrParams);
-            var xml = XDocument.Parse(r);
-            return headerParser.Parse(xml);
+            using (DiagnosticsUtil.StartSolrActivity(solrParams))
+            {
+                var r = connection.Get(handler, solrParams);
+                var xml = XDocument.Parse(r);
+                var headers = headerParser.Parse(xml);
+                DiagnosticsUtil.EnrichCurrentActivity(headers);
+                return headers;
+            }
         }
 
         public ResponseHeader SendAndParseHeader(ISolrCommand cmd)
         {
-            var r = Send(cmd);
-            var xml = XDocument.Parse(r);
-            return headerParser.Parse(xml);
+            using (DiagnosticsUtil.StartSolrActivity(cmd))
+            {
+                var r = Send(cmd);
+                var xml = XDocument.Parse(r);
+                var headers = headerParser.Parse(xml);
+                DiagnosticsUtil.EnrichCurrentActivity(headers);
+                return headers;
+            }
         }
 
         public async Task<ResponseHeader> SendAndParseHeaderAsync(ISolrCommand cmd)
         {
-            var r = await SendAsync(cmd);
-            var xml = XDocument.Parse(r);
-            return headerParser.Parse(xml);
+            using (DiagnosticsUtil.StartSolrActivity(cmd))
+            {
+                var r = await SendAsync(cmd);
+                var xml = XDocument.Parse(r);
+                var headers = headerParser.Parse(xml);
+                DiagnosticsUtil.EnrichCurrentActivity(headers);
+                return headers;
+            }
         }
 
         public string SendRaw(string handler, IEnumerable<KeyValuePair<string, string>> solrParams)
         {
-            var r = connection.Get(handler, solrParams);
-            return r;
+            using (DiagnosticsUtil.StartSolrActivity(solrParams))
+            {
+                var r = connection.Get(handler, solrParams);
+                return r;    
+            }
         }
-
-     
     }
 }

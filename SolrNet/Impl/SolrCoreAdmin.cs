@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using SolrNet.Commands.Cores;
+using SolrNet.Diagnostics;
 
 namespace SolrNet.Impl {
     /// <summary>
@@ -90,16 +91,24 @@ namespace SolrNet.Impl {
         /// <summary>
         /// The STATUS action returns the status of all running cores.
         /// </summary>
-        public List<CoreResult> Status() {
-            return ParseStatusResponse(Send(new StatusCommand()));
+        public List<CoreResult> Status() 
+        {
+            using (DiagnosticsUtil.StartSolrActivity("status"))
+            {
+                return ParseStatusResponse(Send(new StatusCommand()));
+            }
         }
 
         /// <summary>
         /// The STATUS action returns the status of the named core.
         /// </summary>
         /// <param name="coreName">The name of a core, as listed in the "name" attribute of a &lt;core&gt; element in solr.xml.</param>
-        public CoreResult Status(string coreName) {
-            return ParseStatusResponse(Send(new StatusCommand(coreName))).FirstOrDefault();
+        public CoreResult Status(string coreName) 
+        {
+            using (DiagnosticsUtil.StartSolrActivity("status"))
+            {
+                return ParseStatusResponse(Send(new StatusCommand(coreName))).FirstOrDefault();    
+            }
         }
 
         /// <summary>

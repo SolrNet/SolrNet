@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -26,6 +27,7 @@ using SolrNet.Exceptions;
 using SolrNet.Utils;
 using System.Threading.Tasks;
 using System.Threading;
+using SolrNet.Diagnostics;
 
 namespace SolrNet.Impl
 {
@@ -156,6 +158,8 @@ namespace SolrNet.Impl
                     using (var sr = new StreamReader(s))
                         msg = sr.ReadToEnd();
                 }
+
+                DiagnosticsUtil.EnrichCurrentActivityWithError(msg);
                 throw new SolrConnectionException(msg, e, request.RequestUri.ToString());
             }
         }
@@ -182,6 +186,8 @@ namespace SolrNet.Impl
                     using (var sr = new StreamReader(s))
                         msg = await sr.ReadToEndAsync();
                 }
+                
+                DiagnosticsUtil.EnrichCurrentActivityWithError(msg);
                 throw new SolrConnectionException(msg, e, request.RequestUri.ToString());
             }
         }
@@ -194,18 +200,21 @@ namespace SolrNet.Impl
                 output.Write(buffer, 0, read);
         }
 
-        private (IHttpWebRequest request, UriBuilder uri, SolrCacheEntity cache) PrepareGetWebRequest(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
+        private (IHttpWebRequest request, Uri uri, SolrCacheEntity cache) PrepareGetWebRequest(string relativeUrl, IEnumerable<KeyValuePair<string, string>> parameters)
         {
             var u = new UriBuilder(serverURL);
             u.Path += relativeUrl;
             u.Query = GetQuery(parameters);
-
-            var request = HttpWebRequestFactory.Create(u.Uri);
+            var uri = u.Uri;
+            
+            DiagnosticsUtil.EnrichCurrentActivity(parameters);
+            
+            var request = HttpWebRequestFactory.Create(uri);
             request.Method = HttpWebRequestMethod.GET;
             request.KeepAlive = true;
             request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-
-            var cached = Cache[u.Uri.ToString()];
+            
+            var cached = Cache[uri.ToString()];
             if (cached != null)
             {
                 request.Headers.Add(HttpRequestHeader.IfNoneMatch, cached.ETag);
@@ -215,7 +224,9 @@ namespace SolrNet.Impl
                 request.ReadWriteTimeout = Timeout;
                 request.Timeout = Timeout;
             }
-            return (request, u,cached);
+            
+            DiagnosticsUtil.EnrichCurrentActivity(request);
+            return (request, uri,cached);
         }
         
         /// <inheritdoc />
@@ -227,7 +238,7 @@ namespace SolrNet.Impl
             {
                 var response = GetResponse(wr.request);
                 if (response.ETag != null)
-                    Cache.Add(new SolrCacheEntity(wr.uri.Uri.ToString(), response.ETag, response.Data));
+                    Cache.Add(new SolrCacheEntity(wr.uri.ToString(), response.ETag, response.Data));
                 return response.Data;
             }
             catch (WebException e)
@@ -244,11 +255,15 @@ namespace SolrNet.Impl
                         using (var s = e.Response.GetResponseStream())
                         using (var sr = new StreamReader(s))
                         {
-                            throw new SolrConnectionException(sr.ReadToEnd(), e, wr.uri.Uri.ToString());
+                            var errorMessage = sr.ReadToEnd();
+                            DiagnosticsUtil.EnrichCurrentActivityWithError(errorMessage);
+                            throw new SolrConnectionException(errorMessage, e, wr.uri.ToString());
                         }
                     }
                 }
-                throw new SolrConnectionException(e, wr.uri.Uri.ToString());
+                
+                DiagnosticsUtil.EnrichCurrentActivityWithError(e);
+                throw new SolrConnectionException(e, wr.uri.ToString());
             }
         }
 
@@ -261,7 +276,7 @@ namespace SolrNet.Impl
             {
                 var response = await GetResponseAsync(wr.request);
                 if (response.ETag != null)
-                    Cache.Add(new SolrCacheEntity(wr.uri.Uri.ToString(), response.ETag, response.Data));
+                    Cache.Add(new SolrCacheEntity(wr.uri.ToString(), response.ETag, response.Data));
                 return response.Data;
             }
             catch (WebException e)
@@ -278,11 +293,15 @@ namespace SolrNet.Impl
                         using (var s = e.Response.GetResponseStream())
                         using (var sr = new StreamReader(s))
                         {
-                            throw new SolrConnectionException(await sr.ReadToEndAsync(), e, wr.uri.Uri.ToString());
+                            var errorMessage = await sr.ReadToEndAsync();
+                            DiagnosticsUtil.EnrichCurrentActivityWithError(errorMessage);
+                            throw new SolrConnectionException(errorMessage, e, wr.uri.ToString());
                         }
                     }
                 }
-                throw new SolrConnectionException(e, wr.uri.Uri.ToString());
+                
+                DiagnosticsUtil.EnrichCurrentActivityWithError(e);
+                throw new SolrConnectionException(e, wr.uri.ToString());
             }
         }
 

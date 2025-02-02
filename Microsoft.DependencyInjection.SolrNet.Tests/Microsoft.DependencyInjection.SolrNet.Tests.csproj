@@ -12,4 +12,7 @@
     <ProjectReference Include="..\Microsoft.DependencyInjection.SolrNet\Microsoft.DependencyInjection.SolrNet.csproj" />
     <ProjectReference Include="..\SolrNet.Tests.Common\SolrNet.Tests.Common.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

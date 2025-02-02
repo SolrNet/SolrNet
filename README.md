@@ -53,6 +53,7 @@ The easiest way to get going is to use our NuGet packages:
  * [Accessing multiple Solr cores / instances](Documentation/Multi-core-instance.md)
  * [Mapping validation](Documentation/Schema-Mapping-validation.md)
  * [Binary document upload](Documentation/Extract.md)
+ * [Observability](Documentation/Observability.md)
  * [Sample web application](Documentation/Sample-application.md)
  * [FAQ](Documentation/FAQ.md)
  * [Websites, products and companies using SolrNet](Documentation/Powered-by-SolrNet.md)

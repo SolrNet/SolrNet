@@ -26,7 +26,7 @@ builder.Services.AddOpenTelemetry()
     .ConfigureResource(ConfigureResource)
     .WithTracing(b => b
         .AddSource(SolrNet.DiagnosticHeaders.DefaultSourceName) // SolrNet ActivitySource
-        .AddConsoleExporter() // Any OTEL suportable exporter can be used here
+        .AddConsoleExporter() // Any OTEL supportable exporter can be used here
     );
 ```
 
@@ -48,7 +48,7 @@ void ConfigureResource(ResourceBuilder r)
 using var tracerProvider = Sdk.CreateTracerProviderBuilder()
     .ConfigureResource(ConfigureResource)
     .AddSource(SolrNet.DiagnosticHeaders.DefaultSourceName) // SolrNet ActivitySource
-    .AddConsoleExporter() // Any OTEL suportable exporter can be used here
+    .AddConsoleExporter() // Any OTEL supportable exporter can be used here
     .Build();
 ```
 
@@ -57,7 +57,7 @@ SolrNet spans contain the following attributes:
 Attribute | Description                                           | Examples 
 --------|-------------------------------------------------------|----------------|
 `db.system`	| The database product identifier                       | `solr`
-`db.collection.name` | The solr core being targetted (_optional_)            | `techproducts`
+`db.collection.name` | The solr core being targeted (_optional_)            | `techproducts`
 `db.query.text`	| The request parameters as a json string (_optional_)  | `[{"q":"ipad"},{"rows":"100"},{"fq":"price:[0 TO 8]"},{"facet":"true"},{"facet.field":"cat"},{"sort":"price asc"}]`
 `db.operation.name`	| The name of the operation or command being executed   | `query`, `commit`, `add`, `delete`, ...
 `http.request.method` | The underlying HTTP request method                    | `GET`, `POST`

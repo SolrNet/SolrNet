@@ -1,5 +1,7 @@
 name: SolrNet
 on: [push, pull_request]
+permissions:
+  checks: write
 jobs:
   test:
     runs-on: ubuntu-22.04

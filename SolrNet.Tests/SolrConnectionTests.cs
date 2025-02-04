@@ -75,6 +75,7 @@ namespace SolrNet.Tests {
                 getResponseStream = () => new MemoryStream(Encoding.UTF8.GetBytes("hello world")),
 		    };
 		    var request = new Mocks.HttpWebRequest {
+                requestUri = () => new Uri("http://foobar:8983/solr/techproducts/select"),
 		        getResponse = () => response
 		    };
 		    var reqFactory = new Mocks.HttpWebRequestFactory {
@@ -109,6 +110,7 @@ namespace SolrNet.Tests {
 
             var request = new Mocks.HttpWebRequest
             {
+                requestUri = () => new Uri("http://foobar:8983/solr/techproducts/select"),
                 getResponse = () => response,
                 Headers = new WebHeaderCollection()
             };
@@ -152,6 +154,7 @@ namespace SolrNet.Tests {
             var request = new Mocks.HttpWebRequest
             {
                 getResponse = () => response, 
+                requestUri = () => new Uri("http://localhost:8983/solr/techproducts/select"),
                 Headers = new WebHeaderCollection()
             };
 
@@ -175,6 +178,7 @@ namespace SolrNet.Tests {
 		public void InvalidHostGet_ShouldThrowException() {
 		    var reqFactory = new Mocks.HttpWebRequestFactory {
 		        create = _ => new Mocks.HttpWebRequest {
+                    requestUri = () => new Uri("http://localhost:8983/solr/techproducts/select"),
 		            getResponse = () => { throw new WebException();}
 		        }
 		    };

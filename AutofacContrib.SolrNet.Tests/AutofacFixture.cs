@@ -56,6 +56,7 @@ namespace AutofacContrib.SolrNet.Tests {
             };
             IHttpWebRequestFactory factory = new Mocks.HttpWebRequestFactory {
                 create = _ => new Mocks.HttpWebRequest {
+                    requestUri = () => new Uri("http://foobar:8983/solr/techproducts/select"),
                     getResponse = () => {
                         getResponseCalls++;
                         return response;

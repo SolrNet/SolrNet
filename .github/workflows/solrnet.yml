@@ -1,7 +1,5 @@
 name: SolrNet
 on: [push, pull_request]
-permissions:
-  checks: write
 jobs:
   test:
     runs-on: ubuntu-22.04
@@ -26,13 +24,15 @@ jobs:
         env:
           SOLR_VERSION: ${{ matrix.solr_version }}
         timeout-minutes: 7
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: success() || failure()    # run this step even if previous step failed
-        with:
-          name: tests
-          path: "*/TestResults/test-results.trx"
-          reporter: dotnet-trx
+      # To check by a maintainer: Workflows triggered by pull requests from forked repositories are executed with read-only token and therefore can't create check runs.
+      # See https://github.com/dorny/test-reporter?tab=readme-ov-file#recommended-setup-for-public-repositories
+      # - name: Test Report
+      #   uses: dorny/test-reporter@v1
+      #   if: success() || failure()    # run this step even if previous step failed
+      #   with:
+      #     name: tests
+      #     path: "*/TestResults/test-results.trx"
+      #     reporter: dotnet-trx
       # - name: SolrCloud tests
       #   run: ./cloud_tests.sh
       #   env:

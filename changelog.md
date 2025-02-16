@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.2.0
+
+- Implement OpenTelemetry (@thomasdc)
+
 ## 1.1.2
 
 - Test on Solr 9

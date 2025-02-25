@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Text;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
@@ -33,14 +34,54 @@ namespace SolrNet.Impl {
             this.fieldSerializer = fieldSerializer;
         }
 
-        private static readonly Regex ControlCharacters =
-            new Regex(@"[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD\u10000-u10FFFF]", RegexOptions.Compiled);
 
-        // http://stackoverflow.com/a/14323524/21239
+        private static bool IsAllowedXmlChar(int codePoint)
+        {
+            // XML 1.0 valid range
+            return
+                codePoint == 0x9 ||
+                codePoint == 0xA ||
+                codePoint == 0xD ||
+                (codePoint >= 0x20   && codePoint <= 0xD7FF) ||
+                (codePoint >= 0xE000 && codePoint <= 0xFFFD) ||
+                (codePoint >= 0x10000 && codePoint <= 0x10FFFF);
+        }
+
         public static string RemoveControlCharacters(string xml) {
             if (xml == null)
                 return null;
-            return ControlCharacters.Replace(xml, "");
+            var sb = new StringBuilder(xml.Length);
+
+            for (var i = 0; i < xml.Length; i++)
+            {
+                var c = xml[i];
+
+                // If 'c' is a high surrogate, make sure next char is a low surrogate, then combine to form a code point:
+                if (char.IsHighSurrogate(c) && i + 1 < xml.Length && char.IsLowSurrogate(xml[i + 1]))
+                {
+                    // This forms a surrogate pair => one astral code point
+                    var codePoint = char.ConvertToUtf32(c, xml[i + 1]);
+
+                    if (IsAllowedXmlChar(codePoint))
+                    {
+                        // Keep it
+                        sb.Append(c);
+                        sb.Append(xml[i + 1]);
+                    }
+                    // Skip the next char because we processed it as part of a pair
+                    i++;
+                }
+                else
+                {
+                    // Single character in BMP
+                    if (IsAllowedXmlChar(c))
+                    {
+                        sb.Append(c);
+                    }
+                }
+            }
+
+            return sb.ToString();
         }
 
         /// <inheritdoc />

@@ -365,13 +365,13 @@ namespace SolrNet.Tests.Integration
             }
         }
 
-        public void print(int tabs, string format, params object[] args)
+        void print(int tabs, string format, params object[] args)
         {
             Console.Write(new string('\t', tabs));
             Console.WriteLine(format, args);
         }
 
-        public void DumpStats(StatsResult s, int tabs)
+        void DumpStats(StatsResult s, int tabs)
         {
             print(tabs, "Min: {0}", s.Min);
             print(tabs, "Max: {0}", s.Max);

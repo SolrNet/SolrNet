@@ -280,7 +280,7 @@ namespace SolrNet.Tests {
             TestCache(conn);
         }
 
-        public void TestCache(ISolrConnection conn) {
+        void TestCache(ISolrConnection conn) {
             foreach (var i in Enumerable.Range(0, 1000)) {
                 conn.Get("/select/", new Dictionary<string, string> {
                     {"q", "*:*"},

@@ -21,7 +21,7 @@ namespace SolrNet.Tests.Integration
             }
         }
 
-        public void TestRoutine()
+        void TestRoutine()
         {
             var num = 1000;
 

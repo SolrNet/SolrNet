@@ -369,7 +369,7 @@ namespace SolrNet.Tests
             Assert.Null(results.MaxScore);
         }
 
-        public void ProfileTest(ProfilingContainer container)
+        void ProfileTest(ProfilingContainer container)
         {
             var parser = container.Resolve<ISolrAbstractResponseParser<TestDocumentWithArrays>>();
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithArraysSimple.xml");

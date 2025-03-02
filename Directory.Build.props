@@ -15,5 +15,6 @@
     <PackageVersion Condition="'$(PackageVersion)' == ''">$(Version)</PackageVersion>
     <InformationalVersion Condition="'$(PackageVersion)' != ''">$(PackageVersion)</InformationalVersion>
     <LangVersion>12.0</LangVersion>
+    <WarningsAsErrors>xUnit1013</WarningsAsErrors>
   </PropertyGroup>
 </Project>

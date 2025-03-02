@@ -173,7 +173,7 @@ namespace Castle.Facilities.SolrNetIntegration.Tests {
             TestCores(container);
         }
 
-        public void TestCores(IWindsorContainer container) {
+        void TestCores(IWindsorContainer container) {
             // assert that everything is correctly wired
             container.Kernel.DependencyResolving += (client, model, dep) => {
                 if (model.TargetType == typeof(ISolrConnection)) {

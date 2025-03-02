@@ -12,16 +12,6 @@
           "Microsoft.TestPlatform.TestHost": "16.11.0"
         }
       },
-      "SimpleInjector": {
-        "type": "Direct",
-        "requested": "[4.3.0, )",
-        "resolved": "4.3.0",
-        "contentHash": "qA2sd1Rdt7x0OneTsg6iNoNt9utTTqaxcUzANMYocWchzI2JDGL0iRMD+ek7WjC89UxiTK8u2Zm5fswR8tyhhA==",
-        "dependencies": {
-          "NETStandard.Library": "1.6.0",
-          "System.ComponentModel": "4.0.1"
-        }
-      },
       "xunit": {
         "type": "Direct",
         "requested": "[2.4.1, )",
@@ -352,6 +342,15 @@
         "type": "Transitive",
         "resolved": "1.4.2",
         "contentHash": "yjj+3zgz8zgXpiiC3ZdF/iyTBbz2fFvMxZFEBPUcwZjIvXOf37Ylm+K58hqMfIBt5JgU/Z2uoUS67JmTLe973A=="
+      },
+      "SimpleInjector": {
+        "type": "Transitive",
+        "resolved": "4.3.0",
+        "contentHash": "qA2sd1Rdt7x0OneTsg6iNoNt9utTTqaxcUzANMYocWchzI2JDGL0iRMD+ek7WjC89UxiTK8u2Zm5fswR8tyhhA==",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "System.ComponentModel": "4.0.1"
+        }
       },
       "SSH.NET": {
         "type": "Transitive",
@@ -1318,7 +1317,7 @@
         "type": "Project",
         "dependencies": {
           "SimpleInjector": "[4.3.0, )",
-          "SolrNet.Core": "[1.0.20, )"
+          "SolrNet.Core": "[9.9.99, )"
         }
       },
       "SolrNet.Core": {
@@ -1334,7 +1333,7 @@
           "Castle.Core": "[4.2.1, )",
           "Castle.Windsor": "[4.1.0, )",
           "CommonServiceLocator": "[2.0.4, )",
-          "SolrNet.Core": "[1.0.20, )",
+          "SolrNet.Core": "[9.9.99, )",
           "Testcontainers": "[3.5.0, )",
           "xunit.assert": "[2.4.1, )"
         }

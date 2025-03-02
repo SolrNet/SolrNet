@@ -50,17 +50,6 @@
           "Microsoft.NET.Test.Sdk": "15.0.0"
         }
       },
-      "ZooKeeperNetEx": {
-        "type": "Direct",
-        "requested": "[3.4.12.1, )",
-        "resolved": "3.4.12.1",
-        "contentHash": "AhDh6BIDE9XqtFmY5HS8E9EVsvosKAvoIZxN//FbaINpPxDl8Z2X5a84eDKe+6z3527drZskSW2MEEPl0sMp4Q==",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Diagnostics.TraceSource": "4.3.0",
-          "System.Net.NameResolution": "4.3.0"
-        }
-      },
       "BouncyCastle.Cryptography": {
         "type": "Transitive",
         "resolved": "2.2.1",
@@ -1465,6 +1454,16 @@
           "xunit.extensibility.core": "[2.4.1]"
         }
       },
+      "ZooKeeperNetEx": {
+        "type": "Transitive",
+        "resolved": "3.4.12.1",
+        "contentHash": "AhDh6BIDE9XqtFmY5HS8E9EVsvosKAvoIZxN//FbaINpPxDl8Z2X5a84eDKe+6z3527drZskSW2MEEPl0sMp4Q==",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "System.Diagnostics.TraceSource": "4.3.0",
+          "System.Net.NameResolution": "4.3.0"
+        }
+      },
       "SolrNet": {
         "type": "Project",
         "dependencies": {
@@ -1527,10 +1526,7 @@
       "solrnet.tests.integration": {
         "type": "Project",
         "dependencies": {
-          "Castle.Core": "[4.2.1, )",
-          "Castle.Windsor": "[4.1.0, )",
           "CommonServiceLocator": "[2.0.4, )",
-          "LightInject": "[4.1.1, )",
           "Microsoft.NET.Test.Sdk": "[16.11.0, )",
           "SolrNet": "[9.9.99, )",
           "SolrNet.Cloud": "[9.9.99, )",

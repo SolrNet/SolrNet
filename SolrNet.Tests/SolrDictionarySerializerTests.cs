@@ -39,7 +39,7 @@ namespace SolrNet.Tests
         {
             var serializer = GetSerializer();
             var xml = serializer.Serialize(new Dictionary<string, object>(), null);
-            Assert.Equal(0, xml.Nodes().Count());
+            Assert.Empty(xml.Nodes());
         }
 
         [Fact]
@@ -160,7 +160,7 @@ namespace SolrNet.Tests
             var docNode = serializer.Serialize(new Dictionary<string, object> {
                 {"one", new List<string> {null, null}}
             }, null);
-            Assert.Equal(0, docNode.Nodes().Count());
+            Assert.Empty(docNode.Nodes());
         }
 
         [Fact]

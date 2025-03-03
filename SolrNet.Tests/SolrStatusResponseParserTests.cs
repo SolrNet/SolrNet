@@ -44,7 +44,7 @@ namespace SolrNet.Tests {
         [Fact]
         public void MoreThan1CoreExists() {
             var r = ParseFromResults("Resources.responseWithStatus.xml");
-            Assert.NotEqual(0, r.Count);
+            Assert.NotEmpty(r);
             Assert.NotEqual(1, r.Count);
             Assert.NotEqual(3, r.Count);
             Assert.NotEqual(4, r.Count);

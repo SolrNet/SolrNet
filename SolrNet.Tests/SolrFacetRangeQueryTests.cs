@@ -66,7 +66,7 @@ namespace SolrNet.Tests
             Assert.Contains(KV.Create("f.version.facet.range.hardend", "true"), r);
             Assert.Contains(KV.Create("f.version.facet.range.other", "after"), r);
             Assert.Contains(KV.Create("f.version.facet.range.include", "lower"), r);
-            Assert.False(r.Any(kv => kv.Key == "f.version.facet.range.method"));
+            Assert.DoesNotContain(r, kv => kv.Key == "f.version.facet.range.method");
         }
 
         [Fact]

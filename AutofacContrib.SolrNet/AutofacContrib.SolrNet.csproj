@@ -13,12 +13,12 @@
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.6.2" />
+    <PackageReference Include="Autofac" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0"/>
+    <PackageReference Include="System.Configuration.ConfigurationManager" />
   </ItemGroup>
 </Project>

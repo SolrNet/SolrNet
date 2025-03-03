@@ -15,7 +15,7 @@ namespace Unity.SolrNetCloudIntegration.Collections
 
         private delegate object CollectionResolver(IBuilderContext context);
 
-        public override void PreBuildUp(IBuilderContext context)
+        public override object PreBuildUp(IBuilderContext context)
         {
             if (context is null)
                 throw new ArgumentNullException(nameof(context));
@@ -39,7 +39,8 @@ namespace Unity.SolrNetCloudIntegration.Collections
                     context.Existing = resolver(context);
                     context.BuildComplete = true;
                 }
-            }            
+            }
+            return null;
         }
 
         private static object ResolveCollection<T>(IBuilderContext context)

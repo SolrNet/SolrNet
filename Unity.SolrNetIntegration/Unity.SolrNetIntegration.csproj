@@ -13,12 +13,12 @@
   </ItemGroup>
   <ItemGroup>
     <!--<PackageReference Include="EnterpriseLibrary.Common" Version="6.0.1304.0" />-->
-    <PackageReference Include="Unity" Version="5.5.0" />
+    <PackageReference Include="Unity" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0"/>
+    <PackageReference Include="System.Configuration.ConfigurationManager" />
   </ItemGroup>
 </Project>

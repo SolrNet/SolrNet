@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "dependencies": {
     ".NETFramework,Version=v4.6.2": {
       "Autofac": {
@@ -83,11 +83,6 @@
           "System.Xml.XDocument": "4.3.0"
         }
       },
-      "Newtonsoft.Json": {
-        "type": "Transitive",
-        "resolved": "13.0.3",
-        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
-      },
       "System.AppContext": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -117,15 +112,6 @@
         "type": "Transitive",
         "resolved": "4.3.0",
         "contentHash": "ZUhUOdqmaG5Jk3Xdb8xi5kIyQYAA4PnTNlHx1mu9ZY3qv4ELIdKbnL/akbGaKi2RnNUWaZsAs31rvzFdewTj2g=="
-      },
-      "System.Diagnostics.DiagnosticSource": {
-        "type": "Transitive",
-        "resolved": "9.0.0",
-        "contentHash": "ddppcFpnbohLWdYKr/ZeLZHmmI+DXFgZ3Snq+/E7SwcdW4UnvxmaugkwGywvGVWkHPGCSZjCP+MLzu23AL5SDw==",
-        "dependencies": {
-          "System.Memory": "4.5.5",
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        }
       },
       "System.Diagnostics.Tools": {
         "type": "Transitive",
@@ -349,11 +335,6 @@
         "resolved": "4.3.0",
         "contentHash": "Z6YfyYTCg7lOZjJzBjONJTFKGN9/NIYKSxhU5GRd+DTwHSZyvWp1xuI5aR+dLg+ayyC5Xv57KiY4oJ0tMO89fQ=="
       },
-      "System.ValueTuple": {
-        "type": "Transitive",
-        "resolved": "4.4.0",
-        "contentHash": "BahUww/+mdP4ARCAh2RQhQTg13wYLVrBb9SYVgW8ZlrwjraGCXHGjo0oIiUfZ34LUZkMMR+RAzR7dEY4S1HeQQ=="
-      },
       "System.Xml.ReaderWriter": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -363,16 +344,6 @@
         "type": "Transitive",
         "resolved": "4.3.0",
         "contentHash": "5zJ0XDxAIg8iy+t4aMnQAu0MqVbqyvfoUVl1yDV61xdo3Vth45oA2FoY4pPkxYAH5f8ixpmTqXeEIya95x0aCQ=="
-      },
-      "ZooKeeperNetEx": {
-        "type": "Transitive",
-        "resolved": "3.4.12.1",
-        "contentHash": "AhDh6BIDE9XqtFmY5HS8E9EVsvosKAvoIZxN//FbaINpPxDl8Z2X5a84eDKe+6z3527drZskSW2MEEPl0sMp4Q==",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Diagnostics.TraceSource": "4.3.0",
-          "System.Net.NameResolution": "4.3.0"
-        }
       },
       "SolrNet.Cloud.Core": {
         "type": "Project",
@@ -387,6 +358,39 @@
           "Newtonsoft.Json": "[13.0.3, )",
           "System.Diagnostics.DiagnosticSource": "[9.0.0, )",
           "System.ValueTuple": "[4.4.0, )"
+        }
+      },
+      "Newtonsoft.Json": {
+        "type": "CentralTransitive",
+        "requested": "[13.0.3, )",
+        "resolved": "13.0.3",
+        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
+      },
+      "System.Diagnostics.DiagnosticSource": {
+        "type": "CentralTransitive",
+        "requested": "[9.0.0, )",
+        "resolved": "9.0.0",
+        "contentHash": "ddppcFpnbohLWdYKr/ZeLZHmmI+DXFgZ3Snq+/E7SwcdW4UnvxmaugkwGywvGVWkHPGCSZjCP+MLzu23AL5SDw==",
+        "dependencies": {
+          "System.Memory": "4.5.5",
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        }
+      },
+      "System.ValueTuple": {
+        "type": "CentralTransitive",
+        "requested": "[4.4.0, )",
+        "resolved": "4.4.0",
+        "contentHash": "BahUww/+mdP4ARCAh2RQhQTg13wYLVrBb9SYVgW8ZlrwjraGCXHGjo0oIiUfZ34LUZkMMR+RAzR7dEY4S1HeQQ=="
+      },
+      "ZooKeeperNetEx": {
+        "type": "CentralTransitive",
+        "requested": "[3.4.12.1, )",
+        "resolved": "3.4.12.1",
+        "contentHash": "AhDh6BIDE9XqtFmY5HS8E9EVsvosKAvoIZxN//FbaINpPxDl8Z2X5a84eDKe+6z3527drZskSW2MEEPl0sMp4Q==",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "System.Diagnostics.TraceSource": "4.3.0",
+          "System.Net.NameResolution": "4.3.0"
         }
       }
     },
@@ -430,11 +434,6 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "Newtonsoft.Json": {
-        "type": "Transitive",
-        "resolved": "13.0.3",
-        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
-      },
       "runtime.native.System": {
         "type": "Transitive",
         "resolved": "4.3.0",
@@ -475,15 +474,6 @@
           "Microsoft.NETCore.Platforms": "1.1.0",
           "Microsoft.NETCore.Targets": "1.1.0",
           "System.Runtime": "4.3.0"
-        }
-      },
-      "System.Diagnostics.DiagnosticSource": {
-        "type": "Transitive",
-        "resolved": "9.0.0",
-        "contentHash": "ddppcFpnbohLWdYKr/ZeLZHmmI+DXFgZ3Snq+/E7SwcdW4UnvxmaugkwGywvGVWkHPGCSZjCP+MLzu23AL5SDw==",
-        "dependencies": {
-          "System.Memory": "4.5.5",
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         }
       },
       "System.Diagnostics.TraceSource": {
@@ -734,16 +724,6 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "ZooKeeperNetEx": {
-        "type": "Transitive",
-        "resolved": "3.4.12.1",
-        "contentHash": "AhDh6BIDE9XqtFmY5HS8E9EVsvosKAvoIZxN//FbaINpPxDl8Z2X5a84eDKe+6z3527drZskSW2MEEPl0sMp4Q==",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Diagnostics.TraceSource": "4.3.0",
-          "System.Net.NameResolution": "4.3.0"
-        }
-      },
       "SolrNet.Cloud.Core": {
         "type": "Project",
         "dependencies": {
@@ -756,6 +736,33 @@
         "dependencies": {
           "Newtonsoft.Json": "[13.0.3, )",
           "System.Diagnostics.DiagnosticSource": "[9.0.0, )"
+        }
+      },
+      "Newtonsoft.Json": {
+        "type": "CentralTransitive",
+        "requested": "[13.0.3, )",
+        "resolved": "13.0.3",
+        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
+      },
+      "System.Diagnostics.DiagnosticSource": {
+        "type": "CentralTransitive",
+        "requested": "[9.0.0, )",
+        "resolved": "9.0.0",
+        "contentHash": "ddppcFpnbohLWdYKr/ZeLZHmmI+DXFgZ3Snq+/E7SwcdW4UnvxmaugkwGywvGVWkHPGCSZjCP+MLzu23AL5SDw==",
+        "dependencies": {
+          "System.Memory": "4.5.5",
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        }
+      },
+      "ZooKeeperNetEx": {
+        "type": "CentralTransitive",
+        "requested": "[3.4.12.1, )",
+        "resolved": "3.4.12.1",
+        "contentHash": "AhDh6BIDE9XqtFmY5HS8E9EVsvosKAvoIZxN//FbaINpPxDl8Z2X5a84eDKe+6z3527drZskSW2MEEPl0sMp4Q==",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "System.Diagnostics.TraceSource": "4.3.0",
+          "System.Net.NameResolution": "4.3.0"
         }
       }
     }

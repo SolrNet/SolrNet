@@ -16,6 +16,6 @@
     <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommonServiceLocator" Version="2.0.4" />
+    <PackageReference Include="CommonServiceLocator" />
   </ItemGroup>
 </Project>

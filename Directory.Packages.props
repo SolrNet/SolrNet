@@ -1,0 +1,38 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageVersion Include="xunit" Version="2.4.1" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.1" />
+    <PackageVersion Include="xunit.assert" Version="2.4.1" />
+    <PackageVersion Include="Testcontainers" Version="3.5.0" />
+    <PackageVersion Include="Hedgehog" Version="0.10.0" />
+    <PackageVersion Include="Hedgehog.Experimental" Version="0.4.0" />
+
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Xml" Version="8.0.1" />
+    <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.1"/>
+    <PackageVersion Include="System.ValueTuple" Version="4.4.0" />
+
+    <PackageVersion Include="CommonServiceLocator" Version="2.0.4" />
+    <PackageVersion Include="Castle.Core" Version="4.2.1" />
+    <PackageVersion Include="Castle.Windsor" Version="4.1.0" />
+    <PackageVersion Include="Autofac" Version="4.6.2" />
+    <PackageVersion Include="LightInject" Version="4.1.1" />
+    <PackageVersion Include="Ninject" Version="3.3.4" />
+    <PackageVersion Include="Unity" Version="5.5.0" />
+    <PackageVersion Include="SimpleInjector" Version="4.3.0" />
+    <PackageVersion Include="StructureMap" Version="4.6.1" />
+    
+    <PackageVersion Include="ZooKeeperNetEx" Version="3.4.12.1" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="System.Diagnostics.DiagnosticSource" Version="9.0.0" />
+    <PackageVersion Include="Nito.AsyncEx" Version="4.0.1" />
+  </ItemGroup>
+</Project>

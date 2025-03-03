@@ -15,7 +15,7 @@
     <PackageProjectUrl>https://github.com/SolrNet/SolrNet</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SimpleInjector" Version="4.3.0" />
+    <PackageReference Include="SimpleInjector" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />

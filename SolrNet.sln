@@ -60,9 +60,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightInject.SolrNet", "LightInject.SolrNet\LightInject.SolrNet.csproj", "{99F980E6-E337-47E5-A39E-CD78B5EAC374}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6AC9B192-076C-43FD-A9D6-2BA62BACDB17}"
-        ProjectSection(SolutionItems) = preProject
-                Directory.Build.props = Directory.Build.props
-        EndProjectSection
+								ProjectSection(SolutionItems) = preProject
+																Directory.Build.props = Directory.Build.props
+									Directory.Packages.props = Directory.Packages.props
+								EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

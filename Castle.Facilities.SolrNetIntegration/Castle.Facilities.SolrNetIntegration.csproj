@@ -18,6 +18,6 @@
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Castle.Windsor" Version="4.1.0" />
+    <PackageReference Include="Castle.Windsor" />
   </ItemGroup>
 </Project>

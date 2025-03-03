@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "dependencies": {
     "net8.0": {
       "Microsoft.NET.Test.Sdk": {
@@ -36,41 +36,6 @@
         "type": "Transitive",
         "resolved": "2.2.1",
         "contentHash": "A6Zr52zVqJKt18ZBsTnX0qhG0kwIQftVAjLmszmkiR/trSp8H+xj1gUOzk7XHwaKgyREMSV1v9XaKrBUeIOdvQ=="
-      },
-      "Castle.Core": {
-        "type": "Transitive",
-        "resolved": "4.2.1",
-        "contentHash": "XSNA0Gc1Zu33L+8+/3Tqt+aFu8QWS8UenVHZ7RenIP5wJfhoLrA4PnNscpxReeo5aBq8PDoGnV8rNaOzIOUo/w==",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Collections.Specialized": "4.3.0",
-          "System.ComponentModel": "4.3.0",
-          "System.ComponentModel.TypeConverter": "4.3.0",
-          "System.Diagnostics.TraceSource": "4.3.0",
-          "System.Dynamic.Runtime": "4.3.0",
-          "System.Reflection": "4.3.0",
-          "System.Reflection.Emit": "4.3.0",
-          "System.Reflection.TypeExtensions": "4.3.0",
-          "System.Xml.XmlDocument": "4.3.0"
-        }
-      },
-      "Castle.Windsor": {
-        "type": "Transitive",
-        "resolved": "4.1.0",
-        "contentHash": "LsVgeKXK7vKyb+YsRKU/rrnFcL11vK92+S4ijpXpEAjS0/j4ssXmqla8ZLO60eT+oTzypMJJxAucN9jZBoHWGA==",
-        "dependencies": {
-          "Castle.Core": "4.2.0",
-          "Microsoft.Extensions.DependencyModel": "1.1.2",
-          "NETStandard.Library": "1.6.1",
-          "System.Runtime.Loader": "4.3.0",
-          "System.Runtime.Serialization.Formatters": "4.3.0",
-          "System.Threading.Thread": "4.3.0"
-        }
-      },
-      "CommonServiceLocator": {
-        "type": "Transitive",
-        "resolved": "2.0.4",
-        "contentHash": "YpXfV5l6kv1iQRDfhQnN4RxocbnNehU/rAAS62IlaQUTAKN3WoUbtx9MHwE98Pb09mBemSs4xhVqFhXq27rjxw=="
       },
       "Docker.DotNet": {
         "type": "Transitive",
@@ -220,11 +185,6 @@
           "System.Xml.ReaderWriter": "4.3.0",
           "System.Xml.XDocument": "4.3.0"
         }
-      },
-      "Newtonsoft.Json": {
-        "type": "Transitive",
-        "resolved": "13.0.3",
-        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
       },
       "NuGet.Frameworks": {
         "type": "Transitive",
@@ -484,11 +444,6 @@
           "Microsoft.NETCore.Targets": "1.1.0",
           "System.Runtime": "4.3.0"
         }
-      },
-      "System.Diagnostics.DiagnosticSource": {
-        "type": "Transitive",
-        "resolved": "9.0.0",
-        "contentHash": "ddppcFpnbohLWdYKr/ZeLZHmmI+DXFgZ3Snq+/E7SwcdW4UnvxmaugkwGywvGVWkHPGCSZjCP+MLzu23AL5SDw=="
       },
       "System.Diagnostics.Tools": {
         "type": "Transitive",
@@ -1244,21 +1199,6 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "Testcontainers": {
-        "type": "Transitive",
-        "resolved": "3.5.0",
-        "contentHash": "UYMCZ778ZjjHPZtr5VpemtI8kjkchFJf+taoH4fUwuzBXbWm+0VgAfBTzOIfrKSVBCKqG0gPm5PSOU8eAhFTpg==",
-        "dependencies": {
-          "BouncyCastle.Cryptography": "2.2.1",
-          "Docker.DotNet": "3.125.15",
-          "Docker.DotNet.X509": "3.125.15",
-          "Microsoft.Bcl.AsyncInterfaces": "6.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "6.0.4",
-          "SSH.NET": "2020.0.2",
-          "SharpZipLib": "1.4.2",
-          "System.Text.Json": "6.0.8"
-        }
-      },
       "xunit.abstractions": {
         "type": "Transitive",
         "resolved": "2.0.3",
@@ -1268,14 +1208,6 @@
         "type": "Transitive",
         "resolved": "0.10.0",
         "contentHash": "4/IDFCJfIeg6bix9apmUtIMwvOsiwqdEexeO/R2D4GReIGPLIRODTpId/l4LRSrAJk9lEO3Zx1H0Zx6uohJDNg=="
-      },
-      "xunit.assert": {
-        "type": "Transitive",
-        "resolved": "2.4.1",
-        "contentHash": "O/Oe0BS5RmSsM+LQOb041TzuPo5MdH2Rov+qXGS37X+KFG1Hxz7kopYklM5+1Y+tRGeXrOx5+Xne1RuqLFQoyQ==",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1"
-        }
       },
       "xunit.core": {
         "type": "Transitive",
@@ -1317,7 +1249,7 @@
           "Castle.Core": "[4.2.1, )",
           "Castle.Windsor": "[4.1.0, )",
           "CommonServiceLocator": "[2.0.4, )",
-          "SolrNet.Core": "[1.0.20, )",
+          "SolrNet.Core": "[9.9.99, )",
           "Testcontainers": "[3.5.0, )",
           "xunit.assert": "[2.4.1, )"
         }
@@ -1326,7 +1258,82 @@
         "type": "Project",
         "dependencies": {
           "Castle.Windsor": "[4.1.0, )",
-          "SolrNet.Core": "[1.0.20, )"
+          "SolrNet.Core": "[9.9.99, )"
+        }
+      },
+      "Castle.Core": {
+        "type": "CentralTransitive",
+        "requested": "[4.2.1, )",
+        "resolved": "4.2.1",
+        "contentHash": "XSNA0Gc1Zu33L+8+/3Tqt+aFu8QWS8UenVHZ7RenIP5wJfhoLrA4PnNscpxReeo5aBq8PDoGnV8rNaOzIOUo/w==",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "System.Collections.Specialized": "4.3.0",
+          "System.ComponentModel": "4.3.0",
+          "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Diagnostics.TraceSource": "4.3.0",
+          "System.Dynamic.Runtime": "4.3.0",
+          "System.Reflection": "4.3.0",
+          "System.Reflection.Emit": "4.3.0",
+          "System.Reflection.TypeExtensions": "4.3.0",
+          "System.Xml.XmlDocument": "4.3.0"
+        }
+      },
+      "Castle.Windsor": {
+        "type": "CentralTransitive",
+        "requested": "[4.1.0, )",
+        "resolved": "4.1.0",
+        "contentHash": "LsVgeKXK7vKyb+YsRKU/rrnFcL11vK92+S4ijpXpEAjS0/j4ssXmqla8ZLO60eT+oTzypMJJxAucN9jZBoHWGA==",
+        "dependencies": {
+          "Castle.Core": "4.2.0",
+          "Microsoft.Extensions.DependencyModel": "1.1.2",
+          "NETStandard.Library": "1.6.1",
+          "System.Runtime.Loader": "4.3.0",
+          "System.Runtime.Serialization.Formatters": "4.3.0",
+          "System.Threading.Thread": "4.3.0"
+        }
+      },
+      "CommonServiceLocator": {
+        "type": "CentralTransitive",
+        "requested": "[2.0.4, )",
+        "resolved": "2.0.4",
+        "contentHash": "YpXfV5l6kv1iQRDfhQnN4RxocbnNehU/rAAS62IlaQUTAKN3WoUbtx9MHwE98Pb09mBemSs4xhVqFhXq27rjxw=="
+      },
+      "Newtonsoft.Json": {
+        "type": "CentralTransitive",
+        "requested": "[13.0.3, )",
+        "resolved": "13.0.3",
+        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
+      },
+      "System.Diagnostics.DiagnosticSource": {
+        "type": "CentralTransitive",
+        "requested": "[9.0.0, )",
+        "resolved": "9.0.0",
+        "contentHash": "ddppcFpnbohLWdYKr/ZeLZHmmI+DXFgZ3Snq+/E7SwcdW4UnvxmaugkwGywvGVWkHPGCSZjCP+MLzu23AL5SDw=="
+      },
+      "Testcontainers": {
+        "type": "CentralTransitive",
+        "requested": "[3.5.0, )",
+        "resolved": "3.5.0",
+        "contentHash": "UYMCZ778ZjjHPZtr5VpemtI8kjkchFJf+taoH4fUwuzBXbWm+0VgAfBTzOIfrKSVBCKqG0gPm5PSOU8eAhFTpg==",
+        "dependencies": {
+          "BouncyCastle.Cryptography": "2.2.1",
+          "Docker.DotNet": "3.125.15",
+          "Docker.DotNet.X509": "3.125.15",
+          "Microsoft.Bcl.AsyncInterfaces": "6.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.4",
+          "SSH.NET": "2020.0.2",
+          "SharpZipLib": "1.4.2",
+          "System.Text.Json": "6.0.8"
+        }
+      },
+      "xunit.assert": {
+        "type": "CentralTransitive",
+        "requested": "[2.4.1, )",
+        "resolved": "2.4.1",
+        "contentHash": "O/Oe0BS5RmSsM+LQOb041TzuPo5MdH2Rov+qXGS37X+KFG1Hxz7kopYklM5+1Y+tRGeXrOx5+Xne1RuqLFQoyQ==",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1"
         }
       }
     }

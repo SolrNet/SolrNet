@@ -13,7 +13,7 @@
     <ProjectReference Include="..\SolrNet.Cloud\SolrNet.Cloud.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Nito.AsyncEx" Version="4.0.1" />
-    <PackageReference Include="Unity" Version="5.0.0" />
+    <PackageReference Include="Nito.AsyncEx" />
+    <PackageReference Include="Unity" />
   </ItemGroup>
 </Project>

@@ -377,8 +377,7 @@
       "SolrNet.Cloud.Core": {
         "type": "Project",
         "dependencies": {
-          "Newtonsoft.Json": "[13.0.3, )",
-          "SolrNet.Core": "[1.0.20, )",
+          "SolrNet.Core": "[9.9.99, )",
           "ZooKeeperNetEx": "[3.4.12.1, )"
         }
       },
@@ -748,8 +747,7 @@
       "SolrNet.Cloud.Core": {
         "type": "Project",
         "dependencies": {
-          "Newtonsoft.Json": "[13.0.3, )",
-          "SolrNet.Core": "[1.0.20, )",
+          "SolrNet.Core": "[9.9.99, )",
           "ZooKeeperNetEx": "[3.4.12.1, )"
         }
       },

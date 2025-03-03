@@ -1477,7 +1477,6 @@
       "SolrNet.Cloud.Core": {
         "type": "Project",
         "dependencies": {
-          "Newtonsoft.Json": "[13.0.3, )",
           "SolrNet.Core": "[9.9.99, )",
           "ZooKeeperNetEx": "[3.4.12.1, )"
         }
@@ -1488,8 +1487,7 @@
           "Nito.AsyncEx": "[4.0.1, )",
           "SolrNet.Cloud.Core": "[9.9.99, )",
           "SolrNet.Core": "[9.9.99, )",
-          "Unity": "[5.0.0, )",
-          "ZooKeeperNetEx": "[3.4.12.1, )"
+          "Unity": "[5.0.0, )"
         }
       },
       "SolrNet.Core": {

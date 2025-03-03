@@ -11,12 +11,6 @@
           "Microsoft.NETFramework.ReferenceAssemblies.net462": "1.0.3"
         }
       },
-      "Newtonsoft.Json": {
-        "type": "Direct",
-        "requested": "[13.0.3, )",
-        "resolved": "13.0.3",
-        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
-      },
       "ZooKeeperNetEx": {
         "type": "Direct",
         "requested": "[3.4.12.1, )",
@@ -93,6 +87,11 @@
           "System.Xml.ReaderWriter": "4.3.0",
           "System.Xml.XDocument": "4.3.0"
         }
+      },
+      "Newtonsoft.Json": {
+        "type": "Transitive",
+        "resolved": "13.0.3",
+        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
       },
       "System.AppContext": {
         "type": "Transitive",
@@ -389,12 +388,6 @@
           "Microsoft.NETCore.Platforms": "1.1.0"
         }
       },
-      "Newtonsoft.Json": {
-        "type": "Direct",
-        "requested": "[13.0.3, )",
-        "resolved": "13.0.3",
-        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
-      },
       "ZooKeeperNetEx": {
         "type": "Direct",
         "requested": "[3.4.12.1, )",
@@ -425,6 +418,11 @@
           "Microsoft.NETCore.Targets": "1.1.0",
           "System.Runtime": "4.3.0"
         }
+      },
+      "Newtonsoft.Json": {
+        "type": "Transitive",
+        "resolved": "13.0.3",
+        "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
       },
       "runtime.native.System": {
         "type": "Transitive",

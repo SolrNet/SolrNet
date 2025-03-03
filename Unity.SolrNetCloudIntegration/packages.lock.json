@@ -28,17 +28,6 @@
         "resolved": "5.0.0",
         "contentHash": "+nlsFVhYFXL9DjYFUr6E3fIEgIRIlUFr3ZXsgaRqxZdsiYQXHcaZJxMtItiqQuDqiYipILha4v9ei7sf8Zu3Yw=="
       },
-      "ZooKeeperNetEx": {
-        "type": "Direct",
-        "requested": "[3.4.12.1, )",
-        "resolved": "3.4.12.1",
-        "contentHash": "AhDh6BIDE9XqtFmY5HS8E9EVsvosKAvoIZxN//FbaINpPxDl8Z2X5a84eDKe+6z3527drZskSW2MEEPl0sMp4Q==",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1",
-          "System.Diagnostics.TraceSource": "4.3.0",
-          "System.Net.NameResolution": "4.3.0"
-        }
-      },
       "Microsoft.Bcl": {
         "type": "Transitive",
         "resolved": "1.1.10",
@@ -407,11 +396,20 @@
         "resolved": "4.3.0",
         "contentHash": "5zJ0XDxAIg8iy+t4aMnQAu0MqVbqyvfoUVl1yDV61xdo3Vth45oA2FoY4pPkxYAH5f8ixpmTqXeEIya95x0aCQ=="
       },
+      "ZooKeeperNetEx": {
+        "type": "Transitive",
+        "resolved": "3.4.12.1",
+        "contentHash": "AhDh6BIDE9XqtFmY5HS8E9EVsvosKAvoIZxN//FbaINpPxDl8Z2X5a84eDKe+6z3527drZskSW2MEEPl0sMp4Q==",
+        "dependencies": {
+          "NETStandard.Library": "1.6.1",
+          "System.Diagnostics.TraceSource": "4.3.0",
+          "System.Net.NameResolution": "4.3.0"
+        }
+      },
       "SolrNet.Cloud.Core": {
         "type": "Project",
         "dependencies": {
-          "Newtonsoft.Json": "[13.0.3, )",
-          "SolrNet.Core": "[1.0.20, )",
+          "SolrNet.Core": "[9.9.99, )",
           "ZooKeeperNetEx": "[3.4.12.1, )"
         }
       },

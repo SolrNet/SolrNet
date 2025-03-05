@@ -40,24 +40,13 @@
         "resolved": "2.0.4",
         "contentHash": "YpXfV5l6kv1iQRDfhQnN4RxocbnNehU/rAAS62IlaQUTAKN3WoUbtx9MHwE98Pb09mBemSs4xhVqFhXq27rjxw=="
       },
-      "Hedgehog": {
+      "FsCheck": {
         "type": "Direct",
-        "requested": "[0.10.0, )",
-        "resolved": "0.10.0",
-        "contentHash": "NHKdHP5yX02OK9+VQ5Yw3MZVwUoMMJG2fmTlTsY/33kRKgvv10B7eFuAbylqq/hGTtBTrNupbzIpUTY4PfXZoQ==",
+        "requested": "[3.1.0, )",
+        "resolved": "3.1.0",
+        "contentHash": "PbPqufRGxtcVuQ4oriwn5/G+WBh5wIiKE6LS6Z8QvC6iUdMDvjo0YbczXavXF+1TFkQ49r3N1HdfBSn/WE0KAw==",
         "dependencies": {
-          "FSharp.Core": "4.1.17"
-        }
-      },
-      "Hedgehog.Experimental": {
-        "type": "Direct",
-        "requested": "[0.4.0, )",
-        "resolved": "0.4.0",
-        "contentHash": "zVchyAB12Pf2+xs7PVRmOMQZxhTNWsm8ZKVl7PoD1L5fcOIh5gBCSY5TcFS544LgM/gqsfLYNHHcBy82apb8eA==",
-        "dependencies": {
-          "FSharp.Core": "4.3.4",
-          "Hedgehog": "0.10.0",
-          "TypeShape": "9.0.0"
+          "FSharp.Core": "5.0.2"
         }
       },
       "Microsoft.NET.Test.Sdk": {
@@ -110,8 +99,8 @@
       },
       "FSharp.Core": {
         "type": "Transitive",
-        "resolved": "4.3.4",
-        "contentHash": "u2UeaUl1pt/Lktdpzq3AsaRmOV1mOiQaSbZgYqQQYuqBSjnILWemetff4xMZIAZi0241jlIkcrJQsU5PlLwIJA=="
+        "resolved": "5.0.2",
+        "contentHash": "DpcajqENgb3VXaHw1FKfVS+TWwEzck1PCajqLwBAVrtd1lfxd7T8JISVZBdV1mX9+2g48+tIgpNaVJWObdMrBw=="
       },
       "Microsoft.CodeCoverage": {
         "type": "Transitive",
@@ -1237,14 +1226,6 @@
           "System.Text.Encoding": "4.3.0",
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
-        }
-      },
-      "TypeShape": {
-        "type": "Transitive",
-        "resolved": "9.0.0",
-        "contentHash": "TFBwzUVpnJT8W4UAGNb0uQ+ZtA9wKUOZA9a825DzOZ0ejUFmLKF/QOVhMt6x9d1TsP1TxuUs/aYilKPCnttryg==",
-        "dependencies": {
-          "FSharp.Core": "4.3.2"
         }
       },
       "xunit.abstractions": {

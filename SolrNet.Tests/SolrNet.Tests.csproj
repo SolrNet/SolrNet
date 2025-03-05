@@ -141,11 +141,10 @@
     <PackageReference Include="CommonServiceLocator" />
     <PackageReference Include="Castle.Core" />
     <PackageReference Include="Castle.Windsor" />
-    <PackageReference Include="Hedgehog" />
-    <PackageReference Include="Hedgehog.Experimental" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="FsCheck" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SolrNet\SolrNet.csproj" />

@@ -1,10 +1,10 @@
 ﻿using System;
-using Hedgehog;
-using Hedgehog.Linq;
+using System.Linq;
+using FsCheck;
+using FsCheck.Fluent;
 using SolrNet.Utils;
 using Xunit;
 using Xunit.Abstractions;
-using Property = Hedgehog.Linq.Property;
 
 namespace SolrNet.Tests
 {
@@ -17,26 +17,34 @@ namespace SolrNet.Tests
             this.testOutputHelper = testOutputHelper;
         }
         
-        [Fact(Skip = "Fails with 'ws' scheme. Hangs when trying to filter gen. Prob will need to rewrite in FsCheck")]
+        [Fact(Skip = "This fails but UriValidator is still useful even though it's not 100% precise. Maybe MaxUriLength could be more conservative.")]
         public void UriLength_Equivalent()
         {
-            var property =
-                from uri in Property.ForAll(GenX.uri.Where(u => u.Scheme is "http" or "https"))
-                let ub = new UriBuilder(uri)
-                let expected = ub.Uri.ToString().Length
-                let actual = UriValidator.UriLength(ub)
-                select AssertEqual(expected: expected, actual: actual);
-
-            property.Check();
-        }
-
-        void AssertEqual(int expected, int actual)
-        {
-            // Hedgehog swallows xunit output so we need this
-            if (actual != expected)
+            var uriGen =
+                from scheme in Gen.Elements("http", "https")
+                from host in ArbMap.Default.GeneratorFor<HostName>()
+                from port in Gen.Choose(1, UInt16.MaxValue)
+                from pathPartsCount in Gen.Choose(0, 20)
+                from pathParts in Gen.Elements("abcdefghijklmnopqrstuvwxyz0123456789-".ToCharArray()).ListOf(pathPartsCount)
+                select GetUri(new UriBuilder(scheme: scheme, host: host.Item, port: port, pathValue: string.Join("/", pathParts)));
+            
+            Prop.ForAll(uriGen.ToArbitrary(), (Uri u) =>
             {
-                testOutputHelper.WriteLine($"Expected {expected} but was {actual}");
-                throw new Exception();
+                var ub = new UriBuilder(u);
+                var expected = ub.Uri.ToString().Length;
+                var actual = UriValidator.UriLength(ub);
+                Assert.True(expected == actual, $"Expected length {expected}, got {actual}. URI: {u}");
+            }).QuickCheckThrowOnFailure();
+        }
+        
+        Uri GetUri(UriBuilder u)
+        {
+            try
+            {
+                return u.Uri;
+            } catch (Exception e)
+            {
+                throw new Exception("Could not build URI from " + u);
             }
         }
     }

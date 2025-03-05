@@ -28,14 +28,14 @@ namespace SolrNet.Tests {
             var mgr = new MappingManager();
             mgr.Add(typeof (Entity).GetProperty("Id"), "id");
             var fields = mgr.GetFields(typeof (Entity));
-            Assert.Equal(1, fields.Count);
+            Assert.Single(fields);
         }
 
         [Fact]
         public void No_Mapped_type_returns_empty() {
             var mgr = new MappingManager();
             var fields = mgr.GetFields(typeof (Entity));
-            Assert.Equal(0, fields.Count);
+            Assert.Empty(fields);
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof (Entity).GetProperty("Id"), "id");
             mgr.Add(typeof (Entity).GetProperty("Id"), "id2");
             var fields = mgr.GetFields(typeof (Entity));
-            Assert.Equal(1, fields.Count);
+            Assert.Single(fields);
             Assert.Equal("id2", fields.First().Value.FieldName);
         }
 
@@ -83,7 +83,7 @@ namespace SolrNet.Tests {
             mappingManager.Add(typeof(ComplexEntity<FrenchSchemaLanguage>).GetProperty("Description"), "description");
 
             var registeredType = mappingManager.GetRegisteredTypes();
-            Assert.Equal(1, registeredType.Count);
+            Assert.Single(registeredType);
             Assert.Single(registeredType, typeof(ComplexEntity<FrenchSchemaLanguage>));
         }
 
@@ -115,7 +115,7 @@ namespace SolrNet.Tests {
             var property = typeof (Entity).GetProperty("Id");
             mgr.Add(property);
             var fields = mgr.GetFields(typeof (Entity));
-            Assert.Equal(1, fields.Count);
+            Assert.Single(fields);
             Assert.Equal("Id", fields.First().Value.FieldName);
         }
 
@@ -162,7 +162,7 @@ namespace SolrNet.Tests {
             mgr.Add(typeof(Entity).GetProperty("Id"), "id");
             mgr.Add(typeof(InheritedEntity).GetProperty("Description"), "desc");
             var entityFields = mgr.GetFields(typeof(Entity));
-            Assert.Equal(1, entityFields.Count);
+            Assert.Single(entityFields);
             var inheritedEntityFields = mgr.GetFields(typeof(InheritedEntity));
             Assert.Equal(2, inheritedEntityFields.Count);
         }
@@ -192,7 +192,7 @@ namespace SolrNet.Tests {
             var mgr = new MappingManager();
             mgr.Add(typeof(Entity).GetProperty("Id"), "id");
             var types = mgr.GetRegisteredTypes();
-            Assert.Equal(1, types.Count);
+            Assert.Single(types);
             Assert.Contains( typeof(Entity),types);
         }
 

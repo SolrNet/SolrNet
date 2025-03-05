@@ -58,12 +58,9 @@
       },
       "xunit.assert": {
         "type": "Direct",
-        "requested": "[2.4.1, )",
-        "resolved": "2.4.1",
-        "contentHash": "O/Oe0BS5RmSsM+LQOb041TzuPo5MdH2Rov+qXGS37X+KFG1Hxz7kopYklM5+1Y+tRGeXrOx5+Xne1RuqLFQoyQ==",
-        "dependencies": {
-          "NETStandard.Library": "1.6.1"
-        }
+        "requested": "[2.9.3, )",
+        "resolved": "2.9.3",
+        "contentHash": "/Kq28fCE7MjOV42YLVRAJzRF0WmEqsmflm0cfpMjGtzQ2lR5mYVj1/i0Y8uDAOLczkL3/jArrwehfMD0YogMAA=="
       },
       "BouncyCastle.Cryptography": {
         "type": "Transitive",

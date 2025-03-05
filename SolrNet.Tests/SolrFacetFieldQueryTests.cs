@@ -43,7 +43,7 @@ namespace SolrNet.Tests {
         public void FieldOnly() {
             var fq = new SolrFacetFieldQuery("pepe");
             var q = Serialize(fq);
-            Assert.Equal(1, q.Count);
+            Assert.Single(q);
             testOutputHelper.WriteLine(q[0].ToString());
             Assert.Equal("facet.field", q[0].Key);
             Assert.Equal("pepe", q[0].Value);
@@ -154,7 +154,7 @@ namespace SolrNet.Tests {
         {
             var fq = new SolrFacetFieldQuery("pepe") { ContainsIgnoreCase = true };
             var q = Serialize(fq);
-            Assert.Equal(1, q.Count);
+            Assert.Single(q);
             Assert.Equal("facet.field", q[0].Key);
             Assert.Equal("pepe", q[0].Value);
 

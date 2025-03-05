@@ -472,7 +472,7 @@ namespace SolrNet.Tests
             //Facet Queries
             Assert.NotNull(r.FacetQueries);
             //Console.WriteLine(r.FacetQueries.Count);
-            Assert.Equal(1, r.FacetQueries.Count);
+            Assert.Single(r.FacetQueries);
         }
 
         [Fact]
@@ -510,11 +510,11 @@ namespace SolrNet.Tests
         public void ParseHighlighting()
         {
             var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting.xml"));
-            Assert.Equal(1, highlights.Count);
+            Assert.Single(highlights);
             var kv = highlights.First().Value;
             Assert.Single(kv);
             Assert.Equal("features", kv.First().Key);
-            Assert.Equal(1, kv.First().Value.Count);
+            Assert.Single(kv.First().Value);
             //Console.WriteLine(kv.First().Value.First());
             Assert.StartsWith("<em>Noise</em>", kv.First().Value.First(), StringComparison.OrdinalIgnoreCase);
         }
@@ -523,14 +523,13 @@ namespace SolrNet.Tests
         public void ParseHighlightingWrappedWithClass()
         {
             var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting.xml"));
-            Assert.Equal(1, highlights.Count);
-            var first = highlights.First();
+            var first = Assert.Single(highlights);
             Assert.Equal("SP2514N", first.Key);
             var fieldsWithSnippets = highlights["SP2514N"].Snippets;
-            Assert.Equal(1, fieldsWithSnippets.Count);
+            Assert.Single(fieldsWithSnippets);
             Assert.Equal("features", fieldsWithSnippets.First().Key);
             var snippets = highlights["SP2514N"].Snippets["features"];
-            Assert.Equal(1, snippets.Count);
+            Assert.Single(snippets);
             Assert.StartsWith("<em>Noise</em>", snippets.First(),StringComparison.OrdinalIgnoreCase);
         }
 
@@ -562,7 +561,7 @@ namespace SolrNet.Tests
             var highlights = ParseHighlightingResults(EmbeddedResource.GetEmbeddedString(GetType(), "Resources.responseWithHighlighting3.xml"));
             Assert.Empty(highlights["e4420cc2"]);
             Assert.Single(highlights["e442c4cd"]);
-            Assert.Equal(1, highlights["e442c4cd"]["bodytext"].Count);
+            Assert.Single(highlights["e442c4cd"]["bodytext"]);
             Assert.Contains("Garia lancerer", highlights["e442c4cd"]["bodytext"].First());
         }
 
@@ -577,14 +576,14 @@ namespace SolrNet.Tests
             //Suggestions
             Assert.Equal(2, spellChecking.Count);
             //First suggestion - hell
-            Assert.Equal(1, spellChecking.First().Suggestions.Count);
+            Assert.Single(spellChecking.First().Suggestions);
             Assert.Equal("dell", spellChecking.First().Suggestions.Single());
             //Second suggestion - ultrashar
-            Assert.Equal(1, spellChecking.Last().Suggestions.Count);
-            Assert.Equal("ultrasharp", spellChecking.Last().Suggestions.Single());            
+            var suggestion = Assert.Single(spellChecking.Last().Suggestions);
+            Assert.Equal("ultrasharp", suggestion);            
             //Collations
             Assert.Equal("dell ultrasharp", spellChecking.Collations.First().CollationQuery);
-            Assert.Equal(1, spellChecking.Collations.Count);
+            Assert.Single(spellChecking.Collations);
         }
 
         [Fact]        
@@ -599,7 +598,7 @@ namespace SolrNet.Tests
             Assert.Equal(2, spellChecking.Count);
 
             //First suggestion - hell
-            Assert.Equal(1, spellChecking.First().Suggestions.Count);
+            Assert.Single(spellChecking.First().Suggestions);
             Assert.Equal("dell", spellChecking.First().Suggestions.Single());
 
             //Second suggestion - ultrashar
@@ -634,7 +633,7 @@ namespace SolrNet.Tests
             Assert.NotNull(spellChecking);
             Assert.Equal("dell ultrasharp", spellChecking.Collations.First().CollationQuery);
             Assert.Equal(2, spellChecking.Count);
-            Assert.Equal(1, spellChecking.Collations.Count);
+            Assert.Single(spellChecking.Collations);
         }
 
         [Theory]
@@ -699,13 +698,13 @@ namespace SolrNet.Tests
             Assert.Equal(2, spellChecking.Collations.Count);
             //First result
             Assert.Equal("audit collation", spellChecking.Collations.First().CollationQuery);
-            Assert.Equal(0, spellChecking.Collations.First().MisspellingsAndCorrections.Count);
+            Assert.Empty(spellChecking.Collations.First().MisspellingsAndCorrections);
             InvalidOperationException ex1 = Assert.Throws<InvalidOperationException>(() => spellChecking.Collations.First().Hits);
             Assert.Equal("Operation not supported when collateExtendedResults parameter is set to false.", ex1.Message);
 
             //Second result
             Assert.Equal("audit (colla tion)", spellChecking.Collations.Last().CollationQuery);
-            Assert.Equal(0, spellChecking.Collations.Last().MisspellingsAndCorrections.Count);
+            Assert.Empty(spellChecking.Collations.Last().MisspellingsAndCorrections);
             InvalidOperationException ex2 = Assert.Throws<InvalidOperationException>(() => spellChecking.Collations.Last().Hits);
             Assert.Equal("Operation not supported when collateExtendedResults parameter is set to false.", ex2.Message);            
         }
@@ -732,7 +731,7 @@ namespace SolrNet.Tests
             var spellChecking = parser.ParseSpellChecking(docNode);
             Assert.NotNull(spellChecking);
             Assert.NotNull(spellChecking.Collations);
-            Assert.Equal(1, spellChecking.Collations.Count);
+            Assert.Single(spellChecking.Collations);
             //First result
             Assert.Equal("audit audit", spellChecking.Collations.ElementAt(0).CollationQuery);
             Assert.Equal(1111, spellChecking.Collations.ElementAt(0).Hits);
@@ -799,7 +798,7 @@ namespace SolrNet.Tests
             Assert.Equal(10, positions[1]);
 
             var offsets = cable.Offsets.ToList();
-            Assert.Equal(1, cable.Offsets.Count);
+            Assert.Single(cable.Offsets);
             Assert.Equal(4, offsets[0].Start);
             Assert.Equal(9, offsets[0].End);
         }
@@ -835,8 +834,8 @@ namespace SolrNet.Tests
             Assert.Equal(2, mlt.Count);
             Assert.True(mlt.ContainsKey(product1.Id));
             Assert.True(mlt.ContainsKey(product2.Id));
-            Assert.Equal(1, mlt[product1.Id].Count);
-            Assert.Equal(1, mlt[product2.Id].Count);
+            Assert.Single(mlt[product1.Id]);
+            Assert.Single(mlt[product2.Id]);
             //Console.WriteLine(mlt[product1.Id][0].Id);
         }
 
@@ -858,7 +857,7 @@ namespace SolrNet.Tests
             Assert.Equal(6038619.160300001, priceStats.SumOfSquares);
             Assert.Equal(350.08466666666664, priceStats.Mean);
             Assert.Equal(547.737557906113, priceStats.StdDev);
-            Assert.Equal(1, priceStats.FacetResults.Count);
+            Assert.Single(priceStats.FacetResults);
             Assert.True(priceStats.FacetResults.ContainsKey("inStock"));
             var priceInStockStats = priceStats.FacetResults["inStock"];
             Assert.NotNull(priceStats.Percentiles);
@@ -952,13 +951,12 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithDateFacet.xml");
             var p = new FacetsResponseParser<Product>();
             var results = p.ParseFacetDates(xml.Root);
-            Assert.Equal(1, results.Count);
-            var result = results.First();
+            var result = Assert.Single(results);
             Assert.Equal("timestamp", result.Key);
             Assert.Equal("+1DAY", result.Value.Gap);
             Assert.Equal(new DateTime(2009, 8, 10, 0, 33, 46, 578), result.Value.End);
             var dateResults = result.Value.DateResults;
-            Assert.Equal(1, dateResults.Count);
+            Assert.Single(dateResults);
             Assert.Equal(16, dateResults[0].Value);
             Assert.Equal(new DateTime(2009, 8, 9, 0, 33, 46, 578), dateResults[0].Key);
         }
@@ -969,8 +967,7 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithDateFacetAndOther.xml");
             var p = new FacetsResponseParser<Product>();
             var results = p.ParseFacetDates(xml.Root);
-            Assert.Equal(1, results.Count);
-            var result = results.First();
+            var result = Assert.Single(results);
             Assert.Equal("timestamp", result.Key);
             Assert.Equal("+1DAY", result.Value.Gap);
             Assert.Equal(new DateTime(2009, 8, 10, 0, 46, 29), result.Value.End);
@@ -987,8 +984,7 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithRangeFacet.xml");
             var p = new FacetsResponseParser<Product>();
             var results = p.ParseFacetRanges(xml.Root);
-            Assert.Equal(1, results.Count);
-            var result = results.First();
+            var result = Assert.Single(results);
             Assert.Equal("timestamp", result.Key);
             Assert.Equal("+1DAY", result.Value.Gap);
             Assert.Equal("2017-08-29T00:00:00Z", result.Value.Start);
@@ -1007,8 +1003,7 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.partialResponseWithRangeFacetAndOther.xml");
             var p = new FacetsResponseParser<Product>();
             var results = p.ParseFacetRanges(xml.Root);
-            Assert.Equal(1, results.Count);
-            var result = results.First();
+            var result = Assert.Single(results);
             Assert.Equal("timestamp", result.Key);
             Assert.Equal("+1DAY", result.Value.Gap);
             Assert.Equal("2017-08-29T00:00:00Z", result.Value.Start);
@@ -1034,7 +1029,7 @@ namespace SolrNet.Tests
             var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithGroupingOnInstock.xml");
             var results = new SolrQueryResults<Product>();
             parser.Parse(xml, results);
-            Assert.Equal(1, results.Grouping.Count);
+            Assert.Single(results.Grouping);
             Assert.Equal(2, results.Grouping["inStock"].Groups.Count());
             Assert.Equal(13, results.Grouping["inStock"].Groups.First().NumFound);
         }

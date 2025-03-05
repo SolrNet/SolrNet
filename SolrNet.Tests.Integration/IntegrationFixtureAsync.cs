@@ -177,7 +177,7 @@ namespace SolrNet.Tests.Integration
                 }
             });
             Assert.NotNull(results.Highlights);
-            Assert.Equal(1, results.Highlights.Count);
+            Assert.Single(results.Highlights);
             foreach (var h in results.Highlights[results[0].Id])
             {
                 testOutputHelper.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.ToArray()));
@@ -196,7 +196,7 @@ namespace SolrNet.Tests.Integration
                 }
             });
             Assert.NotNull(results.Highlights);
-            Assert.Equal(1, results.Highlights.Count);
+            Assert.Single(results.Highlights);
             foreach (var h in results.Highlights[results[0].Id].Snippets)
             {
                 testOutputHelper.WriteLine("{0}: {1}", h.Key, string.Join(", ", h.Value.ToArray()));
@@ -487,7 +487,7 @@ namespace SolrNet.Tests.Integration
             });
 
             testOutputHelper.WriteLine("Group.Count {0}", results.Grouping.Count);
-            Assert.Equal(1, results.Grouping.Count);
+            Assert.Single(results.Grouping);
             Assert.True(results.Grouping.ContainsKey("manu_exact"));
             
             // TODO the following assertions fails, maybe the data isn't set up correctly?

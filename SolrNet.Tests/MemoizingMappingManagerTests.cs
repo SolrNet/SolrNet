@@ -60,7 +60,7 @@ namespace SolrNet.Tests {
             innerMapper.getRegisteredTypes += () => new[] {typeof (TestDocument)};
             var mapper = new MemoizingMappingManager(innerMapper);
             var types = mapper.GetRegisteredTypes();
-            Assert.Equal(1, types.Count);
+            Assert.Single(types);
             Assert.Equal(typeof (TestDocument), types.First());
             mapper.GetRegisteredTypes();
         }

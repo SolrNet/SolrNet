@@ -84,7 +84,7 @@ namespace CommonServiceLocator.SolrNet.Tests
         public void GetlAllInstance_ForUnknownType_ReturnEmptyEnumerable() {
             IEnumerable<IDictionary> instances = locator.GetAllInstances<IDictionary>();
             IList<IDictionary> list = new List<IDictionary>(instances);
-            Assert.Equal(0, list.Count);
+            Assert.Empty(list);
         }
 
         [Fact]

@@ -66,14 +66,14 @@ namespace SolrNet.Tests {
             Assert.Equal("Id", key.Property.Name);
             Assert.Equal("Id", key.FieldName);
             var fields = m.GetFields(typeof (AnotherEntity));
-            Assert.Equal(1, fields.Count);
+            Assert.Single(fields);
         }
 
         [Fact]
         public void NoProperties_ShouldReturnEmpty() {
             var m = new AttributesMappingManager();
             var fields = m.GetFields(typeof (NoProperties));
-            Assert.Equal(0, fields.Count);
+            Assert.Empty(fields);
         }
 
         [Fact]

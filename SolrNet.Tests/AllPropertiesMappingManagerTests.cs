@@ -67,7 +67,7 @@ namespace SolrNet.Tests
         {
             var m = new AllPropertiesMappingManager();
             var props = m.GetFields(typeof(NoProperties));
-            Assert.Equal(0, props.Count);
+            Assert.Empty(props);
         }
 
         [Fact]

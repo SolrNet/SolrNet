@@ -76,7 +76,9 @@ namespace SolrNet.Cloud.Tests
             Thread.Sleep(ZOOKEEPER_REFRESH_PERIOD_MSEC);
             var collectionState = await AssertCollectionPresenceByCloudStateAsync(COLLECTION_NAME);
             Assert.NotNull(collectionState.Shards);
+#pragma warning disable xUnit2013
             Assert.Equal(expected: NUM_SHARDS, actual: collectionState.Shards.Count);
+#pragma warning restore xUnit2013
 
             res = collections.DeleteCollection(COLLECTION_NAME);
             Assert.Equal(expected: 0, actual: res.Status);

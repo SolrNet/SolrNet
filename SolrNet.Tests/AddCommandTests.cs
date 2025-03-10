@@ -16,6 +16,8 @@
 
 using System;
 using System.Collections.Generic;
+using FsCheck;
+using FsCheck.Fluent;
 using Xunit;
 using Moroco;
 using SolrNet.Attributes;
@@ -195,6 +197,17 @@ namespace SolrNet.Tests {
         public void RemoveControlCharacters() {
             var xml = SolrDocumentSerializer<object>.RemoveControlCharacters("control " + (char)1);
             Assert.DoesNotContain((char)1, xml);
+        }
+
+        [Fact]
+        public void RemoveControlCharacters_total()
+        {
+            Prop.ForAll<string>(s =>
+            {
+                var result = SolrDocumentSerializer<object>.RemoveControlCharacters(s);
+                return true;
+            }).QuickCheckThrowOnFailure();
+
         }
 	}
 }

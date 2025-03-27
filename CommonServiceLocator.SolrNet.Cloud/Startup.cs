@@ -39,6 +39,16 @@ namespace SolrNet.Cloud
         }
 
         /// <summary>
+        /// Resets/Clears the previous initialization (DI container, collections, etc) in order to start from scratch.
+        /// </summary>
+        public static void Reset()
+        {
+            Collections.Clear();
+            Providers.Clear();
+            Parent.Container.Clear();
+        }
+
+        /// <summary>
         /// Startup initializing 
         /// </summary>
         public static async Task InitAsync<T>(ISolrCloudStateProvider cloudStateProvider, bool isPostConnection = false)
@@ -78,14 +88,15 @@ namespace SolrNet.Cloud
         /// <summary>
         /// Startup initializing 
         /// </summary>
-        public static async Task InitAsync<T>(ISolrCloudStateProvider cloudStateProvider, string collectionName, bool isPostConnection = false)
+        public static async Task InitAsync<T>(ISolrCloudStateProvider cloudStateProvider, string collectionName, bool isPostConnection = false, ISolrOperationsProvider solrOperationsProvider = null)
         {
             if (cloudStateProvider == null)
                 throw new ArgumentNullException("cloudStateProvider");
             if (string.IsNullOrEmpty(collectionName))
                 throw new ArgumentNullException("collectionName");
 
-            await EnsureRegistrationAsync(cloudStateProvider);
+            await EnsureRegistrationAsync(cloudStateProvider, solrOperationsProvider).ConfigureAwait(false);
+
 
             if (!Collections.Add(collectionName))
                 return;
@@ -122,13 +133,13 @@ namespace SolrNet.Cloud
         /// <summary>
         /// Ensures registrations and initializing
         /// </summary>
-        private static async Task EnsureRegistrationAsync(ISolrCloudStateProvider cloudStateProvider)
+        private static async Task EnsureRegistrationAsync(ISolrCloudStateProvider cloudStateProvider, ISolrOperationsProvider solrOperations = null)
         {
             if (Providers.Count == 0)
-                Parent.Container.Register<ISolrOperationsProvider>(c => new OperationsProvider());
+                Parent.Container.Register<ISolrOperationsProvider>(c => solrOperations ?? new OperationsProvider());
             if (Providers.ContainsKey(cloudStateProvider.Key))
                 return;
-            await cloudStateProvider.InitAsync();
+            await cloudStateProvider.InitAsync().ConfigureAwait(false);
             Providers.Add(cloudStateProvider.Key, cloudStateProvider);
             Parent.Container.Register(cloudStateProvider.Key, container => cloudStateProvider);
         }

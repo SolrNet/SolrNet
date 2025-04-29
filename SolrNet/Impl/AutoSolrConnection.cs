@@ -132,6 +132,7 @@ namespace SolrNet.Impl
             if (UriValidator.UriLength(u) > MaxUriLength)
             {
                 u.Query = null;
+                var postParameters = GetPostParameters(parameters);
                 DiagnosticsUtil.EnrichCurrentActivity("POST", u.Uri);
                 response = await HttpClient.PostAsync(u.Uri, new FormUrlEncodedContent(parameters), cancellationToken);
             }
@@ -223,6 +224,22 @@ namespace SolrNet.Impl
             DiagnosticsUtil.EnrichCurrentActivity(param);
             
             return string.Join("&", param.Select(kv => $"{WebUtility.UrlEncode(kv.Key)}={WebUtility.UrlEncode(kv.Value)}"));
+        }
+
+        private IEnumerable<KeyValuePair<string, string>> GetPostParameters(IEnumerable<KeyValuePair<string, string>> parameters)
+        {
+            var param = new List<KeyValuePair<string, string>>();
+            if (parameters != null)
+                param.AddRange(parameters);
+
+            if (!param.Exists(param => param.Key == "version"))
+                param.Add(new KeyValuePair<string, string>("version", version));
+
+            if (!param.Exists(param => param.Key == "wt"))
+                param.Add(new KeyValuePair<string, string>("wt", "xml"));
+
+            return param;
+
         }
 
         #region IDisposable Support

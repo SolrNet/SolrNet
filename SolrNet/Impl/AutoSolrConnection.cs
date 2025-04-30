@@ -134,7 +134,7 @@ namespace SolrNet.Impl
                 u.Query = null;
                 var postParameters = GetPostParameters(parameters);
                 DiagnosticsUtil.EnrichCurrentActivity("POST", u.Uri);
-                response = await HttpClient.PostAsync(u.Uri, new FormUrlEncodedContent(parameters), cancellationToken);
+                response = await HttpClient.PostAsync(u.Uri, new FormUrlEncodedContent(postParameters), cancellationToken);
             }
             else
             {

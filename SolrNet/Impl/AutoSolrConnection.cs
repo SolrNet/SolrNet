@@ -226,16 +226,16 @@ namespace SolrNet.Impl
             return string.Join("&", param.Select(kv => $"{WebUtility.UrlEncode(kv.Key)}={WebUtility.UrlEncode(kv.Value)}"));
         }
 
-        private IEnumerable<KeyValuePair<string, string>> GetPostParameters(IEnumerable<KeyValuePair<string, string>> parameters)
+        private static IEnumerable<KeyValuePair<string, string>> GetPostParameters(IEnumerable<KeyValuePair<string, string>> parameters)
         {
             var param = new List<KeyValuePair<string, string>>();
             if (parameters != null)
                 param.AddRange(parameters);
 
-            if (!param.Exists(param => param.Key == "version"))
+            if (!param.Exists(p => p.Key == "version"))
                 param.Add(new KeyValuePair<string, string>("version", version));
 
-            if (!param.Exists(param => param.Key == "wt"))
+            if (!param.Exists(p => p.Key == "wt"))
                 param.Add(new KeyValuePair<string, string>("wt", "xml"));
 
             return param;

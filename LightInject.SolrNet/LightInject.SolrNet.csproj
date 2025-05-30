@@ -11,7 +11,6 @@
     <IsPackable>true</IsPackable>
     <Product>SolrNet.LightInject</Product>
     <Description>SolrNet extensions for LightInject.</Description>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/SolrNet/SolrNet/master/license.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/SolrNet/SolrNet</PackageProjectUrl>
     <Version>1.0.0</Version>
   </PropertyGroup>

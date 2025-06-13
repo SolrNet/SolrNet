@@ -118,6 +118,7 @@ namespace SolrNet
             services.AddTransient<ISolrFacetQuerySerializer, DefaultFacetQuerySerializer>();
             services.AddTransient(typeof(ISolrAbstractResponseParser<>), typeof(DefaultResponseParser<>));
             services.AddTransient<ISolrHeaderResponseParser, HeaderResponseParser<string>>();
+            services.AddTransient<ISolrStatusResponseParser, SolrStatusResponseParser>();
             services.AddTransient<ISolrExtractResponseParser, ExtractResponseParser>();
             foreach (var p in new[] {
                 typeof(MappedPropertiesIsInSolrSchemaRule),
@@ -129,6 +130,7 @@ namespace SolrNet
             services.AddTransient(typeof(ISolrMoreLikeThisHandlerQueryResultsParser<>), typeof(SolrMoreLikeThisHandlerQueryResultsParser<>));
             services.AddTransient(typeof(ISolrDocumentSerializer<>), typeof(SolrDocumentSerializer<>));
             services.AddTransient<ISolrDocumentSerializer<Dictionary<string, object>>, SolrDictionarySerializer>();
+            services.AddTransient<ISolrCoreAdmin, SolrCoreAdmin>();
 
             services.AddTransient<ISolrSchemaParser, SolrSchemaParser>();
             services.AddTransient<ISolrDIHStatusParser, SolrDIHStatusParser>();

@@ -14,6 +14,8 @@
 // limitations under the License.
 #endregion
 
+using System.Collections.Generic;
+
 namespace SolrNet
 {
     /// <summary>
@@ -107,6 +109,59 @@ namespace SolrNet
             Field = field;
             Type = type;
             Value = value;
+        }
+    }
+
+    /// <summary>
+    /// Represents a collection of atomic update specifications for Solr documents.
+    /// </summary>
+    /// <remarks>
+    /// This class is a dictionary where the key is the document ID and the value is a collection of atomic update specifications.
+    /// </remarks>
+    public class AtomicUpdateSpecCollection : Dictionary<string, IEnumerable<AtomicUpdateSpec>>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AtomicUpdateSpecCollection"/> class.
+        /// </summary>
+        public AtomicUpdateSpecCollection()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AtomicUpdateSpecCollection"/> class with the specified document ID and updates.
+        /// </summary>
+        /// <param name="docId">The ID of the document to update.</param>
+        /// <param name="updates">The collection of atomic update specifications for the document.</param>
+        public AtomicUpdateSpecCollection(string docId, IEnumerable<AtomicUpdateSpec> updates)
+        {
+            this[docId] = updates;
+        }
+    }
+
+    /// <summary>
+    /// Represents a generic collection of atomic update specifications for Solr documents.
+    /// </summary>
+    /// <remarks>
+    /// This class is a dictionary where the key is a document identifier of type T and the value is a collection of atomic update specifications.
+    /// </remarks>
+    /// <typeparam name="T">The type of the document identifier used as the dictionary key.</typeparam>
+    public class AtomicUpdateSpecCollection<T> : Dictionary<T, IEnumerable<AtomicUpdateSpec>>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AtomicUpdateSpecCollection{T}"/> class.
+        /// </summary>
+        public AtomicUpdateSpecCollection()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AtomicUpdateSpecCollection{T}"/> class with the specified document identifier and updates.
+        /// </summary>
+        /// <param name="doc">The identifier of the document to update.</param>
+        /// <param name="updates">The collection of atomic update specifications for the document.</param>
+        public AtomicUpdateSpecCollection(T doc, IEnumerable<AtomicUpdateSpec> updates)
+        {
+            this[doc] = updates;
         }
     }
 }

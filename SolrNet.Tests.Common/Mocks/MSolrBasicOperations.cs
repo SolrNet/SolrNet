@@ -92,6 +92,16 @@ namespace SolrNet.Tests.Mocks {
             throw new NotImplementedException();
         }
 
+        public ResponseHeader AtomicUpdates(string uniqueKey, AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AtomicUpdatesAsync(string uniqueKey, AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<ResponseHeader> CommitAsync(CommitOptions options)
         {
             throw new NotImplementedException();

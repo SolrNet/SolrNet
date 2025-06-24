@@ -465,12 +465,15 @@ namespace SolrNet
         /// <returns></returns>
         Task<IEnumerable<ValidationResult>> EnumerateValidationResultsAsync(String schemaFileName);
 
+        #region Obsolete Atomic Update Methods
+
         /// <summary>
         /// Updates a document according to the supplied specification.
         /// </summary>
         /// <param name="doc">The document to update</param>
         /// <param name="updateSpecs">The specification that defines the update</param>
         /// <returns></returns>
+        [Obsolete("Use AtomicUpdates instead")]
         ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs);
 
         /// <summary>
@@ -479,6 +482,7 @@ namespace SolrNet
         /// <param name="doc">The document to update</param>
         /// <param name="updateSpecs">The specification that defines the update</param>
         /// <returns></returns>
+        [Obsolete("Use AtomicUpdatesAsync instead")]
         Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs);
 
         /// <summary>
@@ -487,6 +491,7 @@ namespace SolrNet
         /// <param name="id">The ID of the document to update</param>
         /// <param name="updateSpecs">The specification that defines the update</param>
         /// <returns></returns>
+        [Obsolete("Use AtomicUpdates instead")]
         ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs);
 
         /// <summary>
@@ -495,6 +500,7 @@ namespace SolrNet
         /// <param name="id">The ID of the document to update</param>
         /// <param name="updateSpecs">The specification that defines the update</param>
         /// <returns></returns>
+        [Obsolete("Use AtomicUpdatesAsync instead")]
         Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs);
 
         /// <summary>
@@ -504,6 +510,7 @@ namespace SolrNet
         /// <param name="updateSpecs">The specification that defines the update</param>
         /// <param name="parameters">The atomic update parameters</param>
         /// <returns></returns>
+        [Obsolete("Use AtomicUpdates instead")]
         ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
 
         /// <summary>
@@ -513,6 +520,7 @@ namespace SolrNet
         /// <param name="updateSpecs">The specification that defines the update</param>
         /// <param name="parameters">The atomic update parameters</param>
         /// <returns></returns>
+        [Obsolete("Use AtomicUpdatesAsync instead")]
         Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
 
         /// <summary>
@@ -522,6 +530,7 @@ namespace SolrNet
         /// <param name="updateSpecs">The specification that defines the update</param>
         /// <param name="parameters">The atomic update parameters</param>
         /// <returns></returns>
+        [Obsolete("Use AtomicUpdates instead")]
         ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
 
         /// <summary>
@@ -531,6 +540,69 @@ namespace SolrNet
         /// <param name="updateSpecs">The specification that defines the update</param>
         /// <param name="parameters">The atomic update parameters</param>
         /// <returns></returns>
+        [Obsolete("Use AtomicUpdatesAsync instead")]
         Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters);
+
+        #endregion
+
+        /// <summary>
+        /// Updates documents according to the supplied specification.
+        /// </summary>
+        /// <param name="updateSpecs">The specifications that define the updates</param>
+        /// <returns></returns>
+        ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection<T> updateSpecs);
+
+        /// <summary>
+        /// Updates documents according to the supplied specification (asynchronous).
+        /// </summary>
+        /// <param name="updateSpecs">The specifications that define the updates</param>
+        /// <returns></returns>
+        Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection<T> updateSpecs);
+
+        /// <summary>
+        /// Updates documents with the supplied IDs according to the supplied specifications.
+        /// </summary>
+        /// <param name="updateSpecs">The specifications that define the updates</param>
+        /// <returns></returns>
+        ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection updateSpecs);
+
+        /// <summary>
+        /// Updates documents with the supplied IDs according to the supplied specifications (asynchronous).
+        /// </summary>
+        /// <param name="updateSpecs">The specifications that define the updates</param>
+        /// <returns></returns>
+        Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection updateSpecs);
+
+        /// <summary>
+        /// Updates documents according to the supplied specifications.
+        /// </summary>
+        /// <param name="updateSpecs">The specifications that define the updates</param>
+        /// <param name="parameters">The atomic update parameters</param>
+        /// <returns></returns>
+        ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection<T> updateSpecs, AtomicUpdateParameters parameters);
+
+        /// <summary>
+        /// Updates documents according to the supplied specifications (asynchronous).
+        /// </summary>
+        /// <param name="updateSpecs">The specifications that define the updates</param>
+        /// <param name="parameters">The atomic update parameters</param>
+        /// <returns></returns>
+        Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection<T> updateSpecs, AtomicUpdateParameters parameters);
+
+        /// <summary>
+        /// Updates documents with the supplied IDs according to the supplied specifications.
+        /// </summary>
+        /// <param name="updateSpecs">The specifications that define the updates</param>
+        /// <param name="parameters">The atomic update parameters</param>
+        /// <returns></returns>
+        ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters);
+
+        /// <summary>
+        /// Updates documents with the supplied IDs according to the supplied specifications (asynchronous).
+        /// </summary>
+        /// <param name="updateSpecs">The specifications that define the updates</param>
+        /// <param name="parameters">The atomic update parameters</param>
+        /// <returns></returns>
+        Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters);
     }
 }

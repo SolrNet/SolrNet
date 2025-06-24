@@ -101,6 +101,23 @@ namespace SolrNet.Tests
         }
 
         [Fact]
+        public void AtomicUpdateAddDistinct()
+        {
+            var conn = new Mocks.MSolrConnection();
+            conn.postStream += new MFunc<string, string, Stream, IEnumerable<KeyValuePair<string, string>>, string>((url, contentType, content, param) => {
+                string text = new StreamReader(content, Encoding.UTF8).ReadToEnd();
+                Assert.Equal("/update", url);
+                Assert.Equal("[{\"id\":\"0\",\"food\":{\"add-distinct\":\"nuts\"}}]", text);
+                testOutputHelper.WriteLine(text);
+                return null;
+            });
+            var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("food", AtomicUpdateType.AddDistinct, "nuts") };
+            var cmd = new AtomicUpdateCommand("id", "0", updateSpecs, null);
+            cmd.Execute(conn);
+            Assert.Equal(1, conn.postStream.Calls);
+        }
+
+        [Fact]
         public void AtomicUpdateAddArray()
         {
             var conn = new Mocks.MSolrConnection();

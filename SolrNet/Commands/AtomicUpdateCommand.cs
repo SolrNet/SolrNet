@@ -77,11 +77,22 @@ namespace SolrNet.Commands
 
             foreach (var updateSpec in updateSpecs)
             {
-                json += "," + JsonConvert.SerializeObject(updateSpec.Field) + ":{\"" + updateSpec.Type.ToString().ToLowerInvariant() + "\":" + JsonConvert.SerializeObject(updateSpec.Value) + "}";
+                json += "," + JsonConvert.SerializeObject(updateSpec.Field) + ":{\"" + GetUpdateType(updateSpec.Type) + "\":" + JsonConvert.SerializeObject(updateSpec.Value) + "}";
             }
 
             json += "}]";
             return json;
+        }
+
+        private string GetUpdateType(AtomicUpdateType type)
+        {
+            switch (type)
+            {
+                case AtomicUpdateType.AddDistinct:
+                    return "add-distinct";
+                default:
+                    return type.ToString().ToLowerInvariant();
+            }
         }
     }
 }

@@ -30,6 +30,10 @@ namespace SolrNet
         /// </summary>
         Add,
         /// <summary>
+        /// Adds the specified value(s) to a multi-valued field, but only if they are not already present
+        /// </summary>
+        AddDistinct,
+        /// <summary>
         /// Increments a numeric value by a specific amount
         /// </summary>
         Inc,

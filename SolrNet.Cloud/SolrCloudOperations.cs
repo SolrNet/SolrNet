@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SolrNet.Commands.Parameters;
@@ -260,27 +261,67 @@ namespace SolrNet.Cloud
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdates instead.")]
         public ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs)
         {
-            return PerformOperation(operations => operations.AtomicUpdate(doc, updateSpecs), true);
+            return AtomicUpdates(new AtomicUpdateSpecCollection<T> ()
+            {
+                { doc, updateSpecs }
+            });
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdates instead.")]
         public ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs)
         {
-            return PerformOperation(operations => operations.AtomicUpdate(id, updateSpecs), true);
+            return AtomicUpdates(new AtomicUpdateSpecCollection()
+            {
+                { id, updateSpecs }
+            });
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdates instead.")]
         public ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            return PerformOperation(operations => operations.AtomicUpdate(doc, updateSpecs, parameters), true);
+            return AtomicUpdates(new AtomicUpdateSpecCollection<T>()
+            {
+                { doc, updateSpecs }
+            }, parameters);
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdates instead.")]
         public ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            return PerformOperation(operations => operations.AtomicUpdate(id, updateSpecs, parameters), true);
+            return AtomicUpdates(new AtomicUpdateSpecCollection()
+            {
+                { id, updateSpecs }
+            }, parameters);
+        }
+
+        /// <inheritdoc />
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection<T> updateSpecs)
+        {
+            return PerformOperation(operations => operations.AtomicUpdates(updateSpecs), true);
+        }
+
+        /// <inheritdoc />
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection updateSpecs)
+        {
+            return PerformOperation(operations => operations.AtomicUpdates(updateSpecs), true);
+        }
+
+        /// <inheritdoc />
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection<T> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            return PerformOperation(operations => operations.AtomicUpdates(updateSpecs, parameters), true);
+        }
+
+        /// <inheritdoc />
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            return PerformOperation(operations => operations.AtomicUpdates(updateSpecs, parameters), true);
         }
 
         /// <inheritdoc />
@@ -435,20 +476,52 @@ namespace SolrNet.Cloud
             => PerformOperation(operations => operations.GetDIHStatusAsync(options));
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdatesAsync instead.")]
         public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs)
-            => PerformOperation(operations => operations.AtomicUpdateAsync(doc, updateSpecs));
+            => AtomicUpdatesAsync(new AtomicUpdateSpecCollection<T>()
+            {
+                { doc, updateSpecs }
+            });
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdatesAsync instead.")]
         public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs)
-            => PerformOperation(operations => operations.AtomicUpdateAsync(id, updateSpecs));
+            => AtomicUpdatesAsync(new AtomicUpdateSpecCollection()
+            {
+                { id, updateSpecs }
+            });
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdatesAsync instead.")]
         public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
-            => PerformOperation(operations => operations.AtomicUpdateAsync(doc, updateSpecs, parameters));
+            => AtomicUpdatesAsync(new AtomicUpdateSpecCollection<T>()
+            {
+                { doc, updateSpecs }
+            }, parameters);
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdatesAsync instead.")]
         public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
-            => PerformOperation(operations => operations.AtomicUpdateAsync(id, updateSpecs, parameters));
+            => AtomicUpdatesAsync(new AtomicUpdateSpecCollection()
+            {
+                { id, updateSpecs }
+            }, parameters);
+
+        /// <inheritdoc />
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection<T> updateSpecs)
+            => PerformOperation(operations => operations.AtomicUpdatesAsync(updateSpecs));
+
+        /// <inheritdoc />
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection updateSpecs)
+            => PerformOperation(operations => operations.AtomicUpdatesAsync(updateSpecs));
+
+        /// <inheritdoc />
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection<T> updateSpecs, AtomicUpdateParameters parameters)
+            => PerformOperation(operations => operations.AtomicUpdatesAsync(updateSpecs, parameters));
+
+        /// <inheritdoc />
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+            => PerformOperation(operations => operations.AtomicUpdatesAsync(updateSpecs, parameters));
 
         /// <inheritdoc />
         public IEnumerable<ValidationResult> EnumerateValidationResults(string schemaFileName)

@@ -371,61 +371,141 @@ namespace SolrNet.Impl
             return basicServer.MoreLikeThis(query, options);
         }
 
+        #region Obsolete Atomic Update Methods
+
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdates instead")]
         public ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs)
         {
-            string uniqueKey = mappingManager.GetUniqueKey(doc.GetType()).FieldName;
-            return basicServer.AtomicUpdate(uniqueKey, GetId(doc).ToString(), updateSpecs, null);
+            return AtomicUpdates(new AtomicUpdateSpecCollection<T> { { doc, updateSpecs } });
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdatesAsync instead")]
         public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs)
         {
-            string uniqueKey = mappingManager.GetUniqueKey(doc.GetType()).FieldName;
-            return basicServer.AtomicUpdateAsync(uniqueKey, GetId(doc).ToString(), updateSpecs, null);
+            return AtomicUpdatesAsync(new AtomicUpdateSpecCollection<T> { { doc, updateSpecs } });
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdates instead")]
         public ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs)
         {
-            string uniqueKey = mappingManager.GetUniqueKey(typeof(T)).FieldName;
-            return basicServer.AtomicUpdate(uniqueKey, id, updateSpecs, null);
+            return AtomicUpdates(new AtomicUpdateSpecCollection { { id, updateSpecs } });
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdatesAsync instead")]
         public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs)
         {
-            string uniqueKey = mappingManager.GetUniqueKey(typeof(T)).FieldName;
-            return basicServer.AtomicUpdateAsync(uniqueKey, id, updateSpecs, null);
+            return AtomicUpdatesAsync(new AtomicUpdateSpecCollection { { id, updateSpecs } });
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdates instead")]
         public ResponseHeader AtomicUpdate(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            string uniqueKey = mappingManager.GetUniqueKey(doc.GetType()).FieldName;
-            return basicServer.AtomicUpdate(uniqueKey, GetId(doc).ToString(), updateSpecs, parameters);
+            return AtomicUpdates(new AtomicUpdateSpecCollection<T> { { doc, updateSpecs } }, parameters);
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdatesAsync instead")]
         public Task<ResponseHeader> AtomicUpdateAsync(T doc, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            string uniqueKey = mappingManager.GetUniqueKey(doc.GetType()).FieldName;
-            return basicServer.AtomicUpdateAsync(uniqueKey, GetId(doc).ToString(), updateSpecs, parameters);
+            return AtomicUpdatesAsync(new AtomicUpdateSpecCollection<T> { { doc, updateSpecs } }, parameters);
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdates instead")]
         public ResponseHeader AtomicUpdate(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            string uniqueKey = mappingManager.GetUniqueKey(typeof(T)).FieldName;
-            return basicServer.AtomicUpdate(uniqueKey, id, updateSpecs, parameters);
+            return AtomicUpdates(new AtomicUpdateSpecCollection { { id, updateSpecs } }, parameters);
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdatesAsync instead")]
         public Task<ResponseHeader> AtomicUpdateAsync(string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            string uniqueKey = mappingManager.GetUniqueKey(typeof(T)).FieldName;
-            return basicServer.AtomicUpdateAsync(uniqueKey, id, updateSpecs, parameters);
+            return AtomicUpdatesAsync(new AtomicUpdateSpecCollection { { id, updateSpecs } }, parameters);
         }
+
+        #endregion
+
+        private AtomicUpdateSpecCollection PrepareAtomicUpdates(AtomicUpdateSpecCollection<T> updateSpecs, out string uniqueKey)
+        {
+            uniqueKey = null;
+
+            var updates = new AtomicUpdateSpecCollection();
+            foreach (var kvp in updateSpecs)
+            {
+                if (uniqueKey == null)
+                {
+                    uniqueKey = mappingManager.GetUniqueKey(kvp.Key.GetType()).FieldName;
+                }
+                var id = GetId(kvp.Key).ToString();
+                if (id == null)
+                    throw new SolrNetException($"Cannot perform atomic updates on a document of type '{typeof(T)}' with a null ID.");
+                updates[id] = kvp.Value;
+            }
+            return updates;
+        }
+
+        /// <inheritdoc />
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection<T> updateSpecs)
+        {
+            var updates = PrepareAtomicUpdates(updateSpecs, out string uniqueKey);
+            return basicServer.AtomicUpdates(uniqueKey, updates, null);
+        }
+
+        /// <inheritdoc />
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection<T> updateSpecs)
+        {
+            var updates = PrepareAtomicUpdates(updateSpecs, out string uniqueKey);
+            return basicServer.AtomicUpdatesAsync(uniqueKey, updates, null);
+        }
+
+        /// <inheritdoc />
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection updateSpecs)
+        {
+            string uniqueKey = mappingManager.GetUniqueKey(typeof(T)).FieldName;
+            return basicServer.AtomicUpdates(uniqueKey, updateSpecs, null);
+        }
+
+        /// <inheritdoc />
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection updateSpecs)
+        {
+            string uniqueKey = mappingManager.GetUniqueKey(typeof(T)).FieldName;
+            return basicServer.AtomicUpdatesAsync(uniqueKey,  updateSpecs, null);
+        }
+
+        /// <inheritdoc />
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection<T> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            var updates = PrepareAtomicUpdates(updateSpecs, out string uniqueKey);
+            return basicServer.AtomicUpdates(uniqueKey, updates, parameters);
+        }
+
+        /// <inheritdoc />
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection<T> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            var updates = PrepareAtomicUpdates(updateSpecs, out string uniqueKey);
+            return basicServer.AtomicUpdatesAsync(uniqueKey, updates, parameters);
+        }
+
+        /// <inheritdoc />
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            string uniqueKey = mappingManager.GetUniqueKey(typeof(T)).FieldName;
+            return basicServer.AtomicUpdates(uniqueKey, updateSpecs, parameters);
+        }
+
+        /// <inheritdoc />
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            string uniqueKey = mappingManager.GetUniqueKey(typeof(T)).FieldName;
+            return basicServer.AtomicUpdatesAsync(uniqueKey, updateSpecs, parameters);
+        }
+
 
         /// <inheritdoc />
         public Task<SolrQueryResults<T>> QueryAsync(string q, CancellationToken cancellationToken = default(CancellationToken)) => QueryAsync(new SolrQuery(q),cancellationToken);

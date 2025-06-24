@@ -552,7 +552,7 @@ namespace SolrNet.Tests {
             var updateSpecs = new AtomicUpdateSpec[] { new AtomicUpdateSpec("animal", AtomicUpdateType.Set, "squirrel"),
                 new AtomicUpdateSpec("food", AtomicUpdateType.Add, new string[] {"nuts", "seeds" }), new AtomicUpdateSpec("count", AtomicUpdateType.Inc, 3),
                 new AtomicUpdateSpec("colour", AtomicUpdateType.Remove, "pink"), new AtomicUpdateSpec("habitat", AtomicUpdateType.RemoveRegex, new string[]{ "tree.*", "river.+" }) };
-            ops.AtomicUpdate(new TestDocumentWithUniqueKey(), updateSpecs, parameters);
+            ops.AtomicUpdates(new AtomicUpdateSpecCollection<TestDocumentWithUniqueKey>() { { new TestDocumentWithUniqueKey(), updateSpecs } }, parameters);
             Assert.Equal(1, connection.postStream.Calls);
         }
     }

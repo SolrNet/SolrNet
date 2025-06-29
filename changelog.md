@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.1
+
+- Fix handling of emojis in documents (@omanikhi)
+- Fix passing some basic parameters to AutoSolrConnection (@superjulius)
+- Use SPDX licence in NuGet packages (@thompson-tomo)
+
 ## 1.2.0
 
 - Implement OpenTelemetry (@thomasdc)

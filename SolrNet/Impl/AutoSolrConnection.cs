@@ -218,8 +218,21 @@ namespace SolrNet.Impl
             if (parameters != null)
                 param.AddRange(parameters);
 
-            param.Add(new KeyValuePair<string, string>("version", version));
-            param.Add(new KeyValuePair<string, string>("wt", "xml"));
+            if (param.All(x => x.Key != "wt"))
+            {
+                // only set wt=xml if wt wasn't already set by the caller
+                param.Add(new KeyValuePair<string, string>("wt", "xml"));
+            }
+
+            if (param.Single(x => x.Key == "wt").Value == "xml")
+            {
+                // only set version if wt is set to xml since version specifies the xml protocol version (see Solr docs)
+                // and only set version if it wasn't already set by the caller
+                if (param.All(x => x.Key != "version"))
+                {
+                    param.Add(new KeyValuePair<string, string>("version", version));
+                }
+            }
 
             DiagnosticsUtil.EnrichCurrentActivity(param);
             

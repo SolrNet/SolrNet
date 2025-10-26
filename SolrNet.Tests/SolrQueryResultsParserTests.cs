@@ -476,6 +476,33 @@ namespace SolrNet.Tests
         }
 
         [Fact]
+        public void ParseFacetFunctions()
+        {
+            var parser = new FacetsResponseParser<TestDocumentWithArrays>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithFacetFunctions.xml");
+            var r = new SolrQueryResults<TestDocumentWithArrays>();
+            parser.Parse(xml, r);
+            Assert.NotNull(r.FacetFunctions);
+            Assert.Equal("150010", r.FacetFunctions.count);
+            Assert.Equal("30002", r.FacetFunctions.guids);
+        }
+
+        [Fact]
+        public void ParseFacetFunctionsNested()
+        {
+            var parser = new FacetsResponseParser<TestDocumentWithArrays>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithFacetFunctions2.xml");
+            var r = new SolrQueryResults<TestDocumentWithArrays>();
+            parser.Parse(xml, r);
+            Assert.NotNull(r.FacetFunctions);
+            Assert.Equal("150009", r.FacetFunctions.count);
+            Assert.Equal(5, r.FacetFunctions.categories.buckets[0].lst.Count);
+            Assert.Equal("en", r.FacetFunctions.categories.buckets[0].lst[0].val);
+            Assert.Equal("30002", r.FacetFunctions.categories.buckets[0].lst[0].unique_guid);
+            Assert.Equal("30003", r.FacetFunctions.categories.buckets[0].lst[0].count);
+        }
+
+        [Fact]
         public void ParseResponseHeader()
         {
             var parser = new HeaderResponseParser<TestDocument>();

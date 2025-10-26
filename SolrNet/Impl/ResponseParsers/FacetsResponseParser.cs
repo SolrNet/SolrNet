@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Xml.Linq;
 using SolrNet.Impl.FieldParsers;
@@ -242,11 +241,14 @@ namespace SolrNet.Impl.ResponseParsers {
         /// </summary>
         /// <param name="node"></param>
         /// <returns></returns>
-        public dynamic ParseFacetFunctions(XElement node)
+        public IDictionary<string, object> ParseFacetFunctions(XElement node)
         {
-            IDictionary<string, object> result = new ExpandoObject();
+            var result = new Dictionary<string, object>();
 
-            // Process attributes as dynamic properties
+            // Use the inferring parser so leaf nodes are converted to the best .NET type
+            var inferring = new InferringFieldParser(new DefaultFieldParser());
+
+            // Process attributes as properties
             foreach (var attribute in node.Attributes())
             {
                 result[attribute.Name.LocalName] = attribute.Value;
@@ -256,24 +258,71 @@ namespace SolrNet.Impl.ResponseParsers {
             {
                 string key = child.Attribute("name")?.Value ?? child.Name.LocalName;
 
-                // If element has children, recursively parse
-                var value = child.HasElements ? ParseFacetFunctions(child) : child.Value;
+                object value;
 
-                // Handle arrays (multiple elements with the same name)
-                if (result.ContainsKey(key))
+                if (child.HasElements)
                 {
-                    if (result[key] is List<dynamic> list)
+                    // If this is an <arr>, parse each child into a typed list
+                    if (child.Name.LocalName == "arr")
                     {
-                        list.Add(value);
+                        var items = new List<object>();
+                        foreach (var item in child.Elements())
+                        {
+                            if (item.HasElements)
+                            {
+                                items.Add(ParseFacetFunctions(item));
+                            }
+                            else
+                            {
+                                items.Add(inferring.Parse(item, typeof(object)));
+                        }
+                        }
+                        value = items;
                     }
                     else
                     {
-                        result[key] = new List<dynamic> { result[key], value };
+                        // Nested object (e.g. <lst>...)
+                        value = ParseFacetFunctions(child);
                     }
                 }
                 else
                 {
-                    result[key] = child.Name == "arr" ? new List<dynamic> { value } : value;
+                    // Leaf element: parse to appropriate .NET type (int, bool, date, string, ...)
+                    value = inferring.Parse(child, typeof(object));
+                }
+
+                // Merge into result, handling repeated keys / arrays
+                if (result.TryGetValue(key, out var existing))
+                {
+                    if (existing is List<object> existingList)
+                    {
+                        if (value is List<object> newList)
+                        {
+                            existingList.AddRange(newList);
+                        }
+                        else
+                        {
+                            existingList.Add(value);
+                    }
+                    }
+                    else
+                    {
+                        var newList = new List<object> { existing };
+                        if (value is List<object> nl)
+                        {
+                            newList.AddRange(nl);
+                        }
+                        else
+                        {
+                            newList.Add(value);
+                        }
+
+                        result[key] = newList;
+                    }
+                }
+                else
+                {
+                    result[key] = value;
                 }
             }
             return result;
@@ -316,8 +365,8 @@ namespace SolrNet.Impl.ResponseParsers {
 				}
 			}
 
-
 			return pivot;
 		}
+
     }
 }

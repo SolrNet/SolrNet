@@ -59,7 +59,7 @@ namespace SolrNet.Impl {
         /// <summary>
         /// Facet aggregation functions results
         /// </summary>
-        public dynamic FacetFunctions { get; set; }
+        public IDictionary<string, object> FacetFunctions { get; set; }
 
         /// <summary>
         /// Facet pivot results

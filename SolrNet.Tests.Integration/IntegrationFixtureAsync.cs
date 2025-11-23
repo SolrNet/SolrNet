@@ -453,11 +453,11 @@ namespace SolrNet.Tests.Integration
             foreach (var r in results)
                 foreach (var kv in r)
                 {
-                    testOutputHelper.WriteLine("{0} ({1}): {2}", kv.Key, TypeOrNull(kv.Value), kv.Value);
+                    testOutputHelper.WriteLine("{0} ({1}): {2}", kv.Key, kv.Value?.GetType(), kv.Value);
                     if (kv.Value is IList)
                     {
                         foreach (var e in (IList)kv.Value)
-                            testOutputHelper.WriteLine("\t{0} ({1})", e, TypeOrNull(e));
+                            testOutputHelper.WriteLine("\t{0} ({1})", e, e?.GetType());
                     }
                 }
         }
@@ -474,14 +474,7 @@ namespace SolrNet.Tests.Integration
             });
             Assert.Equal(0, response.Status);
         }
-
-        public Type TypeOrNull(object o)
-        {
-            if (o == null)
-                return null;
-            return o.GetType();
-        }
-
+        
         [Fact]
         public async Task FieldCollapsingAsync()
         {
@@ -560,7 +553,7 @@ namespace SolrNet.Tests.Integration
             Assert.NotNull(product.OtherFields);
             testOutputHelper.WriteLine(product.OtherFields.Count.ToString());
             foreach (var field in product.OtherFields)
-                testOutputHelper.WriteLine("{0}: {1} ({2})", field.Key, field.Value, TypeOrNull(field.Value));
+                testOutputHelper.WriteLine("{0}: {1} ({2})", field.Key, field.Value, field.Value?.GetType());
             var manufacturedate = Assert.IsType<DateTime>(product.OtherFields["manufacturedate_dt"]);
             Assert.Equal(new DateTime(2006, 02, 13), manufacturedate.Date);
             Assert.IsAssignableFrom<ICollection>(product.OtherFields["features"]);

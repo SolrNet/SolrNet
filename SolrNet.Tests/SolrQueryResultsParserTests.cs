@@ -1,4 +1,4 @@
-#region license
+﻿#region license
 // Copyright (c) 2007-2010 Mauricio Scheffer
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -473,6 +473,60 @@ namespace SolrNet.Tests
             Assert.NotNull(r.FacetQueries);
             //Console.WriteLine(r.FacetQueries.Count);
             Assert.Single(r.FacetQueries);
+        }
+
+        [Fact]
+        public void ParseFacetFunctions()
+        {
+            var parser = new FacetsResponseParser<TestDocumentWithArrays>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithFacetFunctions.xml");
+            var r = new SolrQueryResults<TestDocumentWithArrays>();
+            parser.Parse(xml, r);
+            Assert.NotNull(r.FacetFunctions);
+
+            var ff = r.FacetFunctions as IDictionary<string, object>;
+            Assert.NotNull(ff);
+
+            Assert.True(ff.ContainsKey("count"));
+            Assert.True(ff.ContainsKey("guids"));
+
+            Assert.Equal(150010, (int)ff["count"]);
+            Assert.Equal(30002, (int)ff["guids"]);
+        }
+
+        [Fact]
+        public void ParseFacetFunctionsNested()
+        {
+            var parser = new FacetsResponseParser<TestDocumentWithArrays>();
+            var xml = EmbeddedResource.GetEmbeddedXml(GetType(), "Resources.responseWithFacetFunctions2.xml");
+            var r = new SolrQueryResults<TestDocumentWithArrays>();
+            parser.Parse(xml, r);
+            Assert.NotNull(r.FacetFunctions);
+
+            var ff = r.FacetFunctions as IDictionary<string, object>;
+            Assert.NotNull(ff);
+
+            Assert.True(ff.ContainsKey("count"));
+            // top-level count parsed as int
+            Assert.Equal(150009, (int)ff["count"]);
+
+            // categories -> buckets
+            Assert.True(ff.ContainsKey("categories"));
+            var categories = ff["categories"] as IDictionary<string, object>;
+            Assert.NotNull(categories);
+            Assert.True(categories.ContainsKey("buckets"));
+            var buckets = categories["buckets"] as List<object>;
+            Assert.NotNull(buckets);
+            Assert.NotEmpty(buckets);
+
+            var firstBucket = buckets[0] as IDictionary<string, object>;
+            Assert.NotNull(firstBucket);
+            Assert.Equal(4, firstBucket.Count);
+
+            Assert.Equal("en", (string)firstBucket["val"]);
+            Assert.Equal(30002, (int)firstBucket["unique_guid"]);
+            Assert.Equal(30003, (int)firstBucket["count"]);
+            Assert.Equal(0.0, (double)firstBucket["sum_boost"]);
         }
 
         [Fact]

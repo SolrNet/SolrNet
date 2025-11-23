@@ -39,19 +39,8 @@ namespace SolrNet.Tests {
 
         private const string solrURL = "http://localhost:8983/solr/techproducts";
 
-        [Fact(Skip = "unknown reason")]
-        [Trait("Category", "Integration")]
-		public void ActualConnection() {
-            var conn = new SolrConnection(solrURL) { HttpWebRequestFactory = new HttpWebRequestFactory() };
-			var p = new Dictionary<string, string>();
-			p["version"] = "2.1";
-			p["indent"] = "on";
-			p["q"] = "+video +price:[* TO 400]";
-			testOutputHelper.WriteLine(conn.Get("/select/", p));
-		}
-
 		[Trait("Category", "Integration")]
-        [Fact(Skip = "unknown reason")]
+        [Fact]
         public void ActualConnectionWithException() {
             var conn = new SolrConnection(solrURL);
 			var p = new Dictionary<string, string>();
@@ -257,35 +246,6 @@ namespace SolrNet.Tests {
             conn.Get("/select/", new Dictionary<string, string> {
                 {"q", "*:*"},
             });
-        }
-
-        [Fact(Skip = "unknown reason")]
-        public void Cache() {
-            var conn = new SolrConnection(solrURL);
-            conn.Get("/select/", new Dictionary<string, string> {
-                {"q", "*:*"},
-            });
-            conn.Get("/select/", new Dictionary<string, string> {
-                {"q", "*:*"},
-            });
-        }
-
-      
-
-        [Fact(Skip = "unknown reason")]
-        public void NoCache_performance() {
-            var conn = new SolrConnection(solrURL) {
-                Cache = new NullCache(),
-            };
-            TestCache(conn);
-        }
-
-        void TestCache(ISolrConnection conn) {
-            foreach (var i in Enumerable.Range(0, 1000)) {
-                conn.Get("/select/", new Dictionary<string, string> {
-                    {"q", "*:*"},
-                });
-            }
         }
 	}
 }

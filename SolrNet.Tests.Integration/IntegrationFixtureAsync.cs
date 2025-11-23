@@ -462,16 +462,17 @@ namespace SolrNet.Tests.Integration
                 }
         }
 
-        [Fact(Skip = "Registering the connection in the container causes a side effect.")]
+        [Fact]
         public async Task LooseMappingAddAsync()
         {
             var _ = initDict.Value;
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<Dictionary<string, object>>>();
-            await solr.AddAsync(new Dictionary<string, object> {
+            var response = await solr.AddAsync(new Dictionary<string, object> {
                 {"id", "id1234"},
                 {"manu", "pepe"},
                 {"popularity", 6},
             });
+            Assert.Equal(0, response.Status);
         }
 
         public Type TypeOrNull(object o)

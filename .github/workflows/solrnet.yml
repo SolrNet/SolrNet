@@ -8,10 +8,7 @@ jobs:
       matrix:
         solr_version:
         - 9.6.1
-        - 8.11.2
-        - 7.7.3
-        - 6.6.6
-        - 5.5.5
+        - 8.11.4
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v27

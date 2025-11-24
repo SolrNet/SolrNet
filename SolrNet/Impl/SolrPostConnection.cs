@@ -60,6 +60,13 @@ namespace SolrNet.Impl
             get { return serverUrl; }
         }
 
+
+        /// <summary>
+        /// HTTP connection timeout in milliseconds
+        /// </summary>
+        public int Timeout { get; set; }
+
+
         /// <inheritdoc />
         public string Post(string relativeUrl, string s)
         {
@@ -79,6 +86,11 @@ namespace SolrNet.Impl
             var request = HttpWebRequestFactory.Create(u.Uri);
             request.Method = HttpWebRequestMethod.POST;
             request.ContentType = "application/x-www-form-urlencoded";
+            if (Timeout > 0)
+            {
+                request.ReadWriteTimeout = Timeout;
+                request.Timeout = Timeout;
+            }
 
             var param = new List<KeyValuePair<string, string>>();
             if (parameters != null)

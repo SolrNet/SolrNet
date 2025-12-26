@@ -28,9 +28,8 @@ namespace SolrNet.Impl.ResponseParsers {
     /// <typeparam name="T">Document type</typeparam>
     public class FacetsResponseParser<T> : ISolrAbstractResponseParser<T> {
         public void Parse(XDocument xml, AbstractSolrQueryResults<T> results) {
-            var mainFacetNode = xml.Element("response")
-                .Elements("lst")
-                .FirstOrDefault(X.AttrEq("name", "facet_counts"));
+            var childNodes = xml.Element("response").Elements("lst");
+            var mainFacetNode = childNodes.FirstOrDefault(X.AttrEq("name", "facet_counts"));
             if (mainFacetNode != null) {
                 results.FacetQueries = ParseFacetQueries(mainFacetNode);
                 results.FacetFields = ParseFacetFields(mainFacetNode);
@@ -38,6 +37,11 @@ namespace SolrNet.Impl.ResponseParsers {
 				results.FacetPivots = ParseFacetPivots(mainFacetNode);
                 results.FacetRanges = ParseFacetRanges(mainFacetNode);
                 results.FacetIntervals = ParseFacetIntervals(mainFacetNode);
+            }
+            var functionsNode = childNodes.FirstOrDefault(X.AttrEq("name", "facets"));
+            if (functionsNode != null)
+            {
+                results.FacetFunctions = ParseFacetFunctions(functionsNode);
             }
         }
 
@@ -232,6 +236,97 @@ namespace SolrNet.Impl.ResponseParsers {
             return d;
         }
 
+        /// <summary>
+        /// Parses facet aggregation functions (also called facet functions, analytic functions, or metrics)
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public IDictionary<string, object> ParseFacetFunctions(XElement node)
+        {
+            var result = new Dictionary<string, object>();
+
+            // Use the inferring parser so leaf nodes are converted to the best .NET type
+            var inferring = new InferringFieldParser(new DefaultFieldParser());
+
+            // Process attributes as properties
+            foreach (var attribute in node.Attributes())
+            {
+                result[attribute.Name.LocalName] = attribute.Value;
+            }
+
+            foreach (var child in node.Elements())
+            {
+                string key = child.Attribute("name")?.Value ?? child.Name.LocalName;
+
+                object value;
+
+                if (child.HasElements)
+                {
+                    // If this is an <arr>, parse each child into a typed list
+                    if (child.Name.LocalName == "arr")
+                    {
+                        var items = new List<object>();
+                        foreach (var item in child.Elements())
+                        {
+                            if (item.HasElements)
+                            {
+                                items.Add(ParseFacetFunctions(item));
+                            }
+                            else
+                            {
+                                items.Add(inferring.Parse(item, typeof(object)));
+                        }
+                        }
+                        value = items;
+                    }
+                    else
+                    {
+                        // Nested object (e.g. <lst>...)
+                        value = ParseFacetFunctions(child);
+                    }
+                }
+                else
+                {
+                    // Leaf element: parse to appropriate .NET type (int, bool, date, string, ...)
+                    value = inferring.Parse(child, typeof(object));
+                }
+
+                // Merge into result, handling repeated keys / arrays
+                if (result.TryGetValue(key, out var existing))
+                {
+                    if (existing is List<object> existingList)
+                    {
+                        if (value is List<object> newList)
+                        {
+                            existingList.AddRange(newList);
+                        }
+                        else
+                        {
+                            existingList.Add(value);
+                    }
+                    }
+                    else
+                    {
+                        var newList = new List<object> { existing };
+                        if (value is List<object> nl)
+                        {
+                            newList.AddRange(nl);
+                        }
+                        else
+                        {
+                            newList.Add(value);
+                        }
+
+                        result[key] = newList;
+                    }
+                }
+                else
+                {
+                    result[key] = value;
+                }
+            }
+            return result;
+        } 
 
         /// <summary>
         /// Parses facet pivot results
@@ -269,7 +364,6 @@ namespace SolrNet.Impl.ResponseParsers {
 					pivot.ChildPivots.Add(ParsePivotNode(childNode));
 				}
 			}
-
 
 			return pivot;
 		}

@@ -47,9 +47,6 @@ namespace SolrNet.Cloud
                 throw new ArgumentNullException("cloudStateProvider");
             await EnsureRegistrationAsync(cloudStateProvider);
 
-            if (!Collections.Add(string.Empty))
-                return;
-
             Parent.Container.Register<ISolrBasicOperations<T>>(
                 container => new SolrCloudBasicOperations<T>(
                     container.GetInstance<ISolrCloudStateProvider>(cloudStateProvider.Key),

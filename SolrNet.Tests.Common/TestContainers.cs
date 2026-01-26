@@ -14,7 +14,7 @@ public static class TestContainers
     public static Uri BaseUrl => _solr.Value.GetUrl();
     public static Uri BaseUrlWithAuth => _solrWithAuth.Value.GetUrl();
     
-    public static string SolrVersion => Environment.GetEnvironmentVariable("SOLR_VERSION") ?? "9.4.0";
+    public static string SolrVersion => Environment.GetEnvironmentVariable("SOLR_VERSION") ?? "9.6.1";
 
     static Uri GetUrl(this IContainer container) =>
         new UriBuilder("http", container.Hostname, container.GetMappedPublicPort(8983)).Uri;

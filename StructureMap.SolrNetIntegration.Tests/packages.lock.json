@@ -80,18 +80,19 @@
       },
       "Docker.DotNet.Enhanced": {
         "type": "Transitive",
-        "resolved": "3.126.1",
-        "contentHash": "UPyLBLBaVE3s7OCWM0h5g9w6mUOag5sOIP5CldFQekIWo/gHixgZR+o5fG7eCFH4ZdKlvBGM4ALFuOyPoKoJ3A==",
+        "resolved": "3.129.0",
+        "contentHash": "+mTwpvdnCs0366AfuofuBhUFGHuGraWX+4am+NX93sL1tmLTCX6idDS8stDA6JG/5SYdx+UFn7BNu8H5Fjhj9g==",
         "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
           "System.IO.Pipelines": "8.0.0"
         }
       },
       "Docker.DotNet.Enhanced.X509": {
         "type": "Transitive",
-        "resolved": "3.126.1",
-        "contentHash": "XFHMC/iWHbloQgg9apZrxu010DmSamaAggu8nomCqTeotGyUGkv2Tt/aqk1ljC/4tjtTrb9LtFQwYpwZbMbiKg==",
+        "resolved": "3.129.0",
+        "contentHash": "UxMlIB7XX9jZKWUGk/hosD1VGlnb9BTcMzBkhba9ZvN3PZn/bLlhLSDLLFa29Wh/WUfsngpSfz+zuyfChr7Dqw==",
         "dependencies": {
-          "Docker.DotNet.Enhanced": "3.126.1"
+          "Docker.DotNet.Enhanced": "3.129.0"
         }
       },
       "Microsoft.CodeCoverage": {
@@ -1344,7 +1345,7 @@
           "Castle.Windsor": "[4.1.0, )",
           "CommonServiceLocator": "[2.0.4, )",
           "SolrNet.Core": "[9.9.99, )",
-          "Testcontainers": "[4.3.0, )",
+          "Testcontainers": "[4.8.1, )",
           "xunit.assert": "[2.9.3, )"
         }
       },
@@ -1428,12 +1429,12 @@
       },
       "Testcontainers": {
         "type": "CentralTransitive",
-        "requested": "[4.3.0, )",
-        "resolved": "4.3.0",
-        "contentHash": "1cxsjDE2+rdi/ELOel+NbQhQ7tvaqXG2YDN6nmhDzyAu9baGM2FUENG/3eG7N+ak3nap35RFvxyhIdVBeqNwlA==",
+        "requested": "[4.8.1, )",
+        "resolved": "4.8.1",
+        "contentHash": "6KB430LIVqn2H25idznjqWFu8I9ltQua8FFCoyB8AywUAqEjbkGVm1SfJ8wfXprV7tZlgSxrcWFgilZbA1RDYA==",
         "dependencies": {
-          "Docker.DotNet.Enhanced": "3.126.1",
-          "Docker.DotNet.Enhanced.X509": "3.126.1",
+          "Docker.DotNet.Enhanced": "3.129.0",
+          "Docker.DotNet.Enhanced.X509": "3.129.0",
           "Microsoft.Extensions.Logging.Abstractions": "8.0.3",
           "SSH.NET": "2024.2.0",
           "SharpZipLib": "1.4.2"

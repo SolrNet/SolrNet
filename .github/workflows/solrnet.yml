@@ -2,7 +2,11 @@ name: SolrNet
 on: [push, pull_request]
 jobs:
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      checks: write
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -12,8 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31
-        with:
-          install_url: https://releases.nixos.org/nix/nix-2.23.3/install
       - name: Unit tests
         run: ./unit_tests.sh
       - name: Integration tests
@@ -40,16 +42,17 @@ jobs:
       #     name: test-output
       #     path: ${{ env.CLOUD_TEST_OUTPUT }}
   pack:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: test
     if: github.ref == 'refs/heads/master'
+    permissions:
+      contents: write
+      packages: write
     steps:
       - uses: actions/checkout@v6
         with:
-         fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
       - uses: cachix/install-nix-action@v31
-        with:
-          install_url: https://releases.nixos.org/nix/nix-2.23.3/install
       - name: Pack
         run: ./pack.sh
         env:

@@ -55,6 +55,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleInjector.SolrNet", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutofacContrib.SolrNetCloud", "AutofacContrib.SolrNetCloud\AutofacContrib.SolrNetCloud.csproj", "{10226C1F-3DE4-4C8C-845F-24D520D6696F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.DependencyInjection.SolrNet.Cloud", "Microsoft.DependencyInjection.SolrNet.Cloud\Microsoft.DependencyInjection.SolrNet.Cloud.csproj", "{2AD0FD19-258C-41AF-90C8-06609B797C41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.DependencyInjection.SolrNet.Cloud.Tests", "Microsoft.DependencyInjection.SolrNet.Cloud.Tests\Microsoft.DependencyInjection.SolrNet.Cloud.Tests.csproj", "{293E3A89-783E-4EDE-B695-082F197BC006}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightInject.SolrNet.Tests", "LightInject.SolrNet.Tests\LightInject.SolrNet.Tests.csproj", "{82DB35C4-2E5B-44CD-81A2-9E66C9AC933C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightInject.SolrNet", "LightInject.SolrNet\LightInject.SolrNet.csproj", "{99F980E6-E337-47E5-A39E-CD78B5EAC374}"
@@ -171,6 +175,14 @@ Global
 		{10226C1F-3DE4-4C8C-845F-24D520D6696F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10226C1F-3DE4-4C8C-845F-24D520D6696F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10226C1F-3DE4-4C8C-845F-24D520D6696F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AD0FD19-258C-41AF-90C8-06609B797C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AD0FD19-258C-41AF-90C8-06609B797C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AD0FD19-258C-41AF-90C8-06609B797C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AD0FD19-258C-41AF-90C8-06609B797C41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{293E3A89-783E-4EDE-B695-082F197BC006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{293E3A89-783E-4EDE-B695-082F197BC006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{293E3A89-783E-4EDE-B695-082F197BC006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{293E3A89-783E-4EDE-B695-082F197BC006}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82DB35C4-2E5B-44CD-81A2-9E66C9AC933C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82DB35C4-2E5B-44CD-81A2-9E66C9AC933C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82DB35C4-2E5B-44CD-81A2-9E66C9AC933C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -196,6 +208,7 @@ Global
 		{C4FF031C-FB88-4186-9305-B180A07EC7DA} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{48DA5170-B96E-485C-941D-0D7797DCA0EF} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{110F4D69-8F08-42F5-97DB-B0A42B3107AC} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
+		{293E3A89-783E-4EDE-B695-082F197BC006} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 		{82DB35C4-2E5B-44CD-81A2-9E66C9AC933C} = {C167AD0C-270B-4297-94C5-BE5548AA6038}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

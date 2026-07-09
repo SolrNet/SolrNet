@@ -96,6 +96,8 @@
     <EmbeddedResource Include="Resources\responseWithEnumAsInt.xml" />
     <EmbeddedResource Include="Resources\responseWithEnumAsString.xml" />
     <EmbeddedResource Include="Resources\responseWithExtractContent.xml" />
+    <EmbeddedResource Include="Resources\responseWithFacetFunctions2.xml" />
+    <EmbeddedResource Include="Resources\responseWithFacetFunctions.xml" />
     <EmbeddedResource Include="Resources\responseWithFacet.xml" />
     <EmbeddedResource Include="Resources\responseWithFacetPivoting.xml" />
     <EmbeddedResource Include="Resources\responseWithGroupingOnInstock.xml" />

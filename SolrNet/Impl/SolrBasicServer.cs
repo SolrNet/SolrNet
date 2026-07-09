@@ -162,15 +162,35 @@ namespace SolrNet.Impl {
         }
 
         /// <inheritdoc />
+        [Obsolete("Use AtomicUpdates instead.")]
         public ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters){
-            var atomicUpdate = new AtomicUpdateCommand(uniqueKey, id, updateSpecs, parameters);
+            return AtomicUpdates(uniqueKey, new AtomicUpdateSpecCollection()
+            {
+                { id, updateSpecs }
+            }, parameters);
+        }
+
+        /// <inheritdoc />
+        [Obsolete("Use AtomicUpdatesAsync instead.")]
+        public Task<ResponseHeader> AtomicUpdateAsync(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            return AtomicUpdatesAsync(uniqueKey, new AtomicUpdateSpecCollection()
+            {
+                { id, updateSpecs }
+            }, parameters);
+        }
+
+        /// <inheritdoc />
+        public ResponseHeader AtomicUpdates(string uniqueKey, AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            var atomicUpdate = new AtomicUpdatesCommand(uniqueKey, updateSpecs, parameters);
             return SendAndParseHeader(atomicUpdate);
         }
 
         /// <inheritdoc />
-        public Task<ResponseHeader> AtomicUpdateAsync(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
+        public Task<ResponseHeader> AtomicUpdatesAsync(string uniqueKey, AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
         {
-            var atomicUpdate = new AtomicUpdateCommand(uniqueKey, id, updateSpecs, parameters);
+            var atomicUpdate = new AtomicUpdatesCommand(uniqueKey, updateSpecs, parameters);
             return SendAndParseHeaderAsync(atomicUpdate);
         }
 

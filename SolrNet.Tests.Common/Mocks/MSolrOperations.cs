@@ -410,5 +410,45 @@ namespace SolrNet.Tests.Mocks {
         {
             throw new NotImplementedException();
         }
+
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection<T> updateSpecs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection<T> updateSpecs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection updateSpecs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection updateSpecs)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection<T> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection<T> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

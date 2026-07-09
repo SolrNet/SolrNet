@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SolrNet.Commands.Parameters;
@@ -89,14 +90,26 @@ namespace SolrNet.Cloud
             return PerformBasicOperation(operations => operations.SendAndParseExtract(cmd));
         }
 
+        [Obsolete("Use AtomicUpdates instead.")]
         public ResponseHeader AtomicUpdate(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            return PerformBasicOperation(operations => operations.AtomicUpdate(uniqueKey, id, updateSpecs, parameters));
+            return AtomicUpdates(uniqueKey, new AtomicUpdateSpecCollection { { id, updateSpecs } }, parameters);
         }
 
+        [Obsolete("Use AtomicUpdatesAsync instead.")]
         public Task<ResponseHeader> AtomicUpdateAsync(string uniqueKey, string id, IEnumerable<AtomicUpdateSpec> updateSpecs, AtomicUpdateParameters parameters)
         {
-            return PerformBasicOperation(operations => operations.AtomicUpdateAsync(uniqueKey, id, updateSpecs, parameters));
+            return AtomicUpdatesAsync(uniqueKey, new AtomicUpdateSpecCollection { { id, updateSpecs } }, parameters);
+        }
+
+        public ResponseHeader AtomicUpdates(string uniqueKey, AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            return PerformBasicOperation(operations => operations.AtomicUpdates(uniqueKey, updateSpecs, parameters));
+        }
+
+        public Task<ResponseHeader> AtomicUpdatesAsync(string uniqueKey, AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            return PerformBasicOperation(operations => operations.AtomicUpdatesAsync(uniqueKey, updateSpecs, parameters));
         }
 
         public Task<ResponseHeader> CommitAsync(CommitOptions options)

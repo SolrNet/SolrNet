@@ -627,5 +627,65 @@ namespace SolrNet.Cloud.Tests
         {
             provider.LastOperation = operation;
         }
+
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection<T> updateSpecs)
+        {
+            SetLastOperation();
+            return null;
+        }
+
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection<T> updateSpecs)
+        {
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
+        }
+
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection updateSpecs)
+        {
+            SetLastOperation();
+            return null;
+        }
+
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection updateSpecs)
+        {
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
+        }
+
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection<T> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            SetLastOperation();
+            return null;
+        }
+
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection<T> updateSpecs, AtomicUpdateParameters parameters)
+        {
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
+        }
+
+        public ResponseHeader AtomicUpdates(AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            SetLastOperation();
+            return null;
+        }
+
+        public Task<ResponseHeader> AtomicUpdatesAsync(AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
+        }
+
+        public ResponseHeader AtomicUpdates(string uniqueKey, AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            SetLastOperation();
+            return null;
+        }
+
+        public Task<ResponseHeader> AtomicUpdatesAsync(string uniqueKey, AtomicUpdateSpecCollection updateSpecs, AtomicUpdateParameters parameters)
+        {
+            SetLastOperation();
+            return Task.FromResult<ResponseHeader>(null);
+        }
     }
 }

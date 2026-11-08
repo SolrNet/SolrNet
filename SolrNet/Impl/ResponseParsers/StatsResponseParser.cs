@@ -76,6 +76,15 @@ namespace SolrNet.Impl.ResponseParsers {
             return r;
         }
 
+        public IDictionary<string, Dictionary<string, StatsResult>> ParseDistinctValuesNode(XElement node) {
+            var r = new Dictionary<string, Dictionary<string, StatsResult>>();
+            foreach (var n in node.Elements()) {
+                var value = n.Value;
+                r[value] = null;
+            }
+            return r;
+        }
+
         /// <summary>
         /// Parses percentiles node.
         /// </summary>
@@ -130,6 +139,9 @@ namespace SolrNet.Impl.ResponseParsers {
                         break;
                     case "percentiles":
                         r.Percentiles = ParsePercentilesNode(statNode);
+                        break;
+                    case "distinctValues":
+                        r.FacetResults = ParseDistinctValuesNode(statNode);
                         break;
                     default:
                         r.FacetResults = ParseFacetNode(statNode);
